@@ -1,116 +1,271 @@
 /* ==========================================================================
-   2-sys/colors.css — TOKENS SEMANTICOS DE COLOR (solo var())
+   2-sys/colors.css — CLASES UTILITARIAS DE COLOR
    ==========================================================================
 
    QUE ES ESTE ARCHIVO
    -------------------
-   CAPA 2 del sistema. Aqui viven los ROLES de color: el nombre que un
-   componente pide cuando dice "quiero el color de error".
+   Capa 2 del sistema. Aqui NO se define ningun token de color: eso vive en
+   theme/theme.light.css y theme/theme.dark.css, que son los unicos archivos
+   que deciden que tono tiene cada rol.
 
-   Este archivo NO contiene los valores. Solo declara QUE TONO cumple cada
-   ROL. Los tonos viven en 1-ref/palette.css.
+   Este archivo expone los ROLES como clases de CSS, para poder aplicarlos
+   desde el HTML sin tener que escribir la propiedad a mano cada vez.
 
+       <div class="md-c-surface md-c-on-surface">Texto</div>
+
+   ---------------------------------------------------------------------------
+   POR QUE EXISTEN Y CUANDO USARLAS
+   ---------------------------------------------------------------------------
+   Son una AYUDA, no la via principal. M3 recomienda construir componentes con
+   las variables directamente:
+
+       .mi-tarjeta {
+         background: var(--md-sys-color-surface-container);
+         color: var(--md-sys-color-on-surface);
+       }
+
+   Las clases utilitarias son para cuando NO quieres (o no puedes) escribir
+   una regla: prototipos rapidos, HTML del showroom, Utilities genericos,
+   o archivos donde meter CSS a mano no tiene sentido.
+
+   En cuanto un patron de estilo se repite, deja de ser una utilidad y pasa a
+   ser un componente. Lo que se repite mucho se va a 3-comp/. Esa es la
+   frontera: si una clase utilitaria crece hasta reproducir un componente de
+   M3 entero, es una pista de que deberia viver en 3-comp/.
+
+   ---------------------------------------------------------------------------
    LA REGLA DE ESTA CAPA
    ---------------------
-   TODAS las declaraciones son var(). No hay un solo #HEX en este archivo.
+   Todas las declaraciones son var(). No hay un solo #HEX en este archivo, y
+   no hay ningun token nuevo. Este archivo CONSUME el sistema; no lo define.
 
-   Eso no es estetica: es lo que hace que cambiar la paleta sea barato. Si el
-   rol "primary" apunta a primary40, y manana la marca cambia de violeta a
-   naranja, basta con mover el rol en ESTE archivo. Ningun componente se
-   entera, porque ninguno conocia el tono, solo el rol.
-
-   ESTRUCTURA
-   ----------
-   Este archivo declara los ROLES. Los VALORES de cada rol viven en:
-
-       2-sys/theme/theme.light.css    (tema claro)
-       2-sys/theme/theme.dark.css     (tema oscuro)
-
-   Aqui NO se asigna ningun tono, porque el mismo rol necesita tonos
-   DISTINTOS en cada tema. En claro, primary usa el tono 40 (oscuro y
-   saturado, para contrastar con fondo claro). En oscuro, primary usa el tono
-   80 (claro, porque el fondo ya es oscuro). El rol es el mismo; el tono
-   cambia. Esa separacion es lo que hace posible el cambio de tema.
+   Esto es lo que mantiene el cambio de tema funcionando: la clase .md-c-primary
+   no sabe que color es primary. Solo dice "usa el rol primary". Cuando el
+   tema cambia, la clase se entera sola.
 
    ---------------------------------------------------------------------------
-   LOS ROLES Y POR QUE EXISTEN
+   LOS DOS PATRONES DE M3 PARA COLOR
    ---------------------------------------------------------------------------
+   M3 define la convencion "on-*" para garantizar contraste: el rol on-X es
+   el texto o icono que va ENCIMA de X, y el sistema ya verifico que la
+   combinacion es legible.
 
-   LA REGLA DEL PREFIJO "on-"
-   ---------------------------
-   Es la convencion central de M3 y merece entenderse antes de usar nada:
+   Por eso existen las clases en dos formas:
 
-       primary            = fondo
-       on-primary         = TEXTO o ICONO que va ENCIMA de primary
-
-   "on" significa "sobre", no "opuesto". Los roles "on-*" existen para
-   garantizar contraste: el sistema ya verifico que on-primary sobre primary
-   cumple el ratio de accesibilidad. Por eso un componente NUNCA elige el color
-   del texto por su cuenta: pide el rol "on-" que corresponde a su fondo.
-
-   ERROR TIPICO QUE ESTOS ROLES PREVIENEN
-   ----------------------------------------
-   Poner texto blanco sobre cualquier fondo. Sobre el violeta del tema claro
-   funciona; pero si alguien cambia el fondo a un tono claro, el texto blanco
-   desaparece. Con el rol "on-", la combinacion esta probada por construccion.
+     .md-c-primary            fondo + texto on-primary
+     .md-c-on-primary         texto on-primary sobre fondo transparente
+     .md-c-primary-bg         SOLO el fondo
+     .md-c-primary-text       SOLO el texto
 
    ---------------------------------------------------------------------------
-   EL CATALOGO COMPLETO DE ROLES
+   PREFIXO DE CLASES: md-c-
    ---------------------------------------------------------------------------
-   Los 30 roles, agrupados por lo que representan:
-
-   GRUPOS PRIMARIO, SECUNDARIO, TERCIARIO, ERROR  (4 familias x 4 roles = 16)
-     primary            / on-primary
-     primary-container  / on-primary-container
-     secondary          / on-secondary
-     secondary-container/ on-secondary-container
-     tertiary           / on-tertiary
-     tertiary-container / on-tertiary-container
-     error              / on-error
-     error-container    / on-error-container
-
-     El patron "-container" es una version atenuada del color. Un boton
-     "filled" usa primary solido; un "tonal" usa primary-container. Ambos
-     son validos, dependiend del nivel de enfasis que se quiera.
-
-   SUPERFICIES  (10 roles)
-     surface, surface-dim, surface-bright
-     surface-container-lowest / -low / (base) / -high / -highest
-     surface-variant
-
-     M3 expresion la jerarquia visual por TONO, no solo por sombra: cuanto
-     mas alto el contenedor, mas claro (en tema oscuro) o mas oscuro (en
-     tema claro). Es la evolucion de la elevation con sombras: una tarjeta
-     "levantada" se distingue por su tono, no por un box-shadow.
-
-   BORDES Y CONTENIDO  (4 roles)
-     on-surface, on-surface-variant, outline, outline-variant
-
-     outline es el borde de un campo de formulario.
-     outline-variant es un borde mucho mas sutil, para separadores.
-
-   INVERSOS  (4 roles)
-     inverse-surface, inverse-on-surface, inverse-primary, scrim
-
-     "inverse" significa superponer el contraste: fondo oscuro donde el tema
-     normal es claro. Se usa en snackbars y menus flotantes.
+   Sin prefijo, nombres como .primary o .surface colisionarian con cualquier
+   otra hoja de estilos del proyecto. El prefijo md-c- (material design color)
+   evita esas colisiones.
 
    ========================================================================== */
 
-:root {
-  /* ------------------------------------------------------------------------
-     NOTA SOBRE LA ESTRUCTURA DE ESTE BLOQUE
-     ---------------------------------------------------------------------
-     Este bloque esta deliberadamente vacio de declaraciones de valor.
+/* ==========================================================================
+   GRUPOS PRIMARIO, SECUNDARIO, TERCIARIO, ERROR
+   --------------------------------------------------------------------------
+   .md-c-<grupo>           fondo + texto on-<grupo>
+   .md-c-<grupo>-bg        solo fondo
+   .md-c-<grupo>-text      solo texto
+   .md-c-on-<grupo>        texto on-<grupo> sobre fondo transparente
+   .md-c-<grupo>-container fondo atenuado + texto on-<grupo>-container
+   .md-c-on-<grupo>-container   texto on-<grupo>-container
+   ========================================================================== */
 
-     Los roles se nombran y se asignan en theme/theme.light.css y
-     theme/theme.dark.css. Este archivo los agrupa y documenta.
+/* -------------------------------------------------------------------------
+   PRIMARY — el color de marca
+   ---------------------------------------------------------------------- */
+.md-c-primary {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+.md-c-primary-bg {
+  background-color: var(--md-sys-color-primary);
+}
+.md-c-primary-text {
+  color: var(--md-sys-color-primary);
+}
+.md-c-on-primary {
+  color: var(--md-sys-color-on-primary);
+}
+.md-c-primary-container {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+.md-c-on-primary-container {
+  color: var(--md-sys-color-on-primary-container);
+}
 
-     Se podria "declarar aqui" cada rol con un valor por defecto, pero eso
-     crearia una segunda fuente de verdad que competiria con los archivos de
-     tema. Con una sola fuente, el cambio de tema es fiable por construccion.
-     --------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------
+   SECONDARY — apoyo, menos enfasis que primary
+   ---------------------------------------------------------------------- */
+.md-c-secondary {
+  background-color: var(--md-sys-color-secondary);
+  color: var(--md-sys-color-on-secondary);
+}
+.md-c-secondary-bg {
+  background-color: var(--md-sys-color-secondary);
+}
+.md-c-secondary-text {
+  color: var(--md-sys-color-secondary);
+}
+.md-c-on-secondary {
+  color: var(--md-sys-color-on-secondary);
+}
+.md-c-secondary-container {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+.md-c-on-secondary-container {
+  color: var(--md-sys-color-on-secondary-container);
+}
 
-  /* Los roles se definen en 2-sys/theme/theme.light.css */
-  /* Los roles se definen en 2-sys/theme/theme.dark.css  */
+/* -------------------------------------------------------------------------
+   TERTIARY — acento de contraste
+   ---------------------------------------------------------------------- */
+.md-c-tertiary {
+  background-color: var(--md-sys-color-tertiary);
+  color: var(--md-sys-color-on-tertiary);
+}
+.md-c-tertiary-bg {
+  background-color: var(--md-sys-color-tertiary);
+}
+.md-c-tertiary-text {
+  color: var(--md-sys-color-tertiary);
+}
+.md-c-on-tertiary {
+  color: var(--md-sys-color-on-tertiary);
+}
+.md-c-tertiary-container {
+  background-color: var(--md-sys-color-tertiary-container);
+  color: var(--md-sys-color-on-tertiary-container);
+}
+.md-c-on-tertiary-container {
+  color: var(--md-sys-color-on-tertiary-container);
+}
+
+/* -------------------------------------------------------------------------
+   ERROR — fallo y validacion
+   ---------------------------------------------------------------------- */
+.md-c-error {
+  background-color: var(--md-sys-color-error);
+  color: var(--md-sys-color-on-error);
+}
+.md-c-error-bg {
+  background-color: var(--md-sys-color-error);
+}
+.md-c-error-text {
+  color: var(--md-sys-color-error);
+}
+.md-c-on-error {
+  color: var(--md-sys-color-on-error);
+}
+.md-c-error-container {
+  background-color: var(--md-sys-color-error-container);
+  color: var(--md-sys-color-on-error-container);
+}
+.md-c-on-error-container {
+  color: var(--md-sys-color-on-error-container);
+}
+
+/* ==========================================================================
+   SUPERFICIES
+   --------------------------------------------------------------------------
+   .md-c-surface             fondo base de la app
+   .md-c-surface-<nivel>     la escalera de contenedores
+   .md-c-on-surface          texto principal
+   .md-c-on-surface-variant  texto de apoyo
+
+   LA ESCALERA DE CONTAINERS
+   -------------------------
+   Estos cinco roles expresan jerarquia visual por TONO, no por sombra. Es la
+   evolucion de la elevacion en M3: una tarjeta "levantada" se distingue por su
+   tono de superficie, no por un box-shadow.
+
+   lowest < low < (container) < high < highest
+
+   Cuando algo "flota" sobre la pagina (un dialogo, un menu), se sube en esta
+   escalera en lugar de añadirle sombra.
+   ========================================================================== */
+.md-c-surface {
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+}
+.md-c-surface-bg {
+  background-color: var(--md-sys-color-surface);
+}
+.md-c-surface-dim {
+  background-color: var(--md-sys-color-surface-dim);
+}
+.md-c-surface-bright {
+  background-color: var(--md-sys-color-surface-bright);
+}
+.md-c-surface-container-lowest {
+  background-color: var(--md-sys-color-surface-container-lowest);
+}
+.md-c-surface-container-low {
+  background-color: var(--md-sys-color-surface-container-low);
+}
+.md-c-surface-container {
+  background-color: var(--md-sys-color-surface-container);
+}
+.md-c-surface-container-high {
+  background-color: var(--md-sys-color-surface-container-high);
+}
+.md-c-surface-container-highest {
+  background-color: var(--md-sys-color-surface-container-highest);
+}
+.md-c-surface-variant {
+  background-color: var(--md-sys-color-surface-variant);
+}
+.md-c-on-surface {
+  color: var(--md-sys-color-on-surface);
+}
+.md-c-on-surface-variant {
+  color: var(--md-sys-color-on-surface-variant);
+}
+.md-c-background {
+  background-color: var(--md-sys-color-background);
+  color: var(--md-sys-color-on-background);
+}
+
+/* ==========================================================================
+   BORDES
+   --------------------------------------------------------------------------
+   .md-c-outline        borde visible (campos de formulario)
+   .md-c-outline-variant borde sutil (separadores)
+   ========================================================================== */
+.md-c-outline {
+  border: 1px solid var(--md-sys-color-outline);
+}
+.md-c-outline-variant {
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+/* ==========================================================================
+   INVERSOS
+   --------------------------------------------------------------------------
+   Para superficies que necesitan standout: snackbars, menus flotantes.
+   Invierte el contraste respecto al tema activo.
+   ========================================================================== */
+.md-c-inverse-surface {
+  background-color: var(--md-sys-color-inverse-surface);
+  color: var(--md-sys-color-inverse-on-surface);
+}
+.md-c-on-inverse-surface {
+  color: var(--md-sys-color-inverse-on-surface);
+}
+.md-c-inverse-primary {
+  color: var(--md-sys-color-inverse-primary);
+}
+.md-c-scrim {
+  background-color: var(--md-sys-color-scrim);
+}
+.md-c-shadow {
+  background-color: var(--md-sys-color-shadow);
 }
