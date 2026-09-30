@@ -89,7 +89,7 @@ Verificado contra los archivos publicados por Google. Nombres exactos:
 | `--md-ref-palette-*`     | `1-ref/palette.css` | 91 tonos (v0.192)                      |
 | `--md-ref-typeface-*`    | `1-ref/typeface.css`| 5 tokens (plain, brand, 3 pesos)         |
 | `--md-sys-color-*`       | `2-sys/theme/*.css` | 37 roles × 2 temas                      |
-| `.md-c-*`                | `2-sys/colors.css` | Clases utilitarias de color             |
+| `md-bg-*` / `md-text-*` / `md-border-*` | `2-sys/colors.css` | 93 clases utilitarias de color |
 | `--md-sys-typescale-*`   | `2-sys/typography.css` | 15 estilos (display→label)           |
 | `--md-sys-shape-*`       | `2-sys/shape.css`| Esquinas y radios                          |
 | `--md-sys-motion-*`      | `2-sys/motion.css`| Duraciones y easing                        |
@@ -101,17 +101,28 @@ Verificado contra los archivos publicados por Google. Nombres exactos:
 > `--md-sys-typescale-*`. Confundir ambos nombres es un error frecuente.
 
 > **Nota sobre `colors.css`:** este archivo **no define variables `:root`**.
-> Expone los roles como clases utilitarias (`.md-c-primary`, `.md-c-surface`,
-> `.md-c-on-surface`) que consumen `var(--md-sys-color-*)`. Los valores viven
-> exclusivamente en `2-sys/theme/theme.light.css` y `theme.dark.css`, porque el
-> mismo rol necesita tonos distintos por tema (`primary` es tono 40 en claro y
-> tono 80 en oscuro); asignarlos en un archivo único crearía una segunda fuente
-> de verdad que competiría con los temas.
+> Expone los roles como clases utilitarias que consumen `var(--md-sys-color-*)`.
+> Los valores viven exclusivamente en `2-sys/theme/theme.light.css` y
+> `theme.dark.css`, porque el mismo rol necesita tonos distintos por tema
+> (`primary` es tono 40 en claro y tono 80 en oscuro); asignarlos en un archivo
+> único crearía una segunda fuente de verdad que competiría con los temas.
 >
-> La vía recomendada para construir componentes es la variable directa. Las
-> clases utilitarias existen para HTML del showroom, prototipos y utilities
-> genéricos. Si una utilidad crece hasta reproducir un componente M3 completo,
-> ese es el indicio de que debe pasar a `3-comp/`.
+> El esquema de nombres es **propiedad primero**: `md-bg-<rol>`, `md-text-<rol>`,
+> `md-border-<rol>`. Es el criterio de Tailwind y el que mejor escala, porque se
+> lee de un vistazo sin llegar al final de la clase. Prefijar con `md-` coincide
+> con el namespace que Google usa en `@material/web` (custom elements como
+> `<md-filled-button>`), de modo que nuestras utilidades y sus elementos
+> conviven sin colisión.
+>
+> No existe un atajo que empareje fondo con su texto. Se escribe el par
+> explícito —`md-bg-primary` + `md-text-on-primary`— para que el contraste sea
+> auditable en el HTML. Eso protege la convención `on-*`, que es la garantía de
+> accesibilidad del tema.
+>
+> La vía recomendada para construir componentes sigue siendo la variable
+> directa. Las utilidades existen para el HTML del showroom, prototipos y
+> utilities genéricos. Si una utilidad crece hasta reproducir un componente M3
+> completo, ese es el indicio de que debe pasar a `3-comp/`.
 
 > **Nota sobre la versión de la paleta (v0.192):** existe una versión "compacta"
 > de la paleta con 13 tonos por familia que circulaba antes. **No alcanza** para

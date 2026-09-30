@@ -8,10 +8,10 @@
    theme/theme.light.css y theme/theme.dark.css, que son los unicos archivos
    que deciden que tono tiene cada rol.
 
-   Este archivo expone los ROLES como clases de CSS, para poder aplicarlos
-   desde el HTML sin tener que escribir la propiedad a mano cada vez.
+   Este archivo EXPONE los roles como clases de CSS, para aplicarlos desde el
+   HTML sin escribir la propiedad a mano cada vez.
 
-       <div class="md-c-surface md-c-on-surface">Texto</div>
+       <div class="md-bg-surface-container md-text-on-surface">Texto</div>
 
    ---------------------------------------------------------------------------
    POR QUE EXISTEN Y CUANDO USARLAS
@@ -24,248 +24,220 @@
          color: var(--md-sys-color-on-surface);
        }
 
-   Las clases utilitarias son para cuando NO quieres (o no puedes) escribir
-   una regla: prototipos rapidos, HTML del showroom, Utilities genericos,
-   o archivos donde meter CSS a mano no tiene sentido.
+   Las utilidades son para cuando NO se quiere (o no se puede) escribir una
+   regla: HTML del showroom, prototipos rapidos, utilities genericos.
 
-   En cuanto un patron de estilo se repite, deja de ser una utilidad y pasa a
-   ser un componente. Lo que se repite mucho se va a 3-comp/. Esa es la
-   frontera: si una clase utilitaria crece hasta reproducir un componente de
-   M3 entero, es una pista de que deberia viver en 3-comp/.
+   En cuanto un patron de estilo se repite, deja de ser utilidad y pasa a ser
+   componente. Lo que se repite vive en 3-comp/. Esa es la frontera: si una
+   utilidad crece hasta reproducir un componente de M3 entero, es la senal de
+   que debe mudarse a 3-comp/.
 
    ---------------------------------------------------------------------------
    LA REGLA DE ESTA CAPA
    ---------------------
-   Todas las declaraciones son var(). No hay un solo #HEX en este archivo, y
-   no hay ningun token nuevo. Este archivo CONSUME el sistema; no lo define.
+   Todas las declaraciones son var(). Ni un solo #HEX, ni un solo token nuevo.
+   Este archivo CONSUME el sistema; no lo define.
 
-   Esto es lo que mantiene el cambio de tema funcionando: la clase .md-c-primary
-   no sabe que color es primary. Solo dice "usa el rol primary". Cuando el
-   tema cambia, la clase se entera sola.
-
-   ---------------------------------------------------------------------------
-   LOS DOS PATRONES DE M3 PARA COLOR
-   ---------------------------------------------------------------------------
-   M3 define la convencion "on-*" para garantizar contraste: el rol on-X es
-   el texto o icono que va ENCIMA de X, y el sistema ya verifico que la
-   combinacion es legible.
-
-   Por eso existen las clases en dos formas:
-
-     .md-c-primary            fondo + texto on-primary
-     .md-c-on-primary         texto on-primary sobre fondo transparente
-     .md-c-primary-bg         SOLO el fondo
-     .md-c-primary-text       SOLO el texto
+   Eso es lo que mantiene el tema funcionando: .md-bg-primary no sabe que
+   color es primary. Solo dice "usa el rol primary". Cuando el tema cambia, la
+   clase se entera sola.
 
    ---------------------------------------------------------------------------
-   PREFIXO DE CLASES: md-c-
+   ESQUEMA DE NOMBRES: PROPIEDAD PRIMERO
    ---------------------------------------------------------------------------
-   Sin prefijo, nombres como .primary o .surface colisionarian con cualquier
-   otra hoja de estilos del proyecto. El prefijo md-c- (material design color)
-   evita esas colisiones.
+   Los nombres siguen el patron `md-<propiedad>-<rol>`:
+
+       md-bg-<rol>      fondo
+       md-text-<rol>    color de texto
+       md-border-<rol>  borde
+
+   La propiedad va PRIMERO por dos razones:
+
+   1. Se lee de un vistazo. `.md-text-on-surface` dice "esto es texto" sin
+      necesidad de llegar al final de la clase. Es el criterio que usan
+      Tailwind (`bg-`, `text-`, `border-`) y es el que mejor escala.
+
+   2. Agrupa por comportamiento al leer el HTML. Todas las clases `md-bg-*` de
+      una linea se refieren a la misma propiedad, y eso se detecta de un
+      vistazo, sin tener que parsear cada nombre.
+
+   NO existe un atajo que empareje fondo con su color de texto (por ejemplo
+   `.md-bg-primary` + `.md-text-primary`). Es una decision deliberada:
+
+       <!-- MAL: primary sobre primary. Contraste cero, ilegible -->
+       <div class="md-bg-primary md-text-primary"></div>
+
+       <!-- BIEN: el par on-*, explicito -->
+       <div class="md-bg-primary md-text-on-primary"></div>
+
+   Obligar a escribir el par completo hace que el contraste sea AUDITABLE: se
+   lee directamente en el HTML. Es justo lo que protege la convencion on-*, que
+   es la garantia de accesibilidad del tema.
+
+   ---------------------------------------------------------------------------
+   PREFIXO md-
+   ---------------------------------------------------------------------------
+   Google usa el prefijo `md-` en su propia libreria web (@material/web), donde
+   los componentes son custom elements: <md-filled-button>, <md-checkbox>. Usa
+   Shadow DOM, asi que sus clases internas no son accesibles. Nuestras
+   utilidades conviven con esos elementos sin colision porque comparten raiz.
+
+   Los nombres cortos (.primary, .surface) colisionarian con cualquier otra hoja
+   de estilos del proyecto, incluido un normalize.css o un reset global.
 
    ========================================================================== */
 
 /* ==========================================================================
-   GRUPOS PRIMARIO, SECUNDARIO, TERCIARIO, ERROR
+   BG — FONDOS
    --------------------------------------------------------------------------
-   .md-c-<grupo>           fondo + texto on-<grupo>
-   .md-c-<grupo>-bg        solo fondo
-   .md-c-<grupo>-text      solo texto
-   .md-c-on-<grupo>        texto on-<grupo> sobre fondo transparente
-   .md-c-<grupo>-container fondo atenuado + texto on-<grupo>-container
-   .md-c-on-<grupo>-container   texto on-<grupo>-container
+   .md-bg-<rol>  aplica el rol como color de fondo.
    ========================================================================== */
 
-/* -------------------------------------------------------------------------
-   PRIMARY — el color de marca
-   ---------------------------------------------------------------------- */
-.md-c-primary {
-  background-color: var(--md-sys-color-primary);
-  color: var(--md-sys-color-on-primary);
-}
-.md-c-primary-bg {
-  background-color: var(--md-sys-color-primary);
-}
-.md-c-primary-text {
-  color: var(--md-sys-color-primary);
-}
-.md-c-on-primary {
-  color: var(--md-sys-color-on-primary);
-}
-.md-c-primary-container {
-  background-color: var(--md-sys-color-primary-container);
-  color: var(--md-sys-color-on-primary-container);
-}
-.md-c-on-primary-container {
-  color: var(--md-sys-color-on-primary-container);
-}
+/* --- Grupos de color: primary, secondary, tertiary, error --- */
+.md-bg-primary          { background-color: var(--md-sys-color-primary); }
+.md-bg-on-primary       { background-color: var(--md-sys-color-on-primary); }
+.md-bg-primary-container { background-color: var(--md-sys-color-primary-container); }
+.md-bg-on-primary-container { background-color: var(--md-sys-color-on-primary-container); }
 
-/* -------------------------------------------------------------------------
-   SECONDARY — apoyo, menos enfasis que primary
-   ---------------------------------------------------------------------- */
-.md-c-secondary {
-  background-color: var(--md-sys-color-secondary);
-  color: var(--md-sys-color-on-secondary);
-}
-.md-c-secondary-bg {
-  background-color: var(--md-sys-color-secondary);
-}
-.md-c-secondary-text {
-  color: var(--md-sys-color-secondary);
-}
-.md-c-on-secondary {
-  color: var(--md-sys-color-on-secondary);
-}
-.md-c-secondary-container {
-  background-color: var(--md-sys-color-secondary-container);
-  color: var(--md-sys-color-on-secondary-container);
-}
-.md-c-on-secondary-container {
-  color: var(--md-sys-color-on-secondary-container);
-}
+.md-bg-secondary          { background-color: var(--md-sys-color-secondary); }
+.md-bg-on-secondary       { background-color: var(--md-sys-color-on-secondary); }
+.md-bg-secondary-container { background-color: var(--md-sys-color-secondary-container); }
+.md-bg-on-secondary-container { background-color: var(--md-sys-color-on-secondary-container); }
 
-/* -------------------------------------------------------------------------
-   TERTIARY — acento de contraste
-   ---------------------------------------------------------------------- */
-.md-c-tertiary {
-  background-color: var(--md-sys-color-tertiary);
-  color: var(--md-sys-color-on-tertiary);
-}
-.md-c-tertiary-bg {
-  background-color: var(--md-sys-color-tertiary);
-}
-.md-c-tertiary-text {
-  color: var(--md-sys-color-tertiary);
-}
-.md-c-on-tertiary {
-  color: var(--md-sys-color-on-tertiary);
-}
-.md-c-tertiary-container {
-  background-color: var(--md-sys-color-tertiary-container);
-  color: var(--md-sys-color-on-tertiary-container);
-}
-.md-c-on-tertiary-container {
-  color: var(--md-sys-color-on-tertiary-container);
-}
+.md-bg-tertiary          { background-color: var(--md-sys-color-tertiary); }
+.md-bg-on-tertiary       { background-color: var(--md-sys-color-on-tertiary); }
+.md-bg-tertiary-container { background-color: var(--md-sys-color-tertiary-container); }
+.md-bg-on-tertiary-container { background-color: var(--md-sys-color-on-tertiary-container); }
 
-/* -------------------------------------------------------------------------
-   ERROR — fallo y validacion
-   ---------------------------------------------------------------------- */
-.md-c-error {
-  background-color: var(--md-sys-color-error);
-  color: var(--md-sys-color-on-error);
-}
-.md-c-error-bg {
-  background-color: var(--md-sys-color-error);
-}
-.md-c-error-text {
-  color: var(--md-sys-color-error);
-}
-.md-c-on-error {
-  color: var(--md-sys-color-on-error);
-}
-.md-c-error-container {
-  background-color: var(--md-sys-color-error-container);
-  color: var(--md-sys-color-on-error-container);
-}
-.md-c-on-error-container {
-  color: var(--md-sys-color-on-error-container);
-}
+.md-bg-error          { background-color: var(--md-sys-color-error); }
+.md-bg-on-error       { background-color: var(--md-sys-color-on-error); }
+.md-bg-error-container { background-color: var(--md-sys-color-error-container); }
+.md-bg-on-error-container { background-color: var(--md-sys-color-on-error-container); }
+
+/* --- Superficies ---
+   La escalera de containers expresa jerarquia visual por TONO, no por sombra.
+   Es la evolucion de la elevacion en M3: algo que "flota" sube en esta
+   escalera en lugar de ganar un box-shadow.
+
+   lowest < low < (container) < high < highest */
+.md-bg-background           { background-color: var(--md-sys-color-background); }
+.md-bg-surface              { background-color: var(--md-sys-color-surface); }
+.md-bg-surface-dim          { background-color: var(--md-sys-color-surface-dim); }
+.md-bg-surface-bright       { background-color: var(--md-sys-color-surface-bright); }
+.md-bg-surface-variant      { background-color: var(--md-sys-color-surface-variant); }
+.md-bg-surface-container-lowest { background-color: var(--md-sys-color-surface-container-lowest); }
+.md-bg-surface-container-low     { background-color: var(--md-sys-color-surface-container-low); }
+.md-bg-surface-container         { background-color: var(--md-sys-color-surface-container); }
+.md-bg-surface-container-high    { background-color: var(--md-sys-color-surface-container-high); }
+.md-bg-surface-container-highest { background-color: var(--md-sys-color-surface-container-highest); }
+
+.md-bg-on-surface            { background-color: var(--md-sys-color-on-surface); }
+.md-bg-on-surface-variant    { background-color: var(--md-sys-color-on-surface-variant); }
+.md-bg-on-background         { background-color: var(--md-sys-color-on-background); }
+
+/* --- Inversos, scrim y shadow ---
+   "inverse" invierte el contraste respecto al tema activo: superficie oscura
+   en tema claro, y al reves en tema oscuro. Es lo que usan snackbars y menus
+   flotantes, que deben destacar sea cual sea el tema. */
+.md-bg-inverse-surface     { background-color: var(--md-sys-color-inverse-surface); }
+.md-bg-on-inverse-surface   { background-color: var(--md-sys-color-inverse-on-surface); }
+.md-bg-inverse-primary      { background-color: var(--md-sys-color-inverse-primary); }
+.md-bg-scrim                { background-color: var(--md-sys-color-scrim); }
+.md-bg-shadow               { background-color: var(--md-sys-color-shadow); }
+.md-bg-surface-tint         { background-color: var(--md-sys-color-surface-tint); }
 
 /* ==========================================================================
-   SUPERFICIES
+   TEXT — COLOR DE TEXTO
    --------------------------------------------------------------------------
-   .md-c-surface             fondo base de la app
-   .md-c-surface-<nivel>     la escalera de contenedores
-   .md-c-on-surface          texto principal
-   .md-c-on-surface-variant  texto de apoyo
+   .md-text-<rol>  aplica el rol como color de texto.
 
-   LA ESCALERA DE CONTAINERS
-   -------------------------
-   Estos cinco roles expresan jerarquia visual por TONO, no por sombra. Es la
-   evolucion de la elevacion en M3: una tarjeta "levantada" se distingue por su
-   tono de superficie, no por un box-shadow.
+   OJO CON LA CONVENCION on-*: `on-primary` es un FONDO, no un color de texto.
+   Aplicar `md-text-on-primary` sobre un fondo cualquiera da texto claro sin
+   garantia de contraste. Lo correcto es usar `md-text-primary` para texto
+   sobre superficie, o `md-text-on-primary` SOLO cuando el fondo es
+   `md-bg-primary`.
 
-   lowest < low < (container) < high < highest
-
-   Cuando algo "flota" sobre la pagina (un dialogo, un menu), se sube en esta
-   escalera en lugar de añadirle sombra.
+   Las clases on-* en TEXT se incluyen por completitud del catalogo, pero el
+   uso responsable es: fondo primary + texto on-primary.
    ========================================================================== */
-.md-c-surface {
-  background-color: var(--md-sys-color-surface);
-  color: var(--md-sys-color-on-surface);
-}
-.md-c-surface-bg {
-  background-color: var(--md-sys-color-surface);
-}
-.md-c-surface-dim {
-  background-color: var(--md-sys-color-surface-dim);
-}
-.md-c-surface-bright {
-  background-color: var(--md-sys-color-surface-bright);
-}
-.md-c-surface-container-lowest {
-  background-color: var(--md-sys-color-surface-container-lowest);
-}
-.md-c-surface-container-low {
-  background-color: var(--md-sys-color-surface-container-low);
-}
-.md-c-surface-container {
-  background-color: var(--md-sys-color-surface-container);
-}
-.md-c-surface-container-high {
-  background-color: var(--md-sys-color-surface-container-high);
-}
-.md-c-surface-container-highest {
-  background-color: var(--md-sys-color-surface-container-highest);
-}
-.md-c-surface-variant {
-  background-color: var(--md-sys-color-surface-variant);
-}
-.md-c-on-surface {
-  color: var(--md-sys-color-on-surface);
-}
-.md-c-on-surface-variant {
-  color: var(--md-sys-color-on-surface-variant);
-}
-.md-c-background {
-  background-color: var(--md-sys-color-background);
-  color: var(--md-sys-color-on-background);
-}
+.md-text-primary          { color: var(--md-sys-color-primary); }
+.md-text-on-primary       { color: var(--md-sys-color-on-primary); }
+.md-text-primary-container { color: var(--md-sys-color-primary-container); }
+.md-text-on-primary-container { color: var(--md-sys-color-on-primary-container); }
+
+.md-text-secondary          { color: var(--md-sys-color-secondary); }
+.md-text-on-secondary       { color: var(--md-sys-color-on-secondary); }
+.md-text-secondary-container { color: var(--md-sys-color-secondary-container); }
+.md-text-on-secondary-container { color: var(--md-sys-color-on-secondary-container); }
+
+.md-text-tertiary          { color: var(--md-sys-color-tertiary); }
+.md-text-on-tertiary       { color: var(--md-sys-color-on-tertiary); }
+.md-text-tertiary-container { color: var(--md-sys-color-tertiary-container); }
+.md-text-on-tertiary-container { color: var(--md-sys-color-on-tertiary-container); }
+
+.md-text-error          { color: var(--md-sys-color-error); }
+.md-text-on-error       { color: var(--md-sys-color-on-error); }
+.md-text-error-container { color: var(--md-sys-color-error-container); }
+.md-text-on-error-container { color: var(--md-sys-color-on-error-container); }
+
+.md-text-background           { color: var(--md-sys-color-background); }
+.md-text-surface              { color: var(--md-sys-color-surface); }
+.md-text-surface-dim          { color: var(--md-sys-color-surface-dim); }
+.md-text-surface-bright       { color: var(--md-sys-color-surface-bright); }
+.md-text-surface-variant      { color: var(--md-sys-color-surface-variant); }
+.md-text-surface-container-lowest { color: var(--md-sys-color-surface-container-lowest); }
+.md-text-surface-container-low     { color: var(--md-sys-color-surface-container-low); }
+.md-text-surface-container         { color: var(--md-sys-color-surface-container); }
+.md-text-surface-container-high    { color: var(--md-sys-color-surface-container-high); }
+.md-text-surface-container-highest { color: var(--md-sys-color-surface-container-highest); }
+
+.md-text-on-surface            { color: var(--md-sys-color-on-surface); }
+.md-text-on-surface-variant    { color: var(--md-sys-color-on-surface-variant); }
+.md-text-on-background         { color: var(--md-sys-color-on-background); }
+
+.md-text-inverse-surface     { color: var(--md-sys-color-inverse-surface); }
+.md-text-on-inverse-surface   { color: var(--md-sys-color-inverse-on-surface); }
+.md-text-inverse-primary      { color: var(--md-sys-color-inverse-primary); }
+.md-text-scrim                { color: var(--md-sys-color-scrim); }
+.md-text-shadow               { color: var(--md-sys-color-shadow); }
+.md-text-surface-tint         { color: var(--md-sys-color-surface-tint); }
 
 /* ==========================================================================
-   BORDES
+   BORDER — BORDES
    --------------------------------------------------------------------------
-   .md-c-outline        borde visible (campos de formulario)
-   .md-c-outline-variant borde sutil (separadores)
-   ========================================================================== */
-.md-c-outline {
-  border: 1px solid var(--md-sys-color-outline);
-}
-.md-c-outline-variant {
-  border: 1px solid var(--md-sys-color-outline-variant);
-}
+   .md-border-<rol>  aplica el rol como color de borde con grosor de 1px.
 
-/* ==========================================================================
-   INVERSOS
-   --------------------------------------------------------------------------
-   Para superficies que necesitan standout: snackbars, menus flotantes.
-   Invierte el contraste respecto al tema activo.
+   Por que 1px aqui y no un token: es el grosor de borde por defecto de M3 para
+   campos de formulario y separadores. Si un componente necesita otro grosor,
+   ese grosor es una decision de componente (3-comp/), no de la utilidad.
+
+   Usa -outline para el borde visible de un campo de formulario, y
+   -outline-variant para separadores sutiles.
    ========================================================================== */
-.md-c-inverse-surface {
-  background-color: var(--md-sys-color-inverse-surface);
-  color: var(--md-sys-color-inverse-on-surface);
-}
-.md-c-on-inverse-surface {
-  color: var(--md-sys-color-inverse-on-surface);
-}
-.md-c-inverse-primary {
-  color: var(--md-sys-color-inverse-primary);
-}
-.md-c-scrim {
-  background-color: var(--md-sys-color-scrim);
-}
-.md-c-shadow {
-  background-color: var(--md-sys-color-shadow);
-}
+.md-border-primary            { border: 1px solid var(--md-sys-color-primary); }
+.md-border-on-primary         { border: 1px solid var(--md-sys-color-on-primary); }
+.md-border-primary-container  { border: 1px solid var(--md-sys-color-primary-container); }
+.md-border-on-primary-container { border: 1px solid var(--md-sys-color-on-primary-container); }
+
+.md-border-secondary          { border: 1px solid var(--md-sys-color-secondary); }
+.md-border-on-secondary       { border: 1px solid var(--md-sys-color-on-secondary); }
+.md-border-secondary-container { border: 1px solid var(--md-sys-color-secondary-container); }
+.md-border-on-secondary-container { border: 1px solid var(--md-sys-color-on-secondary-container); }
+
+.md-border-tertiary          { border: 1px solid var(--md-sys-color-tertiary); }
+.md-border-on-tertiary       { border: 1px solid var(--md-sys-color-on-tertiary); }
+.md-border-tertiary-container { border: 1px solid var(--md-sys-color-tertiary-container); }
+.md-border-on-tertiary-container { border: 1px solid var(--md-sys-color-on-tertiary-container); }
+
+.md-border-error          { border: 1px solid var(--md-sys-color-error); }
+.md-border-on-error       { border: 1px solid var(--md-sys-color-on-error); }
+.md-border-error-container { border: 1px solid var(--md-sys-color-error-container); }
+.md-border-on-error-container { border: 1px solid var(--md-sys-color-on-error-container); }
+
+.md-border-outline          { border: 1px solid var(--md-sys-color-outline); }
+.md-border-outline-variant  { border: 1px solid var(--md-sys-color-outline-variant); }
+.md-border-inverse-surface  { border: 1px solid var(--md-sys-color-inverse-surface); }
+.md-border-on-inverse-surface { border: 1px solid var(--md-sys-color-inverse-on-surface); }
+.md-border-inverse-primary   { border: 1px solid var(--md-sys-color-inverse-primary); }
+.md-border-scrim             { border: 1px solid var(--md-sys-color-scrim); }
+.md-border-shadow            { border: 1px solid var(--md-sys-color-shadow); }
