@@ -1,0 +1,241 @@
+# RDM Next — Design System
+
+Showroom de componentes UI para **ManGo! App** (`mango-next`).
+Estándar: **Google Material Design 3 (M3)**.
+
+---
+
+## 1. Propósito
+
+Este repositorio es la **fuente única de verdad** del sistema de diseño de ManGo!.
+
+No es una maqueta ni un prototipo: es la implementación real de tokens y recetas que
+consumirá el sistema final. El showroom y la app de producción cargan **el mismo
+orquestador `css/app.css`**. Lo que se ve aquí es exactamente lo que궁 se ejecuta allí.
+
+---
+
+## 2. Arquitectura: la jerarquía de 3 capas
+
+El sistema se organiza en tres capas con dependencias **unidireccionales**.
+Cada capa solo puede consumir la capa inmediatamente anterior.
+
+```
+css/
+├── 1-ref/    Primitivas       --md-ref-*
+├── 2-sys/    Tokens semánticos --md-sys-*
+└── 3-comp/   Componentes      --md-comp-*
+```
+
+### Regla de dependencia
+
+```
+1-ref  ──►  2-sys  ──►  3-comp
+ (valores)   (roles)     (componentes)
+```
+
+- `3-comp/` **nunca** referencia `1-ref/` directamente.
+- `2-sys/` **nunca** referencia `3-comp/`.
+- `1-ref/` **nunca** referencia `2-sys/` ni `3-comp/` (sería dependencia circular).
+
+Si un componente necesita un valor crudo, **no lo usa**: pide un token semántico a
+`2-sys/`, y si ese rol no existe, se crea primero en `2-sys/`. Esa es la disciplina que
+hace que el tema sea cambiable sin tocar componentes.
+
+### Prefijos de tokens
+
+| Capa     | Prefijo          | Contiene                                |
+| -------- | ---------------- | --------------------------------------- |
+| `1-ref/` | `--md-ref-*`     | Valores crudos, sin contexto semántico  |
+| `2-sys/` | `--md-sys-*`     | Roles con significado de diseño         |
+| `3-comp/`| `--md-comp-*`    | Decisiones específicas de un componente |
+
+---
+
+## 3. La regla del hardcoding
+
+> **Los valores crudos viven exclusivamente en `css/1-ref/`.**
+
+| Capa     | `#HEX`, `px`, `ms`, números sueltos | Referencias permitidas |
+| -------- | ----------------------------------- | ---------------------- |
+| `1-ref/` | ✅ Permitido                        | Ninguna                |
+| `2-sys/` | ❌ **Prohibido**                    | Solo `--md-ref-*`      |
+| `3-comp/`| ❌ **Prohibido**                    | Solo `--md-sys-*`      |
+
+En `2-sys/` y `3-comp/` **toda** declaración debe ser un `var()`.
+
+### Por qué existe esta regla
+
+`1-ref/` es el **único** lugar donde se toca el tema. Si un componente tuviera
+`#6750A4` hardcodeado, cambiar la paleta obligaría a editar ese componente. Al aislar
+los valores crudos en una sola capa, un cambio de marca se resuelve editando cuatro
+archivos y nada más.
+
+Esta regla es verificable de forma automática con `tools/verify-tokens.ps1`.
+
+---
+
+## 4. Nomenclatura: qué es oficial de M3 y qué es decisión propia
+
+Distinguimos entre tokens publicados por Google y convenciones de este proyecto,
+porque mezclarlos lleva a buscar en la documentación oficial algo que no existe.
+
+### Oficial de M3
+
+Verificado contra los archivos publicados por Google. Nombres exactos:
+
+| Familia                  | Archivo          | Notas                                       |
+| ------------------------ | ---------------- | ------------------------------------------- |
+| `--md-ref-palette-*`     | `1-ref/palette.css` | 80 tonos                                 |
+| `--md-ref-typeface-*`    | `1-ref/typeface.css`| 5 tokens (plain, brand, 3 pesos)         |
+| `--md-sys-color-*`       | `2-sys/colors.css` | Roles de color                          |
+| `--md-sys-typescale-*`   | `2-sys/typography.css` | 15 estilos (display→label)           |
+| `--md-sys-shape-*`       | `2-sys/shape.css`| Esquinas y radios                          |
+| `--md-sys-motion-*`      | `2-sys/motion.css`| Duraciones y easing                        |
+| `--md-sys-elevation-*`   | `2-sys/elevation.css` | Niveles 0–5                            |
+| `--md-sys-state-*`       | `2-sys/state.css`| 4 opacidades de state layer                |
+
+> **Nota sobre `typescale`:** el prefijo real de Google es `typescale`, no `typography`.
+> El archivo se llama `typography.css` por legibilidad, pero los tokens usan
+> `--md-sys-typescale-*`. Confundir ambos nombres es un error frecuente.
+
+### Decisión propia de RDM Next
+
+Estos nombres **no existen** en los archivos oficiales de M3. Son nuestras, construidas
+sobre specs oficiales de Google:
+
+| Familia                   | Archivo             | Origen                                                    |
+| ------------------------- | ------------------- | --------------------------------------------------------- |
+| `--md-ref-spacing-*`      | `1-ref/spacing.css` | Escala oficial M3 `Space 0`–`Space 900`                     |
+| `--md-sys-measurement-*`  | `2-sys/measurement.css` | Capa semántica que mapea spacing a roles de componente |
+
+**Detalle importante sobre la escala de espacio:** los nombres `Space 0` … `Space 900`
+**sí son oficiales de M3** (publicados en `m3.material.io/styles/spacing/tokens`, con
+valores cada 4dp hasta `Space 200` y múltiplos de 8dp después). Lo que **no** es oficial
+es el prefijo `md.sys.measurement`; Google nunca publicó un token set de spacing en CSS.
+Por eso el nombre lleva prefijo `md-*` propio y está documentado aquí como extensión.
+
+**Unidad:** M3 está diseñado en **dp**. En web `1dp = 1px`, así que `1-ref/spacing.css`
+escribe valores en `px` para que el mapeo contra cualquier spec de Android sea directo
+y sin conversión mental.
+
+---
+
+## 5. Temas: light y dark
+
+Dos temas, activados por dos mecanismos:
+
+1. **Atributo manual** — `html[data-theme="light"]` / `html[data-theme="dark"]`
+   (lo usa el toggle de tema de ManGo!)
+2. **Preferencia del sistema** — `prefers-color-scheme`
+
+Se resuelven **sin duplicar** los ~30 tokens de color de cada tema, mediante el orden de
+importación en `app.css`:
+
+```css
+@import url("2-sys/theme/theme.light.css") layer(sys);  /* 1.er plano */
+@import url("2-sys/theme/theme.dark.css")  layer(sys);  /* 2.er plano, gana por orden */
+```
+
+| Estado                            | Coincide            | Resultado |
+| --------------------------------- | ------------------- | --------- |
+| Sin atributo + SO en light        | ambos               | **light** |
+| Sin atributo + SO en dark         | ambos               | **dark**  |
+| `data-theme="light"` + SO en dark | solo light          | **light** |
+| `data-theme="dark"` + SO en light | solo dark           | **dark**  |
+
+Los selectores usan `html:not([data-theme="..."])`, de modo que el atributo **excluye**
+al tema contrario en lugar de competir con él.
+
+---
+
+## 6. Orden de carga y `@layer`
+
+`app.css` es el orquestador. Declara las capas antes de importar, para que la
+jerarquía quede garantizada por el motor del navegador y no solo por el orden de escritura:
+
+```css
+@layer ref, sys, comp;
+
+@import url("1-ref/palette.css") layer(ref);
+@import url("2-sys/colors.css")  layer(sys);
+@import url("3-comp/button.css") layer(comp);
+```
+
+Efecto: aunque alguien cometa el error de usar un token `ref` dentro de `3-comp/`, la
+capa `ref` **pierde siempre** frente a `sys`. La regla se convierte en una garantía del
+motor, no en una convención.
+
+---
+
+## 7. Verificación
+
+```powershell
+.\tools\verify-tokens.ps1
+```
+
+Falla si detecta:
+
+| Verificación                                              | Alcance          |
+| --------------------------------------------------------- | ---------------- |
+| Valores crudos (`#HEX`, `px`, `ms`)                        | `2-sys/`, `3-comp/` |
+| Referencias a `--md-ref-*`                                 | `3-comp/`        |
+| Referencias a `--md-sys-*` o `--md-comp-*`                 | `1-ref/`         |
+| Declaraciones sin `var()`                                  | `2-sys/`, `3-comp/` |
+
+---
+
+## 8. Flujo de trabajo
+
+Los componentes se implementan **uno a la vez**, cada uno con validación antes de
+avanzar al siguiente. Los commits siguen
+[Commits Convenacionales](https://www.conventionalcommits.org/es/v1.0.0/):
+
+```
+<tipo>(<alcance>): <descripción corta en presente>
+
+<cuerpo: qué tokens o estructuras se añadieron>
+```
+
+Tipos: `feat`, `fix`, `docs`, `style`, `refactor`, `chore`.
+
+---
+
+## 9. Estructura completa
+
+```
+rdm-next-new/
+├── .gitignore
+├── README.md                 Este documento: contrato de arquitectura
+├── index.html                Shell del showroom
+├── css/
+│   ├── app.css               Orquestador: @layer + @import
+│   ├── 1-ref/                Valores crudos (única capa que los permite)
+│   │   ├── palette.css       --md-ref-palette-*
+│   │   ├── typeface.css      --md-ref-typeface-*
+│   │   ├── spacing.css       --md-ref-spacing-*
+│   │   └── time.css          --md-ref-time-*
+│   ├── 2-sys/                Tokens semánticos (solo var())
+│   │   ├── colors.css        --md-sys-color-*
+│   │   ├── typography.css    --md-sys-typescale-*
+│   │   ├── measurement.css   --md-sys-measurement-*
+│   │   ├── motion.css        --md-sys-motion-*
+│   │   ├── shape.css         --md-sys-shape-*
+│   │   ├── elevation.css     --md-sys-elevation-*
+│   │   ├── state.css         --md-sys-state-*
+│   │   └── theme/
+│   │       ├── theme.light.css
+│   │       └── theme.dark.css
+│   └── 3-comp/               Un componente por archivo (se llena por pasos)
+└── tools/
+    └── verify-tokens.ps1     Candado automático de la regla de hardcoding
+```
+
+---
+
+## 10. Fuentes oficiales
+
+- Tokens: `https://m3.material.io/foundations/design-tokens`
+- Spacing: `https://m3.material.io/styles/spacing/tokens`
+- Escala tipográfica: `https://m3.material.io/styles/typography/type-scale-tokens`
+- Material Web (referencia de implementación): `https://material-web.dev`

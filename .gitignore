@@ -1,0 +1,36 @@
+# ---------------------------------------------------------------------------
+# Exclusiones del design system RDM Next
+# ---------------------------------------------------------------------------
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editores
+.vscode/*
+!.vscode/settings.json
+.idea/
+*.swp
+*.swo
+
+# Archivos temporales de trabajo temporal
+*.tmp
+*.temp
+*.bak
+*~
+.cache/
+
+# Node (por si se anaden herramientas de build en el futuro)
+node_modules/
+
+# Salidas de compilacion / bundle
+dist/
+build/
+*.min.css
+*.bundle.css
+*.map
+
+# Sistema: este proyecto NO usa frameworks CSS de terceros.
+# Si alguna vez se introduce uno, debe declararse aqui de forma explicita
+# para que la violacion sea visible en la revision, no silenciosa.

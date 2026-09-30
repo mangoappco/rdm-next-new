@@ -1,0 +1,6 @@
+# Marcador de directorio vacio.
+#
+# Git no rastrea carpetas, solo archivos. Este archivo existe unicamente para
+# que `css/2-sys/` quede versionada desde el primer commit.
+#
+# ELIMINAR este archivo al crear `colors.css`.
