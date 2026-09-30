@@ -86,9 +86,9 @@ Verificado contra los archivos publicados por Google. Nombres exactos:
 
 | Familia                  | Archivo          | Notas                                       |
 | ------------------------ | ---------------- | ------------------------------------------- |
-| `--md-ref-palette-*`     | `1-ref/palette.css` | 80 tonos                                 |
+| `--md-ref-palette-*`     | `1-ref/palette.css` | 91 tonos (v0.192)                      |
 | `--md-ref-typeface-*`    | `1-ref/typeface.css`| 5 tokens (plain, brand, 3 pesos)         |
-| `--md-sys-color-*`       | `2-sys/colors.css` | Roles de color                          |
+| `--md-sys-color-*`       | `2-sys/theme/*.css` | 37 roles × 2 temas                      |
 | `--md-sys-typescale-*`   | `2-sys/typography.css` | 15 estilos (display→label)           |
 | `--md-sys-shape-*`       | `2-sys/shape.css`| Esquinas y radios                          |
 | `--md-sys-motion-*`      | `2-sys/motion.css`| Duraciones y easing                        |
@@ -98,6 +98,20 @@ Verificado contra los archivos publicados por Google. Nombres exactos:
 > **Nota sobre `typescale`:** el prefijo real de Google es `typescale`, no `typography`.
 > El archivo se llama `typography.css` por legibilidad, pero los tokens usan
 > `--md-sys-typescale-*`. Confundir ambos nombres es un error frecuente.
+
+> **Nota sobre `colors.css`:** los **roles** de color se declaran en
+> `2-sys/theme/theme.light.css` y `theme.dark.css`, no en `2-sys/colors.css`.
+> El mismo rol necesita tonos distintos en cada tema (`primary` es tono 40 en
+> claro y tono 80 en oscuro), así que los valores no pueden vivir en un archivo
+> único. `colors.css` documenta el catálogo de roles y los remite a los temas.
+
+> **Nota sobre la versión de la paleta (v0.192):** existe una versión "compacta"
+> de la paleta con 13 tonos por familia que circulaba antes. **No alcanza** para
+> los roles `surface-container-*`, que son la base de la jerarquía visual de M3.
+> v0.192 amplía `neutral` con 11 tonos finos (4, 6, 12, 17, 22, 24, 87, 92, 94,
+> 96, 98) sin los cuales seis roles de superficie quedarían sin valor o colapsarían
+> al mismo gris. Este proyecto usa v0.192:
+> `material-components/material-web` → `tokens/versions/v0_192/`.
 
 ### Decisión propia de RDM Next
 

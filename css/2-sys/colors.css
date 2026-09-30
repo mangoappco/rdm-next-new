@@ -1,0 +1,116 @@
+/* ==========================================================================
+   2-sys/colors.css — TOKENS SEMANTICOS DE COLOR (solo var())
+   ==========================================================================
+
+   QUE ES ESTE ARCHIVO
+   -------------------
+   CAPA 2 del sistema. Aqui viven los ROLES de color: el nombre que un
+   componente pide cuando dice "quiero el color de error".
+
+   Este archivo NO contiene los valores. Solo declara QUE TONO cumple cada
+   ROL. Los tonos viven en 1-ref/palette.css.
+
+   LA REGLA DE ESTA CAPA
+   ---------------------
+   TODAS las declaraciones son var(). No hay un solo #HEX en este archivo.
+
+   Eso no es estetica: es lo que hace que cambiar la paleta sea barato. Si el
+   rol "primary" apunta a primary40, y manana la marca cambia de violeta a
+   naranja, basta con mover el rol en ESTE archivo. Ningun componente se
+   entera, porque ninguno conocia el tono, solo el rol.
+
+   ESTRUCTURA
+   ----------
+   Este archivo declara los ROLES. Los VALORES de cada rol viven en:
+
+       2-sys/theme/theme.light.css    (tema claro)
+       2-sys/theme/theme.dark.css     (tema oscuro)
+
+   Aqui NO se asigna ningun tono, porque el mismo rol necesita tonos
+   DISTINTOS en cada tema. En claro, primary usa el tono 40 (oscuro y
+   saturado, para contrastar con fondo claro). En oscuro, primary usa el tono
+   80 (claro, porque el fondo ya es oscuro). El rol es el mismo; el tono
+   cambia. Esa separacion es lo que hace posible el cambio de tema.
+
+   ---------------------------------------------------------------------------
+   LOS ROLES Y POR QUE EXISTEN
+   ---------------------------------------------------------------------------
+
+   LA REGLA DEL PREFIJO "on-"
+   ---------------------------
+   Es la convencion central de M3 y merece entenderse antes de usar nada:
+
+       primary            = fondo
+       on-primary         = TEXTO o ICONO que va ENCIMA de primary
+
+   "on" significa "sobre", no "opuesto". Los roles "on-*" existen para
+   garantizar contraste: el sistema ya verifico que on-primary sobre primary
+   cumple el ratio de accesibilidad. Por eso un componente NUNCA elige el color
+   del texto por su cuenta: pide el rol "on-" que corresponde a su fondo.
+
+   ERROR TIPICO QUE ESTOS ROLES PREVIENEN
+   ----------------------------------------
+   Poner texto blanco sobre cualquier fondo. Sobre el violeta del tema claro
+   funciona; pero si alguien cambia el fondo a un tono claro, el texto blanco
+   desaparece. Con el rol "on-", la combinacion esta probada por construccion.
+
+   ---------------------------------------------------------------------------
+   EL CATALOGO COMPLETO DE ROLES
+   ---------------------------------------------------------------------------
+   Los 30 roles, agrupados por lo que representan:
+
+   GRUPOS PRIMARIO, SECUNDARIO, TERCIARIO, ERROR  (4 familias x 4 roles = 16)
+     primary            / on-primary
+     primary-container  / on-primary-container
+     secondary          / on-secondary
+     secondary-container/ on-secondary-container
+     tertiary           / on-tertiary
+     tertiary-container / on-tertiary-container
+     error              / on-error
+     error-container    / on-error-container
+
+     El patron "-container" es una version atenuada del color. Un boton
+     "filled" usa primary solido; un "tonal" usa primary-container. Ambos
+     son validos, dependiend del nivel de enfasis que se quiera.
+
+   SUPERFICIES  (10 roles)
+     surface, surface-dim, surface-bright
+     surface-container-lowest / -low / (base) / -high / -highest
+     surface-variant
+
+     M3 expresion la jerarquia visual por TONO, no solo por sombra: cuanto
+     mas alto el contenedor, mas claro (en tema oscuro) o mas oscuro (en
+     tema claro). Es la evolucion de la elevation con sombras: una tarjeta
+     "levantada" se distingue por su tono, no por un box-shadow.
+
+   BORDES Y CONTENIDO  (4 roles)
+     on-surface, on-surface-variant, outline, outline-variant
+
+     outline es el borde de un campo de formulario.
+     outline-variant es un borde mucho mas sutil, para separadores.
+
+   INVERSOS  (4 roles)
+     inverse-surface, inverse-on-surface, inverse-primary, scrim
+
+     "inverse" significa superponer el contraste: fondo oscuro donde el tema
+     normal es claro. Se usa en snackbars y menus flotantes.
+
+   ========================================================================== */
+
+:root {
+  /* ------------------------------------------------------------------------
+     NOTA SOBRE LA ESTRUCTURA DE ESTE BLOQUE
+     ---------------------------------------------------------------------
+     Este bloque esta deliberadamente vacio de declaraciones de valor.
+
+     Los roles se nombran y se asignan en theme/theme.light.css y
+     theme/theme.dark.css. Este archivo los agrupa y documenta.
+
+     Se podria "declarar aqui" cada rol con un valor por defecto, pero eso
+     crearia una segunda fuente de verdad que competiria con los archivos de
+     tema. Con una sola fuente, el cambio de tema es fiable por construccion.
+     --------------------------------------------------------------------- */
+
+  /* Los roles se definen en 2-sys/theme/theme.light.css */
+  /* Los roles se definen en 2-sys/theme/theme.dark.css  */
+}
