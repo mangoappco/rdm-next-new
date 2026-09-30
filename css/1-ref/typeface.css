@@ -1,0 +1,87 @@
+/* ==========================================================================
+   1-ref/typeface.css — PRIMITIVAS TIPOGRAFICAS (valores crudos)
+   ==========================================================================
+
+   QUE ES ESTE ARCHIVO
+   -------------------
+   CAPA 1 del sistema. Aqui viven los VALORES CRUDOS de tipografia: el NOMBRE
+   de la fuente y los PESOS numericos. Es el unico lugar donde se puede
+   escribir "Roboto" o el numero 700.
+
+   POR QUE SOLO HAY 5 TOKENS
+   -------------------------
+   Material Design 3 define 15 estilos tipograficos (display, headline, title,
+   body, label) y cada uno tiene sus propios pesos. Reducirlos todos a estos
+   3 pesos base es lo que hace la escala coherente: no se puede tener un
+   "display-medium" con peso 600 si 600 no existe en el sistema.
+
+   RELACION CON LAS OTRAS CAPAS
+   -----------------------------
+       1-ref/typeface.css    <-- Roboto, 400 / 500 / 700 (CRUDOS)
+              |
+              v
+       2-sys/typography.css   <-- los 15 estilos M3, cada uno con
+                                  var(--md-ref-typeface-...)
+              |
+              v
+       3-comp/button.css      <-- el componente pide el ESTILO, no el peso
+
+   NOTA SOBRE EL ORDEN EN LOS ARCHIVOS DE GOOGLE
+   ---------------------------------------------
+   En el archivo oficial typography.css de Google, estos 5 tokens de referencia
+   aparecen AL FINAL del bloque :root, despues de los 15 estilos que ya los
+   consumen. Funciona (las custom properties se resuelven en tiempo de
+   calculo, no de parseo) pero invierte la jerarquia en el papel.
+
+   Este proyecto los coloca PRIMERO, en la capa que les corresponde. La
+   jerarquia del archivo refleja la jerarquia del sistema.
+
+   FUENTE: Roboto (Apache License 2.0)
+   -----------------------------------
+   Roboto es la tipografia oficial de Material Design 3 y tiene licencia
+   abierta, a diferencia de Google Sans que solo autoriza uso en productos de
+   Google.
+
+   Se carga desde Google Fonts por @import. Consecuencia a tener en cuenta:
+   el showroom requiere conexion a internet para mostrar la fuente. Si el
+   proyecto llegara a necesitar funcionar offline, habria que alojarla local.
+
+   ========================================================================== */
+
+/* Carga de la fuente. Debe ir ANTES de la declaracion de :root porque el
+   @import es una regla de CSS y solo se admite al principio de una hoja de
+   estilos. Al estar aqui, este archivo se autoproporciona: app.css no
+   necesita saber nada del tema tipografico. */
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
+
+:root {
+  /* ------------------------------------------------------------------------
+     FAMILY — la familia tipografica del sistema
+     Se declara con comillas porque el nombre puede contener espacios en
+     futuras sustituciones. "Roboto" es el nombre correcto segun el
+     tokenizer de Google Fonts.
+     --------------------------------------------------------------------- */
+  /* Plain typeface — texto corriente, cuerpo de la app */
+  --md-ref-typeface-plain: "Roboto";
+
+  /* Brand typeface — titulares y elementos de marca.
+     En M3 ambos apuntan a Roboto. Se mantienen separados porque una identidad
+     de marca podria divergir mas adelante sin tocar los estilos de texto. */
+  --md-ref-typeface-brand: "Roboto";
+
+  /* ------------------------------------------------------------------------
+     WEIGHTS — los tres unicos pesos del sistema
+     Regular 400  texto normal, la gran mayoria del contenido
+     Medium  500  etiquetas y titulos de seccion; mas firme sin competir
+                 con los titulos grandes
+     Bold    700  enfasis fuerte y cifras destacadas
+     --------------------------------------------------------------------- */
+  /* Bold weight */
+  --md-ref-typeface-weight-bold: 700;
+
+  /* Medium weight */
+  --md-ref-typeface-weight-medium: 500;
+
+  /* Regular weight */
+  --md-ref-typeface-weight-regular: 400;
+}

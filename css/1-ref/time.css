@@ -1,0 +1,109 @@
+/* ==========================================================================
+   1-ref/time.css — PRIMITIVAS DE DURACION (valores crudos)
+   ==========================================================================
+
+   QUE ES ESTE ARCHIVO
+   -------------------
+   CAPA 1 del sistema. Aqui viven las DURACIONES CRUDAS, en ms.
+   Es el unico lugar del proyecto donde se permite escribir "300ms".
+
+   POR QUE time.css Y NO motion.css
+   -------------------------------
+   M3 publica todo el movimiento bajo el nombre "motion", y ese nombre lo usa
+   para DURACIONES y para CURVAS DE ANIMACION juntos.
+
+   Este proyecto los separa, porque son cosas de naturaleza distinta:
+
+     time.css    (1-ref)  duraciones crudas: "esto tarda 300ms"
+     motion.css  (2-sys)  los tokens semanticos que el sistema usa de verdad,
+                          y las curvas cubic-bezier
+
+   La razon practica: una duracion SI es un valor crudo y pertenece a la capa
+   1. Una curva cubic-bezier NO lo es — son 4 numeros que representan una
+   funcion matematica, no un valor de medida. Si metieramos todo en 1-ref,
+   ese archivo contendria cosas que no son medidas, y la regla "aqui solo
+   hay valores crudos" dejaria de ser util como criterio.
+
+   ASI QUEDA LA DIVISION
+   ---------------------
+       1-ref/time.css        <-- 50ms, 100ms, 200ms ... (CRUDOS)
+              |
+              v
+       2-sys/motion.css      <-- ROLES: --md-sys-motion-duration-short2
+                  ^             var(--md-ref-time-duration-100)
+                  |
+                  + las curvas cubic-bezier, que viven directamente aqui
+
+   EL PORQUE DE LOS ROLES EN 2-sys
+   -------------------------------
+   Un componente NO pide "200ms". Pide "short2". El motivo es que "short2"
+   sobrevive a un cambio de decision:
+
+       hoy      --md-sys-motion-duration-short2  ->  100ms
+       manana   --md-sys-motion-duration-short2  ->   80ms   (mas ágil)
+
+   El componente no se entero porque nunca escribio el numero. Esa
+   intercambiabilidad es el objetivo de todo el sistema de tokens.
+
+   ---------------------------------------------------------------------------
+   ESCALA OFICIAL DE DURACIONES DE M3
+   ---------------------------------------------------------------------------
+   M3 no publica duraciones con nombres como "corta" o "larga": publica 16
+   valores numericos exactos. Los nombres "short1", "short2", etc. que usa
+   Material Web son una AGRUPACION posterior sobre esos numeros, y se definen
+   en 2-sys/motion.css.
+
+   Aqui abajo solo estan los 16 numeros, tal cual los publica Google:
+
+       50 / 100 / 150 / 200 / 250 / 300 / 350 / 400
+       450 / 500 / 550 / 600 / 700 / 800 / 900 / 1000
+
+   Fuente: https://m3.material.io
+
+   NOTA SOBRE prefers-reduced-motion
+   ---------------------------------
+   Accesibilidad. Algunas personas tienen Sensitivity al movimiento y el
+   sistema operativo lo comunica con esta preferencia. Las transiciones de
+   este sistema deben consultarla en 2-sys/motion.css y neutralizarse.
+   No se resuelve aqui: 1-ref no sabe nada del contexto de uso.
+
+   ========================================================================== */
+
+:root {
+  /* ------------------------------------------------------------------------
+     DURACIONES RAPIDAS — cambios de estado instantaneos
+     Hover, focus, pressed. El usuario debe sentir que responde de inmediato.
+     --------------------------------------------------------------------- */
+  --md-ref-time-duration-50: 50ms;
+  --md-ref-time-duration-100: 100ms;
+  --md-ref-time-duration-150: 150ms;
+  --md-ref-time-duration-200: 200ms;
+
+  /* ------------------------------------------------------------------------
+     DURACIONES MEDIAS — elementos que entran o cambian de posicion
+     Expansion de un menu, apertura de un dialogo.
+     --------------------------------------------------------------------- */
+  --md-ref-time-duration-250: 250ms;
+  --md-ref-time-duration-300: 300ms;
+  --md-ref-time-duration-350: 350ms;
+  --md-ref-time-duration-400: 400ms;
+
+  /* ------------------------------------------------------------------------
+     DURACIONES LARGAS — transiciones de pagina y superficies grandes
+     Cambios de tema, entrada de un drawer completo.
+     --------------------------------------------------------------------- */
+  --md-ref-time-duration-450: 450ms;
+  --md-ref-time-duration-500: 500ms;
+  --md-ref-time-duration-550: 550ms;
+  --md-ref-time-duration-600: 600ms;
+
+  /* ------------------------------------------------------------------------
+     DURACIONES EXTRA LARGAS — movimiento de grandes superficies
+     Se usan con las curvas "emphasized", que tienen una cola larga que
+     hace que terminen con suavidad.
+     --------------------------------------------------------------------- */
+  --md-ref-time-duration-700: 700ms;
+  --md-ref-time-duration-800: 800ms;
+  --md-ref-time-duration-900: 900ms;
+  --md-ref-time-duration-1000: 1000ms;
+}

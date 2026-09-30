@@ -1,0 +1,262 @@
+﻿/* ==========================================================================
+   1-ref/palette.css — PRIMITIVAS DE COLOR (valores crudos)
+   ==========================================================================
+
+   QUE ES ESTE ARCHIVO
+   -------------------
+   Es la CAPA 1 del sistema. Aqui viven los VALORES CRUDOS: codigos #HEX.
+   Es el UNICO archivo del proyecto donde se permite escribir un color literal.
+
+   POR QUE EXISTE
+   --------------
+   Si un componente escribiera `color: #6750A4`, cambiar la paleta obligaria a
+   editar ese componente. Al encerrar todos los tonos crudos en esta capa, un
+   cambio de marca se resuelve editando SOLO este archivo y las capas superiores
+   se actualizan solas por cascada.
+
+   RELACION CON LAS OTRAS CAPAS
+   -----------------------------
+   ESTA CAPA NO CONSUME NINGUN TOKEN. No puede referenciar 2-sys ni 3-comp:
+   hacerlo seria una dependencia circular (el color no puede depender del
+   componente que lo usa).
+
+       1-ref/palette.css   <-- ESTAS TONOS CRUDOS (80)
+              |
+              v
+       2-sys/colors.css    <-- mapea tonos a ROLES (--md-sys-color-primary)
+              |
+              v
+       3-comp/button.css   <-- el componente usa el ROL, nunca el tono
+
+   SOBRE ESTOS VALORES
+   -------------------
+   Paleta baseline oficial de Material Design 3 (semilla #6750A4).
+   Fuente: https://m3.material.io/foundations/design-tokens
+   Transcrita desde los tokens publicados por Google.
+
+   El codigo esta en 8 digitos (RRGGBBAA): los ultimos dos son el canal alfa,
+   aqui siempre `ff` = completamente opaco. Se conserva el formato original de
+   Google para que la comparacion con la fuente sea literal.
+
+   LA ESCALA DE TONOS
+   ------------------
+   Cada familia de color tiene los mismos tonos, que van de 0 (negro) a
+   100 (blanco). El numero NO es un indice de cantidad: es el TONO perceptual.
+   Mas alto = mas claro. En tema oscuro los roles se asignan al reves
+   (ver 2-sys/theme/theme.dark.css).
+
+   Las familias y su funcion:
+
+     primary            Accion principal de la app. El color de marca.
+     secondary          Acciones de menor enfasis, o "secundarias" al primary.
+     tertiary           Acento de contraste, para detalles que no son ni
+                        primary ni secondary (lo usa M3 en variantes expresivas).
+     error              Fallos y acciones destructivas. Siempre derivado de
+                        rojo por convencion de accesibilidad, nunca personalizable
+     neutral            Fondos y texto principales. Escala gris pura.
+     neutral-variant    Bordes, divisores y texto de apoyo. Gris con un punto
+                        de violeta, para que acompañe al primary sin competir.
+     black / white      Negro y blanco absolutos, usados por roles "inverse".
+
+   ========================================================================== */
+
+:root {
+  /* ------------------------------------------------------------------------
+     ERROR — familia de error
+     Se reserva exclusivamente para comunicar fallo. Cambiarla rompe el
+     contrato de accesibilidad que el usuario ya conoce de otras apps.
+     --------------------------------------------------------------------- */
+  /* Error 0 */
+  --md-ref-palette-error0: #000000ff;
+  /* Error 10 */
+  --md-ref-palette-error10: #410e0bff;
+  /* Error 20 */
+  --md-ref-palette-error20: #601410ff;
+  /* Error 30 */
+  --md-ref-palette-error30: #8c1d18ff;
+  /* Error 40 */
+  --md-ref-palette-error40: #b3261eff;
+  /* Error 50 */
+  --md-ref-palette-error50: #dc362eff;
+  /* Error 60 */
+  --md-ref-palette-error60: #e46962ff;
+  /* Error 70 */
+  --md-ref-palette-error70: #ec928eff;
+  /* Error 80 */
+  --md-ref-palette-error80: #f2b8b5ff;
+  /* Error 90 */
+  --md-ref-palette-error90: #f9dedcff;
+  /* Error 95 */
+  --md-ref-palette-error95: #fceeeeff;
+  /* Error 99 */
+  --md-ref-palette-error99: #fffbf9ff;
+  /* Error 100 */
+  --md-ref-palette-error100: #ffffffff;
+
+  /* ------------------------------------------------------------------------
+     TERTIARY — acento de contraste
+     Color de apoyo para detalles que no son ni primario ni secundario.
+     --------------------------------------------------------------------- */
+  /* Tertiary 0 */
+  --md-ref-palette-tertiary0: #000000ff;
+  /* Tertiary 10 */
+  --md-ref-palette-tertiary10: #31111dff;
+  /* Tertiary 20 */
+  --md-ref-palette-tertiary20: #492532ff;
+  /* Tertiary 30 */
+  --md-ref-palette-tertiary30: #633b48ff;
+  /* Tertiary 40 */
+  --md-ref-palette-tertiary40: #7d5260ff;
+  /* Tertiary 50 */
+  --md-ref-palette-tertiary50: #986977ff;
+  /* Tertiary 60 */
+  --md-ref-palette-tertiary60: #b58392ff;
+  /* Tertiary 70 */
+  --md-ref-palette-tertiary70: #d29dacff;
+  /* Tertiary 80 */
+  --md-ref-palette-tertiary80: #efb8c8ff;
+  /* Tertiary 90 */
+  --md-ref-palette-tertiary90: #ffd8e4ff;
+  /* Tertiary 95 */
+  --md-ref-palette-tertiary95: #ffecf1ff;
+  /* Tertiary 99 */
+  --md-ref-palette-tertiary99: #fffbfaff;
+  /* Tertiary 100 */
+  --md-ref-palette-tertiary100: #ffffffff;
+
+  /* ------------------------------------------------------------------------
+     SECONDARY — acento secundario
+     Menos enfasis que primary. Complementa sin robar protagonismo.
+     --------------------------------------------------------------------- */
+  /* Secondary 0 */
+  --md-ref-palette-secondary0: #000000ff;
+  /* Secondary 10 */
+  --md-ref-palette-secondary10: #1d192bff;
+  /* Secondary 20 */
+  --md-ref-palette-secondary20: #332d41ff;
+  /* Secondary 30 */
+  --md-ref-palette-secondary30: #4a4458ff;
+  /* Secondary 40 */
+  --md-ref-palette-secondary40: #625b71ff;
+  /* Secondary 50 */
+  --md-ref-palette-secondary50: #7a7289ff;
+  /* Secondary 60 */
+  --md-ref-palette-secondary60: #958da5ff;
+  /* Secondary 70 */
+  --md-ref-palette-secondary70: #b0a7c0ff;
+  /* Secondary 80 */
+  --md-ref-palette-secondary80: #ccc2dcff;
+  /* Secondary 90 */
+  --md-ref-palette-secondary90: #e8def8ff;
+  /* Secondary 95 */
+  --md-ref-palette-secondary95: #f6edffff;
+  /* Secondary 99 */
+  --md-ref-palette-secondary99: #fffbfeff;
+  /* Secondary 100 */
+  --md-ref-palette-secondary100: #ffffffff;
+
+  /* ------------------------------------------------------------------------
+     PRIMARY — color de marca y accion principal
+     Este es el tono 40 (#6750A4) en tema claro: el color de acento iconic
+     del Material Design. Es el que ve el usuario el 80% del tiempo.
+     --------------------------------------------------------------------- */
+  /* Primary 0 */
+  --md-ref-palette-primary0: #000000ff;
+  /* Primary 10 */
+  --md-ref-palette-primary10: #21005dff;
+  /* Primary 20 */
+  --md-ref-palette-primary20: #381e72ff;
+  /* Primary 30 */
+  --md-ref-palette-primary30: #4f378bff;
+  /* Primary 40 */
+  --md-ref-palette-primary40: #6750a4ff;
+  /* Primary 50 */
+  --md-ref-palette-primary50: #7f67beff;
+  /* Primary 60 */
+  --md-ref-palette-primary60: #9a82dbff;
+  /* Primary 70 */
+  --md-ref-palette-primary70: #b69df8ff;
+  /* Primary 80 */
+  --md-ref-palette-primary80: #d0bcffff;
+  /* Primary 90 */
+  --md-ref-palette-primary90: #eaddffff;
+  /* Primary 95 */
+  --md-ref-palette-primary95: #f6edffff;
+  /* Primary 99 */
+  --md-ref-palette-primary99: #fffbfeff;
+  /* Primary 100 */
+  --md-ref-palette-primary100: #ffffffff;
+
+  /* ------------------------------------------------------------------------
+     NEUTRAL VARIANT — bordes y texto de apoyo
+     Gris con un punto de violeta. Deliberadamente NO es gris puro: si lo
+     fuera, los bordes se verian "sucios" junto al primary violeta.
+     --------------------------------------------------------------------- */
+  /* Neutral Variant 0 */
+  --md-ref-palette-neutral-variant0: #000000ff;
+  /* Neutral Variant 10 */
+  --md-ref-palette-neutral-variant10: #1d1a22ff;
+  /* Neutral Variant 20 */
+  --md-ref-palette-neutral-variant20: #322f37ff;
+  /* Neutral Variant 30 */
+  --md-ref-palette-neutral-variant30: #49454fff;
+  /* Neutral Variant 40 */
+  --md-ref-palette-neutral-variant40: #605d66ff;
+  /* Neutral Variant 50 */
+  --md-ref-palette-neutral-variant50: #79747eff;
+  /* Neutral Variant 60 */
+  --md-ref-palette-neutral-variant60: #938f99ff;
+  /* Neutral Variant 70 */
+  --md-ref-palette-neutral-variant70: #aea9b4ff;
+  /* Neutral Variant 80 */
+  --md-ref-palette-neutral-variant80: #cac4d0ff;
+  /* Neutral Variant 90 */
+  --md-ref-palette-neutral-variant90: #e7e0ecff;
+  /* Neutral Variant 95 */
+  --md-ref-palette-neutral-variant95: #f5eefaff;
+  /* Neutral Variant 99 */
+  --md-ref-palette-neutral-variant99: #fffbfeff;
+  /* Neutral Variant 100 */
+  --md-ref-palette-neutral-variant100: #ffffffff;
+
+  /* ------------------------------------------------------------------------
+     NEUTRAL — superficies y texto principal
+     Escala gris pura. Es la familia mas usada: fondos, texto, contenedores.
+     --------------------------------------------------------------------- */
+  /* Neutral 0 */
+  --md-ref-palette-neutral0: #000000ff;
+  /* Neutral 10 */
+  --md-ref-palette-neutral10: #1c1b1fff;
+  /* Neutral 20 */
+  --md-ref-palette-neutral20: #313033ff;
+  /* Neutral 30 */
+  --md-ref-palette-neutral30: #484649ff;
+  /* Neutral 40 */
+  --md-ref-palette-neutral40: #605d62ff;
+  /* Neutral 50 */
+  --md-ref-palette-neutral50: #787579ff;
+  /* Neutral 60 */
+  --md-ref-palette-neutral60: #939094ff;
+  /* Neutral 70 */
+  --md-ref-palette-neutral70: #aeaaaeff;
+  /* Neutral 80 */
+  --md-ref-palette-neutral80: #c9c5caff;
+  /* Neutral 90 */
+  --md-ref-palette-neutral90: #e6e1e5ff;
+  /* Neutral 95 */
+  --md-ref-palette-neutral95: #f4eff4ff;
+  /* Neutral 99 */
+  --md-ref-palette-neutral99: #fffbfeff;
+  /* Neutral 100 */
+  --md-ref-palette-neutral100: #ffffffff;
+
+  /* ------------------------------------------------------------------------
+     BLACK / WHITE — absolutos
+     Se usan desde los roles "inverse" (superficie oscura con texto claro,
+     tipico de snackbars) y desde los tonos 0 y 100 de cada familia.
+     --------------------------------------------------------------------- */
+  /* Black */
+  --md-ref-palette-black: #000000ff;
+  /* White */
+  --md-ref-palette-white: #ffffffff;
+}
