@@ -1,0 +1,51 @@
+# Normalización de finales de línea
+#
+# PROBLEMA QUE ESTE ARCHIVO RESUELVE
+# ----------------------------------
+# La instalación global de Git en Windows (C:/Program Files/Git/etc/gitconfig)
+# tiene core.autocrlf=true. Eso hace que Git convierta LF a CRLF al escribir
+# en disco y CRLF a LF al commitear. Consecuencia: el mismo repositorio se ve
+# distinto según la máquina, y "git status" puede listar archivos como
+# modificados cuando su contenido es idéntico.
+#
+# LA REGLA QUE IMPONEMOS
+# ----------------------
+#   * text=auto   Git detecta texto y lo normaliza a LF al commitear
+#   eol=lf        LF es el formato canonico del repositorio
+#
+# Resultado: el repositorio guarda siempre LF. Al abrir los archivos en
+# Windows, Git los convierte a CRLF automaticamente. Todos los que clonen el
+# proyecto ven exactamente los mismos bytes en el repositorio, sin importar su
+# sistema operativo.
+#
+# `text=auto` es importante: por si alguien anade un archivo binario, Git lo
+# detecta y no intenta convertirlo.
+
+* text=auto eol=lf
+
+# ---------------------------------------------------------------------------
+# Archivos que DEBEN conservarse como bytes exactos
+# ---------------------------------------------------------------------------
+
+# Imagenes, fuentes, audio y video: convertirlos a LF los corromperia.
+*.png    binary
+*.jpg    binary
+*.jpeg   binary
+*.gif    binary
+*.webp   binary
+*.avif   binary
+*.ico    binary
+*.svg    text
+*.woff   binary
+*.woff2  binary
+*.ttf    binary
+*.otf    binary
+*.eot    binary
+*.mp3    binary
+*.mp4    binary
+*.webm   binary
+*.pdf    binary
+
+# Lockfiles: deben ser identicos byte a byte en todas las maquinas.
+composer.lock  binary
+package-lock.json  binary
