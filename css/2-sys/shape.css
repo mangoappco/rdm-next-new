@@ -20,18 +20,24 @@
    componentes que pidieron "medium" se actualizan juntos.
 
    ---------------------------------------------------------------------------
-   LOS 7 ROLES DE FORMA DE M3
+   LOS 10 ROLES DE FORMA DE M3
    ---------------------------------------------------------------------------
    M3 no numera los radios: los nombra. Cada nombre responde a una intencion
    concreta, y esa intencion es lo que el componente declara.
 
-       --md-sys-shape-corner-none          0px     Sin redondeo
-       --md-sys-shape-corner-extra-small  4px     Chips, snackbars
-       --md-sys-shape-corner-small        8px     Inputs, bordes de lista
-       --md-sys-shape-corner-medium      12px     El mas usado: cards, dialogos
-       --md-sys-shape-corner-large       16px     FABs, navigation drawer
-       --md-sys-shape-corner-extra-large 28px     Modal sheets
-       --md-sys-shape-corner-full      9999px     Pastilla, circulo
+       --md-sys-shape-corner-none                  0px     Sin redondeo
+       --md-sys-shape-corner-extra-small          4px     Chips, snackbars
+       --md-sys-shape-corner-small                8px     Inputs, bordes de lista
+       --md-sys-shape-corner-medium              12px     El mas usado: cards, dialogos
+       --md-sys-shape-corner-large               16px     FABs, navigation drawer
+       --md-sys-shape-corner-large-increased     20px     Dialogo expandido
+       --md-sys-shape-corner-extra-large         28px     Modal sheets
+       --md-sys-shape-corner-extra-large-increased 32px Dialogo a pantalla completa
+       --md-sys-shape-corner-extra-extra-large   48px     Tope de la escala
+       --md-sys-shape-corner-full              9999px     Pastilla, circulo
+
+   MAS VARIANTES: -top, -start y -end de los radios que las publican (ver
+   abajo). En total este archivo define 15 roles.
 
    POR QUE EL NOMBRE IMPORTA MAS QUE EL NUMERO
    -------------------------------------------
@@ -100,8 +106,17 @@
   /* FABs, navigation drawer, superficies amplias */
   --md-sys-shape-corner-large: var(--md-ref-corner-large);
 
+  /* Variante ampliada de large: dialogo expandido */
+  --md-sys-shape-corner-large-increased: var(--md-ref-corner-large-increased);
+
   /* Modal sheets y superficies muy redondeadas */
   --md-sys-shape-corner-extra-large: var(--md-ref-corner-extra-large);
+
+  /* Variante ampliada de extra-large: dialogo de pantalla completa */
+  --md-sys-shape-corner-extra-large-increased: var(--md-ref-corner-extra-large-increased);
+
+  /* El tope de la escala: superficies casi a pantalla completa */
+  --md-sys-shape-corner-extra-extra-large: var(--md-ref-corner-extra-extra-large);
 
   /* Pastilla o circulo perfecto */
   --md-sys-shape-corner-full: var(--md-ref-corner-full);
@@ -126,6 +141,9 @@
 
   /* Redondeo superior con extra-large: modal sheet amplio */
   --md-sys-shape-corner-extra-large-top: var(--md-ref-corner-extra-large) var(--md-ref-corner-extra-large) var(--md-ref-corner-none) var(--md-ref-corner-none);
+
+  /* Redondeo superior pequeno: campo de texto con etiqueta flotante */
+  --md-sys-shape-corner-extra-small-top: var(--md-ref-corner-extra-small) var(--md-ref-corner-extra-small) var(--md-ref-corner-none) var(--md-ref-corner-none);
 }
 
 /* ==========================================================================
@@ -148,10 +166,14 @@
 .md-shape-corner-small         { border-radius: var(--md-sys-shape-corner-small); }
 .md-shape-corner-medium        { border-radius: var(--md-sys-shape-corner-medium); }
 .md-shape-corner-large         { border-radius: var(--md-sys-shape-corner-large); }
+.md-shape-corner-large-increased { border-radius: var(--md-sys-shape-corner-large-increased); }
 .md-shape-corner-extra-large   { border-radius: var(--md-sys-shape-corner-extra-large); }
+.md-shape-corner-extra-large-increased { border-radius: var(--md-sys-shape-corner-extra-large-increased); }
+.md-shape-corner-extra-extra-large { border-radius: var(--md-sys-shape-corner-extra-extra-large); }
 .md-shape-corner-full          { border-radius: var(--md-sys-shape-corner-full); }
 
 /* --- Variantes por lado --- */
 .md-shape-corner-large-top     { border-radius: var(--md-sys-shape-corner-large-top); }
 .md-shape-corner-large-start   { border-radius: var(--md-sys-shape-corner-large-start); }
 .md-shape-corner-large-end     { border-radius: var(--md-sys-shape-corner-large-end); }
+.md-shape-corner-extra-small-top { border-radius: var(--md-sys-shape-corner-extra-small-top); }

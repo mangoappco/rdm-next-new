@@ -90,12 +90,12 @@ Verificado contra los archivos publicados por Google. Nombres exactos:
 | `--md-ref-typeface-*`    | `1-ref/typeface.css`| 5 tokens (plain, brand, 3 pesos)         |
 | `--md-ref-typescale-*`   | `1-ref/typescale.css` | 45 medidas (15 estilos × size/line-height/tracking) |
 | `--md-ref-stroke-*`      | `1-ref/stroke.css` | 3 grosores — **extensión propia**       |
-| `--md-ref-corner-*`      | `1-ref/corner.css` | 7 radios de esquina (v0.192)            |
+| `--md-ref-corner-*`      | `1-ref/corner.css` | 10 radios de esquina                     |
 | `--md-sys-color-*`       | `2-sys/theme/*.css` | 37 roles × 2 temas                      |
 | `md-bg-*` / `md-text-*` / `md-border-*` | `2-sys/colors.css` | 93 clases utilitarias de color |
 | `--md-sys-typescale-*`   | `2-sys/typography.css` | 15 estilos × 5 sub-tokens + 15 compuestos |
 | `.md-type-*`             | `2-sys/typography.css` | 33 clases tipográficas               |
-| `--md-sys-shape-*`       | `2-sys/shape.css`| 11 roles de esquina + variantes por lado |
+| `--md-sys-shape-*`       | `2-sys/shape.css`| 15 roles de esquina + variantes por lado |
 | `--md-sys-motion-*`      | `2-sys/motion.css`| Duraciones y easing                        |
 | `--md-sys-elevation-*`   | `2-sys/elevation.css` | Niveles 0–5                            |
 | `--md-sys-state-*`       | `2-sys/state.css`| 4 opacidades de state layer                |
@@ -195,6 +195,22 @@ Es redundancia deliberada:
 Es el mismo criterio que aplicamos en `palette.css`, donde `--md-ref-palette-black`
 duplica `neutral0`: un valor puede coincidir con otro y aun así merecer su propio
 token cuando significa algo distinto.
+
+**Versión de la escala de shape:** el paquete de tokens de Material Web **v0.192**
+publica solo 7 radios (`none`, `extra-small`, `small`, `medium`, `large`,
+`extra-large`, `full`). La escala oficial actual tiene **10**: los tres niveles
+`large-increased` (20px), `extra-large-increased` (32px) y `extra-extra-large`
+(48px) se añadieron después. Son **coexistentes**, no reemplazan a los anteriores.
+
+Este proyecto implementa la escala oficial completa de 10, verificada contra la
+tabla de tokens de `m3.material.io` y contra la documentación de shapes de
+material-components-android.
+
+> **Nota sobre M3 Expressive.** Existe una variante posterior de M3 que *redefine*
+> algunos de estos valores (por ejemplo `large` pasa de 16dp a 20dp) y cambia `full`
+> de valor fijo a porcentaje. Este proyecto implementa la escala **base** de M3, que
+> es la estable y la que usan las librerías web de Google. Migrar a Expressive es
+> una decisión de proyecto, no un detalle de implementación.
 
 ---
 

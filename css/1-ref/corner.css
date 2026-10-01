@@ -24,34 +24,66 @@
    es solo del primero.
 
    ---------------------------------------------------------------------------
-   LOS 7 RADIOS DE M3
+   LOS 10 RADIOS DE M3
    ---------------------------------------------------------------------------
    M3 define una escala de radios con nombres semanticos, no numeros:
 
-     none         0px       Sin redondeo. Recto puro.
-     extra-small  4px       Chips, snackbars, campos pequenos.
-     small        8px       Menos redondeo. Bordes de lista, campos.
-     medium      12px       El mas usado. Cards, dialogos, sheets.
-     large       16px       FABs, navigation drawer, esquinas grandes.
-     extra-large 28px       Modal sheets, superficies muy redondeadas.
-     full       9999px      Pastilla o circulo perfecto.
+     none                  0px       Sin redondeo. Recto puro.
+     extra-small           4px       Chips, snackbars, campos pequenos.
+     small                 8px       Menos redondeo. Bordes de lista.
+     medium               12px       El mas usado. Cards, dialogos, sheets.
+     large                16px       FABs, navigation drawer.
+     large-increased      20px       Variante ampliada de large.
+     extra-large          28px       Modal sheets, superficies redondeadas.
+     extra-large-increased 32px     Variante ampliada de extra-large.
+     extra-extra-large    48px       El radio mayor. Diálogos de pantalla
+                                      completa, superficies muy redondeadas.
+     full               9999px       Pastilla o circulo perfecto.
 
    El nombre importa mas que el numero. Un componente no dice "12px", dice
    "medium". Si manana M3 cambiara medium a 14px, el componente sigue
    diciendo medium y se actualiza solo.
 
+   LOS TRES NIVELES "increased" Y "extra-extra-large"
+   -----------------------------------------------
+   Son adiciones posteriores al nucleo original de M3 (v0.192 publicaba solo
+   siete: none, extra-small, small, medium, large, extra-large, full). Google
+   los incorporo al ampliar la escala, y son COEXISTENTES: no reemplazan a
+   los anteriores, conviven con ellos.
+
+   La intencion de los "increased" es permitir a un componente subir UN paso
+   su redondeo sin cambiar de familia. Un dialogo normal usa `large` (16px);
+   el mismo dialogo en un estado expandido usa `large-increased` (20px). Es
+   un refinamiento, no un salto.
+
+   `extra-extra-large` (48px) es el tope de la escala. Se usa en superficies
+   que ocupan casi toda la pantalla, donde un radio pequeno se veria
+   ranurado y uno enorme se veria barroco.
+
+   NOTA SOBRE M3 Expressive
+   -----------------------
+   Existe una variante posterior llamada M3 Expressive que redefine algunos
+   de estos valores (por ejemplo, `large` pasa de 16dp a 20dp) y cambia `full`
+   de un valor fijo a un porcentaje. Este proyecto implementa la escala
+   BASE de M3, que es la estable y la que consumen las librerias web de
+   Google. Migrar a Expressive es una decision de proyecto, no un detalle.
+
    ---------------------------------------------------------------------------
    POR QUE EXISTE ESTE ARCHIVO Y NO SE USA spacing.css DIRECTAMENTE
    ---------------------------------------------------------------------------
-   Este es el punto que conviene dejar bien documentado, porque cinco de los
-   siete valores SI coinciden con tokens de 1-ref/spacing.css:
+   Este es el punto que conviene dejar bien documentado, porque ocho de los
+   diez valores SI coinciden con tokens de 1-ref/spacing.css:
 
-     extra-small  4px  = var(--md-ref-spacing-50)
-     small        8px  = var(--md-ref-spacing-100)
-     medium      12px  = var(--md-ref-spacing-150)
-     large       16px  = var(--md-ref-spacing-200)
+     none                  0px  = var(--md-ref-spacing-0)
+     extra-small           4px  = var(--md-ref-spacing-50)
+     small                 8px  = var(--md-ref-spacing-100)
+     medium               12px  = var(--md-ref-spacing-150)
+     large                16px  = var(--md-ref-spacing-200)
+     large-increased      20px  = var(--md-ref-spacing-250)
+     extra-large-increased 32px = var(--md-ref-spacing-400)
+     extra-extra-large    48px  = var(--md-ref-spacing-600)
 
-   Y aun asi se redefinen aqui. Es redundancia INTENCIONAL, por dos razones:
+   Y aun asi se redefinen aqui. Es redundancia INTENCIONAL, por tres razones:
 
    RAZON 1 — extra-large (28px) no existe en la escala de espacio
    -----------------------------------------------------------
@@ -130,11 +162,32 @@
   --md-ref-corner-large: 16px;
 
   /* ------------------------------------------------------------------------
+     LARGE INCREASED — 20px
+     Variante ampliada de `large`. Permite subir UN paso el redondeo sin
+     cambiar de familia: un dialogo normal usa `large`, y el mismo dialogo
+     expandido usa `large-increased`.
+     --------------------------------------------------------------------- */
+  --md-ref-corner-large-increased: 20px;
+
+  /* ------------------------------------------------------------------------
      EXTRA LARGE — 28px
      Modal sheets y superficies muy redondeadas.
      Este valor NO existe en la escala de espacio de M3 (ver cabecera).
      --------------------------------------------------------------------- */
   --md-ref-corner-extra-large: 28px;
+
+  /* ------------------------------------------------------------------------
+     EXTRA LARGE INCREASED — 32px
+     Variante ampliada de `extra-large`. Dialogos de pantalla completa.
+     --------------------------------------------------------------------- */
+  --md-ref-corner-extra-large-increased: 32px;
+
+  /* ------------------------------------------------------------------------
+     EXTRA EXTRA LARGE — 48px
+     El tope de la escala. Superficies que ocupan casi toda la pantalla, donde
+     un radio pequeno se veria ranurado y uno enorme se veria barroco.
+     --------------------------------------------------------------------- */
+  --md-ref-corner-extra-extra-large: 48px;
 
   /* ------------------------------------------------------------------------
      FULL — 9999px
