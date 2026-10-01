@@ -1,40 +1,50 @@
 <!DOCTYPE html>
+<!-- ==========================================================================
+     RDM Next — Showroom de componentes
+     ==========================================================================
+
+     SHELL DEL SHOWROOM.
+
+     Este archivo existe para dos cosas:
+
+       1. Cargar el sistema completo (css/main.css) y la fuente.
+       2. Servir de esqueleto donde luego se inserten los componentes.
+
+     ---------------------------------------------------------------------------
+     REGLA DE DOGFOODING (NO NEGOCIABLE)
+     ---------------------------------------------------------------------------
+     CERO estilos inline. Ni un solo atributo de estilo en el cuerpo del HTML.
+
+     El showroom se construye UNICAMENTE con lo que el sistema proporciona:
+
+       2-sys/  clases de utilidad semanticas
+               .md-type-*   tipografia  (typography.css)
+               .md-bg-*     fondos     (colors.css)
+               .md-text-*   texto      (colors.css)
+
+       3-comp/  componentes M3, a medida que se liberen
+
+     REGLA DE PRUEBA DEL SISTEMA
+     ---------------------------
+     Si al maquetar hace falta un margen, un padding o un color que no existe,
+     NO se resuelve inline. Se evalua si corresponde crear el token semantico
+     o la utilidad en 2-sys o 3-comp, siguiendo el flujo del proyecto.
+
+     Ese es el proposito del showroom: encontrar los huecos del sistema
+     mientras se maqueta, no taparlos con parches.
+
+     VERIFICACION: tools/verify-tokens.ps1, REGLA 6, falla si aparece un
+     atributo de estilo en cualquier HTML del showroom.
+
+     ========================================================================== -->
+<html lang="es" data-theme="light">
 <!-- data-theme="light" fija un estado inicial INDEPENDIENTE del sistema
      operativo del visitante. Sin este atributo, el tema se resuelve por
      prefers-color-scheme y el showroom se veria oscuro en una maquina con
      SO oscuro, que no es lo esperado al abrir la referencia visual.
 
-     El toggle de ManGo! App funciona simplemente cambiando este atributo:
+     El toggle de ManGo! App funciona cambiando este atributo:
      document.documentElement.setAttribute('data-theme', 'dark') -->
-<html lang="es" data-theme="light">
-<!-- ==========================================================================
-     RDM Next — Showroom de componentes
-     ==========================================================================
-
-     SHELL MINIMO DEL SHOWROOM.
-
-     Este archivo existe para dos cosas:
-
-       1. Cargar el sistema completo (css/main.css) y la fuente Google Sans Flex.
-       2. Servir de esqueleto donde luego se inserten los componentes.
-
-     AUN NO HAY COMPONENTES. El sistema de tokens esta completo
-     (19 archivos, 481 tokens), pero 3-comp/ esta vacio. Los componentes se
-     agregan de a uno, con el mismo bloque de comentarios delimitadores en
-     cada entrega.
-
-     ---------------------------------------------------------------------------
-     NOTA SOBRE ESTRUCTURA: POR QUE NO HAY NADA DENTRO DE <body>
-     ---------------------------------------------------------------------------
-     Un esqueleto vacio se ve igual a un error. Por eso body lleva los
-     delimitadores visibles de "aun no hay componentes", en lugar de estar
-     literalmente vacio.
-
-     Cuando se agregue el primer componente, ese bloque se reemplaza por el
-     componente, conservando el formato de comentarios delimitadores exigido
-     por las reglas del proyecto.
-
-     ========================================================================== -->
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -45,13 +55,10 @@
   <!-- ==========================================================================
        CARGA DE LA FUENTE
        --------------------------------------------------------------------------
-       Google Sans Flex se carga AQUI, con <link>, y no dentro del CSS.
-       Motivo tecnico:
-
-       Un @import de CSS bloquea el descubrimiento de los recursos
-       posteriores. El navegador tiene que terminar de leer el CSS, descubrir
-       el @import de la fuente, y solo entonces puede seguir. Para una fuente
-       es el peor caso: nada se puede pintar hasta que la fuente este lista.
+       Google Sans Flex se carga con <link>, y no dentro del CSS. Motivo
+       tecnico: un @import de CSS bloquea el descubrimiento de los recursos
+       posteriores. Para una fuente es el peor caso: nada se puede pintar
+       hasta que la fuente este descargada.
 
        Las tres lineas hacen esto:
          1. preconnect a fonts.googleapis.com  -> evita un round-trip de DNS
@@ -96,59 +103,42 @@
   <link rel="stylesheet" href="css/main.css">
 </head>
 
-<body style="
-  /* Reset minimo del body.
-     Sin esto, el <body> queda con los valores por defecto del navegador:
-     Times New Roman y margin 8px. Es un detalle que se ve solo mirando el
-     showroom en pantalla completa, pero delata que falta el reset.
-
-     El reset completo del sistema vivira en utilities/reset.css cuando se
-     implemente la capa utilities de main.css. Por ahora, con lo minimo
-     indispensable para que el placeholder se vea correcto. */
-  margin: 0;
-  background-color: var(--md-sys-color-surface);
-  color: var(--md-sys-color-on-surface);
-  font-family: var(--md-ref-typeface-plain);
-">
+<body>
 
   <!-- ====================================================================== -->
-  <!-- INICIO: PLACEHOLDER - SHOWROOM SIN COMPONENTES                        -->
-  <!-- ====================================================================== -->
+  <!-- INICIO: SHOWROOM - PLACEHOLDER                                         -->
+  <!-- ------------------------------------------------------------------------
+       El showroom esta en construccion. Este placeholder existe para
+       comprobar que la cadena del sistema funciona de extremo a extremo:
 
-  <main style="
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    gap: var(--md-ref-spacing-300);
-    background-color: var(--md-sys-color-surface);
-    color: var(--md-sys-color-on-surface);
-    font-family: var(--md-ref-typeface-plain);
-  ">
+         1-ref  ->  2-sys  ->  utilidad de clase  ->  HTML
 
-    <h1 class="md-type-headline-medium" style="margin: 0;">
-      RDM Next
-    </h1>
+       Usa unicamente clases de 2-sys. Sin estilos inline.
 
-    <p class="md-type-body-large" style="
-      margin: 0;
-      color: var(--md-sys-color-on-surface-variant);
-    ">
-      Sistema de tokens completo. Componentes en camino.
-    </p>
+       Cuando se libere el primer componente de 3-comp/, este bloque se
+       sustituye por la seccion interactiva del componente, conservando el
+       formato de comentarios delimitadores que exige el proyecto.
+       ====================================================================== -->
 
-    <!--
-      Este bloque usa clases de utilidad del propio sistema
-      (.md-type-headline-medium, .md-type-body-large) para comprobar que la
-      cadena 1-ref -> 2-sys -> utilidad funciona de extremo a extremo.
-      Si el texto se ve con Google Sans Flex y el tamano correcto, el sistema carga bien.
-    -->
+  <main>
+
+    <header>
+      <h1 class="md-type-headline-medium md-text-primary">
+        RDM Next
+      </h1>
+    </header>
+
+    <section>
+      <p class="md-type-body-large md-text-on-surface-variant">
+        Sistema de tokens completo. Componentes en camino.
+      </p>
+    </section>
 
   </main>
 
   <!-- ====================================================================== -->
-  <!-- FIN: PLACEHOLDER - SHOWROOM SIN COMPONENTES                           -->
+  <!-- FIN: SHOWROOM - PLACEHOLDER                                            -->
   <!-- ====================================================================== -->
+
 </body>
 </html>

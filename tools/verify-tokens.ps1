@@ -337,6 +337,55 @@ foreach ($dir in $expected) {
 }
 
 # ============================================================================
+# REGLA 6 - Dogfooding del showroom
+# --------------------------------------------------------------------------
+# El showroom se construye UNICAMENTE con lo que el sistema proporciona.
+# Esta regla verifica dos cosas:
+#
+#   a) Ningun HTML del proyecto lleva atributos de estilo en linea.
+#      El HTML tiene que consumir el sistema a traves de clases.
+#
+#   b) Ningun HTML del proyecto lleva un bloque <style> propio.
+#      Si el showroom necesita CSS que el sistema no ofrece, la respuesta es
+#      crear el token o la utilidad en 2-sys/3-comp, no parchear el HTML.
+#
+# El punto (b) es tan importante como el (a): un <style> dentro del HTML es
+# la forma "limpia" de la misma prohibicion, y seria el hueco por donde
+# volverian los estilos ad-hoc.
+# ============================================================================
+
+$htmlFiles = Get-ChildItem -Path $ProjectRoot -Recurse -File -Include '*.html' |
+    Where-Object { $_.FullName -notmatch '\\\.git\\' }
+
+foreach ($html in $htmlFiles) {
+    $raw = [System.IO.File]::ReadAllText($html.FullName)
+    $rel = $html.FullName.Substring($ProjectRoot.Length + 1)
+
+    # Sin comentarios: los comentarios de documentacion mencionan la regla
+    $body = [regex]::Replace($raw, '(?s)<!--.*?-->', '')
+
+    $lines = $body -split "`n"
+
+    for ($i = 0; $i -lt $lines.Count; $i++) {
+        $lineText = $lines[$i]
+
+        # a) atributo de estilo en linea
+        foreach ($m in [regex]::Matches($lineText, '<[a-zA-Z][^>]*?\sstyle\s*=')) {
+            Add-Issue -Rule 'REGLA 6' -File $rel -Line ($i + 1) `
+                      -Message 'estilo en linea prohibido: el HTML debe consumir el sistema con clases de 2-sys o 3-comp. Si falta un token o una utilidad, creala en la capa correspondiente' `
+                      -Snippet $lineText.Trim()
+        }
+
+        # b) bloque de estilos propio en el HTML
+        if ($lineText -match '<style[\s>]') {
+            Add-Issue -Rule 'REGLA 6' -File $rel -Line ($i + 1) `
+                      -Message 'bloque <style> en el HTML prohibido: el CSS pertenece a las capas 1-ref, 2-sys o 3-comp' `
+                      -Snippet $lineText.Trim()
+        }
+    }
+}
+
+# ============================================================================
 # RESULTADO
 # ============================================================================
 
@@ -346,10 +395,11 @@ Write-Host '    REGLA 2  direccion de dependencias entre capas'
 Write-Host '    REGLA 3  todo token referenciado existe'
 Write-Host '    REGLA 4  orden de theme.light antes que theme.dark'
 Write-Host '    REGLA 5  integridad de la estructura y @layer'
+Write-Host '    REGLA 6  sin estilos inline ni <style> en el showroom'
 Write-Host ''
 
 if ($script:Issues.Count -eq 0) {
-    Write-Host '  OK - La arquitectura se respeta en las 5 reglas.' -ForegroundColor Green
+    Write-Host '  OK - La arquitectura se respeta en las 6 reglas.' -ForegroundColor Green
     Write-Host ''
     exit 0
 }
