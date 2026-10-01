@@ -94,6 +94,112 @@ y pegar nuestro CSS sobre su `class` tampoco funciona.
 (`.md-typescale-label-medium-prominent`). Antes se usaban dos (`--prominent`) por
 influencia de BEM, que no aplica en este proyecto; normalizado junto con esto.
 
+### Cuántas clases de utilidad publica Google (y cuántas publicamos nosotros)
+
+La tabla de arriba puede leerse como si nuestras clases replicaran las de Google.
+No lo hacen, y conviene tener el dato medido.
+
+Auditado sobre el repositorio completo de `@material/web` 2.5.0
+(`material-components/material-web`):
+
+```
+Clases distintas en TODO el repositorio:  10
+  .md-typescale-*        8   generadas por typescale.styles() en typography/_typescale.scss
+  .md-icon               1   experimento en labs/gb/, no parte del sistema de estilos
+  .md-stories-bg-override 1  del sitio de documentación (catalog/)
+
+Clases de este proyecto:  167
+  colors 93 · typography 32 · shape 14 · elevation 12 · motion 8 · state 6 · measurement 2
+```
+
+Las 6 de `state` son `.md-state-layer` más sus cuatro modificadores
+(`--hover`, `--focus`, `--pressed`, `--dragged`) y `.md-disabled`, que aplica `opacity` al
+contenido inactivo —no es un *state layer*: no hay capa encima, el propio contenido se
+atenúa—.
+
+Esas cuatro usan **doble guion**, a diferencia del `-prominent` de tipografía, que se
+normalizó a uno. Queda como inconsistencia pendiente, no resuelta: el criterio todavía no
+está escrito.
+
+**Material Web publica 8 clases de utilidad. Publicamos 167.** Compartimos una sola
+familia: la tipográfica.
+
+La prueba más directa está en el `package.json` de la librería:
+
+```json
+{
+  "name": "@material/web",
+  "version": "2.5.0",
+  "customElements": [ … ],
+  "files": [ "**/*.js", "**/*.scss", "**/*.css", … ]
+}
+```
+
+**No hay campo `style` ni campo `sass`.** Una librería que publicara utilidades CSS los
+tendría. Los únicos `.css` del repositorio son de `catalog/site/` —la página de
+documentación— y están excluidos del paquete con `!catalog/`.
+
+Además, en `.md-bg-*`, `.md-text-*` y `.md-border-*` hay **cero coincidencias** en todo el
+repositorio. Nuestras 93 clases de color no existen en Google.
+
+### Cómo aplica Google el color, la elevación y el estado sin clases
+
+No hay atajo de utilidad porque el mecanismo es otro: **web components con tokens propios
+y estilos internos.** Tres formas distintas, ninguna con clase global.
+
+**1. Cada componente expone sus propios tokens, y el tema los alimenta.**
+
+```scss
+// button/internal/_filled-button.scss
+@mixin theme($tokens) {
+  @each $token, $value in $tokens {
+    --md-filled-button-#{$token}: #{$value};
+  }
+}
+```
+
+Ahí no hay `.md-btn-primary`: hay un elemento `<md-filled-button>` que se tema por variables.
+
+**2. `:host` y pseudo-elementos, en lugar de clases de estado.**
+
+```scss
+// elevation/internal/_elevation.scss
+:host { display: flex; pointer-events: none; }
+.shadow::before { box-shadow: …; opacity: 0.3; }   /* sombra key    */
+.shadow::after  { box-shadow: …; opacity: 0.15; }  /* sombra ambient */
+```
+
+Nosotros exponemos `.md-elevation-3`. Google usa `<md-elevation>` con un `--_level`
+interno y dos sombras superpuestas. **La elevación no se pide con una clase: se pide con
+un elemento.**
+
+**3. `currentColor` para los colores.** Igual que nosotros en `2-sys/state.css`: la capa de
+estado toma el color del contenido, no un color propio.
+
+### Qué significa para este proyecto
+
+Nuestra forma de consumir tokens es una **decisión de arquitectura distinta**, no una
+convención heredada. Conviene decir las dos cosas:
+
+**Lo que se gana:** el HTML puede tomar decisiones de diseño sin escribir CSS. Esto resuelve
+un hueco concreto:
+
+```html
+<p class="md-text-primary">Texto primario fuera de un componente</p>
+```
+
+Con Material Web, ese mismo párrafo necesita que escribas la regla del color. No existe
+clase oficial que lo haga. La REGLA 6 del proyecto prohíbe escribirla en el HTML, así que
+sin nuestras clases no habría forma de cumplirla para texto suelto.
+
+**Lo que se pierde:** la interoperabilidad directa con Material Web. No se puede tomar un
+`<md-button>` de su documentación y aplicarle nuestras clases, porque sus estilos viven en
+`:host`, dentro del shadow DOM de un web component, y no en clases que se puedan añadir
+desde fuera.
+
+Esto no es un defecto pendiente de corregir: es el compromiso que hace que el sistema
+funcione en HTML+CSS estático sin capa de build.
+
 ---
 
 ## 3. La regla del hardcoding
