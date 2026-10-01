@@ -295,7 +295,7 @@
       </h3>
       <p class="md-type-body-small md-text-on-surface-variant">
         El script <code class="md-text-tertiary">verify-tokens.ps1</code> actua como candado
-        de seguridad verificando 6 reglas de compilacion.
+        de seguridad verificando 7 reglas de compilacion.
       </p>
     </aside>
 
@@ -309,7 +309,338 @@
   </footer>
 
   <!-- ====================================================================== -->
-  <!-- FIN: SHOWROOM - PAGINA DE PRESENTACION DEL SISTEMA                    -->
+  <!-- INICIO: SHOWROOM - COMPONENTE DIVIDER                                   -->
+  <!-- ------------------------------------------------------------------------
+       Documenta el componente real de css/3-comp/divider.css.
+
+       DOGFOODING: todo divisor de esta seccion es un <hr> con la clase
+       .md-divider. No hay un solo <div> ni un solo estilo en linea.
+
+       Estructura confirmada con el usuario: 13 secciones.
+       ====================================================================== -->
+
+  <main class="md-measure-page-margin">
+
+    <!-- 01. HEADER -->
+    <section id="divider">
+      <header>
+        <h2 class="md-type-headline-small md-text-secondary">
+          Divider
+        </h2>
+        <p class="md-type-body-medium md-text-on-surface-variant">
+          Una linea horizontal que separa contenido dentro de un contenedor.
+        </p>
+      </header>
+    </section>
+
+    <!-- 02. USO -->
+    <section id="divider-uso">
+      <header>
+        <h3 class="md-type-title-medium md-text-primary">
+          Uso
+        </h3>
+      </header>
+      <article>
+        <p class="md-type-body-medium md-text-on-surface">
+          Usa un divisor cuando necesitas separar visualmente bloques de contenido
+          que pertenecen a un mismo grupo, sin usar un borde de caja ni una sombra.
+        </p>
+        <p class="md-type-body-medium md-text-on-surface-variant">
+          Es el separador mas ligero del sistema: no tiene fondo propio, toma el
+          color del contexto y mide 1px de grosor.
+        </p>
+      </article>
+    </section>
+
+    <!-- 03. EJEMPLO BASICO -->
+    <section id="divider-ejemplo">
+      <header>
+        <h3 class="md-type-title-medium md-text-primary">
+          Ejemplo basico
+        </h3>
+      </header>
+      <article>
+        <p class="md-type-body-medium md-text-on-surface">
+          La forma mas simple: un <code class="md-text-tertiary">&lt;hr&gt;</code>
+          con la clase del componente.
+        </p>
+        <hr class="md-divider">
+      </article>
+    </section>
+
+    <!-- 04. VARIANTES / TYPES -->
+    <section id="divider-variantes">
+      <header>
+        <h3 class="md-type-title-medium md-text-primary">
+          Variantes
+        </h3>
+      </header>
+      <article>
+        <p class="md-type-body-medium md-text-on-surface">
+          M3 define tres variantes segun la separacion lateral:
+        </p>
+        <ul>
+          <li class="md-type-body-medium md-measure-item-gap">
+            <b>Full-width</b> — sin inset. Ocupa todo el ancho disponible.
+          </li>
+          <li class="md-type-body-medium md-measure-item-gap">
+            <b>Inset</b> — 16dp de padding a la izquierda, 0 a la derecha.
+          </li>
+          <li class="md-type-body-medium md-measure-item-gap">
+            <b>Middle-inset</b> — 16dp de padding en ambos lados.
+          </li>
+        </ul>
+        <hr class="md-divider">
+        <hr class="md-divider md-divider-inset">
+        <hr class="md-divider md-divider-middle-inset">
+      </article>
+    </section>
+
+    <!-- 05. COLOR -->
+    <section id="divider-color">
+      <header>
+        <h3 class="md-type-title-medium md-text-primary">
+          Color
+        </h3>
+      </header>
+      <article>
+        <p class="md-type-body-medium md-text-on-surface">
+          El divisor usa el rol <code class="md-text-tertiary">outline-variant</code>,
+          un gris violeta atenuado que funciona en ambos temas.
+        </p>
+        <p class="md-type-body-medium md-text-on-surface-variant">
+          No tiene color propio: aplica <code class="md-text-tertiary">color</code>
+          al elemento y el <code class="md-text-tertiary">::before</code> lo toma
+          con <code class="md-text-tertiary">currentColor</code>. Asi hereda el color
+          del contexto.
+        </p>
+      </article>
+    </section>
+
+    <!-- 06. PADDING -->
+    <section id="divider-padding">
+      <header>
+        <h3 class="md-type-title-medium md-text-primary">
+          Padding
+        </h3>
+      </header>
+      <article>
+        <p class="md-type-body-medium md-text-on-surface">
+          Las variantes inset y middle-inset anaden padding lateral. Los valores
+          vienen del token <code class="md-text-tertiary">--md-sys-measurement-inset</code>:
+        </p>
+        <ul>
+          <li class="md-type-body-medium md-measure-item-gap">
+            <b>Full-width</b> — 0 / 0
+          </li>
+          <li class="md-type-body-medium md-measure-item-gap">
+            <b>Inset</b> — 16dp / 0
+          </li>
+          <li class="md-type-body-medium md-measure-item-gap">
+            <b>Middle-inset</b> — 16dp / 16dp
+          </li>
+        </ul>
+      </article>
+    </section>
+
+    <!-- 07. COMPORTAMIENTO -->
+    <section id="divider-comportamiento">
+      <header>
+        <h3 class="md-type-title-medium md-text-primary">
+          Comportamiento
+        </h3>
+      </header>
+      <article>
+        <p class="md-type-body-medium md-text-on-surface">
+          El divisor no responde a interaccion: no tiene estados
+          <code class="md-text-tertiary">:hover</code>,
+          <code class="md-text-tertiary">:focus</code> ni
+          <code class="md-text-tertiary">:disabled</code>.
+        </p>
+        <p class="md-type-body-medium md-text-on-surface-variant">
+          Su unico comportamiento es pasivo: hereda el color del contexto.
+          Si un contenedor tiene <code class="md-text-tertiary">color: primary</code>,
+          el divisor que contiene se ve primario sin clases extra.
+        </p>
+      </article>
+    </section>
+
+    <!-- 08. ANATOMIA -->
+    <section id="divider-anatomia">
+      <header>
+        <h3 class="md-type-title-medium md-text-primary">
+          Anatomia
+        </h3>
+      </header>
+      <article>
+        <p class="md-type-body-medium md-text-on-surface">
+          El componente entero son dos reglas:
+        </p>
+        <ul>
+          <li class="md-type-body-medium md-measure-item-gap">
+            <b>.md-divider</b> — el contenedor. Pone el color, el grosor y el ancho.
+          </li>
+          <li class="md-type-body-medium md-measure-item-gap">
+            <b>::before</b> — la linea visible. Toma el color con currentColor.
+          </li>
+        </ul>
+      </article>
+    </section>
+
+    <!-- 09. ACCESIBILIDAD -->
+    <section id="divider-accesibilidad">
+      <header>
+        <h3 class="md-type-title-medium md-text-primary">
+          Accesibilidad
+        </h3>
+      </header>
+      <article>
+        <p class="md-type-body-medium md-text-on-surface">
+          El elemento obligatorio es <code class="md-text-tertiary">&lt;hr&gt;</code>.
+          El <code class="md-text-tertiary">&lt;hr&gt;</code> nativo tiene
+          <code class="md-text-tertiary">role="separator"</code> implicito, asi que
+          un lector de pantallas lo anuncia como un separador.
+        </p>
+        <p class="md-type-body-medium md-text-on-surface-variant">
+          Si usas <code class="md-text-tertiary">&lt;div&gt;</code> en su lugar,
+          pierdes ese rol y el divisor se vuelve invisible para un lector de
+          pantallas.
+        </p>
+      </article>
+    </section>
+
+    <!-- 10. COMPOSICION -->
+    <section id="divider-composicion">
+      <header>
+        <h3 class="md-type-title-medium md-text-primary">
+          Composicion
+        </h3>
+      </header>
+      <article>
+        <p class="md-type-body-medium md-text-on-surface">
+          El divisor se usa dentro de listas y tarjetas para separar elementos.
+          Aqui un ejemplo en una lista:
+        </p>
+        <ul>
+          <li class="md-type-body-medium md-measure-item-gap">
+            Elemento uno
+          </li>
+          <li class="md-type-body-medium md-measure-item-gap">
+            <hr class="md-divider">
+            Elemento dos
+          </li>
+          <li class="md-type-body-medium md-measure-item-gap">
+            Elemento tres
+          </li>
+        </ul>
+        <p class="md-type-body-small md-text-on-surface-variant">
+          La composicion con Card queda pendiente hasta que se implemente ese
+          componente.
+        </p>
+      </article>
+    </section>
+
+    <!-- 11. DO / DON'T -->
+    <section id="divider-dodont">
+      <header>
+        <h3 class="md-type-title-medium md-text-primary">
+          Do / Don't
+        </h3>
+      </header>
+      <article>
+        <p class="md-type-body-medium md-text-on-surface">
+          <b>Do</b>
+        </p>
+        <ul>
+          <li class="md-type-body-medium md-measure-item-gap">
+            Usa <code class="md-text-tertiary">&lt;hr&gt;</code> para mantener la semantica.
+          </li>
+          <li class="md-type-body-medium md-measure-item-gap">
+            Usa las variantes inset cuando el contenido tiene un icono o avatar alineado.
+          </li>
+        </ul>
+        <p class="md-type-body-medium md-text-on-surface">
+          <b>Don't</b>
+        </p>
+        <ul>
+          <li class="md-type-body-medium md-measure-item-gap">
+            No uses <code class="md-text-tertiary">&lt;div&gt;</code> sin semantica: pierdes el rol de separador.
+          </li>
+          <li class="md-type-body-medium md-measure-item-gap">
+            No uses el divisor como borde de caja: para eso esta <code class="md-text-tertiary">.md-border-*</code>.
+          </li>
+        </ul>
+      </article>
+    </section>
+
+    <!-- 12. MEDIDAS -->
+    <section id="divider-medidas">
+      <header>
+        <h3 class="md-type-title-medium md-text-primary">
+          Medidas
+        </h3>
+      </header>
+      <article>
+        <p class="md-type-body-medium md-text-on-surface">
+          Valores del componente y de su contexto de uso, segun la especificacion de M3:
+        </p>
+        <ul>
+          <li class="md-type-body-medium md-measure-item-gap">
+            <b>Grosor</b> — 1px (<code class="md-text-tertiary">--md-sys-shape-stroke-thin</code>)
+          </li>
+          <li class="md-type-body-medium md-measure-item-gap">
+            <b>Ancho</b> — 100% del contenedor
+          </li>
+          <li class="md-type-body-medium md-measure-item-gap">
+            <b>Inset</b> — 16dp (<code class="md-text-tertiary">--md-sys-measurement-inset</code>)
+          </li>
+          <li class="md-type-body-medium md-measure-item-gap">
+            <b>Espacio con texto</b> — 4dp
+          </li>
+          <li class="md-type-body-medium md-measure-item-gap">
+            <b>Margen derecho</b> — 8dp
+          </li>
+          <li class="md-type-body-medium md-measure-item-gap">
+            <b>Margen inferior</b> — 8dp
+          </li>
+        </ul>
+      </article>
+    </section>
+
+    <!-- 13. TOKENS -->
+    <section id="divider-tokens">
+      <header>
+        <h3 class="md-type-title-medium md-text-primary">
+          Tokens
+        </h3>
+      </header>
+      <article>
+        <p class="md-type-body-medium md-text-on-surface">
+          El componente consume tres tokens de <code class="md-text-tertiary">2-sys/</code>:
+        </p>
+        <ul>
+          <li class="md-type-body-medium md-measure-item-gap">
+            <code class="md-text-tertiary">--md-sys-color-outline-variant</code> — color de la linea
+          </li>
+          <li class="md-type-body-medium md-measure-item-gap">
+            <code class="md-text-tertiary">--md-sys-shape-stroke-thin</code> — grosor de 1px
+          </li>
+          <li class="md-type-body-medium md-measure-item-gap">
+            <code class="md-text-tertiary">--md-sys-measurement-inset</code> — inset lateral de 16dp
+          </li>
+        </ul>
+        <p class="md-type-body-small md-text-on-surface-variant">
+          Declara ademas dos tokens de componente:
+          <code class="md-text-tertiary">--md-comp-divider-color</code> y
+          <code class="md-text-tertiary">--md-comp-divider-thickness</code>.
+        </p>
+      </article>
+    </section>
+
+  </main>
+
+  <!-- ====================================================================== -->
+  <!-- FIN: SHOWROOM - COMPONENTE DIVIDER                                     -->
   <!-- ====================================================================== -->
 
 </body>
