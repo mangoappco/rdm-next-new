@@ -106,14 +106,42 @@
     margin: 0;
     padding: 0;
     min-height: 100vh;
-    font-family: var(--md-ref-typeface-brand);
-    background-color: var(--md-sys-color-surface);
-    color: var(--md-sys-color-on-surface);
+
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
   }
 
   /* ------------------------------------------------------------------------
+     LO QUE YA NO ESTA EN EL BODY, Y POR QUE
+     ------------------------------------------------------------------------
+     Antes el body declaraba tambien:
+
+       font-family: var(--md-ref-typeface-brand);
+       background-color: var(--md-sys-color-surface);
+       color: var(--md-sys-color-on-surface);
+
+     Se quitaron porque son decisiones de TEMA, no del navegador, y por tanto
+     no pertenecen a la capa que anula al navegador.
+
+     Consecuencia: el fondo, el color y la fuente ahora se declaran en cada
+     vista, con clases de 2-sys/:
+
+       <div class="md-bg-surface md-text-on-surface md-type-body-medium">
+
+     Lo que se gana: el HTML muestra de donde sale cada cosa. Antes, al abrir
+     index.html no se veia de donde salia el fondo ni la fuente, porque venian
+     del reset. Ahora si.
+
+     Lo que se pierde: cada vista tiene que acordarse de esas clases. Si se
+     olvida, la pagina se ve en blanco con texto negro. Es el precio de que el
+     marcado sea explicito, y es el mismo criterio que ya aplica a todo lo
+     demas del sistema.
+
+     Lo que se mantiene aqui es exclusivamente estructural: margin, padding,
+     min-height y el renderizado del texto. Ninguno de esos cuatro es una
+     decision de diseno.
+     --------------------------------------------------------------------- */
+   /* ------------------------------------------------------------------------
      ENCABEZADOS — sin margenes
      ------------------------------------------------------------------------
      El navegador aplica a los h1..h6 un margen calculado que NO pertenece a

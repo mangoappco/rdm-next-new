@@ -1020,6 +1020,42 @@ RDM Next is a static HTML + CSS system. There is no build step, no framework, no
 JavaScript, and no PHP. Everything below is a hard constraint of this project, not a
 preference.
 
+## View architecture
+
+The showroom is split across files. `index.html` is the **only** entry point and
+contains **no** component sections.
+
+```text
+index.html          portada: titulo, tagline, enlaces a las vistas
+<componente>.html   una vista por componente en 3-comp/
+```
+
+Rules:
+
+- `index.html` never contains component sections. Only the title, the tagline,
+  and links to the component views.
+- Each component view is a standalone HTML file named after the component:
+  `divider.html`, `button.html`, `card.html`.
+- Every view loads the full system (`css/main.css`) and the font, exactly like
+  `index.html`.
+- Every view declares its base styles on a container `<div>` with `2-sys/`
+  classes. The base is **never** in `reset.css`.
+
+```html
+<body>
+  <div class="md-bg-surface md-text-on-surface md-type-body-medium">
+    <!-- contenido de la vista -->
+  </div>
+</body>
+```
+
+- The back link in a component view points to `index.html` and reads `RDM Next`.
+- The `<title>` of a component view is `<Component> — ManGo! App`. The title of
+  the portada is `ManGo! App — RDM Next`.
+
+When a new component is built, its view is added to `index.html` as a link, and
+the view file is created. The portada never grows beyond title + tagline + links.
+
 ## The 5 cascade layers
 
 Declared in `css/main.css`, in this order. The order **is** the precedence table.

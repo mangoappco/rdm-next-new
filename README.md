@@ -711,7 +711,8 @@ Tipos: `feat`, `fix`, `docs`, `style`, `refactor`, `chore`.
 rdm-next-new/
 ├── .gitignore
 ├── README.md                 Este documento: contrato de arquitectura
-├── index.html                Showroom: presentación + componente Divider
+├── index.html                Portada del showroom: título, tagline, enlaces
+├── divider.html              Vista del componente Divider (13 secciones)
 ├── css/
 │   ├── main.css               Orquestador: @layer + @import
 │   ├── 1-ref/                Valores crudos (única capa que los permite)
@@ -744,7 +745,49 @@ rdm-next-new/
 
 ---
 
-## 10. Componentes
+## 10. Arquitectura de vistas
+
+El showroom está dividido en archivos. `index.html` es la **única** puerta de entrada y
+**no** contiene secciones de componentes.
+
+```
+index.html            portada: título, tagline, enlaces a las vistas
+<componente>.html     una vista por componente en 3-comp/
+```
+
+**Reglas:**
+
+- `index.html` nunca contiene secciones de componentes. Solo el título, la tagline y
+  los enlaces.
+- Cada componente tiene su propia vista: `divider.html`, `button.html`, `card.html`.
+- Toda vista carga el sistema completo (`css/main.css`) y la fuente, igual que el índice.
+- Toda vista declara sus estilos base en un contenedor `<div>` con clases de `2-sys/`.
+  La base **nunca** está en `reset.css`.
+
+```html
+<body>
+  <div class="md-bg-surface md-text-on-surface md-type-body-medium">
+    <!-- contenido de la vista -->
+  </div>
+</body>
+```
+
+- El enlace de vuelta en una vista de componente apunta a `index.html` y dice `RDM Next`.
+- El `<title>` de una vista de componente es `<Componente> — ManGo! App`. El del índice
+  es `ManGo! App — RDM Next`.
+
+Cuando se construye un componente nuevo, su vista se añade a `index.html` como enlace y
+se crea el archivo de la vista. La portada nunca crece más allá de título + tagline +
+enlaces.
+
+**Por qué la base no está en `reset.css`:** el fondo, el color y la fuente son decisiones
+de **tema**, no del navegador, y por tanto no pertenecen a la capa que anula al navegador.
+Antes el `body` las declaraba; ahora cada vista las declara explícitamente. El HTML muestra
+de dónde sale cada cosa, y el precio es que cada vista tiene que acordarse de esas clases.
+
+---
+
+## 11. Componentes
 
 ### Divider — el primero
 
@@ -795,12 +838,12 @@ Se usan añadiendo una clase a `.md-divider`:
 | `--md-comp-divider-color` | 3-comp | → outline-variant |
 | `--md-comp-divider-thickness` | 3-comp | → stroke-thin |
 
-**Showroom:** `index.html` tiene una sección de 13 secciones documentando el componente.
+**Showroom:** `divider.html` es la vista del componente, con 13 secciones.
 Estructura confirmada con el usuario según la skill `rdm-component-showroom`.
 
 ---
 
-## 11. Fuentes oficiales
+## 12. Fuentes oficiales
 
 - Tokens: `https://m3.material.io/foundations/design-tokens`
 - Spacing: `https://m3.material.io/styles/spacing/tokens`

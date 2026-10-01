@@ -54,8 +54,9 @@
    Fonts bajo licencia abierta, y se puede usar en cualquier proyecto, comercial
    incluido. Por eso se elige Flex y no la variante estatica.
 
-   Se carga desde Google Fonts por <link> en index.html. Consecuencia a tener en
-   cuenta: el showroom requiere conexion a internet para mostrar la fuente. Si
+   Se carga desde Google Fonts por <link> en cada vista del showroom, no desde
+   aqui. Consecuencia a tener en cuenta: el showroom requiere conexion a
+   internet para mostrar la fuente. Si
    el proyecto llegara a necesitar funcionar offline, habria que alojarla local.
 
    ========================================================================== */
@@ -65,12 +66,13 @@
    ---------------------------------------------------------------------------
    FUENTE PRINCIPAL (la que usa el proyecto)
    ------------------------------------------
-   Google Sans Flex se carga desde index.html con <link> y preconnect, NO desde
-   aqui. Motivo tecnico: un @import de CSS bloquea el descubrimiento de los
-   recursos posteriores. El navegador tiene que descargar ESTE archivo, terminar
-   de parsearlo, descubrir el @import de la fuente, y solo entonces puede
-   empezar a leer el resto del CSS. Para una fuente, eso es el peor caso
-   posible: nada se puede pintar hasta que la fuente este descargada.
+   Google Sans Flex se carga desde cada vista del showroom con <link> y
+   preconnect, NO desde aqui. Motivo tecnico: un @import de CSS bloquea el
+   descubrimiento de los recursos posteriores. El navegador tiene que
+   descargar ESTE archivo, terminar de parsearlo, descubrir el @import de la
+   fuente, y solo entonces puede empezar a leer el resto del CSS. Para una
+   fuente, eso es el peor caso posible: nada se puede pintar hasta que la
+   fuente este descargada.
 
    La forma correcta es declararlo en el <head> del HTML:
 
@@ -100,9 +102,9 @@
    FALLBACK: POR QUE ESTA EL @import COMENTADO
    ---------------------------------------------------------------------------
    Esta regla queda comentada a proposito. Si alguien importa ESTE archivo de
-   forma aislada, sin pasar por index.html, los tokens de fuente seguirian
-   declarandose pero Google Sans Flex no se descargaria: el texto se veria con
-   la fuente por defecto del sistema.
+   forma aislada, sin pasar por una vista del showroom, los tokens de fuente
+   seguirian declarandose pero Google Sans Flex no se descargaria: el texto se
+   veria con la fuente por defecto del sistema.
 
    Para cubrir ese caso se descomenta la regla siguiente. El trade-off es
    explicito: se recupera la autosuficiencia del archivo a costa de la
@@ -112,7 +114,7 @@
    queda disponible para quien necesite el archivo aislado.
    --------------------------------------------------------------------------- */
 
-/* FALLBACK — descomentar solo si este archivo se usa sin index.html.
+/* FALLBACK - descomentar solo si este archivo se usa sin una vista del showroom.
 @import url("https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap");
 */
 

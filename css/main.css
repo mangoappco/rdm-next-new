@@ -115,10 +115,10 @@
    resultado es identico en bytes, pero en UNA peticion de red.
 
    La UNICA excepcion a esta regla, y si es una excepcion importante, es la
-   fuente Roboto: NO se carga aqui. Se carga desde index.html con <link> y
-   preconnect, porque el @import de una fuente es lo mas lento que existe:
-   el navegador no puede ni siquiera empezar a leer el CSS hasta que termina
-   de descargar el archivo de fuente.
+   fuente Roboto: NO se carga aqui. Se carga desde cada vista del showroom con
+   <link> y preconnect, porque el @import de una fuente es lo mas lento que
+   existe: el navegador no puede ni siquiera empezar a leer el CSS hasta que
+   termina de descargar el archivo de fuente.
 
    ========================================================================== */
 

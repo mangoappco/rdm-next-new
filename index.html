@@ -3,24 +3,35 @@
      RDM Next — Showroom de componentes
      ==========================================================================
 
-     SHELL DEL SHOWROOM.
+     PORTADA DEL SHOWROOM
 
-     Este archivo existe para dos cosas:
+     Este archivo es la puerta de entrada. No contiene secciones de
+     componentes: solo el titulo, la tagline y los enlaces a las vistas.
 
-       1. Cargar el sistema completo (css/main.css) y la fuente.
-       2. Servir de esqueleto donde luego se inserten los componentes.
+     Cada componente tiene su propia vista:
+
+       divider.html    el separador de M3
+
+     Cuando se construyan mas componentes, se anaden aqui sus enlaces.
 
      ---------------------------------------------------------------------------
-     REGLA DE DOGFOODING (NO NEGOCIABLE)
+     ARQUITECTURA DE VISTAS
      ---------------------------------------------------------------------------
-     CERO estilos en linea. Ni un atributo de estilo en el cuerpo del HTML,
+     index.html      portada: titulo, tagline, enlaces
+     <component>.html  una vista por componente en 3-comp/
+
+     Las vistas cargan el sistema completo (css/main.css) y la fuente, igual
+     que este archivo.
+
+     ---------------------------------------------------------------------------
+     DOGFOODING
+     ---------------------------------------------------------------------------
+     Cero estilos en linea. Ni un atributo de estilo en el cuerpo del HTML,
      ni un bloque de estilos propio.
 
      El showroom se construye UNICAMENTE con lo que el sistema proporciona:
 
-       reset.css  la base que el navegador no puede imponer: tipografia, fondo
-                  y color base heredados en el body. Por eso el marcado de
-                  abajo no lleva clases en los elementos basicos.
+       reset.css  la base que el navegador no puede imponer
 
        2-sys/  clases de utilidad semanticas
                .md-type-*   tipografia  (typography.css)
@@ -28,11 +39,27 @@
                .md-text-*   texto      (colors.css)
                .md-border-* bordes     (colors.css)
                .md-shape-*  esquinas   (shape.css)
+               .md-measure-* medidas   (measurement.css)
 
        3-comp/  componentes M3, a medida que se liberen
 
+       LAS MEDIDAS NO SON UNA EXCEPCION
+       ---------------------------------
+       Las medidas se consumen igual que la tipografia y el color: con clases
+       de 2-sys, aplicadas sobre las etiquetas semanticas.
+
+       No hay utilidades de layout, ni atajos, ni clases de "box". La medida
+       es una familia de tokens mas, con el mismo criterio que las demas.
+
+       Por que .md-measure-section-gap NO usa la propiedad gap: gap solo
+       funciona en contenedores flex o grid, y un <section> es block. Medido
+       en el motor: gap de 40px en un bloque block separa 0px. Estas clases
+       usan margin-block, que funciona en cualquier modo de layout. Ver la
+       cabecera de 2-sys/measurement.css.
+
+     ---------------------------------------------------------------------------
      REGLA DE PRUEBA DEL SISTEMA
-     ---------------------------
+     ---------------------------------------------------------------------------
      Si al maquetar hace falta un margen, un padding o un color que no existe,
      NO se resuelve en linea. Se evalua si corresponde crear el token semantico
      o la utilidad en 2-sys o 3-comp, siguiendo el flujo del proyecto.
@@ -56,73 +83,11 @@
 
      ========================================================================== -->
 <html lang="es">
-<!-- ---------------------------------------------------------------------------
-     SIN data-theme: EL SHOWROOM SIGUE AL SISTEMA OPERATIVO
-     ---------------------------------------------------------------------------
-     Este <html> NO lleva data-theme. Es una decision, no un olvido.
-
-     Cuando el atributo esta presente, el tema queda FIJO y el sistema
-     operativo deja de influir. Como este archivo es la referencia visual
-     del sistema, lo correcto es que se vea como lo vera quien lo use:
-
-         SO en oscuro  ->  showroom en oscuro
-         SO en claro   ->  showroom en claro
-
-     Poner data-theme="light" haria que un visitante con SO en oscuro viera
-     una referencia en claro, que es justo lo contrario de lo que el showroom
-     debe demostrar.
-
-     ---------------------------------------------------------------------------
-     COMO SE RESUELVE EL TEMA SIN EL ATRIBUTO
-     ---------------------------------------------------------------------------
-     Por los dos archivos de 2-sys/theme/, cada uno con DOS bloques:
-
-         theme.light.css
-           @media (prefers-color-scheme: light) { html:not([data-theme="dark"]) }
-           html[data-theme="light"]
-
-         theme.dark.css
-           @media (prefers-color-scheme: dark) { html:not([data-theme="light"]) }
-           html[data-theme="dark"]
-
-     El bloque con @media responde al sistema operativo. El bloque con
-     [data-theme] responde a la eleccion explicita del usuario. Juntos
-     cubren los cuatro casos posibles:
-
-         Sin atributo + SO en claro  ->  light (por @media)
-         Sin atributo + SO en oscuro ->  oscuro (por @media)
-         data-theme="light"         ->  light (por atributo, ignora el SO)
-         data-theme="dark"          ->  oscuro (por atributo, ignora el SO)
-
-     Medido en este proyecto, con el sistema operativo en claro:
-
-         sin atributo        surface #fef7ff   primary #6750a4   (claro)
-         data-theme="light"  surface #fef7ff   primary #6750a4   (claro)
-         data-theme="dark"   surface #141218   primary #d0bcff   (oscuro)
-
-     Con el sistema operativo en oscuro, sin atributo:
-
-         sin atributo        surface #141218   primary #d0bcff   (oscuro)
-         data-theme="light"  surface #fef7ff   primary #6750a4   (claro)
-         data-theme="dark"   surface #141218   primary #d0bcff   (oscuro)
-
-     ---------------------------------------------------------------------------
-     EL TOGGUE DE MANGo! APP
-     ---------------------------------------------------------------------------
-     Cuando exista el toggle, escribe el atributo y a partir de ahi ese es el
-     que manda:
-
-         document.documentElement.setAttribute('data-theme', 'dark')
-         document.documentElement.removeAttribute('data-theme')
-
-     Quitarlo devuelve el control al sistema operativo. Es la forma de que un
-     visitante exprese "sigue mi SO" en lugar de fijar un tema.
-     ---------------------------------------------------------------------- -->
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>ManGo! App — RDM Next Showcase</title>
+  <title>ManGo! App — RDM Next</title>
   <meta name="description" content="Showroom de componentes UI de ManGo! App, construido sobre Material Design 3.">
 
   <!-- ==========================================================================
@@ -137,28 +102,6 @@
          1. preconnect a fonts.googleapis.com  -> evita un round-trip de DNS
          2. preconnect a fonts.gstatic.com     -> idem, y con crossorigin
          3. el stylesheet de la fuente         -> se descarga en paralelo
-
-       POR QUE LA URL NO DECLARA EJES
-       ---------------------------------
-       Seria tentador pedir los ejes explicitamente:
-
-           ?family=Google+Sans+Flex:opsz,wght@6..144,1..1000
-
-       Verificado que NO se hace a proposito. Esa forma hace que Google
-       responda con un archivo TTF POR PESO y POR EJE: nueve peticiones de del
-       orden de 100 a 200 KB cada una.
-
-       Sin declarar ejes, Google detecta que el navegador soporta woff2 y
-       sirve UN archivo variable de 30 a 60 KB que cubre todos los pesos y
-       todos los ejes. Entre dos y tres veces mas ligero, en una sola peticion.
-
-       El parametro `display=swap` hace que el navegador pinte el texto con una
-       fuente provisional mientras descarga la definitiva, en lugar de mostrar
-       texto invisible. Esa fuente provisional sale del stack declarado en
-       css/1-ref/typeface.css, que empieza por las fuentes del sistema.
-
-       El fallback para usar el archivo de forma aislada esta comentado en
-       css/1-ref/typeface.css, con la explicacion del trade-off.
        ========================================================================== -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -168,480 +111,38 @@
        EL SISTEMA DE TOKENS
        --------------------------------------------------------------------------
        Un solo archivo. Nunca los individuales: main.css garantiza que toda la
-       cadena de 19 hojas se cargue en el orden correcto, con las capas
+       cadena de 21 hojas se cargue en el orden correcto, con las capas
        @layer ya declaradas.
-
-       Si se importara 3-comp/button.css sin main.css, sus variables no
-       existiran y el componente se veria roto.
        ========================================================================== -->
   <link rel="stylesheet" href="./css/main.css">
 </head>
 
-<!-- El body NO lleva clases. La capa reset (css/reset.css) le hereda la
-     tipografia, el fondo y el color base, asi que el marcado se queda en HTML
-     semantico puro y las clases quedan reservadas para decisiones de diseno. -->
 <body>
+  <!-- ========================================================================
+       CONTENEDOR BASE
+       ------------------------------------------------------------------------
+       El fondo, el color y la fuente se declaran aqui, con clases de 2-sys/.
+       Antes venian del reset; ahora cada vista los declara explicitamente.
+       ======================================================================== -->
+  <div class="md-bg-surface md-text-on-surface md-type-body-medium">
 
-  <!-- ====================================================================== -->
-  <!-- INICIO: SHOWROOM - PAGINA DE PRESENTACION DEL SISTEMA                 -->
-  <!-- ------------------------------------------------------------------------
-       Esta pagina cumple dos funciones:
-
-       1. Documentar el estado y las reglas del sistema, para que cualquier
-          desarrollador que abra el repositorio entienda las decisiones.
-
-       2. Servir de PRUEBA del dogfooding: todo el marcado de abajo consume
-          unicamente clases de 2-sys. No hay una sola regla escrita aqui.
-
-       Cuando se libere el primer componente de 3-comp/, se agregara una seccion
-       nueva con la demostracion interactiva, conservando el formato de
-       comentarios delimitadores que exige el proyecto.
-       ====================================================================== -->
-
-  <!-- Cabecera de la aplicacion -->
-  <header>
-    <h1 class="md-type-display-medium md-text-primary">
-      RDM Next
-    </h1>
-    <p class="md-type-title-medium md-text-on-surface-variant">
-      Sistema de tokens completo. Componentes en camino.
-    </p>
-  </header>
-
-  <!-- Navegacion conceptual del sistema -->
-  <nav>
-    <p class="md-type-label-large md-text-on-surface-variant">
-      Navegacion de Arquitectura:
-      <a href="#ref" class="md-text-primary">Capa 1 Ref</a> |
-      <a href="#sys" class="md-text-primary">Capa 2 Sys</a> |
-      <a href="#comp" class="md-text-primary">Capa 3 Comp</a>
-    </p>
-  </nav>
-
-  <!-- Contenido Principal -->
-  <main>
-
-    <!-- Seccion de Vision General -->
-    <section id="ref">
-      <header>
-        <h2 class="md-type-headline-small md-text-secondary">
-          Filosofia y Reglas No Negociables
-        </h2>
-      </header>
-
-      <article>
-        <p class="md-type-body-large md-text-on-surface">
-          Este proyecto implementa un <strong>showroom de alta fidelidad</strong> para
-          <cite>ManGo! App</cite>, basado en la especificacion oficial de <em>Material Design 3</em>.
-        </p>
-
-        <p class="md-type-body-medium md-text-on-surface-variant">
-          El desarrollo sigue una estricta jerarquia de 3 capas:
-        </p>
-
-        <ul>
-          <li class="md-type-body-medium">
-            <b>Capa 1 (Ref):</b> Primitivas fisicas agnosticas (paletas, escalas, tiempos).
-          </li>
-          <li class="md-type-body-medium">
-            <b>Capa 2 (Sys):</b> Roles semanticos de negocio y tema (colores, formas, tipos).
-          </li>
-          <li class="md-type-body-medium">
-            <b>Capa 3 (Comp):</b> Recetas de componentes atomicos.
-          </li>
-        </ul>
-      </article>
-    </section>
-
-    <!-- Seccion de Detalles Tecnicos -->
-    <section id="sys">
-      <header>
-        <h2 class="md-type-headline-small md-text-secondary">
-          Estado del Proyecto y Especificaciones
-        </h2>
-      </header>
-
-      <article>
-        <p class="md-type-body-medium md-text-on-surface">
-          Actualmente, la Capa 1 y la Capa 2 cuentan con <mark class="md-bg-primary-container md-text-on-primary-container">0 valores crudos</mark>
-          quemados fuera de <code class="md-text-tertiary">1-ref/</code>.
-        </p>
-
-        <p class="md-type-body-medium md-text-on-surface-variant">
-          El estado anterior <s class="md-text-on-surface-variant">sin capas de cascada</s> ha sido
-          reemplazado por la orquestacion nativa de
-          <code class="md-text-tertiary">@layer ref, sys, comp, utilities;</code> en <cite>main.css</cite>.
-        </p>
-
-        <p class="md-type-body-small md-text-on-surface-variant">
-          Ultima actualizacion de arquitectura registrada el
-          <time datetime="2026-10-01">1 de octubre de 2026</time>.
-        </p>
-      </article>
-
-      <article>
-        <p class="md-type-body-medium md-text-on-surface">
-          Como dice la guia de M3 sobre la capa de estado:
-          <q class="md-text-on-surface-variant">La capa de estado es una superposicion
-          semitransparente que utiliza el mismo color que el contenido.</q>
-        </p>
-      </article>
-    </section>
-
-    <!-- Barra lateral / Informacion complementaria -->
-    <aside>
-      <h3 class="md-type-title-small md-text-tertiary">
-        Herramientas de Calidad
-      </h3>
-      <p class="md-type-body-small md-text-on-surface-variant">
-        El script <code class="md-text-tertiary">verify-tokens.ps1</code> actua como candado
-        de seguridad verificando 7 reglas de compilacion.
+    <header class="md-measure-page-margin">
+      <h1 class="md-type-display-medium md-text-primary">
+        RDM Next
+      </h1>
+      <p class="md-type-title-medium md-text-on-surface-variant">
+        Sistema de tokens completo. Componentes en desarrollo
       </p>
-    </aside>
+    </header>
 
-  </main>
+    <nav class="md-measure-page-margin">
+      <p class="md-type-label-large md-text-on-surface-variant">
+        Componentes:
+        <a href="./divider.html" class="md-text-primary">Divider</a>
+      </p>
+    </nav>
 
-  <!-- Pie de pagina -->
-  <footer>
-    <p class="md-type-label-small md-text-on-surface-variant">
-      <small>ManGo! App SAS (c) 2026 — Demostrador de Componentes M3</small>
-    </p>
-  </footer>
-
-  <!-- ====================================================================== -->
-  <!-- INICIO: SHOWROOM - COMPONENTE DIVIDER                                   -->
-  <!-- ------------------------------------------------------------------------
-       Documenta el componente real de css/3-comp/divider.css.
-
-       DOGFOODING: todo divisor de esta seccion es un <hr> con la clase
-       .md-divider. No hay un solo <div> ni un solo estilo en linea.
-
-       Estructura confirmada con el usuario: 13 secciones.
-       ====================================================================== -->
-
-  <main class="md-measure-page-margin">
-
-    <!-- 01. HEADER -->
-    <section id="divider">
-      <header>
-        <h2 class="md-type-headline-small md-text-secondary">
-          Divider
-        </h2>
-        <p class="md-type-body-medium md-text-on-surface-variant">
-          Una linea horizontal que separa contenido dentro de un contenedor.
-        </p>
-      </header>
-    </section>
-
-    <!-- 02. USO -->
-    <section id="divider-uso">
-      <header>
-        <h3 class="md-type-title-medium md-text-primary">
-          Uso
-        </h3>
-      </header>
-      <article>
-        <p class="md-type-body-medium md-text-on-surface">
-          Usa un divisor cuando necesitas separar visualmente bloques de contenido
-          que pertenecen a un mismo grupo, sin usar un borde de caja ni una sombra.
-        </p>
-        <p class="md-type-body-medium md-text-on-surface-variant">
-          Es el separador mas ligero del sistema: no tiene fondo propio, toma el
-          color del contexto y mide 1px de grosor.
-        </p>
-      </article>
-    </section>
-
-    <!-- 03. EJEMPLO BASICO -->
-    <section id="divider-ejemplo">
-      <header>
-        <h3 class="md-type-title-medium md-text-primary">
-          Ejemplo basico
-        </h3>
-      </header>
-      <article>
-        <p class="md-type-body-medium md-text-on-surface">
-          La forma mas simple: un <code class="md-text-tertiary">&lt;hr&gt;</code>
-          con la clase del componente.
-        </p>
-        <hr class="md-divider">
-      </article>
-    </section>
-
-    <!-- 04. VARIANTES / TYPES -->
-    <section id="divider-variantes">
-      <header>
-        <h3 class="md-type-title-medium md-text-primary">
-          Variantes
-        </h3>
-      </header>
-      <article>
-        <p class="md-type-body-medium md-text-on-surface">
-          M3 define tres variantes segun la separacion lateral:
-        </p>
-        <ul>
-          <li class="md-type-body-medium md-measure-item-gap">
-            <b>Full-width</b> — sin inset. Ocupa todo el ancho disponible.
-          </li>
-          <li class="md-type-body-medium md-measure-item-gap">
-            <b>Inset</b> — 16dp de padding a la izquierda, 0 a la derecha.
-          </li>
-          <li class="md-type-body-medium md-measure-item-gap">
-            <b>Middle-inset</b> — 16dp de padding en ambos lados.
-          </li>
-        </ul>
-        <hr class="md-divider">
-        <hr class="md-divider md-divider-inset">
-        <hr class="md-divider md-divider-middle-inset">
-      </article>
-    </section>
-
-    <!-- 05. COLOR -->
-    <section id="divider-color">
-      <header>
-        <h3 class="md-type-title-medium md-text-primary">
-          Color
-        </h3>
-      </header>
-      <article>
-        <p class="md-type-body-medium md-text-on-surface">
-          El divisor usa el rol <code class="md-text-tertiary">outline-variant</code>,
-          un gris violeta atenuado que funciona en ambos temas.
-        </p>
-        <p class="md-type-body-medium md-text-on-surface-variant">
-          No tiene color propio: aplica <code class="md-text-tertiary">color</code>
-          al elemento y el <code class="md-text-tertiary">::before</code> lo toma
-          con <code class="md-text-tertiary">currentColor</code>. Asi hereda el color
-          del contexto.
-        </p>
-      </article>
-    </section>
-
-    <!-- 06. PADDING -->
-    <section id="divider-padding">
-      <header>
-        <h3 class="md-type-title-medium md-text-primary">
-          Padding
-        </h3>
-      </header>
-      <article>
-        <p class="md-type-body-medium md-text-on-surface">
-          Las variantes inset y middle-inset anaden padding lateral. Los valores
-          vienen del token <code class="md-text-tertiary">--md-sys-measurement-inset</code>:
-        </p>
-        <ul>
-          <li class="md-type-body-medium md-measure-item-gap">
-            <b>Full-width</b> — 0 / 0
-          </li>
-          <li class="md-type-body-medium md-measure-item-gap">
-            <b>Inset</b> — 16dp / 0
-          </li>
-          <li class="md-type-body-medium md-measure-item-gap">
-            <b>Middle-inset</b> — 16dp / 16dp
-          </li>
-        </ul>
-      </article>
-    </section>
-
-    <!-- 07. COMPORTAMIENTO -->
-    <section id="divider-comportamiento">
-      <header>
-        <h3 class="md-type-title-medium md-text-primary">
-          Comportamiento
-        </h3>
-      </header>
-      <article>
-        <p class="md-type-body-medium md-text-on-surface">
-          El divisor no responde a interaccion: no tiene estados
-          <code class="md-text-tertiary">:hover</code>,
-          <code class="md-text-tertiary">:focus</code> ni
-          <code class="md-text-tertiary">:disabled</code>.
-        </p>
-        <p class="md-type-body-medium md-text-on-surface-variant">
-          Su unico comportamiento es pasivo: hereda el color del contexto.
-          Si un contenedor tiene <code class="md-text-tertiary">color: primary</code>,
-          el divisor que contiene se ve primario sin clases extra.
-        </p>
-      </article>
-    </section>
-
-    <!-- 08. ANATOMIA -->
-    <section id="divider-anatomia">
-      <header>
-        <h3 class="md-type-title-medium md-text-primary">
-          Anatomia
-        </h3>
-      </header>
-      <article>
-        <p class="md-type-body-medium md-text-on-surface">
-          El componente entero son dos reglas:
-        </p>
-        <ul>
-          <li class="md-type-body-medium md-measure-item-gap">
-            <b>.md-divider</b> — el contenedor. Pone el color, el grosor y el ancho.
-          </li>
-          <li class="md-type-body-medium md-measure-item-gap">
-            <b>::before</b> — la linea visible. Toma el color con currentColor.
-          </li>
-        </ul>
-      </article>
-    </section>
-
-    <!-- 09. ACCESIBILIDAD -->
-    <section id="divider-accesibilidad">
-      <header>
-        <h3 class="md-type-title-medium md-text-primary">
-          Accesibilidad
-        </h3>
-      </header>
-      <article>
-        <p class="md-type-body-medium md-text-on-surface">
-          El elemento obligatorio es <code class="md-text-tertiary">&lt;hr&gt;</code>.
-          El <code class="md-text-tertiary">&lt;hr&gt;</code> nativo tiene
-          <code class="md-text-tertiary">role="separator"</code> implicito, asi que
-          un lector de pantallas lo anuncia como un separador.
-        </p>
-        <p class="md-type-body-medium md-text-on-surface-variant">
-          Si usas <code class="md-text-tertiary">&lt;div&gt;</code> en su lugar,
-          pierdes ese rol y el divisor se vuelve invisible para un lector de
-          pantallas.
-        </p>
-      </article>
-    </section>
-
-    <!-- 10. COMPOSICION -->
-    <section id="divider-composicion">
-      <header>
-        <h3 class="md-type-title-medium md-text-primary">
-          Composicion
-        </h3>
-      </header>
-      <article>
-        <p class="md-type-body-medium md-text-on-surface">
-          El divisor se usa dentro de listas y tarjetas para separar elementos.
-          Aqui un ejemplo en una lista:
-        </p>
-        <ul>
-          <li class="md-type-body-medium md-measure-item-gap">
-            Elemento uno
-          </li>
-          <li class="md-type-body-medium md-measure-item-gap">
-            <hr class="md-divider">
-            Elemento dos
-          </li>
-          <li class="md-type-body-medium md-measure-item-gap">
-            Elemento tres
-          </li>
-        </ul>
-        <p class="md-type-body-small md-text-on-surface-variant">
-          La composicion con Card queda pendiente hasta que se implemente ese
-          componente.
-        </p>
-      </article>
-    </section>
-
-    <!-- 11. DO / DON'T -->
-    <section id="divider-dodont">
-      <header>
-        <h3 class="md-type-title-medium md-text-primary">
-          Do / Don't
-        </h3>
-      </header>
-      <article>
-        <p class="md-type-body-medium md-text-on-surface">
-          <b>Do</b>
-        </p>
-        <ul>
-          <li class="md-type-body-medium md-measure-item-gap">
-            Usa <code class="md-text-tertiary">&lt;hr&gt;</code> para mantener la semantica.
-          </li>
-          <li class="md-type-body-medium md-measure-item-gap">
-            Usa las variantes inset cuando el contenido tiene un icono o avatar alineado.
-          </li>
-        </ul>
-        <p class="md-type-body-medium md-text-on-surface">
-          <b>Don't</b>
-        </p>
-        <ul>
-          <li class="md-type-body-medium md-measure-item-gap">
-            No uses <code class="md-text-tertiary">&lt;div&gt;</code> sin semantica: pierdes el rol de separador.
-          </li>
-          <li class="md-type-body-medium md-measure-item-gap">
-            No uses el divisor como borde de caja: para eso esta <code class="md-text-tertiary">.md-border-*</code>.
-          </li>
-        </ul>
-      </article>
-    </section>
-
-    <!-- 12. MEDIDAS -->
-    <section id="divider-medidas">
-      <header>
-        <h3 class="md-type-title-medium md-text-primary">
-          Medidas
-        </h3>
-      </header>
-      <article>
-        <p class="md-type-body-medium md-text-on-surface">
-          Valores del componente y de su contexto de uso, segun la especificacion de M3:
-        </p>
-        <ul>
-          <li class="md-type-body-medium md-measure-item-gap">
-            <b>Grosor</b> — 1px (<code class="md-text-tertiary">--md-sys-shape-stroke-thin</code>)
-          </li>
-          <li class="md-type-body-medium md-measure-item-gap">
-            <b>Ancho</b> — 100% del contenedor
-          </li>
-          <li class="md-type-body-medium md-measure-item-gap">
-            <b>Inset</b> — 16dp (<code class="md-text-tertiary">--md-sys-measurement-inset</code>)
-          </li>
-          <li class="md-type-body-medium md-measure-item-gap">
-            <b>Espacio con texto</b> — 4dp
-          </li>
-          <li class="md-type-body-medium md-measure-item-gap">
-            <b>Margen derecho</b> — 8dp
-          </li>
-          <li class="md-type-body-medium md-measure-item-gap">
-            <b>Margen inferior</b> — 8dp
-          </li>
-        </ul>
-      </article>
-    </section>
-
-    <!-- 13. TOKENS -->
-    <section id="divider-tokens">
-      <header>
-        <h3 class="md-type-title-medium md-text-primary">
-          Tokens
-        </h3>
-      </header>
-      <article>
-        <p class="md-type-body-medium md-text-on-surface">
-          El componente consume tres tokens de <code class="md-text-tertiary">2-sys/</code>:
-        </p>
-        <ul>
-          <li class="md-type-body-medium md-measure-item-gap">
-            <code class="md-text-tertiary">--md-sys-color-outline-variant</code> — color de la linea
-          </li>
-          <li class="md-type-body-medium md-measure-item-gap">
-            <code class="md-text-tertiary">--md-sys-shape-stroke-thin</code> — grosor de 1px
-          </li>
-          <li class="md-type-body-medium md-measure-item-gap">
-            <code class="md-text-tertiary">--md-sys-measurement-inset</code> — inset lateral de 16dp
-          </li>
-        </ul>
-        <p class="md-type-body-small md-text-on-surface-variant">
-          Declara ademas dos tokens de componente:
-          <code class="md-text-tertiary">--md-comp-divider-color</code> y
-          <code class="md-text-tertiary">--md-comp-divider-thickness</code>.
-        </p>
-      </article>
-    </section>
-
-  </main>
-
-  <!-- ====================================================================== -->
-  <!-- FIN: SHOWROOM - COMPONENTE DIVIDER                                     -->
-  <!-- ====================================================================== -->
+  </div>
 
 </body>
 </html>
