@@ -96,7 +96,8 @@ Verificado contra los archivos publicados por Google. Nombres exactos:
 | `--md-sys-typescale-*`   | `2-sys/typography.css` | 15 estilos × 5 sub-tokens + 15 compuestos |
 | `.md-type-*`             | `2-sys/typography.css` | 33 clases tipográficas               |
 | `--md-sys-shape-*`       | `2-sys/shape.css`| 15 roles de esquina + variantes por lado |
-| `--md-sys-motion-*`      | `2-sys/motion.css`| Duraciones y easing                        |
+| `--md-sys-motion-*`      | `2-sys/motion.css`| 16 duraciones + 10 curvas                 |
+| `--md-ref-easing-*`      | `1-ref/easing.css`| 40 puntos de control (10 curvas × 4)      |
 | `--md-sys-elevation-*`   | `2-sys/elevation.css` | Niveles 0–5                            |
 | `--md-sys-state-*`       | `2-sys/state.css`| 4 opacidades de state layer                |
 
@@ -211,6 +212,12 @@ Es el mismo criterio que aplicamos en `palette.css`, donde `--md-ref-palette-bla
 duplica `neutral0`: un valor puede coincidir con otro y aun así merecer su propio
 token cuando significa algo distinto.
 
+> **Nota sobre M3 Expressive.** Existe una variante posterior de M3 que *redefine*
+> algunos de estos valores (por ejemplo `large` pasa de 16dp a 20dp) y cambia `full`
+> de valor fijo a porcentaje. Este proyecto implementa la escala **base** de M3, que
+> es la estable y la que usan las librerías web de Google. Migrar a Expressive es
+> una decisión de proyecto, no un detalle de implementación.
+
 **Versión de la escala de shape:** el paquete de tokens de Material Web **v0.192**
 publica solo 7 radios (`none`, `extra-small`, `small`, `medium`, `large`,
 `extra-large`, `full`). La escala oficial actual tiene **10**: los tres niveles
@@ -221,11 +228,32 @@ Este proyecto implementa la escala oficial completa de 10, verificada contra la
 tabla de tokens de `m3.material.io` y contra la documentación de shapes de
 material-components-android.
 
-> **Nota sobre M3 Expressive.** Existe una variante posterior de M3 que *redefine*
-> algunos de estos valores (por ejemplo `large` pasa de 16dp a 20dp) y cambia `full`
-> de valor fijo a porcentaje. Este proyecto implementa la escala **base** de M3, que
-> es la estable y la que usan las librerías web de Google. Migrar a Expressive es
-> una decisión de proyecto, no un detalle de implementación.
+**Por qué `1-ref/easing.css` existe:** las curvas `cubic-bezier` llevan cuatro números
+crudos. La alternativa era escribirlos directamente en `2-sys/motion.css` y aceptar
+que ese archivo fuera **el único** de la capa 2 con valores crudos. Se descartó.
+
+Descomponiendo cada curva en sus cuatro puntos de control, `motion.css` compone:
+
+```css
+--md-sys-motion-easing-standard: cubic-bezier(
+  var(--md-ref-easing-standard-x0),
+  var(--md-ref-easing-standard-y0),
+  var(--md-ref-easing-standard-x1),
+  var(--md-ref-easing-standard-y1)
+);
+```
+
+El `cubic-bezier()` aparece, pero **ninguno de sus números está escrito ahí**. Resultado:
+la capa 2 queda 100% limpia y el verificador no necesita ningún caso especial.
+
+**Sobre la nomenclatura de duraciones:** M3 agrupa sus 16 duraciones en cuatro
+familias (`short1-4`, `medium1-4`, `long1-4`, `extra-long1-4`). Un componente pide
+`medium2`, no `300ms`. El nombre sobrevive a un cambio de criterio; el número no.
+
+**Sobre `emphasized`:** en v0.192 vale lo mismo que `standard` (`0.2, 0, 0, 1`), pero
+se mantiene como token separado porque la versión actual de M3 le da una cola más
+larga. Cuando Google lo actualice, aquí cambian cuatro números y las tres variantes
+se actualizan solas.
 
 ---
 
@@ -322,6 +350,7 @@ rdm-next-new/
 │   │   ├── palette.css       --md-ref-palette-*
 │   │   ├── typeface.css      --md-ref-typeface-*
 │   │   ├── corner.css        --md-ref-corner-*
+│   │   ├── easing.css        --md-ref-easing-*
 │   │   ├── spacing.css       --md-ref-spacing-*
 │   │   ├── stroke.css        --md-ref-stroke-*
 │   │   ├── typescale.css     --md-ref-typescale-*
