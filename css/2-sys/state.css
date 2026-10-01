@@ -76,13 +76,13 @@
    ---------------------------------------------------------------------------
    RELACION CON LAS OTRAS CAPAS
    -----------------------------
-       1-ref/opacity.css    <-- los 5 valores crudos
+       1-ref/opacity.css    <- los 5 valores crudos
               |
               v
-       2-sys/state.css      <-- ESTE: los 5 roles + las utilidades
+       2-sys/state.css      <- ESTE: los 5 roles + las utilidades
               |
               v
-       3-comp/button.css    <-- el componente define sus estados
+       3-comp/button.css    <- el componente define sus estados
 
    ========================================================================== */
 
@@ -203,26 +203,48 @@
    En componentes reales se prefiere el patron ::after con transicion
    (documentado arriba), porque una transicion de opacidad es mucho mas
    fluida que un cambio brusco de estado.
+
+   -------------------------------------------------------------------------
+   EL GUION DEL MODIFICADOR
+   -------------------------------------------------------------------------
+   Estas clases usan un guion (--hover). Antes usaban dos (md-state-layer--hover),
+   por influencia de BEM. Se normalizaron a uno.
+
+   El criterio, y por que: en este proyecto los modificadores se escriben con
+   UN guion. BEM reserva el doble guion para marcar un elemento dentro de otro
+   (.card__title), y aqui no hay anidamiento de elementos: md-state-layer es un
+   bloque plano y hover es su estado. El doble guion daba a entender una
+   jerarquia que no existe.
+
+   Google tampoco usa doble guion en sus clases de utilidad: escribe
+   .md-typescale-label-medium-prominent, con uno. Los 18 modificadores de doble
+   guion que si existen en su repositorio (.md3-segmented-button--selected,
+   .md3-badge--large) son ATRIBUTOS internos de componentes del SDK md3, con
+   prefijo md3- y no md-, y no son utilidades globales.
+
+   Los tokens de este archivo nunca tuvieron doble guion:
+   --md-sys-state-hover-state-layer-opacity. Ahora las clases y los tokens
+   usan el mismo separador.
    ------------------------------------------------------------------------- */
-.md-state-layer--hover {
+.md-state-layer-hover {
   background-color: currentColor;
   opacity: var(--md-sys-state-hover-state-layer-opacity);
   pointer-events: none;
 }
 
-.md-state-layer--focus {
+.md-state-layer-focus {
   background-color: currentColor;
   opacity: var(--md-sys-state-focus-state-layer-opacity);
   pointer-events: none;
 }
 
-.md-state-layer--pressed {
+.md-state-layer-pressed {
   background-color: currentColor;
   opacity: var(--md-sys-state-pressed-state-layer-opacity);
   pointer-events: none;
 }
 
-.md-state-layer--dragged {
+.md-state-layer-dragged {
   background-color: currentColor;
   opacity: var(--md-sys-state-dragged-state-layer-opacity);
   pointer-events: none;

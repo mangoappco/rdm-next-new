@@ -90,9 +90,44 @@ separadas, más `font-optical-sizing` y `font-variation-settings`, que son lo qu
 configura Google Sans Flex como variable. Copiar el `class` sin el CSS no aplica nada,
 y pegar nuestro CSS sobre su `class` tampoco funciona.
 
-**Modificador `-prominent`:** con un solo guion, igual que Google
-(`.md-typescale-label-medium-prominent`). Antes se usaban dos (`--prominent`) por
-influencia de BEM, que no aplica en este proyecto; normalizado junto con esto.
+### Criterio del guion en los modificadores de clase
+
+**Los modificadores se escriben con UN guion. Nunca con dos.**
+
+```
+.md-type-label-medium-prominent     ← un guion
+.md-state-layer-hover               ← un guion
+.md-type-label-medium--prominent    ← incorrecto, ya no existe
+.md-state-layer--hover              ← incorrecto, ya no existe
+```
+
+El nombre completo es una concatenación de partes separadas por guion simple:
+`md-` + familia + elemento + modificador. El guion ya cumple ese papel.
+
+**Por qué no el doble guion de BEM:** BEM reserva `--` para marcar un elemento *dentro de*
+otro, como `.card__title` o `.btn--primary`. En este proyecto no hay anidamiento de
+elementos: `md-state-layer` es un bloque plano y `hover` es su estado, no una cosa dentro de
+otra. El doble guion anunciaba una jerarquía que no existe.
+
+**Google tampoco lo usa en sus utilidades.** Escribe `.md-typescale-label-medium-prominent`,
+con un guion. Los 18 modificadores de doble guion que sí existen en su repositorio
+(`.md3-segmented-button--selected`, `.md3-badge--large`) son **atributos internos** de
+componentes del SDK `md3`, con prefijo `md3-` y no `md-`, y no son utilidades globales. Son
+otra cosa: estado de un elemento concreto, no una clase que se pueda poner en cualquier lado.
+
+**Los tokens nunca recibieron doble guion**, y son la prueba de que el criterio es interno y
+no una mezcla:
+
+```
+--md-sys-state-hover-state-layer-opacity
+--md-sys-typescale-label-medium-weight-prominent
+```
+
+Clases y tokens usan el mismo separador. Cuando las clases traían `--`, los tokens seguían
+con uno solo, y esa asimetría era el síntoma de que algo no cuadraba.
+
+Aplicado a: `.md-type-label-*-prominent` (commit `b9d9e5d`) y
+`.md-state-layer-*-{hover,focus,pressed,dragged}`.
 
 ### Cuántas clases de utilidad publica Google (y cuántas publicamos nosotros)
 
@@ -113,13 +148,9 @@ Clases de este proyecto:  167
 ```
 
 Las 6 de `state` son `.md-state-layer` más sus cuatro modificadores
-(`--hover`, `--focus`, `--pressed`, `--dragged`) y `.md-disabled`, que aplica `opacity` al
+(`-hover`, `-focus`, `-pressed`, `-dragged`) y `.md-disabled`, que aplica `opacity` al
 contenido inactivo —no es un *state layer*: no hay capa encima, el propio contenido se
-atenúa—.
-
-Esas cuatro usan **doble guion**, a diferencia del `-prominent` de tipografía, que se
-normalizó a uno. Queda como inconsistencia pendiente, no resuelta: el criterio todavía no
-está escrito.
+atenúa—. Los cuatro modificadores usan un guion, según el criterio de la sección anterior.
 
 **Material Web publica 8 clases de utilidad. Publicamos 167.** Compartimos una sola
 familia: la tipográfica.
