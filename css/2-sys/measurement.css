@@ -191,6 +191,23 @@
 
   /* Icono pequeno, para chips y badges. */
   --md-sys-measurement-icon-size-small: var(--md-ref-spacing-200);
+
+  /* ==========================================================================
+     INSET DE DIVISOR
+     --------------------------------------------------------------------------
+     Separacion lateral de las variantes inset y middle-inset del divisor.
+
+     M3 define tres variantes de divisor: full-width (sin inset), inset
+     (padding-inline-start de 16dp) y middle-inset (padding-inline de 16dp
+     en ambos lados). Este token es el valor de ese inset.
+
+     Por que un token y no un numero: si manana M3 cambia el inset a 20dp,
+     se edita aqui y el divisor se actualiza solo. Si el divisor escribiera
+     16px, habria que buscar cada uso.
+     ====================================================================== */
+
+  /* Inset lateral del divisor: 16dp, para las variantes inset y middle-inset */
+  --md-sys-measurement-inset: var(--md-ref-spacing-200);
 }
 
 /* ==========================================================================

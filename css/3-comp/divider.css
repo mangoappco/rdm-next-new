@@ -79,21 +79,23 @@
    componente pide es un token muerto.
 
    ---------------------------------------------------------------------------
-   LO QUE GOOGLE TIENE Y ESTE COMPONENTE NO
+   VARIANTES DE INSET
    ---------------------------------------------------------------------------
-   Google soporta tres atributos de inset:
+   M3 define tres variantes segun la separacion lateral, y este componente
+   las implementa todas:
 
-       [inset]        padding-inline-start Y padding-inline-end: 16px
-       [inset-start]  padding-inline-start: 16px
-       [inset-end]    padding-inline-end: 16px
+     full-width     sin inset. Es la clase base .md-divider.
+     inset          padding-inline-start de 16dp.
+     middle-inset   padding-inline de 16dp en ambos lados.
 
-   Este componente NO los implementa todavia. El motivo es el mismo de antes:
-   16px es --md-ref-spacing-200, y 3-comp no puede leer 1-ref. No existe un
-   token 2-sys que signifique "inset de divisor".
+   Se usan anadiendo una clase a .md-divider:
 
-   Cuando se implemente, sera con un token nuevo en 2-sys/measurement.css.
-   No se hace ahora para no expandir el alcance sin necesidad: el divisor
-   cumple su funcion basica sin inset.
+     <hr class="md-divider md-divider-inset">
+     <hr class="md-divider md-divider-middle-inset">
+
+   El valor viene de --md-sys-measurement-inset. No se escribe 16px en el
+   componente porque 3-comp no puede leer 1-ref (REGLA 2), y un numero
+   aqui quedaria congelado aunque M3 cambie el valor.
 
    ---------------------------------------------------------------------------
    FORCED COLORS
@@ -133,6 +135,32 @@
   content: '';
   height: 100%;
   width: 100%;
+}
+
+/* ---------------------------------------------------------------------------
+   VARIANTES DE INSET
+   ---------------------------------------------------------------------------
+   M3 define tres variantes de divisor segun su separacion lateral:
+
+     full-width     sin inset (la clase base .md-divider)
+     inset          padding-inline-start de 16dp
+     middle-inset   padding-inline de 16dp en ambos lados
+
+   Las dos ultimas son clases que se anaden a .md-divider:
+
+     <hr class="md-divider md-divider-inset">
+     <hr class="md-divider md-divider-middle-inset">
+
+   El valor viene de --md-sys-measurement-inset, no de un numero: si M3
+   cambia el inset, se edita el token y el divisor se actualiza solo.
+   ------------------------------------------------------------------------ */
+
+.md-divider-inset {
+  padding-inline-start: var(--md-sys-measurement-inset);
+}
+
+.md-divider-middle-inset {
+  padding-inline: var(--md-sys-measurement-inset);
 }
 
 /* Alto contraste forzado: el divisor usa el color de texto del sistema. */
