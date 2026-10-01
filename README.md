@@ -98,7 +98,8 @@ Verificado contra los archivos publicados por Google. Nombres exactos:
 | `--md-sys-shape-*`       | `2-sys/shape.css`| 15 roles de esquina + variantes por lado |
 | `--md-sys-motion-*`      | `2-sys/motion.css`| 16 duraciones + 10 curvas                 |
 | `--md-ref-easing-*`      | `1-ref/easing.css`| 40 puntos de control (10 curvas × 4)      |
-| `--md-sys-elevation-*`   | `2-sys/elevation.css` | Niveles 0–5                            |
+| `--md-sys-elevation-*`   | `2-sys/elevation.css` | 6 niveles (key + ambient)              |
+| `--md-ref-shadow-*`      | `1-ref/shadow.css` | 12 geometrías + 2 opacidades             |
 | `--md-sys-state-*`       | `2-sys/state.css`| 4 opacidades de state layer                |
 
 > **Nota sobre `typescale`:** el prefijo real de Google es `typescale`, no `typography`.
@@ -246,6 +247,52 @@ Descomponiendo cada curva en sus cuatro puntos de control, `motion.css` compone:
 El `cubic-bezier()` aparece, pero **ninguno de sus números está escrito ahí**. Resultado:
 la capa 2 queda 100% limpia y el verificador no necesita ningún caso especial.
 
+**Por qué la elevación está partida en tres archivos:** una sombra necesita tres
+cosas, y cada una pertenece a una capa distinta:
+
+| Dimensión       | Dónde vive                  | Por qué ahí                          |
+| --------------- | --------------------------- | ------------------------------------ |
+| Geometría (px)  | `1-ref/shadow.css`          | Es medida cruda                      |
+| Opacidad        | `1-ref/shadow.css`          | Es un valor crudo, declarado **una vez** y reutilizado por las 12 capas |
+| Color           | `2-sys/theme/*.css`         | Es una decisión de tema              |
+
+`2-sys/elevation.css` es el puente que une las tres. Si la composición estuviera en
+`1-ref/`, ese archivo tendría que referenciar el color del tema —dependencia
+circular— y además el color quedaría *quemado* en la primitiva, de modo que cambiar
+el tema no cambiaría la sombra.
+
+```css
+/* 1-ref/shadow.css — solo medidas */
+--md-ref-shadow-key-1:     0 1px 2px 0px;
+--md-ref-shadow-key-opacity: 0.3;
+
+/* 2-sys/elevation.css — geometría + color del tema */
+--md-sys-elevation-level1:
+  var(--md-ref-shadow-key-1)     rgb(var(--md-sys-color-shadow-rgb) / var(--md-ref-shadow-key-opacity)),
+  var(--md-ref-shadow-ambient-1) rgb(var(--md-sys-color-shadow-rgb) / var(--md-ref-shadow-ambient-opacity));
+```
+
+**Las dos capas de cada sombra.** M3 dibuja cada nivel con dos sombras superpuestas:
+la **key** (opacidad `0.30`, nítida, define el borde) y la **ambient** (opacidad
+`0.15`, difusa, proyecta la luz). El detalle de que el nivel 2 tiene la key
+*idéntica* a la del nivel 1 es intencional: al subir de nivel 1 a 2 solo crece la
+sombra difusa.
+
+Los valores están transcritos de los comentarios del código fuente del componente
+`<md-elevation>` de Material Web, que es donde Google documenta nivel por nivel.
+
+**Sobre `surface-tint`:** la elevación por superposición del color primario
+(*surface tint*) está **deprecada** en la especificación actual. Google lo dice de
+forma explícita: *"Surface tint color is deprecated. Use elevation level tokens
+(0–5) instead."* Por eso este proyecto **no** expone
+`--md-sys-elevation-surface-tint-color`, aunque todavía aparezca en el paquete de
+tokens antiguo.
+
+> **En tema oscuro la sombra casi no se ve** (negro sobre negro). Por eso las clases
+> `.md-elevation-N-surface` aplican solo el cambio de **tono** de superficie, que es
+> lo que M3 recomienda por defecto. Ese mapeo nivel → tono es decisión de RDM Next;
+> M3 define la escalera `surface-container-*` pero no la relaciona con los niveles.
+
 **Sobre la nomenclatura de duraciones:** M3 agrupa sus 16 duraciones en cuatro
 familias (`short1-4`, `medium1-4`, `long1-4`, `extra-long1-4`). Un componente pide
 `medium2`, no `300ms`. El nombre sobrevive a un cambio de criterio; el número no.
@@ -351,6 +398,7 @@ rdm-next-new/
 │   │   ├── typeface.css      --md-ref-typeface-*
 │   │   ├── corner.css        --md-ref-corner-*
 │   │   ├── easing.css        --md-ref-easing-*
+│   │   ├── shadow.css        --md-ref-shadow-*
 │   │   ├── spacing.css       --md-ref-spacing-*
 │   │   ├── stroke.css        --md-ref-stroke-*
 │   │   ├── typescale.css     --md-ref-typescale-*

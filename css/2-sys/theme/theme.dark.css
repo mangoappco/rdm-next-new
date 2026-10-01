@@ -168,8 +168,16 @@ html:not([data-theme="light"]) {
      SHADOW Y SURFACE TINT
      --------------------------------------------------------------------- */
 
-  /* shadow — color de las sombras */
+  /* shadow - color de las sombras */
   --md-sys-color-shadow: var(--md-ref-palette-neutral0);
+
+  /* shadow rgb - el MISMO color, en tripletos.
+     Necesario porque las sombras necesitan opacidad, y la opacidad solo se
+     puede aplicar a un color en formato rgb(). Sin este token, el rgba
+     quedaria quemado dentro de la geometria en 1-ref/shadow.css, que es
+     exactamente lo que la arquitectura prohibe: la primitiva no puede
+     decidir el color, eso es del tema. */
+  --md-sys-color-shadow-rgb: 0 0 0;
   /* surface tint — tinte que se aplica a superficies elevadas */
   --md-sys-color-surface-tint: var(--md-ref-palette-primary80);
   /* surface tint color — color base del tinte */
