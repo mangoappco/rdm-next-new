@@ -88,10 +88,12 @@ Verificado contra los archivos publicados por Google. Nombres exactos:
 | ------------------------ | ---------------- | ------------------------------------------- |
 | `--md-ref-palette-*`     | `1-ref/palette.css` | 91 tonos (v0.192)                      |
 | `--md-ref-typeface-*`    | `1-ref/typeface.css`| 5 tokens (plain, brand, 3 pesos)         |
+| `--md-ref-typescale-*`   | `1-ref/typescale.css` | 45 medidas (15 estilos × size/line-height/tracking) |
 | `--md-ref-stroke-*`      | `1-ref/stroke.css` | 3 grosores — **extensión propia**       |
 | `--md-sys-color-*`       | `2-sys/theme/*.css` | 37 roles × 2 temas                      |
 | `md-bg-*` / `md-text-*` / `md-border-*` | `2-sys/colors.css` | 93 clases utilitarias de color |
-| `--md-sys-typescale-*`   | `2-sys/typography.css` | 15 estilos (display→label)           |
+| `--md-sys-typescale-*`   | `2-sys/typography.css` | 15 estilos × 5 sub-tokens + 15 compuestos |
+| `.md-type-*`             | `2-sys/typography.css` | 33 clases tipográficas               |
 | `--md-sys-shape-*`       | `2-sys/shape.css`| Esquinas y radios                          |
 | `--md-sys-motion-*`      | `2-sys/motion.css`| Duraciones y easing                        |
 | `--md-sys-elevation-*`   | `2-sys/elevation.css` | Niveles 0–5                            |
@@ -269,6 +271,7 @@ rdm-next-new/
 │   │   ├── typeface.css      --md-ref-typeface-*
 │   │   ├── spacing.css       --md-ref-spacing-*
 │   │   ├── stroke.css        --md-ref-stroke-*
+│   │   ├── typescale.css     --md-ref-typescale-*
 │   │   └── time.css          --md-ref-time-*
 │   ├── 2-sys/                Tokens semánticos (solo var())
 │   │   ├── colors.css        --md-sys-color-*
