@@ -459,19 +459,37 @@
    Estas tres clases NO declaran font-optical-sizing ni font-variation-settings,
    y es a proposito: solo cambian el peso de su clase base.
 
-       <button class="md-type-label-large md-type-label-large--prominent">
+       <button class="md-type-label-large md-type-label-large-prominent">
 
    Los ajustes de variable font ya vienen de `md-type-label-large`. Repetirlos
    aqui seria duplicarlos sin efecto: el navegador solo aplica el ultimo valor
    declarado, asi que volver a escribirlos no cambiaria nada.
 
-   ------------------------------------------------------------------------- */
+   -------------------------------------------------------------------------
+   EL GUION DEL MODIFICADOR
+   -------------------------------------------------------------------------
+   Google escribe el modificador con UN guion:
+
+       .md-typescale-label-medium-prominent
+
+   Este archivo usaba dos (--prominent). No habia una razon tecnica: era la
+   convencion de modificador de BEM, que aqui no aplica, porque el proyecto no
+   usa BEM y ninguna otra clase tiene modificadores.
+
+   Se normalizo a un guion para que coincida con el nombre oficial y con los
+   tokens, que siempre lo llevaron con uno:
+
+       --md-sys-typescale-label-medium-weight-prominent
+
+   O sea: el token tenia un guion desde siempre, y la clase dos. Ahora las dos
+   cosas usan uno.
+
    -------------------------------------------------------------------------
    Variante BOLD (700) que v0.192 define para los tres estilos label. Se
-   combina con la clase base usando la convencion de modificador de M3:
+   combina con la clase base usando el modificador de M3:
 
-       class="md-type-label-large md-type-label-large--prominent"
+       class="md-type-label-large md-type-label-large-prominent"
    ------------------------------------------------------------------------- */
-.md-type-label-large--prominent { font-weight: var(--md-sys-typescale-label-large-weight-prominent); }
-.md-type-label-medium--prominent { font-weight: var(--md-sys-typescale-label-medium-weight-prominent); }
-.md-type-label-small--prominent { font-weight: var(--md-sys-typescale-label-small-weight-prominent); }
+.md-type-label-large-prominent { font-weight: var(--md-sys-typescale-label-large-weight-prominent); }
+.md-type-label-medium-prominent { font-weight: var(--md-sys-typescale-label-medium-weight-prominent); }
+.md-type-label-small-prominent { font-weight: var(--md-sys-typescale-label-small-weight-prominent); }

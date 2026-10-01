@@ -50,6 +50,50 @@ hace que el tema sea cambiable sin tocar componentes.
 | `2-sys/` | `--md-sys-*`     | Roles con significado de diseño         |
 | `3-comp/`| `--md-comp-*`    | Decisiones específicas de un componente |
 
+### Prefijos de clases: el criterio tokens-largos / clases-cortas
+
+Los tokens usan el **nombre oficial de M3** íntegro. Las clases usan el **prefijo corto**,
+porque en el markup cada carácter cuenta y el nombre completo ya está a un click de
+distancia en la hoja de estilos.
+
+| Concepto                 | Token (oficial de Google)  | Clase (forma corta) |
+| ------------------------ | -------------------------- | ------------------- |
+| Escala tipográfica       | `--md-sys-typescale-*`     | `.md-type-*`        |
+| Tipografía de referencia | `--md-ref-typescale-*`     | *(no lleva clase)*  |
+| Familia de fuente        | `--md-ref-typeface-*`      | *(no lleva clase)*  |
+| Color de fondo           | `--md-sys-color-*`         | `.md-bg-*`          |
+| Color de texto           | `--md-sys-color-*`         | `.md-text-*`        |
+| Color de borde           | `--md-sys-color-*`         | `.md-border-*`      |
+| Esquinas                 | `--md-sys-corner-*`        | `.md-shape-*`       |
+| Medidas                  | `--md-sys-measurement-*`   | `.md-measure-*`     |
+
+**La única excepción de esta regla** es tipografía, donde el nombre oficial es
+`typescale` y la forma corta es `type`. El motivo es que en HTML
+`class="md-type-body-medium"` se lee mejor que `class="md-typescale-body-medium"`, y a
+diferencia de `bg`/`text`/`border`, `type` no es ambiguo: no hay otra propiedad que
+empiece igual.
+
+**Consecuencia práctica:** si traes un ejemplo de la documentación de Google, las clases
+se llaman distinto. El mapeo es mecánico: quita `md-typescale-`, pon `md-type-`.
+
+```html
+<!-- Google Material Web -->
+<h1 class="md-typescale-display-large">…</h1>
+
+<!-- RDM Next -->
+<h1 class="md-type-display-large">…</h1>
+```
+
+**Lo que NO se puede copiar tal cual:** las clases de Google emiten el atajo
+`font: weight size/line-height family`. Las nuestras emiten las cuatro propiedades
+separadas, más `font-optical-sizing` y `font-variation-settings`, que son lo que
+configura Google Sans Flex como variable. Copiar el `class` sin el CSS no aplica nada,
+y pegar nuestro CSS sobre su `class` tampoco funciona.
+
+**Modificador `-prominent`:** con un solo guion, igual que Google
+(`.md-typescale-label-medium-prominent`). Antes se usaban dos (`--prominent`) por
+influencia de BEM, que no aplica en este proyecto; normalizado junto con esto.
+
 ---
 
 ## 3. La regla del hardcoding
@@ -491,3 +535,8 @@ rdm-next-new/
 - Spacing: `https://m3.material.io/styles/spacing/tokens`
 - Escala tipográfica: `https://m3.material.io/styles/typography/type-scale-tokens`
 - Material Web (referencia de implementación): `https://material-web.dev`
+- Clases `.md-typescale-*` de Google: `material-components/material-web` → `typography/_typescale.scss`
+  (el mixin `typescale.styles()` las genera; es la fuente de la columna "oficial" de la
+  tabla de prefijos de arriba)
+- Tokens de sistema v0.192: `_md-sys-color.scss`, `_md-sys-typescale.scss`, `_md-sys-motion.scss`,
+  `_md-sys-state.scss`, `_md-sys-shape.scss` en `tokens/versions/v0_192/` del mismo repositorio
