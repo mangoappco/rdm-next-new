@@ -18,7 +18,18 @@
 
    Este es el mecanismo que hace funcionar los dos temas SIN duplicar y SIN
    usar @media para los valores. Todo se resuelve por el orden de
-   importacion en app.css + estos dos selectores :not().
+   importacion en main.css + estos dos selectores :not().
+
+   ---------------------------------------------------------------------------
+   ESTE ARCHIVO ES EL QUE GANA POR DEFECTO
+   ---------------------------------------------------------------------------
+   Sin atributo data-theme, los dos selectores coinciden. Gana el ultimo en
+   declararse, y main.css importa theme.light.css ANTES que este. Por eso el
+   tema por defecto del sistema es el OSCURO.
+
+   Que NO se lea la preferencia del sistema operativo. Ver la seccion
+   "COMO SE RESUELVE EL TEMA, EN REALIDAD" en theme.light.css, que explica el
+   mecanismo completo y por que el tema no sigue al SO.
 
    ---------------------------------------------------------------------------
    POR QUE SE INVIERTEN LOS TONOS

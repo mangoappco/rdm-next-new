@@ -200,15 +200,35 @@
 
    Por eso el orden es light primero, dark despues:
 
-       Sin atributo + SO en light  ->  ambos coinciden  ->  gana light  ✓
-       Sin atributo + SO en dark   ->  ambos coinciden  ->  gana dark   ✓
-       data-theme="light"         ->  excluye dark    ->  gana light  ✓
-       data-theme="dark"          ->  excluye light   ->  gana dark   ✓
+       Sin atributo     ->  ambos coinciden  ->  gana dark   (por el orden)
+       data-theme="light" ->  excluye dark  ->  gana light  (por el atributo)
+       data-theme="dark"  ->  excluye light ->  gana dark   (por el atributo)
 
-   INVERTIR ESTE ORDEN ROMPE EL TEMA. Si dark se importara antes, el sistema
-   arrancaria en oscuro para todo el mundo. Es el unico punto del proyecto
-   donde el orden de escritura cambia el comportamiento, y por eso esta
-   comentado aqui y en los dos archivos de tema.
+   ---------------------------------------------------------------------------
+   ADVERTENCIA: EL TEMA NO SIGUE AL SISTEMA OPERATIVO
+   ---------------------------------------------------------------------------
+   Ninguno de los dos selectores consulta prefers-color-scheme, y el sistema
+   no usa @media para los valores. El tema por defecto lo decide el ORDEN de
+   las hojas, y es el oscuro.
+
+   Antes esta cabecera afirmaba que el SO se tenia en cuenta, y no era cierto:
+   no hay ninguna regla @media en todo el sistema. La consecuencia practica es
+   que un visitante con SO en claro veria el showroom oscuro, salvo que el HTML
+   declare data-theme="light".
+
+   Para que el tema siga al SO hacen falta dos cosas, y ninguna esta hecha:
+
+     1. un @media (prefers-color-scheme: light) que duplique los 38 tokens
+        del tema claro, con lo cual se pierde el ahorro de no duplicarlos; o
+     2. que el HTML escriba data-theme con matchMedia() desde JavaScript, que
+        es el mecanismo que usa ManGo! App con su toggle.
+
+   Ver la seccion "COMO SE RESUELVE EL TEMA, EN REALIDAD" en theme.light.css.
+
+   INVERTIR EL ORDEN DE ESTOS DOS IMPORTS no rompe nada visible: no hay error
+   de sintaxis ni archivo faltante. Solo cambia que el tema por defecto pasa a
+   ser el claro. Por eso el orden se verifica con la REGLA 4 de
+   tools/verify-tokens.ps1 y no se deja al azar.
    ========================================================================== */
 @import url("2-sys/theme/theme.light.css") layer(sys);
 @import url("2-sys/colors.css")            layer(sys);

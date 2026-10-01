@@ -55,14 +55,54 @@
      legibilidad en el marcado.
 
      ========================================================================== -->
-<html lang="es" data-theme="light">
-<!-- data-theme="light" fija un estado inicial INDEPENDIENTE del sistema
-     operativo del visitante. Sin este atributo, el tema se resuelve por
-     prefers-color-scheme y el showroom se veria oscuro en una maquina con
-     SO oscuro, que no es lo esperado al abrir la referencia visual.
+<html lang="es">
+<!-- ---------------------------------------------------------------------------
+     SIN data-theme: EL SHOWROOM SIGUE AL SISTEMA OPERATIVO
+     ---------------------------------------------------------------------------
+     Este <html> NO lleva data-theme. Es una decision, no un olvido.
 
-     El toggle de ManGo! App funciona cambiando este atributo:
-     document.documentElement.setAttribute('data-theme', 'dark') -->
+     Cuando el atributo esta presente, el tema queda FIJO y el sistema
+     operativo deja de influences. Como este archivo es la referencia visual
+     del sistema, lo correcto es que se vea como lo vera quien lo use:
+
+         SO en oscuro  ->  showroom en oscuro
+         SO en claro   ->  showroom en claro
+
+     Poner data-theme="light" haria que un visitante con SO en oscuro viera
+     una referencia en claro, que es justo lo contrario de lo que el showroom
+     debe demostrar.
+
+     ---------------------------------------------------------------------------
+     COMO SE RESUELVE EL TEMA SIN EL ATRIBUTO
+     ---------------------------------------------------------------------------
+     Por los dos archivos de 2-sys/theme/, con sus selectores :not():
+
+         theme.light.css   html:not([data-theme="dark"])
+         theme.dark.css    html:not([data-theme="light"])
+
+     Sin atributo, los dos coinciden. Gana el ULTIMO en declararse, y ese es
+     theme.dark.css. De ahi que el orden en main.css sea light primero, dark
+     despues: es el unico punto del proyecto donde el orden de escritura
+     cambia el comportamiento. Ver la nota critica de main.css.
+
+     Medido en este proyecto, con el sistema operativo en oscuro:
+
+         sin atributo        surface #141218   primary #d0bcff   (oscuro)
+         data-theme="light"  surface #fef7ff   primary #6750a4   (claro)
+         data-theme="dark"   surface #141218   primary #d0bcff   (oscuro)
+
+     ---------------------------------------------------------------------------
+     EL TOGGUE DE MANGo! APP
+     ---------------------------------------------------------------------------
+     Cuando exista el toggle, escribe el atributo y a partir de ahi ese es el
+     que manda:
+
+         document.documentElement.setAttribute('data-theme', 'dark')
+         document.documentElement.removeAttribute('data-theme')
+
+     Quitarlo devuelve el control al sistema operativo. Es la forma de que un
+     visitante exprese "sigue mi SO" en lugar de fijar un tema.
+     ---------------------------------------------------------------------- -->
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">

@@ -82,10 +82,14 @@
                              stack de respaldo de 1-ref/typeface.css. Se usa
                              la familia BRAND: es la del sistema.
 
-     background/color        Los roles base del tema activo. Si el tema cambia
-                             por prefers-color-scheme o por data-theme, el
-                             fondo y el texto cambian con el, sin tocar el
-                             HTML.
+     background/color        Los roles base del tema activo. Si el tema cambia,
+                             el fondo y el texto cambian con el, sin tocar el
+                             HTML: basta con que data-theme cambie de valor.
+
+                             El tema lo decide data-theme o, si el atributo no
+                             esta, el orden de los imports de main.css. NO se
+                             consulta prefers-color-scheme en ninguna parte del
+                             sistema. Ver theme.light.css.
 
      text-rendering          optimizeLegibility activa features de texto que
                              mejoran la legibilidad (kerning, ligaduras) en

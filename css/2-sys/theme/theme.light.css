@@ -17,8 +17,8 @@
 
    Es decir, se activa en estos casos:
 
-     1. No hay atributo data-theme Y el sistema esta en claro
-     2. data-theme="light" explicito (el usuario forzo claro)
+     1. No hay atributo data-theme
+     2. data-theme="light" explicito (alguien forzo claro)
 
    Y NO se aplica cuando hay data-theme="dark".
 
@@ -33,10 +33,55 @@
    mientras su sistema esta en oscuro veria el tema equivocado, porque el
    @media manda sobre el atributo y no hay forma de que el atributo gane.
 
-   La solucion de M3, y la que usa este sistema, es NO usar @media para los
-   valores. Se usa prefers-color-scheme UNICAMENTE para decidir el orden de
-   importacion (ver app.css), y los selectores :not() resuelven el resto.
-   Asi el atributo explicito siempre gana.
+   Este sistema NO USA @media para los valores. Ni para elegir el tema, ni
+   para otra cosa. Los 38 tokens de cada tema salen de los dos selectores
+   :not(), y nada mas.
+
+   ---------------------------------------------------------------------------
+   COMO SE RESUELVE EL TEMA, EN REALIDAD
+   ---------------------------------------------------------------------------
+   Este archivo se debe leer junto con theme.dark.css, porque los dos
+   selectores estan disenados para cooperar:
+
+       theme.light.css   html:not([data-theme="dark"])
+       theme.dark.css    html:not([data-theme="light"])
+
+   Ninguno consulta la preferencia del sistema. Los dos se aplican siempre,
+   y se resuelve por el ORDEN DE IMPORTACION:
+
+       main.css importa theme.light.css ANTES que theme.dark.css
+
+   Sin atributo data-theme, los dos selectores coinciden en el mismo elemento.
+   Dos reglas de la misma especificidad (0,1,1) y la misma capa: gana la ultima.
+   Esa es theme.dark.css.
+
+   Es decir: el tema por defecto del sistema es OSCURO. No porque se lea el SO,
+   sino porque el orden de las hojas lo decide.
+
+   ADVERTENCIA
+   ------------
+   Este mecanismo tiene una consecuencia que conviene tener presente: el tema
+   NO sigue al sistema operativo. Un visitante con SO en claro, si este
+   proyecto se sirve sin data-theme, veria el tema oscuro.
+
+   Para que el tema siga al SO haria falta una de estas dos cosas, y ninguna
+   esta hecha:
+
+       @media (prefers-color-scheme: light) { html:not([data-theme="dark"]) { ... } }
+
+     que duplica los 38 tokens del tema claro, o un atributo en el HTML escrito
+     desde JavaScript con matchMedia(), que es lo que hace ManGo! App.
+
+   index.html no lleva data-theme, de modo que el showroom se ve con el tema
+   por defecto del sistema, que es el oscuro.
+
+   ---------------------------------------------------------------------------
+   POR QUE EL ORDEN SIGUE SIENDO CRITICO
+   ---------------------------------------------------------------------------
+   Invertir el orden de los dos imports no rompe nada visible: no hay error de
+   sintaxis ni archivo faltante. Solo cambia que el tema por defecto pasa a ser
+   el claro. Por eso el orden esta comentado en main.css y verificado por la
+   REGLA 4 de tools/verify-tokens.ps1.
 
    ---------------------------------------------------------------------------
    EL TONO ELEGIDO POR ROL
