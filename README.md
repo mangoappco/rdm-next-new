@@ -711,7 +711,7 @@ Tipos: `feat`, `fix`, `docs`, `style`, `refactor`, `chore`.
 rdm-next-new/
 ├── .gitignore
 ├── README.md                 Este documento: contrato de arquitectura
-├── index.html                Shell del showroom
+├── index.html                Showroom: presentación + componente Divider
 ├── css/
 │   ├── main.css               Orquestador: @layer + @import
 │   ├── 1-ref/                Valores crudos (única capa que los permite)
@@ -744,7 +744,63 @@ rdm-next-new/
 
 ---
 
-## 10. Fuentes oficiales
+## 10. Componentes
+
+### Divider — el primero
+
+`css/3-comp/divider.css` es el primer componente construido. Es el más simple del
+catálogo de M3: dos tokens, sin variantes de tipo.
+
+**Receta**, según `material-components/material-web`:
+
+```scss
+'color':     map.get($deps, 'md-sys-color', 'outline-variant')
+'thickness': 1px
+
+:host { color: <color>; display: flex; height: <thickness>; width: 100%; }
+:host::before { background: currentColor; content: ''; height: 100%; width: 100%; }
+```
+
+**Tres decisiones de la receta que se conservan:**
+
+1. **`currentColor`** en vez de un `background-color` directo. El color se aplica al
+   `color` del texto y el `::before` lo toma. Así el divisor hereda el color del contexto.
+2. **`display: flex`**. El `::before` necesita ocupar el 100% del ancho.
+3. **`border: 0`**. El `<hr>` nativo trae un border que se sumaría al `height`. Sin esto
+   el divisor medía 2px en vez de 1px.
+
+**Tres variantes de inset**, según las medidas oficiales de M3:
+
+| Variante | padding-inline-start | padding-inline-end |
+| -------- | -------------------- | ------------------ |
+| full-width | 0 | 0 |
+| inset | 16dp | 0 |
+| middle-inset | 16dp | 16dp |
+
+Se usan añadiendo una clase a `.md-divider`:
+
+```html
+<hr class="md-divider">
+<hr class="md-divider md-divider-inset">
+<hr class="md-divider md-divider-middle-inset">
+```
+
+**Tokens que consume:**
+
+| Token | Capa | Valor |
+| ----- | ---- | ----- |
+| `--md-sys-color-outline-variant` | 2-sys | `#cac4d0` en light |
+| `--md-sys-shape-stroke-thin` | 2-sys | 1px |
+| `--md-sys-measurement-inset` | 2-sys | 16px |
+| `--md-comp-divider-color` | 3-comp | → outline-variant |
+| `--md-comp-divider-thickness` | 3-comp | → stroke-thin |
+
+**Showroom:** `index.html` tiene una sección de 13 secciones documentando el componente.
+Estructura confirmada con el usuario según la skill `rdm-component-showroom`.
+
+---
+
+## 11. Fuentes oficiales
 
 - Tokens: `https://m3.material.io/foundations/design-tokens`
 - Spacing: `https://m3.material.io/styles/spacing/tokens`
