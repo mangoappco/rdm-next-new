@@ -205,39 +205,65 @@
 /* ==========================================================================
    BORDER — BORDES
    --------------------------------------------------------------------------
-   .md-border-<rol>  aplica el rol como color de borde con grosor de 1px.
+   .md-border-<rol>  aplica el rol como COLOR de borde.
 
-   Por que 1px aqui y no un token: es el grosor de borde por defecto de M3 para
-   campos de formulario y separadores. Si un componente necesita otro grosor,
-   ese grosor es una decision de componente (3-comp/), no de la utilidad.
+   ---------------------------------------------------------------------------
+   POR QUE NO SE FIXA EL GROSOR AQUI
+   ---------------------------------------------------------------------------
+   Estas clases declaran solo border-color. El grosor lo decide el COMPONENTE,
+   no la utilidad de color, y por dos razones:
+
+     1. Un separador usa 1px (thin); el borde de un checkbox sin marcar usa 2px
+        (thick); el de un text field en focus usa 2px. Si la utilidad fijara el
+        grosor, todos los bordes del sistema serian iguales, y M3 usa el grosor
+        como senal de estado: thin = en reposo, thick = activo o en error.
+
+     2. El grosor es una medida, no un color. Meter 1px aqui seria meter un
+        valor crudo en la capa 2, que solo puede contener var().
+
+   El grosor disponible esta en 1-ref/stroke.css:
+
+       var(--md-ref-stroke-none)    0px
+       var(--md-ref-stroke-thin)    1px   en reposo
+       var(--md-ref-stroke-thick)   2px   focus, selected, error
+
+   Uso tipico en 3-comp/:
+
+       .md-divider {
+         border-top: var(--md-ref-stroke-thin) solid
+                     var(--md-sys-color-outline-variant);
+       }
+
+   Note que ese ejemplo consume el token de 1-ref directamente, no una
+   utilidad. Es correcto: 3-comp SI puede leer 1-ref.
 
    Usa -outline para el borde visible de un campo de formulario, y
    -outline-variant para separadores sutiles.
    ========================================================================== */
-.md-border-primary            { border: 1px solid var(--md-sys-color-primary); }
-.md-border-on-primary         { border: 1px solid var(--md-sys-color-on-primary); }
-.md-border-primary-container  { border: 1px solid var(--md-sys-color-primary-container); }
-.md-border-on-primary-container { border: 1px solid var(--md-sys-color-on-primary-container); }
+.md-border-primary            { border-color: var(--md-sys-color-primary); }
+.md-border-on-primary         { border-color: var(--md-sys-color-on-primary); }
+.md-border-primary-container  { border-color: var(--md-sys-color-primary-container); }
+.md-border-on-primary-container { border-color: var(--md-sys-color-on-primary-container); }
 
-.md-border-secondary          { border: 1px solid var(--md-sys-color-secondary); }
-.md-border-on-secondary       { border: 1px solid var(--md-sys-color-on-secondary); }
-.md-border-secondary-container { border: 1px solid var(--md-sys-color-secondary-container); }
-.md-border-on-secondary-container { border: 1px solid var(--md-sys-color-on-secondary-container); }
+.md-border-secondary          { border-color: var(--md-sys-color-secondary); }
+.md-border-on-secondary       { border-color: var(--md-sys-color-on-secondary); }
+.md-border-secondary-container { border-color: var(--md-sys-color-secondary-container); }
+.md-border-on-secondary-container { border-color: var(--md-sys-color-on-secondary-container); }
 
-.md-border-tertiary          { border: 1px solid var(--md-sys-color-tertiary); }
-.md-border-on-tertiary       { border: 1px solid var(--md-sys-color-on-tertiary); }
-.md-border-tertiary-container { border: 1px solid var(--md-sys-color-tertiary-container); }
-.md-border-on-tertiary-container { border: 1px solid var(--md-sys-color-on-tertiary-container); }
+.md-border-tertiary          { border-color: var(--md-sys-color-tertiary); }
+.md-border-on-tertiary       { border-color: var(--md-sys-color-on-tertiary); }
+.md-border-tertiary-container { border-color: var(--md-sys-color-tertiary-container); }
+.md-border-on-tertiary-container { border-color: var(--md-sys-color-on-tertiary-container); }
 
-.md-border-error          { border: 1px solid var(--md-sys-color-error); }
-.md-border-on-error       { border: 1px solid var(--md-sys-color-on-error); }
-.md-border-error-container { border: 1px solid var(--md-sys-color-error-container); }
-.md-border-on-error-container { border: 1px solid var(--md-sys-color-on-error-container); }
+.md-border-error          { border-color: var(--md-sys-color-error); }
+.md-border-on-error       { border-color: var(--md-sys-color-on-error); }
+.md-border-error-container { border-color: var(--md-sys-color-error-container); }
+.md-border-on-error-container { border-color: var(--md-sys-color-on-error-container); }
 
-.md-border-outline          { border: 1px solid var(--md-sys-color-outline); }
-.md-border-outline-variant  { border: 1px solid var(--md-sys-color-outline-variant); }
-.md-border-inverse-surface  { border: 1px solid var(--md-sys-color-inverse-surface); }
-.md-border-on-inverse-surface { border: 1px solid var(--md-sys-color-inverse-on-surface); }
-.md-border-inverse-primary   { border: 1px solid var(--md-sys-color-inverse-primary); }
-.md-border-scrim             { border: 1px solid var(--md-sys-color-scrim); }
-.md-border-shadow            { border: 1px solid var(--md-sys-color-shadow); }
+.md-border-outline          { border-color: var(--md-sys-color-outline); }
+.md-border-outline-variant  { border-color: var(--md-sys-color-outline-variant); }
+.md-border-inverse-surface  { border-color: var(--md-sys-color-inverse-surface); }
+.md-border-on-inverse-surface { border-color: var(--md-sys-color-inverse-on-surface); }
+.md-border-inverse-primary   { border-color: var(--md-sys-color-inverse-primary); }
+.md-border-scrim             { border-color: var(--md-sys-color-scrim); }
+.md-border-shadow            { border-color: var(--md-sys-color-shadow); }

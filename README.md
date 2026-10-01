@@ -88,6 +88,7 @@ Verificado contra los archivos publicados por Google. Nombres exactos:
 | ------------------------ | ---------------- | ------------------------------------------- |
 | `--md-ref-palette-*`     | `1-ref/palette.css` | 91 tonos (v0.192)                      |
 | `--md-ref-typeface-*`    | `1-ref/typeface.css`| 5 tokens (plain, brand, 3 pesos)         |
+| `--md-ref-stroke-*`      | `1-ref/stroke.css` | 3 grosores — **extensión propia**       |
 | `--md-sys-color-*`       | `2-sys/theme/*.css` | 37 roles × 2 temas                      |
 | `md-bg-*` / `md-text-*` / `md-border-*` | `2-sys/colors.css` | 93 clases utilitarias de color |
 | `--md-sys-typescale-*`   | `2-sys/typography.css` | 15 estilos (display→label)           |
@@ -141,6 +142,7 @@ sobre specs oficiales de Google:
 | ------------------------- | ------------------- | --------------------------------------------------------- |
 | `--md-ref-spacing-*`      | `1-ref/spacing.css` | Escala oficial M3 `Space 0`–`Space 900`                     |
 | `--md-sys-measurement-*`  | `2-sys/measurement.css` | Capa semántica que mapea spacing a roles de componente |
+| `--md-ref-stroke-*`       | `1-ref/stroke.css` | Grosor de trazo: `none`/`thin`/`thick`                  |
 
 **Detalle importante sobre la escala de espacio:** los nombres `Space 0` … `Space 900`
 **sí son oficiales de M3** (publicados en `m3.material.io/styles/spacing/tokens`, con
@@ -151,6 +153,25 @@ Por eso el nombre lleva prefijo `md-*` propio y está documentado aquí como ext
 **Unidad:** M3 está diseñado en **dp**. En web `1dp = 1px`, así que `1-ref/spacing.css`
 escribe valores en `px` para que el mapeo contra cualquier spec de Android sea directo
 y sin conversión mental.
+
+**Por qué `stroke` es una primitiva aparte de `spacing`:** un borde de 1px no es
+"espacio", es un **trazo**. Y hay una razón técnica, no solo semántica: la escala
+oficial de espacio de M3 **no tiene 1px** — su salto más pequeño es 2px (`Space 25`).
+No existe ningún token de espacio al que `1px` pueda mapearse; el valor más cercano
+duplicaría el grosor. Google tampoco publica tokens de grosor de borde (se verificó en
+los archivos oficiales de `material-tokens`), así que `--md-ref-stroke-*` es una
+extensión nuestra construida sobre el `1px` literal que usan las specs de M3.
+
+| Token                | Valor | Uso                                              |
+| -------------------- | ----- | ------------------------------------------------ |
+| `--md-ref-stroke-none`  | `0px` | Resetear un borde, animar desde cero         |
+| `--md-ref-stroke-thin`  | `1px` | En reposo: outlined cards, divisores, chips    |
+| `--md-ref-stroke-thick` | `2px` | Activo: focus, selected, error                 |
+
+Por eso las utilidades `.md-border-*` aplican **solo `border-color`**: el grosor es
+una medida y el grosor correcto depende del estado del componente (un separador es
+`thin`, el borde de un checkbox sin marcar es `thick`). Esa decisión es del
+componente en `3-comp/`, no de una clase de color.
 
 ---
 
@@ -247,6 +268,7 @@ rdm-next-new/
 │   │   ├── palette.css       --md-ref-palette-*
 │   │   ├── typeface.css      --md-ref-typeface-*
 │   │   ├── spacing.css       --md-ref-spacing-*
+│   │   ├── stroke.css        --md-ref-stroke-*
 │   │   └── time.css          --md-ref-time-*
 │   ├── 2-sys/                Tokens semánticos (solo var())
 │   │   ├── colors.css        --md-sys-color-*
