@@ -286,6 +286,8 @@
   font-size: var(--md-sys-typescale-display-large-size);
   line-height: var(--md-sys-typescale-display-large-line-height);
   letter-spacing: var(--md-sys-typescale-display-large-tracking);
+  font-optical-sizing: var(--md-ref-typeface-font-optical-sizing);
+  font-variation-settings: var(--md-ref-typeface-font-variation-settings);
 }
 .md-type-display-medium {
   font-family: var(--md-sys-typescale-display-medium-font);
@@ -293,6 +295,8 @@
   font-size: var(--md-sys-typescale-display-medium-size);
   line-height: var(--md-sys-typescale-display-medium-line-height);
   letter-spacing: var(--md-sys-typescale-display-medium-tracking);
+  font-optical-sizing: var(--md-ref-typeface-font-optical-sizing);
+  font-variation-settings: var(--md-ref-typeface-font-variation-settings);
 }
 .md-type-display-small {
   font-family: var(--md-sys-typescale-display-small-font);
@@ -300,6 +304,8 @@
   font-size: var(--md-sys-typescale-display-small-size);
   line-height: var(--md-sys-typescale-display-small-line-height);
   letter-spacing: var(--md-sys-typescale-display-small-tracking);
+  font-optical-sizing: var(--md-ref-typeface-font-optical-sizing);
+  font-variation-settings: var(--md-ref-typeface-font-variation-settings);
 }
 
 /* --- HEADLINE --- */
@@ -309,6 +315,8 @@
   font-size: var(--md-sys-typescale-headline-large-size);
   line-height: var(--md-sys-typescale-headline-large-line-height);
   letter-spacing: var(--md-sys-typescale-headline-large-tracking);
+  font-optical-sizing: var(--md-ref-typeface-font-optical-sizing);
+  font-variation-settings: var(--md-ref-typeface-font-variation-settings);
 }
 .md-type-headline-medium {
   font-family: var(--md-sys-typescale-headline-medium-font);
@@ -316,6 +324,8 @@
   font-size: var(--md-sys-typescale-headline-medium-size);
   line-height: var(--md-sys-typescale-headline-medium-line-height);
   letter-spacing: var(--md-sys-typescale-headline-medium-tracking);
+  font-optical-sizing: var(--md-ref-typeface-font-optical-sizing);
+  font-variation-settings: var(--md-ref-typeface-font-variation-settings);
 }
 .md-type-headline-small {
   font-family: var(--md-sys-typescale-headline-small-font);
@@ -323,6 +333,8 @@
   font-size: var(--md-sys-typescale-headline-small-size);
   line-height: var(--md-sys-typescale-headline-small-line-height);
   letter-spacing: var(--md-sys-typescale-headline-small-tracking);
+  font-optical-sizing: var(--md-ref-typeface-font-optical-sizing);
+  font-variation-settings: var(--md-ref-typeface-font-variation-settings);
 }
 
 /* --- TITLE --- */
@@ -332,6 +344,8 @@
   font-size: var(--md-sys-typescale-title-large-size);
   line-height: var(--md-sys-typescale-title-large-line-height);
   letter-spacing: var(--md-sys-typescale-title-large-tracking);
+  font-optical-sizing: var(--md-ref-typeface-font-optical-sizing);
+  font-variation-settings: var(--md-ref-typeface-font-variation-settings);
 }
 .md-type-title-medium {
   font-family: var(--md-sys-typescale-title-medium-font);
@@ -339,6 +353,8 @@
   font-size: var(--md-sys-typescale-title-medium-size);
   line-height: var(--md-sys-typescale-title-medium-line-height);
   letter-spacing: var(--md-sys-typescale-title-medium-tracking);
+  font-optical-sizing: var(--md-ref-typeface-font-optical-sizing);
+  font-variation-settings: var(--md-ref-typeface-font-variation-settings);
 }
 .md-type-title-small {
   font-family: var(--md-sys-typescale-title-small-font);
@@ -346,6 +362,8 @@
   font-size: var(--md-sys-typescale-title-small-size);
   line-height: var(--md-sys-typescale-title-small-line-height);
   letter-spacing: var(--md-sys-typescale-title-small-tracking);
+  font-optical-sizing: var(--md-ref-typeface-font-optical-sizing);
+  font-variation-settings: var(--md-ref-typeface-font-variation-settings);
 }
 
 /* --- BODY --- */
@@ -355,6 +373,8 @@
   font-size: var(--md-sys-typescale-body-large-size);
   line-height: var(--md-sys-typescale-body-large-line-height);
   letter-spacing: var(--md-sys-typescale-body-large-tracking);
+  font-optical-sizing: var(--md-ref-typeface-font-optical-sizing);
+  font-variation-settings: var(--md-ref-typeface-font-variation-settings);
 }
 .md-type-body-medium {
   font-family: var(--md-sys-typescale-body-medium-font);
@@ -362,6 +382,8 @@
   font-size: var(--md-sys-typescale-body-medium-size);
   line-height: var(--md-sys-typescale-body-medium-line-height);
   letter-spacing: var(--md-sys-typescale-body-medium-tracking);
+  font-optical-sizing: var(--md-ref-typeface-font-optical-sizing);
+  font-variation-settings: var(--md-ref-typeface-font-variation-settings);
 }
 .md-type-body-small {
   font-family: var(--md-sys-typescale-body-small-font);
@@ -369,6 +391,8 @@
   font-size: var(--md-sys-typescale-body-small-size);
   line-height: var(--md-sys-typescale-body-small-line-height);
   letter-spacing: var(--md-sys-typescale-body-small-tracking);
+  font-optical-sizing: var(--md-ref-typeface-font-optical-sizing);
+  font-variation-settings: var(--md-ref-typeface-font-variation-settings);
 }
 
 /* --- LABEL --- */
@@ -378,6 +402,8 @@
   font-size: var(--md-sys-typescale-label-large-size);
   line-height: var(--md-sys-typescale-label-large-line-height);
   letter-spacing: var(--md-sys-typescale-label-large-tracking);
+  font-optical-sizing: var(--md-ref-typeface-font-optical-sizing);
+  font-variation-settings: var(--md-ref-typeface-font-variation-settings);
 }
 .md-type-label-medium {
   font-family: var(--md-sys-typescale-label-medium-font);
@@ -385,6 +411,8 @@
   font-size: var(--md-sys-typescale-label-medium-size);
   line-height: var(--md-sys-typescale-label-medium-line-height);
   letter-spacing: var(--md-sys-typescale-label-medium-tracking);
+  font-optical-sizing: var(--md-ref-typeface-font-optical-sizing);
+  font-variation-settings: var(--md-ref-typeface-font-variation-settings);
 }
 .md-type-label-small {
   font-family: var(--md-sys-typescale-label-small-font);
@@ -392,6 +420,8 @@
   font-size: var(--md-sys-typescale-label-small-size);
   line-height: var(--md-sys-typescale-label-small-line-height);
   letter-spacing: var(--md-sys-typescale-label-small-tracking);
+  font-optical-sizing: var(--md-ref-typeface-font-optical-sizing);
+  font-variation-settings: var(--md-ref-typeface-font-variation-settings);
 }
 
 /* -------------------------------------------------------------------------
@@ -407,24 +437,35 @@
    A diferencia de los tokens compuestos, el tracking SI se preserva, porque
    letter-spacing es una propiedad discreta.
    ------------------------------------------------------------------------- */
-.md-type-display-large-style   { font-family: var(--md-sys-typescale-display-large-font);   font-weight: var(--md-sys-typescale-display-large-weight);   letter-spacing: var(--md-sys-typescale-display-large-tracking); }
-.md-type-display-medium-style  { font-family: var(--md-sys-typescale-display-medium-font);  font-weight: var(--md-sys-typescale-display-medium-weight);  letter-spacing: var(--md-sys-typescale-display-medium-tracking); }
-.md-type-display-small-style   { font-family: var(--md-sys-typescale-display-small-font);   font-weight: var(--md-sys-typescale-display-small-weight);   letter-spacing: var(--md-sys-typescale-display-small-tracking); }
-.md-type-headline-large-style  { font-family: var(--md-sys-typescale-headline-large-font);  font-weight: var(--md-sys-typescale-headline-large-weight);  letter-spacing: var(--md-sys-typescale-headline-large-tracking); }
-.md-type-headline-medium-style { font-family: var(--md-sys-typescale-headline-medium-font); font-weight: var(--md-sys-typescale-headline-medium-weight); letter-spacing: var(--md-sys-typescale-headline-medium-tracking); }
-.md-type-headline-small-style  { font-family: var(--md-sys-typescale-headline-small-font);  font-weight: var(--md-sys-typescale-headline-small-weight);  letter-spacing: var(--md-sys-typescale-headline-small-tracking); }
-.md-type-title-large-style     { font-family: var(--md-sys-typescale-title-large-font);     font-weight: var(--md-sys-typescale-title-large-weight);     letter-spacing: var(--md-sys-typescale-title-large-tracking); }
-.md-type-title-medium-style    { font-family: var(--md-sys-typescale-title-medium-font);    font-weight: var(--md-sys-typescale-title-medium-weight);    letter-spacing: var(--md-sys-typescale-title-medium-tracking); }
-.md-type-title-small-style     { font-family: var(--md-sys-typescale-title-small-font);     font-weight: var(--md-sys-typescale-title-small-weight);     letter-spacing: var(--md-sys-typescale-title-small-tracking); }
-.md-type-body-large-style      { font-family: var(--md-sys-typescale-body-large-font);      font-weight: var(--md-sys-typescale-body-large-weight);      letter-spacing: var(--md-sys-typescale-body-large-tracking); }
-.md-type-body-medium-style     { font-family: var(--md-sys-typescale-body-medium-font);     font-weight: var(--md-sys-typescale-body-medium-weight);     letter-spacing: var(--md-sys-typescale-body-medium-tracking); }
-.md-type-body-small-style      { font-family: var(--md-sys-typescale-body-small-font);      font-weight: var(--md-sys-typescale-body-small-weight);      letter-spacing: var(--md-sys-typescale-body-small-tracking); }
-.md-type-label-large-style     { font-family: var(--md-sys-typescale-label-large-font);     font-weight: var(--md-sys-typescale-label-large-weight);     letter-spacing: var(--md-sys-typescale-label-large-tracking); }
-.md-type-label-medium-style    { font-family: var(--md-sys-typescale-label-medium-font);    font-weight: var(--md-sys-typescale-label-medium-weight);    letter-spacing: var(--md-sys-typescale-label-medium-tracking); }
-.md-type-label-small-style     { font-family: var(--md-sys-typescale-label-small-font);     font-weight: var(--md-sys-typescale-label-small-weight);     letter-spacing: var(--md-sys-typescale-label-small-tracking); }
+.md-type-display-large-style   { font-family: var(--md-sys-typescale-display-large-font);   font-weight: var(--md-sys-typescale-display-large-weight);   letter-spacing: var(--md-sys-typescale-display-large-tracking); font-optical-sizing: var(--md-ref-typeface-font-optical-sizing); font-variation-settings: var(--md-ref-typeface-font-variation-settings); }
+.md-type-display-medium-style  { font-family: var(--md-sys-typescale-display-medium-font);  font-weight: var(--md-sys-typescale-display-medium-weight);  letter-spacing: var(--md-sys-typescale-display-medium-tracking); font-optical-sizing: var(--md-ref-typeface-font-optical-sizing); font-variation-settings: var(--md-ref-typeface-font-variation-settings); }
+.md-type-display-small-style   { font-family: var(--md-sys-typescale-display-small-font);   font-weight: var(--md-sys-typescale-display-small-weight);   letter-spacing: var(--md-sys-typescale-display-small-tracking); font-optical-sizing: var(--md-ref-typeface-font-optical-sizing); font-variation-settings: var(--md-ref-typeface-font-variation-settings); }
+.md-type-headline-large-style  { font-family: var(--md-sys-typescale-headline-large-font);  font-weight: var(--md-sys-typescale-headline-large-weight);  letter-spacing: var(--md-sys-typescale-headline-large-tracking); font-optical-sizing: var(--md-ref-typeface-font-optical-sizing); font-variation-settings: var(--md-ref-typeface-font-variation-settings); }
+.md-type-headline-medium-style { font-family: var(--md-sys-typescale-headline-medium-font); font-weight: var(--md-sys-typescale-headline-medium-weight); letter-spacing: var(--md-sys-typescale-headline-medium-tracking); font-optical-sizing: var(--md-ref-typeface-font-optical-sizing); font-variation-settings: var(--md-ref-typeface-font-variation-settings); }
+.md-type-headline-small-style  { font-family: var(--md-sys-typescale-headline-small-font);  font-weight: var(--md-sys-typescale-headline-small-weight);  letter-spacing: var(--md-sys-typescale-headline-small-tracking); font-optical-sizing: var(--md-ref-typeface-font-optical-sizing); font-variation-settings: var(--md-ref-typeface-font-variation-settings); }
+.md-type-title-large-style     { font-family: var(--md-sys-typescale-title-large-font);     font-weight: var(--md-sys-typescale-title-large-weight);     letter-spacing: var(--md-sys-typescale-title-large-tracking); font-optical-sizing: var(--md-ref-typeface-font-optical-sizing); font-variation-settings: var(--md-ref-typeface-font-variation-settings); }
+.md-type-title-medium-style    { font-family: var(--md-sys-typescale-title-medium-font);    font-weight: var(--md-sys-typescale-title-medium-weight);    letter-spacing: var(--md-sys-typescale-title-medium-tracking); font-optical-sizing: var(--md-ref-typeface-font-optical-sizing); font-variation-settings: var(--md-ref-typeface-font-variation-settings); }
+.md-type-title-small-style     { font-family: var(--md-sys-typescale-title-small-font);     font-weight: var(--md-sys-typescale-title-small-weight);     letter-spacing: var(--md-sys-typescale-title-small-tracking); font-optical-sizing: var(--md-ref-typeface-font-optical-sizing); font-variation-settings: var(--md-ref-typeface-font-variation-settings); }
+.md-type-body-large-style      { font-family: var(--md-sys-typescale-body-large-font);      font-weight: var(--md-sys-typescale-body-large-weight);      letter-spacing: var(--md-sys-typescale-body-large-tracking); font-optical-sizing: var(--md-ref-typeface-font-optical-sizing); font-variation-settings: var(--md-ref-typeface-font-variation-settings); }
+.md-type-body-medium-style     { font-family: var(--md-sys-typescale-body-medium-font);     font-weight: var(--md-sys-typescale-body-medium-weight);     letter-spacing: var(--md-sys-typescale-body-medium-tracking); font-optical-sizing: var(--md-ref-typeface-font-optical-sizing); font-variation-settings: var(--md-ref-typeface-font-variation-settings); }
+.md-type-body-small-style      { font-family: var(--md-sys-typescale-body-small-font);      font-weight: var(--md-sys-typescale-body-small-weight);      letter-spacing: var(--md-sys-typescale-body-small-tracking); font-optical-sizing: var(--md-ref-typeface-font-optical-sizing); font-variation-settings: var(--md-ref-typeface-font-variation-settings); }
+.md-type-label-large-style     { font-family: var(--md-sys-typescale-label-large-font);     font-weight: var(--md-sys-typescale-label-large-weight);     letter-spacing: var(--md-sys-typescale-label-large-tracking); font-optical-sizing: var(--md-ref-typeface-font-optical-sizing); font-variation-settings: var(--md-ref-typeface-font-variation-settings); }
+.md-type-label-medium-style    { font-family: var(--md-sys-typescale-label-medium-font);    font-weight: var(--md-sys-typescale-label-medium-weight);    letter-spacing: var(--md-sys-typescale-label-medium-tracking); font-optical-sizing: var(--md-ref-typeface-font-optical-sizing); font-variation-settings: var(--md-ref-typeface-font-variation-settings); }
+.md-type-label-small-style     { font-family: var(--md-sys-typescale-label-small-font);     font-weight: var(--md-sys-typescale-label-small-weight);     letter-spacing: var(--md-sys-typescale-label-small-tracking); font-optical-sizing: var(--md-ref-typeface-font-optical-sizing); font-variation-settings: var(--md-ref-typeface-font-variation-settings); }
 
 /* -------------------------------------------------------------------------
    PESO PROMINENTE
+   -------------------------------------------------------------------------
+   Estas tres clases NO declaran font-optical-sizing ni font-variation-settings,
+   y es a proposito: solo cambian el peso de su clase base.
+
+       <button class="md-type-label-large md-type-label-large--prominent">
+
+   Los ajustes de variable font ya vienen de `md-type-label-large`. Repetirlos
+   aqui seria duplicarlos sin efecto: el navegador solo aplica el ultimo valor
+   declarado, asi que volver a escribirlos no cambiaria nada.
+
+   ------------------------------------------------------------------------- */
    -------------------------------------------------------------------------
    Variante BOLD (700) que v0.192 define para los tres estilos label. Se
    combina con la clase base usando la convencion de modificador de M3:

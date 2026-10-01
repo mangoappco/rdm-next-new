@@ -170,4 +170,49 @@
 
   /* Regular weight */
   --md-ref-typeface-weight-regular: 400;
+
+  /* ------------------------------------------------------------------------
+     AJUSTES DE VARIABLE FONT
+     --------------------------------------------------------------------------
+     Google Sans Flex no es una fuente con tres estilos fijos: es una fuente
+     VARIABLE, con seis ejes de diseño que se pueden mover de forma continua.
+
+     Estos tokens fijan los valores por defecto de los ejes que NO se tocan en
+     el uso diario. La idea es dejar el peso y el tamaño optical bajo control
+     del sistema (que ya los maneja con font-weight y font-size), y explicitar
+     que los demas ejes se quedan en su posicion neutra.
+
+     QUE HACE CADA EJE
+     ------------------
+       wght   Peso. NO se fija aqui: lo controla --md-ref-typeface-weight-*,
+              que el sistema ya usa para los tres pesos de M3.
+
+       wdth   Ancho. 100 es el ancho normal. Se fija en 100 para que una
+              fuente de respaldo con un ancho distinto no estire el texto.
+
+       slnt   Inclinacion. 0 es vertical. Google Sans Flex admite inclinacion
+              intermedia, pero M3 no la usa.
+
+       opsz   Tamano optical. `auto` deja que el navegador elija el corte
+              optico segun el tamano real del texto. Es el ajuste mas
+              importante: sin el, una fuente se dibuja con el corte de un
+              tamano fijo y se ve mal en los extremos de la escala, que aqui
+              va de 11px a 57px.
+
+       GRAD   Grado. Cambia el grosor visual SIN cambiar el ancho, y por lo
+              tanto sin alterar los saltos de linea. 0 es el valor neutro.
+
+       ROND   Redondeado de los terminales. 0 es la forma neutra.
+
+     POR QUE DECLARARLOS SI 0 Y AUTO SON LOS VALORES POR DEFECTO
+     -----------------------------------------------------------
+     Porque son EXPLICITOS, y esa es la diferencia. Un valor por defecto que
+     no se declara puede cambiar: si una actualizacion de la fuente altera el
+     valor neutral de un eje, el texto del sistema cambia de aspecto sin que
+     nadie haya tocado una linea. Declarandolo, el estado neutro queda
+     garantizado por el codigo, no por la suposicion.
+
+     ========================================================================= */
+  --md-ref-typeface-font-optical-sizing: auto;
+  --md-ref-typeface-font-variation-settings: "slnt" 0, "wdth" 100, "GRAD" 0, "ROND" 0;
 }
