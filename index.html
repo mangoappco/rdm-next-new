@@ -1,5 +1,12 @@
 <!DOCTYPE html>
-<html lang="es">
+<!-- data-theme="light" fija un estado inicial INDEPENDIENTE del sistema
+     operativo del visitante. Sin este atributo, el tema se resuelve por
+     prefers-color-scheme y el showroom se veria oscuro en una maquina con
+     SO oscuro, que no es lo esperado al abrir la referencia visual.
+
+     El toggle de ManGo! App funciona simplemente cambiando este atributo:
+     document.documentElement.setAttribute('data-theme', 'dark') -->
+<html lang="es" data-theme="light">
 <!-- ==========================================================================
      RDM Next — Showroom de componentes
      ==========================================================================

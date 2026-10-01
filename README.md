@@ -383,17 +383,35 @@ motor, no en una convención.
 ## 7. Verificación
 
 ```powershell
-.\tools\verify-tokens.ps1
+powershell -ExecutionPolicy Bypass -File .\tools\verify-tokens.ps1
 ```
 
-Falla si detecta:
+> **Por qué `-ExecutionPolicy Bypass`:** la política de ejecución de PowerShell
+> en Windows deshabilita los scripts `.ps1` por defecto. El flag lo permite solo
+> para esta invocación, sin cambiar la configuración del sistema. También
+> funciona con `-File` si ejecutás desde el editor.
 
-| Verificación                                              | Alcance          |
-| --------------------------------------------------------- | ---------------- |
-| Valores crudos (`#HEX`, `px`, `ms`)                        | `2-sys/`, `3-comp/` |
-| Referencias a `--md-ref-*`                                 | `3-comp/`        |
-| Referencias a `--md-sys-*` o `--md-comp-*`                 | `1-ref/`         |
-| Declaraciones sin `var()`                                  | `2-sys/`, `3-comp/` |
+El script escanea las 19 hojas del sistema, indexa los **443 tokens** definidos y
+aplica 5 reglas:
+
+| Regla | Qué detecta                                                                 | Alcance            |
+| ----- | --------------------------------------------------------------------------- | ------------------ |
+| **1** | Valores crudos: `#HEX`, `px`, `ms`, `rem`                                   | `2-sys/`, `3-comp/` |
+| **2** | Dirección de dependencias (saltos de capa y dependencias circulares)        | todo el proyecto   |
+| **3** | Tokens referenciados que **no existen**                                     | todo el proyecto   |
+| **4** | `theme.light.css` importado **antes** que `theme.dark.css`                  | `app.css`          |
+| **5** | Integridad: carpetas, `@layer` declarado antes de importar, imports válidos | proyecto           |
+
+**La Regla 3 es la más importante.** Un `var(--md-token-inexistente)` no da error:
+el navegador descarta la regla **en silencio** y el componente se ve roto sin
+explicación. Es el fallo más difícil de detectar revisando CSS a ojo.
+
+**La Regla 4 es la más sutil.** El orden de los dos temas es el único punto del
+proyecto donde el orden de escritura cambia el comportamiento: invertido, el
+sistema arranca en oscuro para todo el mundo, y nada en el CSS lo delata.
+
+El script devuelve código de salida `0` si todo cumple y `1` si hay fallos, así que
+se puede encadenar en un hook de `pre-commit` o en CI.
 
 ---
 
