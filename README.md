@@ -100,7 +100,8 @@ Verificado contra los archivos publicados por Google. Nombres exactos:
 | `--md-ref-easing-*`      | `1-ref/easing.css`| 40 puntos de control (10 curvas × 4)      |
 | `--md-sys-elevation-*`   | `2-sys/elevation.css` | 6 niveles (key + ambient)              |
 | `--md-ref-shadow-*`      | `1-ref/shadow.css` | 12 geometrías + 2 opacidades             |
-| `--md-sys-state-*`       | `2-sys/state.css`| 4 opacidades de state layer                |
+| `--md-sys-state-*`       | `2-sys/state.css`| 5 roles de estado + 6 utilidades          |
+| `--md-ref-opacity-*`     | `1-ref/opacity.css`| 4 opacidades crudas                      |
 
 > **Nota sobre `typescale`:** el prefijo real de Google es `typescale`, no `typography`.
 > El archivo se llama `typography.css` por legibilidad, pero los tokens usan
@@ -293,6 +294,34 @@ tokens antiguo.
 > lo que M3 recomienda por defecto. Ese mapeo nivel → tono es decisión de RDM Next;
 > M3 define la escalera `surface-container-*` pero no la relaciona con los niveles.
 
+**Sobre los state layers y `currentColor`:** un state layer es una capa
+semitransparente que se coloca *encima* de un elemento para indicar su estado. M3
+establece que **usa el mismo color que el contenido**, no uno propio:
+
+```css
+.md-state-layer {
+  background-color: currentColor;   /* toma el color del texto o icono */
+  opacity: var(--md-sys-state-hover-state-layer-opacity);
+}
+```
+
+`currentColor` es lo que hace que un solo selector sirva para toda la interfaz: la
+capa se adapta sola al componente donde se aplica, sin que cada componente decida un
+color.
+
+El state layer va en un pseudo-elemento (`::after`), nunca sobre el elemento mismo,
+porque si se aplicara al elemento **taparía el contenido**. El orden de capas que
+define M3 es: container → state layer → content.
+
+> **Una discrepancia real en la especificación de Google.** `focus` y `pressed`
+> tienen dos valores circulando:
+> - `m3.material.io` (documentación, **fuente primaria**) → **0.10**
+> - `_md-sys-state.scss` de Material Web (implementación) → 0.12
+>
+> Este proyecto sigue la documentación. Si Google unifica el valor, se cambia **una
+> línea** en `1-ref/opacity.css` y los 5 roles, las utilidades y toda la app se
+> actualizan por cascada. Es el escenario para el que existe la capa 1.
+
 **Sobre la nomenclatura de duraciones:** M3 agrupa sus 16 duraciones en cuatro
 familias (`short1-4`, `medium1-4`, `long1-4`, `extra-long1-4`). Un componente pide
 `medium2`, no `300ms`. El nombre sobrevive a un cambio de criterio; el número no.
@@ -397,6 +426,7 @@ rdm-next-new/
 │   │   ├── palette.css       --md-ref-palette-*
 │   │   ├── typeface.css      --md-ref-typeface-*
 │   │   ├── corner.css        --md-ref-corner-*
+│   │   ├── opacity.css       --md-ref-opacity-*
 │   │   ├── easing.css        --md-ref-easing-*
 │   │   ├── shadow.css        --md-ref-shadow-*
 │   │   ├── spacing.css       --md-ref-spacing-*
