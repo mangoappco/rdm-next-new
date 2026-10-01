@@ -6,7 +6,7 @@
    -------------------
    CAPA 1 del sistema. Aqui viven los VALORES CRUDOS de tipografia: el NOMBRE
    de la fuente y los PESOS numericos. Es el unico lugar donde se puede
-   escribir "Roboto" o el numero 700.
+   escribir "Google Sans Flex" o el numero 700.
 
    POR QUE SOLO HAY 5 TOKENS
    -------------------------
@@ -17,7 +17,7 @@
 
    RELACION CON LAS OTRAS CAPAS
    -----------------------------
-       1-ref/typeface.css    <-- Roboto, 400 / 500 / 700 (CRUDOS)
+       1-ref/typeface.css    <-- Google Sans Flex, 400 / 500 / 700 (CRUDOS)
               |
               v
        2-sys/typography.css   <-- los 15 estilos M3, cada uno con
@@ -36,15 +36,27 @@
    Este proyecto los coloca PRIMERO, en la capa que les corresponde. La
    jerarquia del archivo refleja la jerarquia del sistema.
 
-   FUENTE: Roboto (Apache License 2.0)
-   -----------------------------------
-   Roboto es la tipografia oficial de Material Design 3 y tiene licencia
-   abierta, a diferencia de Google Sans que solo autoriza uso en productos de
-   Google.
+   FUENTE: Google Sans Flex (licencia abierta, en Google Fonts)
+   -----------------------------------------------------------
+   Google Sans Flex es la tipografia de marca de Google y la que usa la propia
+   documentacion oficial de Material Design 3. Se publica en Google Fonts bajo
+   licencia abierta, asi que se puede usar en proyectos comerciales sin
+   restriccion.
 
-   Se carga desde Google Fonts por @import. Consecuencia a tener en cuenta:
-   el showroom requiere conexion a internet para mostrar la fuente. Si el
-   proyecto llegara a necesitar funcionar offline, habria que alojarla local.
+   Esto cambio respecto de la version estatica de Google Sans, que durante anos
+   solo autorizaba uso dentro de productos de Google. La variante Flex es el
+   caso distinto: es abierta. Por eso se elige Flex.
+
+   NOTA SOBRE LA LICENCIA
+   ----------------------
+   Google Sans (la version estatica) estuvo restringida a productos de Google
+   durante anos. Google Sans Flex es el caso distinto: se publico en Google
+   Fonts bajo licencia abierta, y se puede usar en cualquier proyecto, comercial
+   incluido. Por eso se elige Flex y no la variante estatica.
+
+   Se carga desde Google Fonts por <link> en index.html. Consecuencia a tener en
+   cuenta: el showroom requiere conexion a internet para mostrar la fuente. Si
+   el proyecto llegara a necesitar funcionar offline, habria que alojarla local.
 
    ========================================================================== */
 
@@ -53,30 +65,44 @@
    ---------------------------------------------------------------------------
    FUENTE PRINCIPAL (la que usa el proyecto)
    ------------------------------------------
-   Roboto se carga desde index.html con <link> y preconnect, NO desde aqui.
-   Motivo tecnico: un @import de CSS bloquea el descubrimiento de los recursos
-   posteriores. El navegador tiene que descargar ESTE archivo, terminar de
-   parsearlo, descubrir el @import de la fuente, y solo entonces puede empezar
-   a leer el resto del CSS. Para una fuente, eso es el peor caso posible: nada
-   se puede pintar hasta que la fuente este descargada.
+   Google Sans Flex se carga desde index.html con <link> y preconnect, NO desde
+   aqui. Motivo tecnico: un @import de CSS bloquea el descubrimiento de los
+   recursos posteriores. El navegador tiene que descargar ESTE archivo, terminar
+   de parsearlo, descubrir el @import de la fuente, y solo entonces puede
+   empezar a leer el resto del CSS. Para una fuente, eso es el peor caso
+   posible: nada se puede pintar hasta que la fuente este descargada.
 
    La forma correcta es declararlo en el <head> del HTML:
 
        <link rel="preconnect" href="https://fonts.googleapis.com">
        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
 
-   Asi el navegador descarga la fuente en paralelo con el resto, y ademas
-   `display=swap` muestra el texto con una fuente provisional mientras llega
-   la definitiva, en lugar de texto invisible.
+   ---------------------------------------------------------------------------
+   POR QUE ESA URL NO DECLARA :wght
+   ----------------------------------
+   Es tentador escribir `:wght@400;500;700`, pero conviene NO hacerlo, y el
+   motivo es el peso real de la descarga.
+
+   Cuando se declara `:wght`, Google responde con un archivo TTF POR PESO: tres
+   peticiones y del orden de 100-200 KB cada una.
+
+   Cuando NO se declara, Google detecta que el navegador soporta woff2 y sirve
+   un unico archivo variable, del orden de 30-60 KB, que cubre los tres pesos y
+   todos los intermedios. Es entre dos y tres veces mas ligero.
+
+   Google Sans Flex es ademas una fuente VARIABLE con ejes de peso, ancho y
+   tamaño optico. Servir el archivo variable completo es lo que mas aprovecha
+   el diseño, y lo que hace que el sistema pueda pedir 450 o 520 sin pedir otro
+   archivo.
 
    ---------------------------------------------------------------------------
    FALLBACK: POR QUE ESTA EL @import COMENTADO
    ---------------------------------------------------------------------------
    Esta regla queda comentada a proposito. Si alguien importa ESTE archivo de
    forma aislada, sin pasar por index.html, los tokens de fuente seguirian
-   declarandose pero Roboto no se descargaria: el texto se veria con la fuente
-   por defecto del sistema.
+   declarandose pero Google Sans Flex no se descargaria: el texto se veria con
+   la fuente por defecto del sistema.
 
    Para cubrir ese caso se descomenta la regla siguiente. El trade-off es
    explicito: se recupera la autosuficiencia del archivo a costa de la
@@ -87,23 +113,47 @@
    --------------------------------------------------------------------------- */
 
 /* FALLBACK — descomentar solo si este archivo se usa sin index.html.
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap");
 */
 
 :root {
   /* ------------------------------------------------------------------------
      FAMILY — la familia tipografica del sistema
-     Se declara con comillas porque el nombre puede contener espacios en
-     futuras sustituciones. "Roboto" es el nombre correcto segun el
-     tokenizer de Google Fonts.
+     ------------------------------------------------------------------------
+     Se declara un STACK COMPLETO, no solo el nombre de la fuente.
+
+     El primer elemento es Google Sans Flex. Los siguientes son respaldo, en
+     este orden:
+
+       -apple-system, BlinkMacSystemFont    fuentes nativas del sistema
+       'Segoe UI'                           Windows
+       Roboto                               Android y respaldo web
+       sans-serif                           ultima instancia, siempre presente
+
+     POR QUE UN STACK Y NO SOLO EL NOMBRE
+     -------------------------------------
+     El `display=swap` que se usa en el <link> de la fuente hace que el
+     navegador pinte el texto con una fuente provisional mientras descarga la
+     definitiva. Ese texto tiene que verse LEIBLE, no con una serif por
+     defecto.
+
+     Con el stack, esa fuente provisional es la del sistema operativo, que es
+     similar en estructura y metricas. Con solo el nombre, seria Times New
+     Roman: serifas en undede de la interfaz.
+
+     La coma final tambien importa: sin ella, si Google Sans Flex no esta
+     disponible, el navegador usaria el nombre literal de la fuente en vez de
+     pasar a la siguiente de la lista.
      --------------------------------------------------------------------- */
   /* Plain typeface — texto corriente, cuerpo de la app */
-  --md-ref-typeface-plain: "Roboto";
+  --md-ref-typeface-plain: "Google Sans Flex", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
   /* Brand typeface — titulares y elementos de marca.
-     En M3 ambos apuntan a Roboto. Se mantienen separados porque una identidad
-     de marca podria divergir mas adelante sin tocar los estilos de texto. */
-  --md-ref-typeface-brand: "Roboto";
+     En M3 ambos apuntan a la misma familia. Se mantienen separados porque una
+     identidad de marca podria divergir mas adelante sin tocar los estilos de
+     texto: por ejemplo, una marca con tipografia propia en los titulos y la
+     del sistema en el cuerpo. */
+  --md-ref-typeface-brand: "Google Sans Flex", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
   /* ------------------------------------------------------------------------
      WEIGHTS — los tres unicos pesos del sistema

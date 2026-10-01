@@ -15,7 +15,7 @@
 
      Este archivo existe para dos cosas:
 
-       1. Cargar el sistema completo (css/main.css) y la fuente Roboto.
+       1. Cargar el sistema completo (css/main.css) y la fuente Google Sans Flex.
        2. Servir de esqueleto donde luego se inserten los componentes.
 
      AUN NO HAY COMPONENTES. El sistema de tokens esta completo
@@ -45,7 +45,8 @@
   <!-- ==========================================================================
        CARGA DE LA FUENTE
        --------------------------------------------------------------------------
-       Roboto se carga AQUI, con <link>, y no dentro del CSS. Motivo tecnico:
+       Google Sans Flex se carga AQUI, con <link>, y no dentro del CSS.
+       Motivo tecnico:
 
        Un @import de CSS bloquea el descubrimiento de los recursos
        posteriores. El navegador tiene que terminar de leer el CSS, descubrir
@@ -57,17 +58,30 @@
          2. preconnect a fonts.gstatic.com     -> idem, y con crossorigin
          3. el stylesheet de la fuente         -> se descarga en paralelo
 
-       El parametro `display=swap` es importante: hace que el navegador pinte
-       el texto con una fuente provisional mientras Roboto descarga, en lugar
-       de mostrar texto invisible. Para una app que se carga en conexiones
-       lentas, la diferencia se nota.
+       POR QUE LA URL NO DECLARA :wght
+       ---------------------------------
+       Seria tentador escribir `family=Google+Sans+Flex:wght@400;500;700`. No
+       se hace a proposito, y el motivo es el peso de la descarga:
+
+         con :wght   ->  Google responde con un TTF por peso: 3 peticiones,
+                         del orden de 100-200 KB cada una
+         sin :wght   ->  Google sirve el archivo VARIABLE en woff2: 1 peticion,
+                         del orden de 30-60 KB, que cubre todos los pesos
+
+       Entre dos y tres veces mas ligero. Y como Google Sans Flex es variable,
+       servir el archivo completo es ademas lo que mas aprovecha el diseno.
+
+       El parametro `display=swap` hace que el navegador pinte el texto con una
+       fuente provisional mientras descarga la definitiva, en lugar de mostrar
+       texto invisible. Esa fuente provisional sale del stack declarado en
+       css/1-ref/typeface.css, que empieza por las fuentes del sistema.
 
        El fallback para usar el archivo de forma aislada esta comentado en
        css/1-ref/typeface.css, con la explicacion del trade-off.
        ========================================================================== -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
 
   <!-- ==========================================================================
        EL SISTEMA DE TOKENS
@@ -82,7 +96,21 @@
   <link rel="stylesheet" href="css/main.css">
 </head>
 
-<body>
+<body style="
+  /* Reset minimo del body.
+     Sin esto, el <body> queda con los valores por defecto del navegador:
+     Times New Roman y margin 8px. Es un detalle que se ve solo mirando el
+     showroom en pantalla completa, pero delata que falta el reset.
+
+     El reset completo del sistema vivira en utilities/reset.css cuando se
+     implemente la capa utilities de main.css. Por ahora, con lo minimo
+     indispensable para que el placeholder se vea correcto. */
+  margin: 0;
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-family: var(--md-ref-typeface-plain);
+">
+
   <!-- ====================================================================== -->
   <!-- INICIO: PLACEHOLDER - SHOWROOM SIN COMPONENTES                        -->
   <!-- ====================================================================== -->
@@ -114,7 +142,7 @@
       Este bloque usa clases de utilidad del propio sistema
       (.md-type-headline-medium, .md-type-body-large) para comprobar que la
       cadena 1-ref -> 2-sys -> utilidad funciona de extremo a extremo.
-      Si el texto se ve con Roboto y el tamano correcto, el sistema carga bien.
+      Si el texto se ve con Google Sans Flex y el tamano correcto, el sistema carga bien.
     -->
 
   </main>
