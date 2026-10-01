@@ -90,11 +90,12 @@ Verificado contra los archivos publicados por Google. Nombres exactos:
 | `--md-ref-typeface-*`    | `1-ref/typeface.css`| 5 tokens (plain, brand, 3 pesos)         |
 | `--md-ref-typescale-*`   | `1-ref/typescale.css` | 45 medidas (15 estilos × size/line-height/tracking) |
 | `--md-ref-stroke-*`      | `1-ref/stroke.css` | 3 grosores — **extensión propia**       |
+| `--md-ref-corner-*`      | `1-ref/corner.css` | 7 radios de esquina (v0.192)            |
 | `--md-sys-color-*`       | `2-sys/theme/*.css` | 37 roles × 2 temas                      |
 | `md-bg-*` / `md-text-*` / `md-border-*` | `2-sys/colors.css` | 93 clases utilitarias de color |
 | `--md-sys-typescale-*`   | `2-sys/typography.css` | 15 estilos × 5 sub-tokens + 15 compuestos |
 | `.md-type-*`             | `2-sys/typography.css` | 33 clases tipográficas               |
-| `--md-sys-shape-*`       | `2-sys/shape.css`| Esquinas y radios                          |
+| `--md-sys-shape-*`       | `2-sys/shape.css`| 11 roles de esquina + variantes por lado |
 | `--md-sys-motion-*`      | `2-sys/motion.css`| Duraciones y easing                        |
 | `--md-sys-elevation-*`   | `2-sys/elevation.css` | Niveles 0–5                            |
 | `--md-sys-state-*`       | `2-sys/state.css`| 4 opacidades de state layer                |
@@ -174,6 +175,26 @@ Por eso las utilidades `.md-border-*` aplican **solo `border-color`**: el grosor
 una medida y el grosor correcto depende del estado del componente (un separador es
 `thin`, el borde de un checkbox sin marcar es `thick`). Esa decisión es del
 componente en `3-comp/`, no de una clase de color.
+
+**Por qué `corner.css` no reutiliza `spacing`:** cinco de los siete radios coinciden
+con tokens de espacio (`extra-small` 4px = `space-50`, `small` 8px = `space-100`,
+`medium` 12px = `space-150`, `large` 16px = `space-200`), y aun así se redefinen.
+Es redundancia deliberada:
+
+- **`extra-large` (28px) no existe en la escala.** La escala oficial va
+  `0, 25, 50, 75, 100, 125, 150, 175, 200, 250, 300, 400...`; los vecinos de 28px
+  son 24px y 32px, ambos a 4px. Usar `space-300` daría un radio 14% más pequeño de
+  lo que M3 especifica, y en un modal sheet el redondeo se nota.
+- **`full` (9999px) no es una medida de espacio.** Es un "casi infinito" que
+  significa "pastilla o círculo". `space-900` es 72px, y 72px de radio en una tarjeta
+  de 300px no produce una pastilla.
+- **Un radio no es un espaciado aunque coincida el número.** Si la escala de espacio
+  se compactara para la app, los radios de M3 no deberían moverse: son parte de la
+  especificación visual del sistema, no de su retícula de layout.
+
+Es el mismo criterio que aplicamos en `palette.css`, donde `--md-ref-palette-black`
+duplica `neutral0`: un valor puede coincidir con otro y aun así merecer su propio
+token cuando significa algo distinto.
 
 ---
 
@@ -269,6 +290,7 @@ rdm-next-new/
 │   ├── 1-ref/                Valores crudos (única capa que los permite)
 │   │   ├── palette.css       --md-ref-palette-*
 │   │   ├── typeface.css      --md-ref-typeface-*
+│   │   ├── corner.css        --md-ref-corner-*
 │   │   ├── spacing.css       --md-ref-spacing-*
 │   │   ├── stroke.css        --md-ref-stroke-*
 │   │   ├── typescale.css     --md-ref-typescale-*
