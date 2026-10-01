@@ -131,25 +131,51 @@ Verificado contra los archivos publicados por Google. Nombres exactos:
 | Familia                  | Archivo          | Notas                                       |
 | ------------------------ | ---------------- | ------------------------------------------- |
 | `--md-ref-palette-*`     | `1-ref/palette.css` | 91 tonos (v0.192)                      |
-| `--md-ref-typeface-*`    | `1-ref/typeface.css`| 5 tokens (plain, brand, 3 pesos)         |
+| `--md-ref-typeface-*`    | `1-ref/typeface.css`| 7 tokens: 5 de Google (plain, brand, 3 pesos) + 2 propios (`font-optical-sizing`, `font-variation-settings`) |
 | `--md-ref-typescale-*`   | `1-ref/typescale.css` | 45 medidas (15 estilos × size/line-height/tracking) |
 | `--md-ref-stroke-*`      | `1-ref/stroke.css` | 3 grosores — **extensión propia**       |
 | `--md-ref-corner-*`      | `1-ref/corner.css` | 10 radios de esquina                     |
 | `--md-sys-color-*`       | `2-sys/theme/*.css` | 37 roles × 2 temas                      |
 | `md-bg-*` / `md-text-*` / `md-border-*` | `2-sys/colors.css` | 93 clases utilitarias de color |
-| `--md-sys-typescale-*`   | `2-sys/typography.css` | 15 estilos × 5 sub-tokens + 15 compuestos |
-| `.md-type-*`             | `2-sys/typography.css` | 33 clases tipográficas               |
+| `--md-sys-typescale-*`   | `2-sys/typography.css` | 92 tokens (15 estilos × 5 sub-tokens + 15 compuestos + 2 `weight-prominent`) |
+| `.md-type-*`             | `2-sys/typography.css` | 32 clases tipográficas               |
 | `--md-sys-shape-*`       | `2-sys/shape.css`| 15 roles de esquina + variantes por lado |
 | `--md-sys-motion-*`      | `2-sys/motion.css`| 16 duraciones + 10 curvas                 |
 | `--md-ref-easing-*`      | `1-ref/easing.css`| 40 puntos de control (10 curvas × 4)      |
 | `--md-sys-elevation-*`   | `2-sys/elevation.css` | 6 niveles (key + ambient)              |
-| `--md-ref-shadow-*`      | `1-ref/shadow.css` | 12 geometrías + 2 opacidades             |
+| `--md-ref-shadow-*`      | `1-ref/shadow.css` | 14 tokens: 6 geometrías `key-*` + 6 `ambient-*` + 2 opacidades. Google **no publica** sombras: la geometría salió de los comentarios del código de `<md-elevation>` |
 | `--md-sys-state-*`       | `2-sys/state.css`| 5 roles de estado + 6 utilidades          |
 | `--md-ref-opacity-*`     | `1-ref/opacity.css`| 4 opacidades crudas                      |
 
 > **Nota sobre `typescale`:** el prefijo real de Google es `typescale`, no `typography`.
 > El archivo se llama `typography.css` por legibilidad, pero los tokens usan
 > `--md-sys-typescale-*`. Confundir ambos nombres es un error frecuente.
+
+> **Nota sobre `weight-prominent`:** existen **dos**, no tres.
+> Google publica `label-large-weight-prominent` y `label-medium-weight-prominent`,
+> y **no** publica uno para `label-small`.
+> Verificado en `tokens/versions/v0_192/_md-sys-typescale.scss`: el token no existe.
+> La documentación de m3.material.io describe quince estilos "emphasized", pero el
+> SCSS de Material Web solo emite los que tienen valor, y ese no lo tiene
+> (`_typescale.scss`: *"the prominent selector is not emitted by Sass when a
+> typescale's prominent values are null"*).
+> Por eso existen dos clases `.md-type-label-*-prominent` y no tres. Este proyecto
+> declaraba también el tercero; se eliminó para no divergir de la fuente.
+
+> **Nota sobre la versión de tokens:** seguimos **v0.192**, no la última.
+> El repositorio de Material Web contiene tres generaciones:
+> `tokens/_md-*.scss` (actual), `tokens/v0_192/` (la nuestra) y
+> `tokens/versions/latest/sass/`, que corresponde a la **versión de diseño 34.0.21**.
+> Esa última cambió el modelo tipográfico: usa tags de variable font
+> (`-wght`, `-opsz`, `-wdth`, `-slnt`) en lugar de `-weight`, y sube de 92 a 213
+> tokens. También añadió contraste alto (`_md-sys-color__high-contrast.scss`) y
+> `md.sys.state.focus-indicator`.
+>
+> No se adoptó a propósito: cambiaría los 93 tokens de typescale por 213, y
+> `font-variation-settings` (ya presente en `1-ref/typeface.css`) cubre ese caso.
+> Se anota aquí para que la diferencia sea una decisión documentada y no un olvido.
+> La escala de `corner` de `latest/` **sí** coincide con la nuestra, incluidos
+> `large-increased` y `extra-large-increased`.
 
 > **Nota sobre `colors.css`:** este archivo **no define variables `:root`**.
 > Expone los roles como clases utilitarias que consumen `var(--md-sys-color-*)`.
@@ -205,6 +231,36 @@ los tokens de sistema de Google son **solo color, elevation, motion, shape, stat
 typography**. No existe ningún token de `margin`, `gap` ni `padding`. Por eso
 `measurement.css` expone únicamente medidas de componente y de icono, que sí tienen
 respaldo en la especificación.
+
+**Los 12 tokens de color que NO adoptamos: la familia `*-fixed`.**
+Google publica doce roles que este proyecto no tiene:
+
+```
+primary-fixed          primary-fixed-dim           on-primary-fixed
+on-primary-fixed-variant
+secondary-fixed        secondary-fixed-dim         on-secondary-fixed
+on-secondary-fixed-variant
+tertiary-fixed         tertiary-fixed-dim          on-tertiary-fixed
+on-tertiary-fixed-variant
+```
+
+Verificado en `_md-sys-color.scss` v0.192: son los **únicos roles cuyo valor es idéntico
+en el tema claro y en el oscuro** (por ejemplo `primary-fixed` mapea a `primary90` en
+ambos). Ese es su propósito: mantener la identidad de marca en superficies que no deben
+cambiar al alternar el tema.
+
+Se decidió **no adoptarlos** porque hasta ahora ManGo! App no tiene esa necesidad: no hay
+color dinámico de marca ni superficies que deban conservar su tono entre temas. Agregarlos
+sería agregar tokens muertos.
+
+Si algún día se necesita color dinámico o una superficie de marca invariante, la lista
+exacta está arriba y se puede portar sin volver a investigar el SCSS.
+
+**Un token nuestro que Google no publica:** `--md-sys-color-shadow-rgb` (`0 0 0`).
+Google expone `--md-sys-color-shadow` pero no la variante en tripletos. Existe porque la
+opacidad solo se puede aplicar a un color en formato `rgb()`, y sin este token el `rgba`
+quedaría quemado dentro de la geometría de `1-ref/shadow.css`, que es exactamente lo que
+la arquitectura prohíbe: la primitiva no puede decidir el color, eso es del tema.
 
 **Lo que NO está en `measurement.css`, y por qué:** los roles de retícula
 (`page-margin`, `section-gap`, `item-gap`, `content-padding`) se eliminaron. Ninguno

@@ -200,7 +200,8 @@
      se sin competir con los titulos. NUNCA usar para parrafos.
 
      `weight-prominent` es la variante BOLD (700) que v0.192 anade para
-     botones y chips que necesitan mas enfasis.
+     botones y chips que necesitan mas enfasis. Solo existe para label-large y
+     label-medium: Google no lo publica para label-small.
      ====================================================================== */
 
   --md-sys-typescale-label-large-weight: var(--md-ref-typeface-weight-medium);
@@ -222,7 +223,14 @@
   --md-sys-typescale-label-small-line-height: var(--md-ref-typescale-label-small-line-height);
   --md-sys-typescale-label-small-tracking: var(--md-ref-typescale-label-small-tracking);
   --md-sys-typescale-label-small-font: var(--md-ref-typeface-plain);
-  --md-sys-typescale-label-small-weight-prominent: var(--md-ref-typeface-weight-bold);
+  /* label-small NO tiene weight-prominent. Google no lo publica: en
+     tokens/versions/v0_192/_md-sys-typescale.scss solo existen
+     label-large-weight-prominent y label-medium-weight-prominent.
+
+     La especificacion de m3.material.io describe quince estilos "emphasized",
+     pero el SCSS de Material Web solo emite los que tienen valor, y este no
+     lo tiene. Se declaraba aqui igual; se elimino para no divergir de la
+     fuente oficial. Ver la seccion 4 del README. */
 
   /* ==========================================================================
      TOKENS COMPUESTOS (atajos)
@@ -456,8 +464,12 @@
 /* -------------------------------------------------------------------------
    PESO PROMINENTE
    -------------------------------------------------------------------------
-   Estas tres clases NO declaran font-optical-sizing ni font-variation-settings,
+   Estas DOS clases NO declaran font-optical-sizing ni font-variation-settings,
    y es a proposito: solo cambian el peso de su clase base.
+
+   Son dos, no tres, porque Google no publica weight-prominent para
+   label-small. Verificado en tokens/versions/v0_192/_md-sys-typescale.scss:
+   solo existen label-large-weight-prominent y label-medium-weight-prominent.
 
        <button class="md-type-label-large md-type-label-large-prominent">
 
@@ -492,4 +504,5 @@
    ------------------------------------------------------------------------- */
 .md-type-label-large-prominent { font-weight: var(--md-sys-typescale-label-large-weight-prominent); }
 .md-type-label-medium-prominent { font-weight: var(--md-sys-typescale-label-medium-weight-prominent); }
-.md-type-label-small-prominent { font-weight: var(--md-sys-typescale-label-small-weight-prominent); }
+/* NO existe .md-type-label-small-prominent, y es intencional: Google no publica
+   weight-prominent para label-small. Ver la cabecera de este bloque. */
