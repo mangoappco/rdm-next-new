@@ -38,11 +38,63 @@
 
        1-ref/spacing.css   ->  2-sys/measurement.css   (medida -> su intencion)
        1-ref/time.css      ->  2-sys/motion.css        (tiempo  -> su intencion)
-       1-ref/stroke.css   ->  2-sys/shape.css         (grosor  -> su intencion)
+       1-ref/stroke.css    ->  2-sys/shape.css         (grosor  -> su intencion)
        1-ref/corner.css    ->  2-sys/shape.css         (radio   -> su intencion)
 
-   Ademas, "measurement" es el termino que usa la propia documentacion de
-   Material Design para estos valores.
+   ---------------------------------------------------------------------------
+   ESTE ARCHIVO NO ES OFICIAL DE M3
+   ---------------------------------------------------------------------------
+   Conviene decirlo sin rodeos, porque es facil confundirlo con los tokens
+   de Google:
+
+     La escala 1-ref/spacing.css SI es oficial. Los nombres Space 0 a
+     Space 900 estan publicados en m3.material.io/styles/spacing/tokens.
+
+     ESTE archivo no. Google no publico ningun token set de medidas en CSS.
+     No existe md.sys.measurement. Verificado contra la fuente primaria
+     (_md-sys-color.scss de Material Web v0.192), donde los tokens de
+     sistema son SOLO: color, elevation, motion, shape, state y typography.
+     Ni margin, ni gap, ni padding.
+
+   Los 10 roles de aqui son una EXTENSION PROPIA. No significa que sean
+   incorrectos: se apoyan en medidas que M3 si publica, como el area tactil
+   de 48dp o el tamano de icono de 24dp. Significa que si alguien compara
+   este archivo con los tokens de Google, las diferencias son esperadas y
+   estan justificadas.
+
+   Y "measurement" es un nombre elegido para este proyecto. NO es el termino
+   que usa la documentacion de Material Design: Google habla de "spacing" y
+   de "dp". Una version anterior de esta cabecera afirmaba lo contrario, y
+   era falso.
+
+   ---------------------------------------------------------------------------
+   POR QUE NO HAY ROLES DE RETICULA (page-margin, section-gap, ...)
+   ---------------------------------------------------------------------------
+   Este archivo JA NO declara margins, gaps ni paddings de pagina. Antes si,
+   con cuatro roles:
+
+       --md-sys-measurement-page-margin      --md-sys-measurement-item-gap
+       --md-sys-measurement-section-gap      --md-sys-measurement-content-padding
+
+   Se quitaron por dos razones, y conviene tenerlas presentes para no
+   volver a proponerlos:
+
+   1. NO TIENEN RESPALDO EN M3. Los otros 10 roles de este archivo se apoyan
+      en medidas que M3 publica: el area tactil de 48dp, la altura del boton,
+      el tamano del icono. El margen lateral de pagina y la separacion entre
+      secciones no aparecen en ninguna parte de la especificacion. Eran
+      numeros elegidos por conveniencia, no decisiones de diseno.
+
+   2. EL RITMO DE PAGINA NO ES UN TOKEN, ES UN COMPONENTE. El espacio entre
+      secciones depende de CUANTAS secciones hay y de que las contiene. Una
+      medida fija en 2-sys/ obliga a decidirlo una vez y para siempre, y esa
+      decision pertenece a la pagina, no al sistema de medidas.
+
+   Cuando se construya el componente de 3-comp/ que resuelva esto, consumira
+   los tokens de 1-ref/spacing.css directamente. Un componente puede leer 1-ref
+   por su cuenta: lo que la arquitectura prohibe es que un COMPONENTE lea
+   tokens de otro componente, o que 3-comp lea 1-ref saltandose 2-sys en un
+   token compartido. Ver la REGLA 2 de tools/verify-tokens.ps1.
 
    ---------------------------------------------------------------------------
    POR QUE TODAS LAS MEDIDAS CAEN EN spacing.css
@@ -51,13 +103,10 @@
    de los radios (donde 28px no existia en la escala), TODOS los roles de
    este archivo tienen su token correspondiente:
 
-     48dp -> space-600      8dp -> space-100      32dp -> space-400
-     24dp -> space-300     40dp -> space-500      16dp -> space-200
-     56dp -> space-700     64dp -> space-800      72dp -> space-900
-     20dp -> space-250     12dp -> space-150      80dp -> (ninguno)
-     36dp -> space-450
+     48dp -> space-600      8dp -> space-100      40dp -> space-500
+     24dp -> space-300     16dp -> space-200      64dp -> space-800
 
-   Los 11 roles de abajo, sin excepcion. Por eso este archivo queda 100%
+   Los 10 roles de abajo, sin excepcion. Por eso este archivo queda 100%
    fiel al principio de consumir unicamente var().
 
    ========================================================================== */
@@ -142,25 +191,6 @@
 
   /* Icono pequeno, para chips y badges. */
   --md-sys-measurement-icon-size-small: var(--md-ref-spacing-200);
-
-  /* ==========================================================================
-     MARGENES Y SEPARACIONES DE LAYOUT
-     --------------------------------------------------------------------------
-     Medidas de retícula, no de componentes. Definen el ritmo vertical de una
-     pagina.
-     ====================================================================== */
-
-  /* Margen lateral estandar de la pagina. */
-  --md-sys-measurement-page-margin: var(--md-ref-spacing-400);
-
-  /* Separacion vertical entre secciones de contenido. */
-  --md-sys-measurement-section-gap: var(--md-ref-spacing-600);
-
-  /* Separacion entre elementos de una misma lista o grupo. */
-  --md-sys-measurement-item-gap: var(--md-ref-spacing-300);
-
-  /* Padding interior estandar de un componente tipo tarjeta. */
-  --md-sys-measurement-content-padding: var(--md-ref-spacing-400);
 }
 
 /* ==========================================================================

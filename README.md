@@ -11,7 +11,7 @@ Este repositorio es la **fuente única de verdad** del sistema de diseño de Man
 
 No es una maqueta ni un prototipo: es la implementación real de tokens y recetas que
 consumirá el sistema final. El showroom y la app de producción cargan **el mismo
-orquestador `css/main.css`**. Lo que se ve aquí es exactamente lo que궁 se ejecuta allí.
+orquestador `css/main.css`**. Lo que se ve aquí es exactamente lo que se ejecuta allí.
 
 ---
 
@@ -147,7 +147,7 @@ sobre specs oficiales de Google:
 | Familia                   | Archivo             | Origen                                                    |
 | ------------------------- | ------------------- | --------------------------------------------------------- |
 | `--md-ref-spacing-*`      | `1-ref/spacing.css` | Escala oficial M3 `Space 0`–`Space 900`                     |
-| `--md-sys-measurement-*`  | `2-sys/measurement.css` | 14 roles de medida (**extensión propia**) |
+| `--md-sys-measurement-*`  | `2-sys/measurement.css` | 10 roles de medida (**extensión propia**) |
 | `--md-ref-stroke-*`       | `1-ref/stroke.css` | Grosor de trazo: `none`/`thin`/`thick`                  |
 
 **Detalle importante sobre la escala de espacio:** los nombres `Space 0` … `Space 900`
@@ -155,6 +155,21 @@ sobre specs oficiales de Google:
 valores cada 4dp hasta `Space 200` y múltiplos de 8dp después). Lo que **no** es oficial
 es el prefijo `md.sys.measurement`; Google nunca publicó un token set de spacing en CSS.
 Por eso el nombre lleva prefijo `md-*` propio y está documentado aquí como extensión.
+
+**Verificado contra la fuente primaria** (`_md-sys-color.scss` de Material Web v0.192):
+los tokens de sistema de Google son **solo color, elevation, motion, shape, state y
+typography**. No existe ningún token de `margin`, `gap` ni `padding`. Por eso
+`measurement.css` expone únicamente medidas de componente y de icono, que sí tienen
+respaldo en la especificación.
+
+**Lo que NO está en `measurement.css`, y por qué:** los roles de retícula
+(`page-margin`, `section-gap`, `item-gap`, `content-padding`) se eliminaron. Ninguno
+tiene respaldo en M3 — el margen lateral de página y la separación entre secciones no
+aparecen en la especificación — y, más importante, el ritmo de página no es un token:
+depende de cuántas secciones hay y de qué contienen. Esa decisión pertenece a un
+componente de `3-comp/`, que consumirá `1-ref/spacing.css` directamente. Un componente
+puede leer `1-ref` por su cuenta; lo que la arquitectura prohíbe es que un componente lea
+tokens de *otro* componente, o que `3-comp` salte `2-sys` en un token compartido.
 
 **Qué aporta `measurement.css` sobre `spacing.css`:** el número no explica su
 propósito. `48px` a secas no dice por qué es 48; `--md-sys-measurement-touch-target`
