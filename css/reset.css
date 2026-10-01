@@ -84,12 +84,13 @@
 
      background/color        Los roles base del tema activo. Si el tema cambia,
                              el fondo y el texto cambian con el, sin tocar el
-                             HTML: basta con que data-theme cambie de valor.
+                             HTML: basta con que data-theme cambie de valor,
+                             o con que el sistema operativo cambie de modo.
 
-                             El tema lo decide data-theme o, si el atributo no
-                             esta, el orden de los imports de main.css. NO se
-                             consulta prefers-color-scheme en ninguna parte del
-                             sistema. Ver theme.light.css.
+                             El tema lo decide data-theme (eleccion explicita)
+                             o, si el atributo no esta, prefers-color-scheme
+                             (preferencia del SO). Ver theme.light.css y
+                             theme.dark.css para el mecanismo completo.
 
      text-rendering          optimizeLegibility activa features de texto que
                              mejoran la legibilidad (kerning, ligaduras) en

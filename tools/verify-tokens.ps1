@@ -292,7 +292,7 @@ else {
     }
     elseif ($iLight -gt $iDark) {
         Add-Issue -Rule 'REGLA 4' -File 'css/main.css' -Line 0 `
-                  -Message 'orden invertido: theme.light.css debe importarse ANTES que theme.dark.css, o el sistema arranca en oscuro para todos' `
+                  -Message 'orden invertido: theme.light.css debe importarse ANTES que theme.dark.css (convencion de legibilidad; ya no afecta el comportamiento del tema)' `
                   -Snippet ''
     }
 
@@ -424,6 +424,100 @@ foreach ($html in $htmlFiles) {
 }
 
 # ============================================================================
+# REGLA 7 - Sincronizacion de bloques de tema
+# ---------------------------------------------------------------------------
+# Cada archivo de tema declara sus 38 tokens en DOS bloques: uno con @media
+# (para prefers-color-scheme) y otro con [data-theme] (para eleccion
+# explicita). Ambos bloques deben ser IDENTICOS.
+#
+# Si se cambia un tono en un bloque y no en el otro, el tema se comporta
+# de forma diferente segun si el usuario eligio el tema o lo heredo del SO.
+# Es un error sutil que no se ve a simple vista: el showroom puede verse
+# bien (porque usa el bloque del SO) mientras que el toggle de ManGo! App
+# muestra colores distintos (porque usa el bloque del atributo).
+#
+# Esta regla extrae los tokens de ambos bloques y los compara.
+# ============================================================================
+
+$themeFiles = @('css\2-sys\theme\theme.light.css', 'css\2-sys\theme\theme.dark.css')
+
+foreach ($tf in $themeFiles) {
+    $path = Join-Path $ProjectRoot $tf
+    if (-not (Test-Path $path)) { continue }
+
+    $code = Get-CodeOnly $path
+    $lines = $code -split "`n"
+
+    # Extraer tokens de un rango de lineas
+    $getTokens = {
+        param($start, $end)
+        $result = @{}
+        for ($i = $start; $i -le $end; $i++) {
+            if ($lines[$i] -match '^\s*(--md-sys-color-[a-z0-9-]+)\s*:\s*(.+?)\s*;') {
+                $result[$matches[1]] = $matches[2]
+            }
+        }
+        return $result
+    }
+
+    # Encontrar el bloque @media
+    $mediaStart = -1
+    for ($i = 0; $i -lt $lines.Count; $i++) {
+        if ($lines[$i] -match '@media\s*\(prefers-color-scheme:') { $mediaStart = $i; break }
+    }
+
+    # Encontrar el bloque [data-theme]
+    $attrStart = -1
+    for ($i = 0; $i -lt $lines.Count; $i++) {
+        if ($lines[$i] -match '^html\[data-theme=') { $attrStart = $i; break }
+    }
+
+    if ($mediaStart -lt 0 -or $attrStart -lt 0) {
+        Add-Issue -Rule 'REGLA 7' -File $tf -Line 0 `
+                  -Message "no se encontraron los dos bloques (@media y [data-theme])" -Snippet ''
+        continue
+    }
+
+    # Encontrar el final de cada bloque (contando llaves)
+    $findEnd = {
+        param($start)
+        $depth = 0
+        for ($i = $start; $i -lt $lines.Count; $i++) {
+            $depth += ([regex]::Matches($lines[$i], '\{')).Count
+            $depth -= ([regex]::Matches($lines[$i], '\}')).Count
+            if ($depth -eq 0) { return $i }
+        }
+        return $lines.Count - 1
+    }
+
+    $mediaEnd = & $findEnd $mediaStart
+    $attrEnd = & $findEnd $attrStart
+
+    $mediaTokens = & $getTokens $mediaStart $mediaEnd
+    $attrTokens = & $getTokens $attrStart $attrEnd
+
+    # Comparar
+    $allKeys = @($mediaTokens.Keys) + @($attrTokens.Keys) | Sort-Object -Unique
+    foreach ($key in $allKeys) {
+        $inMedia = $mediaTokens.ContainsKey($key)
+        $inAttr = $attrTokens.ContainsKey($key)
+
+        if (-not $inMedia) {
+            Add-Issue -Rule 'REGLA 7' -File $tf -Line 0 `
+                      -Message "token $key esta en el bloque [data-theme] pero no en el bloque @media" -Snippet ''
+        }
+        elseif (-not $inAttr) {
+            Add-Issue -Rule 'REGLA 7' -File $tf -Line 0 `
+                      -Message "token $key esta en el bloque @media pero no en el bloque [data-theme]" -Snippet ''
+        }
+        elseif ($mediaTokens[$key] -ne $attrTokens[$key]) {
+            Add-Issue -Rule 'REGLA 7' -File $tf -Line 0 `
+                      -Message "token $key tiene valores distintos: @media=$($mediaTokens[$key]) vs [data-theme]=$($attrTokens[$key])" -Snippet ''
+        }
+    }
+}
+
+# ============================================================================
 # RESULTADO
 # ============================================================================
 
@@ -434,10 +528,11 @@ Write-Host '    REGLA 3  todo token referenciado existe'
 Write-Host '    REGLA 4  orden de theme.light antes que theme.dark'
 Write-Host '    REGLA 5  integridad de la estructura y @layer'
 Write-Host '    REGLA 6  sin estilos inline ni <style> en el showroom'
+Write-Host '    REGLA 7  sincronizacion de bloques de tema'
 Write-Host ''
 
 if ($script:Issues.Count -eq 0) {
-    Write-Host '  OK - La arquitectura se respeta en las 6 reglas.' -ForegroundColor Green
+    Write-Host '  OK - La arquitectura se respeta en las 7 reglas.' -ForegroundColor Green
     Write-Host ''
     exit 0
 }

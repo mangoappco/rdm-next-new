@@ -181,54 +181,50 @@
 
    Estan en la capa `sys`, que gana siempre a la capa `ref`.
 
-   EL ORDEN DENTRO DE ESTA CAPA SI IMPORTA, en un caso concreto:
+   EL TEMA: prefers-color-scheme + [data-theme]
+   ---------------------------------------------------------------------------
+   Cada archivo de tema declara sus 38 tokens en DOS bloques:
+
+     theme.light.css
+       @media (prefers-color-scheme: light) { html:not([data-theme="dark"]) }
+       html[data-theme="light"]
+
+     theme.dark.css
+       @media (prefers-color-scheme: dark) { html:not([data-theme="light"]) }
+       html[data-theme="dark"]
+
+   El bloque con @media responde al sistema operativo. El bloque con
+   [data-theme] responde a la eleccion explicita del usuario (el toggle de
+   ManGo! App). Juntos cubren los cuatro casos posibles:
+
+     Sin atributo + SO en claro  ->  light (por @media)
+     Sin atributo + SO en oscuro ->  oscuro (por @media)
+     data-theme="light"         ->  light (por atributo, ignora el SO)
+     data-theme="dark"          ->  oscuro (por atributo, ignora el SO)
 
    ---------------------------------------------------------------------------
-   CASO CRITICO: theme.light.css ANTES que theme.dark.css
-   ---------------------------------------------------------------------------
-   Este par de archivos resuelve el tema claro/oscuro SIN usar
-   prefers-color-scheme para los valores, y sin duplicar 38 tokens por tema.
+   POR QUE SE DUPLICAN LOS 38 TOKENS EN CADA ARCHIVO
+   -------------------------------------------------
+   Es el costo de expresar "este tema aplica cuando el SO lo pide O cuando
+   el usuario lo elige" en CSS puro. Un solo bloque con @media no cubre el
+   caso "el usuario eligio un tema distinto al del SO". Un solo bloque sin
+   @media no cubre "el SO decide cuando no hay eleccion explicita".
 
-   La logica:
-
-       theme.light.css  ->  html:not([data-theme="dark"])
-       theme.dark.css   ->  html:not([data-theme="light"])
-
-   Los dos usan :not(), de modo que el atributo explicito EXCLUYE al tema
-   contrario en vez de competir con el. Y cuando NO hay atributo, los dos
-   coinciden, y gana el ULTIMO en declararse.
-
-   Por eso el orden es light primero, dark despues:
-
-       Sin atributo     ->  ambos coinciden  ->  gana dark   (por el orden)
-       data-theme="light" ->  excluye dark  ->  gana light  (por el atributo)
-       data-theme="dark"  ->  excluye light ->  gana dark   (por el atributo)
+   La alternativa es light-dark(), que resuelve lo mismo con UNA sola
+   declaracion por token, pero requiere navegador moderno (Chrome 123+,
+   Safari 17.5+, Firefox 120+). Si ManGo! App debe soportar navegadores
+   viejos, esta duplicacion es el precio de la compatibilidad.
 
    ---------------------------------------------------------------------------
-   ADVERTENCIA: EL TEMA NO SIGUE AL SISTEMA OPERATIVO
-   ---------------------------------------------------------------------------
-   Ninguno de los dos selectores consulta prefers-color-scheme, y el sistema
-   no usa @media para los valores. El tema por defecto lo decide el ORDEN de
-   las hojas, y es el oscuro.
+   EL ORDEN DE IMPORTACION YA NO ES CRITICO
+   ---------------------------------------
+   Antes, sin @media, el tema por defecto lo decia el orden de las hojas:
+   gana el ultimo en declararse. Ahora cada archivo tiene sus propios bloques
+   con @media, y el orden no afecta el comportamiento del tema.
 
-   Antes esta cabecera afirmaba que el SO se tenia en cuenta, y no era cierto:
-   no hay ninguna regla @media en todo el sistema. La consecuencia practica es
-   que un visitante con SO en claro veria el showroom oscuro, salvo que el HTML
-   declare data-theme="light".
-
-   Para que el tema siga al SO hacen falta dos cosas, y ninguna esta hecha:
-
-     1. un @media (prefers-color-scheme: light) que duplique los 38 tokens
-        del tema claro, con lo cual se pierde el ahorro de no duplicarlos; o
-     2. que el HTML escriba data-theme con matchMedia() desde JavaScript, que
-        es el mecanismo que usa ManGo! App con su toggle.
-
-   Ver la seccion "COMO SE RESUELVE EL TEMA, EN REALIDAD" en theme.light.css.
-
-   INVERTIR EL ORDEN DE ESTOS DOS IMPORTS no rompe nada visible: no hay error
-   de sintaxis ni archivo faltante. Solo cambia que el tema por defecto pasa a
-   ser el claro. Por eso el orden se verifica con la REGLA 4 de
-   tools/verify-tokens.ps1 y no se deja al azar.
+   Se mantiene light primero, dark despues como convencion de legibilidad,
+   y la REGLA 4 del verificador la sigue comprobando, pero invertirla ya no
+   rompe el tema: solo cambia el orden en que se declaran las reglas.
    ========================================================================== */
 @import url("2-sys/theme/theme.light.css") layer(sys);
 @import url("2-sys/colors.css")            layer(sys);

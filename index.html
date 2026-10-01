@@ -62,7 +62,7 @@
      Este <html> NO lleva data-theme. Es una decision, no un olvido.
 
      Cuando el atributo esta presente, el tema queda FIJO y el sistema
-     operativo deja de influences. Como este archivo es la referencia visual
+     operativo deja de influir. Como este archivo es la referencia visual
      del sistema, lo correcto es que se vea como lo vera quien lo use:
 
          SO en oscuro  ->  showroom en oscuro
@@ -75,17 +75,32 @@
      ---------------------------------------------------------------------------
      COMO SE RESUELVE EL TEMA SIN EL ATRIBUTO
      ---------------------------------------------------------------------------
-     Por los dos archivos de 2-sys/theme/, con sus selectores :not():
+     Por los dos archivos de 2-sys/theme/, cada uno con DOS bloques:
 
-         theme.light.css   html:not([data-theme="dark"])
-         theme.dark.css    html:not([data-theme="light"])
+         theme.light.css
+           @media (prefers-color-scheme: light) { html:not([data-theme="dark"]) }
+           html[data-theme="light"]
 
-     Sin atributo, los dos coinciden. Gana el ULTIMO en declararse, y ese es
-     theme.dark.css. De ahi que el orden en main.css sea light primero, dark
-     despues: es el unico punto del proyecto donde el orden de escritura
-     cambia el comportamiento. Ver la nota critica de main.css.
+         theme.dark.css
+           @media (prefers-color-scheme: dark) { html:not([data-theme="light"]) }
+           html[data-theme="dark"]
 
-     Medido en este proyecto, con el sistema operativo en oscuro:
+     El bloque con @media responde al sistema operativo. El bloque con
+     [data-theme] responde a la eleccion explicita del usuario. Juntos
+     cubren los cuatro casos posibles:
+
+         Sin atributo + SO en claro  ->  light (por @media)
+         Sin atributo + SO en oscuro ->  oscuro (por @media)
+         data-theme="light"         ->  light (por atributo, ignora el SO)
+         data-theme="dark"          ->  oscuro (por atributo, ignora el SO)
+
+     Medido en este proyecto, con el sistema operativo en claro:
+
+         sin atributo        surface #fef7ff   primary #6750a4   (claro)
+         data-theme="light"  surface #fef7ff   primary #6750a4   (claro)
+         data-theme="dark"   surface #141218   primary #d0bcff   (oscuro)
+
+     Con el sistema operativo en oscuro, sin atributo:
 
          sin atributo        surface #141218   primary #d0bcff   (oscuro)
          data-theme="light"  surface #fef7ff   primary #6750a4   (claro)
