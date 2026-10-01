@@ -1,0 +1,221 @@
+/* ==========================================================================
+   reset.css — BASE DEL SISTEMA (capa reset)
+   ==========================================================================
+
+   QUE ES ESTE ARCHIVO
+   -------------------
+   Este es el PRIMER archivo que se carga, antes que los tokens. Su unico
+   trabajo es desmontar los estilos por defecto del navegador para que las
+   capas superiores construyan sobre una base limpia y controlada.
+
+   Es la CAPA 0 del sistema. Se declara la primera:
+
+       @layer reset, ref, sys, comp, utilities;
+
+   ---------------------------------------------------------------------------
+   POR QUE NECESITA SU PROPIA CAPA
+   ------------------------------
+   Porque el reset tiene que GANARLE al navegador y PERDER contra el sistema.
+   Son dos requisitos opuestos, y la cascada de capas es lo unico que
+   garantiza los dos a la vez:
+
+     Gana contra el navegador   el navegador no esta en ninguna capa. Las
+                                reglas con capa ganan a las que no la tienen,
+                                sin importar su especificidad.
+
+     Pierde contra el sistema   al declararse la PRIMERA, pierde contra ref,
+                                sys, comp y utilities. Es exactamente lo que
+                                un reset necesita: propone, no impone.
+
+   Sin capa, el reset competiria solo por especificidad, que es fragil: un
+   selector de elemento (0,0,1) pierde contra cualquier clase (0,1,0), y
+   devolveria el control al navegador en cuanto el sistema usara una clase.
+
+   ---------------------------------------------------------------------------
+   POR QUE ESTA SEPARADO DE utilities
+   ----------------------------------
+   Son cosas opuestas y no deben compartir capa:
+
+     reset      Anula al navegador. Es la opinion mas debil del sistema.
+     utilities  Atajos de alto nivel. Es la opinion mas fuerte: ganan
+                contra los componentes.
+
+   Juntas en una misma capa no tendrian forma de distinguirse, porque dentro
+   de una capa la precedencia la decide el orden de escritura, no el nombre.
+
+   ---------------------------------------------------------------------------
+   LO QUE HACE, Y POR QUE CADA COSA
+   --------------------------------
+   Cada regla esta aqui por una razon concreta. Un reset que se aplica "de
+   mas" termina generando estilos que el sistema deberia controlar.
+
+   ---------------------------------------------------------------------------
+   NOTA SOBRE LA HERENCIA DE TIPOGRAFIA
+   ---------------------------------------------------------------------------
+   El body hereda la fuente, el color y el fondo. Eso tiene una consecuencia
+   util para la regla de dogfooding:
+
+   Si el body ya trae la tipografia y los colores base, el HTML NO necesita
+   clases para lo basico. Un <p> se ve correctamente sin escribir nada, y las
+   clases quedan reservadas para las decisiones de diseno reales.
+
+   Eso reduce el marcado a HTML semantico limpio, que es el objetivo de la
+   regla de dogfooding: las clases describen intencion, no propiedades
+   mecanicas.
+   ========================================================================== */
+
+@layer reset {
+
+  /* ------------------------------------------------------------------------
+     BODY — la base de todo
+     ------------------------------------------------------------------------
+     margin/padding 0        Anula el margen de 8px del navegador. Es un valor
+                             que nadie decide: viene por defecto y aparece en
+                             todas las paginas sin que nadie lo pida.
+
+     min-height 100vh        Permite que el fondo del body cubra toda la
+                             ventana. Sin esto, un documento corto dejaria
+                             banda blanca abajo, porque el body no llega al
+                             fondo de la pantalla.
+
+     font-family             Hereda Google Sans Flex a TODO el documento, con el
+                             stack de respaldo de 1-ref/typeface.css. Se usa
+                             la familia BRAND: es la del sistema.
+
+     background/color        Los roles base del tema activo. Si el tema cambia
+                             por prefers-color-scheme o por data-theme, el
+                             fondo y el texto cambian con el, sin tocar el
+                             HTML.
+
+     text-rendering          optimizeLegibility activa features de texto que
+                             mejoran la legibilidad (kerning, ligaduras) en
+                             navegadores que las tienen desactivadas por
+                             defecto. No tiene efecto en los que ya las
+                             aplican.
+
+     -webkit-font-smoothing  Suaviza el renderizado de la fuente en macOS. En
+                             pantallas de alta densidad, sin esto el texto se
+                             ve mas pesado y con los bordes aserrados.
+     --------------------------------------------------------------------- */
+  body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    font-family: var(--md-ref-typeface-brand);
+    background-color: var(--md-sys-color-surface);
+    color: var(--md-sys-color-on-surface);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ------------------------------------------------------------------------
+     ENCABEZADOS — sin margenes
+     ------------------------------------------------------------------------
+     El navegador aplica a los h1..h6 un margen calculado que NO pertenece a
+     nuestra reticula: el h1 recibe 0.67em de margen, que en un tamano de 45px
+     equivale a 30.15px. Ese numero no existe en nuestra escala de espaciado.
+
+     El ritmo vertical de la pagina lo decide --md-ref-spacing-*, no el
+     navegador. Un heading con 30.15px arriba y un bloque con 48px abajo
+     guarda una relacion accidental, no disenada.
+
+     Se conservan los tamanos de fuente: los h1..h6 siguen con el tamano que
+     el navegador les asigna. El sistema los sobreescribe despues con las
+     clases .md-type-*.
+     --------------------------------------------------------------------- */
+  h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+  }
+
+  /* ------------------------------------------------------------------------
+     PARRAFOS Y TEXTOS EN BLOQUE
+     ------------------------------------------------------------------------
+     El navegador da 1em de margen a <p>, lo que en 16px son 16px: el mismo
+     valor que space-200. Coincide por casualidad, no por decision. Si
+     manana el tamano base del body cambiara, el margen dejaria de coincidir
+     y nadie sabria por que.
+     --------------------------------------------------------------------- */
+  p {
+    margin: 0;
+  }
+
+  /* ------------------------------------------------------------------------
+     LISTAS
+     ------------------------------------------------------------------------
+     El navegador aplica margin, padding y las vinetas por defecto. La
+     lista de componentes de este proyecto controla su propia sangria con
+     tokens de espaciado, no con los valores del navegador.
+     --------------------------------------------------------------------- */
+  ul, ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* ------------------------------------------------------------------------
+     TEXTO ENLINEA CON SIGNIFICADO SEMANTICO
+     ------------------------------------------------------------------------
+     <code> trae monospace y <mark> trae un fondo amarillo por defecto. La
+     primera no es la tipografia del sistema; la segunda es un amarillo que
+     no pertenece a la paleta y descuadraria el tema.
+
+     El fondo de mark se deja TRANSPARENTE a proposito: si el componente
+     necesita resaltarlo, lo hara con un token de color (por ejemplo
+     primary-container), no con el amarillo del navegador.
+     --------------------------------------------------------------------- */
+  code, pre, kbd, samp {
+    font-family: var(--md-ref-typeface-plain);
+  }
+
+  mark {
+    padding: 0;
+    background-color: transparent;
+    color: inherit;
+  }
+
+  /* <s> tachado usa un color por defecto que no es un rol de M3. */
+  s, del {
+    text-decoration-thickness: var(--md-ref-stroke-thin);
+  }
+
+  /* ------------------------------------------------------------------------
+     MEDIOS
+     ------------------------------------------------------------------------
+     Las imagenes y los videos no replacedo el contenedor: si un <img> es mas
+     ancho que su columna, desborda y rompe el diseno. Es el unico reset que
+     se aplica a un elemento con contenido real.
+     --------------------------------------------------------------------- */
+  img, video, canvas, svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  /* ------------------------------------------------------------------------
+     FORMULARIOS
+     ------------------------------------------------------------------------
+     Los controles del navegador traen estilos propios que compiten con los
+     de M3. No se neutralizan aqui: un componente de formulario de 3-comp/
+     debe definirlos con sus propios tokens, porque un input de M3 no es un
+     input nativo pelado.
+
+     Lo que si se hace aqui es quitar el margen por defecto, que es un valor
+     que nadie decide.
+     --------------------------------------------------------------------- */
+  button, input, select, textarea {
+    margin: 0;
+  }
+
+  /* ------------------------------------------------------------------------
+     ENLACES
+     ------------------------------------------------------------------------
+     El navegador los pinta con su azul por defecto (un color que no existe
+     en la paleta de M3) y los subraya siempre.
+
+     Se conserva el subrayado: es la convencion de accesibilidad que indica
+     que el texto es un enlace, y no debe depender solo del color.
+     --------------------------------------------------------------------- */
+  a {
+    color: inherit;
+    text-decoration: underline;
+  }
+}

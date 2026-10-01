@@ -18,6 +18,10 @@
 
      El showroom se construye UNICAMENTE con lo que el sistema proporciona:
 
+       reset.css  la base que el navegador no puede imponer: tipografia, fondo
+                  y color base heredados en el body. Por eso el marcado de
+                  abajo no lleva clases en los elementos basicos.
+
        2-sys/  clases de utilidad semanticas
                .md-type-*   tipografia  (typography.css)
                .md-bg-*     fondos     (colors.css)
@@ -118,7 +122,10 @@
   <link rel="stylesheet" href="./css/main.css">
 </head>
 
-<body class="md-bg-surface md-text-on-surface">
+<!-- El body NO lleva clases. La capa reset (css/reset.css) le hereda la
+     tipografia, el fondo y el color base, asi que el marcado se queda en HTML
+     semantico puro y las clases quedan reservadas para decisiones de diseno. -->
+<body>
 
   <!-- ====================================================================== -->
   <!-- INICIO: SHOWROOM - PAGINA DE PRESENTACION DEL SISTEMA                 -->

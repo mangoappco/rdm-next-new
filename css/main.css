@@ -9,7 +9,7 @@
 
        <link rel="stylesheet" href="css/main.css">
 
-   A partir de aqui se cargan las 19 hojas del sistema en el orden correcto.
+   A partir de aqui se cargan las 20 hojas del sistema en el orden correcto.
 
    NO se importan los archivos individuales. Si ManGo! App importa button.css
    sin main.css, las variables que ese archivo usa no existen y el componente
@@ -18,9 +18,9 @@
    ---------------------------------------------------------------------------
    POR QUE EXISTE EL ORDEN ENTRE CAPAS: @layer
    ----------------------------------------------------
-   Las tres capas se declaran ANTES de cualquier importacion:
+   Las cinco capas se declaran ANTES de cualquier importacion:
 
-       @layer ref, sys, comp, utilities;
+       @layer reset, ref, sys, comp, utilities;
 
    Esto no es estetica. Es un mecanismo de seguridad del navegador.
 
@@ -30,10 +30,48 @@
 
    Que significa en la practica:
 
-       @layer ref, sys, comp;
+       @layer reset, ref, sys, comp, utilities;
 
    Cualquier regla de la capa `ref` PIERDE SIEMPRE contra una de `sys`, y
    cualquier regla de `sys` PIERDE SIEMPRE contra una de `comp`.
+
+   ---------------------------------------------------------------------------
+   LAS CINCO CAPAS, DE LA MAS DEBIL A LA MAS FUERTE
+   --------------------------------------------------
+   El orden de la declaracion ES la tabla de precedencia del sistema:
+
+       reset       La mas debil. Desmonta los estilos del navegador.
+       ref         Primitivas fisicas: la paleta, el espacio, los radios.
+       sys         Roles semanticos: primary, surface, duration-short2.
+       comp        Componentes: button, card, dialog.
+       utilities   La mas fuerte. Atajos de alto nivel.
+
+   Cada capa solo pierde contra las que estan a su derecha. `ref` pierde contra
+   `sys`; `sys` pierde contra `comp`; `comp` pierde contra `utilities`.
+
+   ---------------------------------------------------------------------------
+   POR QUE `reset` VA EN SU PROPIA CAPA Y NO DENTRO DE `utilities`
+   --------------------------------------------------------------
+   Porque hacen cosas OPUESTAS, y una capa no puede expresar las dos:
+
+     reset      Propone. Gana al navegador (que no esta en capas) y pierde
+                contra todo lo nuestro. Un reset que impusiera su opinion
+                dejaria al sistema sin control sobre la pagina.
+
+     utilities  Impone. Gana contra los componentes, para que un atajo de alto
+                nivel pueda sobrescribir una receta sin pelear por
+                especificidad.
+
+   En una misma capa, la precedencia entre reset y utilidad la decidiria el
+   orden de escritura dentro de los archivos, que es exactamente lo que
+   @layer existe para dejar de hacer depender del orden de escritura.
+
+   El reset quedaria asi:
+
+       @layer reset { body { margin: 0 } }
+
+   ...en la capa mas baja, ganando al margen de 8px del navegador y perdiendo
+   contra `.md-p-4 { padding: 16px }`, sin discusion posible.
 
    POR QUE ESTO NOS PROTEGE
    ------------------------
@@ -61,7 +99,7 @@
    --------------------------------------
    Los @import de CSS son lentos. Cada uno es una peticion de red separada que
    el navegador descubre SOLO despues de parsear el archivo anterior. En una
-   cadena de 19 imports, el navegador los va pidiendo en cascada.
+   cadena de 20 imports, el navegador los va pidiendo en cascada.
 
    Google Chrome avisa de esto en su documentacion: un @import bloquea el
    descubrimiento de recursos posteriores.
@@ -84,7 +122,31 @@
 
    ========================================================================== */
 
-@layer ref, sys, comp, utilities;
+@layer reset, ref, sys, comp, utilities;
+
+/* ==========================================================================
+   CAPA 0 — RESET (anula al navegador)
+   --------------------------------------------------------------------------
+   Es la PRIMERA importacion del archivo, y la capa mas baja de la cascada.
+
+   Este archivo no es un token de M3: es un reinicio del navegador. Por eso NO
+   va en 1-ref/. Va suelto en la raiz de css/, al lado de este orquestador, y
+   en su propia capa.
+
+   QUE LOGRA, CON LOS DOS REQUISITOS OPUESTOS DE UN RESET
+   ------------------------------------------------------
+     Gana contra el navegador. El navegador no esta en ninguna capa, y las
+     reglas con capa ganan a las que no la tienen, sin importar su
+     especificidad.
+
+     Pierde contra el sistema. Al declararse la primera, pierde contra ref,
+     sys, comp y utilities.
+
+   Body hereda tipografia y colores base, con lo cual el HTML del showroom no
+   necesita clases para lo basico. Ver la cabecera de reset.css para el
+   detalle de cada regla.
+   ========================================================================== */
+@import url("reset.css") layer(reset);
 
 /* ==========================================================================
    CAPA 1 — REFERENCIA (valores crudos)
@@ -191,29 +253,33 @@
    atajos para escribir rapido desde el HTML. Los componentes, en cambio, son
    recetas que traducen tokens a estilos.
 
-   La diferencia es dejerarquia: un componente debe poder sobreescribir una
-   utilidad cuando ambos se usan juntos. Con esta capa declarada
-   cualquier regla de componente gana a cualquier utilidad sin importar el
-   orden de escritura dentro de cada archivo.
+   La diferencia es de jerarquia. Y como `utilities` es la ULTIMA capa de la
+   declaracion, tiene maxima prioridad de sobreescritura: una utilidad gana
+   contra cualquier componente, sin importar el orden de escritura dentro de
+   cada archivo.
+
+   Eso es deliberado. Una utilidad es la opinion final del autor sobre la
+   pagina, y se aplica AL FINAL de la cascada. Un componente que quiera
+   proteger su receta frente a un atajo lo hace con una capa propia, no
+   esperando que la especificidad le salve.
 
    UTILIDADES ADEMAS DE ESTA CAPA, DEBEN ESTAR EN SU CAPA NATURAL
    --------------------------------------------------------------
    Las utilidades de color viven en 2-sys/colors.css, las de tipografia en
-   2-sys/typography.css, etc. Todas se importan en la capa `sys`.
+   2-sys/typography.css, etc. Todas se importan en la capa `sys`, porque son
+   utilidades de una familia concreta de token, no atajos de alto nivel.
 
    La capa `utilities` esta reservada para las utilidades de ALTO NIVEL que no
-   pertenecen a ninguna familia concreta, y para las que un componente quiera
-   sobreescribir de forma explicita.
+   pertenecen a ninguna familia concreta.
    ========================================================================== */
 
 /* --- utilities/ (se poblara cuando existan utilidades globales) --- */
-/* @import url("utilities/reset.css")     layer(utilities); */
 /* @import url("utilities/accessibility.css") layer(utilities); */
 
 /* ==========================================================================
    FIN DEL ORQUESTADOR
    ==========================================================================
-   19 archivos importados. El sistema de tokens esta completo.
+   20 archivos importados. El sistema de tokens esta completo.
 
    Para empezar a construir componentes, el siguiente paso es 3-comp/, que se
    agrega en este mismo archivo en la seccion de arriba.

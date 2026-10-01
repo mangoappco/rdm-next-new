@@ -77,8 +77,10 @@ function Get-CssFiles {
             $name -notin $Markers -and
             # fuera de main.css (se valida aparte, con reglas propias)
             $name -ne 'main.css' -and
-            # solo dentro de las carpetas de capas
-            $rel -match '1-ref|2-sys|3-comp'
+            # dentro de las carpetas de capas, mas el reset de la raiz de css/
+            # (el reset no va en una carpeta numerada: no es un token de M3,
+            #  es un reinicio del navegador. Ver la cabecera de css/reset.css)
+            ($rel -match '1-ref|2-sys|3-comp' -or $rel -eq 'css\reset.css')
         }
 }
 
@@ -103,6 +105,7 @@ function Get-CodeOnly {
 function Get-Layer {
     param([string]$Relative)
 
+    if ($Relative -eq 'css\reset.css') { return 'reset' }
     if ($Relative -match '1-ref') { return 'ref' }
     if ($Relative -match '2-sys') { return 'sys' }
     if ($Relative -match '3-comp') { return 'comp' }
@@ -230,6 +233,10 @@ foreach ($file in $files) {
                 $violation = $true
                 $why = '2-sys no puede leer 3-comp: dependencia invertida'
             }
+            if ($layer -eq 'reset' -and $target -eq 'comp') {
+                $violation = $true
+                $why = 'reset no puede leer 3-comp: el reset es la base y no depende de componentes'
+            }
 
             if ($violation) {
                 Add-Issue -Rule 'REGLA 2' -File $rel -Line ($i + 1) -Message $why -Snippet $lineText.Trim()
@@ -307,8 +314,12 @@ else {
 # REGLA 5 - Integridad de la arquitectura
 # ============================================================================
 
-# Las capas @layer deben declararse antes de cualquier import
-$mainRaw = [System.IO.File]::ReadAllText($mainPath)
+# Las capas @layer deben declararse antes de cualquier import.
+#
+# IMPORTANTE: el analisis se hace sobre el codigo SIN comentarios. main.css
+# documenta la declaracion de @layer en su cabecera, y un regex sobre el texto
+# crudo capturaria esa mencion pedagogica en vez de la declaracion real.
+$mainRaw = Get-CodeOnly $mainPath
 $layerDecl = [regex]::Match($mainRaw, '@layer\s+([^;]+);')
 if (-not $layerDecl.Success) {
     Add-Issue -Rule 'REGLA 5' -File 'css/main.css' -Line 0 -Message 'no declara @layer' -Snippet ''
@@ -319,10 +330,37 @@ elseif ($layerDecl.Index -gt [regex]::Match($mainRaw, '@import').Index) {
 }
 else {
     $declared = $layerDecl.Groups[1].Value
-    foreach ($need in @('ref', 'sys', 'comp')) {
+    foreach ($need in @('reset', 'ref', 'sys', 'comp', 'utilities')) {
         if ($declared -notmatch "\b$need\b") {
             Add-Issue -Rule 'REGLA 5' -File 'css/main.css' -Line 0 -Message "no declara la capa @$need" -Snippet ''
         }
+    }
+
+    # El ORDEN de la declaracion es la tabla de precedencia del sistema.
+    # Si una capa se declara despues de otra, esa otra pierde contra ella.
+    # Un orden alterado no rompe el build: rompe la ARQUITECTURA en silencio.
+    $order = ($declared -split ',' | ForEach-Object { $_.Trim() }) |
+             Where-Object { $_ -ne '' }
+    $wanted = @('reset', 'ref', 'sys', 'comp', 'utilities')
+    if (($order -join ',') -ne ($wanted -join ',')) {
+        Add-Issue -Rule 'REGLA 5' -File 'css/main.css' -Line 0 `
+                  -Message "orden de capas incorrecto. Esperado: $($wanted -join ', '). Encontrado: $($order -join ', ')" `
+                  -Snippet ''
+    }
+}
+
+# reset.css debe existir y ser el PRIMER import del orquestador.
+$resetPath = Join-Path $ProjectRoot 'css\reset.css'
+if (-not (Test-Path $resetPath)) {
+    Add-Issue -Rule 'REGLA 5' -File 'css\reset.css' -Line 0 `
+              -Message 'falta la capa 0: css/reset.css es el primer import del sistema' -Snippet ''
+}
+else {
+    $firstImport = [regex]::Match($mainRaw, '@import\s+url\(\s*"([^"]+)"')
+    if ($firstImport.Success -and $firstImport.Groups[1].Value -ne 'reset.css') {
+        Add-Issue -Rule 'REGLA 5' -File 'css/main.css' -Line 0 `
+                  -Message "reset.css debe ser el PRIMER import (se encontro '$($firstImport.Groups[1].Value)' primero). El reset necesita declararse antes que las capas que lo van a sobreescribir" `
+                  -Snippet ''
     }
 }
 
