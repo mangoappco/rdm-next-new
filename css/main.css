@@ -1,5 +1,5 @@
 /* ==========================================================================
-   app.css — ORQUESTADOR DEL DESIGN SYSTEM
+   main.css — ORQUESTADOR DEL DESIGN SYSTEM
    ==========================================================================
 
    QUE ES ESTE ARCHIVO
@@ -7,13 +7,13 @@
    Este es el UNICO punto de entrada del sistema. Quien quiera usar RDM Next
    importa ESTE archivo y nada mas:
 
-       <link rel="stylesheet" href="css/app.css">
+       <link rel="stylesheet" href="css/main.css">
 
    A partir de aqui se cargan las 19 hojas del sistema en el orden correcto.
 
    NO se importan los archivos individuales. Si ManGo! App importa button.css
-   sin app.css, las variables que ese archivo usa no existen y el componente
-   se ve roto. app.css garantiza que toda la cadena este presente.
+   sin main.css, las variables que ese archivo usa no existen y el componente
+   se ve roto. main.css garantiza que toda la cadena este presente.
 
    ---------------------------------------------------------------------------
    POR QUE EXISTE EL ORDEN ENTRE CAPAS: @layer

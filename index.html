@@ -15,7 +15,7 @@
 
      Este archivo existe para dos cosas:
 
-       1. Cargar el sistema completo (css/app.css) y la fuente Roboto.
+       1. Cargar el sistema completo (css/main.css) y la fuente Roboto.
        2. Servir de esqueleto donde luego se inserten los componentes.
 
      AUN NO HAY COMPONENTES. El sistema de tokens esta completo
@@ -72,14 +72,14 @@
   <!-- ==========================================================================
        EL SISTEMA DE TOKENS
        --------------------------------------------------------------------------
-       Un solo archivo. Nunca los individuales: app.css garantiza que toda la
+       Un solo archivo. Nunca los individuales: main.css garantiza que toda la
        cadena de 19 hojas se cargue en el orden correcto, con las capas
        @layer ya declaradas.
 
-       Si se importara 3-comp/button.css sin app.css, sus variables no
+       Si se importara 3-comp/button.css sin main.css, sus variables no
        existiran y el componente se veria roto.
        ========================================================================== -->
-  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/main.css">
 </head>
 
 <body>

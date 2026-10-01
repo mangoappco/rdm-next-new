@@ -11,7 +11,7 @@ Este repositorio es la **fuente única de verdad** del sistema de diseño de Man
 
 No es una maqueta ni un prototipo: es la implementación real de tokens y recetas que
 consumirá el sistema final. El showroom y la app de producción cargan **el mismo
-orquestador `css/app.css`**. Lo que se ve aquí es exactamente lo que궁 se ejecuta allí.
+orquestador `css/main.css`**. Lo que se ve aquí es exactamente lo que궁 se ejecuta allí.
 
 ---
 
@@ -342,7 +342,7 @@ Dos temas, activados por dos mecanismos:
 2. **Preferencia del sistema** — `prefers-color-scheme`
 
 Se resuelven **sin duplicar** los ~30 tokens de color de cada tema, mediante el orden de
-importación en `app.css`:
+importación en `main.css`:
 
 ```css
 @import url("2-sys/theme/theme.light.css") layer(sys);  /* 1.er plano */
@@ -363,7 +363,7 @@ al tema contrario en lugar de competir con él.
 
 ## 6. Orden de carga y `@layer`
 
-`app.css` es el orquestador. Declara las capas antes de importar, para que la
+`main.css` es el orquestador. Declara las capas antes de importar, para que la
 jerarquía quede garantizada por el motor del navegador y no solo por el orden de escritura:
 
 ```css
@@ -399,7 +399,7 @@ aplica 5 reglas:
 | **1** | Valores crudos: `#HEX`, `px`, `ms`, `rem`                                   | `2-sys/`, `3-comp/` |
 | **2** | Dirección de dependencias (saltos de capa y dependencias circulares)        | todo el proyecto   |
 | **3** | Tokens referenciados que **no existen**                                     | todo el proyecto   |
-| **4** | `theme.light.css` importado **antes** que `theme.dark.css`                  | `app.css`          |
+| **4** | `theme.light.css` importado **antes** que `theme.dark.css`                  | `main.css`          |
 | **5** | Integridad: carpetas, `@layer` declarado antes de importar, imports válidos | proyecto           |
 
 **La Regla 3 es la más importante.** Un `var(--md-token-inexistente)` no da error:
@@ -439,7 +439,7 @@ rdm-next-new/
 ├── README.md                 Este documento: contrato de arquitectura
 ├── index.html                Shell del showroom
 ├── css/
-│   ├── app.css               Orquestador: @layer + @import
+│   ├── main.css               Orquestador: @layer + @import
 │   ├── 1-ref/                Valores crudos (única capa que los permite)
 │   │   ├── palette.css       --md-ref-palette-*
 │   │   ├── typeface.css      --md-ref-typeface-*

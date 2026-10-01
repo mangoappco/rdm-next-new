@@ -26,7 +26,7 @@
                comportamiento.
 
       REGLA 5  Integridad de la arquitectura
-               Las carpetas y archivos esperados existen; app.css declara las
+               Las carpetas y archivos esperados existen; main.css declara las
                capas @layer; el numero de archivos importados coincide.
 
 .PARAMETER Quiet
@@ -75,8 +75,8 @@ function Get-CssFiles {
 
             # fuera de marcadores
             $name -notin $Markers -and
-            # fuera de app.css (se valida aparte, con reglas propias)
-            $name -ne 'app.css' -and
+            # fuera de main.css (se valida aparte, con reglas propias)
+            $name -ne 'main.css' -and
             # solo dentro de las carpetas de capas
             $rel -match '1-ref|2-sys|3-comp'
         }
@@ -261,43 +261,43 @@ foreach ($file in $files) {
 }
 
 # ============================================================================
-# REGLA 4 - Orden de los temas en app.css
+# REGLA 4 - Orden de los temas en main.css
 # ============================================================================
 
-$appPath = Join-Path $ProjectRoot 'css\app.css'
+$mainPath = Join-Path $ProjectRoot 'css\main.css'
 
-if (-not (Test-Path $appPath)) {
-    Add-Issue -Rule 'REGLA 5' -File 'css/app.css' -Line 0 -Message 'no existe' -Snippet ''
+if (-not (Test-Path $mainPath)) {
+    Add-Issue -Rule 'REGLA 5' -File 'css/main.css' -Line 0 -Message 'no existe' -Snippet ''
 }
 else {
-    $appCode = Get-CodeOnly $appPath
-    $imports = [regex]::Matches($appCode, '@import url\("([^"]+)"\)\s*layer\((\w+)\)')
+    $mainCode = Get-CodeOnly $mainPath
+    $imports = [regex]::Matches($mainCode, '@import url\("([^"]+)"\)\s*layer\((\w+)\)')
 
     $seq = @($imports | ForEach-Object { $_.Groups[1].Value })
     $iLight = [array]::IndexOf($seq, '2-sys/theme/theme.light.css')
     $iDark  = [array]::IndexOf($seq, '2-sys/theme/theme.dark.css')
 
     if ($iLight -lt 0) {
-        Add-Issue -Rule 'REGLA 4' -File 'css/app.css' -Line 0 -Message 'no importa 2-sys/theme/theme.light.css' -Snippet ''
+        Add-Issue -Rule 'REGLA 4' -File 'css/main.css' -Line 0 -Message 'no importa 2-sys/theme/theme.light.css' -Snippet ''
     }
     elseif ($iDark -lt 0) {
-        Add-Issue -Rule 'REGLA 4' -File 'css/app.css' -Line 0 -Message 'no importa 2-sys/theme/theme.dark.css' -Snippet ''
+        Add-Issue -Rule 'REGLA 4' -File 'css/main.css' -Line 0 -Message 'no importa 2-sys/theme/theme.dark.css' -Snippet ''
     }
     elseif ($iLight -gt $iDark) {
-        Add-Issue -Rule 'REGLA 4' -File 'css/app.css' -Line 0 `
+        Add-Issue -Rule 'REGLA 4' -File 'css/main.css' -Line 0 `
                   -Message 'orden invertido: theme.light.css debe importarse ANTES que theme.dark.css, o el sistema arranca en oscuro para todos' `
                   -Snippet ''
     }
 
     # Cada archivo importado debe existir en disco.
-    # Las rutas de los @import de app.css son RELATIVAS a css/ (donde vive
-    # app.css), no a la raiz del proyecto. Por eso se resuelve partiendo de
+    # Las rutas de los @import de main.css son RELATIVAS a css/ (donde vive
+    # main.css), no a la raiz del proyecto. Por eso se resuelve partiendo de
     # la carpeta css/.
     $cssRoot = Join-Path $ProjectRoot 'css'
     foreach ($imp in $imports) {
         $p = Join-Path $cssRoot ($imp.Groups[1].Value -replace '/', '\')
         if (-not (Test-Path $p)) {
-            Add-Issue -Rule 'REGLA 5' -File 'css/app.css' -Line 0 `
+            Add-Issue -Rule 'REGLA 5' -File 'css/main.css' -Line 0 `
                       -Message "importa un archivo que no existe: $($imp.Groups[1].Value)" -Snippet ''
         }
     }
@@ -308,20 +308,20 @@ else {
 # ============================================================================
 
 # Las capas @layer deben declararse antes de cualquier import
-$appRaw = [System.IO.File]::ReadAllText($appPath)
-$layerDecl = [regex]::Match($appRaw, '@layer\s+([^;]+);')
+$mainRaw = [System.IO.File]::ReadAllText($mainPath)
+$layerDecl = [regex]::Match($mainRaw, '@layer\s+([^;]+);')
 if (-not $layerDecl.Success) {
-    Add-Issue -Rule 'REGLA 5' -File 'css/app.css' -Line 0 -Message 'no declara @layer' -Snippet ''
+    Add-Issue -Rule 'REGLA 5' -File 'css/main.css' -Line 0 -Message 'no declara @layer' -Snippet ''
 }
-elseif ($layerDecl.Index -gt [regex]::Match($appRaw, '@import').Index) {
-    Add-Issue -Rule 'REGLA 5' -File 'css/app.css' -Line 0 `
+elseif ($layerDecl.Index -gt [regex]::Match($mainRaw, '@import').Index) {
+    Add-Issue -Rule 'REGLA 5' -File 'css/main.css' -Line 0 `
               -Message '@layer debe declararse ANTES del primer @import' -Snippet ''
 }
 else {
     $declared = $layerDecl.Groups[1].Value
     foreach ($need in @('ref', 'sys', 'comp')) {
         if ($declared -notmatch "\b$need\b") {
-            Add-Issue -Rule 'REGLA 5' -File 'css/app.css' -Line 0 -Message "no declara la capa @$need" -Snippet ''
+            Add-Issue -Rule 'REGLA 5' -File 'css/main.css' -Line 0 -Message "no declara la capa @$need" -Snippet ''
         }
     }
 }
