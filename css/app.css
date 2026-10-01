@@ -1,0 +1,220 @@
+/* ==========================================================================
+   app.css — ORQUESTADOR DEL DESIGN SYSTEM
+   ==========================================================================
+
+   QUE ES ESTE ARCHIVO
+   -------------------
+   Este es el UNICO punto de entrada del sistema. Quien quiera usar RDM Next
+   importa ESTE archivo y nada mas:
+
+       <link rel="stylesheet" href="css/app.css">
+
+   A partir de aqui se cargan las 19 hojas del sistema en el orden correcto.
+
+   NO se importan los archivos individuales. Si ManGo! App importa button.css
+   sin app.css, las variables que ese archivo usa no existen y el componente
+   se ve roto. app.css garantiza que toda la cadena este presente.
+
+   ---------------------------------------------------------------------------
+   POR QUE EXISTE EL ORDEN ENTRE CAPAS: @layer
+   ----------------------------------------------------
+   Las tres capas se declaran ANTES de cualquier importacion:
+
+       @layer ref, sys, comp, utilities;
+
+   Esto no es estetica. Es un mecanismo de seguridad del navegador.
+
+   En CSS, cuando dos reglas tienen la misma especificidad, gana la que esta
+   ULTIMA. Con @layer, la prioridad la decide el ORDEN DECLARADO AQUI, no el
+   orden en que se escribieron las reglas.
+
+   Que significa en la practica:
+
+       @layer ref, sys, comp;
+
+   Cualquier regla de la capa `ref` PIERDE SIEMPRE contra una de `sys`, y
+   cualquier regla de `sys` PIERDE SIEMPRE contra una de `comp`.
+
+   POR QUE ESTO NOS PROTEGE
+   ------------------------
+   Nuestra regla dice que 3-comp/ NO puede leer tokens de 1-ref/. Con @layer,
+   esa regla deja de ser una convencion y pasa a estar GARANTIZADA por el
+   motor del navegador: aunque alguien cometa el error de escribir
+
+       .mi-boton { color: var(--md-ref-palette-primary40); }
+
+   la capa `ref` pierde contra `sys`, y el valor correcto gana.
+
+   Es defensa en profundidad: la arquitectura estadocumentada Y el motor la
+   hace cumplir.
+
+   ---------------------------------------------------------------------------
+   EL ORDEN DE IMPORTACION Y POR QUE IMPORTA
+   ------------------------------------------
+   Las hojas se importan en cascada: 1-ref, luego 2-sys, luego 3-comp.
+
+   Dentro de cada capa, el orden importa por una razon tecnica concreta, no
+   por estetica. Se documenta caso por caso mas abajo.
+
+   ---------------------------------------------------------------------------
+   NOTA SOBRE LOS @import Y EL RENDIMIENTO
+   --------------------------------------
+   Los @import de CSS son lentos. Cada uno es una peticion de red separada que
+   el navegador descubre SOLO despues de parsear el archivo anterior. En una
+   cadena de 19 imports, el navegador los va pidiendo en cascada.
+
+   Google Chrome avisa de esto en su documentacion: un @import bloquea el
+   descubrimiento de recursos posteriores.
+
+   POR QUE AUN ASI LOS USAMOS AQUI
+   --------------------------------
+   El showroom es un proyecto de referencia, no un sitio en produccion. La
+   claridad de ver la cadena completa de dependencias en un solo archivo tiene
+   mas valor que las milisegundos.
+
+   PARA UN SITIO EN PRODUCCION: usar una herramienta de build (postcss-import,
+   lightningcss, sass) que aplane los 19 archivos en un solo bundle. El
+   resultado es identico en bytes, pero en UNA peticion de red.
+
+   La UNICA excepcion a esta regla, y si es una excepcion importante, es la
+   fuente Roboto: NO se carga aqui. Se carga desde index.html con <link> y
+   preconnect, porque el @import de una fuente es lo mas lento que existe:
+   el navegador no puede ni siquiera empezar a leer el CSS hasta que termina
+   de descargar el archivo de fuente.
+
+   ========================================================================== */
+
+@layer ref, sys, comp, utilities;
+
+/* ==========================================================================
+   CAPA 1 — REFERENCIA (valores crudos)
+   --------------------------------------------------------------------------
+   Aqui viven los valores sin interpretar: los tonos de la paleta, las medidas
+   del espacio, los radios, las duraciones, las curvas, las sombras y las
+   opacidades.
+
+   Ninguna de estas hojas referencia a otra capa. Son la base del sistema.
+
+   El orden dentro de la capa es alfabetico y NO tiene importancia funcional:
+   ninguna de estas hojas depende de otra. Se mantiene alfabetico para que sea
+   facil encontrar un archivo.
+   ========================================================================== */
+@import url("1-ref/corner.css")    layer(ref);
+@import url("1-ref/easing.css")    layer(ref);
+@import url("1-ref/opacity.css")   layer(ref);
+@import url("1-ref/palette.css")   layer(ref);
+@import url("1-ref/shadow.css")    layer(ref);
+@import url("1-ref/spacing.css")   layer(ref);
+@import url("1-ref/stroke.css")    layer(ref);
+@import url("1-ref/time.css")      layer(ref);
+@import url("1-ref/typeface.css")  layer(ref);
+@import url("1-ref/typescale.css") layer(ref);
+
+/* ==========================================================================
+   CAPA 2 — SISTEMA (tokens semanticos)
+   --------------------------------------------------------------------------
+   Aqui viven los ROLES: primary, surface, corner-medium, duration-short2,
+   elevation-level3. Cada uno apunta a un valor de la capa 1, y cada uno es
+   sensible al tema activo.
+
+   Estan en la capa `sys`, que gana siempre a la capa `ref`.
+
+   EL ORDEN DENTRO DE ESTA CAPA SI IMPORTA, en un caso concreto:
+
+   ---------------------------------------------------------------------------
+   CASO CRITICO: theme.light.css ANTES que theme.dark.css
+   ---------------------------------------------------------------------------
+   Este par de archivos resuelve el tema claro/oscuro SIN usar
+   prefers-color-scheme para los valores, y sin duplicar 38 tokens por tema.
+
+   La logica:
+
+       theme.light.css  ->  html:not([data-theme="dark"])
+       theme.dark.css   ->  html:not([data-theme="light"])
+
+   Los dos usan :not(), de modo que el atributo explicito EXCLUYE al tema
+   contrario en vez de competir con el. Y cuando NO hay atributo, los dos
+   coinciden, y gana el ULTIMO en declararse.
+
+   Por eso el orden es light primero, dark despues:
+
+       Sin atributo + SO en light  ->  ambos coinciden  ->  gana light  ✓
+       Sin atributo + SO en dark   ->  ambos coinciden  ->  gana dark   ✓
+       data-theme="light"         ->  excluye dark    ->  gana light  ✓
+       data-theme="dark"          ->  excluye light   ->  gana dark   ✓
+
+   INVERTIR ESTE ORDEN ROMPE EL TEMA. Si dark se importara antes, el sistema
+   arrancaria en oscuro para todo el mundo. Es el unico punto del proyecto
+   donde el orden de escritura cambia el comportamiento, y por eso esta
+   comentado aqui y en los dos archivos de tema.
+   ========================================================================== */
+@import url("2-sys/theme/theme.light.css") layer(sys);
+@import url("2-sys/colors.css")            layer(sys);
+@import url("2-sys/elevation.css")         layer(sys);
+@import url("2-sys/measurement.css")        layer(sys);
+@import url("2-sys/motion.css")            layer(sys);
+@import url("2-sys/shape.css")             layer(sys);
+@import url("2-sys/state.css")             layer(sys);
+@import url("2-sys/typography.css")        layer(sys);
+
+/* El tema oscuro va AL ULTIMO a proposito. Ver la nota critica de arriba.
+   Este es el ultimo import del sistema de tokens. */
+@import url("2-sys/theme/theme.dark.css")  layer(sys);
+
+/* ==========================================================================
+   CAPA 3 — COMPONENTES
+   --------------------------------------------------------------------------
+   Un archivo por componente. Cada uno consume UNICAMENTE tokens de 2-sys/.
+
+   Ninguno se importa todavia: el sistema de tokens esta completo, pero no
+   hay ningun componente construido. Se agregan aqui a medida que se
+   implementen, uno por vez.
+
+   Cuando se agreguen, deben ir en esta capa, nunca directamente en la raiz.
+   ========================================================================== */
+
+/* --- 3-comp/ (pendiente de implementar) --- */
+/* @import url("3-comp/button.css") layer(comp);   */
+/* @import url("3-comp/card.css")   layer(comp);   */
+/* @import url("3-comp/divider.css") layer(comp);  */
+/* @import url("3-comp/dialog.css") layer(comp);   */
+
+/* ==========================================================================
+   CAPA UTILITIES — CLASES AUXILIARES
+   --------------------------------------------------------------------------
+   Las utilidades del sistema se mueven a su propia capa, separada de los
+   tokens.
+
+   POR QUE UNA CAPA SEPARADA
+   -------------------------
+   Las utilidades (md-bg-primary, md-type-body-large, md-elevation-3) son
+   atajos para escribir rapido desde el HTML. Los componentes, en cambio, son
+   recetas que traducen tokens a estilos.
+
+   La diferencia es dejerarquia: un componente debe poder sobreescribir una
+   utilidad cuando ambos se usan juntos. Con esta capa declarada
+   cualquier regla de componente gana a cualquier utilidad sin importar el
+   orden de escritura dentro de cada archivo.
+
+   UTILIDADES ADEMAS DE ESTA CAPA, DEBEN ESTAR EN SU CAPA NATURAL
+   --------------------------------------------------------------
+   Las utilidades de color viven en 2-sys/colors.css, las de tipografia en
+   2-sys/typography.css, etc. Todas se importan en la capa `sys`.
+
+   La capa `utilities` esta reservada para las utilidades de ALTO NIVEL que no
+   pertenecen a ninguna familia concreta, y para las que un componente quiera
+   sobreescribir de forma explicita.
+   ========================================================================== */
+
+/* --- utilities/ (se poblara cuando existan utilidades globales) --- */
+/* @import url("utilities/reset.css")     layer(utilities); */
+/* @import url("utilities/accessibility.css") layer(utilities); */
+
+/* ==========================================================================
+   FIN DEL ORQUESTADOR
+   ==========================================================================
+   19 archivos importados. El sistema de tokens esta completo.
+
+   Para empezar a construir componentes, el siguiente paso es 3-comp/, que se
+   agrega en este mismo archivo en la seccion de arriba.
+   ========================================================================== */
