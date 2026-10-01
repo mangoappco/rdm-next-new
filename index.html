@@ -117,32 +117,49 @@
   <link rel="stylesheet" href="./css/main.css">
 </head>
 
-<body>
+<body class="md-bg-background md-text-on-background md-type-body-medium">
   <!-- ========================================================================
-       CONTENEDOR BASE
+       LA BASE DE LA VISTA, CON LA SEMANTICA DE M3
        ------------------------------------------------------------------------
-       El fondo, el color y la fuente se declaran aqui, con clases de 2-sys/.
-       Antes venian del reset; ahora cada vista los declara explicitamente.
+       Las tres clases van en el <body>, no en un contenedor interior, por dos
+       razones que son la misma:
+
+         1. EL <body> ES EL LIENZO. El reset ya le da min-height: 100vh, asi que
+            su fondo cubre la ventana entera. En un <div> interior, un documento
+            corto dejaba la banda de abajo sin pintar: blanca en tema oscuro,
+            con el color del sistema y no con el del tema.
+
+         2. M3 RESERVA `background` PARA LA PAGINA. El rol `background` es el
+            fondo del lienzo; `surface` es el fondo de una superficie concreta
+            (una tarjeta, un menu, un dialogo). Una pagina no es una superficie:
+            es el fondo. Por eso el fondo usa `md-bg-background` y su contenido
+            se lee con `md-text-on-background`, que es el par que garantiza
+            contraste segun la propia especificacion de M3.
+
+       El par se escribe EXPLICITO, porque 2-sys/colors.css no ofrece ningun
+       atajo que empareje fondo con su texto. Esa decision es lo que hace
+       auditable el contraste: se lee en el marcado, sin abrir la hoja de
+       estilo.
+
+       El texto de apoyo usa `md-text-on-surface-variant`: es el rol de menor
+       enfasis que define M3, y no existe un `on-background-variant`.
        ======================================================================== -->
-  <div class="md-bg-surface md-text-on-surface md-type-body-medium">
 
-    <header class="md-measure-page-margin">
-      <h1 class="md-type-display-medium md-text-primary">
-        RDM Next
-      </h1>
-      <p class="md-type-title-medium md-text-on-surface-variant">
-        Sistema de tokens completo. Componentes en desarrollo
-      </p>
-    </header>
+  <header class="md-measure-page-margin">
+    <h1 class="md-type-display-medium md-text-primary">
+      RDM Next
+    </h1>
+    <p class="md-type-title-medium md-text-on-surface-variant">
+      Sistema de tokens completo. Componentes en desarrollo
+    </p>
+  </header>
 
-    <nav class="md-measure-page-margin">
-      <p class="md-type-label-large md-text-on-surface-variant">
-        Componentes:
-        <a href="./divider.html" class="md-text-primary">Divider</a>
-      </p>
-    </nav>
-
-  </div>
+  <nav class="md-measure-page-margin">
+    <p class="md-type-label-large md-text-on-surface-variant">
+      Componentes:
+      <a href="./divider.html" class="md-text-primary">Divider</a>
+    </p>
+  </nav>
 
 </body>
 </html>

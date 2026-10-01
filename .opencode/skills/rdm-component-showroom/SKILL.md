@@ -1038,16 +1038,29 @@ Rules:
   `divider.html`, `button.html`, `card.html`.
 - Every view loads the full system (`css/main.css`) and the font, exactly like
   `index.html`.
-- Every view declares its base styles on a container `<div>` with `2-sys/`
-  classes. The base is **never** in `reset.css`.
+- Every view declares its base styles **on its `<body>`**, with `2-sys/` classes.
+  The base is **never** in `reset.css`, and **never** on an inner container
+  `<div>`.
 
 ```html
-<body>
-  <div class="md-bg-surface md-text-on-surface md-type-body-medium">
-    <!-- contenido de la vista -->
-  </div>
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <!-- contenido de la vista -->
 </body>
 ```
+
+- The background role is `background`, not `surface`. In M3, `background` is the
+  page canvas and `surface` is a concrete surface (card, menu, dialog) drawn on
+  top of it. The text on the canvas is read with `on-background`; `surface` +
+  `on-surface` belong to those concrete surfaces.
+- The pair background + text is written **explicitly** on purpose:
+  `2-sys/colors.css` ships no shortcut that pairs a background with its text,
+  so the contrast is auditable in the markup.
+- Supporting text uses `md-text-on-surface-variant`. M3 has no
+  `on-background-variant`; `on-surface-variant` is the lower-emphasis role.
+- Never wrap the view in an extra `<div>` just to carry these classes: the
+  `<body>` is the element that paints the window, and `reset` gives it
+  `min-height: 100vh`. An inner `<div>` leaves the bottom band unpainted on a
+  short document.
 
 - The back link in a component view points to `index.html` and reads `RDM Next`.
 - The `<title>` of a component view is `<Component> — ManGo! App`. The title of

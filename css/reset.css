@@ -82,15 +82,14 @@
                              stack de respaldo de 1-ref/typeface.css. Se usa
                              la familia BRAND: es la del sistema.
 
-     background/color        Los roles base del tema activo. Si el tema cambia,
-                             el fondo y el texto cambian con el, sin tocar el
-                             HTML: basta con que data-theme cambie de valor,
-                             o con que el sistema operativo cambie de modo.
+     background/color        No estan aqui. Ver la nota de abajo.
 
-                             El tema lo decide data-theme (eleccion explicita)
-                             o, si el atributo no esta, prefers-color-scheme
-                             (preferencia del SO). Ver theme.light.css y
-                             theme.dark.css para el mecanismo completo.
+                              El fondo y el color son decisiones de TEMA, no del
+                              navegador, asi que los declara cada vista sobre su
+                              <body> con clases de 2-sys/. El tema sigue mandando
+                              igual: si cambia data-theme, o si cambia
+                              prefers-color-scheme, el fondo y el texto cambian
+                              con el, sin tocar el HTML.
 
      text-rendering          optimizeLegibility activa features de texto que
                              mejoran la legibilidad (kerning, ligaduras) en
@@ -123,10 +122,34 @@
      Se quitaron porque son decisiones de TEMA, no del navegador, y por tanto
      no pertenecen a la capa que anula al navegador.
 
-     Consecuencia: el fondo, el color y la fuente ahora se declaran en cada
-     vista, con clases de 2-sys/:
+     Consecuencia: el fondo, el color y la fuente los declara cada vista, con
+     clases de 2-sys/ sobre el propio <body>:
 
-       <div class="md-bg-surface md-text-on-surface md-type-body-medium">
+       <body class="md-bg-background md-text-on-background md-type-body-medium">
+
+     EN EL BODY, Y NO EN UN CONTENEDOR INTERIOR
+     -------------------------------------------
+     El <body> es el lienzo de la pagina. Con el min-height: 100vh de arriba, su
+     fondo pinta la ventana entera; un <div> interior dejaria sin pintar la
+     banda de abajo en un documento corto.
+
+     EL ROL ES `background`, Y NO `surface`
+     ---------------------------------------
+     Segun M3, `background` es el fondo del lienzo de la pagina y `surface` el
+     de una superficie concreta: una tarjeta, un menu, un dialogo. Una vista
+     completa no es una superficie, es el fondo. Por eso el fondo usa
+     `--md-sys-color-background` y el texto que va encima se empareja con
+     `--md-sys-color-on-background`, que es el par que declara la
+     especificacion.
+
+     En el tema de este proyecto los dos roles resuelven al mismo tono
+     (neutral98 en claro, neutral6 en oscuro), asi que el cambio no se ve. Es
+     justo la razon de escribirlo asi: la clase dice LO QUE ES, no lo que se ve
+     hoy. `surface` queda para las superficies que se dibujen ENCIMA del lienzo,
+     cada una con su `on-surface`.
+
+     Elegir el rol por su nombre evita tener que recordar el tono, y es lo que
+     permite que el tema cambie de valores sin que el HTML tenga que saberlo.
 
      Lo que se gana: el HTML muestra de donde sale cada cosa. Antes, al abrir
      index.html no se veia de donde salia el fondo ni la fuente, porque venian
@@ -140,7 +163,7 @@
      Lo que se mantiene aqui es exclusivamente estructural: margin, padding,
      min-height y el renderizado del texto. Ninguno de esos cuatro es una
      decision de diseno.
-     --------------------------------------------------------------------- */
+     ------------------------------------------------------------------------ */
    /* ------------------------------------------------------------------------
      ENCABEZADOS — sin margenes
      ------------------------------------------------------------------------

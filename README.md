@@ -761,16 +761,29 @@ index.html            portada: título, tagline, enlaces a las vistas
   los enlaces.
 - Cada componente tiene su propia vista: `divider.html`, `button.html`, `card.html`.
 - Toda vista carga el sistema completo (`css/main.css`) y la fuente, igual que el índice.
-- Toda vista declara sus estilos base en un contenedor `<div>` con clases de `2-sys/`.
-  La base **nunca** está en `reset.css`.
+- Toda vista declara sus estilos base **sobre su `<body>`**, con clases de `2-sys/`.
+  La base **nunca** está en `reset.css`, y **nunca** en un contenedor `<div>` interior.
 
 ```html
-<body>
-  <div class="md-bg-surface md-text-on-surface md-type-body-medium">
-    <!-- contenido de la vista -->
-  </div>
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <!-- contenido de la vista -->
 </body>
 ```
+
+**Por qué `background` y no `surface`:** según M3, `background` es el fondo del lienzo de la
+página y `surface` el de una superficie concreta (una tarjeta, un menú, un diálogo). Una
+vista completa es el lienzo, no una superficie. Por eso el texto que va encima se lee con
+`on-background`, y no con `on-surface`. `surface` queda para lo que se dibuje *encima* del
+lienzo.
+
+**Por qué en el `<body>` y no en un `<div>`:** el `<body>` es el elemento que pinta la
+ventana, y el `reset` ya le da `min-height: 100vh`. Un `<div>` interior deja sin pintar la
+banda de abajo en un documento corto, con el color del sistema en vez del color del tema.
+
+El par fondo + texto se escribe **explícito** a propósito: `2-sys/colors.css` no ofrece
+ningún atajo que empareje un fondo con su texto, para que el contraste sea auditable en el
+marcado. El texto de apoyo usa `md-text-on-surface-variant`, el rol de menor énfasis de M3:
+no existe un `on-background-variant`.
 
 - El enlace de vuelta en una vista de componente apunta a `index.html` y dice `RDM Next`.
 - El `<title>` de una vista de componente es `<Componente> — ManGo! App`. El del índice
