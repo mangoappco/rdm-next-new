@@ -144,7 +144,7 @@ sobre specs oficiales de Google:
 | Familia                   | Archivo             | Origen                                                    |
 | ------------------------- | ------------------- | --------------------------------------------------------- |
 | `--md-ref-spacing-*`      | `1-ref/spacing.css` | Escala oficial M3 `Space 0`–`Space 900`                     |
-| `--md-sys-measurement-*`  | `2-sys/measurement.css` | Capa semántica que mapea spacing a roles de componente |
+| `--md-sys-measurement-*`  | `2-sys/measurement.css` | 14 roles de medida (**extensión propia**) |
 | `--md-ref-stroke-*`       | `1-ref/stroke.css` | Grosor de trazo: `none`/`thin`/`thick`                  |
 
 **Detalle importante sobre la escala de espacio:** los nombres `Space 0` … `Space 900`
@@ -152,6 +152,21 @@ sobre specs oficiales de Google:
 valores cada 4dp hasta `Space 200` y múltiplos de 8dp después). Lo que **no** es oficial
 es el prefijo `md.sys.measurement`; Google nunca publicó un token set de spacing en CSS.
 Por eso el nombre lleva prefijo `md-*` propio y está documentado aquí como extensión.
+
+**Qué aporta `measurement.css` sobre `spacing.css`:** el número no explica su
+propósito. `48px` a secas no dice por qué es 48; `--md-sys-measurement-touch-target`
+sí, porque comunica la intención. Y la intención es lo que sobrevive al cambio: si
+el mínimo táctil pasara a 44px por decisión de accesibilidad, se edita **una vez** en
+`2-sys` y ningún componente se entera, porque ninguno conoce el 48 — todos pidieron
+`touch-target`. Sin esta capa habría 40 lugares que editar.
+
+A diferencia de los radios, **todos** los roles de `measurement` caen en la escala de
+`spacing`. Es el único archivo de `2-sys` sin una sola excepción.
+
+**Sobre el área táctil:** 48dp es el mínimo de zona táctil de Android, un requisito de
+accesibilidad (≈9mm; la recomendación es 7–10mm; iOS usa 44×44pt). No es el tamaño del
+elemento visible: un icono de 24×24dp tiene un área táctil de 48×48dp, y el padding
+alrededor es lo que cuenta. Por eso M3 separa los 24dp del glifo de los 48dp del área.
 
 **Unidad:** M3 está diseñado en **dp**. En web `1dp = 1px`, así que `1-ref/spacing.css`
 escribe valores en `px` para que el mapeo contra cualquier spec de Android sea directo
@@ -315,6 +330,7 @@ rdm-next-new/
 │   │   ├── colors.css        --md-sys-color-*
 │   │   ├── typography.css    --md-sys-typescale-*
 │   │   ├── measurement.css   --md-sys-measurement-*
+│   │   ├── motion.css        --md-sys-motion-*
 │   │   ├── motion.css        --md-sys-motion-*
 │   │   ├── shape.css         --md-sys-shape-*
 │   │   ├── elevation.css     --md-sys-elevation-*

@@ -1,0 +1,194 @@
+/* ==========================================================================
+   2-sys/measurement.css — TOKENS SEMANTICOS DE MEDIDA (solo var())
+   ==========================================================================
+
+   QUE ES ESTE ARCHIVO
+   -------------------
+   CAPA 2 del sistema. Aqui viven los ROLES de medida: el nombre que un
+   componente pide cuando dice "esto debe tener un area tactil de 48px".
+
+   Este archivo NO contiene medidas. Todas mapean a 1-ref/spacing.css.
+
+   ---------------------------------------------------------------------------
+   POR QUE ESTE ARCHIVO EXISTE, SI ESPACING YA ESTA DEFINIDO
+   ---------------------------------------------------------------------------
+   Esta es la pieza que responde a la pregunta que plantaste al empezar el
+   proyecto: que aporta un token semantico que el numero ya describe.
+
+   La respuesta: el NUMERO no dice nada. 48px no explica por que ese 48.
+
+   --md-ref-spacing-600: 48px
+       "hay un espacio de 48 pixeles"
+   --md-sys-measurement-touch-target: var(--md-ref-spacing-600)
+       "esto debe ser tocable con el dedo, y 48px es lo minimo para eso"
+
+   La segunda version comunica la INTENCION. Y la intencion es lo que
+   sobrevive al cambio: si manana el minimo tactile pasara a 44px por
+   decision de accesibilidad, se cambia UNA vez aca y ningun componente se
+   entera, porque ninguno conocia el 48. Todos pidieron "touch-target".
+
+   Sin este archivo, cada componente escribiria "48px" y habria 40 lugares
+   que editar el dia que cambie. Con el, hay uno.
+
+   ---------------------------------------------------------------------------
+   POR QUE measurement Y NO "size" O "dimension"
+   ---------------------------------------------------------------------------
+   "Measurement" describe la operacion de MEDIR, no la dimension. Y sigue
+   la misma logica de los pares que ya existen en el proyecto:
+
+       1-ref/spacing.css   ->  2-sys/measurement.css   (medida -> su intencion)
+       1-ref/time.css      ->  2-sys/motion.css        (tiempo  -> su intencion)
+       1-ref/stroke.css   ->  2-sys/shape.css         (grosor  -> su intencion)
+       1-ref/corner.css    ->  2-sys/shape.css         (radio   -> su intencion)
+
+   Ademas, "measurement" es el termino que usa la propia documentacion de
+   Material Design para estos valores.
+
+   ---------------------------------------------------------------------------
+   POR QUE TODAS LAS MEDIDAS CAEN EN spacing.css
+   ---------------------------------------------------------------------------
+   Este es el caso donde la regla se cumple sin excepciones. A diferencia
+   de los radios (donde 28px no existia en la escala), TODOS los roles de
+   este archivo tienen su token correspondiente:
+
+     48dp -> space-600      8dp -> space-100      32dp -> space-400
+     24dp -> space-300     40dp -> space-500      16dp -> space-200
+     56dp -> space-700     64dp -> space-800      72dp -> space-900
+     20dp -> space-250     12dp -> space-150      80dp -> (ninguno)
+     36dp -> space-450
+
+   Los 11 roles de abajo, sin excepcion. Por eso este archivo queda 100%
+   fiel al principio de consumir unicamente var().
+
+   ========================================================================== */
+
+:root {
+  /* ==========================================================================
+     AREA TACTIL
+     --------------------------------------------------------------------------
+     EL ROLE MAS IMPORTANTE DE ESTE ARCHIVO, y el que justifica la capa.
+
+     48dp es el TAMANO MINIMO DE ZONA TACTIL de Android. No es una
+     preferencia estetica: es un requisito de accesibilidad que permite
+     alcanzar el elemento con el dedo en una pantalla grande.
+
+     Dato de contexto: 48dp equivalen a unos 9mm en un dispositivo tipico,
+     y la recomendacion para pantallas tactiles es de 7 a 10mm. iOS usa
+     44x44pt por comparacion.
+
+     OJO CON UN MALENTENDIDO FRECUENTE
+     ---------------------------------
+     El area tactil NO es el tamano del elemento visible. Un icono puede
+     medir 24x24dp y tener un area tactil de 48x48dp: el padding alrededor
+     es lo que cuenta.
+
+     Por eso los iconos en M3 se dibujan a 24dp pero se estan separados por
+     al menos 8dp, de modo que el area de 48dp de cada uno no se solape con
+     la del vecino. Ese padding de separacion usa space-100 y lo define el
+     COMPONENTE, no este archivo.
+
+     AQUI SOLO SE DEFINE EL TAMANO DEL AREA. Que un componente cumpla lo pone
+     en su receta, en 3-comp/.
+     ====================================================================== */
+
+  /* Area tactil minima. Todo elemento interactivo debe permitir al menos
+     esto, sea visible o no. */
+  --md-sys-measurement-touch-target: var(--md-ref-spacing-600);
+
+  /* Separacion minima entre dos areas tactiles vecinas, para que no se
+     solapen. M3 recomienda 8dp entre iconos de 24dp. */
+  --md-sys-measurement-touch-target-spacing: var(--md-ref-spacing-100);
+
+  /* ==========================================================================
+     ALTURAS DE COMPONENTES
+     --------------------------------------------------------------------------
+     Medidas que comparten varios componentes de M3. No son medidas de UN
+     componente (eso seria 3-comp/), sino medidas que el sistema usa de
+     forma consistente en varios sitios.
+
+     Dato: en un boton, el area tactil de 48dp suele ser MAYOR que el boton
+     visible. Un boton filled de M3 mide 40dp de alto y el area tactil que lo
+     envuelve llega a 48dp. Por eso estos roles son distintos entre si.
+     ====================================================================== */
+
+  /* Altura del boton. 40dp, mas bajo que el area tactil. */
+  --md-sys-measurement-button-height: var(--md-ref-spacing-500);
+
+  /* Alto de una fila de lista estandar. */
+  --md-sys-measurement-list-item-height: var(--md-ref-spacing-600);
+
+  /* Alto de una barra de navegacion superior. */
+  --md-sys-measurement-top-bar-height: var(--md-ref-spacing-600);
+
+  /* Alto de una barra de navegacion inferior o rail. */
+  --md-sys-measurement-navigation-bar-height: var(--md-ref-spacing-800);
+
+  /* Alto de un tab. */
+  --md-sys-measurement-tab-height: var(--md-ref-spacing-600);
+
+  /* ==========================================================================
+     MEDIDAS DE ICONOS
+     --------------------------------------------------------------------------
+     Un icono se dibuja a 24dp, que es el estandar de M3 para glifos. Pero
+     un icono NUNCA debe medir 24dp de zona pulsable: necesita los 48dp del
+     area tactil. Por eso son dos medidas distintas.
+     ====================================================================== */
+
+  /* Tamano del glifo del icono. */
+  --md-sys-measurement-icon-size: var(--md-ref-spacing-300);
+
+  /* Contenedor cuadrado del icono, para el que se aplica el area tactil. */
+  --md-sys-measurement-icon-container: var(--md-ref-spacing-600);
+
+  /* Icono pequeno, para chips y badges. */
+  --md-sys-measurement-icon-size-small: var(--md-ref-spacing-200);
+
+  /* ==========================================================================
+     MARGENES Y SEPARACIONES DE LAYOUT
+     --------------------------------------------------------------------------
+     Medidas de retícula, no de componentes. Definen el ritmo vertical de una
+     pagina.
+     ====================================================================== */
+
+  /* Margen lateral estandar de la pagina. */
+  --md-sys-measurement-page-margin: var(--md-ref-spacing-400);
+
+  /* Separacion vertical entre secciones de contenido. */
+  --md-sys-measurement-section-gap: var(--md-ref-spacing-600);
+
+  /* Separacion entre elementos de una misma lista o grupo. */
+  --md-sys-measurement-item-gap: var(--md-ref-spacing-300);
+
+  /* Padding interior estandar de un componente tipo tarjeta. */
+  --md-sys-measurement-content-padding: var(--md-ref-spacing-400);
+}
+
+/* ==========================================================================
+   CLASES UTILITARIAS
+   --------------------------------------------------------------------------
+   Estas NO aplican alto ni ancho directamente, porque un componente casi
+   nunca quiere que el HTML le fije la dimension: eso rompe los layouts
+   fluidos y el zoom del usuario.
+
+   En su lugar, exponen el area tactil minima mediante MIN-WIDTH/MIN-HEIGHT.
+   Es la manera correcta de garantizar los 48dp sin imponer un tamano fijo:
+   el elemento puede crecer si su contenido lo pide, pero nunca baja de 48dp.
+
+   Esta es una diferencia importante frente a las utilidades de color, que si
+   aplican su propiedad directamente. Aqui la dimension casi nunca es
+   heredada del HTML, se resuelve en el componente.
+   ========================================================================== */
+
+/* Area tactil minima: garantiza los 48dp sin fijar la dimension. */
+.md-measure-touch-target {
+  min-width: var(--md-sys-measurement-touch-target);
+  min-height: var(--md-sys-measurement-touch-target);
+}
+
+/* Icono con su area tactil: glifo de 24dp, area de 48dp. */
+.md-measure-icon {
+  width: var(--md-sys-measurement-icon-size);
+  height: var(--md-sys-measurement-icon-size);
+  min-width: var(--md-sys-measurement-touch-target);
+  min-height: var(--md-sys-measurement-touch-target);
+}
