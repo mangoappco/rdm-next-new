@@ -48,11 +48,47 @@
 
    ========================================================================== */
 
-/* Carga de la fuente. Debe ir ANTES de la declaracion de :root porque el
-   @import es una regla de CSS y solo se admite al principio de una hoja de
-   estilos. Al estar aqui, este archivo se autoproporciona: app.css no
-   necesita saber nada del tema tipografico. */
+/* ---------------------------------------------------------------------------
+   CARGA DE LA FUENTE
+   ---------------------------------------------------------------------------
+   FUENTE PRINCIPAL (la que usa el proyecto)
+   ------------------------------------------
+   Roboto se carga desde index.html con <link> y preconnect, NO desde aqui.
+   Motivo tecnico: un @import de CSS bloquea el descubrimiento de los recursos
+   posteriores. El navegador tiene que descargar ESTE archivo, terminar de
+   parsearlo, descubrir el @import de la fuente, y solo entonces puede empezar
+   a leer el resto del CSS. Para una fuente, eso es el peor caso posible: nada
+   se puede pintar hasta que la fuente este descargada.
+
+   La forma correcta es declararlo en el <head> del HTML:
+
+       <link rel="preconnect" href="https://fonts.googleapis.com">
+       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+
+   Asi el navegador descarga la fuente en paralelo con el resto, y ademas
+   `display=swap` muestra el texto con una fuente provisional mientras llega
+   la definitiva, en lugar de texto invisible.
+
+   ---------------------------------------------------------------------------
+   FALLBACK: POR QUE ESTA EL @import COMENTADO
+   ---------------------------------------------------------------------------
+   Esta regla queda comentada a proposito. Si alguien importa ESTE archivo de
+   forma aislada, sin pasar por index.html, los tokens de fuente seguirian
+   declarandose pero Roboto no se descargaria: el texto se veria con la fuente
+   por defecto del sistema.
+
+   Para cubrir ese caso se descomenta la regla siguiente. El trade-off es
+   explicito: se recupera la autosuficiencia del archivo a costa de la
+   velocidad de carga, que es exactamente lo que se pierde al usar @import.
+
+   Decision del proyecto: la VIA PRINCIPAL es <link> en el HTML. Esta regla
+   queda disponible para quien necesite el archivo aislado.
+   --------------------------------------------------------------------------- */
+
+/* FALLBACK — descomentar solo si este archivo se usa sin index.html.
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
+*/
 
 :root {
   /* ------------------------------------------------------------------------

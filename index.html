@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<!-- ==========================================================================
+     RDM Next — Showroom de componentes
+     ==========================================================================
+
+     SHELL MINIMO DEL SHOWROOM.
+
+     Este archivo existe para dos cosas:
+
+       1. Cargar el sistema completo (css/app.css) y la fuente Roboto.
+       2. Servir de esqueleto donde luego se inserten los componentes.
+
+     AUN NO HAY COMPONENTES. El sistema de tokens esta completo
+     (19 archivos, 481 tokens), pero 3-comp/ esta vacio. Los componentes se
+     agregan de a uno, con el mismo bloque de comentarios delimitadores en
+     cada entrega.
+
+     ---------------------------------------------------------------------------
+     NOTA SOBRE ESTRUCTURA: POR QUE NO HAY NADA DENTRO DE <body>
+     ---------------------------------------------------------------------------
+     Un esqueleto vacio se ve igual a un error. Por eso body lleva los
+     delimitadores visibles de "aun no hay componentes", en lugar de estar
+     literalmente vacio.
+
+     Cuando se agregue el primer componente, ese bloque se reemplaza por el
+     componente, conservando el formato de comentarios delimitadores exigido
+     por las reglas del proyecto.
+
+     ========================================================================== -->
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>RDM Next — Showroom</title>
+  <meta name="description" content="Showroom de componentes UI de ManGo! App, construido sobre Material Design 3.">
+
+  <!-- ==========================================================================
+       CARGA DE LA FUENTE
+       --------------------------------------------------------------------------
+       Roboto se carga AQUI, con <link>, y no dentro del CSS. Motivo tecnico:
+
+       Un @import de CSS bloquea el descubrimiento de los recursos
+       posteriores. El navegador tiene que terminar de leer el CSS, descubrir
+       el @import de la fuente, y solo entonces puede seguir. Para una fuente
+       es el peor caso: nada se puede pintar hasta que la fuente este lista.
+
+       Las tres lineas hacen esto:
+         1. preconnect a fonts.googleapis.com  -> evita un round-trip de DNS
+         2. preconnect a fonts.gstatic.com     -> idem, y con crossorigin
+         3. el stylesheet de la fuente         -> se descarga en paralelo
+
+       El parametro `display=swap` es importante: hace que el navegador pinte
+       el texto con una fuente provisional mientras Roboto descarga, en lugar
+       de mostrar texto invisible. Para una app que se carga en conexiones
+       lentas, la diferencia se nota.
+
+       El fallback para usar el archivo de forma aislada esta comentado en
+       css/1-ref/typeface.css, con la explicacion del trade-off.
+       ========================================================================== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
+
+  <!-- ==========================================================================
+       EL SISTEMA DE TOKENS
+       --------------------------------------------------------------------------
+       Un solo archivo. Nunca los individuales: app.css garantiza que toda la
+       cadena de 19 hojas se cargue en el orden correcto, con las capas
+       @layer ya declaradas.
+
+       Si se importara 3-comp/button.css sin app.css, sus variables no
+       existiran y el componente se veria roto.
+       ========================================================================== -->
+  <link rel="stylesheet" href="css/app.css">
+</head>
+
+<body>
+  <!-- ====================================================================== -->
+  <!-- INICIO: PLACEHOLDER - SHOWROOM SIN COMPONENTES                        -->
+  <!-- ====================================================================== -->
+
+  <main style="
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    gap: var(--md-ref-spacing-300);
+    background-color: var(--md-sys-color-surface);
+    color: var(--md-sys-color-on-surface);
+    font-family: var(--md-ref-typeface-plain);
+  ">
+
+    <h1 class="md-type-headline-medium" style="margin: 0;">
+      RDM Next
+    </h1>
+
+    <p class="md-type-body-large" style="
+      margin: 0;
+      color: var(--md-sys-color-on-surface-variant);
+    ">
+      Sistema de tokens completo. Componentes en camino.
+    </p>
+
+    <!--
+      Este bloque usa clases de utilidad del propio sistema
+      (.md-type-headline-medium, .md-type-body-large) para comprobar que la
+      cadena 1-ref -> 2-sys -> utilidad funciona de extremo a extremo.
+      Si el texto se ve con Roboto y el tamano correcto, el sistema carga bien.
+    -->
+
+  </main>
+
+  <!-- ====================================================================== -->
+  <!-- FIN: PLACEHOLDER - SHOWROOM SIN COMPONENTES                           -->
+  <!-- ====================================================================== -->
+</body>
+</html>
