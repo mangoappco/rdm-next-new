@@ -276,7 +276,7 @@ Verificado contra los archivos publicados por Google. Nombres exactos:
 | `md-bg-*` / `md-text-*` / `md-border-*` | `2-sys/colors.css` | 93 clases utilitarias de color |
 | `--md-sys-typescale-*`   | `2-sys/typography.css` | 92 tokens (15 estilos × 5 sub-tokens + 15 compuestos + 2 `weight-prominent`) |
 | `.md-type-*`             | `2-sys/typography.css` | 32 clases tipográficas               |
-| `--md-sys-shape-*`       | `2-sys/shape.css`| 15 roles de esquina + variantes por lado |
+| `--md-sys-shape-*`       | `2-sys/shape.css`| 16 roles: 15 de esquina + variantes por lado, y 1 de grosor de trazo |
 | `--md-sys-motion-*`      | `2-sys/motion.css`| 16 duraciones + 10 curvas                 |
 | `--md-ref-easing-*`      | `1-ref/easing.css`| 40 puntos de control (10 curvas × 4)      |
 | `--md-sys-elevation-*`   | `2-sys/elevation.css` | 6 niveles (key + ambient)              |
@@ -445,6 +445,27 @@ Por eso las utilidades `.md-border-*` aplican **solo `border-color`**: el grosor
 una medida y el grosor correcto depende del estado del componente (un separador es
 `thin`, el borde de un checkbox sin marcar es `thick`). Esa decisión es del
 componente en `3-comp/`, no de una clase de color.
+
+**El rol de grosor en `2-sys/shape.css`:** `--md-sys-shape-stroke-thin`.
+
+`1-ref/stroke.css` tiene tres valores crudos, pero `2-sys/` no tenia ninguno. Ese
+hueco se encontro al construir el primer componente real: el divisor de Google
+hardcodea `'thickness': 1px`, y aqui eso choca con dos reglas a la vez: escribir
+`1px` en `3-comp/` viola la REGLA 1, y leer `--md-ref-stroke-thin` desde `3-comp/`
+viola la REGLA 2.
+
+La salida es un token semantico:
+
+```css
+--md-sys-shape-stroke-thin: var(--md-ref-stroke-thin);
+```
+
+Vive en `shape.css` y no en `measurement.css` porque el stroke es una **forma**, no
+un espaciado: un borde de 1px no es una distancia, es el grosor de una linea. Por eso
+`1-ref` lo tiene como primitiva aparte de `spacing`.
+
+Solo se declara `thin`. `thick` y `none` quedan en `1-ref` hasta que un componente
+los pida: un token que nadie consume es un token muerto.
 
 **Por qué `corner.css` no reutiliza `spacing`:** cinco de los siete radios coinciden
 con tokens de espacio (`extra-small` 4px = `space-50`, `small` 8px = `space-100`,
@@ -619,11 +640,12 @@ al tema contrario en lugar de competir con él.
 jerarquía quede garantizada por el motor del navegador y no solo por el orden de escritura:
 
 ```css
-@layer ref, sys, comp;
+@layer reset, ref, sys, comp, utilities;
 
+@import url("reset.css")        layer(reset);
 @import url("1-ref/palette.css") layer(ref);
 @import url("2-sys/colors.css")  layer(sys);
-@import url("3-comp/button.css") layer(comp);
+@import url("3-comp/divider.css") layer(comp);
 ```
 
 Efecto: aunque alguien cometa el error de usar un token `ref` dentro de `3-comp/`, la
@@ -708,7 +730,6 @@ rdm-next-new/
 │   │   ├── typography.css    --md-sys-typescale-*
 │   │   ├── measurement.css   --md-sys-measurement-*
 │   │   ├── motion.css        --md-sys-motion-*
-│   │   ├── motion.css        --md-sys-motion-*
 │   │   ├── shape.css         --md-sys-shape-*
 │   │   ├── elevation.css     --md-sys-elevation-*
 │   │   ├── state.css         --md-sys-state-*
@@ -716,6 +737,7 @@ rdm-next-new/
 │   │       ├── theme.light.css
 │   │       └── theme.dark.css
 │   └── 3-comp/               Un componente por archivo (se llena por pasos)
+│       └── divider.css       --md-comp-divider-*
 └── tools/
     └── verify-tokens.ps1     Candado automático de la regla de hardcoding
 ```

@@ -9,7 +9,7 @@
 
        <link rel="stylesheet" href="css/main.css">
 
-   A partir de aqui se cargan las 20 hojas del sistema en el orden correcto.
+   A partir de aqui se cargan las 21 hojas del sistema en el orden correcto.
 
    NO se importan los archivos individuales. Si ManGo! App importa button.css
    sin main.css, las variables que ese archivo usa no existen y el componente
@@ -244,17 +244,17 @@
    --------------------------------------------------------------------------
    Un archivo por componente. Cada uno consume UNICAMENTE tokens de 2-sys/.
 
-   Ninguno se importa todavia: el sistema de tokens esta completo, pero no
-   hay ningun componente construido. Se agregan aqui a medida que se
-   implementen, uno por vez.
+   El primero es divider: dos tokens, sin variaciones de tipo. Es el mas
+   simple del catalogo y sirve para probar el contrato de capas con un
+   archivo real. Se agregan aqui a medida que se implementen, uno por vez.
 
    Cuando se agreguen, deben ir en esta capa, nunca directamente en la raiz.
    ========================================================================== */
 
-/* --- 3-comp/ (pendiente de implementar) --- */
+/* --- 3-comp/ --- */
+@import url("3-comp/divider.css") layer(comp);
 /* @import url("3-comp/button.css") layer(comp);   */
 /* @import url("3-comp/card.css")   layer(comp);   */
-/* @import url("3-comp/divider.css") layer(comp);  */
 /* @import url("3-comp/dialog.css") layer(comp);   */
 
 /* ==========================================================================
@@ -295,7 +295,8 @@
 /* ==========================================================================
    FIN DEL ORQUESTADOR
    ==========================================================================
-   20 archivos importados. El sistema de tokens esta completo.
+   21 archivos importados. El sistema de tokens esta completo y ya tiene su
+   primer componente.
 
    Para empezar a construir componentes, el siguiente paso es 3-comp/, que se
    agrega en este mismo archivo en la seccion de arriba.

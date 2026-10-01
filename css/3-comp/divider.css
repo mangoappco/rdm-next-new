@@ -1,0 +1,143 @@
+/* ==========================================================================
+   3-comp/divider.css — COMPONENTE DIVIDER
+   ==========================================================================
+
+   QUE ES ESTE COMPONENTE
+   ---------------------
+   Una linea horizontal que separa contenido dentro de un contenedor.
+
+   Es el componente mas simple del catalogo de M3, y por eso es el primero:
+   tiene solo dos tokens y ninguna variacion de tipo. Sirve para probar el
+   contrato completo de capas con un archivo real.
+
+   ---------------------------------------------------------------------------
+   LA RECETA, SEGUN GOOGLE
+   ---------------------------------------------------------------------------
+   Fuente: material-components/material-web, tokens/versions/v0_192/
+   _md-comp-divider.scss y divider/internal/_divider.scss.
+
+   Google define exactamente dos roles:
+
+       'color':     map.get($deps, 'md-sys-color', 'outline-variant')
+       'thickness': 1px
+
+   Y la estructura:
+
+       :host {
+         box-sizing: border-box;
+         color: <color>;
+         display: flex;
+         height: <thickness>;
+         width: 100%;
+       }
+       :host::before {
+         background: currentColor;
+         content: '';
+         height: 100%;
+         width: 100%;
+       }
+
+   ---------------------------------------------------------------------------
+   POR QUE `currentColor` Y NO UN `background-color` DIRECTO
+   ---------------------------------------------------------------------------
+   El color del divisor NO se aplica al fondo del elemento. Se aplica al
+   `color` del texto, y el `::before` lo toma con `currentColor`.
+
+   La razon: asi el divisor hereda el color del contexto. Si un contenedor
+   tiene `color: var(--md-sys-color-primary)`, el divisor que contiene se ve
+   primario sin que nadie le pase una clase. Es el mismo patron que usa la
+   capa de estado en 2-sys/state.css, y es una decision de M3, no nuestra.
+
+   ---------------------------------------------------------------------------
+   POR QUE `display: flex`
+   ---------------------------------------------------------------------------
+   El `::before` necesita ocupar el 100% del ancho del contenedor. Con
+   `display: flex` el pseudo-elemento se estira al ancho completo. Sin flex,
+   un pseudo-elemento con `width: 100%` dentro de un bloque normal tambien
+   funcionaria, pero la receta de Google usa flex y se sigue.
+
+   ---------------------------------------------------------------------------
+   EL TOKEN DE GROSOR: UN HUECO QUE ESTE COMPONENTE ENCONTRO
+   ---------------------------------------------------------------------------
+   Google hardcodea el grosor: `'thickness': 1px`. No es un token de ref.
+
+   En este proyecto eso no es posible, por dos reglas que se bloquean:
+
+     Escribir 1px aqui        -> REGLA 1: 0 valores crudos fuera de 1-ref
+     var(--md-ref-stroke-thin) -> REGLA 2: 3-comp no puede leer 1-ref
+
+   La salida es un token en 2-sys/shape.css:
+
+     --md-sys-shape-stroke-thin: var(--md-ref-stroke-thin)
+
+   Por que en shape.css y no en otro archivo: el stroke es una FORMA, no un
+   espaciado. Un borde de 1px no es una distancia, es el grosor de una linea.
+   Por eso 1-ref lo tiene como primitiva aparte de spacing, y por eso el rol
+   vive en shape.css junto a los corner.
+
+   Solo se declara `thin`. No `thick` ni `none`: un token que ningun
+   componente pide es un token muerto.
+
+   ---------------------------------------------------------------------------
+   LO QUE GOOGLE TIENE Y ESTE COMPONENTE NO
+   ---------------------------------------------------------------------------
+   Google soporta tres atributos de inset:
+
+       [inset]        padding-inline-start Y padding-inline-end: 16px
+       [inset-start]  padding-inline-start: 16px
+       [inset-end]    padding-inline-end: 16px
+
+   Este componente NO los implementa todavia. El motivo es el mismo de antes:
+   16px es --md-ref-spacing-200, y 3-comp no puede leer 1-ref. No existe un
+   token 2-sys que signifique "inset de divisor".
+
+   Cuando se implemente, sera con un token nuevo en 2-sys/measurement.css.
+   No se hace ahora para no expandir el alcance sin necesidad: el divisor
+   cumple su funcion basica sin inset.
+
+   ---------------------------------------------------------------------------
+   FORCED COLORS
+   ---------------------------------------------------------------------------
+   Google incluye:
+
+       @media (forced-colors: active) {
+         :host::before { background: CanvasText; }
+       }
+
+   Se conserva. En modo de alto contraste forzado, el divisor usa el color de
+   texto del sistema en vez del token, para que sea visible en cualquier tema.
+
+   ========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   TOKENS DEL COMPONENTE
+   ---------------------------------------------------------------------------
+   Capa 3. Lee UNICAMENTE de 2-sys, nunca de 1-ref (REGLA 2).
+   ------------------------------------------------------------------------ */
+
+.md-divider {
+  --md-comp-divider-color: var(--md-sys-color-outline-variant);
+  --md-comp-divider-thickness: var(--md-sys-shape-stroke-thin);
+
+  box-sizing: border-box;
+  color: var(--md-comp-divider-color);
+  display: flex;
+  height: var(--md-comp-divider-thickness);
+  width: 100%;
+  border: 0;   /* el <hr> nativo trae un border que se sumaria al height */
+}
+
+/* La linea visible. Toma el color del contexto con currentColor. */
+.md-divider::before {
+  background: currentColor;
+  content: '';
+  height: 100%;
+  width: 100%;
+}
+
+/* Alto contraste forzado: el divisor usa el color de texto del sistema. */
+@media (forced-colors: active) {
+  .md-divider::before {
+    background: CanvasText;
+  }
+}

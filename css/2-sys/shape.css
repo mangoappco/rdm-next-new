@@ -37,7 +37,11 @@
        --md-sys-shape-corner-full              9999px     Pastilla, circulo
 
    MAS VARIANTES: -top, -start y -end de los radios que las publican (ver
-   abajo). En total este archivo define 15 roles.
+   abajo). En total este archivo define 15 roles de esquina.
+
+   A esos se suma 1 rol de grosor de trazo (--md-sys-shape-stroke-thin), que
+   vive en este archivo porque el stroke es una forma, no un espaciado. En
+   total: 16 roles.
 
    POR QUE EL NOMBRE IMPORTA MAS QUE EL NUMERO
    -------------------------------------------
@@ -144,6 +148,26 @@
 
   /* Redondeo superior pequeno: campo de texto con etiqueta flotante */
   --md-sys-shape-corner-extra-small-top: var(--md-ref-corner-extra-small) var(--md-ref-corner-extra-small) var(--md-ref-corner-none) var(--md-ref-corner-none);
+
+  /* ------------------------------------------------------------------------
+     GROSOR DE TRAZO
+     --------------------------------------------------------------------------
+     Mismo patron que los radios: 1-ref/stroke.css tiene el numero crudo y
+     aqui se le da intencion.
+
+     Solo se declara `thin`. No `thick` ni `none`: un token que ningun
+     componente pide es un token muerto, y este archivo solo existe para
+     servir a los componentes. Cuando un componente necesite otro grosor, lo
+     pide por su nombre y el numero queda aislado.
+
+     Por que este archivo y no otro: `stroke` es una FORMA, no un espaciado.
+     Un borde de 1px no es una distancia, es el grosor de una linea. Por eso
+     1-ref lo tiene como primitiva aparte de spacing, y por eso el rol vive
+     aqui y no en measurement.
+     --------------------------------------------------------------------- */
+
+  /* Linea divisoria estandar: separadores, bordes de lista, <hr> */
+  --md-sys-shape-stroke-thin: var(--md-ref-stroke-thin);
 }
 
 /* ==========================================================================
@@ -177,3 +201,6 @@
 .md-shape-corner-large-start   { border-radius: var(--md-sys-shape-corner-large-start); }
 .md-shape-corner-large-end     { border-radius: var(--md-sys-shape-corner-large-end); }
 .md-shape-corner-extra-small-top { border-radius: var(--md-sys-shape-corner-extra-small-top); }
+
+/* --- Grosor de trazo --- */
+.md-shape-stroke-thin { border-width: var(--md-sys-shape-stroke-thin); }
