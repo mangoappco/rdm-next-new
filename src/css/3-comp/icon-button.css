@@ -1,0 +1,449 @@
+/* ==========================================================================
+   3-comp/icon-button.css - COMPONENTE BOTON DE ICONO
+   ==========================================================================
+
+   QUE ES ESTE COMPONENTE
+   ----------------------
+   El control que ejecuta una accion y se representa SOLO con un icono. En M3
+   es un componente aparte del boton, no un boton sin etiqueta, y la razon es
+   una medida:
+
+       .md-button        small  ->  glifo de 20dp
+       .md-icon-button   small  ->  glifo de 24dp
+
+   Cuatro dp de diferencia en el mismo tamano. El glifo del boton tiene que
+   compartir el ancho con una etiqueta; el del boton de icono esta solo y
+   tiene el contenedor entero para el.
+
+   Por eso son dos archivos y no uno con una variante. Un boton con etiqueta
+   vacia daria 20dp, y esa es la medida equivocada.
+
+   EL COMPONENTE DE M3, VERIFICADO
+   --------------------------------
+   tokens/versions/latest/sass/_md-comp-icon-button-{xsmall,small,medium}.scss:
+
+       xsmall   contenedor 32px    glifo 20px
+       small    contenedor 40px    glifo 24px
+       medium   contenedor 56px    glifo 24px
+
+   tokens/versions/v0_192/_md-comp-icon-button.scss, los colores:
+
+       icon-color            on-surface-variant
+       selected-icon-color   primary
+       disabled-icon-color   on-surface, con opacity 0.38
+       state-layer           40 x 40, corner-full
+
+   Y la forma, que INVIERTE al seleccionarse:
+
+       round    corner-full     seleccionado -> corner-medium
+       square   corner-medium   seleccionado -> corner-full
+
+   En medium, el cuadrado es corner-large y no corner-medium. Es el unico
+   lugar donde el tamano cambia la forma, y esta escrito abajo.
+
+   QUE VERSION DE TOKENS USA ESTE ARCHIVO
+   --------------------------------------
+   UNA DIFERENCIA CON EL RESTO DEL PROYECTO, Y ES DELIBERADA
+   -----------------------------------------------------------
+   Este proyecto usa los tokens v0.192. En esa generacion, icon-button NO
+   tiene variantes de tamano: declara un solo icono de 24px y un state layer
+   de 40 x 40, y el contenedor queda en cero a la espera de que lo fije un
+   archivo por tamano.
+
+   Los archivos por tamano estan en versions/latest/sass/, que es la version
+   de diseno 34.0.21. Este archivo toma de ahi las TRES medidas de contenedor
+   y de glifo, y de v0.192 los colores.
+
+   Es la primera vez que el proyecto cruza esa frontera, asi que conviene que
+   quede escrito: los colores son de nuestra version y las medidas no. Si
+   alguna vez se Migra a v0.192 completa, este archivo hay que rehacerlo, y
+   con esto se sabe que parte es de ahi y que parte no.
+
+   LO QUE NO IMPLEMENTA
+   -------------------
+   large y xlarge    96 y 136 de contenedor no existen en la escala de espacio
+                     de M3. Ver la nota de 2-sys/measurement.css.
+
+   morph de esquina  al seleccionar, M3 cambia el radio con una transicion de
+                     resorte. Aqui el cambio es instantaneo. Es el mismo
+                     limite que declara 3-comp/button.css: un resorte son dos
+                     parametros fisicos, no una curva, y aproximarlo con
+                     linear() perderia la fisica.
+
+   toggle con texto  el boton con etiqueta opcional y su checkmark. Es otra
+                     variante de M3 y no cabe en un componente que solo lleva
+                     icono.
+
+   ==========================================================================
+   ANATOMIA DEL MARCADO
+   ==========================================================================
+
+       <button class="md-icon-button" type="button" aria-label="Eliminar">
+         <span class="md-icon-button-icon md-icon" aria-hidden="true">delete</span>
+         <span class="md-icon-button-touch"></span>
+       </button>
+
+   El control necesita aria-label SIEMPRE: no hay etiqueta visible que
+   describa la accion, y sin ella el lector de pantalla anuncia el nombre del
+   glifo, que en Material Symbols es la palabra inglesa con la que esta
+   escrito.
+
+   El icono lleva aria-hidden por lo mismo: ya hay un nombre accesible en el
+   control, y el glifo seria ruido.
+
+   POR QUE NO HAY .md-icon-button-label
+   -----------------------------------
+   El boton tiene una, porque una etiqueta larga necesita recortarse y el
+   overflow que lo hace impede que la superficie de toque sobresalga. Aqui no
+   hay texto que recortar: el contenido es un solo glifo de tamano fijo.
+
+   Por eso este componente NO lleva overflow: hidden en ningun sitio, y por
+   eso la superficie de toque sale con la receta de M3 sin ningun recorte que
+   la recorte. Es el componente mas simple de los dos.
+
+   ========================================================================== */
+
+.md-icon-button {
+  /* ------------------------------------------------------------------------
+     TOKENS DEL COMPONENTE
+     ------------------------------------------------------------------------
+     Cada tamano y cada variante reapunta estos. Ninguno escribe un numero.
+     ------------------------------------------------------------------------ */
+
+  /* Medidas. El tamano de sistema es medium, como en el boton. */
+  --md-comp-icon-button-height: var(--md-sys-measurement-icon-button-height-medium);
+  --md-comp-icon-button-icon-size: var(--md-sys-measurement-icon-button-icon-medium);
+  --md-comp-icon-button-optical-size: var(--md-sys-icon-optical-size-medium);
+
+  /* Forma. Dos, y se INVIERTEN al seleccionarse. Ver el bloque de la forma. */
+  --md-comp-icon-button-shape: var(--md-sys-shape-corner-full);
+  --md-comp-icon-button-selected-shape: var(--md-sys-shape-corner-medium);
+
+  /* Color. El contenedor de la variante standard es transparente: en M3 es
+     un icono sobre la superficie, sin relleno. */
+  --md-comp-icon-button-container-color: transparent;
+  --md-comp-icon-button-icon-color: var(--md-sys-color-on-surface-variant);
+  --md-comp-icon-button-outline-width: var(--md-sys-shape-stroke-none);
+  --md-comp-icon-button-outline-color: transparent;
+
+  /* POR QUE EL GROSOR POR DEFECTO ES `none` Y NO `thin`
+     -------------------------------------------------
+     Las cuatro variantes declaran el borde con la misma propiedad, asi que el
+     grosor por defecto tiene que ser cero. Con `thin`, la variante standard
+     tendria un borde invisible de un pixel que ademas le recortaria dos al
+     area de contenido: con box-sizing: border-box, un contenedor de 56dp se
+     quedaria con 54dp utiles, y la superficie de toque se mediria sobre el
+     padding box en vez de sobre la caja.
+
+     Por eso `none` es un rol de 2-sys y no un cero escrito aqui. Es tambien
+     el primer consumidor de --md-sys-shape-stroke-none, que no existia hasta
+     que un componente lo pidio: es el flujo que 2-sys/shape.css ya
+     documentaba cuando dijo que thick y none quedaban en 1-ref "hasta que un
+     componente los pida". */
+
+  /* Estado. La capa toma currentColor, igual que en el boton, y por eso no
+     hay token de color propio para ella. */
+  --md-comp-icon-button-state-duration: var(--md-sys-motion-duration-short2);
+  --md-comp-icon-button-state-easing: var(--md-sys-motion-easing-standard);
+
+  /* La superficie de toque. Es el mismo objetivo de 48dp que exige M3 en
+     todo elemento interactivo. */
+  --md-comp-icon-button-touch-size: var(--md-sys-measurement-touch-target);
+
+  box-sizing: border-box;
+
+  /* position: relative para que la superficie de toque se ubique contra este
+     elemento. isolation: isolate para que los dos pseudo-elementos con
+     z-index -1 no se pinten en el contexto de apilamiento de un ancestro: un
+     boton de icono dentro de una tarjeta se veria sin relleno. */
+  position: relative;
+  isolation: isolate;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  inline-size: var(--md-comp-icon-button-height);
+  block-size: var(--md-comp-icon-button-height);
+
+  padding: 0;
+  border: var(--md-comp-icon-button-outline-width) solid
+    var(--md-comp-icon-button-outline-color);
+  border-radius: var(--md-comp-icon-button-shape);
+  background-color: var(--md-comp-icon-button-container-color);
+
+  color: var(--md-comp-icon-button-icon-color);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+
+  /* La elevacion va en el elemento. No hay overflow que la recorte, asi que
+     podria ir en el ::before; se queda aqui por el mismo motivo que en
+     button.css, y por la misma razon de no mezclar responsabilidades en un
+     pseudo-elemento que ya lleva el fondo y el radio. */
+  box-shadow: var(--md-comp-icon-button-elevation);
+  --md-comp-icon-button-elevation: var(--md-sys-elevation-level0);
+}
+
+/* ---------------------------------------------------------------------------
+   EL ICONO
+   ---------------------------------------------------------------------------
+   Un icono de Material Symbols es un texto: se escala con font-size, no con
+   width. Por eso font-size va junto con las otras dos medidas.
+
+   font-variation-settings es una propiedad HEREDADA. Ponerla en el boton
+   contaminaria a cualquier texto que metiera dentro; por eso vive en el icono,
+   que es el unico elemento cuya fuente es la de iconos.
+
+   Se declaran los CUATRO ejes aunque .md-icon tambien los declare. Si se
+   declarara uno solo, los demas volverian al valor por defecto de la fuente y
+   el peso pasaria de 400 a lo que la fuente traiga.
+   ------------------------------------------------------------------------ */
+
+.md-icon-button-icon {
+  flex: 0 0 auto;
+  inline-size: var(--md-comp-icon-button-icon-size);
+  block-size: var(--md-comp-icon-button-icon-size);
+  font-size: var(--md-comp-icon-button-icon-size);
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  font-variation-settings:
+    'opsz' var(--md-comp-icon-button-optical-size),
+    'wght' var(--md-sys-icon-weight),
+    'FILL' var(--md-sys-icon-fill),
+    'GRAD' var(--md-sys-typescale-icon-grade);
+}
+
+/* ---------------------------------------------------------------------------
+   LA CAPA DE ESTADO
+   ---------------------------------------------------------------------------
+   El mismo patron que documenta 2-sys/state.css: un pseudo-elemento con
+   currentColor, opacidad 0 en reposo, y transicion de opacidad.
+
+   Se acota por geometria: es position: absolute con inset: 0 y
+   border-radius: inherit, o sea que ocupa exactamente la caja y no puede
+   derramarse. Por eso este componente no necesita overflow: hidden.
+   ------------------------------------------------------------------------ */
+
+.md-icon-button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: currentColor;
+  opacity: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  transition: opacity
+    var(--md-comp-icon-button-state-duration)
+    var(--md-comp-icon-button-state-easing);
+}
+
+/* El orden importa: :active va despues de :hover, y :focus-visible despues
+   tambien, para que mantener pulsado un control ya iluminado por hover no
+   pierda la iluminacion correcta. */
+.md-icon-button:hover::after {
+  opacity: var(--md-sys-state-hover-state-layer-opacity);
+}
+
+.md-icon-button:focus-visible::after {
+  opacity: var(--md-sys-state-focus-state-layer-opacity);
+}
+
+.md-icon-button:active::after {
+  opacity: var(--md-sys-state-pressed-state-layer-opacity);
+}
+
+/* ---------------------------------------------------------------------------
+   DISABLED
+   ---------------------------------------------------------------------------
+   M3 baja el icono a on-surface con 38% de opacidad. Es el unico ajuste que
+   hace: no hay capa de estado, porque no hay nada que emphasize.
+
+   La opacidad es el mismo rol que usa .md-disabled, y por el mismo motivo: es
+   la opacidad del CONTENIDO inactivo, y da igual que ese contenido sea texto
+   o un glifo. El nombre del token dice state-layer, que es donde se escribio
+   primero, pero el valor es el del contenido apagado y por eso lo comparten.
+
+   El pointer-events: none es lo que hace que un control deshabilitado no
+   responda. Sin el, el boton seguiria respondiendo al clic aunque se vea
+   apagado.
+   ------------------------------------------------------------------------ */
+
+.md-icon-button:disabled {
+  color: var(--md-sys-color-on-surface);
+  opacity: var(--md-sys-state-disabled-state-layer-opacity);
+  cursor: default;
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------------------------
+   LA SUPERFICIE DE TOQUE
+   ---------------------------------------------------------------------------
+   Aqui se usa la RECETA DE ICON-BUTTON de M3, que es distinta de la de button,
+   y esa es una de las razones por las que este componente existe.
+
+   button/internal/_touch-target.scss, linea 10:
+       height: max(48px, 100%);
+       left: 0; right: 0;          <-- y nada en el eje inline
+
+   iconbutton/internal/_shared.scss, linea 105:
+       height: max(48px, 100%);
+       width:  max(48px, 100%);   <-- los DOS ejes
+
+   El boton de icono crece en los dos porque es estrecho en los dos. Su
+   contenedor es de 32 o 40dp, no solo de alto: tambien de ancho. Copiar la
+   receta del boton aqui daria 32 x 48dp y cuatro dp por debajo en el eje
+   que M3 pide.
+
+   Y eso es lo que obliga a que 3-comp/button.css .md-button-touch crezca en
+   los dos ejes tambien: mientras el showroom use .md-button para los botones
+   de icono, esa es la unica receta que funciona para los dos. Cuando esos
+   botones passen a .md-icon-button, la de .md-button-touch puede volver a la
+   de M3, que es de un solo eje.
+
+   pointer-events: none NO lleva, al contrario que los dos pseudo-elementos del
+   boton: esta superficie existe para recibir el toque.
+   ------------------------------------------------------------------------ */
+
+.md-icon-button-touch {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  block-size: max(var(--md-comp-icon-button-touch-size), 100%);
+  inline-size: max(var(--md-comp-icon-button-touch-size), 100%);
+  transform: translate(-50%, -50%);
+}
+
+/* ---------------------------------------------------------------------------
+   TAMANOS
+   ---------------------------------------------------------------------------
+   Los tres que el proyecto declara. Ver 2-sys/measurement.css para por que no
+   large ni xlarge.
+   ------------------------------------------------------------------------ */
+
+.md-icon-button-xsmall {
+  --md-comp-icon-button-height: var(--md-sys-measurement-icon-button-height-xsmall);
+  --md-comp-icon-button-icon-size: var(--md-sys-measurement-icon-button-icon-xsmall);
+  --md-comp-icon-button-optical-size: var(--md-sys-icon-optical-size-small);
+}
+
+.md-icon-button-small {
+  --md-comp-icon-button-height: var(--md-sys-measurement-icon-button-height-small);
+  --md-comp-icon-button-icon-size: var(--md-sys-measurement-icon-button-icon-small);
+  --md-comp-icon-button-optical-size: var(--md-sys-icon-optical-size-medium);
+}
+
+.md-icon-button-medium {
+  --md-comp-icon-button-height: var(--md-sys-measurement-icon-button-height-medium);
+  --md-comp-icon-button-icon-size: var(--md-sys-measurement-icon-button-icon-medium);
+  --md-comp-icon-button-optical-size: var(--md-sys-icon-optical-size-medium);
+}
+
+/* ---------------------------------------------------------------------------
+   LA FORMA, Y POR QUE SE INVIERTE AL SELECCIONARSE
+   ---------------------------------------------------------------------------
+   M3 no inventa una forma nueva para el estado seleccionado: le da la forma
+   del otro. Un boton redondeado pasa a medium, y uno cuadrado pasa a full.
+
+   El motivo es que el seleccionado ya se distingue por el color --primary en
+   lugar de on-surface-variant-- y por el relleno en las variantes filled. Si
+   ademas cambiara la forma, el estado se comunicaria dos veces y el glifo
+   pareceria un componente distinto. Pasando de full a medium, o de medium a
+   full, el estado se nota sin que el glifo se descentre.
+
+   Por eso son dos tokens y no uno: --md-comp-icon-button-shape y
+   --md-comp-icon-button-selected-shape.
+
+   Y por eso medium usa corner-large y no corner-medium en el cuadrado: con
+   56dp de contenedor, un radio de 12dp se veria pequeno. Verificado en
+   _md-comp-icon-button-medium.scss.
+   ------------------------------------------------------------------------ */
+
+.md-icon-button-square {
+  --md-comp-icon-button-shape: var(--md-sys-shape-corner-medium);
+  --md-comp-icon-button-selected-shape: var(--md-sys-shape-corner-full);
+}
+
+.md-icon-button-medium.md-icon-button-square {
+  --md-comp-icon-button-shape: var(--md-sys-shape-corner-large);
+  --md-comp-icon-button-selected-shape: var(--md-sys-shape-corner-full);
+}
+
+.md-icon-button[aria-pressed='true'] {
+  --md-comp-icon-button-icon-color: var(--md-sys-color-primary);
+
+  /* Y la forma se INVIERTE. Este es el segundo uso del par de tokens: sin
+     esta linea, --md-comp-icon-button-selected-shape quedaria declarado y sin
+     usar, que es como se declara un token muerto. */
+  border-radius: var(--md-comp-icon-button-selected-shape);
+}
+
+/* ---------------------------------------------------------------------------
+   VARIANTES
+   ---------------------------------------------------------------------------
+   Las cuatro de M3. El contenedor cambia de color y el icono deja de tenirse
+   con currentColor, porque sobre un relleno el color tiene que ser el del
+   par, no el del glifo.
+
+   Por eso el icono NO usa currentColor en el estado hover de estas variantes:
+   usa --md-comp-icon-button-icon-color, que es lo que M3 declara.
+   ------------------------------------------------------------------------ */
+
+.md-icon-button-standard {
+  --md-comp-icon-button-container-color: transparent;
+  --md-comp-icon-button-icon-color: var(--md-sys-color-on-surface-variant);
+}
+
+.md-icon-button-filled {
+  --md-comp-icon-button-container-color: var(--md-sys-color-primary);
+  --md-comp-icon-button-icon-color: var(--md-sys-color-on-primary);
+  --md-comp-icon-button-elevation: var(--md-sys-elevation-level0);
+}
+
+.md-icon-button-filled-tonal {
+  --md-comp-icon-button-container-color: var(--md-sys-color-secondary-container);
+  --md-comp-icon-button-icon-color: var(--md-sys-color-on-secondary-container);
+  --md-comp-icon-button-elevation: var(--md-sys-elevation-level0);
+}
+
+.md-icon-button-outlined {
+  --md-comp-icon-button-container-color: transparent;
+  --md-comp-icon-button-icon-color: var(--md-sys-color-on-surface-variant);
+  --md-comp-icon-button-outline-width: var(--md-sys-shape-stroke-thin);
+  --md-comp-icon-button-outline-color: var(--md-sys-color-outline-variant);
+}
+
+/* El glifo de las variantes con relleno no usa currentColor, asi que la capa
+   de estado necesita su propio color o se pintarria del color equivocado.
+   En las de contorno y standard, currentColor es correcto y no se declara
+   nada. */
+.md-icon-button-filled .md-icon-button-icon,
+.md-icon-button-filled-tonal .md-icon-button-icon {
+  color: var(--md-comp-icon-button-icon-color);
+}
+
+/* ---------------------------------------------------------------------------
+   FORCED COLORS
+   ---------------------------------------------------------------------------
+   Google lo incluye en icon-button con dos ajustes, y son los mismos que se
+   aplicaron al boton: el relleno pasa a llevar borde de CanvasText, porque en
+   alto contraste el fondo puede no pintarse, y el disabled pasa a GrayText con
+   opacidad 1, porque un gris al 38% sobre cualquier fondo deja de ser legible.
+
+   Ver 3-comp/button.css.
+   ------------------------------------------------------------------------ */
+
+@media (forced-colors: active) {
+  .md-icon-button {
+    border-color: CanvasText;
+  }
+
+  .md-icon-button:disabled {
+    color: GrayText;
+    opacity: 1;
+  }
+}

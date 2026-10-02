@@ -307,6 +307,7 @@
 /* --- 3-comp/ --- */
 @import url("3-comp/divider.css") layer(comp);
 @import url("3-comp/button.css")  layer(comp);
+@import url("3-comp/icon-button.css") layer(comp);
 /* @import url("3-comp/card.css")   layer(comp);   */
 /* @import url("3-comp/dialog.css") layer(comp);   */
 

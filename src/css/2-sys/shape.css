@@ -173,6 +173,7 @@
 
   /* Linea divisoria estandar: separadores, bordes de lista, <hr> */
   --md-sys-shape-stroke-thin: var(--md-ref-stroke-thin);
+--md-sys-shape-stroke-none: var(--md-ref-stroke-none);
 
   /* Componentes en estado activo: selected, error, checkbox sin marcar.
      El boton todavia no lo usa, pero M3 lo define para esos estados en

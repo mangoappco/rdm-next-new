@@ -333,6 +333,48 @@
   --md-sys-measurement-button-icon-size-medium: var(--md-sys-measurement-icon-size);
 
   /* ==========================================================================
+     MEDIDAS DEL BOTON DE ICONO
+     --------------------------------------------------------------------------
+     M3 define el boton de icono como un COMPONENTE APARTE del boton, con sus
+     propias medidas. No es un boton sin etiqueta: los tamaños no coinciden.
+
+     Verificado en material-web-main, tokens/versions/latest/sass/:
+
+         _md-comp-icon-button-xsmall.scss   container 32px   icon 20px
+         _md-comp-icon-button-small.scss    container 40px   icon 24px
+         _md-comp-icon-button-medium.scss   container 56px   icon 24px
+         _md-comp-icon-button-large.scss    container 96px   icon 32px
+         _md-comp-icon-button-xlarge.scss   container 136px  icon 40px
+
+     LA DIFERENCIA CON EL BOTON, Y POR QUE IMPORTA
+     ----------------------------------------------
+     En small, el boton pone 20dp de glifo y el boton de icono pone 24dp. No es
+     un descuido de la tabla: el glifo del boton tiene que compartir el ancho
+     con una etiqueta, y el del boton de icono esta solo, con el contenedor
+     entero para el. Por eso NO se puede resolver declarando un boton con
+     etiqueta vacia.
+
+     LO QUE NO SE DECLARA: large y xlarge
+     ------------------------------------
+     Sus contenedores miden 96 y 136, y ninguno de los dos numeros existe en
+     la escala de espacio de M3, que termina en 72. Anadirlos a 1-ref seria
+     crear primitivas por un componente, que es exactamente lo que este
+     proyecto no hace.
+
+     Es el mismo motivo por el que 3-comp/button.css no declara large ni
+     xlarge, y por el que su cabecera lo dice. Se anaden cuando un
+     componente real los pida, no antes.
+     ======================================================================= */
+
+  --md-sys-measurement-icon-button-height-xsmall: var(--md-ref-spacing-400);
+  --md-sys-measurement-icon-button-height-small:  var(--md-ref-spacing-500);
+  --md-sys-measurement-icon-button-height-medium: var(--md-ref-spacing-700);
+
+  --md-sys-measurement-icon-button-icon-xsmall: var(--md-ref-spacing-250);
+  --md-sys-measurement-icon-button-icon-small:  var(--md-ref-spacing-300);
+  --md-sys-measurement-icon-button-icon-medium: var(--md-ref-spacing-300);
+
+  /* ==========================================================================
      INSET DE DIVISOR
      --------------------------------------------------------------------------
      Separacion lateral de las variantes inset y middle-inset del divisor.
