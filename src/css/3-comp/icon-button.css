@@ -203,12 +203,25 @@
      comportamiento hay que devolverle la parte visual que el navegador
      impone, y esto es esa parte.
 
-     Verificado, con getComputedStyle: en Chrome el fondo y el borde ya son los
-     del componente, con `appearance: auto` residual, porque
+     Verificado, con getComputedStyle: en Chrome `appearance` computada a `none`
+     en los 26 .md-icon-button de la vista, incluidos los deshabilitados, y el
+     fondo y el borde ya son los del componente porque
      `--md-comp-icon-button-container-color` y `--md-comp-icon-button-outline-color`
-     resuelven a `transparent`. Safari y Firefox NO estan verificados, y sin
-     ellos no se puede cerrar si esto arregla algo. Va por la misma razon que
-     en button.css: fidelidad al comportamiento de M3, no un defecto visto. */
+     resuelven a `transparent`.
+
+     Firefox, verificado con firefox --headless sobre los componentes reales: el
+     boton de icono se dibuja bien, con glifo y sin chrome nativo. Comparando
+     `appearance: none` contra `appearance: auto`, no hay diferencia visible.
+
+     O sea que en los dos navegadores comprobados esta linea NO cambia nada
+     observable. Safari NO esta verificado: WebKit no corre en Windows sin
+     instalar su build, y ahi es donde podria quedar el riesgo, si queda alguno.
+
+     Se conserva, y con un aviso: si WebKit resultara ser inocuo igual, esta
+     linea seria una declaracion sin efecto verificable, y entonces lo
+     honesto seria quitarla. Queda pendiente de esa comprobacion. Va por la
+     misma razon que en button.css: fidelidad al comportamiento de M3, no un
+     defecto visto. */
   -webkit-appearance: none;
 
   color: var(--md-comp-icon-button-icon-color);

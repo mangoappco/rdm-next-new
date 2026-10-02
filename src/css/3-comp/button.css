@@ -188,16 +188,26 @@
 
      QUE ESTO ESTA Y QUE NO ESTA VERIFICADO
      ---------------------------------------
-     Verificado, con getComputedStyle y capturas: en Chrome el fondo gris ya
-     no aparece, y eso lo resuelve `background: transparent` de arriba. Con
-     `appearance: auto` residual.
+     Chrome, verificado con getComputedStyle: `appearance` computada a `none` en
+     las cinco variantes y en el deshabilitado, y ninguno de los 26 .md-button
+     de la vista conserva fondo de elemento. Con `appearance: auto` residual el
+     fondo gris tampoco aparecia, porque `background: transparent` de arriba ya
+     lo tapa.
 
-     NO verificado: Safari y Firefox. Alli un <button> con `appearance: auto`
-     conserva comportamiento de widget nativo, y `background: transparent` no
-     siempre basta. No hay forma de cerrarlo desde aqui sin esos navegadores,
-     asi que esta linea NO es un arreglo de un defecto visto: es la receta de
+     Firefox, verificado con firefox --headless sobre los componentes reales: los
+     cinco se dibujan bien y el boton text sigue siendo solo texto. Comparando
+     `appearance: none` contra `appearance: auto` en la misma captura, no hay
+     diferencia visible. O sea que en Firefox esta linea NO arregla nada
+     observable, igual que en Chrome.
+
+     Safari NO esta verificado. WebKit no corre en Windows sin instalar su build,
+     y meter npm y node_modules en este proyecto no compensa una comprobacion.
+     Donde queda el riesgo, si queda alguno, es ahi.
+
+     Asi que esta linea NO es un arreglo de un defecto visto: es la receta de
      M3, copiada por fidelidad y por el mismo motivo que la de arriba, que el
-     componente se defienda del navegador con sus propias declaraciones.
+     componente se defienda del navegador con sus propias declaraciones. En los
+     dos navegadores comprobados es inocua.
 
      Va con el prefijo `-webkit-` porque es lo que escribe M3, y porque es un
      alias en todos los navegadores que importan. La forma sin prefijo tambien
