@@ -155,10 +155,15 @@
      Mismo patron que los radios: 1-ref/stroke.css tiene el numero crudo y
      aqui se le da intencion.
 
-     Solo se declara `thin`. No `thick` ni `none`: un token que ningun
-     componente pide es un token muerto, y este archivo solo existe para
-     servir a los componentes. Cuando un componente necesite otro grosor, lo
-     pide por su nombre y el numero queda aislado.
+     Se declaraba solo `thin`. Con el boton se anaden `thick` y
+     `extra-thick`, porque M3 define el anillo de foco con dos grosores
+     distintos y 1-ref ya los expone.
+
+     La regla que se mantuvo no cambio: solo se declara un grosor si ALGO lo
+     pide. Se declara `thin` porque divisores, outlined y text fields lo
+     piden; `thick` y `extra-thick` porque el anillo de foco los pide. Un
+     token que ningun componente pide sigue siendo un token muerto, y no se
+     anade por completitud de la escala.
 
      Por que este archivo y no otro: `stroke` es una FORMA, no un espaciado.
      Un borde de 1px no es una distancia, es el grosor de una linea. Por eso
@@ -168,6 +173,15 @@
 
   /* Linea divisoria estandar: separadores, bordes de lista, <hr> */
   --md-sys-shape-stroke-thin: var(--md-ref-stroke-thin);
+
+  /* Componentes en estado activo: selected, error, checkbox sin marcar.
+     El boton todavia no lo usa, pero M3 lo define para esos estados en
+     varios componentes y 1-ref ya lo expone. */
+  --md-sys-shape-stroke-thick: var(--md-ref-stroke-thick);
+
+  /* El anillo de foco. M3 lo mide en 3px con un offset de 2px por fuera:
+     son dos medidas distintas, asi que hacen falta dos tokens. */
+  --md-sys-shape-stroke-extra-thick: var(--md-ref-stroke-extra-thick);
 }
 
 /* ==========================================================================

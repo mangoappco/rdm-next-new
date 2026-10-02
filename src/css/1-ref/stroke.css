@@ -42,16 +42,47 @@
    Google, igual que se hizo con --md-sys-measurement-*.
 
    ---------------------------------------------------------------------------
-   LOS TRES GROSORES DEL SISTEMA
+   LOS CUATRO GROSORES DEL SISTEMA
    ---------------------------------------------------------------------------
-   none    0px   Ausencia de linea. Para "resetear" un borde que un reset
-                  global haya puesto, o para transition de 0 a thin.
-   thin    1px   El grosor por defecto de M3. Outlined cards, divisores,
-                  bordes de tabla, chips en reposo, text fields.
-   thick   2px   Estados activos: focus, selected, error. El borde "grita".
+   none         0px   Ausencia de linea. Para "resetear" un borde que un reset
+                      global haya puesto, o para transition de 0 a thin.
+   thin         1px   El grosor por defecto de M3. Outlined cards, divisores,
+                      bordes de tabla, chips en reposo, text fields.
+   thick        2px   Estados activos de un componente: selected, error, el
+                      borde de un checkbox sin marcar. El borde "grita".
+   extra-thick  3px   El anillo de foco. Ver la nota de abajo.
 
    La logica de fondo: thin define la presencia de un componente, thick
    comunica que ese componente esta en el foco del usuario o en error.
+
+   ---------------------------------------------------------------------------
+   POR QUE 3px Y NO 2px: EL ANILLO DE FOCUS
+   ---------------------------------------------------------------------------
+   Esta escala estaba en tres grosores, y el boton obliga a un cuarto.
+
+   M3 no trata el foco como "un borde mas grueso". Lo define como un token
+   set aparte, md-sys-state-focus-indicator, con tres medidas propias:
+
+       md-sys-state-focus-indicator.inner-offset   -3px
+       md-sys-state-focus-indicator.outer-offset    2px
+       md-sys-state-focus-indicator.thickness      3px
+
+   El grosor del anillo es 3px y su separacion respecto del componente es
+   2px. Son dos medidas distintas con dos grosores distintos, asi que un
+   solo token no alcanza.
+
+   Y 2px no serviria aunque se quisiera usar: el anillo tiene que separarse
+   visualmente del borde del componente. Con 1px de diferencia se lee como
+   un borde mal dibujado, no como un anillo de foco.
+
+   El nombre extra-thick mantiene la escala graduada (0, 1, 2, 3) en vez de
+   inventar un token con el nombre de su consumidor. Que hoy solo lo use el
+   anillo de foco no lo convierte en un token de focus: es un grosor de
+   trazo mas, que resulta que tiene un solo consumidor. Si manana aparece
+   un separador de 3px, el token ya existe y no hay que decidir nada.
+
+   Ojo con el 2px: NO es el anillo, es su offset. Por eso hacen falta los
+   dos, y por eso 2px no se reutiliza como grosor.
 
    ---------------------------------------------------------------------------
    DONDE SE USA (documentacion de la decision arquitectonica)
@@ -69,14 +100,21 @@
      chip.css          chip en reposo              -> thin
                        chip seleccionado           -> thick
      selection.css     caja o circulo sin marcar   -> thick
+     button.css        borde del outlined          -> thin
+                       anillo de foco, grosor      -> extra-thick
+                       anillo de foco, separacion  -> thick
 
    ---------------------------------------------------------------------------
    RELACION CON LAS OTRAS CAPAS
    -----------------------------
-       1-ref/stroke.css     <-- 0px, 1px, 2px (CRUDOS)
+       1-ref/stroke.css     <-- 0px, 1px, 2px, 3px (CRUDOS)
+              |
+              v
+       2-sys/shape.css      <-- los ROLES de grosor
               |
               v
        3-comp/divider.css   <-- el COMPONENTE decide cual usar
+       3-comp/button.css
                                (el grosor es decision del componente,
                                 no de la utilidad de color)
 
@@ -108,4 +146,12 @@
      Comunica que el componente esta en el foco del usuario o en error.
      --------------------------------------------------------------------- */
   --md-ref-stroke-thick: 2px;
+
+  /* ------------------------------------------------------------------------
+     STROKE EXTRA-THICK — el anillo de foco
+     M3 lo define en md-sys-state-focus-indicator.thickness, con 3px. No es
+     un "borde mas grueso": es una medida aparte, con su propio offset de
+     2px. Ver la seccion "POR QUE 3px Y NO 2px" de la cabecera.
+     --------------------------------------------------------------------- */
+  --md-ref-stroke-extra-thick: 3px;
 }
