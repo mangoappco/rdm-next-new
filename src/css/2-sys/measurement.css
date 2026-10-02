@@ -90,11 +90,31 @@
       medida fija en 2-sys/ obliga a decidirlo una vez y para siempre, y esa
       decision pertenece a la pagina, no al sistema de medidas.
 
-   Cuando se construya el componente de 3-comp/ que resuelva esto, consumira
-   los tokens de 1-ref/spacing.css directamente. Un componente puede leer 1-ref
-   por su cuenta: lo que la arquitectura prohibe es que un COMPONENTE lea
-   tokens de otro componente, o que 3-comp lea 1-ref saltandose 2-sys en un
-   token compartido. Ver la REGLA 2 de tools/verify-tokens.ps1.
+   ---------------------------------------------------------------------------
+   CORRECCION: ESTA SECCION DECIA QUE UN COMPONENTE PUEDE LEER 1-REF
+   ---------------------------------------------------------------------------
+   Una version anterior de esta cabecera afirmaba que el componente que
+   resuelve el ritmo de pagina "consumira los tokens de 1-ref/spacing.css
+   directamente", y que "un componente puede leer 1-ref por su cuenta".
+
+   Eso es FALSO, y la version que se construyo el divisor lo demuestra. La
+   REGLA 2 de tools/verify-tokens.ps1 falla cualquier --md-ref-* dentro de
+   3-comp/:
+
+       REGLA 2  3-comp no puede leer 1-ref: salto de capa prohibido
+
+   Por eso el divisor no escribe 1px: pide --md-sys-shape-stroke-thin, un rol
+   de 2-sys/shape.css que apunta a la primitiva. Ese es el patron correcto y
+   el unico que pasa el verificador.
+
+   La regla real es: un componente NUNCA lee 1-ref. Si necesita una medida,
+   2-sys tiene que exponela como rol primero. El coste es un token mas en
+   este archivo; la ganancia es que 3-comp queda auditable con una regla
+   mecanica, sin excepciones que recordar.
+
+   Se deja la constancia porque el error es facil de cometer: parece
+   razonable, y el verificador lo rechaza con un mensaje que no parece
+   relacionado con lo que uno estaba escribiendo.
 
    ---------------------------------------------------------------------------
    POR QUE TODAS LAS MEDIDAS CAEN EN spacing.css
@@ -176,6 +196,53 @@
   --md-sys-measurement-tab-height: var(--md-ref-spacing-600);
 
   /* ==========================================================================
+     MEDIDAS DEL BOTON
+     --------------------------------------------------------------------------
+     M3 define el boton en cinco tamanos (xsmall, small, medium, large,
+     xlarge). Aqui estan los tres primeros; large y xlarge no estan porque
+     sus alturas (96 y 136) no existen en la escala de espacio de M3, asi que
+     anadirlos exigiria crear primitivas en 1-ref.
+
+     `--md-sys-measurement-button-height` es el tamano small y es el que M3
+     llama "default". Los otros dos llevan el sufijo del tamano para poder
+     repetir el patron cuando se cubran large y xlarge.
+
+     Dato: la escala de espacio de M3 tiene un salto de 24 entre space-700
+     (56) y space-900 (72). No hay ningun token de 96, y por eso el tamano
+     large no se puede expresar sin inventar uno.
+     ====================================================================== */
+
+  /* Altura del boton pequeno: 32dp, para acciones terciarias y toolbars. */
+  --md-sys-measurement-button-height-xsmall: var(--md-ref-spacing-400);
+
+  /* Altura del boton mediano: 56dp, la llamada a la accion principal. */
+  --md-sys-measurement-button-height-medium: var(--md-ref-spacing-700);
+
+  /* ==========================================================================
+     MEDIDAS PROPIAS DEL BOTON
+     --------------------------------------------------------------------------
+     Estas si son medidas de UN componente, no medidas compartidas. Viven
+     aqui, y no en 3-comp/button.css, por una sola razon tecnica: la REGLA 2
+     prohibe que 3-comp lea 1-ref. Si el boton escribiera 20px, el verificador
+     lo rechazaria. Para que el componente pueda pedirla, 2-sys tiene que
+     exponarla.
+
+     No es que 2-sys "se robe" las medidas del boton: es que un componente no
+     puede inventar medidas. Las pide por su intencion, y quien decide el
+     numero es 1-ref.
+     ====================================================================== */
+
+  /* Separacion entre el icono y la etiqueta. M3 la fija en 8dp para los tres
+     tamanos, asi que un solo rol cubre los tres. */
+  --md-sys-measurement-button-label-space: var(--md-ref-spacing-100);
+
+  /* Padding lateral del boton. M3 usa el mismo valor a izquierda y a
+     derecha, asi que un rol por tamono sirve para ambos lados. */
+  --md-sys-measurement-button-padding-xsmall: var(--md-ref-spacing-150);
+  --md-sys-measurement-button-padding-small:  var(--md-ref-spacing-200);
+  --md-sys-measurement-button-padding-medium: var(--md-ref-spacing-300);
+
+  /* ==========================================================================
      MEDIDAS DE ICONOS
      --------------------------------------------------------------------------
      Un icono se dibuja a 24dp, que es el estandar de M3 para glifos. Pero
@@ -191,6 +258,12 @@
 
   /* Icono pequeno, para chips y badges. */
   --md-sys-measurement-icon-size-small: var(--md-ref-spacing-200);
+
+  /* Icono del boton, para los tamanos xsmall y small.
+     M3 usa 20dp aqui, no los 24dp del icono generico: el glifo del boton es
+     mas pequeno que el de un icono suelto. El tamano medium si usa 24dp, y
+     por eso reutiliza --md-sys-measurement-icon-size. */
+  --md-sys-measurement-button-icon-size: var(--md-ref-spacing-250);
 
   /* ==========================================================================
      INSET DE DIVISOR
