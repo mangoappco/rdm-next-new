@@ -117,8 +117,9 @@
           <span class="md-button-icon md-icon" aria-hidden="true">download</span>
           <span class="md-button-label">Descargar</span>
         </button>
-        <button class="md-button" type="button" aria-label="Eliminar">
-          <span class="md-button-icon md-icon" aria-hidden="true">delete</span>
+        <button class="md-icon-button md-icon-button-small" type="button" aria-label="Eliminar">
+          <span class="md-icon-button-icon md-icon" aria-hidden="true">delete</span>
+          <span class="md-icon-button-touch"></span>
         </button>
       </div>
       <h3>Qué declara el componente y qué no</h3>
@@ -532,14 +533,15 @@
       </table>
       <p>El resultado es un botón que <strong>se ve de 32dp y se pulsa de 48dp</strong>. El área visible conserva el tamaño que pide el diseño; el área pulsable cumple la accesibilidad. Son dos medidas y por eso son dos tokens.</p>
       <h4>Por qué una utilidad no sirve aquí</h4>
-      <p>Porque una utilidad solo puede cambiar el tamaño de la caja, y la caja <em>es</em> el área visible. Agrandarla deformaría el botón: mide 48 de ancho y se queda en 32 de alto, o al revés, y el resultado ya no es un botón.</p>
+      <p>Porque una utilidad solo puede cambiar el tamaño de la caja, y la caja <em>es</em> el área visible. Agrandarla deformaría el botón, o lo haría crecer más de lo que el diseño pide.</p>
       <div class="sr-stage">
-        <button class="md-button md-button-xsmall md-measure-touch-target" type="button" aria-label="Añadir">
-          <span class="md-button-icon md-icon" aria-hidden="true">add</span>
+        <button class="md-icon-button md-icon-button-xsmall md-measure-touch-target" type="button" aria-label="Añadir">
+          <span class="md-icon-button-icon md-icon" aria-hidden="true">add</span>
         </button>
       </div>
-      <p class="sr-na">El botón de arriba lleva <code>.md-measure-touch-target</code>, de <code>2-sys/measurement.css</code>. Medido en el navegador da <strong>48×32</strong>: la utilidad no aporta nada y el botón sale achaparrado. No es la solución, es un contraejemplo.</p>
-      <p>Además le falta el otro problema. La utilidad vive en <code>sys</code> y el botón declara su propio <code>min-height</code> en <code>comp</code>, que está declarada <em>después</em>. A igualdad de especificidad, gana <code>comp</code>:</p>
+      <p class="sr-na">El botón de arriba lleva <code>.md-measure-touch-target</code>, de <code>2-sys/measurement.css</code>. Es un <a href="icon-button.html">Icon Button</a> extra small, que M3 mide en <strong>32dp</strong>. Con la utilidad, medido en el navegador, da <strong>48×48</strong>: la utilidad no agranda el área de toque, agranda el botón. El control queda un 50% más grande de lo que pide el diseño, y sigue sin tener por qué área de toque: ya la tiene de serie.</p>
+      <p class="sr-na">Antes de migrar esto a <code>icon-button</code>, el mismo contraejemplo medía 48×32, porque el botón declaraba su propio alto y ganaba la pelea de capas. Con el componente nuevo la deformación se ve en los dos ejes, que es lo que se ve a simple vista.</p>
+      <p>Además le falta el otro problema. La utilidad vive en <code>sys</code> y el botón declara su propio alto en <code>comp</code>, que está declarada <em>después</em>. A igualdad de especificidad, gana <code>comp</code>:</p>
       <table class="sr-table">
         <thead>
           <tr><th scope="col">Medida</th><th scope="col">Declarado en</th><th scope="col">Computado</th></tr>
@@ -551,29 +553,30 @@
       </table>
       <p>Es el mismo fenómeno que impide que una utilidad de <code>2-sys</code> cambie el color de un componente: una clase de <code>2-sys</code> puede fijar algo que el componente no toque, y no puede pisar algo que el componente sí fije.</p>
       <p><strong>Consecuencia:</strong> el requisito de 48×48 de M3 <strong>no se puede cumplir con una utilidad</strong>, ni por capas ni por motivo. Necesita algo del propio componente, que es lo que hace el siguiente bloque.</p>
-      <h4>La solución: <code>.md-button-touch</code></h4>
-      <p>Un elemento hijo que se dibuja por encima del botón sin ocupar sitio en el flujo. Es lo que hace M3 con su elemento <code>.touch</code>, en <code>button/internal/_touch-target.scss</code>.</p>
+      <h4>La solución: <code>.md-icon-button-touch</code></h4>
+      <p>Un elemento hijo que se dibuja por encima del control sin ocupar sitio en el flujo. Es lo que hace M3 con su elemento <code>.touch</code>, en <code>iconbutton/internal/_shared.scss</code>.</p>
       <div class="sr-stage">
-        <button class="md-button md-button-xsmall" type="button" aria-label="Añadir">
-          <span class="md-button-icon md-icon" aria-hidden="true">add</span>
-          <span class="md-button-touch"></span>
+        <button class="md-icon-button md-icon-button-xsmall" type="button" aria-label="Añadir">
+          <span class="md-icon-button-icon md-icon" aria-hidden="true">add</span>
+          <span class="md-icon-button-touch"></span>
         </button>
       </div>
-      <p>Medido en el navegador: el botón <strong>sigue midiendo 32dp</strong> y la superficie mide <strong>48×48dp</strong>. El layout no cambia ni un píxel, porque la superficie es <code>position: absolute</code>: no entra en el flujo, no empuja a los hermanos y no ensancha el botón.</p>
+      <p>Medido en el navegador: el control <strong>sigue midiendo 32dp</strong> y la superficie mide <strong>48×48dp</strong>. El layout no cambia ni un píxel, porque la superficie es <code>position: absolute</code>: no entra en el flujo, no empuja a los hermanos y no ensancha el control.</p>
       <table class="sr-table">
         <thead>
           <tr><th scope="col">Elemento</th><th scope="col">Alto</th><th scope="col">Ancho</th><th scope="col">Lo que es</th></tr>
         </thead>
         <tbody>
-          <tr><td><code>.md-button</code></td><td>32px</td><td>48px</td><td>El área visible, y lo que mide el diseño</td></tr>
-          <tr><td><code>.md-button-touch</code></td><td><strong>48px</strong></td><td><strong>48px</strong></td><td>El área que recibe el toque</td></tr>
+          <tr><td><code>.md-icon-button</code></td><td>32px</td><td>32px</td><td>El área visible, y lo que mide M3</td></tr>
+          <tr><td><code>.md-icon-button-touch</code></td><td><strong>48px</strong></td><td><strong>48px</strong></td><td>El área que recibe el toque</td></tr>
         </tbody>
       </table>
-      <p>La receta es la de M3, con un cambio: donde su <code>.touch</code> pone <code>height: max(48px, 100%)</code>, aquí se pide el rol del sistema en vez del número, porque <code>3-comp/</code> no puede escribir medidas crudas. El <code>100%</code> se conserva y es lo que hace que un botón con etiqueta larga agrande también su superficie, en vez de quedarse en 48dp por debajo del texto.</p>
+      <p>La receta es la de M3, con un cambio: donde su <code>.touch</code> pone <code>max(48px, 100%)</code>, aquí se pide el rol del sistema en vez del número, porque <code>3-comp/</code> no puede escribir medidas crudas. El <code>100%</code> se conserva, y es lo que hace que un control con etiqueta larga agrande también su superficie en vez de quedarse en 48dp por debajo del texto.</p>
+      <p>Y es la receta de <strong>icon-button</strong>, que es distinta de la de <code>button</code>: aquí crece en los <strong>dos ejes</strong>, porque el botón de icono es estrecho en los dos. El <code>Button</code> de texto solo crece en vertical. Ver <a href="icon-button.html#comportamiento">Icon Button</a>.</p>
       <p>Dos detalles que no son de M3 y sí hacen falta aquí:</p>
       <ul>
-        <li>La superficie <strong>no</strong> lleva <code>pointer-events: none</code>, al contrario que los dos pseudo-elementos del botón. Existe para recibir el toque. No intercepta nada que esté mal porque es descendiente del botón: el clic le llega de todas formas. La superficie no <em>reemplaza</em> al botón, lo <em>amplía</em>.</li>
-        <li>No hay que <code>overflow: hidden</code> en el botón, y antes sí lo había. Ese <code>overflow</code> recortaba a los descendientes, y una superficie que sobresale se recortaba con él. Por eso <code>.md-button-label</code> es ahora obligatoria en el marcado: es la que lleva el <code>overflow: hidden</code> que recorta los puntos suspensivos, igual que hace M3, que lo tiene en <code>.label</code> y no en el botón.</li>
+        <li>La superficie <strong>no</strong> lleva <code>pointer-events: none</code>, al contrario que los pseudo-elementos del control. Existe para recibir el toque. No intercepta nada que esté mal porque es descendiente: el clic le llega de todas formas. La superficie no <em>reemplaza</em> al control, lo <em>amplía</em>.</li>
+        <li>En <code>.md-button</code> hizo falta además mover el <code>overflow: hidden</code> del elemento a <code>.md-button-label</code>. Ese <code>overflow</code> recortaba a los descendientes, y una superficie que sobresale se recortaba con él. En <code>icon-button</code> no hizo falta: no hay etiqueta que truncar, así que el componente no lleva <code>overflow: hidden</code> en ningún sitio.</li>
       </ul>
       <p class="sr-na">Comprobado que no se rompió nada al quitar el <code>overflow</code> del botón: la capa de estado es <code>position: absolute</code> con <code>inset: 0</code> y <code>border-radius: inherit</code>, o sea que se acota por geometría y nunca se derramó por otra causa. La sombra de elevación sigue dibujándose y el truncado de la etiqueta sigue funcionando, medidos los dos.</p>
       <h4>Y en M3 el botón de icono es otro componente</h4>
@@ -591,7 +594,7 @@
           <tr><td><code>icon-button</code></td><td>medium</td><td>56dp</td><td>24dp</td></tr>
         </tbody>
       </table>
-      <p class="sr-na">Solo difiere en <code>small</code>, y es una diferencia real: <code>icon-button</code> pone 24dp de glifo donde <code>button</code> pone 20dp. El ejemplo de arriba usa <code>button</code> extra small, así que le corresponde 20dp, que es lo que renderiza. <code>icon-button</code> no está implementado en este proyecto.</p>
+      <p class="sr-na">Solo difiere en <code>small</code>, y es una diferencia real: <code>icon-button</code> pone 24dp de glifo donde <code>button</code> pone 20dp. El ejemplo de arriba usa <code>button</code> extra small, así que le corresponde 20dp, que es lo que renderiza. <code>icon-button</code> ya está implementado en este proyecto, como componente aparte: vive en <code>3-comp/icon-button.css</code> y se consume con <code>.md-icon-button</code>.</p>
       <h3>Teclado</h3>
       <table class="sr-table">
         <thead>
@@ -713,7 +716,7 @@
       <p>Implementada. <code>.md-button-touch</code> es un elemento hijo, no un modificador, y se documenta con la medida medida en <a href="#accesibilidad">Accesibilidad</a>.</p>
       <p>Los botones de tamaño <code>medium</code> miden 56dp y cumplen sin la superficie. Los de <code>xsmall</code> y <code>small</code>, que miden 32dp y 40dp, la necesitan.</p>
       <h3>El botón de icono</h3>
-      <p class="sr-na">M3 define <code>icon-button</code> como un componente aparte de <code>button</code>, con sus propios tamaños de glifo. No está implementado. Ver <a href="#accesibilidad">Accesibilidad</a> con la tabla comparada.</p>
+      <p class="sr-na">M3 define <code>icon-button</code> como un componente aparte de <code>button</code>, con sus propios tamaños de glifo, y aquí está igual: <code>3-comp/icon-button.css</code>, que expone <code>.md-icon-button</code> y sus cuatro variantes —<code>standard</code>, <code>filled</code>, <code>filled-tonal</code> y <code>outlined</code>—, que son las cuatro que define M3. De los cinco tamaños de M3 están tres: <code>xsmall</code>, <code>small</code> y <code>medium</code>. Faltan <code>large</code> y <code>xlarge</code>. Ver <a href="#accesibilidad">Accesibilidad</a> con la tabla comparada.</p>
       <h3>El botón toggle</h3>
       <p>La segunda variante de M3. Ver <a href="#variantes">Variantes</a> con la tabla completa de lo que falta.</p>
       <h3>La forma square y el morph al presionar</h3>

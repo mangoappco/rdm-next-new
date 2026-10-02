@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Icon Button — ManGo! App</title>
+  <meta name="description" content="Documentacion del componente Icon Button de RDM Next: el control que ejecuta una accion con un solo icono, con sus cuatro variantes, sus tres tamanos y sus dos formas.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../src/css/main.css">
+  <link rel="stylesheet" href="../assets/showroom.css">
+  <script src="../assets/showroom.js"></script>
+</head>
+
+<!--
+  Copiada de templates/component.template.html.
+  Secciones confirmadas por Danny: las 22 de la skill, todas incluidas.
+
+  Componente: src/css/3-comp/icon-button.css
+  Tokens:    src/css/2-sys/measurement.css (alturas y glifos)
+             src/css/2-sys/shape.css       (stroke-none)
+  Fuente de los iconos: ver showroom/components/icon.html
+
+  Fuentes de esta pagina, de M3:
+    /styles/icons/applying-icons
+    /components/icon-buttons/overview
+  Implementacion de referencia:
+    material-web-main/iconbutton/internal/_shared.scss
+    material-web-main/tokens/v0_192/_md-comp-icon-button.scss
+    material-web-main/tokens/versions/latest/sass/_md-comp-icon-button-*.scss
+-->
+
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <main class="sr-page">
+
+    <div class="sr-bar">
+      <a class="sr-back" href="../index.html">RDM Next</a>
+      <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
+    </div>
+
+    <header class="sr-header">
+      <h1>Icon Button</h1>
+      <p>El control que ejecuta una acción y se representa <strong>solo con un icono</strong>. En M3 es un componente aparte del botón, no un botón sin etiqueta, y la razón es una medida: en <code>small</code>, este componente pone un glifo de <strong>24dp</strong> donde el botón pone <strong>20dp</strong>.</p>
+    </header>
+
+    <hr class="md-divider">
+
+    <article class="sr-section">
+      <h2>Uso</h2>
+      <h3>Cuándo usarlo</h3>
+      <ul>
+        <li>Cuando la acción es <strong>inequívoca con el icono</strong>. No porque el botón sea pequeño, sino porque el icono dice exactamente qué pasa: borrar, compartir, cerrar, buscar.</li>
+        <li>En barras de herramientas y en filas de acciones repetidas, donde el ancho importa y el icono ya es un lenguaje compartido.</li>
+        <li>En superficies pequeñas, donde un botón con etiqueta no entra.</li>
+      </ul>
+      <h3>Cuándo no usarlo</h3>
+      <ul>
+        <li>Si la acción necesita <strong>palabras</strong>. Este componente no tiene etiqueta visible: toda su accesibilidad depende del <code>aria-label</code> que le escriba quien lo usa. Si el nombre no cabe en un <code>aria-label</code> corto, no es un botón de icono.</li>
+        <li>Si hay que añadir otro icono al lado. Un botón con icono y etiqueta es <a href="button.html">Button</a>, no este.</li>
+        <li>Si la acción es destructiva o irreversible sin confirmación. Un icono no da espacio a esa confirmación.</li>
+      </ul>
+      <p class="sr-na">La regla general de M3 es que el icono y el texto van juntos siempre que se pueda, y el icono solo se queda solo cuando el significado es obvio. Un botón de icono es el caso donde se acepta ese riesgo, y por eso lleva <code>aria-label</code> obligatorio.</p>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section">
+      <h2>Ejemplo básico</h2>
+      <div class="sr-stage">
+        <button class="md-icon-button md-icon-button-small" type="button" aria-label="Eliminar">
+          <span class="md-icon-button-icon md-icon" aria-hidden="true">delete</span>
+          <span class="md-icon-button-touch"></span>
+        </button>
+      </div>
+      <p>Tres elementos y ninguno opcional: el control, el glifo y la superficie de toque.</p>
+      <ul>
+        <li><code>.md-icon-button</code> — el control</li>
+        <li><code>.md-icon-button-icon</code> — el glifo. Lleva <code>.md-icon</code> para que le aplique la fuente de iconos</li>
+        <li><code>.md-icon-button-touch</code> — la superficie de 48×48dp</li>
+      </ul>
+      <p><strong>El <code>aria-label</code> no es opcional.</strong> No hay etiqueta visible, así que es el único nombre accesible. Y <code>aria-hidden</code> en el glifo, porque el nombre ya está en el control.</p>
+      <p class="sr-na">A diferencia de <a href="button.html">Button</a>, aquí <strong>no hace falta un elemento de etiqueta</strong>. Ese componente lo necesita porque una etiqueta larga se recorta, y ese recorte impedía que la superficie sobresaliera. Aquí no hay texto que recortar, y por eso este componente no lleva <code>overflow: hidden</code> en ningún sitio. Es el más simple de los dos.</p>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section">
+      <h2>Variantes / Types</h2>
+      <div class="sr-grid">
+        <figure class="sr-cell">
+          <div class="sr-stage"><button class="md-icon-button md-icon-button-standard md-icon-button-small" type="button" aria-label="Favorito"><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span></button></div>
+          <figcaption><code>.md-icon-button-standard</code> · la de sistema</figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-stage"><button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" aria-label="Favorito"><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span></button></div>
+          <figcaption><code>.md-icon-button-filled</code></figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-stage"><button class="md-icon-button md-icon-button-filled-tonal md-icon-button-small" type="button" aria-label="Favorito"><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span></button></div>
+          <figcaption><code>.md-icon-button-filled-tonal</code></figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-stage"><button class="md-icon-button md-icon-button-outlined md-icon-button-small" type="button" aria-label="Favorito"><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span></button></div>
+          <figcaption><code>.md-icon-button-outlined</code></figcaption>
+        </figure>
+      </div>
+      <p>Las cuatro de M3. Solo cambian el color del contenedor, el del glifo y el borde. La geometría es idéntica.</p>
+      <p class="sr-na"><code>standard</code> es la de sistema y no hace falta escribirla: es lo que trae <code>.md-icon-button</code> sin modificador, igual que <code>md-button-filled</code> lo era en <a href="button.html">Button</a>.</p>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section">
+      <h2>Variaciones de comportamiento</h2>
+      <p>Solo hay una: el <strong>toggle</strong>. El control pasa a un estado seleccionado y se queda ahí, y se marca con <code>aria-pressed</code>.</p>
+      <div class="sr-stage">
+        <button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" aria-label="Favorito" aria-pressed="false">
+          <span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span>
+        </button>
+        <button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" aria-label="Favorito" aria-pressed="true">
+          <span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span>
+        </button>
+      </div>
+      <p>Se usa <code>aria-pressed</code> y no una clase propia porque el estado es <strong>semántico</strong>: un lector de pantalla tiene que anunciar que el botón está pulsado. Una clase no se anuncia.</p>
+      <p>Al seleccionar cambian <strong>dos</strong> cosas: el color del glifo pasa a <code>primary</code>, y la forma se invierte. Las dos están en la sección de <a href="#shapes">Shapes</a>.</p>
+      <p class="sr-na">Este componente <strong>no tiene JavaScript</strong>, como ninguno del sistema. El ejemplo de arriba está fijo en el estado que dice su <code>aria-pressed</code>. Quien lo use pone el atributo desde su código.</p>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section">
+      <h2>Color</h2>
+      <p>Cada variante usa su propio par de color, y aquí hay un matiz que no existe en <a href="button.html">Button</a>.</p>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Variante</th><th scope="col">Contenedor</th><th scope="col">Glifo</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>standard</code></td><td>transparente</td><td><code>on-surface-variant</code></td></tr>
+          <tr><td><code>filled</code></td><td><code>primary</code></td><td><code>on-primary</code></td></tr>
+          <tr><td><code>filled-tonal</code></td><td><code>secondary-container</code></td><td><code>on-secondary-container</code></td></tr>
+          <tr><td><code>outlined</code></td><td>transparente</td><td><code>on-surface-variant</code></td></tr>
+          <tr><td>Seleccionado</td><td>—</td><td><code>primary</code></td></tr>
+          <tr><td>Deshabilitado</td><td>—</td><td><code>on-surface</code> al 38%</td></tr>
+        </tbody>
+      </table>
+      <h3>Por qué el glifo no siempre usa <code>currentColor</code></h3>
+      <p>En <a href="button.html">Button</a> la capa de estado usa <code>currentColor</code>: el glifo tiñe la capa y la capa se ve del color del contenido. Ese mecanismo necesita que el glifo sea del color de la superficie.</p>
+      <p>En <code>filled</code> y <code>filled-tonal</code> el glifo es del color del <em>par</em> —blanco sobre el primario, por ejemplo—, no del fondo. Si la capa tomara <code>currentColor</code>, se pintaría del color del glifo sobre un relleno del color del par, y el hover se vería como una mancha del color equivocado.</p>
+      <p class="sr-na">Por eso esas dos variantes fijan el color del glifo con un token, y las de <code>standard</code> y <code>outlined</code> no declaran nada: ahí <code>currentColor</code> es lo correcto.</p>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section" id="shapes">
+      <h2>Shapes</h2>
+      <div class="sr-grid">
+        <figure class="sr-cell">
+          <div class="sr-stage"><button class="md-icon-button md-icon-button-small" type="button" aria-label="Favorito" aria-pressed="false"><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span></button></div>
+          <figcaption><code>round</code> · <code>corner-full</code></figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-stage"><button class="md-icon-button md-icon-button-square md-icon-button-small" type="button" aria-label="Favorito" aria-pressed="false"><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span></button></div>
+          <figcaption><code>.md-icon-button-square</code> · <code>corner-medium</code></figcaption>
+        </figure>
+      </div>
+      <h3>Y se invierten al seleccionar</h3>
+      <div class="sr-grid">
+        <figure class="sr-cell">
+          <div class="sr-stage"><button class="md-icon-button md-icon-button-small" type="button" aria-label="Favorito" aria-pressed="true"><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span></button></div>
+          <figcaption>round seleccionado → <code>corner-medium</code></figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-stage"><button class="md-icon-button md-icon-button-square md-icon-button-small" type="button" aria-label="Favorito" aria-pressed="true"><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span></button></div>
+          <figcaption>square seleccionado → <code>corner-full</code></figcaption>
+        </figure>
+      </div>
+      <p>M3 no inventa una forma nueva para el estado seleccionado: <strong>le da la forma del otro</strong>. Un redondeado pasa a medium, y uno cuadrado pasa a full.</p>
+      <p>El motivo es que el seleccionado ya se distingue por el color —<code>primary</code> en lugar de <code>on-surface-variant</code>— y por el relleno en las variantes <code>filled</code>. Si además cambiara la forma, el estado se comunicaría dos veces y el glifo parecería un componente distinto.</p>
+      <p class="sr-na">Y hay un tamaño que se sale: en <code>medium</code>, el cuadrado es <code>corner-large</code> y no <code>corner-medium</code>. Con 56dp de contenedor, un radio de 12dp se vería pequeño. Verificado en <code>_md-comp-icon-button-medium.scss</code>.</p>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section">
+      <h2>Sizes</h2>
+      <div class="sr-stage">
+        <button class="md-icon-button md-icon-button-xsmall" type="button" aria-label="Añadir"><span class="md-icon-button-icon md-icon" aria-hidden="true">add</span><span class="md-icon-button-touch"></span></button>
+        <button class="md-icon-button md-icon-button-small" type="button" aria-label="Añadir"><span class="md-icon-button-icon md-icon" aria-hidden="true">add</span><span class="md-icon-button-touch"></span></button>
+        <button class="md-icon-button md-icon-button-medium" type="button" aria-label="Añadir"><span class="md-icon-button-icon md-icon" aria-hidden="true">add</span><span class="md-icon-button-touch"></span></button>
+      </div>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Clase</th><th scope="col">Contenedor</th><th scope="col">Glifo</th><th scope="col">Eje <code>opsz</code></th><th scope="col">Superficie</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>.md-icon-button-xsmall</code></td><td>32dp</td><td>20dp</td><td>20</td><td>48×48dp</td></tr>
+          <tr><td><code>.md-icon-button-small</code> <span class="sr-spec-bar sr-spec-bar--none"></span></td><td>40dp</td><td>24dp</td><td>24</td><td>48×48dp</td></tr>
+          <tr><td><code>.md-icon-button-medium</code> <span class="sr-spec-bar sr-spec-bar--none"></span></td><td>56dp</td><td>24dp</td><td>24</td><td>56×56dp</td></tr>
+        </tbody>
+      </table>
+      <h3>La diferencia con el botón, que es la razón de este componente</h3>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Tamaño</th><th scope="col"><code>button</code></th><th scope="col"><code>icon-button</code></th><th scope="col">Diferencia</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>xsmall</code></td><td>20dp</td><td>20dp</td><td>—</td></tr>
+          <tr><td><code>small</code></td><td>20dp</td><td><strong>24dp</strong></td><td><strong>4dp</strong></td></tr>
+          <tr><td><code>medium</code></td><td>24dp</td><td>24dp</td><td>—</td></tr>
+        </tbody>
+      </table>
+      <p>No es un descuido de la tabla. El glifo del botón tiene que <strong>compartir el ancho con una etiqueta</strong>; el del botón de icono está solo y tiene el contenedor entero para él.</p>
+      <p class="sr-na">Por eso son dos archivos y no uno con una variante: <strong>un botón con etiqueta vacía daría 20dp</strong>, y esa es la medida equivocada. Un <code>.md-button</code> con <code>aria-label</code> y solo icono es <em>no</em> un botón de icono: es un botón con una etiqueta que no se ve, y da la medida del botón.</p>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section">
+      <h2>Padding</h2>
+      <p class="sr-na">Este componente <strong>no tiene padding configurable</strong>. Declara <code>padding: 0</code> y el glifo se centra en el contenedor.</p>
+      <p class="sr-na">Y no es una omisión. El aire alrededor del glifo no lo pone el CSS: lo trae dibujado el material, con su live area de 20dp y sus 2dp de padding. Un padding en el control lo que haría es <strong>achicar el área de toque</strong> sin agrandarla, y desplazar el glifo fuera del centro óptico.</p>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section">
+      <h2>States</h2>
+      <div class="sr-grid">
+        <figure class="sr-cell">
+          <div class="sr-stage"><button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" aria-label="Favorito"><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span></button></div>
+          <figcaption>Reposo</figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-stage"><button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" aria-label="Favorito"><span class="md-state-layer-hover" aria-hidden="true"></span><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span></button></div>
+          <figcaption>Hovered</figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-stage"><button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" aria-label="Favorito"><span class="md-state-layer-focus" aria-hidden="true"></span><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span></button></div>
+          <figcaption>Focused</figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-stage"><button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" aria-label="Favorito"><span class="md-state-layer-pressed" aria-hidden="true"></span><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span></button></div>
+          <figcaption>Pressed</figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-stage"><button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" aria-label="Favorito" disabled><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span></button></div>
+          <figcaption>Disabled</figcaption>
+        </figure>
+      </div>
+      <p>Los cuatro estados normales usan la capa de estado, y el deshabilitado apaga el contenido al 38%.</p>
+      <p class="sr-na">La capa se dibuja con el <code>::after</code> del propio control, y se acota por geometría: es <code>position: absolute</code> con <code>inset: 0</code> y <code>border-radius: inherit</code>. Por eso no necesita <code>overflow: hidden</code> y no puede derramarse por la esquina.</p>
+      <p class="sr-na"><strong>Lo que NO se implementa: el ripple.</strong> M3 lo usa para el toque, y material web lo trae con <code>md-ripple</code>. Aquí es una transición de opacidad y nada más, igual que en <a href="button.html">Button</a>. La razón es la misma que declara ese archivo: un ripple necesita un punto de origen que CSS estático no puede conocer.</p>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section">
+      <h2>Iconografía</h2>
+      <p>El glifo es un icono del sistema, con las mismas cuatro propiedades que cualquier otro. Lo que cambia es que aquí el componente <strong>reapunta el tamaño óptico junto con el tamaño</strong>, porque M3 exige que coincidan.</p>
+      <div class="sr-grid">
+        <figure class="sr-cell">
+          <div class="sr-stage"><span class="md-icon md-icon-rounded" aria-hidden="true">delete</span></div>
+          <figcaption>rounded</figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-stage"><span class="md-icon md-icon-sharp" aria-hidden="true">delete</span></div>
+          <figcaption>sharp</figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-stage"><span class="md-icon md-icon-filled" aria-hidden="true">star</span></div>
+          <figcaption><code>FILL</code> 1, para un toggle con estado</figcaption>
+        </figure>
+      </div>
+      <h3>Los cuatro ejes, y cuál puede mover este componente</h3>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Eje</th><th scope="col">Valor aquí</th><th scope="col">Quién lo mueve</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>opsz</code></td><td>20 · 24 · 24 según el tamaño</td><td>El componente, al cambiar de tamaño</td></tr>
+          <tr><td><code>wght</code></td><td>400</td><td>Nadie. Es el grosor que M3 recomienda</td></tr>
+          <tr><td><code>FILL</code></td><td>0</td><td>La clase <code>.md-icon-filled</code>, si el autor la pone en el glifo</td></tr>
+          <tr><td><code>GRAD</code></td><td>0 en claro · −25 en oscuro</td><td>El tema. Cambiá el tema con el botón de arriba</td></tr>
+        </tbody>
+      </table>
+      <p class="sr-na">El <code>opsz</code> acoplado es lo que evita el fallo más común de los iconos: un glifo de 24dp dibujado con el trazo de 20. Se vería más ligero de lo que corresponde, porque el material se dibujó para el tamaño anterior. La doctrina completa está en <a href="icon.html#iconografia">Iconos</a>.</p>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section">
+      <h2>Contenido / Slots</h2>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Elemento</th><th scope="col">Obligatorio</th><th scope="col">Qué es</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>aria-label</code> en el control</td><td><strong>Sí</strong></td><td>El único nombre accesible. Sin él, el lector anuncia el nombre del glifo</td></tr>
+          <tr><td><span><code>md-icon-button-icon</code></span></td><td><strong>Sí</strong></td><td>El glifo. Sin él el control está vacío y no se ve nada</td></tr>
+          <tr><td><span><code>md-icon-button-touch</code></span></td><td>Condicional</td><td>La superficie. Solo hace falta en <code>xsmall</code> y <code>small</code>; ver la nota de abajo</td></tr>
+          <tr><td><code>aria-pressed</code></td><td>Condicional</td><td>Solo si el control es un toggle. Es lo que lo convierte en seleccionable</td></tr>
+        </tbody>
+      </table>
+      <p>El contenido del glifo es el <strong>nombre del glifo en inglés</strong>, como texto: <code>delete</code>, <code>add</code>, <code>favorite</code>. La fuente lo sustituye por el dibujo.</p>
+      <p class="sr-na">No hay contenido de texto visible, y esa es la diferencia con <a href="button.html">Button</a>: aquí no existe la etiqueta, ni el elemento que la envuelve.</p>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section">
+      <h2>Interacción</h2>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Disparador</th><th scope="col">Qué responde</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>:hover</code></td><td>Capa de estado al 8%</td></tr>
+          <tr><td><code>:focus-visible</code></td><td>Capa de estado al 10% <strong>y anillo de 3px con offset de 2px</strong></td></tr>
+          <tr><td><code>:active</code></td><td>Capa de estado al 10%</td></tr>
+          <tr><td><code>[disabled]</code></td><td>Apagado al 38%, y <code>pointer-events: none</code></td></tr>
+          <tr><td><code>[aria-pressed]</code></td><td>Color <code>primary</code> y forma invertida</td></tr>
+        </tbody>
+      </table>
+      <p>El teclado es el del <code>&lt;button&gt;</code> nativo: <kbd>Tab</kbd> lo enfoca, <kbd>Enter</kbd> y <kbd>Espacio</kbd> lo activan. No hay nada que implementar, y por eso el componente no declara ninguna tecla.</p>
+      <h3>El anillo de foco, y por qué aquí es más importante</h3>
+      <p>Un botón tiene etiqueta y se lee sin mirar. Un botón de icono no tiene nada escrito, y sin anillo <strong>la persona que navega con teclado no sabe dónde está</strong>.</p>
+      <p>M3 lo define con 3px de grosor y 2px de offset, y un <code>outline</code> lo reproduce exactamente: el offset saca el anillo de la caja, y así se ve aunque el contenedor esté lleno.</p>
+      <p class="sr-na">Que este control no tenga ripple no lo exime del anillo: son dos señales distintas. El ripple confirma el toque; el anillo dice la posición. Un control con teclado necesita las dos.</p>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section">
+      <h2>Comportamiento</h2>
+      <h3>La capa de estado</h3>
+      <p>Es una transición de opacidad de 100ms con la curva <code>standard</code>, la misma que declara <code>2-sys/state.css</code>. No hay nada más que animar.</p>
+      <h3>La superficie de toque</h3>
+      <p>Es <code>position: absolute</code>, así que <strong>no entra en el flujo</strong>: no empuja a los hermanos, no ensancha el control y no cambia una línea del layout. Solo se acuesta encima con un área más grande que recibe el toque.</p>
+      <p>Su tamaño es <code>max(48px, 100%)</code> en los dos ejes, y esa es la receta de <strong>icon-button</strong> de M3, distinta de la de <code>button</code>.</p>
+      <p class="sr-na"><strong>En <code>medium</code> la superficie no hace nada.</strong> El contenedor ya mide 56dp, que supera los 48dp, así que <code>max(48px, 100%)</code> devuelve el propio 56dp. No es un defecto: es lo que hace la receta de M3, y por eso el ejemplo de arriba la incluye igual. Su función real es <code>xsmall</code> y <code>small</code>, que sí quedan por debajo.</p>
+      <h3>El cambio de forma</h3>
+      <p>Es <strong>instantáneo</strong>, sin transición.</p>
+      <p class="sr-na">M3 lo hace con una transición de resorte. Un resorte son dos parámetros físicos —amortiguación y rigidez—, no una curva, y aproximarlo con <code>linear()</code> perdería la física. Es el mismo límite que declara <a href="button.html">Button</a> con su morph de esquina.</p>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section">
+      <h2>Anatomía</h2>
+      <div class="sr-stage">
+        <button class="md-icon-button md-icon-button-small" type="button" aria-label="Eliminar">
+          <span class="md-icon-button-icon md-icon" aria-hidden="true">delete</span>
+          <span class="md-icon-button-touch"></span>
+        </button>
+      </div>
+      <ol>
+        <li><strong>Contenedor</strong> — el control. Cuadrado, con la forma del estado, y el color de la variante</li>
+        <li><strong>Glifo</strong> — el icono, centrado. Su tamaño lo fija el componente, no el autor</li>
+        <li><strong>Capa de estado</strong> — el <code>::after</code>, del color del glifo, al 0% en reposo</li>
+        <li><strong>Superficie de toque</strong> — invisible, de 48×48dp, solo en <code>xsmall</code> y <code>small</code></li>
+        <li><strong>Anillo de foco</strong> — el <code>outline</code> del navegador con los valores del componente</li>
+      </ol>
+      <p class="sr-na">Y por dentro del glifo, la anatomía que trae el material: live area de 20dp, 2dp de aire, trim area de 24dp. Eso no se escribe en CSS ni se puede alterar desde el marcado; está en <a href="icon.html#anatomia">Iconos</a>.</p>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section" id="accesibilidad">
+      <h2>Accesibilidad</h2>
+      <h3>El nombre accesible es obligatorio</h3>
+      <p>No hay etiqueta visible, así que el <code>aria-label</code> del control es lo único que un lector de pantalla puede anunciar. Sin él anunciaría el nombre del glifo, que en Material Symbols es la palabra inglesa con la que está escrito.</p>
+      <div class="sr-stage">
+        <button class="md-icon-button md-icon-button-small" type="button" aria-label="Eliminar">
+          <span class="md-icon-button-icon md-icon" aria-hidden="true">delete</span>
+        </button>
+        <button class="md-icon-button md-icon-button-small" type="button">
+          <span class="md-icon-button-icon md-icon" aria-hidden="true">delete</span>
+        </button>
+      </div>
+      <p class="sr-na">El de la izquierda se anuncia como <em>Eliminar</em>. El de la derecha se anuncia como <em>delete</em>. Es el fallo más fácil de cometer con este componente, y el más grave, porque se ve bien.</p>
+      <h3>El objetivo de 48×48dp</h3>
+      <p>M3 exige un objetivo de 48×48dp en todo elemento interactivo. Un símbolo de 24dp necesita 48dp, y uno de 20dp puede usar 40dp.</p>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Tamaño</th><th scope="col">Contenedor</th><th scope="col">Superficie</th><th scope="col">¿Hace falta?</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>xsmall</code></td><td>32dp</td><td><strong>48×48dp</strong></td><td><strong>Sí</strong>. Faltan 16dp</td></tr>
+          <tr><td><code>small</code></td><td>40dp</td><td><strong>48×48dp</strong></td><td><strong>Sí</strong>. Faltan 8dp</td></tr>
+          <tr><td><code>medium</code></td><td>56dp</td><td>56×56dp</td><td>No. Ya cumple por sí solo</td></tr>
+        </tbody>
+      </table>
+      <h3>El estado deshabilitado</h3>
+      <p>Es <code>on-surface</code> al 38%, con <code>pointer-events: none</code>. En alto contraste pasa a <code>GrayText</code> con opacidad 1, porque un gris al 38% sobre cualquier fondo deja de ser legible.</p>
+      <h3>El color nunca es el único indicador</h3>
+      <p>El estado seleccionado se marca con <code>aria-pressed</code>, que es semántico, y con un cambio de forma. El color es la tercera señal, no la única. Un lector de pantalla no depende del color, y con deuteranopía el cambio de forma sigue distinguiendo los estados.</p>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section">
+      <h2>Responsive</h2>
+      <p class="sr-na">Este componente <strong>no tiene comportamiento responsive</strong>. Ninguno.</p>
+      <p class="sr-na">El tamaño lo elige el autor, y M3 no dice que cambie con el viewport. Lo que sí recomienda es no mezclar tamaños dentro de un mismo grupo de acciones, porque un botón de 32dp al lado de uno de 56dp se lee como un error de jerarquía, no como una emphasis.</p>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section">
+      <h2>Content States</h2>
+      <p class="sr-na">Este componente <strong>no tiene estados de contenido</strong>.</p>
+      <p class="sr-na">Cargando, vacío, error o éxito existen en M3, pero se representan eligiendo <strong>otro glifo</strong>, no cambiando el estado de este. Un botón de icono no sabe si está cargando: el que lo sabe es el componente que lo contiene, y es el que decide si rota el glifo o no hace nada.</p>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section">
+      <h2>Composición</h2>
+      <h3>Con el sistema de iconos</h3>
+      <p>El glifo usa <code>.md-icon</code> para la familia y los ejes. Sin ella el control queda vacío: el componente declara la <em>medida</em> del icono y el eje óptico, pero no la fuente, porque el glifo puede venir de Material Symbols o de un SVG.</p>
+      <div class="sr-stage">
+        <button class="md-icon-button md-icon-button-small" type="button" aria-label="Con Material Symbols"><span class="md-icon-button-icon md-icon" aria-hidden="true">share</span></button>
+      </div>
+      <h3>Con un toggle, en una fila de acciones</h3>
+      <div class="sr-stage">
+        <button class="md-icon-button md-icon-button-small" type="button" aria-label="Favorito" aria-pressed="true"><span class="md-icon-button-icon md-icon md-icon-filled" aria-hidden="true">star</span></button>
+        <button class="md-icon-button md-icon-button-small" type="button" aria-label="Compartir"><span class="md-icon-button-icon md-icon" aria-hidden="true">share</span></button>
+        <button class="md-icon-button md-icon-button-small" type="button" aria-label="Eliminar"><span class="md-icon-button-icon md-icon" aria-hidden="true">delete</span></button>
+      </div>
+      <p>Combinado con <code>.md-icon-filled</code>, un toggle puede <strong>cambiar de glifo además de cambiar de forma</strong>: el relleno del icono expresa el estado seleccionado, y la forma lo refuerza.</p>
+      <h3>Con Button, que no es lo mismo</h3>
+      <p>Un <a href="button.html">Button</a> lleva icono <em>y</em> etiqueta. Un Icon Button lleva solo icono. Si los dos van en la misma barra de herramientas, conviene el mismo tamaño para los dos: el <code>medium</code> del botón y el <code>small</code> de este miden 56dp y 40dp, y no alinean.</p>
+      <p class="sr-na">Y en la práctica, <code>Button</code> con <code>aria-label</code> y sin etiqueta visible <strong>no es un Icon Button</strong>. Se ve igual, pero da la medida del botón —20dp de glifo en <code>small</code>— y ese es el error que este componente viene a evitar. La diferencia está en <a href="#sizes">Sizes</a>.</p>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section">
+      <h2>Do / Don't</h2>
+      <h3>DO</h3>
+      <ul>
+        <li>Escribí siempre el <code>aria-label</code>, aunque el icono sea obvious.</li>
+        <li>Usá <code>aria-pressed</code> para el toggle, no una clase: es lo que un lector anuncia.</li>
+        <li>Mantené el mismo tamaño en un grupo de acciones contiguas.</li>
+        <li>Dejá el deshabilitado en su propio estado, con <code>disabled</code>, y no lo simules con opacidad.</li>
+        <li>Sumale la superficie en <code>xsmall</code> y <code>small</code>, y dejala en <code>medium</code> solo si te deja más consistente el marcado.</li>
+      </ul>
+      <h3>DON'T</h3>
+      <ul>
+        <li>No lo uses para una acción que necesite palabras. Si el <code>aria-label</code> queda largo, es un <a href="button.html">Button</a>.</li>
+        <li>No lo construyas como un <code>.md-button</code> con <code>aria-label</code> y sin etiqueta. Se ve igual y da la medida equivocada.</li>
+        <li>No le quites el <code>md-icon-button-icon</code>. Sin él el control es un cuadrado vacío.</li>
+        <li>No lo mixes con <code>.md-icon-rounded</code> o <code>md-icon-sharp</code> si el resto de tu interfaz usa outlined.</li>
+        <li>No uses el estado seleccionado solo con color. La forma también cambia, y esa es la señal que sobrevive al daltonismo.</li>
+      </ul>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section">
+      <h2>Medidas y tokens</h2>
+      <h3>Medidas</h3>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Atributo</th><th scope="col">Valor</th><th scope="col">Muestra</th><th scope="col">Token</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Contenedor xsmall</td><td>32px</td><td><span class="sr-spec-bar sr-spec-bar--400"></span></td><td><code>--md-sys-measurement-icon-button-height-xsmall</code></td></tr>
+          <tr><td>Contenedor small</td><td>40px</td><td><span class="sr-spec-bar sr-spec-bar--500"></span></td><td><code>--md-sys-measurement-icon-button-height-small</code></td></tr>
+          <tr><td>Contenedor medium</td><td>56px</td><td><span class="sr-spec-bar sr-spec-bar--700"></span></td><td><code>--md-sys-measurement-icon-button-height-medium</code></td></tr>
+          <tr><td>Glifo xsmall</td><td>20px</td><td><span class="sr-spec-bar sr-spec-bar--250"></span></td><td><code>--md-sys-measurement-icon-button-icon-xsmall</code></td></tr>
+          <tr><td>Glifo small</td><td>24px</td><td><span class="sr-spec-bar sr-spec-bar--300"></span></td><td><code>--md-sys-measurement-icon-button-icon-small</code></td></tr>
+          <tr><td>Glifo medium</td><td>24px</td><td><span class="sr-spec-bar sr-spec-bar--300"></span></td><td><code>--md-sys-measurement-icon-button-icon-medium</code></td></tr>
+          <tr><td>Superficie de toque</td><td>48px</td><td><span class="sr-spec-bar sr-spec-bar--600"></span></td><td><code>--md-sys-measurement-touch-target</code></td></tr>
+          <tr><td>Borde, solo outlined</td><td>1px</td><td><span class="sr-spec-bar sr-spec-bar--25"></span></td><td><code>--md-sys-shape-stroke-thin</code></td></tr>
+          <tr><td>Anillo de foco</td><td>3px</td><td><span class="sr-spec-bar sr-spec-bar--75"></span></td><td><code>--md-sys-shape-stroke-extra-thick</code></td></tr>
+        </tbody>
+      </table>
+      <h3>Tokens del componente</h3>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Token</th><th scope="col">Lo consume</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>--md-comp-icon-button-height</code></td><td>El ancho y el alto del contenedor</td></tr>
+          <tr><td><code>--md-comp-icon-button-icon-size</code></td><td>El <code>font-size</code> y la caja del glifo</td></tr>
+          <tr><td><code>--md-comp-icon-button-optical-size</code></td><td>El eje <code>opsz</code>. Se mueve <strong>con</strong> el tamaño</td></tr>
+          <tr><td><code>--md-comp-icon-button-shape</code></td><td>El radio en reposo</td></tr>
+          <tr><td><code>--md-comp-icon-button-selected-shape</code></td><td>El radio al seleccionar. Se aplica en <code>[aria-pressed]</code></td></tr>
+          <tr><td><code>--md-comp-icon-button-container-color</code></td><td>El fondo</td></tr>
+          <tr><td><code>--md-comp-icon-button-icon-color</code></td><td>El color del glifo</td></tr>
+          <tr><td><code>--md-comp-icon-button-outline-width</code></td><td>El grosor del borde. <code>none</code> por defecto</td></tr>
+          <tr><td><code>--md-comp-icon-button-outline-color</code></td><td>El color del borde</td></tr>
+          <tr><td><code>--md-comp-icon-button-focus-color</code></td><td>El color del anillo</td></tr>
+          <tr><td><code>--md-comp-icon-button-focus-width</code></td><td>El grosor del anillo</td></tr>
+          <tr><td><code>--md-comp-icon-button-focus-offset</code></td><td>La separación del anillo</td></tr>
+          <tr><td><code>--md-comp-icon-button-touch-size</code></td><td>El objetivo de la superficie</td></tr>
+          <tr><td><code>--md-comp-icon-button-state-duration</code></td><td>La duración de la transición</td></tr>
+          <tr><td><code>--md-comp-icon-button-state-easing</code></td><td>La curva</td></tr>
+          <tr><td><code>--md-comp-icon-button-elevation</code></td><td>La sombra. <code>level0</code> en las cuatro variantes</td></tr>
+        </tbody>
+      </table>
+      <p class="sr-na"><strong>Una frontera de versión que conviene saber.</strong> Este proyecto usa los tokens <strong>v0.192</strong>. En esa generación, <code>icon-button</code> no tiene variantes de tamaño: declara un icono de 24dp y deja el contenedor en cero, esperando que lo fije un archivo por tamaño. Los tamaños están en <code>versions/latest/sass/</code>, que es la versión de diseño <strong>34.0.21</strong>.</p>
+      <p class="sr-na">Es la primera vez que el proyecto cruza esa frontera. Este componente toma <strong>los tamaños de <code>latest</code> y los colores de <code>v0.192</code></strong>. Si se migra a v0.192 completa, el archivo hay que rehacerlo, y con esto se sabe qué parte es de dónde.</p>
+    </article>
+
+  </main>
+</body>
+</html>

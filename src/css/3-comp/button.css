@@ -406,67 +406,33 @@
    40dp de ancho, no solo de alto. El boton normal crece solo en vertical
    porque su ancho lo determina la etiqueta, que casi siempre pasa de 48dp.
 
-   Aqui se usa la segunda receta para los dos casos, porque este proyecto
-   todavia no distingue `button` de `icon-button`: el mismo `.md-button` esta
-   sirviendo los dos papeles. Medido en el showroom antes de corregirlo: con
-   la receta de `button`, un boton de icono extra small daba una superficie
-   de 44x48dp. Cuatro dp por debajo de lo que M3 pide, solo en horizontal.
+   Y M3 tiene un componente para el caso estrecho: 3-comp/icon-button.css, que
+   existe y usa la segunda receta. Este archivo usa la primera, la suya.
 
-   Cuando exista `icon-button` como componente aparte, esta receta puede
-   volver a la de M3: alli el ancho lo fijan los tokens del componente y no
-   habria que forzar 48dp.
+   ANTES ESTA REGLA DABA EN LOS DOS EJES, Y POR QUE YA NO
+   ------------------------------------------------------
+   Mientras el showroom usara .md-button con aria-label y sin etiqueta visible
+   para los botones de icono, esta recetaacia falta: un boton de icono de 44dp
+   de ancho daba 44 x 48dp, cuatro dp por debajo de lo que M3 pide en
+   horizontal.
 
-   EL CENTRADO
-   -----------
-   No se usa left: 0 con right: 0 porque esa receta deja el ancho en el de
-   la caja. Aqui el ancho hay que declararlo, asi que el ancla va en 50% con
-   un translate de -50% en los dos ejes.
+   Esos botones se migraron a .md-icon-button, que es lo que M3 dice que son.
+   Medido en el showroom: los botones de texto que quedan por debajo de 48dp
+   miden de 52dp a 672dp de ancho, o sea que ninguno necesita la extension
+   horizontal. El mas estrecho sigue dando 52dp.
 
-   COMO SE USA
-   -----------
-   El elemento hijo ES la activacion. No hay modificador en el boton: que
-   exista el elemento es lo que dice que este boton necesita area tactil.
-
-       <button class="md-button md-button-xsmall">
-         <span class="md-button-icon" aria-hidden="true">add</span>
-         <span class="md-button-touch"></span>
-       </button>
-
-   QUE ESTILOS NECESITA Y POR QUE
-   ------------------------------
-   pointer-events: none  NO lleva. Al contrario que los dos pseudo-elementos:
-   esta superficie existe para recibir el toque, asi que tiene que ser
-   transparente al puntero.
-
-   Y por eso no intercepta nada que este mal: es descendiente del boton, de
-   modo que el clic le llega a el de todas formas. La superficie no
-   REEMPLAZA al boton, lo AMPLIA.
-
-   No lleva fondo, ni borde, ni nada visible. Si se le da un fondo se veria,
-   y el punto es que no se vea.
-
-   NO AFECTA AL LAYOUT
-   -------------------
-   Es el motivo de que sea una superficie y no un min-height mayor. Agrandar
-   el boton con margen compensatorio dejaria 8dp entre dos botones contiguos y
-   solaparia las areas. M3 ofrece esa variante aparte, touch-target='wrapper',
-   y no es la que se implementa aqui.
-
-   ESTADO DISABLED
-   ---------------
-   La superficie sigue. El boton disabled no responde porque el atributo es lo
-   que desactiva el control, no la superficie. Ocultarla en disabled
-   devolveria el boton a 32dp, y dejaria de ser pulsable, que es justo lo que
-   no se quiere.
+   Si alguien vuelve a usar .md-button como boton de icono, el resultado sera
+   el de M3 para un boton: 48dp de alto y el ancho que tenga. Si lo que quiere
+   es un boton de icono, el componente es otro.
    ------------------------------------------------------------------------ */
 
 .md-button-touch {
   position: absolute;
   top: 50%;
-  left: 50%;
+  left: 0;
+  right: 0;
   block-size: max(var(--md-comp-button-touch-size), 100%);
-  inline-size: max(var(--md-comp-button-touch-size), 100%);
-  transform: translate(-50%, -50%);
+  transform: translateY(-50%);
 }
 
 /* ---------------------------------------------------------------------------
