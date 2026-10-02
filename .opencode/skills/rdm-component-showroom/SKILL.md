@@ -1,6 +1,6 @@
 ---
 name: mango-component-showroom
-description: Create and maintain the RDM Next component showroom. Use this skill whenever creating, modifying, documenting, or reviewing a component showroom view. The showroom documents the real RDM Next component implementation from css/3-comp/ using dogfooding. Before implementing any new component showroom view, the agent MUST confirm the component exists, inspect its real implementation, propose the applicable documentation sections, ask the user to confirm each section, and wait for confirmation before writing or modifying the showroom view.
+description: Create and maintain the RDM Next component showroom. Use this skill whenever creating, modifying, documenting, or reviewing a component showroom view. The showroom documents the real RDM Next component implementation from src/css/3-comp/ using dogfooding. Before implementing any new component showroom view, the agent MUST confirm the component exists, inspect its real implementation, propose the applicable documentation sections, ask the user to confirm each section, and wait for confirmation before writing or modifying the showroom view.
 ---
 
 # RDM Next Component Showroom
@@ -28,7 +28,7 @@ Read this before anything else in the skill.
 Before inspecting a component, verify it exists:
 
 ```text
-css/3-comp/<component>.css
+src/css/3-comp/<component>.css
 ```
 
 | Situation | What to do |
@@ -43,14 +43,14 @@ this skill forbids.
 In that case, say so and stop:
 
 ```text
-css/3-comp/divider.css no existe todavia.
+src/css/3-comp/divider.css no existe todavia.
 No hay nada que inspeccionar, y un showroom de un componente que aun no se
 construyo seria inventarlo.
 
 Construimos el componente primero?
 ```
 
-**This precondition exists because RDM Next builds its own components.** `css/3-comp/`
+**This precondition exists because RDM Next builds its own components.** `src/src/css/3-comp/`
 is authored here, from the tokens in `1-ref/` and `2-sys/`. It does not import them from
 another library. So the component is the source, and the showroom documents it, never
 the other way around.
@@ -68,7 +68,7 @@ When the user asks to create a showroom view for a component, DO NOT immediately
 The mandatory workflow is:
 
 ```text
-0. Confirm css/3-comp/<component>.css exists
+0. Confirm src/css/3-comp/<component>.css exists
         ↓
 1. Inspect the real component
         ↓
@@ -100,7 +100,7 @@ If the user has not confirmed the sections, implementation must not begin.
 # STEP 1 — INSPECT THE REAL COMPONENT
 
 Before asking the user about sections, inspect the actual implementation of
-`css/3-comp/<component>.css`, and its `@import` line in `css/main.css`.
+`src/src/css/3-comp/<component>.css`, and its `@import` line in `src/css/main.css`.
 
 Determine, when applicable:
 
@@ -218,7 +218,7 @@ Example, for a hypothetical `card`:
 ```text
 Voy a crear el showroom de Card.
 
-Después de revisar css/3-comp/card.css, estas son las secciones:
+Después de revisar src/css/3-comp/card.css, estas son las secciones:
 
 01. Header — Sí
 02. Uso — Sí
@@ -315,7 +315,7 @@ Only after this confirmation may implementation begin.
 
 ## Mandatory
 
-The showroom must use the actual RDM Next components from `css/3-comp/`.
+The showroom must use the actual RDM Next components from `src/src/css/3-comp/`.
 
 If documenting:
 
@@ -326,7 +326,7 @@ Divider
 the showroom must render:
 
 ```text
-an element carrying the real class from css/3-comp/divider.css
+an element carrying the real class from src/css/3-comp/divider.css
 ```
 
 It must NOT render:
@@ -353,14 +353,41 @@ There is no web component, so the public API is the class name plus whatever uti
 classes the author composes on top:
 
 ```html
-<!-- Dogfooding: el componente, más las clases de 2-sys que elige el autor -->
-<hr class="md-divider md-bg-outline-variant">
+<!-- Dogfooding: el componente, más las clases que el autor elige -->
+<hr class="md-divider md-divider-primary">
 ```
 
-The first class is the component. The rest are decisions from `2-sys/`, and they are
+The first class is the component. The rest are decisions from the author, and they are
 legitimate: that composition is exactly what the system is for.
 
 The line that must not be crossed is writing component CSS inside the showroom.
+
+## The cascade decides whether a composition works
+
+`main.css` declares the layers in this order:
+
+```css
+@layer reset, ref, sys, comp, utilities;
+```
+
+That order **is** the precedence table, so a `2-sys` utility cannot change a property a
+`3-comp` component also sets. `comp` is declared after `sys`, so on a specificity tie the
+component wins.
+
+This bites in two ways, and both have been verified in the browser with `getComputedStyle`:
+
+| Attempted composition | Result |
+| ---------------------- | ------ |
+| `<hr class="md-divider md-text-primary">` | **No effect.** `.md-divider` sets `color`; `comp` beats `sys`, so the divider stays `outline-variant`. |
+| `<hr class="md-divider md-bg-outline-variant">` | **No effect, and wrong anyway.** It sets `background-color`, which the divider never reads: the visible line is `::before { background: currentColor }`. It would also lose the cascade. |
+| `<hr class="md-divider md-divider-primary">` | **Works.** A modifier in the component's own layer re-points the component's own token. |
+
+**Before documenting a composition, verify it computes.** A class that looks right in the
+markup can be silently overridden, and the showroom would then be documenting a lie.
+
+**If no class can express what the view needs to demonstrate, that is a real gap in the
+design system.** Report it to the user before creating the missing class or token, and
+never fall back to an inline `style=` (REGLA 6).
 
 ---
 
@@ -1020,24 +1047,46 @@ RDM Next is a static HTML + CSS system. There is no build step, no framework, no
 JavaScript, and no PHP. Everything below is a hard constraint of this project, not a
 preference.
 
-## View architecture
+## Repository layout
 
-The showroom is split across files. `index.html` is the **only** entry point and
-contains **no** component sections.
+The repository has two halves that must never be mixed:
 
 ```text
-index.html          portada: titulo, tagline, enlaces a las vistas
-<componente>.html   una vista por componente en 3-comp/
+src/css/        the library. This is what gets distributed.
+showroom/       the documentation. Served, but never imported by a product.
+tools/          the verifier.
+```
+
+`showroom/assets/showroom.css` lives in its own `@layer showroom`, declared after the
+five system layers, and none of its selectors touch a `.md-*` class.
+
+## View architecture
+
+The showroom is split across files. `showroom/index.html` is the **only** entry point
+and contains **no** component sections.
+
+```text
+showroom/
+├── index.html                          portada: titulo, tagline, enlaces
+├── components/<componente>.html        una vista por componente
+└── templates/component.template.html   plantilla de una vista nueva
 ```
 
 Rules:
 
 - `index.html` never contains component sections. Only the title, the tagline,
   and links to the component views.
-- Each component view is a standalone HTML file named after the component:
-  `divider.html`, `button.html`, `card.html`.
-- Every view loads the full system (`css/main.css`) and the font, exactly like
-  `index.html`.
+- Each component view is a standalone HTML file in `showroom/components/`, named
+  after the component: `divider.html`, `button.html`, `card.html`.
+- **Every new view starts as a copy of `showroom/templates/component.template.html`**,
+  not from scratch. The template is the single source of truth for the shell.
+- Every view loads the full system and the font, in this order: `src/css/main.css`,
+  then `assets/showroom.css`, then `assets/showroom.js`.
+- **Asset paths are relative to the depth of the file.** The portada uses
+  `../src/css/main.css` and `assets/showroom.css`; a view inside `components/`
+  uses `../../src/css/main.css` and `../assets/showroom.css`. Getting this wrong
+  is the most common mistake when adding a view, and it fails silently as an
+  unstyled page.
 - Every view declares its base styles **on its `<body>`**, with `2-sys/` classes.
   The base is **never** in `reset.css`, and **never** on an inner container
   `<div>`.
@@ -1062,16 +1111,18 @@ Rules:
   `min-height: 100vh`. An inner `<div>` leaves the bottom band unpainted on a
   short document.
 
-- The back link in a component view points to `index.html` and reads `RDM Next`.
+- The back link in a component view points to `../index.html` and reads
+  `RDM Next`.
 - The `<title>` of a component view is `<Component> — ManGo! App`. The title of
   the portada is `ManGo! App — RDM Next`.
+- Every view carries `<meta name="description">`.
 
 When a new component is built, its view is added to `index.html` as a link, and
 the view file is created. The portada never grows beyond title + tagline + links.
 
 ## The 5 cascade layers
 
-Declared in `css/main.css`, in this order. The order **is** the precedence table.
+Declared in `src/css/main.css`, in this order. The order **is** the precedence table.
 
 ```css
 @layer reset, ref, sys, comp, utilities;
@@ -1110,7 +1161,7 @@ powershell -ExecutionPolicy Bypass -File .\tools\verify-tokens.ps1
 - consume classes from `1-ref`, `2-sys` and `3-comp`,
 - add new HTML markup,
 - document token names and real measurements,
-- add `css/3-comp/<component>.css` when the user confirms the sections.
+- add `src/src/css/3-comp/<component>.css` when the user confirms the sections.
 
 **May not:**
 
@@ -1183,7 +1234,7 @@ Do not create a completely different showroom structure for individual component
 
 After implementation, verify:
 
-1. The showroom uses the real component from `css/3-comp/`.
+1. The showroom uses the real component from `src/src/css/3-comp/`.
 2. No fake component implementation was created.
 3. No component logic was duplicated.
 4. All displayed variants actually exist.
@@ -1287,6 +1338,6 @@ IMPLEMENT
 ASK
 ```
 
-And never document a component that does not exist yet in `css/3-comp/`.
+And never document a component that does not exist yet in `src/src/css/3-comp/`.
 
 The user's explicit confirmation of the showroom sections is mandatory before implementation.

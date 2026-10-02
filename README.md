@@ -11,7 +11,7 @@ Este repositorio es la **fuente única de verdad** del sistema de diseño de Man
 
 No es una maqueta ni un prototipo: es la implementación real de tokens y recetas que
 consumirá el sistema final. El showroom y la app de producción cargan **el mismo
-orquestador `css/main.css`**. Lo que se ve aquí es exactamente lo que se ejecuta allí.
+orquestador `src/css/main.css`**. Lo que se ve aquí es exactamente lo que se ejecuta allí.
 
 ---
 
@@ -235,7 +235,7 @@ funcione en HTML+CSS estático sin capa de build.
 
 ## 3. La regla del hardcoding
 
-> **Los valores crudos viven exclusivamente en `css/1-ref/`.**
+> **Los valores crudos viven exclusivamente en `src/css/1-ref/`.**
 
 | Capa     | `#HEX`, `px`, `ms`, números sueltos | Referencias permitidas |
 | -------- | ----------------------------------- | ---------------------- |
@@ -711,56 +711,81 @@ Tipos: `feat`, `fix`, `docs`, `style`, `refactor`, `chore`.
 rdm-next-new/
 ├── .gitignore
 ├── README.md                 Este documento: contrato de arquitectura
-├── index.html                Portada del showroom: título, tagline, enlaces
-├── divider.html              Vista del componente Divider (13 secciones)
-├── css/
-│   ├── main.css               Orquestador: @layer + @import
-│   ├── 1-ref/                Valores crudos (única capa que los permite)
-│   │   ├── palette.css       --md-ref-palette-*
-│   │   ├── typeface.css      --md-ref-typeface-*
-│   │   ├── corner.css        --md-ref-corner-*
-│   │   ├── opacity.css       --md-ref-opacity-*
-│   │   ├── easing.css        --md-ref-easing-*
-│   │   ├── shadow.css        --md-ref-shadow-*
-│   │   ├── spacing.css       --md-ref-spacing-*
-│   │   ├── stroke.css        --md-ref-stroke-*
-│   │   ├── typescale.css     --md-ref-typescale-*
-│   │   └── time.css          --md-ref-time-*
-│   ├── 2-sys/                Tokens semánticos (solo var())
-│   │   ├── colors.css        --md-sys-color-*
-│   │   ├── typography.css    --md-sys-typescale-*
-│   │   ├── measurement.css   --md-sys-measurement-*
-│   │   ├── motion.css        --md-sys-motion-*
-│   │   ├── shape.css         --md-sys-shape-*
-│   │   ├── elevation.css     --md-sys-elevation-*
-│   │   ├── state.css         --md-sys-state-*
-│   │   └── theme/
-│   │       ├── theme.light.css
-│   │       └── theme.dark.css
-│   └── 3-comp/               Un componente por archivo (se llena por pasos)
-│       └── divider.css       --md-comp-divider-*
+├── src/
+│   └── css/                  La librería. Nada más del proyecto la importa.
+│       ├── main.css           Orquestador: @layer + @import
+│       ├── reset.css          Capa 0: anula al navegador
+│       ├── 1-ref/             Valores crudos (única capa que los permite)
+│       │   ├── palette.css    --md-ref-palette-*
+│       │   ├── typeface.css   --md-ref-typeface-*
+│       │   ├── corner.css     --md-ref-corner-*
+│       │   ├── opacity.css    --md-ref-opacity-*
+│       │   ├── easing.css     --md-ref-easing-*
+│       │   ├── shadow.css     --md-ref-shadow-*
+│       │   ├── spacing.css    --md-ref-spacing-*
+│       │   ├── stroke.css     --md-ref-stroke-*
+│       │   ├── typescale.css  --md-ref-typescale-*
+│       │   └── time.css       --md-ref-time-*
+│       ├── 2-sys/             Tokens semánticos (solo var())
+│       │   ├── colors.css     --md-sys-color-*
+│       │   ├── typography.css --md-sys-typescale-*
+│       │   ├── measurement.css--md-sys-measurement-*
+│       │   ├── motion.css     --md-sys-motion-*
+│       │   ├── shape.css      --md-sys-shape-*
+│       │   ├── elevation.css  --md-sys-elevation-*
+│       │   ├── state.css      --md-sys-state-*
+│       │   └── theme/
+│       │       ├── theme.light.css
+│       │       └── theme.dark.css
+│       └── 3-comp/            Un componente por archivo (se llena por pasos)
+│           └── divider.css    --md-comp-divider-*
+├── showroom/                 Documentación. No la importa nadie más.
+│   ├── index.html            Portada: título, tagline, enlaces a las vistas
+│   ├── assets/
+│   │   ├── showroom.css      Estilos mínimos del showroom (capa showroom)
+│   │   └── showroom.js       Toggle de tema, sin build
+│   ├── components/
+│   │   └── divider.html      Vista del componente Divider (10 secciones)
+│   └── templates/
+│       └── component.template.html   Plantilla de una vista nueva
 └── tools/
     └── verify-tokens.ps1     Candado automático de la regla de hardcoding
 ```
+
+Dos carpetas y una regla:
+
+- **`src/css/` es la librería.** Es lo único que se distribuye. Se importa
+  desde `main.css` y nunca por partes.
+- **`showroom/` es documentación.** Se sirve, pero no se distribuye: nadie
+  importa `showroom.css` en un producto.
+- **Los dos no se mezclan.** `showroom/assets/showroom.css` vive en una capa
+  `@layer showroom` propia, declarada después de las cinco del sistema, y
+  ningún selector suyo toca una clase `.md-*`.
 
 ---
 
 ## 10. Arquitectura de vistas
 
-El showroom está dividido en archivos. `index.html` es la **única** puerta de entrada y
-**no** contiene secciones de componentes.
+El showroom está dividido en archivos. `showroom/index.html` es la **única** puerta de
+entrada y **no** contiene secciones de componentes.
 
 ```
-index.html            portada: título, tagline, enlaces a las vistas
-<componente>.html     una vista por componente en 3-comp/
+showroom/
+├── index.html                          portada: título, tagline, enlaces
+├── components/<componente>.html        una vista por componente
+└── templates/component.template.html   plantilla de una vista nueva
 ```
 
 **Reglas:**
 
 - `index.html` nunca contiene secciones de componentes. Solo el título, la tagline y
   los enlaces.
-- Cada componente tiene su propia vista: `divider.html`, `button.html`, `card.html`.
-- Toda vista carga el sistema completo (`css/main.css`) y la fuente, igual que el índice.
+- Cada componente tiene su propia vista en `showroom/components/`: `divider.html`,
+  `button.html`, `card.html`.
+- Toda vista se copia de `showroom/templates/component.template.html`.
+- Toda vista carga el sistema completo (`src/css/main.css`), la fuente y los estilos del
+  showroom, en ese orden. Las rutas son relativas a la profundidad del archivo: la portada
+  usa `../src/css/main.css` y una vista en `components/` usa `../../src/css/main.css`.
 - Toda vista declara sus estilos base **sobre su `<body>`**, con clases de `2-sys/`.
   La base **nunca** está en `reset.css`, y **nunca** en un contenedor `<div>` interior.
 
@@ -785,13 +810,14 @@ ningún atajo que empareje un fondo con su texto, para que el contraste sea audi
 marcado. El texto de apoyo usa `md-text-on-surface-variant`, el rol de menor énfasis de M3:
 no existe un `on-background-variant`.
 
-- El enlace de vuelta en una vista de componente apunta a `index.html` y dice `RDM Next`.
+- El enlace de vuelta en una vista de componente apunta a `../index.html` y dice `RDM Next`.
 - El `<title>` de una vista de componente es `<Componente> — ManGo! App`. El del índice
   es `ManGo! App — RDM Next`.
+- Toda vista lleva `<meta name="description">`.
 
 Cuando se construye un componente nuevo, su vista se añade a `index.html` como enlace y
-se crea el archivo de la vista. La portada nunca crece más allá de título + tagline +
-enlaces.
+se crea el archivo en `showroom/components/`. La portada nunca crece más allá de título +
+tagline + enlaces.
 
 **Por qué la base no está en `reset.css`:** el fondo, el color y la fuente son decisiones
 de **tema**, no del navegador, y por tanto no pertenecen a la capa que anula al navegador.
@@ -804,7 +830,7 @@ de dónde sale cada cosa, y el precio es que cada vista tiene que acordarse de e
 
 ### Divider — el primero
 
-`css/3-comp/divider.css` es el primer componente construido. Es el más simple del
+`src/css/3-comp/divider.css` es el primer componente construido. Es el más simple del
 catálogo de M3: dos tokens, sin variantes de tipo.
 
 **Receta**, según `material-components/material-web`:
@@ -851,8 +877,25 @@ Se usan añadiendo una clase a `.md-divider`:
 | `--md-comp-divider-color` | 3-comp | → outline-variant |
 | `--md-comp-divider-thickness` | 3-comp | → stroke-thin |
 
-**Showroom:** `divider.html` es la vista del componente, con 13 secciones.
-Estructura confirmada con el usuario según la skill `rdm-component-showroom`.
+**Modificador de color (extensión de RDM Next, no de M3):** M3 define un único rol de
+color para el divisor. Aquí además existe `.md-divider-primary`, que reapunta el token
+público `--md-comp-divider-color` del propio componente:
+
+```html
+<hr class="md-divider md-divider-primary">
+```
+
+Existe por un motivo concreto: sin él, la única forma de cambiar el color desde el
+markup era un atributo `style=` en línea, y la REGLA 6 lo prohíbe. El token ya estaba
+declarado, pero no era alcanzable desde el HTML.
+
+No se puede resolver componiendo con una utilidad de `2-sys` como `.md-text-primary`:
+`@layer` declara `comp` **después** de `sys`, así que la regla del componente gana el
+empate por orden de capa y el color no cambiaría. Un modificador del componente, en su
+propia capa, sí funciona.
+
+**Showroom:** `showroom/components/divider.html` es la vista del componente, con 10
+secciones. Estructura confirmada con el usuario según la skill `rdm-component-showroom`.
 
 ---
 
