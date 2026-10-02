@@ -287,6 +287,35 @@
    tracking, sin tocar font-size ni line-height.
    ========================================================================== */
 
+/* ---------------------------------------------------------------------------
+   TAMANO OPTICO DE LOS ICONOS
+   --------------------------------------------------------------------------
+   El eje optical size pertenece a la fuente de los ICONOS, Material Symbols.
+   No al texto: Google Sans Flex dibuja las etiquetas y no tiene ese eje.
+
+   Por eso son un bloque propio y no una entrada mas del typescale. Se
+   declaran en 2-sys/typography.css porque son un valor tipografico, pero los
+   consume un COMPONENTE, no una clase de texto.
+
+   Que un componente los pida y no los escriba en su CSS es la misma regla de
+   siempre: los numeros crudos viven en 1-ref (1-ref/typeface.css) y el
+   componente pide una intencion.
+
+   EL EJE NO CAMBIA EL TAMANO DEL GLIFO
+   -----------------------------------
+   Medido en el navegador: con opsz 20 y con opsz 48 el glifo ocupa la misma
+   caja. Lo que cambia es el grosor del trazo, para que un glifo se lea con
+   el mismo peso visual al tamaño para el que fue dibujado.
+
+   Setearlo bien no cambia el tamaño del icono. Cambia que el trazo no pese
+   de mas.
+   ------------------------------------------------------------------------ */
+
+:root {
+  --md-sys-typescale-icon-optical-size-small:  var(--md-ref-typeface-optical-size-small);
+  --md-sys-typescale-icon-optical-size-medium: var(--md-ref-typeface-optical-size-medium);
+}
+
 /* --- DISPLAY --- */
 .md-type-display-large {
   font-family: var(--md-sys-typescale-display-large-font);

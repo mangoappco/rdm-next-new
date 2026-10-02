@@ -259,11 +259,22 @@
   /* Icono pequeno, para chips y badges. */
   --md-sys-measurement-icon-size-small: var(--md-ref-spacing-200);
 
-  /* Icono del boton, para los tamanos xsmall y small.
-     M3 usa 20dp aqui, no los 24dp del icono generico: el glifo del boton es
-     mas pequeno que el de un icono suelto. El tamano medium si usa 24dp, y
-     por eso reutiliza --md-sys-measurement-icon-size. */
+  /* Icono del boton, para los tamanos xsmall y small. 20dp, lo que pide M3
+     en _md-comp-button-xsmall.scss y _md-comp-button-small.scss.
+
+     Se estuvo en 16px durante una version de este proyecto, con el motivo de
+     que "la tinta del glifo no coincide con la de la etiqueta". Ese motivo
+     era una mala medicion: se midio con measureText sobre una pagina
+     donde la fuente de iconos no estaba resuelta, asi que se midieron las
+     LETRAS del nombre del glifo y no el glifo. La referencia visual que si
+     funciona, rdm-next-old, usa 20px. Ver la nota de GRAD en
+     2-sys/typography.css, que si es una correccion real. */
   --md-sys-measurement-button-icon-size: var(--md-ref-spacing-250);
+
+  /* Icono del boton en el tamano medium. 24px, lo que pide
+     _md-comp-button-medium.scss. Es el mismo valor que el icono generico del
+     sistema, asi que se apoya en el rol comun en vez de fijar un numero. */
+  --md-sys-measurement-button-icon-size-medium: var(--md-sys-measurement-icon-size);
 
   /* ==========================================================================
      INSET DE DIVISOR

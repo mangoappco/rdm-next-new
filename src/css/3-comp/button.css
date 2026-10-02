@@ -86,6 +86,7 @@
   --md-comp-button-padding-inline: var(--md-sys-measurement-button-padding-small);
   --md-comp-button-label-space: var(--md-sys-measurement-button-label-space);
   --md-comp-button-icon-size: var(--md-sys-measurement-button-icon-size);
+  --md-comp-button-icon-optical-size: var(--md-sys-typescale-icon-optical-size-small);
   --md-comp-button-outline-width: var(--md-sys-shape-stroke-thin);
 
   /* Forma. Redondeado completo por defecto, como el filled de M3. */
@@ -523,6 +524,88 @@
    que declarar nada para el color: hereda del boton.
    ------------------------------------------------------------------------ */
 
+/* ---------------------------------------------------------------------------
+   EL TAMANO DEL ICONO: POR QUE 20px
+   ---------------------------------------------------------------------------
+   M3 pide 20dp para xsmall y small (_md-comp-button-xsmall.scss y
+   _md-comp-button-small.scss) y 24dp para medium (_md-comp-button-medium.scss).
+   Este componente cumple los tres.
+
+   Estuvo en 16px durante una version, con un argumento largo y con numeros:
+   que "la tinta que pinta el glifo no coincidia con la de la etiqueta". Ese
+   argumento era una medicion ERRONEA, y conviene escribir como se cayo.
+
+   QUE PASO
+   ---------
+   Se midio la altura de los glifos con measureText y con canvas, en una
+   pagina donde la fuente de iconos no estaba resuelta. El navegador dibujaba
+   entonces las LETRAS del nombre del glifo en vez del glifo.
+
+   Los anchos delatan el error: un "add" media 29px de ancho y un "download"
+   79px. Un glifo de Material Symbols se dibuja sobre una caja cuadrada, asi
+   que su ancho tiene que parecerse a su alto. Cuando el ancho es mucho mayor
+   que el alto, lo que se esta midiendo no es un icono: es texto.
+
+   Con esos numeros se zoo una tabla de seis glifos por cuatro tamanos, se
+   concluyo que el icono era un 40% mas alto que la mayuscula de la etiqueta,
+   y se bajo el tamano. La tabla era falsa de punta a punta.
+
+   LA REFERENCIA QUE SI FUNCIONA
+   ----------------------------
+   rdm-next-old usa 20px con un boton identico, y ahi se ve bien. Esa prueba
+   vale mas que la tabla que se acabo de tirar: una tabla se puede
+   equivocar, una comparacion visual con algo ya aprobado no.
+
+   LO QUE SI SE CORRIGIO DE VERDAD
+   --------------------------------
+   El eje GRAD, que estaba en 0 fijo y ahora lo elige el tema: -25 en
+   oscuro. Ese si cambia lo que se ve, y es el motivo por el que el icono
+   parecia pesado en oscuro. Ver el bloque del eje, mas abajo.
+   ------------------------------------------------------------------------ */
+
+/* ---------------------------------------------------------------------------
+   EL EJE opsz, Y POR QUE VA SOLO EN EL ICONO
+   ---------------------------------------------------------------------------
+   font-variation-settings es una propiedad HEREDADA. Ponerla en el boton
+   contaminaria el texto de la etiqueta, que esta dibujado con Google Sans
+   Flex: esa fuente tiene otros ejes, y forzarle opsz cambiaria el texto.
+
+   Por eso va en el icono, que es el unico elemento cuya fuente es la de
+   iconos.
+
+   Se declaran los CUATRO ejes, no solo opsz. font-variation-settings
+   REEMPLAZA el valor heredado en bloque: si se declara uno solo, los demas
+   vuelven al valor por defecto de la fuente, y el peso pasaria de 400 a lo
+   que la fuente tenga por defecto. Declararlos todos hace que el estado sea
+   explicito y no dependa de lo que traiga la fuente.
+
+   QUE CAMBIA Y QUE NO
+   -------------------
+   Medido en el navegador: con opsz 20 y con opsz 48 el glifo ocupa la misma
+   caja. El eje NO cambia el tamano del icono: cambia el grosor del trazo,
+   para que un glifo se lea con el mismo peso visual al tamano para el que
+   fue dibujado.
+
+    GRAD ES EL QUE SI SE NOTA EN EL TEMA
+    -----------------------------------
+    opsz y GRAD tocan los dos el grosor del trazo, pero no son lo mismo.
+    opsz ajusta para el tamano al que se dibuja el glifo. GRAD compensa el
+    FONDO: Material Symbols dibuja sus iconos para fondo claro, y puesto
+    sobre fondo oscuro un trazo claro se ve mas pesado de lo que es, porque
+    el ojo lo compara contra el fondo.
+
+    Por eso GRAD viene de un token de TEMA y no de una primitiva fija: el
+    valor lo elige el tema, igual que el color de un texto. Con GRAD en 0
+    fijo, que es como estaba antes, el icono de este boton se veia con
+    demasiado cuerpo en tema oscuro. Es el mismo -25 que usaba
+    rdm-next-old, y no viene de la especificacion de M3: es un valor de
+    DISENO, elegido por comparacion visual. Ver 1-ref/typeface.css.
+
+    El tamano del icono, en cambio, si coincide con M3: 20dp en xsmall y
+    small, 24dp en medium.
+
+   ------------------------------------------------------------------------ */
+
 .md-button-icon {
   flex: 0 0 auto;
   width: var(--md-comp-button-icon-size);
@@ -532,6 +615,12 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+
+  font-variation-settings:
+    'opsz' var(--md-comp-button-icon-optical-size),
+    'wght' 400,
+    'FILL' 0,
+    'GRAD' var(--md-sys-typescale-icon-grade);
 }
 
 /* ---------------------------------------------------------------------------
@@ -732,6 +821,7 @@
   --md-comp-button-height: var(--md-sys-measurement-button-height-xsmall);
   --md-comp-button-padding-inline: var(--md-sys-measurement-button-padding-xsmall);
   --md-comp-button-icon-size: var(--md-sys-measurement-button-icon-size);
+  --md-comp-button-icon-optical-size: var(--md-sys-typescale-icon-optical-size-small);
   --md-comp-button-single-line-height: var(--md-sys-typescale-label-large-line-height);
   font: var(--md-sys-typescale-label-large);
 }
@@ -740,6 +830,7 @@
   --md-comp-button-height: var(--md-sys-measurement-button-height);
   --md-comp-button-padding-inline: var(--md-sys-measurement-button-padding-small);
   --md-comp-button-icon-size: var(--md-sys-measurement-button-icon-size);
+  --md-comp-button-icon-optical-size: var(--md-sys-typescale-icon-optical-size-small);
   --md-comp-button-single-line-height: var(--md-sys-typescale-label-large-line-height);
   font: var(--md-sys-typescale-label-large);
 }
@@ -747,7 +838,8 @@
 .md-button-medium {
   --md-comp-button-height: var(--md-sys-measurement-button-height-medium);
   --md-comp-button-padding-inline: var(--md-sys-measurement-button-padding-medium);
-  --md-comp-button-icon-size: var(--md-sys-measurement-icon-size);
+  --md-comp-button-icon-size: var(--md-sys-measurement-button-icon-size-medium);
+  --md-comp-button-icon-optical-size: var(--md-sys-typescale-icon-optical-size-medium);
   --md-comp-button-single-line-height: var(--md-sys-typescale-title-medium-line-height);
   font: var(--md-sys-typescale-title-medium);
 }

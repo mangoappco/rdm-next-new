@@ -211,6 +211,12 @@
     --md-sys-color-surface-tint: var(--md-ref-palette-primary40);
     /* surface tint color — color base del tinte */
 
+    /* Grado del trazo de los iconos. 0 en claro: es el valor para el que
+       Material Symbols dibuja sus glifos, sin compensacion. El fondo
+       oscuro necesita el -25 de theme.dark.css, porque el trazo claro
+       pesa mas de lo que deberia. Ver 1-ref/typeface.css. */
+    --md-sys-typescale-icon-grade: var(--md-ref-typeface-icon-grade-light);
+
     /* Declara que los controles nativos del navegador deben verse en claro.
        Afecta scrollbars, formularios del sistema y el fondo del canvas. */
     color-scheme: light;
@@ -349,6 +355,12 @@ html[data-theme="light"] {
   /* surface tint — tinte que se aplica a superficies elevadas */
   --md-sys-color-surface-tint: var(--md-ref-palette-primary40);
   /* surface tint color — color base del tinte */
+
+  /* Grado del trazo de los iconos. 0 en claro: es el valor para el que
+     Material Symbols dibuja sus glifos, sin compensacion. El fondo
+     oscuro necesita el -25 de theme.dark.css, porque el trazo claro
+     pesa mas de lo que deberia. Ver 1-ref/typeface.css. */
+  --md-sys-typescale-icon-grade: var(--md-ref-typeface-icon-grade-light);
 
   /* Declara que los controles nativos del navegador deben verse en claro.
      Afecta scrollbars, formularios del sistema y el fondo del canvas. */

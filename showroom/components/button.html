@@ -121,7 +121,37 @@
         </tbody>
       </table>
       <p>El <code>font-size</code> es lo que hace que el glifo llene la caja. Un icono es una fuente: se escala con el tamaño de fuente, no con <code>width</code>.</p>
-      <p>El tamaño estándar del glifo es <strong>20dp</strong>, según M3. Con eso el <code>xsmall</code> y el <code>small</code> usan 20px; el <code>medium</code> usa 24px, el tamaño genérico de icono de M3.</p>
+      <h3>El tamaño del glifo</h3>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Tamaño del botón</th><th scope="col">Glifo</th><th scope="col">Fuente</th><th scope="col">Eje <code>opsz</code></th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>xsmall</code> · <code>small</code></td><td>20px</td><td><code>label-large</code> 14px</td><td>20</td></tr>
+          <tr><td><code>medium</code></td><td>24px</td><td><code>title-medium</code> 16px</td><td>24</td></tr>
+        </tbody>
+      </table>
+      <p>Es lo que dice M3 en sus archivos de token: 20dp para <code>xsmall</code> y <code>small</code>, 24dp para <code>medium</code>. No hay desviación.</p>
+      <h3>Los cuatro ejes</h3>
+      <p>Material Symbols es una fuente variable con cuatro ejes: <code>weight</code>, <code>fill</code>, <code>opsz</code> y <code>grade</code>. El componente los declara todos, porque <code>font-variation-settings</code> reemplaza el valor heredado en bloque: declarar uno solo deja los demás en el valor por defecto de la fuente.</p>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Eje</th><th scope="col">Qué hace</th><th scope="col">Valor aquí</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>wght</code></td><td>Grosor del trazo</td><td>400, fijo</td></tr>
+          <tr><td><code>FILL</code></td><td>Relleno del glifo</td><td>0, fijo</td></tr>
+          <tr><td><code>opsz</code></td><td>Para qué tamaño se dibujó el glifo</td><td>20 en small, 24 en medium</td></tr>
+          <tr><td><code>GRAD</code></td><td>Grosor del trazo para compensar el fondo</td><td><strong>0 en claro, −25 en oscuro</strong></td></tr>
+        </tbody>
+      </table>
+      <h3>El grado cambia con el tema</h3>
+      <p>Este es el detalle que hace que el icono se lea bien en oscuro. Material Symbols dibuja sus glifos con un trazo pensado para fondo claro. Puesto sobre fondo oscuro, ese trazo claro se ve más pesado de lo que es, porque el ojo lo compensa contra el fondo.</p>
+      <p>Por eso <code>GRAD</code> no es un número fijo sino un <strong>token de tema</strong>: <code>0</code> en claro y <code>−25</code> en oscuro, igual que el color de un texto. Cambia el tema con el botón de arriba y mira el icono.</p>
+      <p class="sr-na">El <code>−25</code> no viene de la especificación de M3, que no da un número para este caso. Es un valor de diseño, tomado de <code>rdm-next-old</code>, la versión anterior de este mismo sistema, donde los botones con icono se veían bien. Vive en <code>1-ref/typeface.css</code> como primitiva para que quede un solo sitio donde cambiarlo.</p>
+      <h3>El tamaño óptico no cambia el tamaño</h3>
+      <p class="sr-na"><code>opsz</code> y <code>GRAD</code> tocan los dos el grosor del trazo, y conviene no confundirlos. <code>opsz</code> no cambia el tamaño del glifo: medido, con <code>opsz</code> 20 y con <code>opsz</code> 48 el glifo ocupa la misma caja. Lo que decide el tamaño es el <code>font-size</code>.</p>
+      <p class="sr-na">Los ejes se declaran en el icono y no en el botón, porque <code>font-variation-settings</code> se hereda: en el botón contaminaría la etiqueta, que está dibujada con otra fuente sin esos ejes.</p>
       <h3>El padding con icono se aparta de M3</h3>
       <p class="sr-na">M3 aprieta el padding del lado del icono a 16dp. Pero en la versión implementada, M3 v34, <em>referencia</em> ese token y <em>no lo define</em> en ningún archivo: es una referencia colgante. Copiar el 16dp de la web tampoco valdría, porque el <code>xsmall</code> tiene 12px de base y el botón con icono ocuparía más que sin icono. Este proyecto mantiene el mismo padding con y sin icono, y lo documenta como una omisión consciente, pendiente de que M3 defina el token.</p>
     </article>
@@ -181,15 +211,55 @@
       <p>No es un fallo de esta vista, es cómo funciona M3. Cambia el tema con el botón de arriba para comprobarlo.</p>
       <table class="sr-table">
         <thead>
-          <tr><th scope="col">Tema</th><th scope="col">Fondo</th><th scope="col">Relleno del elevated</th><th scope="col">Diferencia</th></tr>
+          <tr><th scope="col">Muestra</th><th scope="col">Tema</th><th scope="col">Fondo</th><th scope="col">Relleno del elevated</th><th scope="col">Diferencia</th></tr>
         </thead>
         <tbody>
-          <tr><td>Claro</td><td><code>#fef7ff</code></td><td><code>#f7f2fa</code></td><td>15 de 255</td></tr>
-          <tr><td>Oscuro</td><td><code>#141218</code></td><td><code>#1d1b20</code></td><td>9 de 255</td></tr>
+          <tr>
+            <td>
+              <span class="sr-spec-pair md-bg-background">
+                <span class="md-bg-surface-container-low"><code>background</code></span>
+                <span class="md-bg-surface-container-low"><code>low</code></span>
+              </span>
+            </td>
+            <td>Claro</td><td><code>#fef7ff</code></td><td><code>#f7f2fa</code></td><td>15 de 255</td>
+          </tr>
+          <tr>
+            <td>
+              <span class="sr-spec-pair md-bg-background">
+                <span class="md-bg-surface-container-low"><code>background</code></span>
+                <span class="md-bg-surface-container-low"><code>low</code></span>
+              </span>
+            </td>
+            <td>Oscuro</td><td><code>#141218</code></td><td><code>#1d1b20</code></td><td>9 de 255</td>
+          </tr>
         </tbody>
       </table>
+      <p class="sr-na">La muestra se repite en las dos filas a proposito: los hex son de cada tema, pero el par de roles es el mismo. Al cambiar el tema con el boton de arriba, las dos muestras cambian juntas, y se ve por que en oscuro la diferencia se pierde.</p>
       <p>En oscuro pasan dos cosas a la vez: el relleno está a 9 unidades del fondo, y la sombra es <em>negra</em> sobre un fondo casi negro. Se podría subir el relleno a <code>surface-container</code> y se vería mejor. <strong>No se hace</strong>, porque M3 especifica <code>surface-container-low</code> para esta configuración, y cambiarlo en silencio sería modificar la especificación sin decidirlo.</p>
       <p>Que M3 lo acepte no significa que se lea siempre igual. En un producto de verdad el <code>elevated</code> se apoya sobre una <code>surface</code>, no sobre el lienzo de <code>background</code>, y ahí el contraste es mayor. El caso de verlo sobre el lienzo en oscuro es el que queda justo.</p>
+      <h3>Dónde sí funciona: sobre una superficie</h3>
+      <p>La razón de fondo es que el relleno del <code>elevated</code> está diseñado para <em>no</em> destacar. Medido contra las seis superficies del sistema, en los dos temas, su contraste nunca pasa de 1.39:</p>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Superficie de fondo</th><th scope="col">Claro</th><th scope="col">Oscuro</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>background</code>, el lienzo</td><td>1.05</td><td>1.09</td></tr>
+          <tr><td><code>surface</code></td><td>1.05</td><td>1.09</td></tr>
+          <tr><td><code>surface-container-low</code>, su propio color</td><td>1.00</td><td>1.00</td></tr>
+          <tr><td><code>surface-container</code></td><td>1.04</td><td>1.05</td></tr>
+          <tr><td><code>surface-container-high</code></td><td>1.11</td><td>1.19</td></tr>
+          <tr><td><code>surface-container-highest</code></td><td>1.17</td><td>1.39</td></tr>
+        </tbody>
+      </table>
+      <p>Sobre su propio color da exactamente <strong>1.00</strong>: es invisible sin sombra. O sea que <strong>toda</strong> la separación del <code>elevated</code> viene de la sombra, nunca del tono. Y en tema oscuro la sombra es negra sobre un fondo casi negro, así que el mecanismo no puede funcionar.</p>
+      <p>Sobre una superficie elevada, en tema claro, la sombra sí separa. Compáralo con el mismo botón sobre el lienzo, cambiando el tema con el botón de arriba:</p>
+      <div class="sr-stage">
+        <div class="sr-surface">
+          <button class="md-button md-button-elevated" type="button">Sobre una superficie</button>
+        </div>
+      </div>
+      <p class="sr-na">Esto no arregla el caso del lienzo en oscuro, que es donde M3 no tiene ningún mecanismo. Lo deja documentado, que es distinto de disimulado.</p>
       <h3>Se pueden usar otros roles</h3>
       <p class="sr-na">M3 advierte que otros roles de color sirven siempre que el contenedor y el texto tengan un contraste de 3:1, y menciona <code>tertiary</code> y <code>on-tertiary</code> como ejemplo. Es una extensión documentada, y por eso los tokens del componente son reapuntables desde el marcado sin tocar el CSS.</p>
     </article>
