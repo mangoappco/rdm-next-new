@@ -77,6 +77,56 @@
      del article. Asi recibe el mismo gap por los dos lados sin que nadie lo
      declare: 16 + 1 + 16 = 33px. Es la cifra de rdm-next-old, y su CSS deja
      escrito por que se bajo de 41px: "cada nivel pega con un solo borde para
+
+     LA PAGINA ES UNA SUPERFICIE, Y EL LIENZO ESTA EN EL BODY
+     ----------------------------------------------------------
+     Este <main> se pinta con `surface` y su texto se lee con `on-surface`. No
+     es una eleccion de gusto: M3 asigna `surface` al area de contenido. En sus
+     propias palabras, "surface" es "a role used for backgrounds and large,
+     low-emphasis areas of the screen", y su ejemplo canonico es "the body area
+     will use the surface color", mientras que la barra de navegacion usa
+     `surface-container`.
+
+     El <body> conserva `background` + `on-background` porque `background` es el
+     color QUE ESTA DETRAS de las superficies, no una superficie mas. Cuerpo y
+     contenido no se disputan el rol: el cuerpo pinta el lienzo que rodea a la
+     hoja, y la hoja es el contenido.
+
+     POR QUE NINGUN TONO DE LA ESCALERIA
+     -----------------------------------
+     `surface-container-*` son cinco roles de CONTENEDOR, ordenados por enfasis
+     para anidar: lowest, low, container, high, highest. M3 los reserva para
+     "creating hierarchy and nested containers", y da al area de cuerpo `surface`.
+     El contenido de la pagina no es un contenedor anidado sino la region de
+     contenido, asi que no pide ninguno de los cinco. Por eso esta hoja no
+     compite con .sr-stage, que es `surface-container-low`, ni con .sr-table,
+     que es `surface-container-lowest`: cada uno esta en su escalon y la pagina
+     esta por debajo de toda la escalera.
+
+     Y POR QUE NINGUNO CAMBIA NADA DE LOS DE DENTRO
+     -----------------------------------------------
+     Los bloques de dentro conservan EXACTAMENTE el contraste que ya tenian
+     contra el lienzo, porque `surface` y `background` son el mismo tono:
+     neutral98 en claro y neutral6 en oscuro, tambien en el baseline de M3. No
+     habia forma de cambiar el relleno de un bloque sin recolorear el resto.
+
+     EL TEXTO, POR QUE `on-surface`
+     -------------------------------
+     M3 empareja `on-surface` con `surface` Y con los cinco contenedores ("text
+     and icons on any surface or surface container color"). Los dos roles valen
+     lo mismo aqui, asi que el cambio no se ve; se declara igual para que el
+     marcado y el CSS digan la verdad.
+
+     EL BORDE, POR QUE `outline-variant`
+     -------------------------------------
+     M3 prohibe `outline` para "components that contain multiple elements, such
+     as cards": un contenedor con muchos hijos necesita el rol decorativo. Esta
+     hoja es exactamente eso, asi que el trazo va en `outline-variant` y no en
+     `outline`. Y hace falta: sin linea no se veria donde acaba la hoja.
+
+     Y sin `box-sizing: border-box` a proposito: el trazo suma 2px por fuera de
+     los 720px de contenido, y con border-box la medida de lectura pasaria de
+     720 a 672 y cada parrafo de las cuatro vistas se volveria a repartir.
      que nada se acumule".
      --------------------------------------------------------------------- */
   .sr-page {
@@ -85,6 +135,10 @@
     gap: var(--sr-space-s);
     max-width: calc(var(--md-ref-spacing-900) * 10);   /* 720px */
     margin-inline: auto;
+    background-color: var(--md-sys-color-surface);
+    border: var(--md-sys-shape-stroke-thin) solid var(--sr-line);
+    border-radius: var(--md-sys-shape-corner-large);
+    color: var(--md-sys-color-on-surface);
     padding: var(--sr-space-m);
   }
 
@@ -128,7 +182,7 @@
     text-decoration: none;
   }
   .sr-back:hover,
-  .sr-back:focus-visible { color: var(--md-sys-color-on-background); text-decoration: underline; }
+  .sr-back:focus-visible { color: var(--md-sys-color-on-surface); text-decoration: underline; }
 
   /* El encabezado de pagina. Sin margin: su separacion respecto a la barra la da
      el gap de .sr-page, y el unico gap propio es el par titulo + bajada, que
@@ -184,6 +238,14 @@
   .sr-section > * + :is(h3, h4) { margin-block-start: var(--sr-space-s); }
 
   .sr-section h2 { font: var(--md-sys-typescale-headline-small); }
+
+  /* El h4 es un nivel mas bajo que el h3: separa los tres casos de una misma
+     seccion sin competir con el titulo de la seccion. Ya tenia su ritmo de
+     arriba, pero no su tipografia, asi que se leia como un parrafo en negrita
+     y no como un subtitulo. title-small es la escala que le corresponde:
+     menor que title-medium del h3, mayor que el cuerpo. */
+  .sr-section h4 { font: var(--md-sys-typescale-title-small); }
+
   .sr-section h3 { font: var(--md-sys-typescale-title-medium); }
   .sr-section p,
   .sr-section li { font: var(--md-sys-typescale-body-medium); }
@@ -355,12 +417,52 @@
      border-color: lo pone este stylesheet, igual que en un producto lo pondria
      el componente.
 
-     El borde va por dentro del contorno que trae .sr-swatch, y el contorno se
-     recorre hacia fuera. Asi se distinguen las dos lineas: el borde interior es
-     el color que se quiere mostrar, y el exterior solo recorta la muestra
-     contra la pagina. */
+     POR QUE SE QUITA EL CONTORNO DE .sr-swatch
+     -------------------------------------------
+     .sr-swatch trae un outline de 1px con outline-offset: -1px, pensado para
+     que los tonos 99 y 100 no se pierdan sobre el fondo claro de la pagina.
+     En esta variante ese contorno TAPA el borde:
+
+       el outline se pinta despues que el border, o sea encima, y con
+       outline-offset: -1px cae exactamente sobre el anillo del borde de 1px.
+
+     Medido en el navegador, las cuatro muestras de la subseccion Bordes
+     mostraban el MISMO anillo, --sr-line (#cac4d0), y no su propio color:
+
+       md-border-outline          pintaba #79747e, se veia #cac4d0
+       md-border-outline-variant  pintaba #cac4d0, se veia #cac4d0
+       md-border-primary          pintaba #6750a4, se veia #cac4d0
+       md-border-error            pintaba #b3261e, se veia #cac4d0
+
+     El borde morado y el rojo, que son los dos unicos que se distinguen de
+     golpe, no se veian. Y --sr-line es #cac4d0, que es el mismo valor que
+     --md-sys-color-outline-variant: aunque el contorno se moviera, la
+     muestra de outline-variant seguiria siendo indistinguible del marco.
+
+     Por eso se quita en vez de desplazar. Aqui el marco ES lo que se quiere
+     mostrar, y un segundo anillo alrededor solo lo tapa. El motivo por el que
+     .sr-swatch lleva contorno no aplica: estas muestras usan
+     surface-container, que se distingue del fondo de la pagina en los dos
+     temas, justo por eso la subseccion lo eligio.
+
+     EL CENTRADO
+     -----------
+     El texto va centrado en los dos ejes, igual que en .sr-swatch--pair. Sin
+     esto el span se quedaba arriba a la izquierda, pegado al borde: medido,
+     a 1px del borde izquierdo.
+
+     border-box para que el alto que declara .sr-swatch--tall sea el alto real
+     y el borde no sume 2px por fuera, como suma en el resto del showroom. */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: var(--sr-space-xs);
+    text-align: center;
+    overflow-wrap: anywhere;
   .sr-swatch--border {
     border-width: var(--md-sys-shape-stroke-thin);
+    outline: none;
     border-style: solid;
   }
 
@@ -528,21 +630,32 @@
     border-radius: var(--md-sys-shape-corner-small);
   }
 
-  /* Par de fondo/texto: el boton elevated necesita las dos superficies juntas
-     para que se vea por que casi no se distingue. Se pinta el boton real, no
-     dos rectangulos sueltos. */
-  .sr-spec-pair {
-    display: flex;
-    gap: var(--sr-space-xs);
-  }
-  .sr-spec-pair > * {
-    flex: 1;
-    block-size: var(--md-ref-spacing-700);
+  /* Lienzo: la pagina tal cual, para pintar un componente EN el rol que
+     documenta en vez de sobre el fondo del escenario.
+
+     Existe por el boton elevated. La seccion compara su relleno,
+     surface-container-low, contra el lienzo, background, y
+     surface-container-low es JUSTAMENTE el fondo que lleva .sr-stage: sobre el
+     stage el boton se dibujaria encima de su propio color, y la comparacion no
+     existiria. Es el caso inverso al de .sr-surface, y el motivo de que las dos
+     clases vivan en la capa del showroom y no en 2-sys.
+
+     El color lo pone la utilidad .md-bg-background desde el marcado, no esta
+     regla, y por el mismo motivo que .sr-swatch--pair: aqui no hay un padre que
+     fije el fondo, asi que la utilidad se aplica al mismo elemento que pinta y
+     no queda herencia que compita. Asi la muestra sobrevive al cambio de tema,
+     que es justo lo que esta seccion documenta.
+
+     El contorno es el mismo apano que el de .sr-swatch, y por el mismo motivo:
+     en tema claro el lienzo esta a un solo tono del fondo de la pagina, y sin
+     una linea no se ve donde acaba. Es chrome de la vista, no una propiedad
+     del componente: el boton de dentro no lo trae. */
+  .sr-canvas {
     display: flex;
     align-items: center;
     justify-content: center;
-    font: var(--md-sys-typescale-label-small);
-    border-radius: var(--md-sys-shape-corner-small);
+    padding: var(--sr-space-s);
+    border-radius: var(--md-sys-shape-corner-large);
     outline: var(--md-sys-shape-stroke-thin) solid var(--sr-line);
     outline-offset: calc(var(--md-ref-spacing-0) - var(--md-sys-shape-stroke-thin));
   }
@@ -628,7 +741,7 @@
   }
   .sr-toggle:hover,
   .sr-toggle:focus-visible {
-    color: var(--md-sys-color-on-background);
+    color: var(--md-sys-color-on-surface);
     text-decoration: underline;
   }
   /* ------------------------------------------------------------------------

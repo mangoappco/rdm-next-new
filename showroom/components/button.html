@@ -220,34 +220,29 @@
       <div class="sr-stage"><button class="md-button md-button-outlined" type="button">Outlined</button></div>
       <p>La especificación separa los dos: el <strong>borde va en <code>outline</code></strong>, el gris claro, y la <strong>etiqueta en <code>on-surface-variant</code></strong>, el gris oscuro. Con un solo tono, el botón se aplana y el borde claro desaparece sobre fondo oscuro.</p>
       <h3>La elevación se ve en claro y casi no se ve en oscuro</h3>
+      <p>Esta es la muestra: el <strong>botón <code>elevated</code> real</strong>, y detrás el <strong>lienzo</strong>, el rol <code>background</code> de la página. El relleno del botón es <code>surface-container-low</code>, y esa es la única diferencia entre las dos superficies:</p>
+      <div class="sr-canvas md-bg-background">
+        <button class="md-button md-button-elevated" type="button">Elevated</button>
+      </div>
+      <p class="sr-na">El fondo de este escenario es <code>background</code> y no el tono de los demás escenarios, que es <code>surface-container-low</code>: sería el mismo color que el relleno del botón y la comparación no existiría. La línea del borde es de la vista, para que se vea dónde acaba el lienzo; el botón de dentro no la trae. Esta muestra es viva, así que siempre enseña el tema que está activo.</p>
       <p>No es un fallo de esta vista, es cómo funciona M3. Cambia el tema con el botón de arriba para comprobarlo.</p>
       <table class="sr-table">
         <thead>
-          <tr><th scope="col">Muestra</th><th scope="col">Tema</th><th scope="col">Fondo</th><th scope="col">Relleno del elevated</th><th scope="col">Diferencia</th></tr>
+          <tr><th scope="col">Tema</th><th scope="col">Fondo</th><th scope="col">Relleno del elevated</th><th scope="col">Diferencia máxima</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td>
-              <span class="sr-spec-pair md-bg-background">
-                <span class="md-bg-surface-container-low"><code>background</code></span>
-                <span class="md-bg-surface-container-low"><code>low</code></span>
-              </span>
-            </td>
-            <td>Claro</td><td><code>#fef7ff</code></td><td><code>#f7f2fa</code></td><td>15 de 255</td>
+            <td>Claro</td><td><code>#fef7ff</code></td><td><code>#f7f2fa</code></td><td>7 de 255</td>
           </tr>
           <tr>
-            <td>
-              <span class="sr-spec-pair md-bg-background">
-                <span class="md-bg-surface-container-low"><code>background</code></span>
-                <span class="md-bg-surface-container-low"><code>low</code></span>
-              </span>
-            </td>
             <td>Oscuro</td><td><code>#141218</code></td><td><code>#1d1b20</code></td><td>9 de 255</td>
           </tr>
         </tbody>
       </table>
-      <p class="sr-na">La muestra se repite en las dos filas a proposito: los hex son de cada tema, pero el par de roles es el mismo. Al cambiar el tema con el boton de arriba, las dos muestras cambian juntas, y se ve por que en oscuro la diferencia se pierde.</p>
-      <p>En oscuro pasan dos cosas a la vez: el relleno está a 9 unidades del fondo, y la sombra es <em>negra</em> sobre un fondo casi negro. Se podría subir el relleno a <code>surface-container</code> y se vería mejor. <strong>No se hace</strong>, porque M3 especifica <code>surface-container-low</code> para esta configuración, y cambiarlo en silencio sería modificar la especificación sin decidirlo.</p>
+      <p class="sr-na">La diferencia es la mayor de las tres diferencias por canal, sobre 255. Medida canal a canal: en claro 7·5·5, en oscuro 9·9·8. Con la media saldría 6 y 9, y con la suma 17 y 26; el orden entre los dos temas no cambia en ninguna de las tres medidas.</p>
+      <p>Los hex son de cada tema y no cambian con el botón de arriba, porque son los valores de las dos hojas de tema del sistema. La muestra de arriba, en cambio, sí: es el mismo componente con los tokens del tema activo.</p>
+      <p>Y conviene ser exacto sobre qué es lo que falla, porque no es el relleno. En oscuro el relleno está <em>más</em> lejos del fondo que en claro: 9 unidades contra 7, y un contraste de 1.09 contra 1.05. O sea que el tono del botón no es el problema en ninguno de los dos temas. Lo que no funciona es la sombra: es <em>negra</em>, y en oscuro se apoya sobre un fondo casi negro, así que no separa nada. En claro la misma sombra sí se ve, porque un negro al 30% sobre un blanco casi puro se nota.</p>
+      <p>Se podría subir el relleno a <code>surface-container</code> y se vería mejor. <strong>No se hace</strong>, porque M3 especifica <code>surface-container-low</code> para esta configuración, y cambiarlo en silencio sería modificar la especificación sin decidirlo.</p>
       <p>Que M3 lo acepte no significa que se lea siempre igual. En un producto de verdad el <code>elevated</code> se apoya sobre una <code>surface</code>, no sobre el lienzo de <code>background</code>, y ahí el contraste es mayor. El caso de verlo sobre el lienzo en oscuro es el que queda justo.</p>
       <h3>Dónde sí funciona: sobre una superficie</h3>
       <p>La razón de fondo es que el relleno del <code>elevated</code> está diseñado para <em>no</em> destacar. Medido contra las seis superficies del sistema, en los dos temas, su contraste nunca pasa de 1.39:</p>
@@ -526,14 +521,33 @@
       <p><strong>Elevated y tonal no llegan a 3:1 sobre el lienzo, en ninguno de los dos temas.</strong> Y conviene decirlo claro: es un dato de M3, no un fallo de esta implementación. Los tokens de M3 para esas dos configuraciones son los que son, y su separación la aporta la <em>sombra</em> y no el tono del relleno. Por eso su botón vive sobre una <code>surface</code> dentro de una tarjeta, y no suelto sobre el lienzo.</p>
       <p>La alternativa sería medir siempre desde la etiqueta, que en esas dos configuraciones sí tiene contraste alto. Se deja la medición como M3 la define, y se documenta el resultado.</p>
       <h3>Área táctil de 48dp: este componente NO la cumple</h3>
-      <p>M3 exige que los <strong>botones de icono</strong> de tamaño extra small y small tengan un objetivo de 48×48dp o más. Un botón de 32dp o 40dp no llega.</p>
+      <p>M3 exige un objetivo de <strong>48×48dp</strong> en todo elemento interactivo. Los botones de icono de tamaño extra small y small se quedan por debajo: 32dp y 40dp no llegan.</p>
+      <p>Y aquí conviene separar dos cosas que se confunden seguido, porque el incumplimiento no está donde parece.</p>
+      <h4>El área visible y el área pulsable son dos medidas distintas</h4>
+      <p>Un botón de 32dp <strong>puede</strong> ser pulsable en 48dp. No hace falta que se vea más grande: lo que se agranda es la superficie que recibe el toque, y puede ser invisible.</p>
+      <p>Es lo que hace M3. En Material Web el botón no crece: lleva un elemento <code>.touch</code> superpuesto, transparente, que se sale por arriba y por abajo:</p>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Propiedad</th><th scope="col">Valor</th><th scope="col">Qué hace</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>position</code></td><td><code>absolute</code></td><td>lo saca del flujo, no empuja a nada</td></tr>
+          <tr><td><code>top</code></td><td><code>50%</code></td><td>se ancla al centro vertical</td></tr>
+          <tr><td><code>height</code></td><td><code>max(48px, 100%)</code></td><td>48dp, o lo que mida el botón si fuera mayor</td></tr>
+          <tr><td><code>left</code> / <code>right</code></td><td><code>0</code></td><td>ocupa todo el ancho</td></tr>
+          <tr><td><code>transform</code></td><td><code>translateY(-50%)</code></td><td>lo centra sobre el botón</td></tr>
+        </tbody>
+      </table>
+      <p>El resultado es un botón que <strong>se ve de 32dp y se pulsa de 48dp</strong>. El área visible conserva el tamaño que pide el diseño; el área pulsable cumple la accesibilidad. Son dos medidas y por eso son dos tokens.</p>
+      <h4>Por qué una utilidad no sirve aquí</h4>
+      <p>Porque una utilidad solo puede cambiar el tamaño de la caja, y la caja <em>es</em> el área visible. Agrandarla deformaría el botón: mide 48 de ancho y se queda en 32 de alto, o al revés, y el resultado ya no es un botón.</p>
       <div class="sr-stage">
         <button class="md-button md-button-xsmall md-measure-touch-target" type="button" aria-label="Añadir">
           <span class="md-button-icon material-symbols-outlined" aria-hidden="true">add</span>
         </button>
       </div>
-      <p>La utilidad <code>.md-measure-touch-target</code> viene de <code>2-sys/measurement.css</code> y pide 48×48 con <code>min-width</code> y <code>min-height</code>. <strong>Medido en el navegador, consigue 48×32: el ancho sí, el alto no.</strong></p>
-      <p>La causa es el orden de capas. La utilidad vive en <code>sys</code> y el botón declara su propio <code>min-height</code> en <code>comp</code>, que está declarada <em>después</em>. A igualdad de especificidad, gana <code>comp</code>:</p>
+      <p class="sr-na">El botón de arriba lleva <code>.md-measure-touch-target</code>, de <code>2-sys/measurement.css</code>. Medido en el navegador da <strong>48×32</strong>: la utilidad no aporta nada y el botón sale achaparrado. No es la solución, es un contraejemplo.</p>
+      <p>Además le falta el otro problema. La utilidad vive en <code>sys</code> y el botón declara su propio <code>min-height</code> en <code>comp</code>, que está declarada <em>después</em>. A igualdad de especificidad, gana <code>comp</code>:</p>
       <table class="sr-table">
         <thead>
           <tr><th scope="col">Medida</th><th scope="col">Declarado en</th><th scope="col">Computado</th></tr>
@@ -543,8 +557,24 @@
           <tr><td>min-height</td><td>comp, el componente</td><td>32px, <strong>no cumple</strong></td></tr>
         </tbody>
       </table>
-      <p>Es el mismo fenómeno que impide que una utilidad de <code>2-sys</code> cambie el color de un componente, y está documentado en la skill: una clase de <code>2-sys</code> puede fijar algo que el componente no toque, y no puede pisar algo que el componente sí fije.</p>
-      <p><strong>Consecuencia:</strong> mientras el <code>min-height</code> viva en el componente, el requisito de 48×48 de M3 <strong>no se puede cumplir con una utilidad</strong>. Necesita un modificador del propio componente, del tipo <code>.md-button-touch</code>, que separe el área visible del área pulsable. No está implementado, y queda anotado en <a href="#notas">Notas</a>.</p>
+      <p>Es el mismo fenómeno que impide que una utilidad de <code>2-sys</code> cambie el color de un componente: una clase de <code>2-sys</code> puede fijar algo que el componente no toque, y no puede pisar algo que el componente sí fije.</p>
+      <p><strong>Consecuencia:</strong> el requisito de 48×48 de M3 <strong>no se puede cumplir con una utilidad</strong>, ni por capas ni por motivo. Necesita un modificador del propio componente, del tipo <code>.md-button-touch</code>, que añada la superficie de toque sin tocar la caja. No está implementado, y queda anotado en <a href="#notas">Notas</a>.</p>
+      <h4>Y en M3 el botón de icono es otro componente</h4>
+      <p>Un detalle de terminología que cambia el tamaño del icono. El <strong>botón de icono</strong> de M3 no es un <code>button</code> sin etiqueta: es <code>icon-button</code>, un componente aparte con sus propios tokens, y sus tamaños no coinciden con los del botón.</p>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Componente</th><th scope="col">Tamaño</th><th scope="col">Contenedor</th><th scope="col">Glifo</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>button</code></td><td>extra small</td><td>32dp</td><td>20dp</td></tr>
+          <tr><td><code>button</code></td><td>small</td><td>40dp</td><td>20dp</td></tr>
+          <tr><td><code>button</code></td><td>medium</td><td>56dp</td><td>24dp</td></tr>
+          <tr><td><code>icon-button</code></td><td>extra small</td><td>32dp</td><td>20dp</td></tr>
+          <tr><td><code>icon-button</code></td><td>small</td><td>40dp</td><td><strong>24dp</strong></td></tr>
+          <tr><td><code>icon-button</code></td><td>medium</td><td>56dp</td><td>24dp</td></tr>
+        </tbody>
+      </table>
+      <p class="sr-na">Solo difiere en <code>small</code>, y es una diferencia real: <code>icon-button</code> pone 24dp de glifo donde <code>button</code> pone 20dp. El ejemplo de arriba usa <code>button</code> extra small, así que le corresponde 20dp, que es lo que renderiza. <code>icon-button</code> no está implementado en este proyecto.</p>
       <h3>Teclado</h3>
       <table class="sr-table">
         <thead>
@@ -659,8 +689,10 @@
       <h2>Notas</h2>
       <p>Lo que este componente <strong>no</strong> implementa, y por qué. No son olvidos.</p>
       <h3>El área táctil de 48dp</h3>
-      <p>M3 exige 48×48 en los botones de icono de tamaño extra small y small. <strong>No se cumple</strong>, y la razón está medida en <a href="#accesibilidad">Accesibilidad</a>: la utilidad <code>.md-measure-touch-target</code> consigue 48 de ancho, pero el <code>min-height</code> del componente, en la capa <code>comp</code>, gana a la utilidad de <code>sys</code>.</p>
-      <p>Hace falta un modificador del propio componente que separe el área visible del área pulsable. Es un hueco real, y se cerrará con un componente, no con una utilidad.</p>
+      <p>M3 exige 48×48 de zona pulsable. <strong>No se cumple</strong>, y la razón está medida en <a href="#accesibilidad">Accesibilidad</a>: la utilidad <code>.md-measure-touch-target</code> agranda la caja, que es el área <em>visible</em>, y eso ni resuelve el alto —el <code>min-height</code> de <code>comp</code> le gana— ni deforma el botón.</p>
+      <p>Hace falta un modificador del propio componente, <code>.md-button-touch</code>, que añada una superficie de toque invisible sin tocar la caja, como hace M3 con su elemento <code>.touch</code>. Es un hueco real, y se cerrará con un componente, no con una utilidad.</p>
+      <h3>El botón de icono</h3>
+      <p class="sr-na">M3 define <code>icon-button</code> como un componente aparte de <code>button</code>, con sus propios tamaños de glifo. No está implementado. Ver <a href="#accesibilidad">Accesibilidad</a> con la tabla comparada.</p>
       <h3>El botón toggle</h3>
       <p>La segunda variante de M3. Ver <a href="#variantes">Variantes</a> con la tabla completa de lo que falta.</p>
       <h3>La forma square y el morph al presionar</h3>

@@ -131,6 +131,15 @@
      un token: depende de la altura del contenedor y del alto de una linea.
      Ver "POR QUE padding-block CON CALC" mas abajo. */
   --md-comp-button-single-line-height: var(--md-sys-typescale-label-large-line-height);
+  /* Tipografia de la etiqueta. Las CUATRO propiedades discretas del typescale,
+     mas el alto de linea que ya esta declarado arriba. Se separan en tokens
+     para que cada tamano las reapunte, igual que las medidas. Ver
+     "POR QUE PROPIEDADES DISCRETAS Y NO font" mas abajo. */
+  --md-comp-button-label-font: var(--md-sys-typescale-label-large-font);
+  --md-comp-button-label-weight: var(--md-sys-typescale-label-large-weight);
+  --md-comp-button-label-size: var(--md-sys-typescale-label-large-size);
+  --md-comp-button-label-tracking: var(--md-sys-typescale-label-large-tracking);
+
 
   box-sizing: border-box;
 
@@ -159,7 +168,11 @@
      la sombra de un ::before se dibujaba justo en la parte recortada. */
   box-shadow: var(--md-comp-button-elevation);
 
-  font: var(--md-sys-typescale-label-large);
+  font-family: var(--md-comp-button-label-font);
+  font-weight: var(--md-comp-button-label-weight);
+  font-size: var(--md-comp-button-label-size);
+  line-height: var(--md-comp-button-single-line-height);
+  letter-spacing: var(--md-comp-button-label-tracking);
 
   /* position: relative para que los pseudo-elementos se ubiquen contra este
      elemento, y no contra el ancestro mas cercano que los positioned.
@@ -622,6 +635,77 @@
     'FILL' 0,
     'GRAD' var(--md-sys-typescale-icon-grade);
 }
+/* ---------------------------------------------------------------------------
+   POR QUE PROPIEDADES DISCRETAS Y NO font
+   ---------------------------------------------------------------------------
+   Este boton se escribia con el token COMPUESTO del typescale:
+
+       font: var(--md-sys-typescale-label-large);
+
+   Eso estaba mal, y no por una cuestion de estilo. 2-sys/typography.css
+   publica ese token como un atajo y advierte en su propia cabecera de que NO
+   incluye el tracking, porque la forma abreviada `font` de CSS no sabe
+   expresar `letter-spacing`. Google lo dice en su archivo de tokens: usar el
+   token compuesto "reduce la fidelidad" y conviene las propiedades discretas.
+
+   MEDIDO EN EL NAVEGADOR, ANTES Y DESPUES
+   --------------------------------------
+   Con el token compuesto, la etiqueta del boton computaba:
+
+       .md-button          letter-spacing: normal    (deberia ser 0.1px)
+       .md-button-medium   letter-spacing: normal    (deberia ser 0.15px)
+
+   `normal` es el valor inicial de la propiedad, o sea que el tracking de
+   label-large y de title-medium no se estaba aplicando: se perdia entero. En
+   un texto de 14px, 0.1px por letra son 1.4px en una etiqueta de siete
+   caracteres. No es una cifra que se vea en una captura, y esa es
+   precisamente la razon para medirla en lugar de suponerla.
+
+   La paradoja era que el propio archivo senalaba el problema y lo sufria:
+   las clases .md-type-* de 2-sys usan las propiedades discretas precisamente
+   por esto, y el componente usaba el atajo.
+
+   LO QUE SE CAMBIO
+   ----------------
+   `font: <compuesto>` se sustituyo por las CINCO propiedades discretas, con
+   los tokens de 2-sys:
+
+       font-family:    ...-label-large-font
+       font-weight:    ...-label-large-weight
+       font-size:      ...-label-large-size
+       line-height:    ...-label-large-line-height
+       letter-spacing: ...-label-large-tracking
+
+   Cada una vive en un token del componente y cada tamano la reapunta, en vez
+   de reescribir la regla entera.
+
+   QUE NO SE PIERDE AL CAMBIAR EL ATAJO POR LAS PROPIEDADES
+   --------------------------------------------------------
+   El atajo `font` ademas de reiniciar font-family, font-weight, font-size y
+   line-height, reinicia tambien font-style, font-variant y font-stretch a su
+   valor inicial. Al medirse, los tres ya valian su valor inicial en un
+   <button> nativo: font-style normal, font-variant normal y font-stretch
+   100% (que es lo que `normal` significa para un ancho). O sea que el atajo
+   no estaba reiniciando nada que las propiedades discretas no cubran, y la
+   sustitucion no abre ese hueco.
+
+   LO QUE SIGUE SIN DECLARARSE, Y POR QUE
+   --------------------------------------
+   El boton no declara font-optical-sizing ni font-variation-settings, y las
+   clases .md-type-* si. Es una diferencia real y queda a proposito:
+
+   REGLA 2 prohibe que 3-comp lea tokens de 1-ref, y los dos valores que
+   necesitan viven ahi, en 1-ref/typeface.css. Exponerlos como roles de 2-sys
+   es una decision del sistema, no una reparacion de este componente: lo
+   propio es que 3-comp pida la INTENCION, y esa intencion todavia no existe
+   como token.
+
+   Medido: los dos valen ya su valor inicial (font-optical-sizing auto y
+   font-variation-settings normal), asi que no hay ninguna diferencia visible
+   mientras tanto. Se anota para que la decision sea consciente y no un
+   olvido, y se resuelve si algun dia hace falta.
+   ------------------------------------------------------------------------ */
+
 
 /* ---------------------------------------------------------------------------
    VARIANTES
@@ -807,10 +891,10 @@
 
    LA FAMILIA DE TIPOGRAFIA SE PISA EN CADA TAMANO
    ----------------------------------------------
-   Cada tamano reescribe font con su typescale. Se declara font y no
-   font-size, porque typescale trae las cuatro propiedades: familia, tamano,
-   peso e interletraje. Poner solo font-size dejaria el peso de label-large
-   colgado de un tamano que ya no es de label-large.
+   Cada tamano reapunta los cuatro tokens de la etiqueta y el alto de linea.
+   No se declara font-size suelto: dejaria el peso y la familia colgando de
+   un tamano que ya no es de label-large. El que cambia de stylescale cambia
+   de las cinco propiedades, no de una.
 
    El alto de linea tambien se actualiza, porque lo usa el calculo del
    padding-block. Si no, el padding del medium estaria calculado con el alto
@@ -823,7 +907,10 @@
   --md-comp-button-icon-size: var(--md-sys-measurement-button-icon-size);
   --md-comp-button-icon-optical-size: var(--md-sys-typescale-icon-optical-size-small);
   --md-comp-button-single-line-height: var(--md-sys-typescale-label-large-line-height);
-  font: var(--md-sys-typescale-label-large);
+  --md-comp-button-label-font: var(--md-sys-typescale-label-large-font);
+  --md-comp-button-label-weight: var(--md-sys-typescale-label-large-weight);
+  --md-comp-button-label-size: var(--md-sys-typescale-label-large-size);
+  --md-comp-button-label-tracking: var(--md-sys-typescale-label-large-tracking);
 }
 
 .md-button-small {
@@ -832,7 +919,10 @@
   --md-comp-button-icon-size: var(--md-sys-measurement-button-icon-size);
   --md-comp-button-icon-optical-size: var(--md-sys-typescale-icon-optical-size-small);
   --md-comp-button-single-line-height: var(--md-sys-typescale-label-large-line-height);
-  font: var(--md-sys-typescale-label-large);
+  --md-comp-button-label-font: var(--md-sys-typescale-label-large-font);
+  --md-comp-button-label-weight: var(--md-sys-typescale-label-large-weight);
+  --md-comp-button-label-size: var(--md-sys-typescale-label-large-size);
+  --md-comp-button-label-tracking: var(--md-sys-typescale-label-large-tracking);
 }
 
 .md-button-medium {
@@ -841,7 +931,10 @@
   --md-comp-button-icon-size: var(--md-sys-measurement-button-icon-size-medium);
   --md-comp-button-icon-optical-size: var(--md-sys-typescale-icon-optical-size-medium);
   --md-comp-button-single-line-height: var(--md-sys-typescale-title-medium-line-height);
-  font: var(--md-sys-typescale-title-medium);
+  --md-comp-button-label-font: var(--md-sys-typescale-title-medium-font);
+  --md-comp-button-label-weight: var(--md-sys-typescale-title-medium-weight);
+  --md-comp-button-label-size: var(--md-sys-typescale-title-medium-size);
+  --md-comp-button-label-tracking: var(--md-sys-typescale-title-medium-tracking);
 }
 
 /* ---------------------------------------------------------------------------
