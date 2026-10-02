@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NombreDelComponente — ManGo! App</title>
+  <meta name="description" content="Documentacion del componente NombreDelComponente de RDM Next, basado en Material Design 3.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../src/css/main.css">
+  <link rel="stylesheet" href="../assets/showroom.css">
+  <script src="../assets/showroom.js"></script>
+</head>
+
+<!--
+  1. Copiar a showroom/components/<nombre>.html
+  2. Preguntar a Danny por CADA seccion si aplica antes de rellenar.
+  3. Si una seccion no aplica: dejar el titulo y <p class="sr-na">Este componente no tiene ...</p>
+  4. Reemplazar "md-componente" por la clase real (src/3-comp/<nombre>.css).
+  5. Estados forzados: <span class="md-state-layer-hover|focus|pressed"> dentro del
+     componente; disabled con .md-disabled. Componentes de ancho completo: .sr-stage--fill.
+-->
+
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <main class="sr-page">
+
+    <div class="sr-bar">
+      <a class="sr-back" href="../index.html">RDM Next</a>
+      <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
+    </div>
+
+    <header class="sr-header">
+      <h1>Nombre del componente</h1>
+      <p>Qué es y para qué sirve, en una o dos frases.</p>
+    </header>
+
+    <article class="sr-section">
+      <h2>Uso</h2>
+      <h3>Cuándo usarlo</h3>
+      <ul><li>…</li></ul>
+      <h3>Cuándo no usarlo</h3>
+      <ul><li>…</li></ul>
+    </article>
+
+    <article class="sr-section">
+      <h2>Default</h2>
+      <div class="sr-stage"><div class="md-componente"></div></div>
+    </article>
+
+    <article class="sr-section">
+      <h2>Variaciones</h2>
+      <div class="sr-grid">
+        <figure class="sr-cell">
+          <div class="sr-stage"><div class="md-componente"></div></div>
+          <figcaption>Nombre de la variación</figcaption>
+        </figure>
+      </div>
+    </article>
+
+    <article class="sr-section">
+      <h2>Color</h2>
+      <div class="sr-grid">
+        <figure class="sr-cell">
+          <div class="sr-stage"><div class="md-componente"></div></div>
+          <figcaption>Rol de color</figcaption>
+        </figure>
+      </div>
+    </article>
+
+    <article class="sr-section">
+      <h2>Shapes</h2>
+      <div class="sr-grid">
+        <figure class="sr-cell">
+          <div class="sr-stage"><div class="md-componente md-shape-corner-medium"></div></div>
+          <figcaption>Token de esquina</figcaption>
+        </figure>
+      </div>
+    </article>
+
+    <article class="sr-section">
+      <h2>Sizes</h2>
+      <div class="sr-grid">
+        <figure class="sr-cell">
+          <div class="sr-stage"><div class="md-componente"></div></div>
+          <figcaption>Nombre del tamaño</figcaption>
+        </figure>
+      </div>
+    </article>
+
+    <article class="sr-section">
+      <h2>Padding</h2>
+      <div class="sr-grid">
+        <figure class="sr-cell">
+          <div class="sr-stage"><div class="md-componente"></div></div>
+          <figcaption>Configuración</figcaption>
+        </figure>
+      </div>
+    </article>
+
+    <article class="sr-section">
+      <h2>States</h2>
+      <div class="sr-grid">
+        <figure class="sr-cell">
+          <div class="sr-stage"><div class="md-componente"></div></div>
+          <figcaption>Enabled</figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-stage"><div class="md-componente"><span class="md-state-layer-hover"></span></div></div>
+          <figcaption>Hovered</figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-stage"><div class="md-componente"><span class="md-state-layer-focus"></span></div></div>
+          <figcaption>Focused</figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-stage"><div class="md-componente"><span class="md-state-layer-pressed"></span></div></div>
+          <figcaption>Pressed</figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-stage"><div class="md-componente md-disabled"></div></div>
+          <figcaption>Disabled</figcaption>
+        </figure>
+      </div>
+    </article>
+
+    <article class="sr-section">
+      <h2>Anatomía</h2>
+      <div class="sr-stage"><div class="md-componente"></div></div>
+      <ol>
+        <li>Parte 1</li>
+      </ol>
+    </article>
+
+    <article class="sr-section">
+      <h2>Medidas y tokens</h2>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Atributo</th><th scope="col">Valor</th><th scope="col">Token</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>…</td><td>…</td><td><code>--md-comp-…</code></td></tr>
+        </tbody>
+      </table>
+    </article>
+
+  </main>
+</body>
+</html>

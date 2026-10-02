@@ -7,7 +7,7 @@
    Este es el UNICO punto de entrada del sistema. Quien quiera usar RDM Next
    importa ESTE archivo y nada mas:
 
-       <link rel="stylesheet" href="css/main.css">
+       <link rel="stylesheet" href="src/css/main.css">
 
    A partir de aqui se cargan las 21 hojas del sistema en el orden correcto.
 

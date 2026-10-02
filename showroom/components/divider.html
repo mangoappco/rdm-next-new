@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Divider · Showroom</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../src/css/main.css">
+  <link rel="stylesheet" href="../assets/showroom.css">
+  <script src="../assets/showroom.js"></script>
+</head>
+
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <main class="sr-page">
+
+    <div class="sr-bar">
+      <a class="sr-back" href="../index.html">RDM Next</a>
+      <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
+    </div>
+
+    <header class="sr-header">
+      <h1>Divider</h1>
+      <p>Una línea fina que separa contenido relacionado dentro de un contenedor, como los elementos de una lista o las secciones de una tarjeta.</p>
+    </header>
+
+    <article class="sr-section">
+      <h2>Uso</h2>
+      <h3>Cuándo usarlo</h3>
+      <ul>
+        <li>Para agrupar visualmente elementos de una lista sin añadir peso.</li>
+        <li>Para separar secciones dentro de una misma superficie, como una tarjeta o un menú.</li>
+      </ul>
+      <h3>Cuándo no usarlo</h3>
+      <ul>
+        <li>Para separar secciones de una página completa: ahí el espacio en blanco ya cumple esa función.</li>
+        <li>Entre elementos que ya están separados por contenedores o fondos distintos.</li>
+      </ul>
+    </article>
+
+    <article class="sr-section">
+      <h2>Default</h2>
+      <div class="sr-stage sr-stage--fill">
+        <p>Contenido encima del divisor.</p>
+        <hr class="md-divider">
+        <p>Contenido debajo del divisor.</p>
+      </div>
+    </article>
+
+    <article class="sr-section">
+      <h2>Variaciones</h2>
+      <div class="sr-grid">
+        <figure class="sr-cell">
+          <div class="sr-stage sr-stage--fill"><hr class="md-divider"></div>
+          <figcaption>Full-width · <code>.md-divider</code></figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-stage sr-stage--fill"><hr class="md-divider md-divider-inset"></div>
+          <figcaption>Inset · <code>.md-divider-inset</code></figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-stage sr-stage--fill"><hr class="md-divider md-divider-middle-inset"></div>
+          <figcaption>Middle inset · <code>.md-divider-middle-inset</code></figcaption>
+        </figure>
+      </div>
+    </article>
+
+    <article class="sr-section">
+      <h2>Color</h2>
+      <div class="sr-grid">
+        <figure class="sr-cell">
+          <div class="sr-stage sr-stage--fill"><hr class="md-divider"></div>
+          <figcaption>Por defecto · <code>--md-sys-color-outline-variant</code></figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-stage sr-stage--fill">
+            <hr class="md-divider" style="--md-comp-divider-color: var(--md-sys-color-primary)">
+          </div>
+          <figcaption>Token sobrescrito · <code>--md-sys-color-primary</code></figcaption>
+        </figure>
+      </div>
+    </article>
+
+    <article class="sr-section">
+      <h2>Shapes</h2>
+      <p class="sr-na">Este componente no tiene shapes: es una línea recta sin esquinas.</p>
+    </article>
+
+    <article class="sr-section">
+      <h2>Sizes</h2>
+      <p class="sr-na">Este componente no tiene tamaños: su grosor es fijo (<code>--md-sys-shape-stroke-thin</code>).</p>
+    </article>
+
+    <article class="sr-section">
+      <h2>Padding</h2>
+      <p class="sr-na">Este componente no tiene configuraciones de padding propias. La separación lateral se muestra en Variaciones (inset y middle inset).</p>
+    </article>
+
+    <article class="sr-section">
+      <h2>States</h2>
+      <p class="sr-na">Este componente no tiene estados.</p>
+    </article>
+
+    <article class="sr-section">
+      <h2>Anatomía</h2>
+      <div class="sr-stage sr-stage--fill"><hr class="md-divider"></div>
+      <ol>
+        <li>Línea: el pseudo-elemento <code>::before</code>, que toma el color del elemento con <code>currentColor</code>.</li>
+      </ol>
+    </article>
+
+    <article class="sr-section">
+      <h2>Medidas y tokens</h2>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Atributo</th><th scope="col">Valor</th><th scope="col">Token</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Color</td><td>outline-variant</td><td><code>--md-comp-divider-color</code></td></tr>
+          <tr><td>Grosor</td><td>1px</td><td><code>--md-comp-divider-thickness</code></td></tr>
+          <tr><td>Inset</td><td>16px</td><td><code>--md-sys-measurement-inset</code></td></tr>
+        </tbody>
+      </table>
+    </article>
+
+  </main>
+</body>
+</html>

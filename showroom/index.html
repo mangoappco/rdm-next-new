@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ManGo! App — RDM Next</title>
+  <meta name="description" content="Showroom de componentes UI de ManGo! App, construido sobre Material Design 3.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../src/css/main.css">
+  <link rel="stylesheet" href="assets/showroom.css">
+  <script src="assets/showroom.js"></script>
+</head>
+
+<!--
+  Para añadir un componente: copiar una linea <li> y cambiar href, nombre y descripcion.
+  El href apunta a components/<nombre>.html (copia de templates/component.template.html).
+-->
+
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <main class="sr-page">
+
+    <div class="sr-bar">
+      <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
+    </div>
+
+    <header class="sr-header">
+      <h1>Showroom</h1>
+      <p>Catálogo de componentes basados en Material Design 3, renderizados con el propio código de la librería.</p>
+    </header>
+
+    <article class="sr-section">
+      <h2>Componentes</h2>
+      <ul class="sr-index">
+        <li>
+          <a href="components/divider.html">
+            <strong>Divider</strong>
+            <span>Línea fina que separa contenido relacionado dentro de un contenedor.</span>
+          </a>
+        </li>
+      </ul>
+    </article>
+
+  </main>
+</body>
+</html>
