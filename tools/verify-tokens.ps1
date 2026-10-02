@@ -29,6 +29,16 @@
                Las carpetas y archivos esperados existen; main.css declara las
                capas @layer; el numero de archivos importados coincide.
 
+      REGLA 6  Dogfooding del showroom
+               Ningun HTML lleva atributos de estilo en linea ni bloques
+               <style>. Si falta un token o una utilidad, se crea en la capa
+               correspondiente, no se parchea el marcado.
+
+      REGLA 7  Sincronizacion de bloques de tema
+               Cada archivo de tema declara sus tokens en DOS bloques, uno con
+               @media y otro con [data-theme]. Deben ser IDENTICOS: si no, el
+               tema se ve bien con el del SO y distinto con el toggle.
+
       REGLA 8  Tablas de tokens del showroom
                Portada del verificador de rdm-next-old. El showroom vive
                fuera de src/css/, asi que Get-CssFiles lo excluye y sin esta
@@ -38,6 +48,21 @@
                texto de la tabla de 4.5:1 en los dos temas.
                La rejilla NO se mide: va en outline-variant por decision
                documentada, y el comentario del bloque explica por que.
+
+      REGLA 9  El icono se pide con las clases del sistema
+               a) Ningun HTML puede llevar material-symbols-* en un atributo
+                  de clase. Esa clase la trae la hoja de Google, que
+                  1-ref/iconfont.css mete en la capa ref.reset precisamente
+                  para que no compita. Como la hoja entera entra con ella, se
+                  podria usar y creerse que funciona; el fallo ya se cometio
+                  una vez y perdia el font-size del componente.
+                  Se comprueba SOLO dentro de atributos class: el nombre
+                  aparece legitimamente en la prosa del showroom, que explica
+                  por que no se usa, y buscarlo en todo el archivo seria un
+                  falso positivo permanente.
+               b) 2-sys/icon.css tiene que declarar .md-icon. Garantiza que la
+                  libreria publique siempre un punto de entrada para iconos,
+                  aunque todavia no haya ningun componente que lo use.
 
 .PARAMETER Quiet
     No muestra el detalle de cada archivo que pasa. Solo el resumen.
@@ -825,6 +850,73 @@ else {
     }
 }
 
+# ============================================================================
+# REGLA 9 - El icono se pide con las clases del sistema
+# --------------------------------------------------------------------------
+# Dos comprobaciones, y las dos nacen de un mismo hecho: la fuente de iconos
+# entra en la libreria con @import, y con ella entran las tres clases de
+# utilidad que Google trae en esa hoja.
+#
+# a) Esas clases no se usan. La libreria declara su propia .md-icon en
+#    2-sys/icon.css, con el prefijo que usan las otras 167 utilidades.
+#
+#    Por que esto necesita una regla y no una convencion: el @import de
+#    1-ref/iconfont.css carga la hoja COMPLETA de Google, clase incluida. Es
+#    decir que la clase ajena esta disponible y ademas neutralizada por la
+#    capa, asi que usarla FUNCIONA y no delata nada. Lo unico que se pierde es
+#    que el componente deje de controlar su tamano de glifo, y eso se ve
+#    mirando el glifo, no el codigo. Ya se cometio el error una vez.
+#
+#    El fallo concreto que previene: .material-symbols-outlined declara
+#    font-size: 24px. .md-button-icon declara 20dp. Si el HTML lleva la clase
+#    de Google encima de la del componente, el glifo se dibuja a 24px dentro de
+#    una caja de 20x20 y el overflow del boton lo recorta. Silencioso.
+#
+# b) 2-sys/icon.css tiene que existir y declarar .md-icon. Sin ella, la
+#    libreria carga una fuente que no tiene forma de aplicar, y el fallo es
+#    un icono que no aparece. Se comprueba por propiedad y no por cantidad:
+#    basta con que el selector este.
+# ============================================================================
+
+# a) La clase de Google fuera del marcado
+
+foreach ($html in $htmlFiles) {
+    $raw = [IO.File]::ReadAllText($html.FullName)
+    $rel = Get-RelPath $html.FullName $ProjectRoot
+
+    # SOLO dentro de atributos class. El nombre material-symbols-outlined
+    # aparece en la prosa del showroom para explicar por que no se usa, y
+    # tambien en comentarios. Buscarlo en el archivo entero seria un falso
+    # positivo que nadie podria silenciar sin borrar la documentacion.
+    foreach ($m in [regex]::Matches($raw, 'class\s*=\s*"([^"]*)"')) {
+        foreach ($cls in ($m.Groups[1].Value -split '\s+')) {
+            if ($cls -and $cls -like 'material-symbols*') {
+                Add-Issue -Rule 'REGLA 9' -File $rel -Line 0 `
+                          -Message "la clase '$cls' es de Google, no del sistema: declararia su propio font-size y le ganaria al componente. Usar .md-icon de 2-sys/icon.css" `
+                          -Snippet $m.Value
+            }
+        }
+    }
+}
+
+# b) 2-sys/icon.css existe y publica .md-icon
+
+$iconCss = Join-Path $CssRoot '2-sys\icon.css'
+
+if (-not (Test-Path $iconCss)) {
+    Add-Issue -Rule 'REGLA 9' -File 'src/css/2-sys/icon.css' -Line 0 `
+              -Message 'no existe: sin el, 1-ref/iconfont.css carga una fuente que la libreria no tiene forma de aplicar' `
+              -Snippet ''
+}
+else {
+    $iconRaw = [IO.File]::ReadAllText($iconCss)
+    if (-not ($iconRaw -match '(?m)^\s*\.md-icon\s*\{')) {
+        Add-Issue -Rule 'REGLA 9' -File 'src/css/2-sys/icon.css' -Line 0 `
+                  -Message 'no declara .md-icon: la libreria debe publicar siempre un punto de entrada para iconos' `
+                  -Snippet ''
+    }
+}
+
 Write-Host '  Reglas aplicadas:' -ForegroundColor DarkGray
 Write-Host '    REGLA 1  sin valores crudos fuera de 1-ref'
 Write-Host '    REGLA 2  direccion de dependencias entre capas'
@@ -834,10 +926,11 @@ Write-Host '    REGLA 5  integridad de la estructura y @layer'
 Write-Host '    REGLA 6  sin estilos inline ni <style> en el showroom'
 Write-Host '    REGLA 7  sincronizacion de bloques de tema'
 Write-Host '    REGLA 8  formato, specimens y contraste de las tablas de tokens'
+Write-Host '    REGLA 9  los iconos se piden con .md-icon, no con la clase de Google'
 Write-Host ''
 
 if ($script:Issues.Count -eq 0) {
-    Write-Host '  OK - La arquitectura se respeta en las 8 reglas.' -ForegroundColor Green
+    Write-Host '  OK - La arquitectura se respeta en las 9 reglas.' -ForegroundColor Green
     Write-Host ''
     exit 0
 }

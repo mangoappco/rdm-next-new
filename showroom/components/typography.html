@@ -449,10 +449,10 @@
           <tr><th scope="col">Token, en <code>2-sys/icon.css</code></th><th scope="col">Valor</th><th scope="col">Que es</th></tr>
         </thead>
         <tbody>
-          <tr><td><code>--md-sys-typescale-icon-optical-size-small</code></td><td>20</td><td>Tamano optico pequeno.</td></tr>
-          <tr><td><code>--md-sys-typescale-icon-optical-size-medium</code></td><td>24</td><td>Tamano optico mediano.</td></tr>
-          <tr><td><code>--md-sys-typescale-icon-optical-size-large</code></td><td>40</td><td>Tamano optico grande.</td></tr>
-          <tr><td><code>--md-sys-typescale-icon-optical-size-xlarge</code></td><td>48</td><td>Tamano optico muy grande.</td></tr>
+          <tr><td><code>--md-sys-icon-optical-size-small</code></td><td>20</td><td>Tamano optico pequeno.</td></tr>
+          <tr><td><code>--md-sys-icon-optical-size-medium</code></td><td>24</td><td>Tamano optico mediano.</td></tr>
+          <tr><td><code>--md-sys-icon-optical-size-large</code></td><td>40</td><td>Tamano optico grande.</td></tr>
+          <tr><td><code>--md-sys-icon-optical-size-xlarge</code></td><td>48</td><td>Tamano optico muy grande.</td></tr>
         </tbody>
       </table>
       <p class="sr-na">Antes eran dos valores y ahora son cuatro. El eje <code>opsz</code> pertenece a la fuente de Material Symbols y <strong>no cambia el tamano del glifo</strong>: lo que cambia es el grosor del trazo, para que un glifo se lea con el mismo peso visual al tamano para el que fue dibujado.</p>
@@ -731,7 +731,7 @@
       <p class="sr-na">Solo dos. No hay <code>label-small-weight-prominent</code>: Google no lo publica.</p>
 
       <h3>Los de icono ya no estan aqui</h3>
-      <p class="sr-na"><code>2-sys/typography.css</code> ya no declara ningun token de icono. Los cuatro del eje de tamano optico se movieron a <code>2-sys/icon.css</code>, con el nombre <code>--md-sys-typescale-icon-optical-size-*</code>, y se documentan en la seccion <strong>Iconografia</strong> de esta misma pagina. Los 92 tokens que quedan aqui son todos de texto.</p>
+      <p class="sr-na"><code>2-sys/typography.css</code> ya no declara ningun token de icono. Los cuatro del eje de tamano optico se movieron a <code>2-sys/icon.css</code>, con el nombre <code>--md-sys-icon-optical-size-*</code>, y se documentan en la seccion <strong>Iconografia</strong> de esta misma pagina. Los 92 tokens que quedan aqui son todos de texto.</p>
 
       <h3>Los tokens de 1-ref que consume</h3>
       <p>Sin estos 54 tokens, los 92 de la capa 2 no resolverian nada. Se declaran en dos archivos distintos, y la division es deliberada: uno es <em>quien</em> escribe y con que peso, el otro es <em>que tamano</em>.</p>

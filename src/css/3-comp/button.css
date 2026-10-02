@@ -86,7 +86,7 @@
   --md-comp-button-padding-inline: var(--md-sys-measurement-button-padding-small);
   --md-comp-button-label-space: var(--md-sys-measurement-button-label-space);
   --md-comp-button-icon-size: var(--md-sys-measurement-button-icon-size);
-  --md-comp-button-icon-optical-size: var(--md-sys-typescale-icon-optical-size-small);
+  --md-comp-button-icon-optical-size: var(--md-sys-icon-optical-size-small);
   --md-comp-button-outline-width: var(--md-sys-shape-stroke-thin);
 
   /* Forma. Redondeado completo por defecto, como el filled de M3. */
@@ -131,6 +131,7 @@
      un token: depende de la altura del contenedor y del alto de una linea.
      Ver "POR QUE padding-block CON CALC" mas abajo. */
   --md-comp-button-single-line-height: var(--md-sys-typescale-label-large-line-height);
+
   /* Tipografia de la etiqueta. Las CUATRO propiedades discretas del typescale,
      mas el alto de linea que ya esta declarado arriba. Se separan en tokens
      para que cada tamano las reapunte, igual que las medidas. Ver
@@ -139,7 +140,6 @@
   --md-comp-button-label-weight: var(--md-sys-typescale-label-large-weight);
   --md-comp-button-label-size: var(--md-sys-typescale-label-large-size);
   --md-comp-button-label-tracking: var(--md-sys-typescale-label-large-tracking);
-
 
   box-sizing: border-box;
 
@@ -610,9 +610,16 @@
     Por eso GRAD viene de un token de TEMA y no de una primitiva fija: el
     valor lo elige el tema, igual que el color de un texto. Con GRAD en 0
     fijo, que es como estaba antes, el icono de este boton se veia con
-    demasiado cuerpo en tema oscuro. Es el mismo -25 que usaba
-    rdm-next-old, y no viene de la especificacion de M3: es un valor de
-    DISENO, elegido por comparacion visual. Ver 1-ref/typeface.css.
+    demasiado cuerpo en tema oscuro.
+
+    El -25 es el valor que PUBLICA M3: "-25 for a light icon on a dark
+    background". Este archivo antes decia lo contrario, que no venia de la
+    especificacion y era una decision de diseno local. Estaba equivocado.
+    Ver 1-ref/iconfont.css, que cita la especificacion.
+
+    'wght' y 'FILL' tambien salen de 2-sys/icon.css, y antes eran los
+    literales 400 y 0. REGLA 1 no los veia: solo busca #HEX, px, ms y rem, y
+    un 400 suelto se cuela. Pasar por un rol cierra ese punto ciego.
 
     El tamano del icono, en cambio, si coincide con M3: 20dp en xsmall y
     small, 24dp en medium.
@@ -631,10 +638,11 @@
 
   font-variation-settings:
     'opsz' var(--md-comp-button-icon-optical-size),
-    'wght' 400,
-    'FILL' 0,
+    'wght' var(--md-sys-icon-weight),
+    'FILL' var(--md-sys-icon-fill),
     'GRAD' var(--md-sys-typescale-icon-grade);
 }
+
 /* ---------------------------------------------------------------------------
    POR QUE PROPIEDADES DISCRETAS Y NO font
    ---------------------------------------------------------------------------
@@ -705,7 +713,6 @@
    mientras tanto. Se anota para que la decision sea consciente y no un
    olvido, y se resuelve si algun dia hace falta.
    ------------------------------------------------------------------------ */
-
 
 /* ---------------------------------------------------------------------------
    VARIANTES
@@ -905,7 +912,7 @@
   --md-comp-button-height: var(--md-sys-measurement-button-height-xsmall);
   --md-comp-button-padding-inline: var(--md-sys-measurement-button-padding-xsmall);
   --md-comp-button-icon-size: var(--md-sys-measurement-button-icon-size);
-  --md-comp-button-icon-optical-size: var(--md-sys-typescale-icon-optical-size-small);
+  --md-comp-button-icon-optical-size: var(--md-sys-icon-optical-size-small);
   --md-comp-button-single-line-height: var(--md-sys-typescale-label-large-line-height);
   --md-comp-button-label-font: var(--md-sys-typescale-label-large-font);
   --md-comp-button-label-weight: var(--md-sys-typescale-label-large-weight);
@@ -917,7 +924,7 @@
   --md-comp-button-height: var(--md-sys-measurement-button-height);
   --md-comp-button-padding-inline: var(--md-sys-measurement-button-padding-small);
   --md-comp-button-icon-size: var(--md-sys-measurement-button-icon-size);
-  --md-comp-button-icon-optical-size: var(--md-sys-typescale-icon-optical-size-small);
+  --md-comp-button-icon-optical-size: var(--md-sys-icon-optical-size-small);
   --md-comp-button-single-line-height: var(--md-sys-typescale-label-large-line-height);
   --md-comp-button-label-font: var(--md-sys-typescale-label-large-font);
   --md-comp-button-label-weight: var(--md-sys-typescale-label-large-weight);
@@ -929,7 +936,7 @@
   --md-comp-button-height: var(--md-sys-measurement-button-height-medium);
   --md-comp-button-padding-inline: var(--md-sys-measurement-button-padding-medium);
   --md-comp-button-icon-size: var(--md-sys-measurement-button-icon-size-medium);
-  --md-comp-button-icon-optical-size: var(--md-sys-typescale-icon-optical-size-medium);
+  --md-comp-button-icon-optical-size: var(--md-sys-icon-optical-size-medium);
   --md-comp-button-single-line-height: var(--md-sys-typescale-title-medium-line-height);
   --md-comp-button-label-font: var(--md-sys-typescale-title-medium-font);
   --md-comp-button-label-weight: var(--md-sys-typescale-title-medium-weight);

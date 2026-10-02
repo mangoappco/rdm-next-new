@@ -226,11 +226,12 @@
     --md-sys-color-surface-tint: var(--md-ref-palette-primary80);
     /* surface tint color — color base del tinte */
 
-    /* Grado del trazo de los iconos. -25 en oscuro, no 0: el glifo esta
-       dibujado para fondo claro, y sobre fondo oscuro el ojo lo lee mas
-       grueso de lo que es. Bajar el grado compensa esa percepcion.
-       Es el mismo valor que usaba rdm-next-old. Ver 1-ref/typeface.css. */
-    --md-sys-typescale-icon-grade: var(--md-ref-typeface-icon-grade-dark);
+    /* Grado del trazo de los iconos. -25 en oscuro, y es el valor que da
+       M3: "-25 for a light icon on a dark background". Compensa el
+       visual bleed: el glifo esta dibujado para fondo claro, y sobre
+       fondo oscuro el ojo lo lee mas grueso de lo que es.
+       Ver 1-ref/iconfont.css. */
+    --md-sys-typescale-icon-grade: var(--md-ref-icon-grade-dark);
 
     /* Declara que los controles nativos del navegador deben verse en oscuro.
        Afecta scrollbars, formularios del sistema y el fondo del canvas. */
@@ -371,11 +372,11 @@ html[data-theme="dark"] {
   --md-sys-color-surface-tint: var(--md-ref-palette-primary80);
   /* surface tint color — color base del tinte */
 
-  /* Grado del trazo de los iconos. -25 en oscuro, no 0: el glifo esta
-     dibujado para fondo claro, y sobre fondo oscuro el ojo lo lee mas
-     grueso de lo que es. Bajar el grado compensa esa percepcion.
-     Es el mismo valor que usaba rdm-next-old. Ver 1-ref/typeface.css. */
-  --md-sys-typescale-icon-grade: var(--md-ref-typeface-icon-grade-dark);
+  /* Grado del trazo de los iconos. -25 en oscuro, y es el valor que da
+     M3: "-25 for a light icon on a dark background". Compensa el visual
+     bleed: el glifo esta dibujado para fondo claro, y sobre fondo oscuro
+     el ojo lo lee mas grueso de lo que es. Ver 1-ref/iconfont.css. */
+  --md-sys-typescale-icon-grade: var(--md-ref-icon-grade-dark);
 
   /* Declara que los controles nativos del navegador deben verse en oscuro.
      Afecta scrollbars, formularios del sistema y el fondo del canvas. */

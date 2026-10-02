@@ -1136,7 +1136,7 @@ Declared in `src/css/main.css`, in this order. The order **is** the precedence t
 | `3-comp/` | componentes | `--md-sys-*` |
 | `utilities` | atajos de alto nivel | reserved, currently empty |
 
-## The 7 rules, enforced by `tools/verify-tokens.ps1`
+## The 9 rules, enforced by `tools/verify-tokens.ps1`
 
 Run it before committing, always:
 
@@ -1153,6 +1153,8 @@ powershell -ExecutionPolicy Bypass -File .\tools\verify-tokens.ps1
 | REGLA 5 | Folder structure and `@layer` declaration are intact |
 | REGLA 6 | No inline `style=` and no `<style>` block in any HTML |
 | REGLA 7 | The two blocks of each theme file stay synchronized |
+| REGLA 8 | Token tables in the showroom paint their value and meet contrast |
+| REGLA 9 | Icons are requested with `.md-icon`, never with Google's class |
 
 ## What a showroom may and may not do
 
@@ -1168,7 +1170,10 @@ powershell -ExecutionPolicy Bypass -File .\tools\verify-tokens.ps1
 - write raw values outside `1-ref/` (REGLA 1),
 - read `--md-ref-*` from `3-comp/` (REGLA 2),
 - invent a token name,
-- add an inline `style=` attribute or a `<style>` block to any HTML (REGLA 6).
+- add an inline `style=` attribute or a `<style>` block to any HTML (REGLA 6),
+- put `material-symbols-*` in a `class` attribute (REGLA 9). Google's sheet is
+  loaded whole by `1-ref/iconfont.css`, so that class is available and already
+  neutralised by the layer: using it *works* and hides the bug. Use `.md-icon`.
 
 If demonstrating a component requires a token that does not exist, **report the gap to the
 user** before creating it. A showroom that needs a token the system does not have has
@@ -1184,6 +1189,7 @@ found a real hole in the design system. That is the point of the showroom.
 | Utility class | property first: `md-<property>-<role>` | `md-bg-primary` |
 | Typography class | `md-type-<role>` | `md-type-body-medium` |
 | Component class | `md-<component>` | `md-divider` |
+| Icon class | `md-icon` | `md-icon-rounded` |
 | Modifier | ONE hyphen | `md-state-layer-hover` |
 
 Two conventions that are easy to break:
@@ -1265,7 +1271,7 @@ This project has its own verifier. It is not optional, and it is not covered by 
 powershell -ExecutionPolicy Bypass -File .\tools\verify-tokens.ps1
 ```
 
-It must print `OK - La arquitectura se respeta en las 7 reglas` and exit 0. This is what
+It must print `OK - La arquitectura se respeta en las 9 reglas` and exit 0. This is what
 proves REGLA 6 in particular: that no `style=` attribute and no `<style>` block crept into
 the new HTML.
 

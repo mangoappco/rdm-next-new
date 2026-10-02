@@ -245,19 +245,70 @@
   /* ==========================================================================
      MEDIDAS DE ICONOS
      --------------------------------------------------------------------------
-     Un icono se dibuja a 24dp, que es el estandar de M3 para glifos. Pero
-     un icono NUNCA debe medir 24dp de zona pulsable: necesita los 48dp del
-     area tactil. Por eso son dos medidas distintas.
-     ====================================================================== */
+     M3 publica CUATRO tamanos de icono, ni uno mas: 20, 24, 40 y 48 dp.
+     Verificado en la pagina de diseno de iconos de m3.material.io, que dice:
 
-  /* Tamano del glifo del icono. */
+         "Supported icon sizes: 20dp, 24dp, 40dp, and 48dp"
+
+     Y da un motivo para cada uno:
+
+       24dp   el estandar. Cuadricula de 24dp, live area de 20dp con 2dp de
+              aire alrededor, area tactil de 48dp.
+       20dp   escritorio, layouts densos, glifos pequenos. Es el mismo valor
+              que pide el boton xsmall y small.
+       40dp   acciones primarias que hay que destacar, y texto de display o
+              de titular.
+       48dp   lo mismo, para pantallas grandes.
+
+     ANTES HABIA UN 16dp Y SE QUITO
+     -------------------------------
+     Existia --md-sys-measurement-icon-size-small en 16dp
+     (--md-ref-spacing-200), con el comentario "icono pequeno, para chips y
+     badges". 16dp no es un tamano de icono de M3: la escala publicada no lo
+     incluye.
+
+     Y cae justo en la zona que la propia especificacion marca como
+     delicada: por debajo de 20dp, un icono necesita etiqueta de texto al
+     lado para que su significado quede claro.
+
+     Se paso a 20dp, que es el tamano denso que M3 si define, y ademas el
+     mismo que el sistema ya usaba de hecho para los botones pequenos.
+
+     ========================================================================== */
+
+  /* Tamano del glifo del icono. 24dp, el estandar de M3. */
   --md-sys-measurement-icon-size: var(--md-ref-spacing-300);
+
+  /* Icono pequeno: 20dp, el tamano que M3 reserva para escritorio y layouts
+     densos. Es el mismo que usan los botones xsmall y small. */
+  --md-sys-measurement-icon-size-small: var(--md-ref-spacing-250);
+
+  /* Icono grande: 40dp, para acciones primarias destacadas. */
+  --md-sys-measurement-icon-size-large: var(--md-ref-spacing-500);
+
+  /* Icono muy grande: 48dp, para texto de display o de titular y para
+     pantallas grandes. */
+  --md-sys-measurement-icon-size-xlarge: var(--md-ref-spacing-600);
 
   /* Contenedor cuadrado del icono, para el que se aplica el area tactil. */
   --md-sys-measurement-icon-container: var(--md-ref-spacing-600);
 
-  /* Icono pequeno, para chips y badges. */
-  --md-sys-measurement-icon-size-small: var(--md-ref-spacing-200);
+  /* Area tactil de un glifo de 24dp: 48dp. Es el par que da M3, y el que ya
+     aplicaba .md-measure-icon.
+
+     M3 empareja el area con el glifo, no con el componente: un simbolo de
+     24dp tiene un objetivo de 48dp, y uno de 20dp puede usar 40dp. La
+     justificacion del par corto la da la misma pagina: cuando el mouse y el
+     teclado son los metodos de entrada principales, las medidas pueden
+     condensarse para permitir layouts mas densos.
+
+     Por eso 48dp no es un area tactil unica, sino el area del glifo de 24dp.
+     El del glifo de 20dp esta mas abajo. */
+  --md-sys-measurement-icon-target: var(--md-ref-spacing-600);
+
+  /* Area tactil de un glifo de 20dp: 40dp. La utilidad que la aplica es
+     .md-measure-icon-target-small, en 2-sys/icon.css. */
+  --md-sys-measurement-icon-target-small: var(--md-ref-spacing-500);
 
   /* Icono del boton, para los tamanos xsmall y small. 20dp, lo que pide M3
      en _md-comp-button-xsmall.scss y _md-comp-button-small.scss.
@@ -268,8 +319,13 @@
      donde la fuente de iconos no estaba resuelta, asi que se midieron las
      LETRAS del nombre del glifo y no el glifo. La referencia visual que si
      funciona, rdm-next-old, usa 20px. Ver la nota de GRAD en
-     2-sys/typography.css, que si es una correccion real. */
-  --md-sys-measurement-button-icon-size: var(--md-ref-spacing-250);
+     1-ref/iconfont.css, que si es una correccion real.
+
+     Se apoya en el rol generico de 20dp en vez de fijar un segundo numero:
+     el glifo del boton pequeno y el icono pequeno del sistema son el mismo
+     tamano, y si M3 los separara habria dos sitios que editar en lugar de
+     uno. */
+  --md-sys-measurement-button-icon-size: var(--md-sys-measurement-icon-size-small);
 
   /* Icono del boton en el tamano medium. 24px, lo que pide
      _md-comp-button-medium.scss. Es el mismo valor que el icono generico del
@@ -316,10 +372,10 @@
   min-height: var(--md-sys-measurement-touch-target);
 }
 
-/* Icono con su area tactil: glifo de 24dp, area de 48dp. */
+/* Icono con su area tactil: glifo de 24dp, area de 48dp. El par que da M3. */
 .md-measure-icon {
   width: var(--md-sys-measurement-icon-size);
   height: var(--md-sys-measurement-icon-size);
-  min-width: var(--md-sys-measurement-touch-target);
-  min-height: var(--md-sys-measurement-touch-target);
+  min-width: var(--md-sys-measurement-icon-target);
+  min-height: var(--md-sys-measurement-icon-target);
 }

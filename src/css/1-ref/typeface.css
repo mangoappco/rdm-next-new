@@ -219,60 +219,41 @@
   --md-ref-typeface-font-variation-settings: "slnt" 0, "wdth" 100, "GRAD" 0, "ROND" 0;
 
   /* ------------------------------------------------------------------------
-     TAMANO OPTICO DE LOS ICONOS
+     LO QUE ESTE ARCHIVO YA NO DECLARA
      --------------------------------------------------------------------------
-     La fuente de los iconos, Material Symbols, es una fuente VARIABLE con
-     cuatro ejes: weight, fill, optical size y grade. Google Sans Flex, que
-     dibuja el texto, tiene los suyos y NO incluye opsz.
+     Los dos bloques que estaban aqui se movieron a 1-ref/iconfont.css, que es
+     donde corresponde:
 
-     El eje opsz no cambia el tamano del glifo: cambia para QUE tamano fue
-     dibujado. Un mismo glifo dibujado para 20px tiene un trazo mas fino que
-     el mismo glifo dibujado para 48px, para que ambos se lean con el mismo
-     peso visual.
+       --md-ref-typeface-optical-size-small / -medium
+       --md-ref-typeface-icon-grade-light / -dark
 
-     Por que el numero va aqui y no en 3-comp: son numeros crudos, y la capa
-     de valores crudos no es la del componente. Es el mismo motivo por el que
-     --md-ref-typeface-weight-bold es 700 y no un 700 escrito en cada
-     typescale.
+     Son las primitivas de los EJES de Material Symbols, la fuente de los
+     iconos. Este archivo declara la fuente con la que se dibuja el TEXTO, y
+     el texto no usa ejes de icono.
 
-     Son SIN UNIDAD, porque un eje de fuente es un numero, no una medida. Se
-     distinguen de los pesos, que tambien son sin unidad, en que estos no se
-     escriben en el font sino en font-variation-settings.
+     EL MOTIVO CONCRETO DEL TRASLADO: los nombres eran ambiguos
+     --------------------------------------------------
+     --md-ref-typeface-optical-size-small podia leerse como el eje opsz de
+     Google Sans Flex, que tambien lo tiene. Este mismo archivo lo menciona:
+     es la razon de que declare font-optical-sizing: auto. Con los dos ejes
+     en el mismo archivo y el mismo prefijo, un nombre asi no dice de que
+     fuente esta hablando.
 
-     El rango que declara la fuente va de 20 a 48, asi que 20 es el valor
-     pequeno disponible.
-     --------------------------------------------------------------------- */
-  --md-ref-typeface-optical-size-small: 20;
-  --md-ref-typeface-optical-size-medium: 24;
+     En iconfont.css se llaman --md-ref-icon-optical-size-small y no puede
+     confundirse.
 
-  /* ------------------------------------------------------------------------
-     GRADO DE LOS ICONOS
-     --------------------------------------------------------------------------
-     GRAD cambia el grosor del trazo sin cambiar el ancho ni el alto del
-     glifo, y a diferencia de opsz SI se ve.
+     ADEMAS SE CORRIGIO EL GRAD
+     --------------------------
+     El -25 del tema oscuro NO es un valor de diseno local. M3 lo publica, con
+     estas palabras en la pagina de aplicar iconos:
 
-     Material Symbols dibuja sus iconos con un trazo pensado para fondo
-     claro. Puesto sobre fondo oscuro, un trazo claro produce el efecto que
-     la guia de iconos llama visual bleed: el glifo parece mas grueso y mas
-     pesado de lo que es, porque el ojo lo compensa contra el fondo.
+         "To match the apparent icon size, the default grade for a dark icon
+          on a light background is 0, and -25 for a light icon on a dark
+          background."
 
-     Por eso el valor baja a -25 en tema oscuro. No es una preferencia
-     estetica: compensa un defecto de percepcion medido por el ojo sobre
-     fondo oscuro.
-
-     OJO CON EL RANGO
-     ----------------
-     El rango del eje segun la fuente es de -50 a 200. El -25 es el valor
-     que declaraba rdm-next-old y con el que esa base se ve bien. No viene
-     de la especificacion de M3, que no da un numero para este caso: es un
-     valor de DISENO, elegido por comparacion visual contra la version
-     anterior de este mismo sistema.
-
-     Por eso vive aqui como primitiva y no se escribe crudo en el
-     componente, igual que cualquier otro numero: para que quede un solo
-     sitio donde cambiarlo, y para que se vea que es una decision y no un
-     descuido.
-     --------------------------------------------------------------------- */
-  --md-ref-typeface-icon-grade-light: 0;
-  --md-ref-typeface-icon-grade-dark: -25;
+     El texto que estaba aqui afirmaba lo contrario, y estaba equivocado. Ver
+     el bloque del GRAD en 1-ref/iconfont.css, que cita la especificacion y
+     explica tambien la diferencia que si existe: M3 formula la regla por
+     contraste del par icono/fondo, y este sistema por tema.
+     ========================================================================== */
 }

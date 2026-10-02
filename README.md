@@ -66,6 +66,7 @@ distancia en la hoja de estilos.
 | Color de borde           | `--md-sys-color-*`         | `.md-border-*`      |
 | Esquinas                 | `--md-sys-corner-*`        | `.md-shape-*`       |
 | Medidas                  | `--md-sys-measurement-*`   | `.md-measure-*`     |
+| Iconos                   | `--md-sys-icon-*`          | `.md-icon`          |
 
 **La única excepción de esta regla** es tipografía, donde el nombre oficial es
 `typescale` y la forma corta es `type`. El motivo es que en HTML
@@ -269,6 +270,7 @@ Verificado contra los archivos publicados por Google. Nombres exactos:
 | ------------------------ | ---------------- | ------------------------------------------- |
 | `--md-ref-palette-*`     | `1-ref/palette.css` | 91 tonos (v0.192)                      |
 | `--md-ref-typeface-*`    | `1-ref/typeface.css`| 7 tokens: 5 de Google (plain, brand, 3 pesos) + 2 propios (`font-optical-sizing`, `font-variation-settings`) |
+| `--md-icon-font`    | `1-ref/iconfont.css` | 1 token de Google: la familia. Las otras dos familias son extensión propia |
 | `--md-ref-typescale-*`   | `1-ref/typescale.css` | 45 medidas (15 estilos × size/line-height/tracking) |
 | `--md-ref-stroke-*`      | `1-ref/stroke.css` | 3 grosores — **extensión propia**       |
 | `--md-ref-corner-*`      | `1-ref/corner.css` | 10 radios de esquina                     |
@@ -665,8 +667,8 @@ powershell -ExecutionPolicy Bypass -File .\tools\verify-tokens.ps1
 > para esta invocación, sin cambiar la configuración del sistema. También
 > funciona con `-File` si ejecutás desde el editor.
 
-El script escanea las 19 hojas del sistema, indexa los **443 tokens** definidos y
-aplica 5 reglas:
+El script escanea las 24 hojas del sistema, indexa los **507 tokens** definidos y
+aplica 9 reglas:
 
 | Regla | Qué detecta                                                                 | Alcance            |
 | ----- | --------------------------------------------------------------------------- | ------------------ |
@@ -675,6 +677,10 @@ aplica 5 reglas:
 | **3** | Tokens referenciados que **no existen**                                     | todo el proyecto   |
 | **4** | `theme.light.css` importado **antes** que `theme.dark.css`                  | `main.css`          |
 | **5** | Integridad: carpetas, `@layer` declarado antes de importar, imports válidos | proyecto           |
+| **6** | Estilos en línea (`style=`) o bloques `<style>` en el HTML                  | todo el HTML       |
+| **7** | Los dos bloques de cada tema declaran los mismos tokens                     | `2-sys/theme/`     |
+| **8** | Las tablas de tokens del showroom pintan su valor y dan contraste           | `showroom/`        |
+| **9** | Los iconos se piden con `.md-icon`, no con la clase de Google                | HTML + `2-sys/`    |
 
 **La Regla 3 es la más importante.** Un `var(--md-token-inexistente)` no da error:
 el navegador descarta la regla **en silencio** y el componente se ve roto sin
@@ -683,6 +689,14 @@ explicación. Es el fallo más difícil de detectar revisando CSS a ojo.
 **La Regla 4 es la más sutil.** El orden de los dos temas es el único punto del
 proyecto donde el orden de escritura cambia el comportamiento: invertido, el
 sistema arranca en oscuro para todo el mundo, y nada en el CSS lo delata.
+
+**La Regla 9 previene un fallo que ya ocurrió.** La fuente de iconos se carga con
+`@import`, y con ella entran las clases de utilidad que trae la hoja de Google. Es
+decir que la clase ajena está disponible y además neutralizada por la capa: usarla
+*funciona* y no delata nada. Lo único que se pierde es que el componente deje de
+controlar el tamaño de su glifo, y eso se ve mirando el icono, no el código. La
+regla lo comprueba en los atributos `class` del HTML, y no en el archivo entero,
+porque el nombre aparece legitimamente en la prosa del showroom.
 
 El script devuelve código de salida `0` si todo cumple y `1` si hay fallos, así que
 se puede encadenar en un hook de `pre-commit` o en CI.
@@ -718,6 +732,7 @@ rdm-next-new/
 │       ├── 1-ref/             Valores crudos (única capa que los permite)
 │       │   ├── palette.css    --md-ref-palette-*
 │       │   ├── typeface.css   --md-ref-typeface-*
+│       │   ├── iconfont.css   --md-ref-icon-* (+ carga la fuente)
 │       │   ├── corner.css     --md-ref-corner-*
 │       │   ├── opacity.css    --md-ref-opacity-*
 │       │   ├── easing.css     --md-ref-easing-*
@@ -729,6 +744,7 @@ rdm-next-new/
 │       ├── 2-sys/             Tokens semánticos (solo var())
 │       │   ├── colors.css     --md-sys-color-*
 │       │   ├── typography.css --md-sys-typescale-*
+│       │   ├── icon.css       --md-sys-icon-* + .md-icon
 │       │   ├── measurement.css--md-sys-measurement-*
 │       │   ├── motion.css     --md-sys-motion-*
 │       │   ├── shape.css      --md-sys-shape-*
@@ -899,14 +915,193 @@ secciones. Estructura confirmada con el usuario según la skill `rdm-component-s
 
 ---
 
-## 12. Fuentes oficiales
+## 12. Iconos
+
+La fuente de los iconos es parte de la librería, no un asset del showroom. Vive en
+`1-ref/iconfont.css` y `main.css` la importa en la capa `ref`.
+
+### Qué publica M3
+
+Material Web publica **dos** tokens de icono, en `tokens/_md-comp-icon.scss`:
+
+| Token             | Valor                        |
+| ----------------- | ---------------------------- |
+| `--md-icon-font`  | `'Material Symbols Outlined'` |
+| `--md-icon-size`  | `24px`                       |
+
+Ni un eje, ni un relleno, ni un área táctil, ni una clase. Los equivalentes aquí son
+`--md-sys-icon-font` y `--md-sys-measurement-icon-size`. El segundo **no** está en
+`2-sys/icon.css`: es una medida, así que comparte capa con las del botón y vive en
+`2-sys/measurement.css`.
+
+**Extensión propia** (no publicada por nadie como token): los ejes, el relleno, el
+desplazamiento de línea base y las familias `rounded` y `sharp`. Están documentados
+como tale en la cabecera de `1-ref/iconfont.css`.
+
+### Los tres estilos y cuándo se usa cada uno
+
+M3 declara tres estilos, y también dice cuál usar:
+
+| Clase              | Estilo    | Cuándo                                                  |
+| ------------------ | --------- | ------------------------------------------------------- |
+| `.md-icon`         | outlined  | UI densa. Esquinas exteriores de 2dp, interiores cuadradas |
+| `.md-icon-rounded` | rounded   | Marca pesada: tipografía fuerte, logos curvos, elementos circulares |
+| `.md-icon-sharp`   | sharp     | Marcas rectangulares, y para que el glifo siga legible a escala pequeña |
+
+`.md-icon` es **Outlined** porque es el valor del token oficial `--md-icon-font`.
+
+### Los cuatro ejes
+
+| Eje     | Rango     | Rol                | Qué hace                                        |
+| ------- | --------- | ------------------ | ----------------------------------------------- |
+| `wght`  | 100 – 700 | `--md-sys-icon-weight` | Grosor del trazo. El sistema usa 400         |
+| `FILL`  | 0 – 1     | `--md-sys-icon-fill`   | De delineado a macizo. `.md-icon-filled` lo pone en 1 |
+| `opsz`  | 20 – 48   | `--md-sys-icon-optical-size-*` | Grosor del trazo según el tamaño del glifo |
+| `GRAD`  | -50 – 200 | `--md-sys-typescale-icon-grade` | Compensa el contraste con el fondo. **Lo elige el tema** |
+
+### Los cuatro tamaños
+
+M3 publica exactamente cuatro, ni uno más: **20, 24, 40 y 48 dp**.
+
+| Rol                                        | dp | Cuándo                                          |
+| ------------------------------------------ | -- | ----------------------------------------------- |
+| `--md-sys-measurement-icon-size-small`    | 20 | Escritorio, layouts densos, botones pequeños    |
+| `--md-sys-measurement-icon-size`           | 24 | El estándar                                      |
+| `--md-sys-measurement-icon-size-large`     | 40 | Acciones primarias destacadas                    |
+| `--md-sys-measurement-icon-size-xlarge`    | 48 | Texto de display o titular, pantallas grandes   |
+
+**Antes había un 16dp y se quitó.** `--md-sys-measurement-icon-size-small` valía
+`16px` con el comentario *«icono pequeño, para chips y badges»*. 16dp no está en la
+escala de M3, y cae justo en la zona que la propia especificación marca como
+delicada: por debajo de 20dp un icono necesita etiqueta de texto al lado. Pasó a
+20dp, que es el tamaño denso que M3 sí define y que el sistema ya usaba de hecho
+para los botones pequeños.
+
+### El área táctil va emparejada con el glifo
+
+| Glifo | Objetivo | Rol                                       | Clase                            |
+| ----- | -------- | ----------------------------------------- | -------------------------------- |
+| 24dp  | 48dp     | `--md-sys-measurement-icon-target`        | `.md-measure-icon`               |
+| 20dp  | 40dp     | `--md-sys-measurement-icon-target-small`  | `.md-measure-icon-target-small`   |
+
+M3 justifica el par corto con una condición concreta: cuando el mouse y el teclado
+son los métodos de entrada principales, las medidas pueden condensarse para permitir
+layouts más densos.
+
+### Por qué la fuente se carga con `@import` y Google Sans Flex con `<link>`
+
+Es la única asimetría del orquestador, y no es una inconsistencia.
+
+Google Sans Flex, en `1-ref/typeface.css`, se carga con `<link>`: su hoja solo trae
+`@font-face`, ninguna regla que compita con las capas, y `<link>` evita el coste del
+`@import`.
+
+Material Symbols **no puede** ir con `<link>`. Su hoja trae además tres clases de
+utilidad —`.material-symbols-outlined`, `-rounded` y `-sharp`— que declaran su propio
+`font-size: 24px`. Con un `<link>` esas reglas llegan **sin capa**, y en CSS una regla
+sin capa gana a cualquier regla con capa sin importar la especificidad.
+
+Medido en el navegador: `.md-button-icon` declaraba 20dp y computaba bien, pero la
+regla de Google le ganaba y el glifo se dibujaba a 24px. La caja seguía midiendo
+20×20 y la tinta del glifo llegaba a medir 24×28, recortada por el `overflow` del
+botón. Afectaba a los seis iconos de la vista del botón.
+
+Un `<link>` no admite `layer()`. La única forma de meter una hoja externa en una capa
+es `@import`, y para que el navegador la descubra tiene que ir en un archivo CSS.
+
+**La capa anidada `ref.reset`.** `iconfont.css` entra en `ref`, y su `@import`
+declara `layer(reset)`. La combinación produce una capa anidada que ordena antes de
+las reglas de `ref`:
+
+```
+ref.reset  <  ref  <  sys  <  comp  <  utilities
+```
+
+La opinión de Google pierde contra las primitivas propias. Verificado: los iconos del
+botón computan `20px` con `opsz 20`, y el del botón medium `24px` con `opsz 24`.
+
+### `display=block`, y por qué no `swap`
+
+Un icono de Material Symbols es un texto: el HTML lleva el **nombre** del glifo,
+`add`, `download`. Con `display=swap`, durante la descarga se pinta ese texto con la
+fuente de respaldo y el usuario ve un instante la palabra *download* donde debería
+haber un icono. `block` no dibuja nada hasta que la fuente llega.
+
+### Las clases de Google no se usan
+
+El sistema declara su propia `.md-icon` en `2-sys/icon.css`. La hoja de Google **sí**
+se carga entera —su `@import` no puede filtrar una clase— así que la clase ajena está
+disponible y además neutralizada por la capa: usarla *funciona* y no delata nada.
+Lo único que se pierde es que el componente deje de controlar el tamaño de su glifo,
+y eso se ve mirando el icono, no el código.
+
+Por eso existe la **REGLA 9** del verificador: comprueba los atributos `class` del
+HTML, y no el archivo entero, porque el nombre aparece legitimamente en la prosa del
+showroom.
+
+### Coste de declarar tres familias
+
+Ninguno, mientras no se usen. Los navegadores descargan una fuente solo cuando un
+elemento pintado la usa. Verificado: `divider.html`, que no tiene ni un icono, pide
+**cero** fuentes de icono.
+
+### Dos correcciones que hizo esta implementación
+
+**El `-25` del grado sí es oficial.** El valor estaba bien, pero la justificación que
+lo acompañaba en `1-ref/typeface.css` era falsa: decía que *«no viene de la
+especificación de M3, que no da un número para este caso»*. M3 sí lo da:
+
+> To match the apparent icon size, the default grade for a dark icon on a light
+> background is 0, and **-25 for a light icon on a dark background**.
+
+Lo que se había elegido por comparación visual era el *nombre* del token, copiado de
+`rdm-next-old` sin revisar la fuente.
+
+**El desplazamiento de línea base es `0.115em`, no `11.5%`.** La primera versión
+aplicaba `top: 11.5%`, que es la lectura literal de la especificación, y funcionaba
+mal: un porcentaje en `top` se resuelve contra la **altura del bloque contenedor**, no
+contra el tamaño de fuente. Medido con el icono en un contenedor de 30px, daba
+`top: 3.4375px` — el 11.5% de la línea del padre, sin relación con el texto. Con
+`0.115em` un glifo de 24px da `2.76px`, y escala con el glifo.
+
+### Accesibilidad
+
+M3 da tres reglas. No hay ninguna clase que las imponga, porque no son reglas de CSS:
+son obligaciones de quien escribe el HTML.
+
+1. Icono decorativo junto a una etiqueta → el icono lleva `aria-hidden="true"`.
+2. Icono solo → el control lleva `aria-label` y el icono `aria-hidden`.
+3. Por debajo de 20dp → etiqueta de texto al lado, salvo iconos complejos o con una
+   acción clave. Los iconos de navegación **siempre** llevan etiqueta.
+
+### El color
+
+No hay token de color de icono. M3 dice que un icono toma `currentColor`: el glifo se
+dibuja con el color del texto que lo contiene. Es la misma regla que aplica
+`2-sys/state.css` a la capa de estado, y por eso un icono cambia de color solo con que
+su contenedor cambie el suyo.
+
+### Showroom
+
+**No hay vista de iconos.** Es una decisión conscious: este cambio es de la librería.
+La vistawould entrar por el flujo de la skill `rdm-component-showroom`, con las 22
+secciones confirmadas una por una antes de escribir una línea.
+
+---
+
+## 13. Fuentes oficiales
 
 - Tokens: `https://m3.material.io/foundations/design-tokens`
 - Spacing: `https://m3.material.io/styles/spacing/tokens`
 - Escala tipográfica: `https://m3.material.io/styles/typography/type-scale-tokens`
+- Iconos: `https://m3.material.io/styles/icons/overview`,
+  `https://m3.material.io/styles/icons/designing-icons`,
+  `https://m3.material.io/styles/icons/applying-icons`
 - Material Web (referencia de implementación): `https://material-web.dev`
 - Clases `.md-typescale-*` de Google: `material-components/material-web` → `typography/_typescale.scss`
   (el mixin `typescale.styles()` las genera; es la fuente de la columna "oficial" de la
   tabla de prefijos de arriba)
 - Tokens de sistema v0.192: `_md-sys-color.scss`, `_md-sys-typescale.scss`, `_md-sys-motion.scss`,
   `_md-sys-state.scss`, `_md-sys-shape.scss` en `tokens/versions/v0_192/` del mismo repositorio
+- Iconos de M3: `_md-comp-icon.scss` en `tokens/` del mismo repositorio. Publica dos
+  tokens: `--md-icon-font` y `--md-icon-size`

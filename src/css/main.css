@@ -9,7 +9,7 @@
 
        <link rel="stylesheet" href="src/css/main.css">
 
-   A partir de aqui se cargan las 21 hojas del sistema en el orden correcto.
+   A partir de aqui se cargan las 24 hojas del sistema en el orden correcto.
 
    NO se importan los archivos individuales. Si ManGo! App importa button.css
    sin main.css, las variables que ese archivo usa no existen y el componente
@@ -111,7 +111,7 @@
    mas valor que las milisegundos.
 
    PARA UN SITIO EN PRODUCCION: usar una herramienta de build (postcss-import,
-   lightningcss, sass) que aplane los 19 archivos en un solo bundle. El
+   lightningcss, sass) que aplane los 24 archivos en un solo bundle. El
    resultado es identico en bytes, pero en UNA peticion de red.
 
    La UNICA excepcion a esta regla, y si es una excepcion importante, es la
@@ -160,9 +160,17 @@
    El orden dentro de la capa es alfabetico y NO tiene importancia funcional:
    ninguna de estas hojas depende de otra. Se mantiene alfabetico para que sea
    facil encontrar un archivo.
+
+   LA EXCEPCION: iconfont.css
+   ---------------------------
+   iconfont.css no es una hoja de tokens: es la de una fuente. Se importa
+   igualmente en `ref`, porque lo que declara ES una primitiva --las familias
+   de Material Symbols y los cuatro ejes--, pero trae consigo un `@import`
+   propio que la mete en la capa `reset`. Ver el bloque de abajo.
    ========================================================================== */
 @import url("1-ref/corner.css")    layer(ref);
 @import url("1-ref/easing.css")    layer(ref);
+@import url("1-ref/iconfont.css")  layer(ref);
 @import url("1-ref/opacity.css")   layer(ref);
 @import url("1-ref/palette.css")   layer(ref);
 @import url("1-ref/shadow.css")    layer(ref);
@@ -171,6 +179,50 @@
 @import url("1-ref/time.css")      layer(ref);
 @import url("1-ref/typeface.css")  layer(ref);
 @import url("1-ref/typescale.css") layer(ref);
+
+/* --------------------------------------------------------------------------
+   POR QUE LA FUENTE DE ICONOS SE CARGA CON @import Y LA DE TEXTO NO
+   --------------------------------------------------------------------------
+   Es la unica asimetria del orquestador, y hay que entenderla porque parece
+   una contradiccion.
+
+   Google Sans Flex, en 1-ref/typeface.css, se carga con `<link>` en cada
+   vista. Su hoja en Google Fonts solo trae `@font-face`: ninguna regla que
+   compita con las capas, asi que un `<link>` no tiene nada que romper. Y
+   `<link>` evita el coste del `@import`, que retrasa el descubrimiento de los
+   recursos posteriores.
+
+   Material Symbols no puede ir con `<link>`. Su hoja trae ADEMAS tres clases
+   de utilidad --.material-symbols-outlined, -rounded y -sharp-- que declaran
+   su propio `font-size: 24px`. Con un `<link>` esas reglas llegan SIN CAPA, y
+   en CSS una regla sin capa gana a cualquier regla con capa sin importar la
+   especificidad. El orden de este archivo solo decide entre reglas que estan
+   dentro de alguna capa, asi que no protege de eso.
+
+   Medido en el navegador: `.md-button-icon` declaraba 20px en el boton
+   pequeno y computaba bien, pero la regla de Google le ganaba y el glifo se
+   dibujaba a 24px. La caja seguia midiendo 20x20 y la tinta del glifo media
+   24x28, recortada por el overflow del boton.
+
+   Un `<link>` no admite `layer()`. La unica forma de meter una hoja externa
+   en una capa es `@import ... layer(...)`, y para que el navegador la
+   descubra tiene que ir en un archivo CSS. Por eso vive en 1-ref/ y no en el
+   `<head>` de cada vista.
+
+   LA CAPA ANIDADA ref.reset
+   --------------------------
+   iconfont.css entra en `ref`, y su `@import` declara `layer(reset)`. La
+   combinacion produce una capa anidada `ref.reset`, que ordena antes de las
+   reglas que pertenecen directamente a `ref`, y antes que `sys` y `comp`:
+
+       ref.reset  <  ref  <  sys  <  comp  <  utilities
+
+   Es decir: la opinion de Google pierde contra las primitivas propias. No
+   rompe el verificador: REGLA 5 solo exige que este archivo declare el
+   orden de las cinco capas del sistema, y esto no altera esa declaracion.
+
+   Mismo argumento, desarrollado, en la cabecera de 1-ref/iconfont.css.
+   -------------------------------------------------------------------------- */
 
 /* ==========================================================================
    CAPA 2 — SISTEMA (tokens semanticos)
@@ -229,6 +281,7 @@
 @import url("2-sys/theme/theme.light.css") layer(sys);
 @import url("2-sys/colors.css")            layer(sys);
 @import url("2-sys/elevation.css")         layer(sys);
+@import url("2-sys/icon.css")              layer(sys);
 @import url("2-sys/measurement.css")        layer(sys);
 @import url("2-sys/motion.css")            layer(sys);
 @import url("2-sys/shape.css")             layer(sys);
@@ -295,7 +348,7 @@
 /* ==========================================================================
    FIN DEL ORQUESTADOR
    ==========================================================================
-   21 archivos importados. El sistema de tokens esta completo y ya tiene su
+   24 archivos importados. El sistema de tokens esta completo y ya tiene su
    primer componente.
 
    Para empezar a construir componentes, el siguiente paso es 3-comp/, que se

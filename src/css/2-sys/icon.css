@@ -1,0 +1,412 @@
+/* ==========================================================================
+   2-sys/icon.css - ROLES DE ICONO Y UTILIDADES
+   ==========================================================================
+
+   QUE ES ESTE ARCHIVO
+   -------------------
+   CAPA 2 del sistema. Aqui viven los ROLES del icono: que fuente se aplica,
+   con que peso, con que relleno, con que desplazamiento de linea base.
+
+   Y las utilidades que permiten que el HTML pida todo eso con una clase.
+
+   RELACION CON LAS OTRAS CAPAS
+   -----------------------------
+       1-ref/iconfont.css   <-- las tres familias y los cuatro ejes
+       |
+       v
+       2-sys/icon.css       <-- este archivo
+       |
+       v
+       3-comp/button.css    <-- el componente pide el rol
+
+   Que viva aqui y no en 3-comp es lo mismo que impide que un componente
+   escriba numeros. El "400" del peso es un valor crudo y vive en 1-ref; este
+   archivo solo decide que el sistema usa el regular.
+
+   ==========================================================================
+   QUE PUBLICA M3 Y QUE PUBLICAMOS NOSOTROS
+   ==========================================================================
+
+   OICIAL DE M3
+   -------------
+   Material Web publica exactamente DOS tokens de icono, y estan en
+   tokens/_md-comp-icon.scss:
+
+       --md-icon-font    'Material Symbols Outlined'
+       --md-icon-size    24px
+
+   Dos. Ni un eje, ni un relleno, ni un area tactil, ni una clase. Verificado
+   contra la fuente primaria.
+
+   Los nombres equivalents de RDM Next son:
+
+       --md-sys-icon-font      -> --md-ref-icon-font-outlined
+       --md-sys-measurement-icon-size -> 2-sys/measurement.css
+
+   Y el segundo NO es de este archivo. Esta es una separacion que conviene
+   tener clara: el tamano del icono es una MEDIDA del sistema, asi que
+   comparte capa con las medidas del boton y del divisor, y vive en
+   2-sys/measurement.css. Aqui viven las propiedades de la FUENTE.
+
+   DECISION PROPIA
+   ---------------
+   Los ejes, el relleno, el desplazamiento de linea base y las familias
+   redondeada y sharp no los publica nadie como token. Son construccion
+   nuestra sobre la especificacion de M3, y por eso el README los lista
+   como extension propia, junto a --md-ref-stroke-* y --md-sys-measurement-*.
+
+   ==========================================================================
+   LAS TRES FAMILIAS Y COMO SE ELIGE UNA
+   ==========================================================================
+
+   .md-icon es Outlined, que es el valor del token oficial --md-icon-font de
+   Material Web. Los otros dos estilos son modificadores:
+
+       .md-icon             outlined, el de sistema
+       .md-icon-rounded     rounded
+       .md-icon-sharp       sharp
+
+   La regla de eleccion no es nuestra, la da M3:
+
+     outlined   UI densa. Esquinas exteriores de 2dp, interiores cuadradas.
+     rounded    Marca con tipografia pesada, logos curvos, elementos
+                circulares. Exterior e interior redondeados.
+     sharp      Marcas rectangulares, y para que el glifo siga legible a
+                escala pequena. Esquinas de 2dp a 0dp.
+
+   Que un icono y su texto usen el mismo estilo no es una coincidencia de la
+   especificacion: M3 dice que el conjunto de iconos debe mantener un estilo
+   visual coherente, y que evitar mezclar estilos es una regla de diseno.
+
+   ==========================================================================
+   POR QUE .md-icon NO APLICA ANCHO NI ALTO
+   ==========================================================================
+
+   Es la misma doctrina que aplica 2-sys/measurement.css a sus utilidades: un
+   componente casi nunca quiere que el HTML le fije la dimension. Fijarla
+   rompe los layouts fluidos y el zoom del usuario.
+
+   El glifo se dibuja con font-size, que es lo que lo escala. Aqui se declara
+   font-size con el rol del sistema, y la caja la resuelve quien lo necesite:
+   .md-measure-icon para el area tactil, o el componente para la suya.
+
+   ==========================================================================
+   LOS CUATRO EJES, Y POR QUE SE DECLARAN LOS CUATRO
+   ==========================================================================
+
+   font-variation-settings REEMPLAZA el valor heredado en bloque. Si se
+   declara un eje solo, los demas vuelven al valor por defecto de la fuente y
+   el peso pasaria de 400 a lo que la fuente tenga por defecto. Declararlos
+   todos hace que el estado sea explicito y no dependa de lo que traiga la
+   fuente.
+
+   wght   400, el regular. M3 recomienda 2dp de trazo, que es este peso.
+   FILL   0 sin relleno. El extremo 1 lo usa .md-icon-filled.
+   opsz   Del rol del tamano. Ver el bloque de sincronizacion, mas abajo.
+   GRAD   Del TEMA. No es una primitiva: lo elige 2-sys/theme/*.css.
+
+   ==========================================================================
+   opsz Y EL TAMAANO: POR QUE NO SE CALCULA
+   ==========================================================================
+
+   M3 pide que el tamano optico y el tamano del icono coincidan: es lo que
+   mantiene el grosor del trazo cuando el glifo crece.
+
+   Podria haberse escrito solo:
+
+       'opsz' var(--md-sys-measurement-icon-size)
+
+   No se hizo, y el motivo es que --md-sys-measurement-icon-size es un
+   LENGTH (24px) y el eje opsz es un NUMERO (24). Un length no se puede
+   escribir en font-variation-settings: la propiedad no acepta dimensiones,
+   y el navegador descarta la regla en silencio. Es el mismo modo de fallo que
+   REGLA 3 persigue en los var().
+
+   Por eso son dos pares de tokens distintos, uno en lengths y otro en
+   numeros, aunque los valores coincidan. La duplicacion es el precio de que
+   el eje se pueda escribir.
+
+   Que coincidan es responsabilidad de quien los asigna, no del motor. Por eso
+   .md-icon declara los cuatro tamanos opticos junto a los cuatro tamanos
+   de glifo: los pares estan a la vista, en el mismo bloque, para que una
+   desalineacion se note al leer.
+
+   ==========================================================================
+   EL PESO Y SUS DOS LIMITES DE USO
+   ==========================================================================
+
+   M3 pone dos limites sobre el peso, y son restricciones de USO, no tokens:
+
+     - El peso mas liviano no se usa en iconos de 24dp. A ese tamano el
+       minimo es 200.
+     - Un peso excesivo tampoco se usa a 24dp.
+
+   400 cumple los dos. No se declaran pesos alternativos: el sistema expone
+   --md-sys-icon-weight, que el HTML no cambia, y un componente que necesite
+   otro peso declara su propio token en 3-comp/ como hace con cualquier otra
+   medida.
+
+   ==========================================================================
+   EL DESPLAZAMIENTO DE LA LINEA BASE, Y POR QUE ES UN MODIFICADOR
+   ==========================================================================
+
+   M3 pide bajar la linea base del simbolo aproximadamente un 11.5% del
+   tamano del texto, para que icono y texto queden alineados: las cajas de
+   las dos fuentes no coinciden.
+
+   NO se aplica en .md-icon. Va en .md-icon-baseline, y la razon es de
+   doble conteo:
+
+   Un icono dentro de un contenedor flex centrado --un boton-- ya esta
+   centrado por su caja. Aplicarle el desplazamiento lo descentraria. El caso
+   que M3 describe es el icono suelto en una linea de texto, y ahi el
+   contenedor no es flex ni lo centra nadie.
+
+   Asignarlo por defecto habria roto .md-button-icon sin avisar, porque
+   `position: relative` y `top` no compiten por la cascada con `align-items`:
+   los dos actuarian.
+
+   ==========================================================================
+   COLOR
+   ==========================================================================
+
+   No hay ningun token de color de icono, y no es una omision. M3 dice que
+   un icono toma el color de currentColor: el glifo se dibuja con el color
+   del texto que lo contiene.
+
+   Es la misma regla que aplica 2-sys/state.css con `background-color:
+   currentColor` en la capa de estado. Por eso un icono cambia de color solo
+   con que su contenedor cambie el suyo, y por eso no hace falta una clase
+   de color para icono.
+
+   ==========================================================================
+   ACCESIBILIDAD
+   ==========================================================================
+
+   M3 da tres reglas concretas sobre iconos. No se pueden verificar con CSS,
+   asi que no hay ninguna clase que las imponga: son documentation obligation,
+   y las cumple quien escribe el HTML. Se documentan porque el sistema se
+   entrega con la libreria y quien la usa no tiene por que leer la
+   especificacion.
+
+     1. Icono decorativo junto a una etiqueta: el icono lleva
+        aria-hidden="true". La etiqueta ya dice para que sirve.
+
+     2. Icono solo, sin etiqueta: el CONTROL lleva aria-label, y el icono
+        aria-hidden. Sin esto el lector de pantalla anuncia el nombre del
+        glifo, que en el caso de un icono de Material Symbols es la palabra
+        inglesa con la que se escribe.
+
+     3. Por debajo de 20dp, un icono necesita etiqueta de texto al lado.
+        Salvo dos casos: iconos complejos con varias partes, e iconos con
+        una accion clave para usar el producto.
+
+   Ademas: los iconos de navegacion SIEMPRE llevan etiqueta. M3 lo dice dos
+   veces en la misma pagina, y es la regla que mas se incumple.
+
+   Ejemplos de markup:
+
+       <span class="md-icon" aria-hidden="true">add</span>
+
+       <button class="md-button" aria-label="Anadir">
+         <span class="md-icon md-icon-baseline" aria-hidden="true">add</span>
+       </button>
+
+   ==========================================================================
+   CLASES PUBLICADAS POR ESTE ARCHIVO
+   ==========================================================================
+
+       .md-icon                   la familia del sistema, con los cuatro ejes
+       .md-icon-rounded           cambia la familia a rounded
+       .md-icon-sharp             cambia la familia a sharp
+       .md-icon-filled            FILL 1
+       .md-icon-baseline          baja la linea base un 11.5% del texto
+       .md-measure-icon-target-small   area tactil de 40dp, para glifo de 20dp
+
+   ========================================================================== */
+
+:root {
+  /* ------------------------------------------------------------------------
+     FAMILIA
+     ------------------------------------------------------------------------
+     El token oficial de M3. Material Web declara --md-icon-font con el
+     valor 'Material Symbols Outlined', y ese es el que se aplica por
+     defecto. Los otros dos estilos se piden con su modificador.
+     ------------------------------------------------------------------------ */
+  --md-sys-icon-font: var(--md-ref-icon-font-outlined);
+
+  /* ------------------------------------------------------------------------
+     PESO
+     ------------------------------------------------------------------------
+     El regular (400), que es el grosor de trazo que M3 recomienda: 2dp.
+     Ver el bloque de los dos limites de uso en la cabecera.
+     ------------------------------------------------------------------------ */
+  --md-sys-icon-weight: var(--md-ref-icon-weight-regular);
+
+  /* ------------------------------------------------------------------------
+     RELLENO
+     ------------------------------------------------------------------------
+     El extremo sin relleno. El lleno lo declara .md-icon-filled, que es lo
+     que hace que un token que no es el de sistema siga siendo alcanzable
+     desde el HTML sin escribir un estilo en linea.
+     ------------------------------------------------------------------------ */
+  --md-sys-icon-fill: var(--md-ref-icon-fill-none);
+
+  /* ------------------------------------------------------------------------
+     TAMANO OPTICO
+     ------------------------------------------------------------------------
+     Los cuatro que publica M3. Son los que van en el eje opsz, y por eso
+     son numeros y no medidas: font-variation-settings no acepta una
+     longitud. Ver el bloque de sincronizacion en la cabecera.
+
+     Los cuatro se declaran aunque .md-icon solo use el mediano, porque los
+     demas los consumen los componentes segun su tamano. Un componente los
+     pide por su propia cuenta; la familia existe para que pueda.
+     ------------------------------------------------------------------------ */
+  --md-sys-icon-optical-size-small:  var(--md-ref-icon-optical-size-small);
+  --md-sys-icon-optical-size-medium: var(--md-ref-icon-optical-size-medium);
+  --md-sys-icon-optical-size-large:  var(--md-ref-icon-optical-size-large);
+  --md-sys-icon-optical-size-xlarge: var(--md-ref-icon-optical-size-xlarge);
+
+  /* ------------------------------------------------------------------------
+     DESPLAZAMIENTO DE LA LINEA BASE
+     ------------------------------------------------------------------------
+     El 11.5% que da M3. Lo consume .md-icon-baseline, no .md-icon.
+     ------------------------------------------------------------------------ */
+  --md-sys-icon-baseline-shift: var(--md-ref-icon-baseline-shift);
+}
+
+/* ==========================================================================
+   .md-icon - LA CLASE BASE
+   ==========================================================================
+   Es la entrada al sistema de iconos. Declara la familia, los cuatro ejes, y
+   lo que todo icono necesita para ser una caja de glifo que no estira su
+   contenedor.
+
+   Un icono de Material Symbols es un texto, asi que necesita las mismas
+   correcciones de caja que el texto dentro de una celda: alto de linea 1, y
+   sin convertir espacios. El suavizado de bordes lo declara la propia fuente
+   en su clase, asi que aqui no se repite.
+
+   font-weight queda CONSCIENTEMENTE fuera. La unica razon de existir de
+   font-weight junto a font-variation-settings es que 'wght' no cambia el peso
+   del texto: cambia el eje de la fuente. Ademas, escribir aqui un peso fijo
+   dejaria de respetar el rol en cuanto un componente lo cambiara.
+
+   Los dos limites de uso de M3 sobre el peso --nada del 100 a 24dp, y nada
+   excesivo-- no se cumplen con una regla que los imponga: se cumplen con que
+   no exista ninguna regla que se pueda vulnerar. Si un componente necesita
+   otro peso, lo declara en 3-comp/ con su propio token, que es una decision
+   de componente y no una excepcion de la utilidad.
+   ========================================================================== */
+
+.md-icon {
+  font-family: var(--md-sys-icon-font);
+  font-size: var(--md-sys-measurement-icon-size);
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--md-sys-icon-weight);
+
+  font-variation-settings:
+    'opsz' var(--md-sys-icon-optical-size-medium),
+    'wght' var(--md-sys-icon-weight),
+    'FILL' var(--md-sys-icon-fill),
+    'GRAD' var(--md-sys-typescale-icon-grade);
+}
+
+/* ---------------------------------------------------------------------------
+   LOS TRES ESTILOS
+   ---------------------------------------------------------------------------
+   Solo cambian la familia. No repiten ni una propiedad mas, y en particular
+   no vuelven a declarar font-size: el tamano lo decide el rol, y repetirla
+   aqui seria una segunda fuente de verdad.
+
+   El orden importa dentro de la misma capa: .md-icon se declara primero, y
+   estos modificadores despues. Con la misma especificidad, en CSS gana la
+   ultima regla, asi que el modificador gana.
+   --------------------------------------------------------------------------- */
+
+.md-icon-rounded {
+  font-family: var(--md-ref-icon-font-rounded);
+}
+
+.md-icon-sharp {
+  font-family: var(--md-ref-icon-font-sharp);
+}
+
+/* ---------------------------------------------------------------------------
+   .md-icon-filled
+   ---------------------------------------------------------------------------
+   Reapunta el token del relleno en vez de volver a declarar la propiedad
+   entera. Es el criterio que ya usan los componentes con sus variantes: el
+   modificador repinta el token, y el consumo no cambia de sitio.
+
+   Que sea un token y no una propiedad es lo que permite combinarla con
+   cualquier otro modificador sin pelear. Volver a declarar font-variation-
+   settings entero aqui haria que esta regla ganase al resto de ejes, que
+   estan en .md-icon.
+   --------------------------------------------------------------------------- */
+
+.md-icon-filled {
+  --md-sys-icon-fill: var(--md-ref-icon-fill-full);
+}
+
+/* ---------------------------------------------------------------------------
+   .md-icon-baseline
+   ---------------------------------------------------------------------------
+   Baja el simbolo un 11.5% del tamano del texto, el valor que da M3 para que
+   el icono se siente en la misma linea visual que el texto que acompana.
+
+   `top` con un porcentaje NO serviria: un porcentaje en `top` se resuelve
+   contra la altura del bloque contenedor, no contra el tamano de fuente del
+   elemento. Medido con el icono en un contenedor de 30px de alto, `top: 11.5%`
+   daba 3.4375px, que es el 11.5% de la linea del padre y no del texto. Por eso
+   el token es 0.115em. Ver el bloque completo en 1-ref/iconfont.css.
+
+   Y por eso hace falta `position: relative`: sin una posicion relativa, `top`
+   no tiene contra que resolverse y no desplaza nada.
+
+   Se usa `top` y no `transform: translateY` porque M3 pide que el icono se
+   desplace SIN cambiar el espacio que reserva. Un desplazamiento relativo no
+   toca el flujo; una transformacion tampoco, pero `top` es la propiedad que
+   describe lo que hace: mover la caja, no mover el contenido.
+
+   NO se aplica dentro de un contenedor flex centrado. Ver el bloque de la
+   cabecera: aplicarlo ahi descentraria el glifo, porque el contenedor ya lo
+   centra y el desplazamiento se sumaria.
+   --------------------------------------------------------------------------- */
+
+.md-icon-baseline {
+  position: relative;
+  top: var(--md-sys-icon-baseline-shift);
+}
+
+/* ---------------------------------------------------------------------------
+   EL AREA TACTIL DE UN GLIFO DE 20dp
+   ---------------------------------------------------------------------------
+   M3 empareja el area con el glifo: un simbolo de 24dp tiene un objetivo de
+   48dp, y uno de 20dp puede usar 40dp. La pagina de la aplicacion justifica
+   el par corto con una condicion concreta: cuando el mouse y el teclado
+   son los metodos de entrada principales, las medidas pueden condensarse
+   para permitir layouts mas densos.
+
+   El de 48dp del glifo de 24dp ya lo publica .md-measure-icon en
+   2-sys/measurement.css. Este es el otro par.
+
+   Se declara como MIN-WIDTH y MIN-HEIGHT, y no como width y height, por el
+   motivo que 2-sys/measurement.css explica en su cabecera: el area minima
+   garantiza los 40dp sin imponer una dimension. El elemento puede crecer si
+   su contenido lo pide.
+   --------------------------------------------------------------------------- */
+
+.md-measure-icon-target-small {
+  min-width: var(--md-sys-measurement-icon-target-small);
+  min-height: var(--md-sys-measurement-icon-target-small);
+}

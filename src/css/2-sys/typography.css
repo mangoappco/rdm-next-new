@@ -1,5 +1,5 @@
 /* ==========================================================================
-   2-sys/typography.css — TOKENS SEMANTICOS DE TIPOGRAFIA (solo var())
+   2-sys/typography.css - TOKENS SEMANTICOS DE TIPOGRAFIA (solo var())
    ==========================================================================
 
    QUE ES ESTE ARCHIVO
@@ -34,7 +34,7 @@
        --md-sys-typescale-body-large-weight:
          var(--md-ref-typeface-weight-regular);            -> 400
        --md-sys-typescale-body-large-font:
-         var(--md-ref-typeface-plain);                     -> Roboto
+         var(--md-ref-typeface-plain);                     -> Google Sans Flex
 
    Que este archivo no escriba "16px" es lo que mantiene el sistema coherente:
    cambiar el tamano de body-large se resuelve en 1-ref/typescale.css y las
@@ -80,14 +80,15 @@
    Y los estilos "label" usan peso MEDIUM porque son texto de interfaz corto
    que necesita afirmarse sin competir con los titulos.
 
-   v0.192 anade ademas `weight-prominent` (bold 700) a los tres estilos
+   v0.192 anade ademas `weight-prominent` (bold 700) a DOS de los tres estilos
    label, para cuando un boton o un chip necesita mas enfasis del normal.
+   No al tercero: ver el bloque de PESO PROMINENTE, mas abajo.
 
    ---------------------------------------------------------------------------
    RELACION CON LAS OTRAS CAPAS
    -----------------------------
        1-ref/typescale.css   <-- 45 medidas crudas (px)
-       1-ref/typeface.css    <-- Roboto, pesos 400/500/700
+       1-ref/typeface.css    <-- Google Sans Flex, pesos 400/500/700
               |
               v
        2-sys/typography.css  <-- ESTE: los 15 estilos, solo var()
@@ -99,7 +100,7 @@
 
 :root {
   /* ==========================================================================
-     DISPLAY — enfasis maximo
+     DISPLAY - enfasis maximo
      --------------------------------------------------------------------------
      Peso regular, fuente brand. Reservados para momentos puntuales: nunca
      como titulo corriente.
@@ -124,7 +125,7 @@
   --md-sys-typescale-display-small-font: var(--md-ref-typeface-brand);
 
   /* ==========================================================================
-     HEADLINE — titulos de pagina y seccion
+     HEADLINE - titulos de pagina y seccion
      ====================================================================== */
 
   --md-sys-typescale-headline-large-weight: var(--md-ref-typeface-weight-regular);
@@ -146,7 +147,7 @@
   --md-sys-typescale-headline-small-font: var(--md-ref-typeface-brand);
 
   /* ==========================================================================
-     TITLE — titulos dentro de un componente
+     TITLE - titulos dentro de un componente
      --------------------------------------------------------------------------
      El salto importante de M3: title-large sigue siendo brand/regular, pero
      title-medium y title-small pasan a plain/medium. Esa distincion separa
@@ -172,7 +173,7 @@
   --md-sys-typescale-title-small-font: var(--md-ref-typeface-plain);
 
   /* ==========================================================================
-     BODY — texto de lectura
+     BODY - texto de lectura
      ====================================================================== */
 
   --md-sys-typescale-body-large-weight: var(--md-ref-typeface-weight-regular);
@@ -194,7 +195,7 @@
   --md-sys-typescale-body-small-font: var(--md-ref-typeface-plain);
 
   /* ==========================================================================
-     LABEL — texto corto de interfaz
+     LABEL - texto corto de interfaz
      --------------------------------------------------------------------------
      Peso MEDIUM (500), no regular: es texto de interfaz y necesita afirmar-
      se sin competir con los titulos. NUNCA usar para parrafos.
@@ -288,33 +289,21 @@
    ========================================================================== */
 
 /* ---------------------------------------------------------------------------
-   TAMANO OPTICO DE LOS ICONOS
+   LO QUE ESTE ARCHIVO YA NO DECLARA
    --------------------------------------------------------------------------
+     --md-sys-typescale-icon-optical-size-small
+     --md-sys-typescale-icon-optical-size-medium
+
+   Se movieron a 2-sys/icon.css, con el nombre --md-sys-icon-optical-size-*.
+
    El eje optical size pertenece a la fuente de los ICONOS, Material Symbols.
-   No al texto: Google Sans Flex dibuja las etiquetas y no tiene ese eje.
+   No al texto: Google Sans Flex dibuja las etiquetas y no tiene ese eje. Por
+   eso nunca debio ser un bloque del typescale, ni usar el prefijo
+   typescale: el prefijo dice "esto es texto", y el icono no lo es.
 
-   Por eso son un bloque propio y no una entrada mas del typescale. Se
-   declaran en 2-sys/typography.css porque son un valor tipografico, pero los
-   consume un COMPONENTE, no una clase de texto.
-
-   Que un componente los pida y no los escriba en su CSS es la misma regla de
-   siempre: los numeros crudos viven en 1-ref (1-ref/typeface.css) y el
-   componente pide una intencion.
-
-   EL EJE NO CAMBIA EL TAMANO DEL GLIFO
-   -----------------------------------
-   Medido en el navegador: con opsz 20 y con opsz 48 el glifo ocupa la misma
-   caja. Lo que cambia es el grosor del trazo, para que un glifo se lea con
-   el mismo peso visual al tamaño para el que fue dibujado.
-
-   Setearlo bien no cambia el tamaño del icono. Cambia que el trazo no pese
-   de mas.
+   Ver 2-sys/icon.css para por que existen como numeros y no como medidas, que
+   es la parte que no es obvia.
    ------------------------------------------------------------------------ */
-
-:root {
-  --md-sys-typescale-icon-optical-size-small:  var(--md-ref-typeface-optical-size-small);
-  --md-sys-typescale-icon-optical-size-medium: var(--md-ref-typeface-optical-size-medium);
-}
 
 /* --- DISPLAY --- */
 .md-type-display-large {
@@ -526,8 +515,9 @@
    cosas usan uno.
 
    -------------------------------------------------------------------------
-   Variante BOLD (700) que v0.192 define para los tres estilos label. Se
-   combina con la clase base usando el modificador de M3:
+   Variante BOLD (700) que v0.192 define para DOS de los tres estilos label,
+   label-large y label-medium. Se combina con la clase base usando el
+   modificador de M3:
 
        class="md-type-label-large md-type-label-large-prominent"
    ------------------------------------------------------------------------- */

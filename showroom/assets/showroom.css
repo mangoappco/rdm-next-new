@@ -77,6 +77,7 @@
      del article. Asi recibe el mismo gap por los dos lados sin que nadie lo
      declare: 16 + 1 + 16 = 33px. Es la cifra de rdm-next-old, y su CSS deja
      escrito por que se bajo de 41px: "cada nivel pega con un solo borde para
+     que nada se acumule".
 
      LA PAGINA ES UNA SUPERFICIE, Y EL LIENZO ESTA EN EL BODY
      ----------------------------------------------------------
@@ -127,7 +128,6 @@
      Y sin `box-sizing: border-box` a proposito: el trazo suma 2px por fuera de
      los 720px de contenido, y con border-box la medida de lectura pasaria de
      720 a 672 y cada parrafo de las cuatro vistas se volveria a repartir.
-     que nada se acumule".
      --------------------------------------------------------------------- */
   .sr-page {
     display: flex;
@@ -135,11 +135,11 @@
     gap: var(--sr-space-s);
     max-width: calc(var(--md-ref-spacing-900) * 10);   /* 720px */
     margin-inline: auto;
+    padding: var(--sr-space-m);
     background-color: var(--md-sys-color-surface);
     border: var(--md-sys-shape-stroke-thin) solid var(--sr-line);
     border-radius: var(--md-sys-shape-corner-large);
     color: var(--md-sys-color-on-surface);
-    padding: var(--sr-space-m);
   }
 
   /* El separador entre secciones es el COMPONENTE, no un borde ad-hoc.
@@ -238,6 +238,7 @@
   .sr-section > * + :is(h3, h4) { margin-block-start: var(--sr-space-s); }
 
   .sr-section h2 { font: var(--md-sys-typescale-headline-small); }
+  .sr-section h3 { font: var(--md-sys-typescale-title-medium); }
 
   /* El h4 es un nivel mas bajo que el h3: separa los tres casos de una misma
      seccion sin competir con el titulo de la seccion. Ya tenia su ritmo de
@@ -246,7 +247,6 @@
      menor que title-medium del h3, mayor que el cuerpo. */
   .sr-section h4 { font: var(--md-sys-typescale-title-small); }
 
-  .sr-section h3 { font: var(--md-sys-typescale-title-medium); }
   .sr-section p,
   .sr-section li { font: var(--md-sys-typescale-body-medium); }
 
@@ -453,6 +453,7 @@
 
      border-box para que el alto que declara .sr-swatch--tall sea el alto real
      y el borde no sume 2px por fuera, como suma en el resto del showroom. */
+  .sr-swatch--border {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -460,10 +461,9 @@
     padding: var(--sr-space-xs);
     text-align: center;
     overflow-wrap: anywhere;
-  .sr-swatch--border {
     border-width: var(--md-sys-shape-stroke-thin);
-    outline: none;
     border-style: solid;
+    outline: none;
   }
 
   /* Las muestras de borde necesitan algo mas de alto para que el trazo se lea
@@ -670,6 +670,20 @@
     block-size: var(--md-ref-spacing-300);
     background-color: var(--md-sys-color-primary);
     border-radius: var(--md-sys-shape-corner-small);
+  }
+
+  /* Token que NO se dibuja.
+     ----------------------------
+     Una barra de medida solo tiene sentido para algo que ocupa espacio: un
+     padding, un ancho, una altura. Hay tokens cuya magnitud se ve sin
+     dibujarla --un numero de un eje de fuente, un porcentaje-- y pintarlos
+     como barra seria mentir sobre lo que el token es.
+
+     Antes de que existiera esta clase, esas filas llevaban
+     `style="display:none"` en el marcado, y REGLA 6 lo prohibe. Por eso la
+     columna "Valor" de la tabla de ejes lleva solo el numero. */
+  .sr-spec-bar--none {
+    display: none;
   }
 
   /* Ancho = token. Se generan desde src/css/1-ref/spacing.css: los 17

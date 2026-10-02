@@ -8,11 +8,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap" rel="stylesheet">
-  <!-- Los iconos de M3 son Material Symbols, una fuente variable. Se carga
-       como la tipografia, porque es lo que es: una fuente. Sus cuatro ejes
-       (weight, fill, optical size, grade) van en los parametros.
+  <!-- Los iconos de M3 son Material Symbols, una fuente variable, con sus
+       cuatro ejes (weight, fill, optical size, grade).
+
+       YA NO SE CARGA NADA DESDE AQUI. La fuente la carga la libreria, en
+       1-ref/iconfont.css, que main.css importa en la capa ref. Estaba aqui
+       porque era un asset del showroom: la app de produccion carga el mismo
+       orquestador y no tendria como obtener los iconos.
+
        https://m3.material.io/styles/icons/applying-icons -->
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../src/css/main.css">
   <link rel="stylesheet" href="../assets/showroom.css">
   <script src="../assets/showroom.js"></script>
@@ -101,7 +105,7 @@
       <p>Los iconos de M3 son <a href="https://m3.material.io/styles/icons/overview" target="_blank" rel="noopener noreferrer">Material Symbols</a>: una fuente variable, no imágenes. Un icono es literalmente un texto que una fuente dibuja, y por eso la página lo carga como carga la tipografía.</p>
       <div class="sr-stage">
         <button class="md-button" type="button">
-          <span class="md-button-icon material-symbols-outlined" aria-hidden="true">add</span>
+          <span class="md-button-icon md-icon" aria-hidden="true">add</span>
           Crear
         </button>
       </div>
@@ -110,11 +114,11 @@
       <p>M3 pide el icono en el <strong>lado inicial</strong>, antes de la etiqueta. En idiomas de derecha a izquierda, al revés. Y nunca dos iconos en el mismo botón.</p>
       <div class="sr-stage">
         <button class="md-button" type="button">
-          <span class="md-button-icon material-symbols-outlined" aria-hidden="true">download</span>
+          <span class="md-button-icon md-icon" aria-hidden="true">download</span>
           Descargar
         </button>
         <button class="md-button" type="button" aria-label="Eliminar">
-          <span class="md-button-icon material-symbols-outlined" aria-hidden="true">delete</span>
+          <span class="md-button-icon md-icon" aria-hidden="true">delete</span>
         </button>
       </div>
       <h3>Qué declara el componente y qué no</h3>
@@ -123,12 +127,18 @@
           <tr><th scope="col">El componente declara</th><th scope="col">La página declara</th></tr>
         </thead>
         <tbody>
-          <tr><td>La caja: ancho y alto del glifo</td><td>La fuente: <code>material-symbols-outlined</code></td></tr>
+          <tr><td>La caja: ancho y alto del glifo</td><td>La familia: <code>md-icon</code></td></tr>
           <tr><td><code>font-size</code>, que es lo que escala el glifo</td><td>Los ejes: weight, fill, opsz, grade</td></tr>
           <tr><td>El color, por herencia de <code>currentColor</code></td><td>El nombre accesible del botón</td></tr>
         </tbody>
       </table>
       <p>El <code>font-size</code> es lo que hace que el glifo llene la caja. Un icono es una fuente: se escala con el tamaño de fuente, no con <code>width</code>.</p>
+      <h3>La fuente se carga en una capa, y por qué importa</h3>
+      <p>Google sirve la URL de Material Symbols con una clase utilitaria incluida, <code>.material-symbols-outlined</code>, que declara su propio <code>font-size: 24px</code>. Si esa hoja se carga con un <code>&lt;link&gt;</code>, su regla llega <strong>sin capa</strong>, y en CSS una regla sin capa gana a cualquier regla con capa, sin importar la especificidad. El orden de las cinco capas solo decide entre reglas que están dentro de alguna capa, así que no protege de esto.</p>
+      <p>El efecto fue medido y no era sutil. El componente declaraba 20dp de glifo en <code>xsmall</code> y <code>small</code>, y la caja medía 20×20 como corresponde. Pero la tinta del glifo llegaba a medir <strong>24×28 dentro de una caja de 20×20</strong>, y el <code>overflow: hidden</code> del botón la recortaba. Afectaba a los seis iconos de esta vista, no solo a uno.</p>
+      <p>La fuente la carga la librería, en <code>src/css/1-ref/iconfont.css</code>, con <code>@import … layer(reset)</code>. Al entrar en la capa más débil, la regla de Google deja de ganarle al componente y el <code>font-size</code> vuelve a decidirlo el token del tamaño del botón. Es exactamente el trabajo que hace el orden de capas del proyecto, y se estaba perdiendo por una línea de HTML.</p>
+      <p>Un <code>&lt;link&gt;</code> no admite <code>layer()</code>. La única forma de meter una hoja externa en una capa es <code>@import</code>, y para que el navegador la descubra tiene que ir en un archivo CSS. Por eso la fuente vive en la librería y no en el <code>&lt;head&gt;</code> de cada vista, que es donde se carga Google Sans Flex: su hoja solo trae <code>@font-face</code>, sin ninguna regla de utilidad que compita.</p>
+      <p class="sr-na">La clase de Google <strong>no se usa</strong>. El sistema declara su propia <code>.md-icon</code> en <code>2-sys/icon.css</code>, con el prefijo que usan las otras 167 utilidades. Así el componente y la utilidad pelean solo entre reglas del sistema, y no hace falta una capa para separarlos. La REGLA 9 del verificador impide que la clase de Google vuelva a colarse en el marcado: el fallo ya se cometió una vez, y una regla que no existe es un fallo que se repite.</p>
       <h3>El tamaño del glifo</h3>
       <table class="sr-table">
         <thead>
@@ -220,12 +230,12 @@
       <div class="sr-stage"><button class="md-button md-button-outlined" type="button">Outlined</button></div>
       <p>La especificación separa los dos: el <strong>borde va en <code>outline</code></strong>, el gris claro, y la <strong>etiqueta en <code>on-surface-variant</code></strong>, el gris oscuro. Con un solo tono, el botón se aplana y el borde claro desaparece sobre fondo oscuro.</p>
       <h3>La elevación se ve en claro y casi no se ve en oscuro</h3>
+      <p>No es un fallo de esta vista, es cómo funciona M3. Cambia el tema con el botón de arriba para comprobarlo.</p>
       <p>Esta es la muestra: el <strong>botón <code>elevated</code> real</strong>, y detrás el <strong>lienzo</strong>, el rol <code>background</code> de la página. El relleno del botón es <code>surface-container-low</code>, y esa es la única diferencia entre las dos superficies:</p>
       <div class="sr-canvas md-bg-background">
         <button class="md-button md-button-elevated" type="button">Elevated</button>
       </div>
       <p class="sr-na">El fondo de este escenario es <code>background</code> y no el tono de los demás escenarios, que es <code>surface-container-low</code>: sería el mismo color que el relleno del botón y la comparación no existiría. La línea del borde es de la vista, para que se vea dónde acaba el lienzo; el botón de dentro no la trae. Esta muestra es viva, así que siempre enseña el tema que está activo.</p>
-      <p>No es un fallo de esta vista, es cómo funciona M3. Cambia el tema con el botón de arriba para comprobarlo.</p>
       <table class="sr-table">
         <thead>
           <tr><th scope="col">Tema</th><th scope="col">Fondo</th><th scope="col">Relleno del elevated</th><th scope="col">Diferencia máxima</th></tr>
@@ -543,7 +553,7 @@
       <p>Porque una utilidad solo puede cambiar el tamaño de la caja, y la caja <em>es</em> el área visible. Agrandarla deformaría el botón: mide 48 de ancho y se queda en 32 de alto, o al revés, y el resultado ya no es un botón.</p>
       <div class="sr-stage">
         <button class="md-button md-button-xsmall md-measure-touch-target" type="button" aria-label="Añadir">
-          <span class="md-button-icon material-symbols-outlined" aria-hidden="true">add</span>
+          <span class="md-button-icon md-icon" aria-hidden="true">add</span>
         </button>
       </div>
       <p class="sr-na">El botón de arriba lleva <code>.md-measure-touch-target</code>, de <code>2-sys/measurement.css</code>. Medido en el navegador da <strong>48×32</strong>: la utilidad no aporta nada y el botón sale achaparrado. No es la solución, es un contraejemplo.</p>
@@ -602,7 +612,7 @@
       <p>El icono y la etiqueta se mantienen <strong>agrupados y centrados</strong> mientras el ancho cambia. Nunca se separan, ni se anclan a lados opuestos del botón.</p>
       <div class="sr-stage sr-stage--fill">
         <button class="md-button" type="button">
-          <span class="md-button-icon material-symbols-outlined" aria-hidden="true">save</span>
+          <span class="md-button-icon md-icon" aria-hidden="true">save</span>
           Guardar los cambios
         </button>
       </div>
@@ -616,7 +626,7 @@
       <p>La especificación nombra tres partes: <strong>contenedor</strong>, <strong>texto de etiqueta</strong> e <strong>icono, opcional</strong>. El contenedor incluye el relleno y la sombra; los otros dos viven dentro.</p>
       <div class="sr-stage">
         <button class="md-button md-button-filled md-button-medium" type="button">
-          <span class="md-button-icon material-symbols-outlined" aria-hidden="true">save</span>
+          <span class="md-button-icon md-icon" aria-hidden="true">save</span>
           Guardar
         </button>
       </div>
