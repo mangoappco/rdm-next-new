@@ -8,6 +8,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap" rel="stylesheet">
+  <!-- Los iconos de M3 son Material Symbols, una fuente variable. Se carga
+       como la tipografia, porque es lo que es: una fuente. Sus cuatro ejes
+       (weight, fill, optical size, grade) van en los parametros.
+       https://m3.material.io/styles/icons/applying-icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../src/css/main.css">
   <link rel="stylesheet" href="../assets/showroom.css">
   <script src="../assets/showroom.js"></script>
@@ -16,7 +21,13 @@
 <!--
   Copiada de templates/component.template.html.
   Secciones confirmadas por Danny: ver el commit de esta vista.
-  Iconografia queda fuera a proposito: esta en Notas, con el motivo.
+  Fuentes de esta pagina, de M3 v34:
+    /components/buttons/overview
+    /components/buttons/specs
+    /components/buttons/guidelines
+    /components/buttons/accessibility
+  Cuando una seccion documenta algo que el componente NO implementa, lo dice
+  explicitamente. No se documenta como si existiera.
 -->
 
 <body class="md-bg-background md-text-on-background md-type-body-medium">
@@ -29,23 +40,44 @@
 
     <header class="sr-header">
       <h1>Button</h1>
-      <p>Los botones permiten a los usuarios ejecutar una acción. Son el componente más usado de la interfaz: una acción principal por pantalla, y el contenedor de casi todo lo que el usuario puede hacer.</p>
+      <p>Los botones piden la mayoría de las acciones de una interfaz. Son el componente más usado después del texto, y el único que comunica una acción en lugar de un contenido.</p>
     </header>
 
     <article class="sr-section">
+      <h2>Terminología</h2>
+      <p>Antes de nada, porque M3 cambió el vocabulario y la documentación antigua lo llama de otra forma. Esta vista usa el de la especificación actual.</p>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Término</th><th scope="col">Qué significa en M3</th><th scope="col">Cuántos hay</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Variante</td><td>Default y toggle. Es decir, si el botón ejecuta una acción o marca un estado binario</td><td>2</td></tr>
+          <tr><td>Configuración de color</td><td>Elevated, filled, tonal, outlined, text. Antes se llamaban “variantes”, y esa es la confusión más común</td><td>5</td></tr>
+          <tr><td>Forma</td><td>Round y square</td><td>2</td></tr>
+          <tr><td>Tamaño</td><td>Extra small, small, medium, large, extra large</td><td>5</td></tr>
+        </tbody>
+      </table>
+      <p>La sección <a href="#configuraciones">Configuraciones de color</a> agrupa las cinco por énfasis visual, de más a menos destacado. No son variantes: son cinco maneras de dibujar lo mismo.</p>
+    </article>
+
+    <article class="sr-section">
       <h2>Uso</h2>
+      <p>M3 los coloca en diálogos, ventanas modales, formularios, tarjetas y barras de herramientas. También dentro de grupos de botones, que pueden tener una acción primaria y secundarias.</p>
       <h3>Cuándo usarlo</h3>
       <ul>
-        <li>Para disparar una acción: guardar, enviar, confirmar, borrar.</li>
+        <li>Para ejecutar una acción: guardar, enviar, confirmar, borrar.</li>
         <li>Para abrir algo: un diálogo, un menú, una vista.</li>
-        <li>Para marcar una opción de un grupo, como un filtro o una vista de una lista.</li>
+        <li>Para marcar una opción binaria, con un <a href="#variantes">botón toggle</a>: guardar como favorito, activar, silenciar.</li>
       </ul>
       <h3>Cuándo no usarlo</h3>
       <ul>
-        <li>Para navegar a otra ubicación: eso es un enlace, y un enlace se reconoce por su color y porque abre contenido, no porque ejecute una acción.</li>
-        <li>Para elegir entre dos o más estados excluyentes que permanecen visibles, como un grupo de pestañas o un conmutador: ahí el usuario compara las opciones, y un botón exige recordar la última elección.</li>
-        <li>Para comunicar un estado: un botón que dice "Guardado" ya no es una acción. Para eso está el <code>chip</code> o un texto de estado.</li>
+        <li><strong>Para navegar a otra ubicación.</strong> Eso es un enlace. Un enlace se reconoce por su color, y porque abre contenido en vez de ejecutar algo.</li>
+        <li><strong>Para elegir entre opciones que siguen visibles.</strong> Si el usuario tiene que comparar, necesita ver las dos: un botón exige recordar la última elección. Ahí van las pestañas o un conmutador.</li>
+        <li><strong>Para comunicar un estado.</strong> Un botón que dice “Guardado” ya no es una acción. Para eso está el <code>chip</code> o un texto de estado.</li>
       </ul>
+      <h3>Un filled por pantalla</h3>
+      <p>La configuración <code>filled</code> tiene el mayor impacto visual después del FAB, así que M3 pide usarla con mucha moderación: <strong>idealmente una sola acción por página</strong>, para la que completa un flujo. Si hay que elegir entre varias, la jerarquía se establece con tamaño, color o forma, no metiendo más filled.</p>
+      <p>Demasiados botones rompen la jerarquía visual. Las acciones de baja prioridad pueden ir en un menú de desbordamiento, en <code>chips</code>, como enlaces de texto o como botones de icono.</p>
     </article>
 
     <article class="sr-section">
@@ -53,12 +85,50 @@
       <div class="sr-stage">
         <button class="md-button" type="button">Continuar</button>
       </div>
-      <p>La clase <code>.md-button</code> sin modificador es un botón <strong>filled</strong> de tamaño <strong>small</strong>. Es la configuración por defecto de M3.</p>
+      <p>La clase <code>.md-button</code> sin modificador es un <strong>filled</strong> de tamaño <strong>small</strong>: la configuración por defecto de M3.</p>
     </article>
 
-    <article class="sr-section">
-      <h2>Variantes</h2>
-      <p>M3 define cinco. Se eligen por la jerarquía de la acción, de más a menos destacado.</p>
+    <article class="sr-section" id="iconografia">
+      <h2>Iconografía</h2>
+      <p>Los iconos de M3 son <a href="https://m3.material.io/styles/icons/overview" target="_blank" rel="noopener noreferrer">Material Symbols</a>: una fuente variable, no imágenes. Un icono es literalmente un texto que una fuente dibuja, y por eso la página lo carga como carga la tipografía.</p>
+      <div class="sr-stage">
+        <button class="md-button" type="button">
+          <span class="md-button-icon material-symbols-outlined" aria-hidden="true">add</span>
+          Crear
+        </button>
+      </div>
+      <p>La clase del componente es <code>.md-button-icon</code>, y va en el hijo. La fuente del glifo es de la página, no del componente: el componente no sabe si el glifo viene de Material Symbols o de un SVG, y no debe saberlo.</p>
+      <h3>El glifo va delante</h3>
+      <p>M3 pide el icono en el <strong>lado inicial</strong>, antes de la etiqueta. En idiomas de derecha a izquierda, al revés. Y nunca dos iconos en el mismo botón.</p>
+      <div class="sr-stage">
+        <button class="md-button" type="button">
+          <span class="md-button-icon material-symbols-outlined" aria-hidden="true">download</span>
+          Descargar
+        </button>
+        <button class="md-button" type="button" aria-label="Eliminar">
+          <span class="md-button-icon material-symbols-outlined" aria-hidden="true">delete</span>
+        </button>
+      </div>
+      <h3>Qué declara el componente y qué no</h3>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">El componente declara</th><th scope="col">La página declara</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>La caja: ancho y alto del glifo</td><td>La fuente: <code>material-symbols-outlined</code></td></tr>
+          <tr><td><code>font-size</code>, que es lo que escala el glifo</td><td>Los ejes: weight, fill, opsz, grade</td></tr>
+          <tr><td>El color, por herencia de <code>currentColor</code></td><td>El nombre accesible del botón</td></tr>
+        </tbody>
+      </table>
+      <p>El <code>font-size</code> es lo que hace que el glifo llene la caja. Un icono es una fuente: se escala con el tamaño de fuente, no con <code>width</code>.</p>
+      <p>El tamaño estándar del glifo es <strong>20dp</strong>, según M3. Con eso el <code>xsmall</code> y el <code>small</code> usan 20px; el <code>medium</code> usa 24px, el tamaño genérico de icono de M3.</p>
+      <h3>El padding con icono se aparta de M3</h3>
+      <p class="sr-na">M3 aprieta el padding del lado del icono a 16dp. Pero en la versión implementada, M3 v34, <em>referencia</em> ese token y <em>no lo define</em> en ningún archivo: es una referencia colgante. Copiar el 16dp de la web tampoco valdría, porque el <code>xsmall</code> tiene 12px de base y el botón con icono ocuparía más que sin icono. Este proyecto mantiene el mismo padding con y sin icono, y lo documenta como una omisión consciente, pendiente de que M3 defina el token.</p>
+    </article>
+
+    <article class="sr-section" id="configuraciones">
+      <h2>Configuraciones de color</h2>
+      <p>Cinco, ordenadas de más a menos énfasis. No son variantes: son cinco maneras de dibujar la misma acción.</p>
       <div class="sr-grid">
         <figure class="sr-cell">
           <div class="sr-stage"><button class="md-button md-button-elevated" type="button">Elevated</button></div>
@@ -81,101 +151,77 @@
           <figcaption>Text · <code>.md-button-text</code></figcaption>
         </figure>
       </div>
-      <p><strong>Cómo se elige:</strong> <code>filled</code> para la acción principal de la pantalla, una sola vez. <code>elevated</code> y <code>tonal</code> para acciones secundarias que aún necesitan presencia. <code>outlined</code> para acciones terciarias, cuando el contexto ya tiene otras acciones destacadas. <code>text</code> para acciones de menor consecuencia, o para una fila de muchas acciones.</p>
+      <h3>Para qué sirve cada una</h3>
+      <p><strong>Elevated</strong> es igual que tonal pero con sombra. M3 pide usarla solo cuando sea de verdad necesario, cuando el botón necesita separarse de un fondo visualmente importante. Una elevación más alta da más énfasis, así que conviene reservarla, y para énfasis alto está antes <code>filled</code>.</p>
+      <p><strong>Filled</strong> es para acciones importantes y finales, las que completan un flujo: Guardar, Unirme, Confirmar. Su énfasis es fuerte, de ahí la regla de una por página.</p>
+      <p><strong>Tonal</strong> sirve cuando una acción de baja prioridad necesita algo más de énfasis que un outlined: el paso “Siguiente” de un tutorial. Usa el mapeo de color secundario.</p>
+      <p><strong>Outlined</strong> es para acciones de énfasis medio: importantes pero no principales. Se combina bien con un filled para marcar la alternativa. M3 avisa de que es <em>muy parecido a un chip</em>, y de que sobre imágenes o vídeos puede no legerse: ahí un filled o un relleno de contraste es mejor.</p>
+      <p><strong>Text</strong> es para lo de menor prioridad, sobre todo al presentar varias opciones. El contenedor no es visible hasta que alguien interactúa. M3 pide explícitamente <strong>no subrayarlo</strong>: para dar énfasis a un enlace se usa texto de enlace.</p>
     </article>
 
     <article class="sr-section">
       <h2>Color</h2>
-      <p>Cada variante define un par: el relleno y el color del contenido. M3 los empareja para garantizar contraste, y por eso no se eligen por separado.</p>
+      <p>Cada configuración define un par: el relleno y el color del contenido. M3 los empareja para garantizar contraste, y por eso no se eligen por separado.</p>
       <table class="sr-table">
         <thead>
-          <tr><th scope="col">Variante</th><th scope="col">Relleno</th><th scope="col">Contenido</th><th scope="col">Elevación</th></tr>
+          <tr><th scope="col">Configuración</th><th scope="col">Relleno</th><th scope="col">Icono y etiqueta</th><th scope="col">Elevación</th></tr>
         </thead>
         <tbody>
           <tr><td>Elevated</td><td>surface-container-low</td><td>primary</td><td>level1</td></tr>
           <tr><td>Filled</td><td>primary</td><td>on-primary</td><td>level0</td></tr>
           <tr><td>Tonal</td><td>secondary-container</td><td>on-secondary-container</td><td>level0</td></tr>
-          <tr><td>Outlined</td><td>transparente</td><td>on-surface-variant</td><td>level0</td></tr>
+          <tr><td>Outlined</td><td>transparente, borde <code>outline</code></td><td>on-surface-variant</td><td>level0</td></tr>
           <tr><td>Text</td><td>transparente</td><td>primary</td><td>level0</td></tr>
         </tbody>
       </table>
-      <p><strong>Por qué el <code>outlined</code> usa <code>on-surface-variant</code> y no <code>primary</code>:</strong> no hay relleno detrás, así que el texto se lee directamente sobre la superficie de la página. Un <code>primary</code> sobre ese fondo se leería como un enlace, y el usuario no sabría si pulsar o navegar.</p>
-      <p><strong>Por qué el <code>elevated</code> es el único con sombra:</strong> existe para separar el componente del fondo cuando ambos son de color similar. Su relleno es un gris muy claro; sin la sombra no se distinguiría de la superficie.</p>
-      <p><strong>Disabled es igual en las cinco variantes:</strong> relleno <code>on-surface</code> al 10% y contenido al 38%. Ver <a href="#states">States</a>.</p>
+      <h3>El borde del outlined y su texto son dos tonos distintos</h3>
+      <div class="sr-stage"><button class="md-button md-button-outlined" type="button">Outlined</button></div>
+      <p>La especificación separa los dos: el <strong>borde va en <code>outline</code></strong>, el gris claro, y la <strong>etiqueta en <code>on-surface-variant</code></strong>, el gris oscuro. Con un solo tono, el botón se aplana y el borde claro desaparece sobre fondo oscuro.</p>
+      <h3>La elevación se ve en claro y casi no se ve en oscuro</h3>
+      <p>No es un fallo de esta vista, es cómo funciona M3. Cambia el tema con el botón de arriba para comprobarlo.</p>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Tema</th><th scope="col">Fondo</th><th scope="col">Relleno del elevated</th><th scope="col">Diferencia</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Claro</td><td><code>#fef7ff</code></td><td><code>#f7f2fa</code></td><td>15 de 255</td></tr>
+          <tr><td>Oscuro</td><td><code>#141218</code></td><td><code>#1d1b20</code></td><td>9 de 255</td></tr>
+        </tbody>
+      </table>
+      <p>En oscuro pasan dos cosas a la vez: el relleno está a 9 unidades del fondo, y la sombra es <em>negra</em> sobre un fondo casi negro. Se podría subir el relleno a <code>surface-container</code> y se vería mejor. <strong>No se hace</strong>, porque M3 especifica <code>surface-container-low</code> para esta configuración, y cambiarlo en silencio sería modificar la especificación sin decidirlo.</p>
+      <p>Que M3 lo acepte no significa que se lea siempre igual. En un producto de verdad el <code>elevated</code> se apoya sobre una <code>surface</code>, no sobre el lienzo de <code>background</code>, y ahí el contraste es mayor. El caso de verlo sobre el lienzo en oscuro es el que queda justo.</p>
+      <h3>Se pueden usar otros roles</h3>
+      <p class="sr-na">M3 advierte que otros roles de color sirven siempre que el contenedor y el texto tengan un contraste de 3:1, y menciona <code>tertiary</code> y <code>on-tertiary</code> como ejemplo. Es una extensión documentada, y por eso los tokens del componente son reapuntables desde el marcado sin tocar el CSS.</p>
     </article>
 
-    <article class="sr-section">
-      <h2>Shapes</h2>
-      <div class="sr-stage">
-        <button class="md-button" type="button">Redondeado completo</button>
-      </div>
-      <p>La única forma implementada es <code>corner-full</code>, elipse completa, que es la que M3 usa para el botón <code>filled</code>.</p>
-      <p class="sr-na"><strong>No está implementado el botón "square".</strong> M3 lo define con <code>corner-medium</code> en los tamaños <code>xsmall</code> y <code>small</code>, y con <code>corner-large</code> en <code>medium</code>. Queda pendiente; la variante <code>.md-button-square</code> se añadirá cuando un producto la pida.</p>
-    </article>
-
-    <article class="sr-section">
-      <h2>Sizes</h2>
+    <article class="sr-section" id="variantes">
+      <h2>Variantes</h2>
+      <p>Dos: <strong>default</strong> y <strong>toggle</strong>. El toggle marca un estado binario, como Guardar o Favorito, y al pulsarlo puede cambiar color, forma y etiqueta.</p>
       <div class="sr-grid">
         <figure class="sr-cell">
-          <div class="sr-stage"><button class="md-button md-button-xsmall" type="button">XSmall</button></div>
-          <figcaption>32px · <code>.md-button-xsmall</code></figcaption>
+          <div class="sr-stage"><button class="md-button" type="button">Default</button></div>
+          <figcaption>Default · implementada</figcaption>
         </figure>
         <figure class="sr-cell">
-          <div class="sr-stage"><button class="md-button md-button-small" type="button">Small</button></div>
-          <figcaption>40px · <code>.md-button-small</code></figcaption>
-        </figure>
-        <figure class="sr-cell">
-          <div class="sr-stage"><button class="md-button md-button-medium" type="button">Medium</button></div>
-          <figcaption>56px · <code>.md-button-medium</code></figcaption>
+          <div class="sr-stage"><span class="sr-na">no implementada</span></div>
+          <figcaption>Toggle (selección) · no implementada</figcaption>
         </figure>
       </div>
-      <p>El tamaño <code>medium</code> cambia también la tipografía: usa <code>title-medium</code> en vez de <code>label-large</code>. No es una inconsistencia, es la jerarquía de Sizes de M3: el tamaño del componente y la jerarquía de su etiqueta son la misma escala. El <code>medium</code> es la llamada a la acción principal, y por eso su etiqueta pesa más.</p>
-      <p class="sr-na"><strong>No están implementados <code>large</code> ni <code>xlarge</code>.</strong> Sus alturas son 96 y 136, y la escala de espacio de M3 no tiene ningún token para ninguna de las dos: el salto más alto es 72. Cubrirlas exigiría crear una primitiva en la capa de referencia por un solo componente.</p>
-    </article>
-
-    <article class="sr-section">
-      <h2>Padding</h2>
-      <p>M3 usa el mismo valor a izquierda y a derecha en los tres tamaños, así que un solo rol de medida cubre ambos lados.</p>
+      <p class="sr-na">El botón toggle <strong>no está implementado</strong>. Serían doce tokens más, uno por estado de cada configuración, y ningún componente del proyecto lo necesita todavía. La tabla siguiente es la especificación completa, para que se vea lo que falta.</p>
+      <h3>Colores del toggle, según la especificación</h3>
       <table class="sr-table">
         <thead>
-          <tr><th scope="col">Tamaño</th><th scope="col">Padding lateral</th><th scope="col">Padding vertical</th><th scope="col">Separación icono-etiqueta</th></tr>
+          <tr><th scope="col">Configuración</th><th scope="col">Default</th><th scope="col">Toggle sin seleccionar</th><th scope="col">Toggle seleccionado</th></tr>
         </thead>
         <tbody>
-          <tr><td>xsmall</td><td>12px</td><td>6px</td><td>8px</td></tr>
-          <tr><td>small</td><td>16px</td><td>10px</td><td>8px</td></tr>
-          <tr><td>medium</td><td>24px</td><td>16px</td><td>8px</td></tr>
+          <tr><td>Elevated</td><td>surface-container-low / primary</td><td>surface-container-low / primary</td><td>primary / on-primary</td></tr>
+          <tr><td>Filled</td><td>primary / on-primary</td><td>surface-container / on-surface-variant</td><td>primary / on-primary</td></tr>
+          <tr><td>Tonal</td><td>secondary-container / on-secondary-container</td><td>secondary-container / on-secondary-container</td><td>secondary / on-secondary</td></tr>
+          <tr><td>Outlined</td><td>outline / on-surface-variant</td><td>outline / on-surface-variant</td><td>inverse-surface / inverse-on-surface</td></tr>
+          <tr><td>Text</td><td>primary</td><td>no existe</td><td>no existe</td></tr>
         </tbody>
       </table>
-      <h3>El padding vertical se calcula</h3>
-      <p>No es un valor fijo, es <code>calc((altura - alto de línea) / 2)</code>. Depende de dos cosas: la altura del tamaño elegido y el alto de línea de su tipografía. Como el <code>medium</code> usa <code>title-medium</code> y no <code>label-large</code>, su padding es distinto aunque mida lo mismo que otro.</p>
-      <h3>El <code>outlined</code> cede 1px por lado</h3>
-      <p>Un borde de 1px se suma al tamaño del botón, y el <code>outlined</code> mediría 42px frente a los 40px del resto. M3 lo resuelve dibujando el borde dentro de la caja, en un nodo aparte. Aquí no hay JavaScript para crearlo, así que el <code>outlined</code> descuenta el grosor del padding vertical y el alto exterior coincide.</p>
-    </article>
-
-    <article class="sr-section">
-      <h2>States</h2>
-      <p>Cinco estados. Cuatro son pseudo-clases de CSS y se ven al interactuar de verdad; el quinto es un atributo y se puede mostrar.</p>
-      <table class="sr-table">
-        <thead>
-          <tr><th scope="col">Estado</th><th scope="col">Selector</th><th scope="col">Capa de estado</th><th scope="col">Efecto</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Enabled</td><td>—</td><td>0%</td><td>Reposo</td></tr>
-          <tr><td>Hovered</td><td><code>:hover</code></td><td>8%</td><td>La capa aparece sobre el contenido</td></tr>
-          <tr><td>Focused</td><td><code>:focus-visible</code></td><td>10%</td><td>La capa aparece, más un anillo de foco de 3px</td></tr>
-          <tr><td>Pressed</td><td><code>:active</code></td><td>10%</td><td>La capa se intensifica</td></tr>
-          <tr><td>Disabled</td><td><code>[disabled]</code></td><td>0%</td><td>Relleno al 10%, contenido al 38%</td></tr>
-        </tbody>
-      </table>
-      <div class="sr-stage">
-        <button class="md-button" type="button" disabled>Deshabilitado</button>
-      </div>
-      <h3>Por qué <code>:focus-visible</code> y no <code>:focus</code></h3>
-      <p><code>:focus</code> también se dispara al hacer clic con el ratón. Un anillo de foco que aparece al pulsar el ratón confunde: el foco de teclado es el único que necesita señalarse, y es el único que el usuario no ve ocurrir.</p>
-      <h3>Cómo se forzan los estados para documentarlos</h3>
-      <p>No se pueden forzar desde el marcado. La capa de estado es el pseudo-elemento <code>::after</code> del propio botón, y un estado de CSS no se activa con un atributo.</p>
-      <p>La plantilla del showroom propone un <code>&lt;span class="md-state-layer-hover"&gt;</code> dentro del componente. <strong>En este botón eso no funcionaría</strong>: un <code>span</code> sin posicionar no tiene tamaño, y la capa de estado del botón es su propio <code>::after</code>, que el autor no controla desde el HTML. Cuatro celdas vacías serían documentación de una mentira.</p>
-      <p>Por eso esta sección documenta los valores y el <code>disabled</code> se ve de verdad, porque es un atributo. Los otros cuatro se comprueban pasando el ratón o tabulando por la página.</p>
+      <p>Dos reglas que solo aplican al toggle: usa un icono <em>outlined</em> sin seleccionar y el mismo icono <em>filled</em> al seleccionar, y si no hay versión filled, sube el grosor. Y si la etiqueta cambia entre estados, mantén el número de caracteres parecido en los dos: un cambio grande rompe el diseño y confunde.</p>
     </article>
 
     <article class="sr-section">
@@ -189,15 +235,293 @@
       <p class="sr-na">La composición con un segundo botón interactivo, o con un <code>chip</code> o un <code>card</code>, queda pendiente: no hay más componentes en <code>3-comp/</code> todavía.</p>
     </article>
 
+    <article class="sr-section" id="shapes">
+      <h2>Shapes</h2>
+      <p>Dos formas: <strong>round</strong>, con esquinas completamente redondeadas, y <strong>square</strong>, con un redondeo más discreto que cambia con el tamaño.</p>
+      <div class="sr-stage">
+        <button class="md-button" type="button">Round</button>
+      </div>
+      <h3>La tabla de radios de la especificación</h3>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Forma</th><th scope="col">XS</th><th scope="col">S</th><th scope="col">M</th><th scope="col">L</th><th scope="col">XL</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Round</td><td>full</td><td>full</td><td>full</td><td>full</td><td>full</td></tr>
+          <tr><td>Square</td><td>12dp</td><td>12dp</td><td>16dp</td><td>28dp</td><td>28dp</td></tr>
+          <tr><td>Al presionar</td><td>8dp</td><td>8dp</td><td>12dp</td><td>16dp</td><td>16dp</td></tr>
+        </tbody>
+      </table>
+      <h3>Qué radios necesita y cuáles faltan</h3>
+      <p class="sr-na">Solo está implementada <code>round</code>, que es <code>corner-full</code>. <strong>La forma square no está implementada</strong>, y antes de decir que cuesta trabajo conviene mirar el mapa: <strong>todos los valores que M3 pide ya existen</strong> en <code>2-sys/shape.css</code>.</p>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Lo que pide M3</th><th scope="col">Valor</th><th scope="col">Token que ya existe</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Round, todos los tamaños</td><td>full</td><td><code>--md-sys-shape-corner-full</code></td></tr>
+          <tr><td>Square XS y S</td><td>12dp</td><td><code>--md-sys-shape-corner-medium</code></td></tr>
+          <tr><td>Square M</td><td>16dp</td><td><code>--md-sys-shape-corner-large</code></td></tr>
+          <tr><td>Square L y XL</td><td>28dp</td><td><code>--md-sys-shape-corner-extra-large</code></td></tr>
+          <tr><td>Presionado XS y S</td><td>8dp</td><td><code>--md-sys-shape-corner-small</code></td></tr>
+          <tr><td>Presionado M</td><td>12dp</td><td><code>--md-sys-shape-corner-medium</code></td></tr>
+          <tr><td>Presionado L y XL</td><td>16dp</td><td><code>--md-sys-shape-corner-large</code></td></tr>
+        </tbody>
+      </table>
+      <p>La forma square no necesita ni un token nuevo. Lo que falta es el morph al presionar, y ese sí es un problema real: M3 lo anima con una curva de resorte, y un resorte son dos parámetros físicos, no una función de timing. Habría que aproximarlo con <code>linear()</code> y se perdería la física.</p>
+    </article>
+
+    <article class="sr-section" id="sizes">
+      <h2>Sizes</h2>
+      <p>Cinco recomendaciones. Tres implementadas.</p>
+      <div class="sr-grid">
+        <figure class="sr-cell">
+          <div class="sr-stage"><button class="md-button md-button-xsmall" type="button">Extra small</button></div>
+          <figcaption>32px · <code>.md-button-xsmall</code></figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-stage"><button class="md-button md-button-small" type="button">Small</button></div>
+          <figcaption>40px · <code>.md-button-small</code> · por defecto</figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-stage"><button class="md-button md-button-medium" type="button">Medium</button></div>
+          <figcaption>56px · <code>.md-button-medium</code></figcaption>
+        </figure>
+      </div>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Tamaño</th><th scope="col">Alto</th><th scope="col">Padding lateral</th><th scope="col">Glifo</th><th scope="col">Tipografía</th><th scope="col">Estado</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Extra small</td><td>32px</td><td>12px</td><td>20px</td><td>label-large</td><td>implementado</td></tr>
+          <tr><td>Small</td><td>40px</td><td>16px</td><td>20px</td><td>label-large</td><td>implementado</td></tr>
+          <tr><td>Medium</td><td>56px</td><td>24px</td><td>24px</td><td>title-medium</td><td>implementado</td></tr>
+          <tr><td>Large</td><td>96px</td><td>48px</td><td>32px</td><td>headline-small</td><td>no implementado</td></tr>
+          <tr><td>Extra large</td><td>136px</td><td>64px</td><td>40px</td><td>headline-large</td><td>no implementado</td></tr>
+        </tbody>
+      </table>
+      <p>El <code>medium</code> cambia también la tipografía: usa <code>title-medium</code> en vez de <code>label-large</code>. No es una inconsistencia, es la jerarquía de Sizes de M3: el tamaño del componente y la jerarquía de su etiqueta son la misma escala.</p>
+      <p class="sr-na"><strong>Large y extra large no están implementados</strong> porque sus alturas, 96 y 136, no tienen token: la escala de espacio de M3 salta de 56 a 72. Anadirlas exigiría crear una primitiva en la capa de referencia por un solo componente.</p>
+    </article>
+
+    <article class="sr-section">
+      <h2>Padding</h2>
+      <p>Hay dos anchos de padding para el tamaño small, y M3 cambió de opinión sobre cuál es el correcto.</p>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Padding del small</th><th scope="col">M3 clásico</th><th scope="col">M3 Expressive</th><th scope="col">Estado</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>16dp</td><td>—</td><td><strong>recomendado</strong>, para igualar el resto de tamaños</td><td>implementado</td></tr>
+          <tr><td>24dp</td><td>disponible</td><td>deja de recomendarse</td><td>no implementado</td></tr>
+        </tbody>
+      </table>
+      <p>Este proyecto usa 16px, que es la recomendación actual. No es la que aparece en los token sets antiguos de M3, de ahí que valga la pena dejarlo escrito.</p>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Tamaño</th><th scope="col">Padding lateral</th><th scope="col">Padding vertical</th><th scope="col">Separación icono-etiqueta</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>xsmall</td><td>12px</td><td>6px</td><td>8px</td></tr>
+          <tr><td>small</td><td>16px</td><td>10px</td><td>8px</td></tr>
+          <tr><td>medium</td><td>24px</td><td>16px</td><td>8px</td></tr>
+        </tbody>
+      </table>
+      <h3>El padding vertical se calcula</h3>
+      <p>No es un valor fijo, es <code>calc((altura - alto de línea) / 2)</code>. Depende de la altura del tamaño elegido y del alto de línea de su tipografía. Como el <code>medium</code> usa <code>title-medium</code> y no <code>label-large</code>, su padding es distinto aunque mida lo mismo que otro.</p>
+      <h3>El outlined cede 1px por lado</h3>
+      <p>Un borde de 1px se suma al tamaño del botón, y el <code>outlined</code> mediría 42px frente a los 40px del resto. M3 lo resuelve dibujando el borde dentro de la caja, en un nodo aparte. Aquí no hay JavaScript para crearlo, así que el <code>outlined</code> descuenta el grosor del padding vertical y el alto exterior coincide.</p>
+    </article>
+
+    <article class="sr-section" id="states">
+      <h2>States</h2>
+      <p>Cinco estados. Los cinco se ven a la vez, y ninguno es una imagen: cada celda es el botón real con su estado forzado.</p>
+      <div class="sr-grid">
+        <figure class="sr-cell">
+          <div class="sr-stage"><button class="md-button" type="button">Enabled</button></div>
+          <figcaption>Enabled</figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-stage"><button class="md-button" type="button"><span class="md-state-layer-hover" aria-hidden="true"></span>Hovered</button></div>
+          <figcaption>Hovered · <code>md-state-layer-hover</code></figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-stage"><button class="md-button" type="button"><span class="md-state-layer-focus" aria-hidden="true"></span>Focused</button></div>
+          <figcaption>Focused · <code>md-state-layer-focus</code></figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-stage"><button class="md-button" type="button"><span class="md-state-layer-pressed" aria-hidden="true"></span>Pressed</button></div>
+          <figcaption>Pressed · <code>md-state-layer-pressed</code></figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-stage"><button class="md-button" type="button" disabled>Disabled</button></div>
+          <figcaption>Disabled · <code>[disabled]</code></figcaption>
+        </figure>
+      </div>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Estado</th><th scope="col">En producción</th><th scope="col">Capa de estado</th><th scope="col">Efecto</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Enabled</td><td>—</td><td>0%</td><td>Reposo</td></tr>
+          <tr><td>Hovered</td><td><code>:hover</code></td><td>8%</td><td>La capa aparece sobre el contenido</td></tr>
+          <tr><td>Focused</td><td><code>:focus-visible</code></td><td>10%</td><td>La capa aparece, más un anillo de foco de 3px</td></tr>
+          <tr><td>Pressed</td><td><code>:active</code></td><td>10%</td><td>La capa se intensifica</td></tr>
+          <tr><td>Disabled</td><td><code>[disabled]</code></td><td>0%</td><td>Relleno al 10%, contenido al 38%</td></tr>
+        </tbody>
+      </table>
+      <p>El <code>outlined</code> y el <code>text</code> tienen el relleno invisible en reposo, pero se comportan igual que el resto en disabled, hover, focus y pressed. M3 lo dice de forma explícita para los dos.</p>
+      <h3>En producción y en esta página son dos cosas distintas</h3>
+      <p>En un producto, la capa de estado es el <code>::after</code> del botón y la activa una pseudo-clase. El autor no hace nada: sale sola de la interacción.</p>
+      <p>Una pseudo-clase <strong>no se puede activar desde el marcado</strong>. No hay atributo que la fuerce, porque las pseudo-clases no leen atributos. Así que para enseñar las cinco celdas a la vez, el botón acepta un hijo con una clase de <code>2-sys/state.css</code>: <code>&lt;span class="md-state-layer-hover"&gt;&lt;/span&gt;</code>.</p>
+      <p>La geometría de esa capa la pone el componente, no la clase. La clase define el color y la intensidad, que es lo suyo; el <code>inset: 0</code> depende de la forma del componente, y si lo trajera la clase se derramaría en un botón con borde redondeado.</p>
+    </article>
+
+    <article class="sr-section">
+      <h2>Interacción</h2>
+      <p>El botón es un <code>&lt;button&gt;</code> nativo, así que el teclado, el foco y la activación los da el navegador. El CSS solo añade la capa de estado y el anillo.</p>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Entrada</th><th scope="col">Qué hace el CSS</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Puntero encima</td><td><code>:hover</code>, capa al 8%</td></tr>
+          <tr><td>Teclado</td><td><code>:focus-visible</code>, capa al 10% y anillo de 3px con offset de 2px</td></tr>
+          <tr><td>Pulsado</td><td><code>:active</code>, capa al 10%</td></tr>
+          <tr><td><code>disabled</code></td><td>Relleno al 10%, contenido al 38%, sin capa, sin eventos</td></tr>
+        </tbody>
+      </table>
+      <p>El anillo de foco usa <code>:focus-visible</code> y no <code>:focus</code>. <code>:focus</code> también se dispara al hacer clic con el ratón, y un anillo que aparece al pulsar el ratón confunde: el foco de teclado es el único que necesita señalarse, y es el único que el usuario no ve ocurrir.</p>
+      <h3>La capa de estado se apaga en disabled</h3>
+      <p>Si no se apagara, el hover dejaría un brillo sobre un botón que no responde. Y <code>pointer-events: none</code> en el botón deshabilitado hace que no intercepte el puntero.</p>
+    </article>
+
+    <article class="sr-section" id="comportamiento">
+      <h2>Comportamiento</h2>
+      <p>La capa de estado hace una transición de opacidad de 100ms con la curva estándar, leída de los tokens de <code>2-sys/motion.css</code>.</p>
+      <p>El color de la capa sale de <code>currentColor</code>, así que toma el de la etiqueta sin declarar un token propio. Por eso el componente no tiene un <code>--md-comp-button-state-layer-color</code>: sería el mismo valor que el de la etiqueta, y duplicarlo obligaría a cambiarlo dos veces.</p>
+      <h3>El ripple de M3</h3>
+      <p>M3 pone una onda de color que se expande desde el punto de pulsación, y la implementa con un elemento que necesita JavaScript para conocer las coordenadas del puntero. Este proyecto no tiene JavaScript. La propia especificación reconoce la capa de estado como la alternativa sin JS.</p>
+      <p>La consecuencia visible: la pulsación se comunica con la capa al 10% en vez de con una onda. No se ha aproximado con una transición de escala, porque sería una imitación de una animación que no es.</p>
+      <h3>Clics rápidos</h3>
+      <p class="sr-na">M3 recomienda usar una curva de movimiento modificada cuando se anticipan clics o pulsaciones seguidas, para evitar efectos resonantes de animaciones solapadas. No aplica aquí: sin ripple no hay dos animaciones que puedan solaparse.</p>
+    </article>
+
+    <article class="sr-section" id="accesibilidad">
+      <h2>Accesibilidad</h2>
+      <h3>Contraste de 3:1</h3>
+      <p>M3 pide un contraste de 3:1 con el fondo. El punto de medición <strong>depende de la configuración</strong>: en elevated, filled y tonal se mide desde el contenedor; en outlined y text, desde el texto de la etiqueta. Estos son los valores medidos sobre el lienzo de la página.</p>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Configuración</th><th scope="col">Se mide desde</th><th scope="col">Claro</th><th scope="col">Oscuro</th><th scope="col">Cumple</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Elevated</td><td>contenedor</td><td>1.05</td><td>1.09</td><td>no</td></tr>
+          <tr><td>Filled</td><td>contenedor</td><td>6.12</td><td>10.91</td><td>sí</td></tr>
+          <tr><td>Tonal</td><td>contenedor</td><td>1.23</td><td>2.00</td><td>no</td></tr>
+          <tr><td>Outlined</td><td>texto</td><td>8.88</td><td>10.91</td><td>sí</td></tr>
+          <tr><td>Text</td><td>texto</td><td>6.12</td><td>10.91</td><td>sí</td></tr>
+        </tbody>
+      </table>
+      <p><strong>Elevated y tonal no llegan a 3:1 sobre el lienzo, en ninguno de los dos temas.</strong> Y conviene decirlo claro: es un dato de M3, no un fallo de esta implementación. Los tokens de M3 para esas dos configuraciones son los que son, y su separación la aporta la <em>sombra</em> y no el tono del relleno. Por eso su botón vive sobre una <code>surface</code> dentro de una tarjeta, y no suelto sobre el lienzo.</p>
+      <p>La alternativa sería medir siempre desde la etiqueta, que en esas dos configuraciones sí tiene contraste alto. Se deja la medición como M3 la define, y se documenta el resultado.</p>
+      <h3>Área táctil de 48dp: este componente NO la cumple</h3>
+      <p>M3 exige que los <strong>botones de icono</strong> de tamaño extra small y small tengan un objetivo de 48×48dp o más. Un botón de 32dp o 40dp no llega.</p>
+      <div class="sr-stage">
+        <button class="md-button md-button-xsmall md-measure-touch-target" type="button" aria-label="Añadir">
+          <span class="md-button-icon material-symbols-outlined" aria-hidden="true">add</span>
+        </button>
+      </div>
+      <p>La utilidad <code>.md-measure-touch-target</code> viene de <code>2-sys/measurement.css</code> y pide 48×48 con <code>min-width</code> y <code>min-height</code>. <strong>Medido en el navegador, consigue 48×32: el ancho sí, el alto no.</strong></p>
+      <p>La causa es el orden de capas. La utilidad vive en <code>sys</code> y el botón declara su propio <code>min-height</code> en <code>comp</code>, que está declarada <em>después</em>. A igualdad de especificidad, gana <code>comp</code>:</p>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Medida</th><th scope="col">Declarado en</th><th scope="col">Computado</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>min-width</td><td>sys, la utilidad</td><td>48px, correcto</td></tr>
+          <tr><td>min-height</td><td>comp, el componente</td><td>32px, <strong>no cumple</strong></td></tr>
+        </tbody>
+      </table>
+      <p>Es el mismo fenómeno que impide que una utilidad de <code>2-sys</code> cambie el color de un componente, y está documentado en la skill: una clase de <code>2-sys</code> puede fijar algo que el componente no toque, y no puede pisar algo que el componente sí fije.</p>
+      <p><strong>Consecuencia:</strong> mientras el <code>min-height</code> viva en el componente, el requisito de 48×48 de M3 <strong>no se puede cumplir con una utilidad</strong>. Necesita un modificador del propio componente, del tipo <code>.md-button-touch</code>, que separe el área visible del área pulsable. No está implementado, y queda anotado en <a href="#notas">Notas</a>.</p>
+      <h3>Teclado</h3>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Tecla</th><th scope="col">Acción</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>Tab</code></td><td>Llega al botón</td></tr>
+          <tr><td><code>Espacio</code> o <code>Enter</code></td><td>Lo activa</td></tr>
+        </tbody>
+      </table>
+      <p>Esto no hay que implementarlo: viene de usar un <code>&lt;button&gt;</code> nativo. Un <code>&lt;div&gt;</code> con clases de botón no recibiría ni <code>Tab</code> ni <code>Enter</code>, ni tendría rol de botón. Esa es la razón de que el componente no pueda hacerse con un <code>&lt;div&gt;</code>.</p>
+      <h3>Nombre accesible</h3>
+      <p>La etiqueta accesible debe <strong>coincidir con el texto visible</strong>: si dice “Enviar”, el nombre accesible dice “Enviar”. Puede llevar contexto adicional si hace falta. En un botón <em>solo</em> con icono no hay texto visible, y por eso el nombre va en el <code>aria-label</code> del botón y el glifo lleva <code>aria-hidden="true"</code>.</p>
+      <h3>Texto al 200%</h3>
+      <p>M3 pide mantener las etiquetas breves para que no se envuelvan ni se trunquen: entre una y tres palabras. Si aun así la etiqueta se trunca, hay que ofrecer otra forma de acceder al contenido completo en un solo toque.</p>
+      <p class="sr-na">El componente declara <code>text-overflow: ellipsis</code> y <code>white-space: nowrap</code>, así que trunca en vez de envolver. Es el comportamiento por defecto del SDK de M3, que permite personalizarlo, pero la especificación desaconseja truncar. Queda declarado como una tensión conocida entre la receta y la guía.</p>
+    </article>
+
+    <article class="sr-section">
+      <h2>Responsive</h2>
+      <p>El ancho del contenedor se ajusta a la etiqueta, de forma dinámica. Y puede estirarse en horizontal para seguir la rejilla.</p>
+      <p>Lo que M3 no quiere es un ancho fijo más estrecho que el texto de la etiqueta, ni un botón estirado hasta quedar largo y plano con muy poco contenido dentro.</p>
+      <p>El icono y la etiqueta se mantienen <strong>agrupados y centrados</strong> mientras el ancho cambia. Nunca se separan, ni se anclan a lados opuestos del botón.</p>
+      <div class="sr-stage sr-stage--fill">
+        <button class="md-button" type="button">
+          <span class="md-button-icon material-symbols-outlined" aria-hidden="true">save</span>
+          Guardar los cambios
+        </button>
+      </div>
+      <p>El componente declara <code>display: inline-flex</code> con <code>justify-content: center</code>, que es lo que mantiene el grupo centrado cuando el contenedor se estira. No declara un ancho: es el contenido el que lo determina.</p>
+    </article>
+
     <article class="sr-section">
       <h2>Anatomía</h2>
-      <div class="sr-stage"><button class="md-button" type="button">Etiqueta</button></div>
+      <p>La especificación nombra tres partes: <strong>contenedor</strong>, <strong>texto de etiqueta</strong> e <strong>icono, opcional</strong>. El contenedor incluye el relleno y la sombra; los otros dos viven dentro.</p>
+      <div class="sr-stage">
+        <button class="md-button md-button-filled md-button-medium" type="button">
+          <span class="md-button-icon material-symbols-outlined" aria-hidden="true">save</span>
+          Guardar
+        </button>
+      </div>
       <ol>
-        <li><strong>El elemento</strong>: un <code>&lt;button&gt;</code> nativo. No es un <code>&lt;div&gt;</code> estilizado: aporta la semántica y el <code>role="button"</code> implícito, y con él el comportamiento de teclado y el foco que el navegador da gratis.</li>
-        <li><strong><code>::before</code></strong>: el relleno y la sombra. Va aparte del elemento para poder atenuarlo al 10% en <code>disabled</code> sin arrastrar el texto, que baja al 38%.</li>
+        <li><strong>El elemento</strong>: un <code>&lt;button&gt;</code> nativo. No es un <code>&lt;div&gt;</code> estilizado: aporta la semántica, el <code>role="button"</code> implícito y todo el teclado.</li>
+        <li><strong><code>span.md-button-icon</code></strong>: el glifo, opcional. El componente le da la caja y el tamaño de fuente; la fuente del glifo es de la página. Lleva <code>aria-hidden="true"</code> porque el nombre lo da la etiqueta.</li>
+        <li><strong>La etiqueta</strong>: texto plano, nodo de texto. No necesita un elemento alrededor. Con el icono delante, el <code>gap</code> de 8px los separa.</li>
+        <li><strong><code>::before</code></strong>: el relleno. Va aparte del elemento para poder atenuarlo al 10% en <code>disabled</code> sin arrastrar el texto, que baja al 38%.</li>
         <li><strong><code>::after</code></strong>: la capa de estado. Usa <code>currentColor</code>, así que toma el color de la etiqueta sin declarar un token de color propio.</li>
       </ol>
-      <p>Los dos pseudo-elementos llevan <code>z-index: -1</code> para quedar detrás del texto, y el botón declara <code>isolation: isolate</code> para que no se pinten detrás del fondo de un ancestro. Sin esa segunda parte, un botón dentro de una tarjeta se vería sin relleno.</p>
+      <p>La sombra de elevación va en el elemento, no en un pseudo-elemento. <code>overflow: hidden</code> recorta a los descendientes, y la sombra de un <code>::before</code> se dibujaba justo en la parte recortada: por eso la elevación no se veía.</p>
+      <p>Los dos pseudo-elementos llevan <code>z-index: -1</code> para quedar detrás del texto, y el botón declara <code>isolation: isolate</code> para que no se pinten detrás del fondo de un ancestro.</p>
+      <h3>La etiqueta es la parte más importante</h3>
+      <p>La especificación es tajante: la etiqueta es lo más importante del botón, porque describe lo que va a pasar. Debería ser <strong>muy breve, de una a tres palabras</strong>, en <strong>sentence case</strong>, que solo capitaliza la primera palabra y los nombres propios. <em>Guardar con vuelos</em>, no <em>GUARDAR CON VUELOS</em>.</p>
+      <p>Y no debe truncarse ni envolver: siempre visible en una sola línea.</p>
+    </article>
+
+    <article class="sr-section">
+      <h2>Do / Don't</h2>
+      <h3>Do</h3>
+      <ul>
+        <li>Usar botones <code>filled</code> visualmente destacados para las acciones más importantes, y solo unas pocas en la pantalla.</li>
+        <li>Dejar que el ancho del contenedor se ajuste a la etiqueta, y que pueda estirarse en horizontal.</li>
+        <li>Mantener el icono y la etiqueta agrupados y centrados cuando el botón cambia de ancho.</li>
+        <li>Colocar el icono en el lado inicial, antes de la etiqueta.</li>
+        <li>Usar iconos que comuniquen claramente su significado.</li>
+        <li>Usar botones para acciones discretas, y texto de enlace para enlaces.</li>
+        <li>En un diálogo, alinear los botones de texto al borde final.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li><strong>No subrayar un botón de texto.</strong> Para dar énfasis a un enlace, usar texto de enlace.</li>
+        <li><strong>No poner dos iconos en el mismo botón.</strong></li>
+        <li><strong>No envolver el texto de la etiqueta.</strong> Para máxima legibilidad, una sola línea.</li>
+        <li><strong>No estrechar el contenedor por debajo del texto</strong> de la etiqueta, ni dejarlo crecer hasta quedar un botón largo y plano con poco contenido.</li>
+        <li><strong>No saturar la interfaz de botones.</strong> Las acciones de baja prioridad, a un menú de desbordamiento o a botones de icono.</li>
+        <li><strong>No usar el botón outlined junto a chips</strong> sin cuidado: son visualmente casi iguales. Un filled o un tonal suelen ser mejor.</li>
+        <li><strong>No poner un outlined o un text sobre una imagen</strong> sin asegurar contraste: el contenedor no las acompaña.</li>
+      </ul>
     </article>
 
     <article class="sr-section">
@@ -213,6 +537,7 @@
           <tr><td>Radio de esquina</td><td>completo</td><td><code>--md-comp-button-shape</code></td></tr>
           <tr><td>Color de relleno</td><td>primary</td><td><code>--md-comp-button-container-color</code></td></tr>
           <tr><td>Color de etiqueta</td><td>on-primary</td><td><code>--md-comp-button-label-color</code></td></tr>
+          <tr><td>Color del borde (outlined)</td><td>outline</td><td><code>--md-comp-button-outline-color</code></td></tr>
           <tr><td>Grosor del anillo de foco</td><td>3px</td><td><code>--md-comp-button-focus-width</code></td></tr>
           <tr><td>Separación del anillo</td><td>2px</td><td><code>--md-comp-button-focus-offset</code></td></tr>
           <tr><td>Transición de la capa</td><td>100ms</td><td><code>--md-comp-button-state-duration</code></td></tr>
@@ -220,22 +545,24 @@
       </table>
     </article>
 
-    <article class="sr-section">
+    <article class="sr-section" id="notas">
       <h2>Notas</h2>
       <p>Lo que este componente <strong>no</strong> implementa, y por qué. No son olvidos.</p>
-      <h3>Iconografía: existe pero no se documenta aquí</h3>
-      <p>El botón acepta un icono como elemento hijo:</p>
-      <p><code>&lt;button class="md-button"&gt;&lt;span class="md-button-icon"&gt;…&lt;/span&gt;Etiqueta&lt;/button&gt;</code></p>
-      <p>El glifo mide 20px en <code>xsmall</code> y <code>small</code>, y 24px en <code>medium</code>, con 8px de separación respecto a la etiqueta.</p>
-      <p><strong>Lo que no coincide con M3:</strong> la especificación aprieta el padding del lado del icono a 16dp. Pero en la versión que se implementó, M3 v34, <em>referencia</em> ese token y <em>no lo define</em> en ningún archivo: es una referencia colgante. Copiar el 16dp de la web tampoco valdría, porque el <code>xsmall</code> tiene 12px de base y el botón con icono ocuparía más que sin icono.</p>
-      <p>Este proyecto mantiene el mismo padding con y sin icono, y lo documenta como lo que es: una omisión consciente, pendiente de que M3 defina el token. Nunca escribe un número que no sale de la fuente.</p>
-      <h3>El ripple de M3</h3>
-      <p>M3 pone una onda de color que se expande desde el punto de pulsación, y la implementa con un elemento que necesita JavaScript para conocer las coordenadas del puntero. Este proyecto no tiene JavaScript. La propia especificación de M3 reconoce la capa de estado como la alternativa sin JS, y es la que se usa.</p>
-      <p>La consecuencia visible: la pulsación se comunica con la capa al 10% en vez de con una onda expansiva. No se ha aproximado con una transición de escala, porque sería una imitación de una animación que no es.</p>
-      <h3>Seleccionado y no seleccionado</h3>
-      <p>M3 permite que el botón funcione como interruptor, con un relleno <code>surface-container</code> cuando está sin seleccionar. No está implementado: son doce tokens más por variante, y ningún componente del proyecto lo necesita todavía.</p>
-      <h3>El morph de esquina al presionar</h3>
-      <p>Al presionar, M3 reduce el radio de la esquina con una transición de resorte. Un resorte no se expresa en una transición de CSS normal: son dos parámetros físicos —amortiguación y rigidez—, no una curva. Habría que aproximarlo con <code>linear()</code> y se perdería la física.</p>
+      <h3>El área táctil de 48dp</h3>
+      <p>M3 exige 48×48 en los botones de icono de tamaño extra small y small. <strong>No se cumple</strong>, y la razón está medida en <a href="#accesibilidad">Accesibilidad</a>: la utilidad <code>.md-measure-touch-target</code> consigue 48 de ancho, pero el <code>min-height</code> del componente, en la capa <code>comp</code>, gana a la utilidad de <code>sys</code>.</p>
+      <p>Hace falta un modificador del propio componente que separe el área visible del área pulsable. Es un hueco real, y se cerrará con un componente, no con una utilidad.</p>
+      <h3>El botón toggle</h3>
+      <p>La segunda variante de M3. Ver <a href="#variantes">Variantes</a> con la tabla completa de lo que falta.</p>
+      <h3>La forma square y el morph al presionar</h3>
+      <p>Ver <a href="#shapes">Shapes</a>. Los radios ya existen todos; lo que falta es el morph, que necesita una curva de resorte.</p>
+      <h3>Los tamaños large y extra large</h3>
+      <p>Sus alturas, 96 y 136, no tienen token. Ver <a href="#sizes">Sizes</a>.</p>
+      <h3>El padding con icono</h3>
+      <p>M3 lo referencia pero no lo define. Ver <a href="#iconografia">Iconografía</a>.</p>
+      <h3>El ripple</h3>
+      <p>Requiere JavaScript. Ver <a href="#comportamiento">Comportamiento</a>.</p>
+      <h3>Dos cosas que la especificación ya no recomienda</h3>
+      <p>El padding de 24dp en el tamaño small, sustituido por 16dp. Y el botón de text en color neutro, que en la comparación con M2 aparece como retirado de la recomendación.</p>
     </article>
 
   </main>
