@@ -297,6 +297,77 @@
 }
 
 /* ---------------------------------------------------------------------------
+   CAPAS DE ESTADO COMO HIJO: PARA PODER FORZAR UN ESTADO
+   ---------------------------------------------------------------------------
+   Arriba esta el patron de verdad: la capa es el ::after del boton y la
+   activa una pseudo-clase. Es lo correcto en un producto, porque el estado
+   sale solo de la interaccion y el autor no tiene que hacer nada.
+
+   El problema es documentarlo. Una pseudo-clase no se activa desde el
+   marcado, asi que el showroom no puede enseñar las cinco celdas a la vez:
+   solo la que el raton tenga encima en ese instante. Y no hay forma de
+   "forzar" :hover con un atributo, porque las pseudo-clases no leen
+   atributos.
+
+   Esta regla existe para eso. Las clases .md-state-layer-hover, -focus,
+   -pressed y -dragged de 2-sys/state.css se_declaran expressly para "uso
+   directo desde el HTML, por ejemplo en el showroom o en estados que no
+   dependen de :hover". Eso es textual de 2-sys/state.css. Solo faltaba que
+   el componente las entendiera.
+
+   Uso:
+
+     <button class="md-button">
+       <span class="md-state-layer-hover"></span>
+       Etiqueta
+     </button>
+
+   Por que la posiciona el componente y no la clase de 2-sys: la clase
+   define el COLOR y la INTENSIDAD, que es lo suyo. La geometria depende de
+   la forma del componente, y por tanto es del componente. Si
+   .md-state-layer-hover trajera inset: 0, funcionaria en un rectangulo y
+   se derramaria en un boton con borde redondeado.
+
+   OJO CON EL SELECTOR
+   -------------------
+   No basta con escribir .md-state-layer. Las cinco clases de 2-sys son
+   independientes, y un elemento con class="md-state-layer-hover" NO lleva
+   la clase .md-state-layer: son cinco clases del mismo peso, no una base y
+   cuatro variantes. Escribir solo la base no matchea ninguna, y el fallo es
+   silencioso: la opacidad se ve (la pone 2-sys) pero la capa queda en
+   static, sin tamaño, y no se ve nada.
+
+   Por eso van las cinco en un :is(). Un selector de atributo con
+   [class*=]eria mas corto y peor: matchearia cualquier clase que contenga
+   ese texto, incluidas las de otro componente.
+   ------------------------------------------------------------------------ */
+
+.md-button > :is(
+  .md-state-layer,
+  .md-state-layer-hover,
+  .md-state-layer-focus,
+  .md-state-layer-pressed,
+  .md-state-layer-dragged
+) {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* Un solo estado forzado por boton. Con dos, el segundo taparia al
+   primero y la suma de opacidades no significaria nada: M3 dice que solo
+   puede haber una capa a la vez. */
+.md-button:has(> :is(
+  .md-state-layer,
+  .md-state-layer-hover,
+  .md-state-layer-focus,
+  .md-state-layer-pressed,
+  .md-state-layer-dragged
+))::after {
+  opacity: 0;
+}
 
 /* ---------------------------------------------------------------------------
    EL ANILLO DE FOCUS
@@ -429,10 +500,35 @@
    no hace falta :has() para detectarlo.
    ------------------------------------------------------------------------ */
 
+/* ---------------------------------------------------------------------------
+   POR QUE EL ICONO NECESITA font-size Y NO SOLO width Y height
+   ---------------------------------------------------------------------------
+   Los iconos de M3 son Material Symbols, una FUENTE variable, no imagenes
+   ni SVG. Un icono es, literalmente, un texto con una fuente que lo dibuja:
+   el glifo se escala con font-size, no con width.
+
+   Asi que con declarar width y height el glifo se dibuja en el tamano de
+   fuente que herede, que no es el del boton, y queda pequeno dentro de una
+   caja vacia. font-size es lo que hace que el glifo llene la caja.
+
+   line-height: 1 evita que el alto de linea del glifo abra el boton: sin
+   el, el inline-flex centraria un texto de 20px con un line-height de
+   1.15 y la caja se saldria de la altura prevista.
+
+   NO se declara aqui la fuente. La fuente la carga la pagina, igual que la
+   tipografia: es contenido, como la etiqueta. El componente no sabe si el
+   glifo viene de Material Symbols o de un SVG, y no deberia saberlo.
+
+   El glifo toma el color de la etiqueta por currentColor, asi que no hay
+   que declarar nada para el color: hereda del boton.
+   ------------------------------------------------------------------------ */
+
 .md-button-icon {
   flex: 0 0 auto;
   width: var(--md-comp-button-icon-size);
   height: var(--md-comp-button-icon-size);
+  font-size: var(--md-comp-button-icon-size);
+  line-height: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
