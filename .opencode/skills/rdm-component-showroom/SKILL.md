@@ -1203,12 +1203,33 @@ Two conventions that are easy to break:
 
 | File | Characters |
 | ---- | ---------- |
-| `README.md` | Spanish, **accents allowed** |
-| `*.css`, `*.html`, `tools/*.ps1` | **ASCII only, no accents** |
+| `README.md` | Spanish, accents |
+| `showroom/**/*.html` | Spanish, **accents**: it is prose a person reads, and unaccented Spanish reads as broken |
+| `src/css/**/*.css`, `showroom/assets/*.css`, `tools/*.ps1` | Spanish, accents, ASCII range otherwise |
 
-Comments in code are written in Spanish without accents. Check for stray non-Latin
-characters before committing; they have slipped into this project before and the verifier
-does not catch them.
+Every file: no BOM, LF line endings, exactly one trailing newline.
+
+**Never** a non-Latin script — CJK, Hangul, Cyrillic, Greek. Those have slipped into this
+project before. The single exception today is `elevation.css`, which draws the six levels
+with box characters (`└ ─ │ ┌ ┘`) on purpose; if you find one of those anywhere else, it
+is a mistake.
+
+### This rule was ASCII-only once, and was wrong
+
+An earlier version of this file said `*.css`, `*.html` and `*.ps1` were **ASCII only, no
+accents**. It was never true and following it was a mistake:
+
+- all 23 files in `src/css/` carry accented Spanish in their comments — 405 non-ASCII
+  characters in total, mostly the em dash in the file header;
+- the 7 views in `showroom/` carry accents deliberately. That text is shown to people.
+
+The real requirement is **consistency and a safe encoding**, not ASCII. What actually
+protects the repo is the first row of the table above and the paragraph under it: no BOM,
+LF, one trailing newline, and no non-Latin script. `tools/verify-tokens.ps1` does not
+check encoding at all, so this is on you.
+
+Do not "fix" accents in a file you are editing for another reason. That produces a diff of
+hundreds of unrelated comment lines and buries the real change.
 
 Do not introduce new frameworks, build systems, or duplicated styling systems unless the
 user explicitly requests it.
@@ -1278,8 +1299,8 @@ the new HTML.
 **Then check encoding**, which the verifier does not cover:
 
 - no BOM, LF line endings, one trailing newline;
-- no CJK or Hangul characters (they have slipped into this project before);
-- ASCII only in `.css`, `.html` and `.ps1`.
+- no CJK, Hangul or any other non-Latin script (they have slipped into this project
+  before). Accented Spanish is expected everywhere; see Language and encoding above.
 
 **Then verify in a real browser**, not by reading the code. Load the showroom and confirm
 with `getComputedStyle` that the tokens resolve to the values the documentation claims.
