@@ -85,23 +85,31 @@
 
     <hr class="md-divider">
 
-    <article class="sr-section">
+    <article class="sr-section" id="variantes">
       <h2>Variantes / Types</h2>
       <div class="sr-grid">
         <figure class="sr-cell">
-          <div class="sr-stage"><button class="md-icon-button md-icon-button-standard md-icon-button-small" type="button" aria-label="Favorito"><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span></button></div>
+          <div class="sr-stage"><button class="md-icon-button md-icon-button-standard md-icon-button-small" type="button" aria-label="Favorito"><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span>
+          <span class="md-icon-button-touch"></span>
+          </button></div>
           <figcaption><code>.md-icon-button-standard</code> · la de sistema</figcaption>
         </figure>
         <figure class="sr-cell">
-          <div class="sr-stage"><button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" aria-label="Favorito"><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span></button></div>
+          <div class="sr-stage"><button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" aria-label="Favorito"><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span>
+          <span class="md-icon-button-touch"></span>
+          </button></div>
           <figcaption><code>.md-icon-button-filled</code></figcaption>
         </figure>
         <figure class="sr-cell">
-          <div class="sr-stage"><button class="md-icon-button md-icon-button-filled-tonal md-icon-button-small" type="button" aria-label="Favorito"><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span></button></div>
+          <div class="sr-stage"><button class="md-icon-button md-icon-button-filled-tonal md-icon-button-small" type="button" aria-label="Favorito"><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span>
+          <span class="md-icon-button-touch"></span>
+          </button></div>
           <figcaption><code>.md-icon-button-filled-tonal</code></figcaption>
         </figure>
         <figure class="sr-cell">
-          <div class="sr-stage"><button class="md-icon-button md-icon-button-outlined md-icon-button-small" type="button" aria-label="Favorito"><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span></button></div>
+          <div class="sr-stage"><button class="md-icon-button md-icon-button-outlined md-icon-button-small" type="button" aria-label="Favorito"><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span>
+          <span class="md-icon-button-touch"></span>
+          </button></div>
           <figcaption><code>.md-icon-button-outlined</code></figcaption>
         </figure>
       </div>
@@ -117,9 +125,13 @@
       <div class="sr-stage">
         <button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" aria-label="Favorito" aria-pressed="false">
           <span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span>
+        
+        <span class="md-icon-button-touch"></span>
         </button>
         <button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" aria-label="Favorito" aria-pressed="true">
           <span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span>
+        
+        <span class="md-icon-button-touch"></span>
         </button>
       </div>
       <p>Se usa <code>aria-pressed</code> y no una clase propia porque el estado es <strong>semántico</strong>: un lector de pantalla tiene que anunciar que el botón está pulsado. Una clase no se anuncia.</p>
@@ -157,22 +169,30 @@
       <h2>Shapes</h2>
       <div class="sr-grid">
         <figure class="sr-cell">
-          <div class="sr-stage"><button class="md-icon-button md-icon-button-small" type="button" aria-label="Favorito" aria-pressed="false"><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span></button></div>
+          <div class="sr-stage"><button class="md-icon-button md-icon-button-small" type="button" aria-label="Favorito" aria-pressed="false"><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span>
+          <span class="md-icon-button-touch"></span>
+          </button></div>
           <figcaption><code>round</code> · <code>corner-full</code></figcaption>
         </figure>
         <figure class="sr-cell">
-          <div class="sr-stage"><button class="md-icon-button md-icon-button-square md-icon-button-small" type="button" aria-label="Favorito" aria-pressed="false"><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span></button></div>
+          <div class="sr-stage"><button class="md-icon-button md-icon-button-square md-icon-button-small" type="button" aria-label="Favorito" aria-pressed="false"><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span>
+          <span class="md-icon-button-touch"></span>
+          </button></div>
           <figcaption><code>.md-icon-button-square</code> · <code>corner-medium</code></figcaption>
         </figure>
       </div>
       <h3>Y se invierten al seleccionar</h3>
       <div class="sr-grid">
         <figure class="sr-cell">
-          <div class="sr-stage"><button class="md-icon-button md-icon-button-small" type="button" aria-label="Favorito" aria-pressed="true"><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span></button></div>
+          <div class="sr-stage"><button class="md-icon-button md-icon-button-small" type="button" aria-label="Favorito" aria-pressed="true"><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span>
+          <span class="md-icon-button-touch"></span>
+          </button></div>
           <figcaption>round seleccionado → <code>corner-medium</code></figcaption>
         </figure>
         <figure class="sr-cell">
-          <div class="sr-stage"><button class="md-icon-button md-icon-button-square md-icon-button-small" type="button" aria-label="Favorito" aria-pressed="true"><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span></button></div>
+          <div class="sr-stage"><button class="md-icon-button md-icon-button-square md-icon-button-small" type="button" aria-label="Favorito" aria-pressed="true"><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span>
+          <span class="md-icon-button-touch"></span>
+          </button></div>
           <figcaption>square seleccionado → <code>corner-full</code></figcaption>
         </figure>
       </div>
@@ -183,7 +203,7 @@
 
     <hr class="md-divider">
 
-    <article class="sr-section">
+    <article class="sr-section" id="sizes">
       <h2>Sizes</h2>
       <div class="sr-stage">
         <button class="md-icon-button md-icon-button-xsmall" type="button" aria-label="Añadir"><span class="md-icon-button-icon md-icon" aria-hidden="true">add</span><span class="md-icon-button-touch"></span></button>
@@ -229,23 +249,33 @@
       <h2>States</h2>
       <div class="sr-grid">
         <figure class="sr-cell">
-          <div class="sr-stage"><button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" aria-label="Favorito"><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span></button></div>
+          <div class="sr-stage"><button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" aria-label="Favorito"><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span>
+          <span class="md-icon-button-touch"></span>
+          </button></div>
           <figcaption>Reposo</figcaption>
         </figure>
         <figure class="sr-cell">
-          <div class="sr-stage"><button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" aria-label="Favorito"><span class="md-state-layer-hover" aria-hidden="true"></span><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span></button></div>
+          <div class="sr-stage"><button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" aria-label="Favorito"><span class="md-state-layer-hover" aria-hidden="true"></span><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span>
+          <span class="md-icon-button-touch"></span>
+          </button></div>
           <figcaption>Hovered</figcaption>
         </figure>
         <figure class="sr-cell">
-          <div class="sr-stage"><button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" aria-label="Favorito"><span class="md-state-layer-focus" aria-hidden="true"></span><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span></button></div>
+          <div class="sr-stage"><button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" aria-label="Favorito"><span class="md-state-layer-focus" aria-hidden="true"></span><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span>
+          <span class="md-icon-button-touch"></span>
+          </button></div>
           <figcaption>Focused</figcaption>
         </figure>
         <figure class="sr-cell">
-          <div class="sr-stage"><button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" aria-label="Favorito"><span class="md-state-layer-pressed" aria-hidden="true"></span><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span></button></div>
+          <div class="sr-stage"><button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" aria-label="Favorito"><span class="md-state-layer-pressed" aria-hidden="true"></span><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span>
+          <span class="md-icon-button-touch"></span>
+          </button></div>
           <figcaption>Pressed</figcaption>
         </figure>
         <figure class="sr-cell">
-          <div class="sr-stage"><button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" aria-label="Favorito" disabled><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span></button></div>
+          <div class="sr-stage"><button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" aria-label="Favorito" disabled><span class="md-icon-button-icon md-icon" aria-hidden="true">favorite</span>
+          <span class="md-icon-button-touch"></span>
+          </button></div>
           <figcaption>Disabled</figcaption>
         </figure>
       </div>
@@ -259,20 +289,27 @@
     <article class="sr-section">
       <h2>Iconografía</h2>
       <p>El glifo es un icono del sistema, con las mismas cuatro propiedades que cualquier otro. Lo que cambia es que aquí el componente <strong>reapunta el tamaño óptico junto con el tamaño</strong>, porque M3 exige que coincidan.</p>
-      <div class="sr-grid">
+      <p>Las cuatro muestras usan <strong>el mismo glifo, <code>favorite</code></strong>, y a propósito. Con dos iconos distintos no se puede saber si lo que cambia es el estilo o es el dibujo, y la comparación deja de decir nada. Con uno solo, cada diferencia es del eje que se está enseñando.</p>
+      <div class="sr-grid sr-grid--4">
         <figure class="sr-cell">
-          <div class="sr-stage"><span class="md-icon md-icon-rounded" aria-hidden="true">delete</span></div>
-          <figcaption>rounded</figcaption>
+          <div class="sr-stage"><span class="md-icon" aria-hidden="true">favorite</span></div>
+          <figcaption><code>.md-icon</code> · la de sistema, sin nada encima</figcaption>
         </figure>
         <figure class="sr-cell">
-          <div class="sr-stage"><span class="md-icon md-icon-sharp" aria-hidden="true">delete</span></div>
-          <figcaption>sharp</figcaption>
+          <div class="sr-stage"><span class="md-icon md-icon-rounded" aria-hidden="true">favorite</span></div>
+          <figcaption><code>.md-icon-rounded</code></figcaption>
         </figure>
         <figure class="sr-cell">
-          <div class="sr-stage"><span class="md-icon md-icon-filled" aria-hidden="true">star</span></div>
+          <div class="sr-stage"><span class="md-icon md-icon-sharp" aria-hidden="true">favorite</span></div>
+          <figcaption><code>.md-icon-sharp</code></figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-stage"><span class="md-icon md-icon-filled" aria-hidden="true">favorite</span></div>
           <figcaption><code>FILL</code> 1, para un toggle con estado</figcaption>
         </figure>
       </div>
+      <p class="sr-na">Las tres primeras celdas cambian la <strong>familia de fuente</strong>, y son los tres estilos que declara M3: outlined, rounded y sharp. La cuarta no cambia la familia: deja la de sistema y mueve el eje <code>FILL</code> a 1, que rellena el mismo contorno. Por eso funciona como cuarto estado de un toggle — un corazón relleno dice "ya está en favoritos" sin cambiar de icono— y por eso lleva el mismo glifo y no <code>favorite_border</code>.</p>
+      <p class="sr-na">Una cosa que este componente no decide: <code>FILL</code> es del autor. La clase <code>.md-icon-filled</code> se pone en el glifo, a mano, porque el icono no sabe si representa algo seleccionado. Es lo mismo que en <a href="icon.html#iconografia">Iconos</a>, y es lo que hace la segunda variante de este componente, la de <a href="#variantes">Variantes / Types</a>.</p>
       <h3>Los cuatro ejes, y cuál puede mover este componente</h3>
       <table class="sr-table">
         <thead>
@@ -374,9 +411,13 @@
       <div class="sr-stage">
         <button class="md-icon-button md-icon-button-small" type="button" aria-label="Eliminar">
           <span class="md-icon-button-icon md-icon" aria-hidden="true">delete</span>
+        
+        <span class="md-icon-button-touch"></span>
         </button>
         <button class="md-icon-button md-icon-button-small" type="button">
           <span class="md-icon-button-icon md-icon" aria-hidden="true">delete</span>
+        
+        <span class="md-icon-button-touch"></span>
         </button>
       </div>
       <p class="sr-na">El de la izquierda se anuncia como <em>Eliminar</em>. El de la derecha se anuncia como <em>delete</em>. Es el fallo más fácil de cometer con este componente, y el más grave, porque se ve bien.</p>
@@ -421,13 +462,21 @@
       <h3>Con el sistema de iconos</h3>
       <p>El glifo usa <code>.md-icon</code> para la familia y los ejes. Sin ella el control queda vacío: el componente declara la <em>medida</em> del icono y el eje óptico, pero no la fuente, porque el glifo puede venir de Material Symbols o de un SVG.</p>
       <div class="sr-stage">
-        <button class="md-icon-button md-icon-button-small" type="button" aria-label="Con Material Symbols"><span class="md-icon-button-icon md-icon" aria-hidden="true">share</span></button>
+        <button class="md-icon-button md-icon-button-small" type="button" aria-label="Con Material Symbols"><span class="md-icon-button-icon md-icon" aria-hidden="true">share</span>
+          <span class="md-icon-button-touch"></span>
+          </button>
       </div>
       <h3>Con un toggle, en una fila de acciones</h3>
       <div class="sr-stage">
-        <button class="md-icon-button md-icon-button-small" type="button" aria-label="Favorito" aria-pressed="true"><span class="md-icon-button-icon md-icon md-icon-filled" aria-hidden="true">star</span></button>
-        <button class="md-icon-button md-icon-button-small" type="button" aria-label="Compartir"><span class="md-icon-button-icon md-icon" aria-hidden="true">share</span></button>
-        <button class="md-icon-button md-icon-button-small" type="button" aria-label="Eliminar"><span class="md-icon-button-icon md-icon" aria-hidden="true">delete</span></button>
+        <button class="md-icon-button md-icon-button-small" type="button" aria-label="Favorito" aria-pressed="true"><span class="md-icon-button-icon md-icon md-icon-filled" aria-hidden="true">star</span>
+          <span class="md-icon-button-touch"></span>
+          </button>
+        <button class="md-icon-button md-icon-button-small" type="button" aria-label="Compartir"><span class="md-icon-button-icon md-icon" aria-hidden="true">share</span>
+          <span class="md-icon-button-touch"></span>
+          </button>
+        <button class="md-icon-button md-icon-button-small" type="button" aria-label="Eliminar"><span class="md-icon-button-icon md-icon" aria-hidden="true">delete</span>
+          <span class="md-icon-button-touch"></span>
+          </button>
       </div>
       <p>Combinado con <code>.md-icon-filled</code>, un toggle puede <strong>cambiar de glifo además de cambiar de forma</strong>: el relleno del icono expresa el estado seleccionado, y la forma lo refuerza.</p>
       <h3>Con Button, que no es lo mismo</h3>
