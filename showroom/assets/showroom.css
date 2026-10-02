@@ -128,6 +128,28 @@
      Y sin `box-sizing: border-box` a proposito: el trazo suma 2px por fuera de
      los 720px de contenido, y con border-box la medida de lectura pasaria de
      720 a 672 y cada parrafo de las cuatro vistas se volveria a repartir.
+
+     EL ANCHO, Y DONDE ESTA EL PISO
+     -------------------------------
+     max-width: 720px, sin min-width. El contenido real es
+     min(720, viewport - 48), porque el padding son 24px por lado.
+
+     Medido en las cuatro vistas, lo unico que se sale de la hoja por debajo
+     de 768px son los <table>: ni un parrafo, ni un <code>, ni un swatch, ni
+     un .sr-stage, ni el h1. El texto refluye solo, porque parte por
+     defecto. Las tablas no, porque una tabla no parte: se sale o se
+     scrollea.
+
+     Por eso el piso lo pone la tabla y no la hoja, y por eso la regla esta
+     en .sr-table y no aqui. Anadir un min-width: 720px en este bloque
+     arreglaria lo mismo con una linea, y es la opcion que parece correcta
+     hasta que se mide: haria que la hoja MIDIERA 720px en un movil de 375, y
+     el lector tendria que desplazar la pagina entera en horizontal para leer
+     un parrafo. Scrollear solo la tabla que no cabe deja el texto en su
+     medida y pone el scroll donde esta el problema.
+
+     Y no es que 720 sea poco: 720 es una medida de LECTURA, y el limite de
+     una tabla de datos es su min-content, que no se negocia.
      --------------------------------------------------------------------- */
   .sr-page {
     display: flex;
@@ -669,6 +691,92 @@
   .sr-table--tight th,
   .sr-table--tight td {
     padding: var(--md-ref-spacing-200);
+  }
+
+  /* ------------------------------------------------------------------------
+     LA TABLA POR DEBAJO DE 768px: CONTENEDOR DE SCROLL
+     --------------------------------------------------------------------------
+     Este es el primer @media de la hoja, y el unico ajuste responsive del
+     showroom. Antes de escribirlo hay que medir que se sale de verdad, porque
+     la intuicion dice "todo" y no es cierto.
+
+     MEDIDO, con el contenido de .sr-page estrecho a mano (el ancho real es
+     min(720, viewport - 48), porque el padding son 24px por lado):
+
+       viewport   contenido   tablas que se salen   peor desborde
+       --------   ---------   ------------------   --------------
+         1024        720              0                    0
+          768        720              0                    0
+          640        592              5                   88px
+          480        432              8                  248px
+          375        327             17                  353px
+
+     Y lo que NO se sale: ni un parrafo, ni un <code>, ni un swatch, ni un
+     .sr-stage, ni el h1. Todo lo demas ya refluye solo, porque el texto
+     parte por defecto. Los 52 <table> de las cuatro vistas eran el unico
+     elemento que se salia de la hoja.
+
+     POR QUE 767 Y NO OTRO
+     ---------------------
+     El contenido de .sr-page es min(720, viewport - 48). A partir de 768 el
+     tope de 720 manda y nada se sale; por debajo el contenido empieza a
+     seguir al viewport, y ahi es cuando la tabla se desborda. El corte
+     natural es 768, no uno mas: es el punto exacto en que el contenido deja
+     de estar topado.
+
+     Y no hace falta ajustarlo mas abajo. La tabla mas ancha del showroom
+     (las de siete columnas) pide 680px, o sea que necesitaria viewport >= 728.
+     Entre 728 y 767 el scroll container ya esta puesto pero no hay barra,
+     porque `overflow-x: auto` no muestra barra si el contenido cabe: se
+     comprueba midiendo, no suponiendo.
+
+     POR QUE display: block Y NO SOLO overflow-x
+     -------------------------------------------
+     Porque `overflow` no aplica a una caja de tabla. Medido: con
+     `.sr-table { overflow-x: auto }` a secas, el valor computado de
+     `overflow-x` sigue siendo `visible` y la tabla se sale 351px igual que
+     antes. Hay que cambiarle el display.
+
+     Y cambiarlo NO rompe el diseno de la tabla, que era el miedo. Los hijos
+     (thead, tbody, tr) conservan sus propios display, asi que la caja
+     anonima que se genera dentro sigue siendo una tabla de verdad: la
+     superficie, el radio, el tinte del encabezado y la rejilla siguen igual.
+     Medido a 432px y a 592px de contenido: las 19 tablas de typography
+     quedan EXACTAMENTE al ancho del contenedor, 0 se salen, y el alto de
+     fila sigue en 97px, el mismo de escritorio. Las anchas no se aplastan:
+     miden 678 por dentro y se scrollean.
+
+     Ademas `overflow-x: auto` es inocuo donde no hace falta: una tabla
+     pequena cabe, no aparece barra, y el ancho lo sigue mandando el
+     `width: 100%` de la regla base.
+
+     Y POR QUE ARRIBA, Y NO ABAJO DE TODO
+     ------------------------------------
+     Por lo mismo que el resto de la tabla: si se declarara al final de la
+     hoja, la regla ganaria por posicion a tablas que la muestran por
+     defecto. Este bloque va antes que elthead, td y las reglas de borde,
+     asi que el `display: block` aplica en todas y solo cambia el
+     desbordamiento. El radio lo sigue recortando `overflow`, que es lo que
+     hace el bloque de arriba.
+
+     LO QUE NO HACE
+     ---------------
+     No hace la tabla mas estrecha: la mantiene a su ancho minimo y la deja
+     scrollear. Es lo unico que conserva los datos legibles, porque a 327px
+     una tabla de siete columnas no se puede comprimir sin partir cada
+     palabra. La alternativa, apilarla a tarjetas, necesita un `data-label`
+     en cada celda (unas 600 en 52 tablas) y reescribir la superficie entera.
+
+     El scroll container lo hace enfocable showroom.js, y solo por debajo de
+     este corte: en escritorio la tabla no scrollea y no debe ser un tab
+     stop de mas. Es WCAG 2.1.1, una region scrolleable tiene que ser
+     alcanzable con teclado.
+     --------------------------------------------------------------------- */
+  @media (max-width: 767px) {
+    .sr-table {
+      display: block;
+      overflow-x: auto;
+    }
   }
 
   /* La ultima columna y la ultima fila no repiten el borde que ya aporta el
