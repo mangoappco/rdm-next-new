@@ -174,6 +174,46 @@
      los dos son estilos del navegador que el componente sustituye. */
   background: transparent;
 
+  /* El resto de la defensa frente al <button> nativo. M3 la reparte en cuatro
+     declaraciones del nodo .button, button/internal/_shared.scss:85-90:
+
+        border: none                  -> aqui border: 0
+        background: transparent       -> la de arriba
+        -webkit-appearance: none      -> ESTA
+        outline: none                 -> NO se copia, ver el anillo de foco
+
+     `appearance` es lo que le dice al navegador que no pinta su widget: sin
+     el, un <button> puede seguir dibujando su propio fondo y su propio borde
+     por mucho que el autor declare `background` y `border`.
+
+     QUE ESTO ESTA Y QUE NO ESTA VERIFICADO
+     ---------------------------------------
+     Verificado, con getComputedStyle y capturas: en Chrome el fondo gris ya
+     no aparece, y eso lo resuelve `background: transparent` de arriba. Con
+     `appearance: auto` residual.
+
+     NO verificado: Safari y Firefox. Alli un <button> con `appearance: auto`
+     conserva comportamiento de widget nativo, y `background: transparent` no
+     siempre basta. No hay forma de cerrarlo desde aqui sin esos navegadores,
+     asi que esta linea NO es un arreglo de un defecto visto: es la receta de
+     M3, copiada por fidelidad y por el mismo motivo que la de arriba, que el
+     componente se defienda del navegador con sus propias declaraciones.
+
+     Va con el prefijo `-webkit-` porque es lo que escribe M3, y porque es un
+     alias en todos los navegadores que importan. La forma sin prefijo tambien
+     existe y es la que conviene en navegadores recientes; no se anade para no
+     apartarse de la receta sin un motivo que la justifique.
+
+     NO SE COPIA `vertical-align: middle`
+     -----------------------------------
+     M3 lo declara tambien (linea 88) y aqui no esta. Medido en vez de
+     supuesto: con un boton en linea de texto, ponerlo y quitarlo deja la caja
+     del boton en el mismo pixel —0px— y mueve el texto 1px. La razon es que
+     `.md-button` es inline-flex, y la linea base de un contenedor flex la
+     aporta su primer hijo, que es la etiqueta: el boton ya se alinea por su
+     texto. Anadirlo seria una declaracion que se ha medido como no-op. */
+  -webkit-appearance: none;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
