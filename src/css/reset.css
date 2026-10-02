@@ -136,11 +136,59 @@
      EL ROL ES `background`, Y NO `surface`
      ---------------------------------------
      Segun M3, `background` es el fondo del lienzo de la pagina y `surface` el
-     de una superficie concreta: una tarjeta, un menu, un dialogo. Una vista
+     de una superficie concreta dibujada ENCIMA de ese lienzo. Una vista
      completa no es una superficie, es el fondo. Por eso el fondo usa
      `--md-sys-color-background` y el texto que va encima se empareja con
      `--md-sys-color-on-background`, que es el par que declara la
      especificacion.
+
+     QUE ES `surface` Y QUE ES LA ESCALERA `surface-container-*`
+     -----------------------------------------------------------
+     Una version anterior de este comentario decia que `surface` era "una
+     tarjeta, un menu, un dialogo". Es lo que decia M3 antes del cambio de
+     superficies por tono, y en v34 es falso: los tres usan la escalera.
+
+     La tabla, sacada de tokens/versions/latest/sass/_md-comp-*.scss:
+
+       contenedor            container                 elevation
+       -----------------   -------------------------   ---------
+       top-app-bar         surface                   level0
+       navigation-rail     surface                   level0
+       navigation-drawer   surface                   level0
+       list item           surface                   level0
+       elevated-card       surface-container-low     level1
+       filled-card         surface-container-highest level0
+       menu                surface-container         level2
+       dialog              surface-container-high    level3
+
+     LA REGLA
+     --------
+     Los cuatro primeros van en `surface` y en `level0`, y son exactamente los
+     que viven EN EL MISMO PLANO que la pagina. Por eso `surface` comparte su
+     tono con `background`: un app bar o un rail con un tono propio seria una
+     banda de color cruzando la pantalla. M3 quiere que se lean como
+     continuacion del lienzo, separados por la sombra que proyectan y no por su
+     relleno. Lo que se apila de verdad sube por la escalera.
+
+     LA PRUEBA ESTA DENTRO DE UN SOLO COMPONENTE
+     ------------------------------------------
+     _md-comp-top-app-bar-small.scss:
+
+       $container-color:            $surface             level0
+       $on-scroll-container-color:  $surface-container   level2
+
+     El app bar arranca en el tono de la pagina y sube un escalon en cuanto
+     necesita despegarse. _md-comp-full-screen-dialog.scss:109 y 145 hacen lo
+     mismo. Esa es la semantica entera: `surface` quiere decir "estoy al nivel
+     del lienzo", y mientras tanto no se nota.
+
+     OJO AL NOMBRE `surface-container-low`
+     -----------------------------------
+     El prefijo `surface-container` es el de la familia de la escalera, no una
+     invitacion a usarlo para cualquier tarjeta. Una elevated es
+     `surface-container-low` y una filled es `surface-container-highest`. Ninguna
+     de las dos es `surface`, y por eso un `md-bg-surface` en una tarjeta seria
+     elegir el rol equivocado aunque se vieran igual.
 
      En el tema de este proyecto los dos roles resuelven al mismo tono
      (neutral98 en claro, neutral6 en oscuro), asi que el cambio no se ve. Es
