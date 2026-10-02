@@ -362,6 +362,19 @@
     grid-template-columns: repeat(auto-fill, minmax(calc(var(--md-ref-spacing-900) * 3), 1fr));
     gap: var(--sr-space-m);
   }
+
+  /* Cuatro celdas en una fila, sin partirla.
+     Existe por la Iconografia de icon-button.html, que compara las tres
+     familias de fuente mas el eje FILL. Con el auto-fill de arriba la fila
+     caben tres y la cuarta caia sola en un segundo renglon, que es peor que
+     una grilla descuadrada: se leia como que faltaba algo.
+
+     Se fijan cuatro columnas en vez de bajar el minmax porque bajarlo
+     permitiria que Auto-fill volviera a decidir, y aqui la decision es que
+     son cuatro y van en un renglon. Medido con el ancho de la columna de la
+     vista, 720px, quedan cuatro celdas de 162px. */
+  .sr-grid--4 { grid-template-columns: repeat(4, 1fr); }
+
   .sr-cell { margin: 0; }
   .sr-cell figcaption {
     margin-block-start: var(--sr-space-xs);
