@@ -303,6 +303,32 @@
   }
   .sr-stage--fill { align-items: stretch; }   /* componentes de ancho completo */
 
+  /* Fila de comparacion: varios ejemplos del MISMO componente, uno al lado del
+     otro, sobre el lienzo y sin escenario.
+
+     Existe por las cinco configuraciones de color del boton, que M3 presenta en
+     fila y no una por celda. La razon de fondo es el boton elevated: su relleno
+     es surface-container-low, que es JUSTAMENTE lo que pinta --sr-stage-bg, y
+     sobre el escenario por defecto se dibuja encima de su propio color con
+     1.00 de contraste en los dos temas. En claro la sombra negra tapa el hueco;
+     en oscuro no, y el boton queda sin relleno ni borde, como un outlined.
+
+     Aqui no hay escenario, y por eso no hace falta ninguna clase de fondo: el
+     <body> de la vista ya es `background`, y en este sistema `background` y
+     `surface` son el mismo tono en los dos temas (#fef7ff y #141218). El boton
+     queda #1d1b20 sobre #141218, mas claro que su fondo, que es la unica
+     direccion en la que "elevado" significa algo.
+
+     Por que no una celda cada uno: ademas de partir la fila en dos renglones
+     descuadrados, cada .sr-stageponia una caja de 24px de padding alrededor de
+     un boton de 40px de alto, y el marco competia con el propio componente. */
+  .sr-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sr-space-s);
+  }
+
   /* Superficie de contraste: un rectangulo con otro tono de superficie, para
      ensenar un componente que esta pensado para vivir EN UNA SUPERFICIE y no
      sobre el lienzo de la pagina.
@@ -512,6 +538,42 @@
      columna y la ultima fila: con border real en la tabla, esos bordes se
      sobrepondrian al contorno y sumarian 2px. Las reglas evitan la doble
      linea.
+
+     CUANTAS COLUMNAS CABEN
+     ----------------------
+     No es un numero fijo, y esa es la parte que surprises: el padding de la
+     celda se multiplica por el numero de columnas, asi que el presupuesto de
+     contenido se encoge conforme anades columnas. Con 720px de contenido en
+     .sr-page y 24px a cada lado, lo que una columna puede pedir antes de
+     desbordar es:
+
+       columnas   con este padding   con .sr-table--tight
+       --------   -----------------   --------------------
+          5            96px                 112px
+          6            72px                  88px
+          7          54.9px                70.9px
+          8            42px                  58px
+
+     La formula es 720 / columnas - 2 * padding-por-lado, y sale entera de los
+     tokens, sin mirar el texto: es el ancho que queda para la palabra mas
+     larga de la columna. Ojo al padding: el que va en la formula es el de 24px
+     por lado, no el de 16px que declara el bloque vertical.
+
+     Y CUANTO PIDE DE VERDAD UNA COLUMNA EN ESTE SHOWROOM: entre 38 y 96px, con
+     mediana de 68px. Medido sobre las 52 tablas de las cuatro vistas.
+
+     Cruzando las dos tablas: con este padding, SEIS columnas es el maximo, y
+     solo porque la mediana (68px) todavia cabe en 72. A la septima el
+     presupuesto baja a 55px y la mediana pide 68, o sea que ya no cabe: de ahi
+     el modificador.
+
+     ASI QUE LA REGLA ES: hasta seis columnas, esta regla. A la septima,
+     .sr-table--tight, que esta mas abajo y sube el presupuesto de 55 a 71.
+     Una tabla de ocho columnas no cabe ni con el modificador.
+
+     Y el motivo de que sea un modificador y no un cambio aqui: solo cinco de
+     las 52 tablas necesitan el ajuste, y las otras 47 ya leen bien con 24px.
+     Aflojar el padding base tocaria 47 tablas que ya estan bien.
      --------------------------------------------------------------------- */
   .sr-table {
     width: 100%;
@@ -536,6 +598,64 @@
     vertical-align: middle;
     border-inline-end: var(--md-sys-shape-stroke-thin) solid var(--sr-line);
     border-block-end: var(--md-sys-shape-stroke-thin) solid var(--sr-line);
+  }
+
+  /* ------------------------------------------------------------------------
+     TABLA APRETADA: LA DE SIETE COLUMNAS
+     --------------------------------------------------------------------------
+     El CUANDO esta en el bloque de .sr-table, mas arriba: con 24px a cada
+     lado, siete columnas se quedan sin presupuesto. Aqui esta el COMO y el
+     POR QUE de este remedio.
+
+     MEDIDO, sobre la tabla de Display en typography.html, antes del cambio:
+       .sr-page da 720px de contenido (spacing-900 * 10, y 720 es una decision
+       documentada mas arriba: la medida de lectura reparte los parrafos de
+       las cuatro vistas).
+       La tabla pedia 790px y se salia 69px por la derecha.
+       Con 24px a cada lado, 7 columnas * 48px = 336px de los 720. O sea que
+       dos tercios del desborde eran padding y el texto de las celdas solo
+       ocupaba unos 454px.
+
+     Las cinco tablas de la seccion Variantes eran las unicas que se salian.
+     El sufijo --tight es el que ya usa .sr-swatches--tight.
+
+     QUE HACE: deja la celda cuadrada en 16px, que es el token que ya usaba en
+     vertical. No afloja el aire de la fila, solo el de los lados.
+     Medido: la tabla pasa a pedir 656-680px y quedan 40-64px de holgura.
+
+     POR QUE NO SE ARREGLA PARTIENDO EL <code>
+     ------------------------------------------
+     Seria lo barato: `overflow-wrap: anywhere` en el th baja el min-content a
+     572-654px y cabe sin tocar el padding. No se aplica por dos motivos.
+     Uno es que parte "Interlineado" y "Interletraje" por la mitad, que son
+     palabras que no llevan guion. Y el otro es peor: como la tabla tiene
+     width: 100%, con eso el desborde no se ve. Antes de arreglarlo, las
+     tablas se salian 69px del papel y eso delataba que algo no cabia; con la
+     regla puesta el motor reparte la diferencia y la tabla parece correcta.
+     Un arreglo que esconde el sintoma no es un arreglo.
+
+     Y `<code>` ya se parte solo, por el guion de `md-type-display-large`, que
+     es comportamiento del UA: src/css/reset.css no declara overflow-wrap ni
+     word-break en ninguna parte. El padding no participa en ese corte.
+
+     LO QUE ESTO NO ARREGLA
+     ----------------------
+     El nombre de clase sigue en dos lineas en la columna Estilo. Pararlo pide
+     `white-space: nowrap` en el <code> de la tabla, que suma unos 111px de
+     min-content, y aqui la holgura es de 40 a 64px. No cabe, y ademas
+     nowrap en un token largo es una apuesta: manana un nombre mas largo
+     parte la tabla otra vez y en la direccion contraria.
+
+     LA CASCADA, POR QUE BASTA CON ESTA POSICION
+     --------------------------------------------
+     `.sr-table--tight th` tiene la MISMA especificidad que `.sr-table th`
+     (0,1,1): el modificador no suma nada. Gana por estar mas abajo en el
+     archivo, el mismo mecanismo que ya documentan .sr-na y el `margin` que
+     .sr-table no declara a proposito.
+     --------------------------------------------------------------------- */
+  .sr-table--tight th,
+  .sr-table--tight td {
+    padding: var(--md-ref-spacing-200);
   }
 
   /* La ultima columna y la ultima fila no repiten el borde que ya aporta el
