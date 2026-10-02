@@ -54,33 +54,62 @@ Set-StrictMode -Version Latest
 # Raiz del proyecto: este script vive en tools/, asi que la raiz es un nivel arriba.
 $ProjectRoot = Split-Path -Parent $PSScriptRoot
 
+# Raiz de la libreria CSS. El sistema no vive en la raiz del repositorio sino
+# en src/css/, y el showroom vive aparte en showroom/. Esta variable es el UNICO
+# lugar donde se conoce esa ruta: las reglas la referencian en vez de escribir
+# 'src\css\...' cada vez. Si la estructura vuelve a cambiar, se cambia aqui.
+$CssRoot = Join-Path $ProjectRoot 'src\css'
+
 # Nombres de archivo que no se escanean por ser marcadores de directorio vacio.
 $Markers = @('.gitkeep')
+
+# Normaliza un separador de ruta para comparar rutas relativas sin depender de
+# si PowerShell reporto '\' o '/'. Get-ChildItem devuelve '\' en Windows, pero
+# las reglas comparan contra rutas escritas a mano.
+function Get-RelPath {
+    param([string]$Path, [string]$Base)
+
+    return $Path.Substring($Base.Length + 1) -replace '/', '\'
+}
 
 # ============================================================================
 # UTILIDADES
 # ============================================================================
 
-# Devuelve las hojas CSS del proyecto en orden alfabetico, relative al proyecto.
+# Devuelve las hojas CSS de la LIBRERIA (src/css/), mas reset.css.
+#
+# El filtro se evalua sobre la ruta relativa a src/css/, no a la raiz del
+# proyecto: asi "esta hoja pertenece a una capa" es una pregunta sobre la
+# libreria. Por eso el prefijo src\css\ se quita antes de comparar, y una hoja
+# que viva fuera de la libreria (por ejemplo showroom/assets/showroom.css, que
+# es del showroom y no del sistema) queda automaticamente excluida.
 function Get-CssFiles {
-    param([string]$Root)
+    param([string]$Root, [string]$CssRoot)
 
     $extensions = '*.css', '*.scss'
-    $excludeDirs = @('3-comp')   # los componentes se validan al agregarse
 
     Get-ChildItem -Path $Root -Recurse -File -Include $extensions |
         Where-Object {
             $name = $_.Name
-            $rel = $_.FullName.Substring($Root.Length + 1)
+
+            # solo hojas que viven dentro de src/css/
+            if (-not $_.FullName.StartsWith($CssRoot + [IO.Path]::DirectorySeparatorChar)) {
+                return $false
+            }
+
+            $cssRel = Get-RelPath $_.FullName $CssRoot
 
             # fuera de marcadores
             $name -notin $Markers -and
             # fuera de main.css (se valida aparte, con reglas propias)
             $name -ne 'main.css' -and
-            # dentro de las carpetas de capas, mas el reset de la raiz de css/
+            # dentro de las carpetas de capas, mas el reset de la raiz de src/css/
             # (el reset no va en una carpeta numerada: no es un token de M3,
-            #  es un reinicio del navegador. Ver la cabecera de css/reset.css)
-            ($rel -match '1-ref|2-sys|3-comp' -or $rel -eq 'css\reset.css')
+            #  es un reinicio del navegador. Ver la cabecera de src/css/reset.css)
+            ($cssRel.StartsWith('1-ref\') -or
+             $cssRel.StartsWith('2-sys\') -or
+             $cssRel.StartsWith('3-comp\') -or
+             $cssRel -eq 'reset.css')
         }
 }
 
@@ -101,14 +130,17 @@ function Get-CodeOnly {
     return $raw
 }
 
-# Devuelve la capa de una hoja a partir de su ruta relativa.
+# Devuelve la capa de una hoja a partir de su ruta RELATIVA A src/css/.
+# La comparacion es exacta con el nombre de archivo para el reset, y por
+# subcarpeta para el resto. No se usan comodines: un token vivo como
+# --md-ref-ref-... en el nombre de una carpeta no debe decidir la capa.
 function Get-Layer {
     param([string]$Relative)
 
-    if ($Relative -eq 'css\reset.css') { return 'reset' }
-    if ($Relative -match '1-ref') { return 'ref' }
-    if ($Relative -match '2-sys') { return 'sys' }
-    if ($Relative -match '3-comp') { return 'comp' }
+    if ($Relative -eq 'reset.css') { return 'reset' }
+    if ($Relative.StartsWith('1-ref\') -or $Relative -eq '1-ref') { return 'ref' }
+    if ($Relative.StartsWith('2-sys\') -or $Relative -eq '2-sys') { return 'sys' }
+    if ($Relative.StartsWith('3-comp\') -or $Relative -eq '3-comp') { return 'comp' }
     return '?'
 }
 
@@ -140,13 +172,19 @@ Write-Host ''
 Write-Host '  RDM Next - Verificador de tokens' -ForegroundColor Cyan
 Write-Host '  --------------------------------' -ForegroundColor DarkCyan
 
-$files = Get-CssFiles -Root $ProjectRoot
+$files = Get-CssFiles -Root $ProjectRoot -CssRoot $CssRoot
 
-# Anotar cada archivo con su ruta relativa al proyecto. Se usa en las reglas
-# 1 y 2 para determinar la capa y para reportar la ubicacion del fallo.
+# Anotar cada archivo con dos rutas:
+#   Relative    -> relativa al proyecto. Se usa para reportar la ubicacion del
+#                  fallo de forma que el mensaje sea accionable.
+#   CssRelative -> relativa a src/css/. Se usa para determinar la capa, porque
+#                  las reglas hablan de 'la capa' y la capa se define dentro de
+#                  la libreria, no del repositorio.
 foreach ($file in $files) {
-    $relPath = $file.FullName.Substring($ProjectRoot.Length + 1)
-    Add-Member -InputObject $file -NotePropertyName Relative -NotePropertyValue $relPath
+    Add-Member -InputObject $file -NotePropertyName Relative `
+                         -NotePropertyValue (Get-RelPath $file.FullName $ProjectRoot)
+    Add-Member -InputObject $file -NotePropertyName CssRelative `
+                         -NotePropertyValue (Get-RelPath $file.FullName $CssRoot)
 }
 
 # Indice de TODOS los tokens definidos en el proyecto (para la regla 3).
@@ -172,12 +210,12 @@ $patternMs    = '(?<![\w-])\d+\.?\d*ms'
 $patternRem   = '(?<![\w-])\d+\.?\d*rem'
 
 foreach ($file in $files) {
-    $layer = Get-Layer $file.Relative
+    $layer = Get-Layer $file.CssRelative
     if ($layer -eq 'ref') { continue }
 
     $code = Get-CodeOnly $file.FullName
     $lines = $code -split "`n"
-    $rel = $file.FullName.Substring($ProjectRoot.Length + 1)
+    $rel = $file.Relative
 
     for ($i = 0; $i -lt $lines.Count; $i++) {
         $lineText = $lines[$i]
@@ -204,10 +242,10 @@ foreach ($file in $files) {
 # ============================================================================
 
 foreach ($file in $files) {
-    $layer = Get-Layer $file.Relative
+    $layer = Get-Layer $file.CssRelative
     $code = Get-CodeOnly $file.FullName
     $lines = $code -split "`n"
-    $rel = $file.FullName.Substring($ProjectRoot.Length + 1)
+    $rel = $file.Relative
 
     for ($i = 0; $i -lt $lines.Count; $i++) {
         $lineText = $lines[$i]
@@ -252,7 +290,7 @@ foreach ($file in $files) {
 foreach ($file in $files) {
     $code = Get-CodeOnly $file.FullName
     $lines = $code -split "`n"
-    $rel = $file.FullName.Substring($ProjectRoot.Length + 1)
+    $rel = $file.Relative
 
     for ($i = 0; $i -lt $lines.Count; $i++) {
         $lineText = $lines[$i]
@@ -271,10 +309,10 @@ foreach ($file in $files) {
 # REGLA 4 - Orden de los temas en main.css
 # ============================================================================
 
-$mainPath = Join-Path $ProjectRoot 'css\main.css'
+$mainPath = Join-Path $CssRoot 'main.css'
 
 if (-not (Test-Path $mainPath)) {
-    Add-Issue -Rule 'REGLA 5' -File 'css/main.css' -Line 0 -Message 'no existe' -Snippet ''
+    Add-Issue -Rule 'REGLA 5' -File 'src/css/main.css' -Line 0 -Message 'no existe' -Snippet ''
 }
 else {
     $mainCode = Get-CodeOnly $mainPath
@@ -285,26 +323,25 @@ else {
     $iDark  = [array]::IndexOf($seq, '2-sys/theme/theme.dark.css')
 
     if ($iLight -lt 0) {
-        Add-Issue -Rule 'REGLA 4' -File 'css/main.css' -Line 0 -Message 'no importa 2-sys/theme/theme.light.css' -Snippet ''
+        Add-Issue -Rule 'REGLA 4' -File 'src/css/main.css' -Line 0 -Message 'no importa 2-sys/theme/theme.light.css' -Snippet ''
     }
     elseif ($iDark -lt 0) {
-        Add-Issue -Rule 'REGLA 4' -File 'css/main.css' -Line 0 -Message 'no importa 2-sys/theme/theme.dark.css' -Snippet ''
+        Add-Issue -Rule 'REGLA 4' -File 'src/css/main.css' -Line 0 -Message 'no importa 2-sys/theme/theme.dark.css' -Snippet ''
     }
     elseif ($iLight -gt $iDark) {
-        Add-Issue -Rule 'REGLA 4' -File 'css/main.css' -Line 0 `
+        Add-Issue -Rule 'REGLA 4' -File 'src/css/main.css' -Line 0 `
                   -Message 'orden invertido: theme.light.css debe importarse ANTES que theme.dark.css (convencion de legibilidad; ya no afecta el comportamiento del tema)' `
                   -Snippet ''
     }
 
     # Cada archivo importado debe existir en disco.
-    # Las rutas de los @import de main.css son RELATIVAS a css/ (donde vive
-    # main.css), no a la raiz del proyecto. Por eso se resuelve partiendo de
-    # la carpeta css/.
-    $cssRoot = Join-Path $ProjectRoot 'css'
+    # Las rutas de los @import de main.css son RELATIVAS a la carpeta donde vive
+    # main.css (src/css/), no a la raiz del proyecto. Por eso se resuelve
+    # partiendo de $CssRoot.
     foreach ($imp in $imports) {
-        $p = Join-Path $cssRoot ($imp.Groups[1].Value -replace '/', '\')
+        $p = Join-Path $CssRoot ($imp.Groups[1].Value -replace '/', '\')
         if (-not (Test-Path $p)) {
-            Add-Issue -Rule 'REGLA 5' -File 'css/main.css' -Line 0 `
+            Add-Issue -Rule 'REGLA 5' -File 'src/css/main.css' -Line 0 `
                       -Message "importa un archivo que no existe: $($imp.Groups[1].Value)" -Snippet ''
         }
     }
@@ -319,20 +356,25 @@ else {
 # IMPORTANTE: el analisis se hace sobre el codigo SIN comentarios. main.css
 # documenta la declaracion de @layer en su cabecera, y un regex sobre el texto
 # crudo capturaria esa mencion pedagogica en vez de la declaracion real.
-$mainRaw = Get-CodeOnly $mainPath
+#
+# Si main.css no existe, REGLA 4 ya lo reporto. Aqui se sigue con una cadena
+# vacia en vez de llamar a Get-CodeOnly sobre un archivo inexistente: sin este
+# guardia el script muere con una excepcion no controlada y las reglas 6 y 7
+# nunca llegan a ejecutarse, que es peor que un fallo reportado.
+$mainRaw = if (Test-Path $mainPath) { Get-CodeOnly $mainPath } else { '' }
 $layerDecl = [regex]::Match($mainRaw, '@layer\s+([^;]+);')
 if (-not $layerDecl.Success) {
-    Add-Issue -Rule 'REGLA 5' -File 'css/main.css' -Line 0 -Message 'no declara @layer' -Snippet ''
+    Add-Issue -Rule 'REGLA 5' -File 'src/css/main.css' -Line 0 -Message 'no declara @layer' -Snippet ''
 }
 elseif ($layerDecl.Index -gt [regex]::Match($mainRaw, '@import').Index) {
-    Add-Issue -Rule 'REGLA 5' -File 'css/main.css' -Line 0 `
+    Add-Issue -Rule 'REGLA 5' -File 'src/css/main.css' -Line 0 `
               -Message '@layer debe declararse ANTES del primer @import' -Snippet ''
 }
 else {
     $declared = $layerDecl.Groups[1].Value
     foreach ($need in @('reset', 'ref', 'sys', 'comp', 'utilities')) {
         if ($declared -notmatch "\b$need\b") {
-            Add-Issue -Rule 'REGLA 5' -File 'css/main.css' -Line 0 -Message "no declara la capa @$need" -Snippet ''
+            Add-Issue -Rule 'REGLA 5' -File 'src/css/main.css' -Line 0 -Message "no declara la capa @$need" -Snippet ''
         }
     }
 
@@ -343,34 +385,51 @@ else {
              Where-Object { $_ -ne '' }
     $wanted = @('reset', 'ref', 'sys', 'comp', 'utilities')
     if (($order -join ',') -ne ($wanted -join ',')) {
-        Add-Issue -Rule 'REGLA 5' -File 'css/main.css' -Line 0 `
+        Add-Issue -Rule 'REGLA 5' -File 'src/css/main.css' -Line 0 `
                   -Message "orden de capas incorrecto. Esperado: $($wanted -join ', '). Encontrado: $($order -join ', ')" `
                   -Snippet ''
     }
 }
 
 # reset.css debe existir y ser el PRIMER import del orquestador.
-$resetPath = Join-Path $ProjectRoot 'css\reset.css'
+$resetPath = Join-Path $CssRoot 'reset.css'
 if (-not (Test-Path $resetPath)) {
-    Add-Issue -Rule 'REGLA 5' -File 'css\reset.css' -Line 0 `
-              -Message 'falta la capa 0: css/reset.css es el primer import del sistema' -Snippet ''
+    Add-Issue -Rule 'REGLA 5' -File 'src/css/reset.css' -Line 0 `
+              -Message 'falta la capa 0: src/css/reset.css es el primer import del sistema' -Snippet ''
 }
 else {
     $firstImport = [regex]::Match($mainRaw, '@import\s+url\(\s*"([^"]+)"')
     if ($firstImport.Success -and $firstImport.Groups[1].Value -ne 'reset.css') {
-        Add-Issue -Rule 'REGLA 5' -File 'css/main.css' -Line 0 `
+        Add-Issue -Rule 'REGLA 5' -File 'src/css/main.css' -Line 0 `
                   -Message "reset.css debe ser el PRIMER import (se encontro '$($firstImport.Groups[1].Value)' primero). El reset necesita declararse antes que las capas que lo van a sobreescribir" `
                   -Snippet ''
     }
 }
 
-# Estructura de carpetas esperada
-$expected = @(
-    'css\1-ref', 'css\2-sys', 'css\2-sys\theme', 'css\3-comp', 'tools'
-)
-foreach ($dir in $expected) {
+# Estructura de carpetas esperada. Las tres primeras son relativas a src/css/
+# (la libreria); las dos siguientes son relativas a la raiz del repositorio.
+$expectedInCss = @('1-ref', '2-sys', '2-sys\theme', '3-comp')
+foreach ($dir in $expectedInCss) {
+    if (-not (Test-Path (Join-Path $CssRoot $dir))) {
+        Add-Issue -Rule 'REGLA 5' -File "src/css/$dir" -Line 0 -Message 'falta el directorio esperado' -Snippet ''
+    }
+}
+
+$expectedInRoot = @('tools', 'showroom', 'showroom\components', 'showroom\assets')
+foreach ($dir in $expectedInRoot) {
     if (-not (Test-Path (Join-Path $ProjectRoot $dir))) {
         Add-Issue -Rule 'REGLA 5' -File $dir -Line 0 -Message 'falta el directorio esperado' -Snippet ''
+    }
+}
+
+# Toda hoja escaneada debe pertenecer a una capa conocida. Si Get-Layer no
+# reconoce una ruta, la REGLA 1 la trataria como si no fuera de 1-ref y la
+# REGLA 2 no revisaria sus dependencias: dos reglas apagadas en silencio.
+foreach ($file in $files) {
+    if ((Get-Layer $file.CssRelative) -eq '?') {
+        Add-Issue -Rule 'REGLA 5' -File $file.Relative -Line 0 `
+                  -Message "hoja escaneada cuya capa no se puede determinar (relativa a src/css: $($file.CssRelative))" `
+                  -Snippet ''
     }
 }
 
@@ -397,7 +456,7 @@ $htmlFiles = Get-ChildItem -Path $ProjectRoot -Recurse -File -Include '*.html' |
 
 foreach ($html in $htmlFiles) {
     $raw = [System.IO.File]::ReadAllText($html.FullName)
-    $rel = $html.FullName.Substring($ProjectRoot.Length + 1)
+    $rel = Get-RelPath $html.FullName $ProjectRoot
 
     # Sin comentarios: los comentarios de documentacion mencionan la regla
     $body = [regex]::Replace($raw, '(?s)<!--.*?-->', '')
@@ -439,10 +498,11 @@ foreach ($html in $htmlFiles) {
 # Esta regla extrae los tokens de ambos bloques y los compara.
 # ============================================================================
 
-$themeFiles = @('css\2-sys\theme\theme.light.css', 'css\2-sys\theme\theme.dark.css')
+# Rutas relativas a src/css/ ($CssRoot).
+$themeFiles = @('2-sys\theme\theme.light.css', '2-sys\theme\theme.dark.css')
 
 foreach ($tf in $themeFiles) {
-    $path = Join-Path $ProjectRoot $tf
+    $path = Join-Path $CssRoot $tf
     if (-not (Test-Path $path)) { continue }
 
     $code = Get-CodeOnly $path
@@ -473,7 +533,7 @@ foreach ($tf in $themeFiles) {
     }
 
     if ($mediaStart -lt 0 -or $attrStart -lt 0) {
-        Add-Issue -Rule 'REGLA 7' -File $tf -Line 0 `
+        Add-Issue -Rule 'REGLA 7' -File "src/css/$tf" -Line 0 `
                   -Message "no se encontraron los dos bloques (@media y [data-theme])" -Snippet ''
         continue
     }
@@ -503,15 +563,15 @@ foreach ($tf in $themeFiles) {
         $inAttr = $attrTokens.ContainsKey($key)
 
         if (-not $inMedia) {
-            Add-Issue -Rule 'REGLA 7' -File $tf -Line 0 `
+            Add-Issue -Rule 'REGLA 7' -File "src/css/$tf" -Line 0 `
                       -Message "token $key esta en el bloque [data-theme] pero no en el bloque @media" -Snippet ''
         }
         elseif (-not $inAttr) {
-            Add-Issue -Rule 'REGLA 7' -File $tf -Line 0 `
+            Add-Issue -Rule 'REGLA 7' -File "src/css/$tf" -Line 0 `
                       -Message "token $key esta en el bloque @media pero no en el bloque [data-theme]" -Snippet ''
         }
         elseif ($mediaTokens[$key] -ne $attrTokens[$key]) {
-            Add-Issue -Rule 'REGLA 7' -File $tf -Line 0 `
+            Add-Issue -Rule 'REGLA 7' -File "src/css/$tf" -Line 0 `
                       -Message "token $key tiene valores distintos: @media=$($mediaTokens[$key]) vs [data-theme]=$($attrTokens[$key])" -Snippet ''
         }
     }
