@@ -44,12 +44,35 @@
     padding-block: var(--sr-gap-lg);
     border-block-start: var(--md-sys-shape-stroke-thin) solid var(--sr-line);
   }
-  .sr-section h2 { margin: 0 0 var(--sr-gap); font: var(--md-sys-typescale-headline-small); }
-  .sr-section h3 { margin: 0 0 var(--sr-gap-sm); font: var(--md-sys-typescale-title-medium); }
+
+  /* Ritmo vertical de la seccion.
+
+     Todos los hijos se normalizan a margin 0 y el aire se reparte con un
+     solo selector de hermanos. Antes cada bloque declaraba su propio margin
+     a mano, y el resultado era que un <p> o una <table> seguidos por otro
+     bloque se quedaban pegados: los margins de abajo y arriba no se suman,
+     se COLAPSAN, y con ambos a 0 no queda nada.
+
+     Con un unico selector no hay dos margenes que se peleen, y anadir un
+     bloque nuevo a una vista no obliga a acordarse de separarlo. */
+  .sr-section > * { margin: 0; }
+  .sr-section > * + * { margin-block-start: var(--sr-gap); }
+
+  /* Lo que sigue a un titulo va pegado a el: el titulo ya respira. */
+  .sr-section > h2 + *,
+  .sr-section > h3 + * { margin-block-start: var(--sr-gap-sm); }
+
+  /* Un titulo nuevo, en cambio, necesita mas aire que un parrafo: marca un
+     cambio de tema dentro de la seccion. */
+  .sr-section > * + h2,
+  .sr-section > * + h3 { margin-block-start: var(--sr-gap-lg); }
+
+  .sr-section h2 { font: var(--md-sys-typescale-headline-small); }
+  .sr-section h3 { font: var(--md-sys-typescale-title-medium); }
   .sr-section p,
   .sr-section li { font: var(--md-sys-typescale-body-medium); }
   .sr-section ul,
-  .sr-section ol { margin: 0; padding-inline-start: var(--md-ref-spacing-300); }
+  .sr-section ol { padding-inline-start: var(--md-ref-spacing-300); }
 
   /* Seccion que no aplica: titulo + aviso */
   .sr-na { margin: 0; color: var(--sr-muted); }
