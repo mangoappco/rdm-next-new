@@ -89,6 +89,16 @@
   --md-comp-button-icon-optical-size: var(--md-sys-icon-optical-size-small);
   --md-comp-button-outline-width: var(--md-sys-shape-stroke-thin);
 
+  /* El area tactil. 48dp, el objetivo que M3 exige en todo elemento
+     interactivo. Se expone como token propio del componente y no se lee de
+     2-sys en la regla, para que quien quiera cambiar el objetivo de este
+     boton lo cambie en un sitio y no editando la regla que dibuja la
+     superficie.
+
+     Los botones de tamano medium ya miden 56dp y cumplen sin esta
+     superficie. Los de xsmall, 32dp, y small, 40dp, no. */
+  --md-comp-button-touch-size: var(--md-sys-measurement-touch-target);
+
   /* Forma. Redondeado completo por defecto, como el filled de M3. */
   --md-comp-button-shape: var(--md-sys-shape-corner-full);
 
@@ -147,6 +157,23 @@
      atenuarlo aparte cuando disabled. Ver "EL CONTENEDOR" mas abajo. */
   color: var(--md-comp-button-label-color);
 
+  /* Un <button> nativo trae `background-color: buttonface` del navegador, un
+     gris que NO es un rol de M3. No lo neutraliza reset.css: su regla para
+     button/input/select/textarea solo quita el margen, porque neutralizar los
+     estilos del navegador es trabajo del componente y con sus propios tokens.
+     Ver FORMULARIOS en reset.css.
+
+     Sin esto, ::before paints el relleno encima en las tres variantes que
+     llevan container, y el gris no se ve. En las otras dos, filled y text,
+     el contenedor es transparente y el gris asoma: el outlined y el text se
+     dibujan sobre un gris solapado que no existe en la paleta, y el boton text
+     deja de ser solo texto.
+
+     M3 lo declara en el nodo .button, button/internal/_shared.scss:89:
+     `background: transparent`. Va con `border: 0` de mas abajo por lo mismo:
+     los dos son estilos del navegador que el componente sustituye. */
+  background: transparent;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -163,9 +190,11 @@
   border: 0;
   border-radius: var(--md-comp-button-shape);
 
-  /* La elevacion va en el elemento, no en un pseudo-elemento suyo. Ver la
-     nota larga de arriba: overflow: hidden recorta a los descendientes, y
-     la sombra de un ::before se dibujaba justo en la parte recortada. */
+  /* La elevacion va en el elemento, no en un pseudo-elemento suyo. La
+     restriccion que lo obligaba era el overflow: hidden que estaba en este
+     elemento, y ese overflow se movio a .md-button-label. Ver la nota
+     larga de arriba, que ahora explica por que sigue aqui aun sin esa
+     restriccion. */
   box-shadow: var(--md-comp-button-elevation);
 
   font-family: var(--md-comp-button-label-font);
@@ -189,11 +218,12 @@
   user-select: none;
   -webkit-tap-highlight-color: transparent;
 
-  /* La etiqueta se recorta con puntos suspensivos en vez de desbordar. Con
-     un icono al lado, min-width: 0 es lo que permite que encoja. */
-  overflow: hidden;
-  text-overflow: ellipsis;
+  /* white-space y text-overflow siguen aqui: son la INTENCION del boton y se
+     pueden sobreescribir desde el marcado. Lo que se movio ABAJO, a
+     .md-button-label, es el overflow: hidden. Ver el bloque del area
+     tactil, que explica por que. */
   white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 /* ---------------------------------------------------------------------------
@@ -237,17 +267,29 @@
    la elevacion no se veia: ni el boton elevated ni ningun otro la
    mostraba.
 
-   La causa es el overflow: hidden que el boton necesita para dos cosas
-   legitimas, que son recortar la capa de estado al borde redondeado y
-   recortar la etiqueta con puntos suspensivos. Pero overflow recorta a los
-   DESCENDIENTES, y el ::before es un descendiente. Su box-shadow se dibuja
-   por FUERA de su propia caja, o sea justo en la parte que el boton
-   recorta. El resultado era que solo se veian los bordes de los lados,
-   alli donde la sombra coincidia con el interior de la caja.
+   La causa era el overflow: hidden que el boton tenia. Ese overflow recortaba
+   a los DESCENDIENTES, y el ::before es un descendiente. Su box-shadow se
+   dibuja por FUERA de su propia caja, o sea justo en la parte que el boton
+   recortaba. El resultado era que solo se veian los bordes de los lados, alli
+   donde la sombra coincidia con el interior de la caja.
 
-   La sombra exterior de un elemento no la recorta su propio overflow: solo
-   la recortan los ancestros. Por eso va en el elemento, y no en un
-   pseudo-elemento suyo.
+   HOY LA RESTRICCION YA NO EXISTE
+   ------------------------------
+   El overflow se movio a .md-button-label para poder dar area tactil, y este
+   elemento ya no recorta a nadie. La sombra podria mudarse al ::before sin
+   romperse.
+
+   Se deja aqui de todas formas, y el motivo es que en el elemento es mas
+   simple: ::before ya lleva el fondo, el radio y la atenuacion de disabled,
+   mas el borde de forced-colors, y sumarle la sombra lo mezclaria con un
+   pseudo-elemento que hoy tiene una sola responsabilidad. Ademas, la sombra
+   exterior de un elemento no la recorta su propio overflow, solo la de los
+   ancestros: mientras el boton no tenga ancestros que recorten, las dos
+   ubicaciones se ven igual.
+
+   Es una decision que hoy ya no la impone nada, y por eso este comentario es
+   explicito: si manana alguien mueve la sombra al ::before, no va a estar
+   arreglando un fallo.
    ------------------------------------------------------------------------ */
 
 .md-button::before {
@@ -258,6 +300,173 @@
   background-color: var(--md-comp-button-container-color);
   border-radius: inherit;
   pointer-events: none;
+}
+
+/* ---------------------------------------------------------------------------
+   LA ETIQUETA: DONDE VIVE EL RECORTE
+   ---------------------------------------------------------------------------
+   El overflow: hidden estaba en el elemento y se movio aqui. Es el unico
+   cambio estructural de esta version, y no es cosmetico: es lo que permite
+   que el boton tenga un area tactil de 48dp.
+
+   POR QUE NO PUEDE SEGUIR EN EL ELEMENTO
+   --------------------------------------
+   overflow recorta a los DESCENDIENTES. Un area tactil de 48dp en un boton
+   de 32dp o de 40dp tiene que SOBRESALIR de la caja, y cualquier
+   descendiente que lo haga queda recortado por el overflow del padre.
+
+   Y es exactamente lo que hace M3: en
+   material-web-main/button/internal/_shared.scss el overflow: hidden esta
+   en .label, linea 132, y NO en el host. El host no lo lleva. Por eso su
+   .touch, que es un hijo suyo, puede sobresalir.
+
+   Que el recorte este en la etiqueta y no en el boton no cambia lo que se
+   ve: el texto se sigue truncando en el mismo borde, porque la etiqueta es
+   la que desborda.
+
+   min-width: 0 es lo que permite que encoja. Sin el, un elemento flex no
+   baja de su ancho de contenido, y la etiqueta empujaria al icono en vez de
+   truncarse.
+
+   text-overflow: inherit trae la intencion del boton. El padre la declara
+   para que se pueda sobreescribir una vez, desde el marcado, en vez de tener
+   que llegar hasta aca.
+   ------------------------------------------------------------------------ */
+
+.md-button-label {
+  overflow: hidden;
+  text-overflow: inherit;
+  min-width: 0;
+}
+
+/* ---------------------------------------------------------------------------
+   EL AREA TACTIL
+   ---------------------------------------------------------------------------
+   M3 exige un objetivo de 48x48dp en todo elemento interactivo, y lo dice
+   de forma general, no como excepcion. Los botones de tamano medium de M3
+   miden 56dp y ya lo cumplen. Los de xsmall, 32dp, y small, 40dp, no.
+
+   QUE HACE Y QUE NO HACE
+   ----------------------
+   No cambia el tamano VISIBLE del boton: sigue midiendo 32dp o 40dp, con su
+   relleno, su borde y su sombra donde siempre. Lo que hace es anadir una
+   superficie de 48dp que recibe el toque.
+
+   Es la misma distincion que ya documenta el showroom: el area visible y el
+   area pulsable son dos medidas, y por eso son dos cosas.
+
+   POR QUE UN ELEMENTO Y NO UN PSEUDO-ELEMENTO
+   -------------------------------------------
+   Los dos estan ocupados: ::before es el relleno y ::after la capa de
+   estado. Y no se pueden reutilizar: la capa de estado pinta el color del
+   contenido y tiene que seguir cubriendo exactamente la caja visible.
+
+   Ademas, los dos pseudo-elementos llevan pointer-events: none, que es lo
+   que hace que el boton siga respondiendo. Quitarselo a uno seria
+   deshacer eso. Un elemento hijo es lo que hace M3, con su clase .touch.
+
+   LA RECETA
+   ---------
+   button/internal/_touch-target.scss, linea 7:
+
+       .touch {
+         position: absolute;
+         top: 50%;
+         height: max(48px, 100%);
+         left: 0;
+         right: 0;
+         transform: translateY(-50%);
+       }
+
+   Se copia con dos cambios, y se agrega un tercero.
+
+     48px        es un numero crudo, y REGLA 1 lo prohibe en 3-comp. Se pide
+                 el rol: var(--md-comp-button-touch-size).
+
+     height      M3 pone max(48px, 100%). El 100% importa: un boton con una
+                 etiqueta larga crece, y el area tactil tiene que crecer con
+                 el, no quedarse en 48dp por debajo de la etiqueta.
+
+     EJE INLINE  aqui NO se copia a M3, y es deliberado.
+
+   POR QUE EL EJE INLINE NO ES IGUAL QUE M3
+   ----------------------------------------
+   M3 tiene DOS recetas, y no son la misma:
+
+     button/internal/_touch-target.scss, linea 10
+         height: max(48px, 100%);
+         left: 0;
+         right: 0;                    <-- y NADA en el eje inline
+
+     iconbutton/internal/_shared.scss, linea 105
+         height: max(48px, 100%);
+         width:  max(48px, 100%);     <-- los DOS ejes
+
+   El boton de icono crece en los dos porque es estrecho en los dos: 32dp o
+   40dp de ancho, no solo de alto. El boton normal crece solo en vertical
+   porque su ancho lo determina la etiqueta, que casi siempre pasa de 48dp.
+
+   Aqui se usa la segunda receta para los dos casos, porque este proyecto
+   todavia no distingue `button` de `icon-button`: el mismo `.md-button` esta
+   sirviendo los dos papeles. Medido en el showroom antes de corregirlo: con
+   la receta de `button`, un boton de icono extra small daba una superficie
+   de 44x48dp. Cuatro dp por debajo de lo que M3 pide, solo en horizontal.
+
+   Cuando exista `icon-button` como componente aparte, esta receta puede
+   volver a la de M3: alli el ancho lo fijan los tokens del componente y no
+   habria que forzar 48dp.
+
+   EL CENTRADO
+   -----------
+   No se usa left: 0 con right: 0 porque esa receta deja el ancho en el de
+   la caja. Aqui el ancho hay que declararlo, asi que el ancla va en 50% con
+   un translate de -50% en los dos ejes.
+
+   COMO SE USA
+   -----------
+   El elemento hijo ES la activacion. No hay modificador en el boton: que
+   exista el elemento es lo que dice que este boton necesita area tactil.
+
+       <button class="md-button md-button-xsmall">
+         <span class="md-button-icon" aria-hidden="true">add</span>
+         <span class="md-button-touch"></span>
+       </button>
+
+   QUE ESTILOS NECESITA Y POR QUE
+   ------------------------------
+   pointer-events: none  NO lleva. Al contrario que los dos pseudo-elementos:
+   esta superficie existe para recibir el toque, asi que tiene que ser
+   transparente al puntero.
+
+   Y por eso no intercepta nada que este mal: es descendiente del boton, de
+   modo que el clic le llega a el de todas formas. La superficie no
+   REEMPLAZA al boton, lo AMPLIA.
+
+   No lleva fondo, ni borde, ni nada visible. Si se le da un fondo se veria,
+   y el punto es que no se vea.
+
+   NO AFECTA AL LAYOUT
+   -------------------
+   Es el motivo de que sea una superficie y no un min-height mayor. Agrandar
+   el boton con margen compensatorio dejaria 8dp entre dos botones contiguos y
+   solaparia las areas. M3 ofrece esa variante aparte, touch-target='wrapper',
+   y no es la que se implementa aqui.
+
+   ESTADO DISABLED
+   ---------------
+   La superficie sigue. El boton disabled no responde porque el atributo es lo
+   que desactiva el control, no la superficie. Ocultarla en disabled
+   devolveria el boton a 32dp, y dejaria de ser pulsable, que es justo lo que
+   no se quiere.
+   ------------------------------------------------------------------------ */
+
+.md-button-touch {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  block-size: max(var(--md-comp-button-touch-size), 100%);
+  inline-size: max(var(--md-comp-button-touch-size), 100%);
+  transform: translate(-50%, -50%);
 }
 
 /* ---------------------------------------------------------------------------
@@ -275,10 +484,18 @@
 
    Los dos errores que 2-sys/state.css senala, y que estan resueltos aqui:
 
-     overflow: hidden    ya esta en el elemento. Sin el, la capa se derrama
-                         y el borde redondeado deja de parecer redondeado.
+     overflow: hidden    NO hace falta, y antes era lo que hacia. Se recortaba
+                         al ELEMENTO, y ahora lo que se recorta es la
+                         etiqueta. Esta capa se acota sola: es
+                         position: absolute con inset: 0 y border-radius
+                         inherit, o sea que ocupa exactamente la caja del
+                         boton y no puede derramarse por geometria. No depende
+                         del recorte de nadie.
+
      pointer-events: none  esta en ambos pseudo-elementos. Sin el, la capa
                          intercepta los clics y el boton deja de responder.
+                         El area tactil, en cambio, NO lo lleva: existe para
+                         recibir el toque.
    ------------------------------------------------------------------------ */
 
 .md-button::after {

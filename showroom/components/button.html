@@ -93,7 +93,7 @@
     <article class="sr-section">
       <h2>Default</h2>
       <div class="sr-stage">
-        <button class="md-button" type="button">Continuar</button>
+        <button class="md-button" type="button"><span class="md-button-label">Continuar</span></button>
       </div>
       <p>La clase <code>.md-button</code> sin modificador es un <strong>filled</strong> de tamaño <strong>small</strong>: la configuración por defecto de M3.</p>
     </article>
@@ -106,7 +106,7 @@
       <div class="sr-stage">
         <button class="md-button" type="button">
           <span class="md-button-icon md-icon" aria-hidden="true">add</span>
-          Crear
+          <span class="md-button-label">Crear</span>
         </button>
       </div>
       <p>La clase del componente es <code>.md-button-icon</code>, y va en el hijo. La fuente del glifo es de la página, no del componente: el componente no sabe si el glifo viene de Material Symbols o de un SVG, y no debe saberlo.</p>
@@ -115,7 +115,7 @@
       <div class="sr-stage">
         <button class="md-button" type="button">
           <span class="md-button-icon md-icon" aria-hidden="true">download</span>
-          Descargar
+          <span class="md-button-label">Descargar</span>
         </button>
         <button class="md-button" type="button" aria-label="Eliminar">
           <span class="md-button-icon md-icon" aria-hidden="true">delete</span>
@@ -179,27 +179,12 @@
     <article class="sr-section" id="configuraciones">
       <h2>Configuraciones de color</h2>
       <p>Cinco, ordenadas de más a menos énfasis. No son variantes: son cinco maneras de dibujar la misma acción.</p>
-      <div class="sr-grid">
-        <figure class="sr-cell">
-          <div class="sr-stage"><button class="md-button md-button-elevated" type="button">Elevated</button></div>
-          <figcaption>Elevated · <code>.md-button-elevated</code></figcaption>
-        </figure>
-        <figure class="sr-cell">
-          <div class="sr-stage"><button class="md-button md-button-filled" type="button">Filled</button></div>
-          <figcaption>Filled · <code>.md-button-filled</code></figcaption>
-        </figure>
-        <figure class="sr-cell">
-          <div class="sr-stage"><button class="md-button md-button-tonal" type="button">Tonal</button></div>
-          <figcaption>Tonal · <code>.md-button-tonal</code></figcaption>
-        </figure>
-        <figure class="sr-cell">
-          <div class="sr-stage"><button class="md-button md-button-outlined" type="button">Outlined</button></div>
-          <figcaption>Outlined · <code>.md-button-outlined</code></figcaption>
-        </figure>
-        <figure class="sr-cell">
-          <div class="sr-stage"><button class="md-button md-button-text" type="button">Text</button></div>
-          <figcaption>Text · <code>.md-button-text</code></figcaption>
-        </figure>
+      <div class="sr-row">
+        <button class="md-button md-button-elevated" type="button"><span class="md-button-label">Elevated</span></button>
+        <button class="md-button md-button-filled" type="button"><span class="md-button-label">Filled</span></button>
+        <button class="md-button md-button-tonal" type="button"><span class="md-button-label">Tonal</span></button>
+        <button class="md-button md-button-outlined" type="button"><span class="md-button-label">Outlined</span></button>
+        <button class="md-button md-button-text" type="button"><span class="md-button-label">Text</span></button>
       </div>
       <h3>Para qué sirve cada una</h3>
       <p><strong>Elevated</strong> es igual que tonal pero con sombra. M3 pide usarla solo cuando sea de verdad necesario, cuando el botón necesita separarse de un fondo visualmente importante. Una elevación más alta da más énfasis, así que conviene reservarla, y para énfasis alto está antes <code>filled</code>.</p>
@@ -222,20 +207,17 @@
           <tr><td>Elevated</td><td>surface-container-low</td><td>primary</td><td>level1</td></tr>
           <tr><td>Filled</td><td>primary</td><td>on-primary</td><td>level0</td></tr>
           <tr><td>Tonal</td><td>secondary-container</td><td>on-secondary-container</td><td>level0</td></tr>
-          <tr><td>Outlined</td><td>transparente, borde <code>outline</code></td><td>on-surface-variant</td><td>level0</td></tr>
+          <tr><td>Outlined</td><td>transparente, borde <code>outline-variant</code></td><td><code>on-surface-variant</code></td><td>level0</td></tr>
           <tr><td>Text</td><td>transparente</td><td>primary</td><td>level0</td></tr>
         </tbody>
       </table>
       <h3>El borde del outlined y su texto son dos tonos distintos</h3>
-      <div class="sr-stage"><button class="md-button md-button-outlined" type="button">Outlined</button></div>
-      <p>La especificación separa los dos: el <strong>borde va en <code>outline</code></strong>, el gris claro, y la <strong>etiqueta en <code>on-surface-variant</code></strong>, el gris oscuro. Con un solo tono, el botón se aplana y el borde claro desaparece sobre fondo oscuro.</p>
-      <h3>La elevación se ve en claro y casi no se ve en oscuro</h3>
-      <p>No es un fallo de esta vista, es cómo funciona M3. Cambia el tema con el botón de arriba para comprobarlo.</p>
-      <p>Esta es la muestra: el <strong>botón <code>elevated</code> real</strong>, y detrás el <strong>lienzo</strong>, el rol <code>background</code> de la página. El relleno del botón es <code>surface-container-low</code>, y esa es la única diferencia entre las dos superficies:</p>
-      <div class="sr-canvas md-bg-background">
-        <button class="md-button md-button-elevated" type="button">Elevated</button>
-      </div>
-      <p class="sr-na">El fondo de este escenario es <code>background</code> y no el tono de los demás escenarios, que es <code>surface-container-low</code>: sería el mismo color que el relleno del botón y la comparación no existiría. La línea del borde es de la vista, para que se vea dónde acaba el lienzo; el botón de dentro no la trae. Esta muestra es viva, así que siempre enseña el tema que está activo.</p>
+      <div class="sr-stage"><button class="md-button md-button-outlined" type="button"><span class="md-button-label">Outlined</span></button></div>
+      <p>La especificación separa los dos en dos tokens distintos: el <strong>borde va en <code>outline-variant</code></strong> y la <strong>etiqueta en <code>on-surface-variant</code></strong>. No es un detalle de redacción: los dos roles se reparten los extremos opuestos de la misma escala y <strong>se intercambian al cambiar de tema</strong>. En claro el borde es el tono claro y la etiqueta el oscuro; en oscuro es al revés, y por eso no hay un tono fijo que describa a ninguno de los dos.</p>
+      <p>Por eso tampoco vale decir que el borde es el "gris claro": <code>outline</code>, que sí es el claro en oscuro, no es el token del borde. Medido sobre el escenario de arriba, el trazo queda en <strong>1.99</strong> de contraste en oscuro y <strong>1.62</strong> en claro, mientras la etiqueta llega a <strong>10.91</strong> y <strong>8.88</strong>. El <code>outlined</code> se sostiene sobre el texto, no sobre el trazo, y el borde es deliberadamente discreto para no competir con él.</p>
+      <h3>La sombra se ve en claro y casi no se ve en oscuro</h3>
+      <p>No es un fallo del componente, es cómo funciona M3. Cambia el tema con el botón de arriba para comprobarlo.</p>
+      <p>La muestra viva es la grilla de <strong>Configuraciones de color</strong>, de arriba: sus cinco escenarios van sobre <code>surface</code>. Esta tabla mide el caso que la grilla no muestra, el del botón directamente sobre el <strong>lienzo</strong>, el rol <code>background</code> de la página. El relleno del botón es <code>surface-container-low</code>, y esa es la única diferencia entre las dos superficies:</p>
       <table class="sr-table">
         <thead>
           <tr><th scope="col">Tema</th><th scope="col">Fondo</th><th scope="col">Relleno del elevated</th><th scope="col">Diferencia máxima</th></tr>
@@ -250,7 +232,7 @@
         </tbody>
       </table>
       <p class="sr-na">La diferencia es la mayor de las tres diferencias por canal, sobre 255. Medida canal a canal: en claro 7·5·5, en oscuro 9·9·8. Con la media saldría 6 y 9, y con la suma 17 y 26; el orden entre los dos temas no cambia en ninguna de las tres medidas.</p>
-      <p>Los hex son de cada tema y no cambian con el botón de arriba, porque son los valores de las dos hojas de tema del sistema. La muestra de arriba, en cambio, sí: es el mismo componente con los tokens del tema activo.</p>
+      <p>Los hex son de cada tema y no cambian con el botón de arriba, porque son los valores de las dos hojas de tema del sistema. La grilla de arriba, en cambio, sí: es el mismo componente con los tokens del tema activo.</p>
       <p>Y conviene ser exacto sobre qué es lo que falla, porque no es el relleno. En oscuro el relleno está <em>más</em> lejos del fondo que en claro: 9 unidades contra 7, y un contraste de 1.09 contra 1.05. O sea que el tono del botón no es el problema en ninguno de los dos temas. Lo que no funciona es la sombra: es <em>negra</em>, y en oscuro se apoya sobre un fondo casi negro, así que no separa nada. En claro la misma sombra sí se ve, porque un negro al 30% sobre un blanco casi puro se nota.</p>
       <p>Se podría subir el relleno a <code>surface-container</code> y se vería mejor. <strong>No se hace</strong>, porque M3 especifica <code>surface-container-low</code> para esta configuración, y cambiarlo en silencio sería modificar la especificación sin decidirlo.</p>
       <p>Que M3 lo acepte no significa que se lea siempre igual. En un producto de verdad el <code>elevated</code> se apoya sobre una <code>surface</code>, no sobre el lienzo de <code>background</code>, y ahí el contraste es mayor. El caso de verlo sobre el lienzo en oscuro es el que queda justo.</p>
@@ -273,10 +255,10 @@
       <p>Sobre una superficie elevada, en tema claro, la sombra sí separa. Compáralo con el mismo botón sobre el lienzo, cambiando el tema con el botón de arriba:</p>
       <div class="sr-stage">
         <div class="sr-surface">
-          <button class="md-button md-button-elevated" type="button">Sobre una superficie</button>
+          <button class="md-button md-button-elevated" type="button"><span class="md-button-label">Sobre una superficie</span></button>
         </div>
       </div>
-      <p class="sr-na">Esto no arregla el caso del lienzo en oscuro, que es donde M3 no tiene ningún mecanismo. Lo deja documentado, que es distinto de disimulado.</p>
+      <p class="sr-na">Esto no arregla el caso del lienzo en oscuro, que es donde M3 no tiene ningún mecanismo. Lo deja documentado, que es distinto de disimulado. Y hay un segundo caso que conviene no disimular tampoco: al cambiar a oscuro, este mismo botón sale <em>más oscuro</em> que la superficie elevada que lo rodea, no más claro, y se ve hundido. Es la regla de la tabla de arriba aplicada al revés: sobre una superficie ya elevada el relleno del <code>elevated</code> es siempre el tono más bajo, y la única forma de que la dirección sea la correcta es que el fondo esté por debajo de <code>surface-container-low</code>.</p>
       <h3>Se pueden usar otros roles</h3>
       <p class="sr-na">M3 advierte que otros roles de color sirven siempre que el contenedor y el texto tengan un contraste de 3:1, y menciona <code>tertiary</code> y <code>on-tertiary</code> como ejemplo. Es una extensión documentada, y por eso los tokens del componente son reapuntables desde el marcado sin tocar el CSS.</p>
     </article>
@@ -288,7 +270,7 @@
       <p>Dos: <strong>default</strong> y <strong>toggle</strong>. El toggle marca un estado binario, como Guardar o Favorito, y al pulsarlo puede cambiar color, forma y etiqueta.</p>
       <div class="sr-grid">
         <figure class="sr-cell">
-          <div class="sr-stage"><button class="md-button" type="button">Default</button></div>
+          <div class="sr-stage"><button class="md-button" type="button"><span class="md-button-label">Default</span></button></div>
           <figcaption>Default · implementada</figcaption>
         </figure>
         <figure class="sr-cell">
@@ -321,7 +303,7 @@
       <div class="sr-stage">
         <p>Tus cambios se guardarán automáticamente.</p>
         <hr class="md-divider">
-        <button class="md-button" type="button">Deshacer</button>
+        <button class="md-button" type="button"><span class="md-button-label">Deshacer</span></button>
       </div>
       <p class="sr-na">La composición con un segundo botón interactivo, o con un <code>chip</code> o un <code>card</code>, queda pendiente: no hay más componentes en <code>3-comp/</code> todavía.</p>
     </article>
@@ -332,7 +314,7 @@
       <h2>Shapes</h2>
       <p>Dos formas: <strong>round</strong>, con esquinas completamente redondeadas, y <strong>square</strong>, con un redondeo más discreto que cambia con el tamaño.</p>
       <div class="sr-stage">
-        <button class="md-button" type="button">Round</button>
+        <button class="md-button" type="button"><span class="md-button-label">Round</span></button>
       </div>
       <h3>La tabla de radios de la especificación</h3>
       <table class="sr-table">
@@ -371,15 +353,15 @@
       <p>Cinco recomendaciones. Tres implementadas.</p>
       <div class="sr-grid">
         <figure class="sr-cell">
-          <div class="sr-stage"><button class="md-button md-button-xsmall" type="button">Extra small</button></div>
+          <div class="sr-stage"><button class="md-button md-button-xsmall" type="button"><span class="md-button-label">Extra small</span></button></div>
           <figcaption>32px · <code>.md-button-xsmall</code></figcaption>
         </figure>
         <figure class="sr-cell">
-          <div class="sr-stage"><button class="md-button md-button-small" type="button">Small</button></div>
+          <div class="sr-stage"><button class="md-button md-button-small" type="button"><span class="md-button-label">Small</span></button></div>
           <figcaption>40px · <code>.md-button-small</code> · por defecto</figcaption>
         </figure>
         <figure class="sr-cell">
-          <div class="sr-stage"><button class="md-button md-button-medium" type="button">Medium</button></div>
+          <div class="sr-stage"><button class="md-button md-button-medium" type="button"><span class="md-button-label">Medium</span></button></div>
           <figcaption>56px · <code>.md-button-medium</code></figcaption>
         </figure>
       </div>
@@ -437,23 +419,23 @@
       <p>Cinco estados. Los cinco se ven a la vez, y ninguno es una imagen: cada celda es el botón real con su estado forzado.</p>
       <div class="sr-grid">
         <figure class="sr-cell">
-          <div class="sr-stage"><button class="md-button" type="button">Enabled</button></div>
+          <div class="sr-stage"><button class="md-button" type="button"><span class="md-button-label">Enabled</span></button></div>
           <figcaption>Enabled</figcaption>
         </figure>
         <figure class="sr-cell">
-          <div class="sr-stage"><button class="md-button" type="button"><span class="md-state-layer-hover" aria-hidden="true"></span>Hovered</button></div>
+          <div class="sr-stage"><button class="md-button" type="button"><span class="md-state-layer-hover" aria-hidden="true"></span><span class="md-button-label">Hovered</span></button></div>
           <figcaption>Hovered · <code>md-state-layer-hover</code></figcaption>
         </figure>
         <figure class="sr-cell">
-          <div class="sr-stage"><button class="md-button" type="button"><span class="md-state-layer-focus" aria-hidden="true"></span>Focused</button></div>
+          <div class="sr-stage"><button class="md-button" type="button"><span class="md-state-layer-focus" aria-hidden="true"></span><span class="md-button-label">Focused</span></button></div>
           <figcaption>Focused · <code>md-state-layer-focus</code></figcaption>
         </figure>
         <figure class="sr-cell">
-          <div class="sr-stage"><button class="md-button" type="button"><span class="md-state-layer-pressed" aria-hidden="true"></span>Pressed</button></div>
+          <div class="sr-stage"><button class="md-button" type="button"><span class="md-state-layer-pressed" aria-hidden="true"></span><span class="md-button-label">Pressed</span></button></div>
           <figcaption>Pressed · <code>md-state-layer-pressed</code></figcaption>
         </figure>
         <figure class="sr-cell">
-          <div class="sr-stage"><button class="md-button" type="button" disabled>Disabled</button></div>
+          <div class="sr-stage"><button class="md-button" type="button" disabled><span class="md-button-label">Disabled</span></button></div>
           <figcaption>Disabled · <code>[disabled]</code></figcaption>
         </figure>
       </div>
@@ -568,7 +550,32 @@
         </tbody>
       </table>
       <p>Es el mismo fenómeno que impide que una utilidad de <code>2-sys</code> cambie el color de un componente: una clase de <code>2-sys</code> puede fijar algo que el componente no toque, y no puede pisar algo que el componente sí fije.</p>
-      <p><strong>Consecuencia:</strong> el requisito de 48×48 de M3 <strong>no se puede cumplir con una utilidad</strong>, ni por capas ni por motivo. Necesita un modificador del propio componente, del tipo <code>.md-button-touch</code>, que añada la superficie de toque sin tocar la caja. No está implementado, y queda anotado en <a href="#notas">Notas</a>.</p>
+      <p><strong>Consecuencia:</strong> el requisito de 48×48 de M3 <strong>no se puede cumplir con una utilidad</strong>, ni por capas ni por motivo. Necesita algo del propio componente, que es lo que hace el siguiente bloque.</p>
+      <h4>La solución: <code>.md-button-touch</code></h4>
+      <p>Un elemento hijo que se dibuja por encima del botón sin ocupar sitio en el flujo. Es lo que hace M3 con su elemento <code>.touch</code>, en <code>button/internal/_touch-target.scss</code>.</p>
+      <div class="sr-stage">
+        <button class="md-button md-button-xsmall" type="button" aria-label="Añadir">
+          <span class="md-button-icon md-icon" aria-hidden="true">add</span>
+          <span class="md-button-touch"></span>
+        </button>
+      </div>
+      <p>Medido en el navegador: el botón <strong>sigue midiendo 32dp</strong> y la superficie mide <strong>48×48dp</strong>. El layout no cambia ni un píxel, porque la superficie es <code>position: absolute</code>: no entra en el flujo, no empuja a los hermanos y no ensancha el botón.</p>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Elemento</th><th scope="col">Alto</th><th scope="col">Ancho</th><th scope="col">Lo que es</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>.md-button</code></td><td>32px</td><td>48px</td><td>El área visible, y lo que mide el diseño</td></tr>
+          <tr><td><code>.md-button-touch</code></td><td><strong>48px</strong></td><td><strong>48px</strong></td><td>El área que recibe el toque</td></tr>
+        </tbody>
+      </table>
+      <p>La receta es la de M3, con un cambio: donde su <code>.touch</code> pone <code>height: max(48px, 100%)</code>, aquí se pide el rol del sistema en vez del número, porque <code>3-comp/</code> no puede escribir medidas crudas. El <code>100%</code> se conserva y es lo que hace que un botón con etiqueta larga agrande también su superficie, en vez de quedarse en 48dp por debajo del texto.</p>
+      <p>Dos detalles que no son de M3 y sí hacen falta aquí:</p>
+      <ul>
+        <li>La superficie <strong>no</strong> lleva <code>pointer-events: none</code>, al contrario que los dos pseudo-elementos del botón. Existe para recibir el toque. No intercepta nada que esté mal porque es descendiente del botón: el clic le llega de todas formas. La superficie no <em>reemplaza</em> al botón, lo <em>amplía</em>.</li>
+        <li>No hay que <code>overflow: hidden</code> en el botón, y antes sí lo había. Ese <code>overflow</code> recortaba a los descendientes, y una superficie que sobresale se recortaba con él. Por eso <code>.md-button-label</code> es ahora obligatoria en el marcado: es la que lleva el <code>overflow: hidden</code> que recorta los puntos suspensivos, igual que hace M3, que lo tiene en <code>.label</code> y no en el botón.</li>
+      </ul>
+      <p class="sr-na">Comprobado que no se rompió nada al quitar el <code>overflow</code> del botón: la capa de estado es <code>position: absolute</code> con <code>inset: 0</code> y <code>border-radius: inherit</code>, o sea que se acota por geometría y nunca se derramó por otra causa. La sombra de elevación sigue dibujándose y el truncado de la etiqueta sigue funcionando, medidos los dos.</p>
       <h4>Y en M3 el botón de icono es otro componente</h4>
       <p>Un detalle de terminología que cambia el tamaño del icono. El <strong>botón de icono</strong> de M3 no es un <code>button</code> sin etiqueta: es <code>icon-button</code>, un componente aparte con sus propios tokens, y sus tamaños no coinciden con los del botón.</p>
       <table class="sr-table">
@@ -613,7 +620,7 @@
       <div class="sr-stage sr-stage--fill">
         <button class="md-button" type="button">
           <span class="md-button-icon md-icon" aria-hidden="true">save</span>
-          Guardar los cambios
+          <span class="md-button-label">Guardar los cambios</span>
         </button>
       </div>
       <p>El componente declara <code>display: inline-flex</code> con <code>justify-content: center</code>, que es lo que mantiene el grupo centrado cuando el contenedor se estira. No declara un ancho: es el contenido el que lo determina.</p>
@@ -627,7 +634,7 @@
       <div class="sr-stage">
         <button class="md-button md-button-filled md-button-medium" type="button">
           <span class="md-button-icon md-icon" aria-hidden="true">save</span>
-          Guardar
+          <span class="md-button-label">Guardar</span>
         </button>
       </div>
       <ol>
@@ -698,9 +705,13 @@
     <article class="sr-section" id="notas">
       <h2>Notas</h2>
       <p>Lo que este componente <strong>no</strong> implementa, y por qué. No son olvidos.</p>
-      <h3>El área táctil de 48dp</h3>
-      <p>M3 exige 48×48 de zona pulsable. <strong>No se cumple</strong>, y la razón está medida en <a href="#accesibilidad">Accesibilidad</a>: la utilidad <code>.md-measure-touch-target</code> agranda la caja, que es el área <em>visible</em>, y eso ni resuelve el alto —el <code>min-height</code> de <code>comp</code> le gana— ni deforma el botón.</p>
-      <p>Hace falta un modificador del propio componente, <code>.md-button-touch</code>, que añada una superficie de toque invisible sin tocar la caja, como hace M3 con su elemento <code>.touch</code>. Es un hueco real, y se cerrará con un componente, no con una utilidad.</p>
+      <h3>La etiqueta necesita su propio elemento</h3>
+      <p>Desde esta versión, todo botón con etiqueta visible la envuelve en <code>&lt;span class="md-button-label"&gt;</code>. No es una preferencia de formato: es lo que hace posible el área táctil.</p>
+      <p>El <code>overflow: hidden</code> del botón recortaba a los descendientes, y una superficie de toque de 48dp en un botón de 32dp tiene que <em>sobresalir</em>. Con el recorte en el botón, se recortaba con él. M3 tiene el mismo problema resuelto de la misma manera: en <code>button/internal/_shared.scss</code>, el <code>overflow: hidden</code> está en <code>.label</code>, línea 132, y el botón no lo lleva.</p>
+      <p>Lo que se ganó aparte: la sombra de elevación ya no depende de estar en el elemento. Antes tenía que estar ahí porque un pseudo-elemento con sombra se dibujaba justo en la parte que el <code>overflow</code> recortaba. Hoy se podría mover al <code>::before</code> sin romperse, y sigue en el elemento por simplicidad. Ver la nota de la elevación en <code>3-comp/button.css</code>.</p>
+      <h3>El área táctil</h3>
+      <p>Implementada. <code>.md-button-touch</code> es un elemento hijo, no un modificador, y se documenta con la medida medida en <a href="#accesibilidad">Accesibilidad</a>.</p>
+      <p>Los botones de tamaño <code>medium</code> miden 56dp y cumplen sin la superficie. Los de <code>xsmall</code> y <code>small</code>, que miden 32dp y 40dp, la necesitan.</p>
       <h3>El botón de icono</h3>
       <p class="sr-na">M3 define <code>icon-button</code> como un componente aparte de <code>button</code>, con sus propios tamaños de glifo. No está implementado. Ver <a href="#accesibilidad">Accesibilidad</a> con la tabla comparada.</p>
       <h3>El botón toggle</h3>
