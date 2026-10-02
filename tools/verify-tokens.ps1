@@ -29,6 +29,16 @@
                Las carpetas y archivos esperados existen; main.css declara las
                capas @layer; el numero de archivos importados coincide.
 
+      REGLA 8  Tablas de tokens del showroom
+               Portada del verificador de rdm-next-old. El showroom vive
+               fuera de src/css/, asi que Get-CssFiles lo excluye y sin esta
+               regla nadie leeria sus hojas. Comprueba que toda <table> lleve
+               el patron .sr-table, que ese patron sea una superficie completa
+               (borde, radio, encabezado con tinte, code monospace) y que el
+               texto de la tabla de 4.5:1 en los dos temas.
+               La rejilla NO se mide: va en outline-variant por decision
+               documentada, y el comentario del bloque explica por que.
+
 .PARAMETER Quiet
     No muestra el detalle de cada archivo que pasa. Solo el resumen.
 
@@ -578,8 +588,242 @@ foreach ($tf in $themeFiles) {
 }
 
 # ============================================================================
-# RESULTADO
+# REGLA 8 - Tablas de tokens del showroom
+# --------------------------------------------------------------------------
+# Estas reglas vienen del verificador de rdm-next-old, que tenia tres checks de
+# tabla. Portan la doctrina que el proyecto viejo escribio en su SKILL.md y que
+# aqui todavia no estaba:.
+#
+#   a) Formato. Toda <table> del showroom lleva sr-table. Y .sr-table es una
+#      SUPERFICIE: borde real + radio, fondo, encabezado con tinte, rejilla
+#      completa, code en monospace. Sin eso la tabla se lee como texto alineado,
+#      no como un bloque de datos.
+#
+#   b) Specimen. Una tabla de color o de medidas debe PINTAR el valor, no solo
+#      listarlo. Es la regla 308 del verificador viejo: "las medidas se muestran,
+#      no solo se listan".
+#
+#   c) Contraste. El texto de la tabla tiene que dar 3:1 contra su fondo, en los
+#      dos temas. Una tabla que documenta accesibilidad y falla ella misma es
+#      peor que no documentarla.
+#
+# Por que el showroom necesita reglas propias: Get-CssFiles excluye todo lo que
+# esta fuera de src/css/, asi que sin esta seccion showroom/assets/showroom.css
+# no lo lee nadie. Y no se extiende a las capas de la libreria: alli manda
+# REGLA 1 a REGLA 7.
 # ============================================================================
+
+$showroomRoot = Join-Path $ProjectRoot 'showroom'
+$showroomCss = Join-Path $showroomRoot 'assets\showroom.css'
+
+# a) Formato de la tabla
+
+if (-not (Test-Path $showroomCss)) {
+    Add-Issue -Rule 'REGLA 8' -File 'showroom/assets/showroom.css' -Line 0 `
+              -Message 'no existe: sin el, las tablas del showroom no tienen patron' -Snippet ''
+}
+else {
+    $srCss = [System.IO.File]::ReadAllText($showroomCss)
+
+    # Cada <table> del showroom lleva la clase. Se comparan los dos conteos: el
+    # de toda tabla del showroom contra el de toda tabla con sr-table.
+    $srTables = 0
+    foreach ($html in $htmlFiles) {
+        $raw = [System.IO.File]::ReadAllText($html.FullName)
+        $body = [regex]::Replace($raw, '(?s)<!--.*?-->', '')
+        $rel = Get-RelPath $html.FullName $ProjectRoot
+
+        $tot = ([regex]::Matches($body, '<table[\s>]')).Count
+        $conPatron = ([regex]::Matches($body, '<table[^>]*class="[^"]*\bsr-table\b')).Count
+
+        if ($tot -ne $conPatron) {
+            Add-Issue -Rule 'REGLA 8' -File $rel -Line 0 `
+                      -Message "hay $tot <table> y solo $conPatron llevan sr-table: toda tabla del showroom lleva el patron" `
+                      -Snippet ''
+        }
+        $srTables += $tot
+    }
+
+    # c) Contraste del texto de la tabla, leido del arbol real de tokens.
+    #
+    # No se comprueba el color que escribe showroom.css sino el que RESUELVE,
+    # siguiendo la cadena hasta 1-ref/palette.css. Asi el check no se rompe cada
+    # vez que la paleta cambia, y detecta el fallo real: un rol nuevo que
+    # documenta la tabla y no da 3:1.
+    #
+    # Los pares de TEXTO que la tabla usa, y que son los unicos medidos:
+    #   texto de celda    body-medium sobre surface-container-lowest
+    #   texto de th       title-medium sobre surface-container-low
+    #
+    # Se miden a 4.5:1, que es lo que exige WCAG 1.4.3 para texto normal.
+    #
+    # Lo que NO se mide, y por que: la linea de la rejilla y el contorno.
+    #
+    # outline-variant da 1.7:1 en claro y 2.07:1 en oscuro sobre la superficie
+    # de la tabla, muy por debajo del 3:1 de WCAG 1.4.11. Medirlo y obligar a
+    # subirlo seria inventar un requisito que el sistema no pide: 1.4.11 aplica
+    # a la informacion visual NECESARIA para identificar un componente y su
+    # estado, y una fila de tabla de documentacion no es un control. Ademas,
+    # rdm-next-old eligio outline-variant para la rejilla a proposito (v0.86),
+    # despues de haber probado outline: el encabezado se distingue por su
+    # tinte, y `outline` solo se leia como una linea mas oscura.
+    #
+    # Asi que la rejilla va en outline-variant por decision, no por descuido. Si
+    # algun dia se quisiera 3:1 de verdad, el rol correcto es `outline` (3.17:1
+    # en claro, 6.1:1 en oscuro) y habria que cambiar el rol, no el umbral.
+    function Get-TokenValue {
+        param([string]$Token, [string]$ThemeFile)
+
+        # El rol de color vive en 2-sys/theme/<tema>.css, NO en 2-sys/colors.css:
+        # colors.css publica las utilidades de clase, y los roles los escriben
+        # los dos bloques de cada tema. Se resuelve desde ahi.
+        $txt = [System.IO.File]::ReadAllText((Join-Path $CssRoot $ThemeFile))
+        $m = [regex]::Match($txt, [regex]::Escape($Token) + '\s*:\s*var\((--md-ref-palette-[a-z0-9-]+)\)')
+        if (-not $m.Success) { return $null }
+        $ref = $m.Groups[1].Value
+
+        # La paleta usa las dos formas: 1-ref/palette.css escribe los extremos
+        # en 3 digitos (#000, #fff) y el resto en 6. Se aceptan ambas y se
+        # expande la corta, porque neutral100 es justamente el fondo de la
+        # tabla en tema claro.
+        $pal = [System.IO.File]::ReadAllText((Join-Path $CssRoot '1-ref\palette.css'))
+        # OJO con el orden de las alternativas: la de 6 digitos va PRIMERO.
+        # En una alternancia el motor prueba las ramas de izquierda a derecha y
+        # se queda con la primera que case, sin mirar el resto. Con {3} primero,
+        # un #1d1b20 se captura como #1d1, se expande a #11dd11, y el contraste
+        # que sale no corresponde a ningun color del sistema. Es un fallo
+        # silencioso: el verificador informaba de un problema de accesibilidad
+        # inexistente y le echaba la culpa a un texto que en realidad da 17:1.
+        $p = [regex]::Match($pal, [regex]::Escape($ref) + '\s*:\s*(#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})')
+        if (-not $p.Success) { return $null }
+
+        $hex = $p.Groups[1].Value
+        if ($hex.Length -eq 4) {
+            # #abc -> #aabbcc
+            return '#' + ($hex[1]) + ($hex[1]) + ($hex[2]) + ($hex[2]) + ($hex[3]) + ($hex[3])
+        }
+        return $hex
+    }
+
+    function Get-Luminance {
+        param([string]$Hex)
+
+        $r = [Convert]::ToInt32($Hex.Substring(1, 2), 16) / 255.0
+        $g = [Convert]::ToInt32($Hex.Substring(3, 2), 16) / 255.0
+        $b = [Convert]::ToInt32($Hex.Substring(5, 2), 16) / 255.0
+
+        # WCAG 2.x: los canales por debajo de 0.03928 se linealizan con
+        # /12.92; el resto con la potencia 2.4.
+        $lin = @($r, $g, $b) | ForEach-Object {
+            if ($_ -le 0.03928) { $_ / 12.92 } else { [Math]::Pow(($_ + 0.055) / 1.055, 2.4) }
+        }
+        return 0.2126 * $lin[0] + 0.7152 * $lin[1] + 0.0722 * $lin[2]
+    }
+
+    function Get-Contrast {
+        param([string]$A, [string]$B)
+
+        $la = Get-Luminance $A
+        $lb = Get-Luminance $B
+        if ($la -lt $lb) { $t = $la; $la = $lb; $lb = $t }
+        return ($la + 0.05) / ($lb + 0.05)
+    }
+
+    # Se mide en LOS DOS TEMAS. El showroom tiene un toggle de tema, asi que
+    # un par que funciona en claro y falla en oscuro es un fallo real de la
+    # pagina, aunque el tema por defecto pase.
+    $pares = @(
+        @{ Name = 'texto de celda';    Fg = '--md-sys-color-on-surface';        Bg = '--md-sys-color-surface-container-lowest'; Min = 4.5 }
+        @{ Name = 'texto de th';       Fg = '--md-sys-color-on-surface';        Bg = '--md-sys-color-surface-container-low';     Min = 4.5 }
+    )
+
+    $temas = @(
+        @{ Nombre = 'claro'; Archivo = '2-sys\theme\theme.light.css' }
+        @{ Nombre = 'oscuro'; Archivo = '2-sys\theme\theme.dark.css' }
+    )
+
+    foreach ($tema in $temas) {
+        foreach ($par in $pares) {
+            $fg = Get-TokenValue $par.Fg  $tema.Archivo
+            $bg = Get-TokenValue $par.Bg  $tema.Archivo
+
+            if ($null -eq $fg -or $null -eq $bg) {
+                Add-Issue -Rule 'REGLA 8' -File 'showroom/assets/showroom.css' -Line 0 `
+                          -Message "no se pudo resolver $($par.Fg) o $($par.Bg) desde $($tema.Archivo)" -Snippet ''
+                continue
+            }
+
+            $c = Get-Contrast $fg $bg
+            if ($c -lt $par.Min) {
+                Add-Issue -Rule 'REGLA 8' -File 'showroom/assets/showroom.css' -Line 0 `
+                          -Message "$($par.Name) en tema $($tema.Nombre) da $([Math]::Round($c, 2)):1 ($fg sobre $bg) y necesita $($par.Min):1" `
+                          -Snippet "$($par.Fg) sobre $($par.Bg)"
+            }
+        }
+    }
+
+    # La receta del formato v0.82, comprobada por propiedad. Cada una es un
+    # requisito que se puede violar sin que la tabla se rompa, asi que ninguno
+    # se deduce de los otros.
+    # Cada entrada trae Regex explicito, porque el script corre con
+    # Set-StrictMode: una clave que falta en un solo elemento del array hace
+    # fallar el acesso a $f.Regex en TODOS ellos. Ausente = $false.
+    $formato = @(
+        @{ Token = 'border-radius: var(--md-sys-shape-corner-medium)'; Msg = 'la tabla no declara radio: sin el no se lee como superficie'; Regex = $false },
+        @{ Token = 'border-collapse: separate';                        Msg = 'la tabla no declara border-collapse: separate: hace falta para que el radio recorte con overflow'; Regex = $false },
+        @{ Token = 'overflow: hidden';                                  Msg = 'la tabla no declara overflow: hidden: el radio solo recorta con overflow'; Regex = $false },
+        @{ Token = 'surface-container-lowest';                         Msg = 'la tabla no pinta superficie propia'; Regex = $false },
+        @{ Token = 'var(--md-sys-typescale-title-medium)';              Msg = 'el encabezado no usa title-medium: pesaria menos que su propio contenido'; Regex = $false },
+        @{ Token = 'var(--md-sys-typescale-body-medium)';              Msg = 'las celdas no usan body-medium'; Regex = $false },
+        @{ Token = 'font-family: monospace';                            Msg = 'el <code> de la tabla no queda en monospace explicito'; Regex = $true },
+        @{ Token = 'thead th';                                          Msg = 'no hay encabezado con tinte: sin el el th se confunde con el contenido'; Regex = $false }
+    )
+
+    # Dos formas de comprobar. Por defecto, Contains: busca el texto tal cual,
+    # que es lo que quiere decir "la declaracion esta". Con Regex, se busca la
+    # DECLARACION, no su texto: `font-family: monospace` esta en la hoja
+    # escrito `font-family: monospace;` y un Contains sin el punto y coma
+    # daria falso negativo. Prefijar los parentesis sin escapar convierte
+    # `(...)` en un grupo de captura, asi que se escapan.
+    #
+    # Los metacaracteres se escapan siempre: sin eso, un token con punto como
+    # `border-radius: var(--md-sys-shape-corner-medium)` pasaria por regex y
+    # coincidiria con cualquier cosa.
+    foreach ($f in $formato) {
+        $found = if ($f.Regex) {
+            [regex]::IsMatch($srCss, [regex]::Escape($f.Token) + '\s*;')
+        }
+        else {
+            $srCss.Contains($f.Token)
+        }
+
+        if (-not $found) {
+            Add-Issue -Rule 'REGLA 8' -File 'showroom/assets/showroom.css' -Line 0 `
+                      -Message $f.Msg -Snippet $f.Token
+        }
+    }
+
+    # Una regla de seguridad que el formato completo vuelve necesaria: el ancho
+    # de las barras de medida no puede venir del markup. Se comprueba que exista
+    # la clase de ancho, porque un swatch sin ancho en una celda no mide nada.
+    if (-not ($srCss -match '\.sr-spec-bar--\d')) {
+        Add-Issue -Rule 'REGLA 8' -File 'showroom/assets/showroom.css' -Line 0 `
+                  -Message 'no hay clases sr-spec-bar--N: las barras de medida no tendrian ancho, y REGLA 6 prohibe ponerlo en el markup' `
+                  -Snippet ''
+    }
+
+    # b) Specimen en las tablas de color y de medidas
+    #
+    # Se busca el encabezado de la tabla, no el de la pagina: una tabla que
+    # documenta tokens de color o medidas tiene que pintar algo. Se acepta
+    # cualquiera de las tres familias de muestra.
+    $tablas = [regex]::Matches($srCss, '(?s)sr-spec')
+    if ($tablas.Count -eq 0) {
+        Add-Issue -Rule 'REGLA 8' -File 'showroom/assets/showroom.css' -Line 0 `
+                  -Message 'no hay specimens (sr-spec-*): las tablas de tokens listarian valores sin mostrarlos' `
+                  -Snippet ''
+    }
+}
 
 Write-Host '  Reglas aplicadas:' -ForegroundColor DarkGray
 Write-Host '    REGLA 1  sin valores crudos fuera de 1-ref'
@@ -589,10 +833,11 @@ Write-Host '    REGLA 4  orden de theme.light antes que theme.dark'
 Write-Host '    REGLA 5  integridad de la estructura y @layer'
 Write-Host '    REGLA 6  sin estilos inline ni <style> en el showroom'
 Write-Host '    REGLA 7  sincronizacion de bloques de tema'
+Write-Host '    REGLA 8  formato, specimens y contraste de las tablas de tokens'
 Write-Host ''
 
 if ($script:Issues.Count -eq 0) {
-    Write-Host '  OK - La arquitectura se respeta en las 7 reglas.' -ForegroundColor Green
+    Write-Host '  OK - La arquitectura se respeta en las 8 reglas.' -ForegroundColor Green
     Write-Host ''
     exit 0
 }

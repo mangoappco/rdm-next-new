@@ -26,6 +26,8 @@
       <p>Una línea fina que separa contenido relacionado dentro de un contenedor, como los elementos de una lista o las secciones de una tarjeta.</p>
     </header>
 
+    <hr class="md-divider">
+
     <article class="sr-section">
       <h2>Uso</h2>
       <h3>Cuándo usarlo</h3>
@@ -40,6 +42,8 @@
       </ul>
     </article>
 
+    <hr class="md-divider">
+
     <article class="sr-section">
       <h2>Default</h2>
       <div class="sr-stage sr-stage--fill">
@@ -48,6 +52,8 @@
         <p>Contenido debajo del divisor.</p>
       </div>
     </article>
+
+    <hr class="md-divider">
 
     <article class="sr-section">
       <h2>Variaciones</h2>
@@ -67,6 +73,8 @@
       </div>
     </article>
 
+    <hr class="md-divider">
+
     <article class="sr-section">
       <h2>Color</h2>
       <div class="sr-grid">
@@ -83,25 +91,35 @@
       </div>
     </article>
 
+    <hr class="md-divider">
+
     <article class="sr-section">
       <h2>Shapes</h2>
       <p class="sr-na">Este componente no tiene shapes: es una línea recta sin esquinas.</p>
     </article>
+
+    <hr class="md-divider">
 
     <article class="sr-section">
       <h2>Sizes</h2>
       <p class="sr-na">Este componente no tiene tamaños: su grosor es fijo (<code>--md-sys-shape-stroke-thin</code>).</p>
     </article>
 
+    <hr class="md-divider">
+
     <article class="sr-section">
       <h2>Padding</h2>
       <p class="sr-na">Este componente no tiene configuraciones de padding propias. La separación lateral se muestra en Variaciones (inset y middle inset).</p>
     </article>
 
+    <hr class="md-divider">
+
     <article class="sr-section">
       <h2>States</h2>
       <p class="sr-na">Este componente no tiene estados.</p>
     </article>
+
+    <hr class="md-divider">
 
     <article class="sr-section">
       <h2>Anatomía</h2>
@@ -111,18 +129,21 @@
       </ol>
     </article>
 
+    <hr class="md-divider">
+
     <article class="sr-section">
       <h2>Medidas y tokens</h2>
       <table class="sr-table">
         <thead>
-          <tr><th scope="col">Atributo</th><th scope="col">Valor</th><th scope="col">Token</th></tr>
+          <tr><th scope="col">Atributo</th><th scope="col">Valor</th><th scope="col">Muestra</th><th scope="col">Token</th></tr>
         </thead>
         <tbody>
-          <tr><td>Color</td><td>outline-variant</td><td><code>--md-comp-divider-color</code></td></tr>
-          <tr><td>Grosor</td><td>1px</td><td><code>--md-comp-divider-thickness</code></td></tr>
-          <tr><td>Inset</td><td>16px</td><td><code>--md-sys-measurement-inset</code></td></tr>
+          <tr><td>Color</td><td>outline-variant</td><td><hr class="md-divider"></td><td><code>--md-comp-divider-color</code></td></tr>
+          <tr><td>Grosor</td><td>1px</td><td><hr class="md-divider"></td><td><code>--md-comp-divider-thickness</code></td></tr>
+          <tr><td>Inset</td><td>16px</td><td><hr class="md-divider md-divider-inset"></td><td><code>--md-sys-measurement-inset</code></td></tr>
         </tbody>
       </table>
+      <p class="sr-na">La muestra de las dos primeras filas es el mismo divider, porque color y grosor se ven juntos: la linea se dibuja con el color y con el grosor a la vez, y no hay forma de verlos por separado. La tercera fila si es otro elemento, <code>md-divider-inset</code>, y por eso su linea no llega al borde.</p>
     </article>
 
   </main>

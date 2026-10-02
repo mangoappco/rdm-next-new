@@ -13,20 +13,114 @@
 
 @layer showroom {
 
+  /* ------------------------------------------------------------------------
+     LA ESCALA DE RITMO
+     --------------------------------------------------------------------------
+     Cuatro pasos, y solo cuatro. Cada uno responde a UNA pregunta, que es lo
+     que hace que la pagina se lea como una sola cosa en vez de como una pila
+     de bloques sueltos:
+
+       --sr-space-xs    8px   un titulo y el texto que introduce
+       --sr-space-s    16px   dos bloques al mismo nivel, y el separador
+       --sr-space-m    24px   un subtitulo que abre grupo; padding del escenario
+       --sr-space-l    32px   la barra respecto al encabezado de pagina
+
+     De donde salen: rdm-next-old trabajaba con 8, 16 y 32, que son los unicos
+     que tenia. El paso de 24 se anade porque aqui existe un nivel de jerarquia
+     que alla no habia: el h3, un titulo de segundo orden dentro de la seccion.
+     Los cuatro son multiplos de 8dp, el ritmo base de la reticula de M3, y los
+     cuatro caen en la escala oficial Space 0-900. Ninguno es un numero suelto.
+
+     POR QUE NO ES UN TOKEN DE 2-sys
+     --------------------------------
+     measurement.css quito a proposito los roles de reticula (page-margin,
+     section-gap, item-gap): el ritmo depende de cuantas secciones hay y de que
+     contienen, asi que es una decision de la pagina y no del sistema de
+     medidas. Aqui se cumple: la escala vive en la capa showroom y se lee de
+     1-ref, igual que hacia el resto del archivo.
+     --------------------------------------------------------------------- */
   :root {
-    --sr-gap:      var(--md-ref-spacing-300);
-    --sr-gap-lg:   var(--md-ref-spacing-500);
-    --sr-gap-sm:   var(--md-ref-spacing-100);
-    --sr-line:     var(--md-sys-color-outline-variant);
+    --sr-space-xs: var(--md-ref-spacing-100);
+    --sr-space-s:  var(--md-ref-spacing-200);
+    --sr-space-m:  var(--md-ref-spacing-300);
+    --sr-space-l:  var(--md-ref-spacing-400);
+
+    /* Dos tonos de linea, y la distincion es de proposito.
+
+       --sr-line        outline-variant. Separadores y bordes de tabla: el
+                        mismo rol que usa el divisor, y por el mismo motivo,
+                        que la linea es decorativa y no delimita un objetivo.
+       --sr-line-strong outline. Lo que separa SECCIONES y acota la pagina.
+                        Aqui el usuario tiene que poder ver donde acaba una
+                        seccion y empieza otra, asi que va por encima del
+                        3:1 de WCAG 1.4.11: 4.55:1 en claro y 6.10:1 en
+                        oscuro. Con outline-variant se quedaba en 1.70:1 y
+                        las secciones se fundian con el fondo. */
+    --sr-line:        var(--md-sys-color-outline-variant);
+    --sr-line-strong: var(--md-sys-color-outline);
     --sr-stage-bg: var(--md-sys-color-surface-container-low);
     --sr-muted:    var(--md-sys-color-on-surface-variant);
   }
 
+  /* ------------------------------------------------------------------------
+     LA PAGINA
+     --------------------------------------------------------------------------
+     Una columna flex con UN solo gap, y el aire repartido desde ahi.
+
+     Con el aire en un gap y no en margenes, ningun hijo puede apagarlo. Antes
+     cada bloque declaraba su propio margin, y dos margenes verticales
+     adyacentes se COLAPSAN (gana el mayor, no la suma): un bloque con margin 0
+     abajo seguido de otro con margin 0 arriba se queda en 0. Ese fue el
+     defecto que el commit 4c6bf9b intento corregir, y volvia por otra via.
+
+     El separador entre secciones es un hijo MAS de esta columna, no un borde
+     del article. Asi recibe el mismo gap por los dos lados sin que nadie lo
+     declare: 16 + 1 + 16 = 33px. Es la cifra de rdm-next-old, y su CSS deja
+     escrito por que se bajo de 41px: "cada nivel pega con un solo borde para
+     que nada se acumule".
+     --------------------------------------------------------------------- */
   .sr-page {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sr-space-s);
     max-width: calc(var(--md-ref-spacing-900) * 10);   /* 720px */
     margin-inline: auto;
-    padding: var(--sr-gap-lg) var(--sr-gap);
+    padding: var(--sr-space-m);
   }
+
+  /* El separador entre secciones es el COMPONENTE, no un borde ad-hoc.
+
+     El showroom documenta md-divider y no puede documentarlo sin usarlo en su
+     propio chrome: es lo que hacia rdm-next-old con .rdm-divider.
+
+     Se reapunta --md-comp-divider-color, que es el token PUBLICO que el propio
+     componente ya declara, y no se escribe un color: es el mismo mecanismo que
+     .md-divider-primary, con la diferencia de que ese vive en la capa comp y
+     este necesita --sr-line-strong, que es una decision de la vista. Al
+     apuntar el token del componente y no su propiedad, una utilidad .md-*
+     aplicada encima no se pelea con el: gana la linea del separador, que es lo
+     que tiene que pasar.
+
+     Y hay que neutralizar su margen a mano: <hr> trae margin-block: 0.5em del
+     navegador (7px con el cuerpo de 14px), ni reset.css lo anula ni
+     3-comp/divider.css lo resetea, asi que se filtra. Sin `margin: 0` el
+     separador mide 16 + 7 + 1 + 7 + 16 = 47px en vez de 33, y el ritmo de la
+     pagina queda en una cifra que nadie eligio.
+
+     El reset vive aqui y no en el componente porque el componente se distribu-
+     ye: la pregunta "cuanto aire va alrededor del separador" es de la pagina
+     que lo usa, no del divisor. Un card no decide el margen de la linea que
+     lo separa de su hermano.
+
+     Y el reset del margen va en la regla de abajo, que baja a cualquier nivel:
+     tambien hay specimens dentro de celdas de tabla, y un <hr> ahi tambien
+     hereda los 7px del navegador. Un specimen tiene que medir lo que mide el
+     componente, no lo que el navegador le agrega por sorpresa. */
+  .sr-page > .md-divider {
+    --md-comp-divider-color: var(--sr-line-strong);
+  }
+
+  .sr-page .md-divider { margin: 0; }
 
   .sr-back {
     font: var(--md-sys-typescale-label-large);
@@ -36,46 +130,102 @@
   .sr-back:hover,
   .sr-back:focus-visible { color: var(--md-sys-color-on-background); text-decoration: underline; }
 
-  .sr-header { margin-block: var(--sr-gap-lg); }
-  .sr-header h1 { margin: 0 0 var(--sr-gap-sm); font: var(--md-sys-typescale-display-small); }
+  /* El encabezado de pagina. Sin margin: su separacion respecto a la barra la da
+     el gap de .sr-page, y el unico gap propio es el par titulo + bajada, que
+     se leen como una unidad. Un titulo pegado a su bajada parece un error. */
+  .sr-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sr-space-xs);
+  }
+  .sr-header h1 { margin: 0; font: var(--md-sys-typescale-display-small); }
   .sr-header p  { margin: 0; font: var(--md-sys-typescale-body-large); color: var(--sr-muted); }
 
+  /* ------------------------------------------------------------------------
+     EL RITMO DENTRO DE UNA SECCION
+     --------------------------------------------------------------------------
+     Una columna flex con gap de 8px, y el aire de mas repartido con dos
+     selectores de hermanos. Nunca con margenes declarados bloque por bloque:
+     ahi es donde aparecian los gaps de 0.
+
+     El gap es el MINIMO y los margenes lo suben. Se elige en ese orden y no al
+     reves porque subir el gap no tiene salida: para pegarle 8px a un titulo
+     habria que escribir un margen NEGATIVO. Con el gap pequeno, cada caso se
+     resuelve sumando hacia arriba y no hay ningun valor negativo en el archivo.
+
+     MEDIDO dentro de una seccion:
+
+       parrafo -> parrafo        8 + 8  = 16px   dos bloques del mismo nivel
+       parrafo -> tabla          8 + 8  = 16px
+       tabla   -> escenario      8 + 8  = 16px
+       titulo  -> parrafo        8 + 0  =  8px   el titulo y su texto, juntos
+       parrafo -> subtitulo      8 + 16 = 24px   el subtitulo abre grupo
+
+     Que lo que sigue a un titulo se pegue SOLO cuando es prosa es
+     deliberado. Antes el selector era "lo que sigue a un titulo", sin mirar
+     QUE, y una tabla o un escenario tras un h2 se quedaban a 8px del titulo
+     mientras que tras un parrafo tenian 16. Que el mismo bloque respire
+     distinto segun el hermano que lo precede es exactamente lo que hace que
+     un ritmo se lea como accidental. */
   .sr-section {
-    padding-block: var(--sr-gap-lg);
-    border-block-start: var(--md-sys-shape-stroke-thin) solid var(--sr-line);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sr-space-xs);
   }
 
-  /* Ritmo vertical de la seccion.
-
-     Todos los hijos se normalizan a margin 0 y el aire se reparte con un
-     solo selector de hermanos. Antes cada bloque declaraba su propio margin
-     a mano, y el resultado era que un <p> o una <table> seguidos por otro
-     bloque se quedaban pegados: los margins de abajo y arriba no se suman,
-     se COLAPSAN, y con ambos a 0 no queda nada.
-
-     Con un unico selector no hay dos margenes que se peleen, y anadir un
-     bloque nuevo a una vista no obliga a acordarse de separarlo. */
   .sr-section > * { margin: 0; }
-  .sr-section > * + * { margin-block-start: var(--sr-gap); }
+  .sr-section > * + * { margin-block-start: var(--sr-space-xs); }
 
-  /* Lo que sigue a un titulo va pegado a el: el titulo ya respira. */
-  .sr-section > h2 + *,
-  .sr-section > h3 + * { margin-block-start: var(--sr-gap-sm); }
+  /* El titulo y su prosa: 8px. */
+  .sr-section > :is(h2, h3, h4) + :is(p, ul, ol) { margin-block-start: 0; }
 
-  /* Un titulo nuevo, en cambio, necesita mas aire que un parrafo: marca un
-     cambio de tema dentro de la seccion. */
-  .sr-section > * + h2,
-  .sr-section > * + h3 { margin-block-start: var(--sr-gap-lg); }
+  /* Un subtitulo abre grupo: 24px. Va DESPUES de la regla anterior a proposito,
+     asi que un h3 seguido de otro h3 cae aqui y no en la de la prosa. */
+  .sr-section > * + :is(h3, h4) { margin-block-start: var(--sr-space-s); }
 
   .sr-section h2 { font: var(--md-sys-typescale-headline-small); }
   .sr-section h3 { font: var(--md-sys-typescale-title-medium); }
   .sr-section p,
   .sr-section li { font: var(--md-sys-typescale-body-medium); }
-  .sr-section ul,
-  .sr-section ol { padding-inline-start: var(--md-ref-spacing-300); }
 
-  /* Seccion que no aplica: titulo + aviso */
-  .sr-na { margin: 0; color: var(--sr-muted); }
+  /* Listas.
+
+     El reset pone `list-style: none` y `padding: 0` porque las listas de un
+     componente las lleva el componente. En documentacion no: sin vineta, tres
+     frases de "cuando usarlo" se leen como un parrafo largo de 6 lineas, y el
+     sangrado solo hace que la primera quede descolgada. Medido antes del
+     arreglo: 0px entre elementos y ninguna vineta.
+
+     Por eso la vineta y el aire entre elementos se devuelven aqui. El sangrio
+     es de texto de documentacion, no de componente, asi que va con un token de
+     espacio y no con el que usaria una lista de la libreria.
+
+     El :not(.sr-index) no es defensa por si acaso: el indice de la portada es
+     tambien un <ul> dentro de una .sr-section, asi que sin el exclusion estas
+     reglas le ponevineta y sangria a un menu de enlaces, que no es una lista
+     de contenido. La especificidad de `.sr-section ul` es (0,1,1) y gana a la
+     de `.sr-index` (0,1,0), de modo que el orden del archivo no lo arregla:
+     hace falta excluirlo en el selector. */
+  .sr-section ul:not(.sr-index),
+  .sr-section ol {
+    padding-inline-start: var(--sr-space-m);
+    list-style: disc;
+  }
+  .sr-section ol { list-style: decimal; }
+
+  /* 8px entre elementos: la lista es un bloque mas y respira como uno. */
+  .sr-section li + li { margin-block-start: var(--sr-space-xs); }
+  .sr-index li + li { margin-block-start: 0; }   /* el aire lo lleva el <a> */
+
+  /* Seccion que no aplica: titulo + aviso.
+
+     Este bloque NO lleva `margin: 0`, y esa es la correccion. Antes lo llevaba,
+     y por especificidad (0,1,0, la misma que la regla de hermanos, y mas abajo
+     en el archivo) le ganaba a `.sr-section > * + *` y le apagaba el aire:
+     8 de los 13 avisos quedaban pegados al bloque de arriba. Un .sr-na es un
+     <p> mas, y al ritmo lo aplica su sitio en la seccion, no su clase. Por eso
+     aqui solo queda el color. */
+  .sr-na { color: var(--sr-muted); }
 
   /* Escenario donde se renderiza el componente */
   .sr-stage {
@@ -83,36 +233,360 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: var(--sr-gap);
-    padding: var(--sr-gap);
+    gap: var(--sr-space-s);
+    padding: var(--sr-space-m);
     color: var(--md-sys-color-on-surface);
     background: var(--sr-stage-bg);
     border-radius: var(--md-sys-shape-corner-large);
   }
   .sr-stage--fill { align-items: stretch; }   /* componentes de ancho completo */
 
+  /* Superficie de contraste: un rectangulo con otro tono de superficie, para
+     ensenar un componente que esta pensado para vivir EN UNA SUPERFICIE y no
+     sobre el lienzo de la pagina.
+
+     Existe por el boton elevated. M3 dice que se usa "cuando el boton
+     necesita separarse de un fondo visualmente importante", y su relleno
+     esta disenado para no destacar contra ese fondo: la separacion la hace
+     la sombra. Sobre el lienzo, en tema oscuro, no hay nada que los separe.
+
+     Vive en la capa del showroom, no en la libreria: es una manera de
+     presentar, no un token del sistema.
+
+     Por que no se puede hacer con .md-bg-*: .sr-stage y las utilidades de
+     color se aplican al mismo atributo y con la misma especificidad, y la
+     capa showroom esta declarada despues, asi que el stage gana siempre.
+     Cambiar el fondo del escenario con una utilidad no es posible por el
+     orden de capas, y por eso esto es una clase propia. */
+  .sr-surface {
+    background: var(--md-sys-color-surface-container-high);
+    border-radius: var(--md-sys-shape-corner-large);
+    /* 16px y no 24: esta superficie va DENTRO de un .sr-stage, que ya aporta
+       sus 24px. Con 24 aqui el boton quedaba a 48px de la celda, y el
+       escenario dejaba de ser el marco para convertirse en una segunda caja. */
+    padding: var(--sr-space-s);
+    width: 100%;
+  }
+
   /* Grilla de variaciones: escenario + leyenda */
   .sr-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(calc(var(--md-ref-spacing-900) * 3), 1fr));
-    gap: var(--sr-gap);
+    gap: var(--sr-space-m);
   }
   .sr-cell { margin: 0; }
   .sr-cell figcaption {
-    margin-block-start: var(--sr-gap-sm);
+    margin-block-start: var(--sr-space-xs);
     font: var(--md-sys-typescale-body-small);
     color: var(--sr-muted);
   }
 
-  /* Tabla de medidas y tokens */
-  .sr-table { width: 100%; border-collapse: collapse; font: var(--md-sys-typescale-body-medium); }
+  /* ------------------------------------------------------------------------
+     SWATCHES DE LA PALETA (1-ref/palette.css)
+     --------------------------------------------------------------------------
+     Estas clases existen SOLO para pintar los 89 tonos crudos de la paleta.
+
+     Por que estan en el showroom y no en la libreria: 1-ref no lleva clase,
+     por decision documentada (README seccion 2). Publicar .md-bg-palette-*
+     expondria al HTML de producto una capa que hoy es privada, y cualquier
+     componente podria saltarse los roles saltandose la capa 2. Un swatch no
+     es un color de interfaz: es una muestra.
+
+     Consumen --md-ref-palette-* directamente, igual que este archivo ya
+     consume --md-ref-spacing-* para su ritmo de pagina. Ninguna regla de
+     showroom.css toca una clase .md-*.
+
+     El nombre replica la familia y el tono del token: sr-swatch-primary40
+     pinta --md-ref-palette-primary40. La unica excepcion al criterio de
+     "propiedad primero" es deliberada: aqui la propiedad es siempre fondo y
+     la familia es el dato, asi que invertir el orden solo anadiria ruido.
+     --------------------------------------------------------------------- */
+
+  /* Celda de swatch: la muestra arriba, la etiqueta debajo. */
+  .sr-swatch-cell {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sr-space-xs);
+    min-width: 0;
+  }
+
+  /* La muestra. El ancho lo decide la grilla; el alto es fijo para que todas
+     las de una familia sean comparables entre si. */
+  .sr-swatch {
+    block-size: var(--md-ref-spacing-800);
+    border-radius: var(--md-sys-shape-corner-small);
+    /* Contorno tenue: sin el, los tonos 99 y 100 se pierden sobre el fondo
+       de la etapa, que en tema claro es casi blanco. */
+    outline: var(--md-sys-shape-stroke-thin) solid var(--sr-line);
+    outline-offset: calc(var(--md-ref-spacing-0) - var(--md-sys-shape-stroke-thin));
+  }
+
+  /* Etiqueta: nombre del token, en dos lineas porque neutral-variant no entra. */
+  .sr-swatch-name {
+    font: var(--md-sys-typescale-label-small);
+    color: var(--md-sys-color-on-surface);
+    overflow-wrap: anywhere;
+  }
+  .sr-swatch-hex {
+    font: var(--md-sys-typescale-body-small);
+    color: var(--sr-muted);
+  }
+
+  /* Variante con par: la muestra ES el fondo del texto, y lleva el texto
+     dentro. Es la que demuestra contraste, porque el par se ve en la propia
+     celda y no en dos muestras separadas que hay que comparar de memoria.
+
+     Aqui no hay un padre que fije el color: las utilidades de 2-sys se
+     aplican al mismo elemento que pinta el fondo, asi que no hay herencia que
+     compita con md-text-*. Ese es el motivo de que esta variante funcione
+     donde un .sr-stage (que fija color) no dejaba distinguir nada. */
+  .sr-swatch--pair {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--sr-space-xs);
+    font: var(--md-sys-typescale-label-medium);
+    text-align: center;
+    overflow-wrap: anywhere;
+  }
+
+  /* Variante con borde: la muestra pinta el fondo y el borde lo aporta una
+     utilidad md-border-*. El grosor NO viene de la utilidad, que solo fija
+     border-color: lo pone este stylesheet, igual que en un producto lo pondria
+     el componente.
+
+     El borde va por dentro del contorno que trae .sr-swatch, y el contorno se
+     recorre hacia fuera. Asi se distinguen las dos lineas: el borde interior es
+     el color que se quiere mostrar, y el exterior solo recorta la muestra
+     contra la pagina. */
+  .sr-swatch--border {
+    border-width: var(--md-sys-shape-stroke-thin);
+    border-style: solid;
+  }
+
+  /* Las muestras de borde necesitan algo mas de alto para que el trazo se lea
+     como un borde y no como un simple cambio de tono. */
+  .sr-swatch--tall { block-size: var(--md-ref-spacing-900); }
+
+
+
+  /* Grilla de swatches: mas densa que sr-grid, porque aqui importa ver la
+     escalera completa de tonos de una familia de un vistazo. */
+  .sr-swatches {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(calc(var(--md-ref-spacing-900) * 1.75), 1fr));
+    gap: var(--sr-space-m);
+  }
+  .sr-swatches--tight {
+    grid-template-columns: repeat(auto-fill, minmax(calc(var(--md-ref-spacing-900) * 1.5), 1fr));
+  }
+
+  /* ------------------------------------------------------------------------
+     TABLA DE MEDIDAS Y TOKENS (formato v0.82)
+     --------------------------------------------------------------------------
+     La tabla es una SUPERFICIE, no texto con rayas: fondo propio, borde y
+     radio, como un card. Antes era una tabla pelada con solo borde inferior,
+     y no se leia como un bloque de datos sino como texto alineado.
+
+     Superficie con radio medium y borde outline-variant, el mismo rol que
+     usa el divider. El encabezado va sobre surface-container-low, el mismo
+     fondo que el boton elevated, y se distingue por su tinte, no por un
+     borde de otro rol: `outline` solo se diferenciaba como una linea mas
+     oscura y punishments la lectura.
+
+     Tipografia: encabezado a `title-medium` (16/24, peso 500, on-surface) y
+     celdas a `body-medium` (14/20, peso 400), que es el default del body y
+     por eso se declara solo en el td. Antes era `label-large` apagado
+     (on-surface-variant): el encabezado pesaba menos que su propio contenido,
+     que es al reves de como se lee una tabla.
+
+     Contorno con `border` real y `overflow: hidden`, no inset box-shadow: el
+     radio de la superficie solo recorta con overflow (misma razon que
+     documenta src/css/3-comp/card.css), y el inset se pinta DEBAJO del fondo
+     de las celdas hijas, asi que el tinte del th lo tapaba y el borde
+     superior de la tabla quedaba invisible.
+
+     Rejilla con right/bottom de las celdas + reglas de excepcion en la ultima
+     columna y la ultima fila: con border real en la tabla, esos bordes se
+     sobrepondrian al contorno y sumarian 2px. Las reglas evitan la doble
+     linea.
+     --------------------------------------------------------------------- */
+  .sr-table {
+    width: 100%;
+    background-color: var(--md-sys-color-surface-container-lowest);
+    border: var(--md-sys-shape-stroke-thin) solid var(--sr-line);
+    border-radius: var(--md-sys-shape-corner-medium);
+    border-collapse: separate;
+    border-spacing: 0;
+    overflow: hidden;
+    /* Sin `margin: 0` a proposito, y por el mismo motivo que .sr-na: esa
+       declaracion tiene la misma especificidad que la regla de hermanos
+       (0,1,0) y aparece mas abajo en el archivo, asi que le gana y le apaga
+       el aire. Medido: la tabla se quedaba a 8px de un h3 mientras que un
+       parrafo a 24. El ritmo lo aplica la posicion del bloque en la seccion,
+       no el bloque. */
+  }
+
   .sr-table th,
   .sr-table td {
-    padding: var(--md-ref-spacing-150) var(--md-ref-spacing-200);
+    padding: var(--md-ref-spacing-200) var(--md-ref-spacing-300);
     text-align: start;
+    vertical-align: middle;
+    border-inline-end: var(--md-sys-shape-stroke-thin) solid var(--sr-line);
     border-block-end: var(--md-sys-shape-stroke-thin) solid var(--sr-line);
   }
-  .sr-table th { font: var(--md-sys-typescale-label-large); color: var(--sr-muted); }
+
+  /* La ultima columna y la ultima fila no repiten el borde que ya aporta el
+     contorno de la superficie. */
+  .sr-table tr > *:last-child { border-inline-end: none; }
+  .sr-table tbody tr:last-child > * { border-block-end: none; }
+
+  .sr-table thead th {
+    font: var(--md-sys-typescale-title-medium);
+    color: var(--md-sys-color-on-surface);
+    background-color: var(--sr-stage-bg);
+  }
+
+  .sr-table td {
+    font: var(--md-sys-typescale-body-medium);
+  }
+
+  /* El <code> conserva monospace explicito, y aqui hay una diferencia real
+     con rdm-next-old.
+
+     Alli, css/rdm/base.css declaraba `font-family: monospace` para
+     code/pre/kbd/samp, con el motivo escrito: el UA lo impone por defecto y
+     se declara "para que sea decision, no accidente".
+
+     Aqui, src/css/reset.css hace otra cosa: pone `var(--md-ref-typeface-plain)`,
+     la tipografia sans del sistema. Es decir, el reset NO da monospace: se
+     lo quita. Su propio comentario dice que "<code> trae monospace", pero la
+     declaracion que le sigue asigna la sans.
+
+     Consecuencia visible en estas tablas: los nombres de token son lo unico
+     que documentan y van en una fuente proporcional, donde el guion se
+     confunde con un signo menos. `--md-sys-color-primary` deja de leerse como
+     un identificador.
+
+     Se re-declara aca porque el selector de la celda (`font:`) lo
+     sobreescribiria igual, asi que la regla es necesaria en los dos casos.
+     M3 no publica un token de fuente monospace (verificado: 0 matches en el
+     vendor), asi que queda el generico, sin inventar token.
+
+     Si el reset pasa a declarar monospace como en el proyecto viejo, esta
+     regla sobra y se puede borrar. */
+  .sr-table code {
+    font-family: monospace;
+    font-size: var(--md-ref-typescale-body-medium-size);
+  }
+
+  /* Muestra viva dentro de la celda: la tabla no solo lista el valor, lo
+     pinta. Ver la seccion de swatches mas abajo. */
+  .sr-table .sr-swatch {
+    block-size: var(--md-ref-spacing-500);
+    border-radius: var(--md-sys-shape-corner-small);
+  }
+
+  /* ------------------------------------------------------------------------
+     SPECIMENS DENTRO DE LA TABLA
+     --------------------------------------------------------------------------
+     La doctrina viene de rdm-next-old, en la regla 308 de su verificador:
+     "las medidas se muestran, no solo se listan". Una tabla que escribe
+     `#fef7ff` en una celda obliga a creerle; una tabla que lo pinta al lado
+     no. Las tablas de color y de medidas son las que masSebastian de esto.
+
+     Estas clases solo pintan. El valor sigue documentado en texto al lado:
+     un color necesita su hex y su token, y un numero necesita su token. La
+     muestra es el dato, no un adorno.
+
+     Consumen --md-ref-* de la misma forma que el resto del showroom: es su
+     capa, y su ritmo de pagina ya viene de ahi. Ninguna regla toca .md-*.
+     --------------------------------------------------------------------- */
+
+  /* Rol de color, pintado con el rol. `.sr-spec-color` consume el rol que le
+     aplicas encima (`.md-bg-primary`), no un token suelto: asi la muestra
+     sobrevive al cambio de tema, que es justo lo que hay que documentar. */
+  .sr-spec-color {
+    display: block;
+    block-size: var(--md-ref-spacing-600);
+    border-radius: var(--md-sys-shape-corner-small);
+    outline: var(--md-sys-shape-stroke-thin) solid var(--sr-line);
+    outline-offset: calc(var(--md-ref-spacing-0) - var(--md-sys-shape-stroke-thin));
+  }
+
+  /* Rol de BORDE, pintado como borde. Hace falta aparte del anterior porque
+     `outline` y `outline-variant` no tienen utilidad de fondo: el sistema solo
+     publica `.md-border-outline*` y `.md-border-outline-variant*`. Es
+     coherente con lo que son esos dos roles: no rellenan nada, dibujan una
+     linea. Se podria forzar con `.md-bg-*` inventando una clase, y seria
+     mentir sobre el sistema. */
+  .sr-spec-border {
+    display: block;
+    block-size: var(--md-ref-spacing-600);
+    border-width: var(--md-sys-shape-stroke-thin);
+    border-style: solid;
+    border-radius: var(--md-sys-shape-corner-small);
+  }
+
+  /* Par de fondo/texto: el boton elevated necesita las dos superficies juntas
+     para que se vea por que casi no se distingue. Se pinta el boton real, no
+     dos rectangulos sueltos. */
+  .sr-spec-pair {
+    display: flex;
+    gap: var(--sr-space-xs);
+  }
+  .sr-spec-pair > * {
+    flex: 1;
+    block-size: var(--md-ref-spacing-700);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font: var(--md-sys-typescale-label-small);
+    border-radius: var(--md-sys-shape-corner-small);
+    outline: var(--md-sys-shape-stroke-thin) solid var(--sr-line);
+    outline-offset: calc(var(--md-ref-spacing-0) - var(--md-sys-shape-stroke-thin));
+  }
+
+  /* Barra de medida: el alto es fijo para que las barras de una columna sean
+     comparables entre si, y el ancho lo pone la clase de tono de mas abajo.
+     No se puede poner el ancho en el markup: REGLA 6 prohibe `style=` y un
+     `<style>` en el HTML, asi que cada ancho es una clase que consume el
+     token. Es la unica forma de que la barra mida de verdad su token. */
+  .sr-spec-bar {
+    display: block;
+    block-size: var(--md-ref-spacing-300);
+    background-color: var(--md-sys-color-primary);
+    border-radius: var(--md-sys-shape-corner-small);
+  }
+
+  /* Ancho = token. Se generan desde src/css/1-ref/spacing.css: los 17
+     tokens que existen alli, ni uno mas ni uno menos. El nombre replica el
+     token, como las clases sr-swatch-*. */
+  .sr-spec-bar--0   { inline-size: var(--md-ref-spacing-0); }
+  .sr-spec-bar--25  { inline-size: var(--md-ref-spacing-25); }
+  .sr-spec-bar--50  { inline-size: var(--md-ref-spacing-50); }
+  .sr-spec-bar--75  { inline-size: var(--md-ref-spacing-75); }
+  .sr-spec-bar--100 { inline-size: var(--md-ref-spacing-100); }
+  .sr-spec-bar--125 { inline-size: var(--md-ref-spacing-125); }
+  .sr-spec-bar--150 { inline-size: var(--md-ref-spacing-150); }
+  .sr-spec-bar--175 { inline-size: var(--md-ref-spacing-175); }
+  .sr-spec-bar--200 { inline-size: var(--md-ref-spacing-200); }
+  .sr-spec-bar--250 { inline-size: var(--md-ref-spacing-250); }
+  .sr-spec-bar--300 { inline-size: var(--md-ref-spacing-300); }
+  .sr-spec-bar--400 { inline-size: var(--md-ref-spacing-400); }
+  .sr-spec-bar--450 { inline-size: var(--md-ref-spacing-450); }
+  .sr-spec-bar--500 { inline-size: var(--md-ref-spacing-500); }
+  .sr-spec-bar--600 { inline-size: var(--md-ref-spacing-600); }
+  .sr-spec-bar--700 { inline-size: var(--md-ref-spacing-700); }
+  .sr-spec-bar--800 { inline-size: var(--md-ref-spacing-800); }
+  .sr-spec-bar--900 { inline-size: var(--md-ref-spacing-900); }
+
+  /* Marca de grosor: para tokens que son un 1px. Un `border` dibujado con el
+     token de trazo, que es lo que la tabla dice en la columna de valor. */
+  .sr-spec-rule {
+    display: block;
+    border-block-start: var(--md-sys-shape-stroke-thin) solid currentColor;
+  }
 
   /* Indice de componentes (index.html) */
   .sr-index { margin: 0; padding: 0; list-style: none; }
@@ -128,12 +602,18 @@
   .sr-index strong { display: block; font: var(--md-sys-typescale-title-medium); }
   .sr-index span { font: var(--md-sys-typescale-body-medium); color: var(--sr-muted); }
 
-  /* Barra superior: link de regreso a la izquierda, tema a la derecha */
+  /* Barra superior: link de regreso a la izquierda, tema a la derecha.
+
+     El padding-block es lo que separa la barra del titulo de pagina. Con el
+     gap de .sr-page (16px) el h1 quedaria a 16px del link de regreso, que es
+     una escala de sibling, no de cabecera: la barra es chrome y el h1 es el
+     titulo, asi que necesitan un paso mas. 16 del gap + 16 del padding = 32. */
   .sr-bar {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    gap: var(--sr-gap);
+    gap: var(--sr-space-s);
+    padding-block: var(--sr-space-s);
   }
 
   /* Boton con aspecto de texto-link: es una accion, no navegacion */
@@ -151,4 +631,115 @@
     color: var(--md-sys-color-on-background);
     text-decoration: underline;
   }
+  /* ------------------------------------------------------------------------
+     LOS 89 TONOS
+     --------------------------------------------------------------------------
+     Una clase por tono, generada desde src/css/1-ref/palette.css. El nombre
+     replica el token: .sr-swatch-primary40 pinta --md-ref-palette-primary40.
+
+     El orden de las familias es el del archivo fuente, no el alfabetico, y las
+     familias estan separadas por un comentario para que se lea como bloques.
+     --------------------------------------------------------------------- */
+
+  /* error */
+  .sr-swatch-error0 { background-color: var(--md-ref-palette-error0); }
+  .sr-swatch-error10 { background-color: var(--md-ref-palette-error10); }
+  .sr-swatch-error20 { background-color: var(--md-ref-palette-error20); }
+  .sr-swatch-error30 { background-color: var(--md-ref-palette-error30); }
+  .sr-swatch-error40 { background-color: var(--md-ref-palette-error40); }
+  .sr-swatch-error50 { background-color: var(--md-ref-palette-error50); }
+  .sr-swatch-error60 { background-color: var(--md-ref-palette-error60); }
+  .sr-swatch-error70 { background-color: var(--md-ref-palette-error70); }
+  .sr-swatch-error80 { background-color: var(--md-ref-palette-error80); }
+  .sr-swatch-error90 { background-color: var(--md-ref-palette-error90); }
+  .sr-swatch-error95 { background-color: var(--md-ref-palette-error95); }
+  .sr-swatch-error99 { background-color: var(--md-ref-palette-error99); }
+  .sr-swatch-error100 { background-color: var(--md-ref-palette-error100); }
+
+  /* tertiary */
+  .sr-swatch-tertiary0 { background-color: var(--md-ref-palette-tertiary0); }
+  .sr-swatch-tertiary10 { background-color: var(--md-ref-palette-tertiary10); }
+  .sr-swatch-tertiary20 { background-color: var(--md-ref-palette-tertiary20); }
+  .sr-swatch-tertiary30 { background-color: var(--md-ref-palette-tertiary30); }
+  .sr-swatch-tertiary40 { background-color: var(--md-ref-palette-tertiary40); }
+  .sr-swatch-tertiary50 { background-color: var(--md-ref-palette-tertiary50); }
+  .sr-swatch-tertiary60 { background-color: var(--md-ref-palette-tertiary60); }
+  .sr-swatch-tertiary70 { background-color: var(--md-ref-palette-tertiary70); }
+  .sr-swatch-tertiary80 { background-color: var(--md-ref-palette-tertiary80); }
+  .sr-swatch-tertiary90 { background-color: var(--md-ref-palette-tertiary90); }
+  .sr-swatch-tertiary95 { background-color: var(--md-ref-palette-tertiary95); }
+  .sr-swatch-tertiary99 { background-color: var(--md-ref-palette-tertiary99); }
+  .sr-swatch-tertiary100 { background-color: var(--md-ref-palette-tertiary100); }
+
+  /* secondary */
+  .sr-swatch-secondary0 { background-color: var(--md-ref-palette-secondary0); }
+  .sr-swatch-secondary10 { background-color: var(--md-ref-palette-secondary10); }
+  .sr-swatch-secondary20 { background-color: var(--md-ref-palette-secondary20); }
+  .sr-swatch-secondary30 { background-color: var(--md-ref-palette-secondary30); }
+  .sr-swatch-secondary40 { background-color: var(--md-ref-palette-secondary40); }
+  .sr-swatch-secondary50 { background-color: var(--md-ref-palette-secondary50); }
+  .sr-swatch-secondary60 { background-color: var(--md-ref-palette-secondary60); }
+  .sr-swatch-secondary70 { background-color: var(--md-ref-palette-secondary70); }
+  .sr-swatch-secondary80 { background-color: var(--md-ref-palette-secondary80); }
+  .sr-swatch-secondary90 { background-color: var(--md-ref-palette-secondary90); }
+  .sr-swatch-secondary95 { background-color: var(--md-ref-palette-secondary95); }
+  .sr-swatch-secondary99 { background-color: var(--md-ref-palette-secondary99); }
+  .sr-swatch-secondary100 { background-color: var(--md-ref-palette-secondary100); }
+
+  /* primary */
+  .sr-swatch-primary0 { background-color: var(--md-ref-palette-primary0); }
+  .sr-swatch-primary10 { background-color: var(--md-ref-palette-primary10); }
+  .sr-swatch-primary20 { background-color: var(--md-ref-palette-primary20); }
+  .sr-swatch-primary30 { background-color: var(--md-ref-palette-primary30); }
+  .sr-swatch-primary40 { background-color: var(--md-ref-palette-primary40); }
+  .sr-swatch-primary50 { background-color: var(--md-ref-palette-primary50); }
+  .sr-swatch-primary60 { background-color: var(--md-ref-palette-primary60); }
+  .sr-swatch-primary70 { background-color: var(--md-ref-palette-primary70); }
+  .sr-swatch-primary80 { background-color: var(--md-ref-palette-primary80); }
+  .sr-swatch-primary90 { background-color: var(--md-ref-palette-primary90); }
+  .sr-swatch-primary95 { background-color: var(--md-ref-palette-primary95); }
+  .sr-swatch-primary99 { background-color: var(--md-ref-palette-primary99); }
+  .sr-swatch-primary100 { background-color: var(--md-ref-palette-primary100); }
+
+  /* neutral-variant */
+  .sr-swatch-neutral-variant0 { background-color: var(--md-ref-palette-neutral-variant0); }
+  .sr-swatch-neutral-variant10 { background-color: var(--md-ref-palette-neutral-variant10); }
+  .sr-swatch-neutral-variant20 { background-color: var(--md-ref-palette-neutral-variant20); }
+  .sr-swatch-neutral-variant30 { background-color: var(--md-ref-palette-neutral-variant30); }
+  .sr-swatch-neutral-variant40 { background-color: var(--md-ref-palette-neutral-variant40); }
+  .sr-swatch-neutral-variant50 { background-color: var(--md-ref-palette-neutral-variant50); }
+  .sr-swatch-neutral-variant60 { background-color: var(--md-ref-palette-neutral-variant60); }
+  .sr-swatch-neutral-variant70 { background-color: var(--md-ref-palette-neutral-variant70); }
+  .sr-swatch-neutral-variant80 { background-color: var(--md-ref-palette-neutral-variant80); }
+  .sr-swatch-neutral-variant90 { background-color: var(--md-ref-palette-neutral-variant90); }
+  .sr-swatch-neutral-variant95 { background-color: var(--md-ref-palette-neutral-variant95); }
+  .sr-swatch-neutral-variant99 { background-color: var(--md-ref-palette-neutral-variant99); }
+  .sr-swatch-neutral-variant100 { background-color: var(--md-ref-palette-neutral-variant100); }
+
+  /* neutral */
+  .sr-swatch-neutral0 { background-color: var(--md-ref-palette-neutral0); }
+  .sr-swatch-neutral4 { background-color: var(--md-ref-palette-neutral4); }
+  .sr-swatch-neutral6 { background-color: var(--md-ref-palette-neutral6); }
+  .sr-swatch-neutral10 { background-color: var(--md-ref-palette-neutral10); }
+  .sr-swatch-neutral12 { background-color: var(--md-ref-palette-neutral12); }
+  .sr-swatch-neutral17 { background-color: var(--md-ref-palette-neutral17); }
+  .sr-swatch-neutral20 { background-color: var(--md-ref-palette-neutral20); }
+  .sr-swatch-neutral22 { background-color: var(--md-ref-palette-neutral22); }
+  .sr-swatch-neutral24 { background-color: var(--md-ref-palette-neutral24); }
+  .sr-swatch-neutral30 { background-color: var(--md-ref-palette-neutral30); }
+  .sr-swatch-neutral40 { background-color: var(--md-ref-palette-neutral40); }
+  .sr-swatch-neutral50 { background-color: var(--md-ref-palette-neutral50); }
+  .sr-swatch-neutral60 { background-color: var(--md-ref-palette-neutral60); }
+  .sr-swatch-neutral70 { background-color: var(--md-ref-palette-neutral70); }
+  .sr-swatch-neutral80 { background-color: var(--md-ref-palette-neutral80); }
+  .sr-swatch-neutral87 { background-color: var(--md-ref-palette-neutral87); }
+  .sr-swatch-neutral90 { background-color: var(--md-ref-palette-neutral90); }
+  .sr-swatch-neutral92 { background-color: var(--md-ref-palette-neutral92); }
+  .sr-swatch-neutral94 { background-color: var(--md-ref-palette-neutral94); }
+  .sr-swatch-neutral95 { background-color: var(--md-ref-palette-neutral95); }
+  .sr-swatch-neutral96 { background-color: var(--md-ref-palette-neutral96); }
+  .sr-swatch-neutral98 { background-color: var(--md-ref-palette-neutral98); }
+  .sr-swatch-neutral99 { background-color: var(--md-ref-palette-neutral99); }
+  .sr-swatch-neutral100 { background-color: var(--md-ref-palette-neutral100); }
+
 }
