@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Color - ManGo! App</title>
+  <meta name="description" content="Documentacion de la capa de color de RDM Next: los 89 tonos crudos de 1-ref/palette.css, los 37 roles de 2-sys y su mapeo por tema, segun Material Design 3.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../src/css/main.css">
+  <link rel="stylesheet" href="../assets/showroom.css">
+  <script src="../assets/showroom.js"></script>
+</head>
+
+<!--
+  Vista de la CAPA 1 (1-ref/palette.css) y de la capa 2 del color.
+
+  No es un componente de 3-comp: no tiene anatomia, ni slots, ni estados,
+  ni interaccion. Es una tabla de valores, y las secciones que si aplican
+  estan confirmadas con el usuario.
+
+  Las clases .sr-swatch-* viven en showroom/assets/showroom.css, no en la
+  libreria: 1-ref no lleva clase por decision de arquitectura.
+-->
+
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <main class="sr-page">
+
+    <div class="sr-bar">
+      <a class="sr-back" href="../index.html">RDM Next</a>
+      <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
+    </div>
+
+    <header class="sr-header">
+      <h1>Color</h1>
+      <p>Los tonos crudos de la paleta y los roles que los consumen. Es el unico camino del sistema donde el color se decide: un #HEX se escribe en 1-ref, un tema elige que tono le toca a cada rol, y un componente pide el rol sin saber que color hay debajo.</p>
+    </header>
+
+    <hr class="md-divider">
+
+    <article class="sr-section">
+      <h2>Uso</h2>
+      <h3>Que es este archivo</h3>
+      <p><code>src/css/1-ref/palette.css</code> es la CAPA 1 del sistema de color: 89 tonos <code>#HEX</code> en 6 familias, mas <code>black</code> y <code>white</code> absolutos. Son valores crudos, sin significado de diseno. Es el unico archivo del proyecto donde se permite escribir un color literal.</p>
+      <p>Los tonos verificados uno a uno contra <code>material-web/tokens/versions/v0_192/_md-ref-palette.scss</code>: <strong>91 de 91 identicos, cero diferencias</strong>. Es la paleta oficial de Material Design 3, version de tokens v0.192.</p>
+
+      <h3>Cuando se toca</h3>
+      <ul>
+        <li>Para cambiar el color de marca de la app: se edita este archivo y las capas superiores se actualizan solas por cascada.</li>
+        <li>Para cambiar que tono recibe un rol: se edita <code>2-sys/theme/theme.light.css</code> o <code>theme.dark.css</code>, nunca la paleta.</li>
+        <li>Para agregar un tono nuevo: se escribe aqui, y luego un rol que lo consuma. Un tono que nadie mapea es un tono disponible, no uno roto.</li>
+      </ul>
+
+      <h3>Cuando no se toca</h3>
+      <ul>
+        <li>Nunca desde <code>3-comp/</code>. Un componente no lee la paleta: lee un rol de <code>2-sys</code>. Es la REGLA 2 del verificador, y <code>@layer</code> la hace cumplir por el motor.</li>
+        <li>Nunca parathofff de un rol a un tono suelto en el marcado. Un componente pide <code>--md-sys-color-primary</code>, jamas <code>#6750a4</code>.</li>
+      </ul>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section">
+      <h2>Anatomia de un token</h2>
+      <div class="sr-stage"><code>--md-ref-palette-&lt;familia&gt;&lt;tono&gt;</code></div>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Parte</th><th scope="col">Que es</th><th scope="col">Ejemplo</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>--md-ref-palette-</code></td><td>Prefijo de capa y familia. <code>ref</code> obliga a que el valor este en la capa de crudos.</td><td><code>--md-ref-palette-</code></td></tr>
+          <tr><td>familia</td><td>La rampa de tonos. Seis, mas los absolutos.</td><td><code>primary</code></td></tr>
+          <tr><td>tono</td><td>La luminosidad perceptual. 0 es negro, 100 es blanco.</td><td><code>40</code></td></tr>
+        </tbody>
+      </table>
+      <p class="sr-na">No hay separacion entre familia y tono en el nombre: <code>primary40</code>, no <code>primary-40</code>. El numero va pegado porque sin guion se lee como un solo identificador, que es lo que es.</p>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section">
+      <h2>Familias de la paleta</h2>
+      <p>Seis familias de tonos, mas dos absolutos. Las cuatro primeras son rampa de color; las dos neutras sostienen superficies y texto.</p>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Familia</th><th scope="col">Tonos</th><th scope="col">Para que sirve</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>primary</code></td><td>13</td><td>Accion principal de la app. El color de marca.</td></tr>
+          <tr><td><code>secondary</code></td><td>13</td><td>Acciones de menor enfasis, o secundarias al primary.</td></tr>
+          <tr><td><code>tertiary</code></td><td>13</td><td>Acento de contraste, para detalles que no son ni primary ni secondary.</td></tr>
+          <tr><td><code>error</code></td><td>13</td><td>Fallos y acciones destructivas. Derivado de rojo por convencion de accesibilidad, nunca personalizable.</td></tr>
+          <tr><td><code>neutral</code></td><td>24</td><td>Fondos y texto principales. La familia mas usada: sostiene toda la escalera de superficies.</td></tr>
+          <tr><td><code>neutral-variant</code></td><td>13</td><td>Bordes, divisores y texto de apoyo. Gris con un punto de violeta, para acompanar al primary sin competir.</td></tr>
+          <tr><td><code>black</code> / <code>white</code></td><td>2</td><td>Absolutos, para los roles <code>inverse</code> y los extremos 0 y 100 de cada familia.</td></tr>
+        </tbody>
+      </table>
+      <p class="sr-na"><code>neutral</code> tiene 24 tonos y las demas 13. No es una inconsistencia: es lo que hace posible la escalera de <code>surface-container-*</code>. Ver la seccion 07.</p>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section">
+      <h2>La escala de tonos</h2>
+      <p>El numero del token <strong>no es un indice de cantidad</strong>: es el tono perceptual. 0 es negro, 100 es blanco, y en medio el gris se abre progresivamente.</p>
+      <p>Por eso <code>primary</code> y <code>secondary</code> tienen 13 tonos y las familias no son intercambiables posicion a posicion: el tono 40 de cada familia tiene una luminosidad parecida, pero un croma y un tono distinto.</p>
+      <h3>Tonos que no son multiplos de 10</h3>
+      <ul>
+        <li><code>95</code> y <code>99</code> estan en las seis familias. Son los tonos casi blancos que usan los <code>*-container</code> en tema claro.</li>
+        <li>En <code>neutral</code> hay ademas <code>4, 6, 12, 17, 22, 24, 87, 92, 94, 96, 98</code>. Son la unica excepcion, y estan a continuacion.</li>
+      </ul>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section">
+      <h2>Catalogo de los 89 tonos</h2>
+      <p>Los 89 tonos tal cual los declara <code>1-ref/palette.css</code>. Debajo de cada muestra, el nombre del tono y su valor. Las muestras se pintan con clases del showroom que consumen el token real: si un tono cambiara, cambiarian aqui tambien.</p>
+      <p class="sr-na">Cada muestra lleva un contorno tenue a proposito: sin el, los tonos 99 y 100 se perderian sobre el fondo de la pagina, que en tema claro es casi blanco.</p>
+
+      <h3>Primary</h3>
+      <p>La accion principal y el color de marca. El tono 40 (<code>#6750a4</code>) es el acento iconic de Material Design.</p>
+<div class="sr-swatches">
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-primary0"></div>
+          <span class="sr-swatch-name">primary0</span>
+          <span class="sr-swatch-hex">#000</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-primary10"></div>
+          <span class="sr-swatch-name">primary10</span>
+          <span class="sr-swatch-hex">#21005d</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-primary20"></div>
+          <span class="sr-swatch-name">primary20</span>
+          <span class="sr-swatch-hex">#381e72</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-primary30"></div>
+          <span class="sr-swatch-name">primary30</span>
+          <span class="sr-swatch-hex">#4f378b</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-primary40"></div>
+          <span class="sr-swatch-name">primary40</span>
+          <span class="sr-swatch-hex">#6750a4</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-primary50"></div>
+          <span class="sr-swatch-name">primary50</span>
+          <span class="sr-swatch-hex">#7f67be</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-primary60"></div>
+          <span class="sr-swatch-name">primary60</span>
+          <span class="sr-swatch-hex">#9a82db</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-primary70"></div>
+          <span class="sr-swatch-name">primary70</span>
+          <span class="sr-swatch-hex">#b69df8</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-primary80"></div>
+          <span class="sr-swatch-name">primary80</span>
+          <span class="sr-swatch-hex">#d0bcff</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-primary90"></div>
+          <span class="sr-swatch-name">primary90</span>
+          <span class="sr-swatch-hex">#eaddff</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-primary95"></div>
+          <span class="sr-swatch-name">primary95</span>
+          <span class="sr-swatch-hex">#f6edff</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-primary99"></div>
+          <span class="sr-swatch-name">primary99</span>
+          <span class="sr-swatch-hex">#fffbfe</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-primary100"></div>
+          <span class="sr-swatch-name">primary100</span>
+          <span class="sr-swatch-hex">#fff</span>
+        </div>
+</div>
+
+      <h3>Secondary</h3>
+      <p>Menos enfasis que primary. Complementa sin robar protagonismo.</p>
+<div class="sr-swatches">
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-secondary0"></div>
+          <span class="sr-swatch-name">secondary0</span>
+          <span class="sr-swatch-hex">#000</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-secondary10"></div>
+          <span class="sr-swatch-name">secondary10</span>
+          <span class="sr-swatch-hex">#1d192b</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-secondary20"></div>
+          <span class="sr-swatch-name">secondary20</span>
+          <span class="sr-swatch-hex">#332d41</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-secondary30"></div>
+          <span class="sr-swatch-name">secondary30</span>
+          <span class="sr-swatch-hex">#4a4458</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-secondary40"></div>
+          <span class="sr-swatch-name">secondary40</span>
+          <span class="sr-swatch-hex">#625b71</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-secondary50"></div>
+          <span class="sr-swatch-name">secondary50</span>
+          <span class="sr-swatch-hex">#7a7289</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-secondary60"></div>
+          <span class="sr-swatch-name">secondary60</span>
+          <span class="sr-swatch-hex">#958da5</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-secondary70"></div>
+          <span class="sr-swatch-name">secondary70</span>
+          <span class="sr-swatch-hex">#b0a7c0</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-secondary80"></div>
+          <span class="sr-swatch-name">secondary80</span>
+          <span class="sr-swatch-hex">#ccc2dc</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-secondary90"></div>
+          <span class="sr-swatch-name">secondary90</span>
+          <span class="sr-swatch-hex">#e8def8</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-secondary95"></div>
+          <span class="sr-swatch-name">secondary95</span>
+          <span class="sr-swatch-hex">#f6edff</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-secondary99"></div>
+          <span class="sr-swatch-name">secondary99</span>
+          <span class="sr-swatch-hex">#fffbfe</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-secondary100"></div>
+          <span class="sr-swatch-name">secondary100</span>
+          <span class="sr-swatch-hex">#fff</span>
+        </div>
+</div>
+
+      <h3>Tertiary</h3>
+      <p>Acento de contraste, para detalles que no son ni primary ni secondary.</p>
+<div class="sr-swatches">
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-tertiary0"></div>
+          <span class="sr-swatch-name">tertiary0</span>
+          <span class="sr-swatch-hex">#000</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-tertiary10"></div>
+          <span class="sr-swatch-name">tertiary10</span>
+          <span class="sr-swatch-hex">#31111d</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-tertiary20"></div>
+          <span class="sr-swatch-name">tertiary20</span>
+          <span class="sr-swatch-hex">#492532</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-tertiary30"></div>
+          <span class="sr-swatch-name">tertiary30</span>
+          <span class="sr-swatch-hex">#633b48</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-tertiary40"></div>
+          <span class="sr-swatch-name">tertiary40</span>
+          <span class="sr-swatch-hex">#7d5260</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-tertiary50"></div>
+          <span class="sr-swatch-name">tertiary50</span>
+          <span class="sr-swatch-hex">#986977</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-tertiary60"></div>
+          <span class="sr-swatch-name">tertiary60</span>
+          <span class="sr-swatch-hex">#b58392</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-tertiary70"></div>
+          <span class="sr-swatch-name">tertiary70</span>
+          <span class="sr-swatch-hex">#d29dac</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-tertiary80"></div>
+          <span class="sr-swatch-name">tertiary80</span>
+          <span class="sr-swatch-hex">#efb8c8</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-tertiary90"></div>
+          <span class="sr-swatch-name">tertiary90</span>
+          <span class="sr-swatch-hex">#ffd8e4</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-tertiary95"></div>
+          <span class="sr-swatch-name">tertiary95</span>
+          <span class="sr-swatch-hex">#ffecf1</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-tertiary99"></div>
+          <span class="sr-swatch-name">tertiary99</span>
+          <span class="sr-swatch-hex">#fffbfa</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-tertiary100"></div>
+          <span class="sr-swatch-name">tertiary100</span>
+          <span class="sr-swatch-hex">#fff</span>
+        </div>
+</div>
+
+      <h3>Error</h3>
+      <p>Fallos y acciones destructivas. Derivado de rojo por convencion de accesibilidad.</p>
+<div class="sr-swatches">
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-error0"></div>
+          <span class="sr-swatch-name">error0</span>
+          <span class="sr-swatch-hex">#000</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-error10"></div>
+          <span class="sr-swatch-name">error10</span>
+          <span class="sr-swatch-hex">#410e0b</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-error20"></div>
+          <span class="sr-swatch-name">error20</span>
+          <span class="sr-swatch-hex">#601410</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-error30"></div>
+          <span class="sr-swatch-name">error30</span>
+          <span class="sr-swatch-hex">#8c1d18</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-error40"></div>
+          <span class="sr-swatch-name">error40</span>
+          <span class="sr-swatch-hex">#b3261e</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-error50"></div>
+          <span class="sr-swatch-name">error50</span>
+          <span class="sr-swatch-hex">#dc362e</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-error60"></div>
+          <span class="sr-swatch-name">error60</span>
+          <span class="sr-swatch-hex">#e46962</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-error70"></div>
+          <span class="sr-swatch-name">error70</span>
+          <span class="sr-swatch-hex">#ec928e</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-error80"></div>
+          <span class="sr-swatch-name">error80</span>
+          <span class="sr-swatch-hex">#f2b8b5</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-error90"></div>
+          <span class="sr-swatch-name">error90</span>
+          <span class="sr-swatch-hex">#f9dedc</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-error95"></div>
+          <span class="sr-swatch-name">error95</span>
+          <span class="sr-swatch-hex">#fceeee</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-error99"></div>
+          <span class="sr-swatch-name">error99</span>
+          <span class="sr-swatch-hex">#fffbf9</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-error100"></div>
+          <span class="sr-swatch-name">error100</span>
+          <span class="sr-swatch-hex">#fff</span>
+        </div>
+</div>
+
+      <h3>Neutral variant</h3>
+      <p>Bordes, divisores y texto de apoyo. Gris con un punto de violeta: si fuera gris puro, los bordes se verian sucios junto al primary violeta.</p>
+<div class="sr-swatches">
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral-variant0"></div>
+          <span class="sr-swatch-name">neutral-variant0</span>
+          <span class="sr-swatch-hex">#000</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral-variant10"></div>
+          <span class="sr-swatch-name">neutral-variant10</span>
+          <span class="sr-swatch-hex">#1d1a22</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral-variant20"></div>
+          <span class="sr-swatch-name">neutral-variant20</span>
+          <span class="sr-swatch-hex">#322f37</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral-variant30"></div>
+          <span class="sr-swatch-name">neutral-variant30</span>
+          <span class="sr-swatch-hex">#49454f</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral-variant40"></div>
+          <span class="sr-swatch-name">neutral-variant40</span>
+          <span class="sr-swatch-hex">#605d66</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral-variant50"></div>
+          <span class="sr-swatch-name">neutral-variant50</span>
+          <span class="sr-swatch-hex">#79747e</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral-variant60"></div>
+          <span class="sr-swatch-name">neutral-variant60</span>
+          <span class="sr-swatch-hex">#938f99</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral-variant70"></div>
+          <span class="sr-swatch-name">neutral-variant70</span>
+          <span class="sr-swatch-hex">#aea9b4</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral-variant80"></div>
+          <span class="sr-swatch-name">neutral-variant80</span>
+          <span class="sr-swatch-hex">#cac4d0</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral-variant90"></div>
+          <span class="sr-swatch-name">neutral-variant90</span>
+          <span class="sr-swatch-hex">#e7e0ec</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral-variant95"></div>
+          <span class="sr-swatch-name">neutral-variant95</span>
+          <span class="sr-swatch-hex">#f5eefa</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral-variant99"></div>
+          <span class="sr-swatch-name">neutral-variant99</span>
+          <span class="sr-swatch-hex">#fffbfe</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral-variant100"></div>
+          <span class="sr-swatch-name">neutral-variant100</span>
+          <span class="sr-swatch-hex">#fff</span>
+        </div>
+</div>
+
+      <h3>Neutral</h3>
+      <p>Fondos y texto principales. Es la familia mas extendida, con 24 tonos.</p>
+<div class="sr-swatches">
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral0"></div>
+          <span class="sr-swatch-name">neutral0</span>
+          <span class="sr-swatch-hex">#000</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral10"></div>
+          <span class="sr-swatch-name">neutral10</span>
+          <span class="sr-swatch-hex">#1d1b20</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral20"></div>
+          <span class="sr-swatch-name">neutral20</span>
+          <span class="sr-swatch-hex">#322f35</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral30"></div>
+          <span class="sr-swatch-name">neutral30</span>
+          <span class="sr-swatch-hex">#48464c</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral40"></div>
+          <span class="sr-swatch-name">neutral40</span>
+          <span class="sr-swatch-hex">#605d64</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral50"></div>
+          <span class="sr-swatch-name">neutral50</span>
+          <span class="sr-swatch-hex">#79767d</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral60"></div>
+          <span class="sr-swatch-name">neutral60</span>
+          <span class="sr-swatch-hex">#938f96</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral70"></div>
+          <span class="sr-swatch-name">neutral70</span>
+          <span class="sr-swatch-hex">#aea9b1</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral80"></div>
+          <span class="sr-swatch-name">neutral80</span>
+          <span class="sr-swatch-hex">#cac5cd</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral90"></div>
+          <span class="sr-swatch-name">neutral90</span>
+          <span class="sr-swatch-hex">#e6e0e9</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral95"></div>
+          <span class="sr-swatch-name">neutral95</span>
+          <span class="sr-swatch-hex">#f5eff7</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral99"></div>
+          <span class="sr-swatch-name">neutral99</span>
+          <span class="sr-swatch-hex">#fffbff</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral100"></div>
+          <span class="sr-swatch-name">neutral100</span>
+          <span class="sr-swatch-hex">#fff</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral4"></div>
+          <span class="sr-swatch-name">neutral4</span>
+          <span class="sr-swatch-hex">#0f0d13</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral6"></div>
+          <span class="sr-swatch-name">neutral6</span>
+          <span class="sr-swatch-hex">#141218</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral12"></div>
+          <span class="sr-swatch-name">neutral12</span>
+          <span class="sr-swatch-hex">#211f26</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral17"></div>
+          <span class="sr-swatch-name">neutral17</span>
+          <span class="sr-swatch-hex">#2b2930</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral22"></div>
+          <span class="sr-swatch-name">neutral22</span>
+          <span class="sr-swatch-hex">#36343b</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral24"></div>
+          <span class="sr-swatch-name">neutral24</span>
+          <span class="sr-swatch-hex">#3b383e</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral87"></div>
+          <span class="sr-swatch-name">neutral87</span>
+          <span class="sr-swatch-hex">#ded8e1</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral92"></div>
+          <span class="sr-swatch-name">neutral92</span>
+          <span class="sr-swatch-hex">#ece6f0</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral94"></div>
+          <span class="sr-swatch-name">neutral94</span>
+          <span class="sr-swatch-hex">#f3edf7</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral96"></div>
+          <span class="sr-swatch-name">neutral96</span>
+          <span class="sr-swatch-hex">#f7f2fa</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral98"></div>
+          <span class="sr-swatch-name">neutral98</span>
+          <span class="sr-swatch-hex">#fef7ff</span>
+        </div>
+</div>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section">
+      <h2>Los tonos finos de neutral</h2>
+      <p>Once de los 24 tonos de <code>neutral</code> no son multiplos de 10: <code>4, 6, 12, 17, 22, 24, 87, 92, 94, 96, 98</code>. Existen por una razon concreta, y son la parte de la paleta que mas se parece a una decision propia.</p>
+      <p>Una version anterior circulaba con 13 tonos por familia, la que M3 llamaba paleta <em>compacta</em>. No alcanza: <strong>los roles <code>surface-container-*</code> son la base del sistema de jerarquia visual de M3</strong>, y son cinco escalones que tienen que distinguirse entre si.</p>
+      <p>Con solo los 13 tonos base, esos seis roles de superficie quedarian sin valor o colapsarian al mismo gris, y la jerarquia visual desapareceria. Por eso <code>v0.192</code> amplia la familia neutral, y por eso <code>neutral</code> tiene 24 tonos donde las demas tienen 13.</p>
+      <p>Se mueven en pasos de 2 sobre un fondo casi negro: por eso estan tan juntos. Cada escalon es una distincion perceptible, no un salto.</p>
+      <div class="sr-swatches sr-swatches--tight">
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral4"></div>
+          <span class="sr-swatch-name">neutral4</span>
+          <span class="sr-swatch-hex">#0f0d13</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral6"></div>
+          <span class="sr-swatch-name">neutral6</span>
+          <span class="sr-swatch-hex">#141218</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral12"></div>
+          <span class="sr-swatch-name">neutral12</span>
+          <span class="sr-swatch-hex">#211f26</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral17"></div>
+          <span class="sr-swatch-name">neutral17</span>
+          <span class="sr-swatch-hex">#2b2930</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral22"></div>
+          <span class="sr-swatch-name">neutral22</span>
+          <span class="sr-swatch-hex">#36343b</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral24"></div>
+          <span class="sr-swatch-name">neutral24</span>
+          <span class="sr-swatch-hex">#3b383e</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral87"></div>
+          <span class="sr-swatch-name">neutral87</span>
+          <span class="sr-swatch-hex">#ded8e1</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral92"></div>
+          <span class="sr-swatch-name">neutral92</span>
+          <span class="sr-swatch-hex">#ece6f0</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral94"></div>
+          <span class="sr-swatch-name">neutral94</span>
+          <span class="sr-swatch-hex">#f3edf7</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral96"></div>
+          <span class="sr-swatch-name">neutral96</span>
+          <span class="sr-swatch-hex">#f7f2fa</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch-neutral98"></div>
+          <span class="sr-swatch-name">neutral98</span>
+          <span class="sr-swatch-hex">#fef7ff</span>
+        </div>
+      </div>
+      <p class="sr-na">Los seis primeros son los que usa <code>surface-container-*</code> en tema oscuro. Los cinco ultimos, en tema claro: son los que ManGo! App consume hoy.</p>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section">
+      <h2>Del tono al rol</h2>
+      <p>La paleta no decide nada por si misma. Un archivo de tema elige que tono recibe cada rol, y ese archivo es el unico lugar del sistema donde se decide que color tiene cada rol.</p>
+      <p>Hay 38 tokens de color por tema: 37 roles y <code>--md-sys-color-shadow-rgb</code>. Los 37 se verificaron uno a uno contra <code>material-web/tokens/versions/v0_192/_md-sys-color.scss</code>.</p>
+      <h3>Grupos de acento</h3>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Rol</th><th scope="col">Muestra</th><th scope="col">Light</th><th scope="col">Dark</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>primary</code></td><td><span class="sr-spec-color md-bg-primary"></span></td><td>primary40</td><td>primary80</td></tr>
+          <tr><td><code>on-primary</code></td><td><span class="sr-spec-color md-bg-on-primary"></span></td><td>primary100</td><td>primary20</td></tr>
+          <tr><td><code>primary-container</code></td><td><span class="sr-spec-color md-bg-primary-container"></span></td><td>primary90</td><td>primary30</td></tr>
+          <tr><td><code>on-primary-container</code></td><td><span class="sr-spec-color md-bg-on-primary-container"></span></td><td>primary10</td><td>primary90</td></tr>
+          <tr><td><code>secondary</code></td><td><span class="sr-spec-color md-bg-secondary"></span></td><td>secondary40</td><td>secondary80</td></tr>
+          <tr><td><code>on-secondary</code></td><td><span class="sr-spec-color md-bg-on-secondary"></span></td><td>secondary100</td><td>secondary20</td></tr>
+          <tr><td><code>secondary-container</code></td><td><span class="sr-spec-color md-bg-secondary-container"></span></td><td>secondary90</td><td>secondary30</td></tr>
+          <tr><td><code>on-secondary-container</code></td><td><span class="sr-spec-color md-bg-on-secondary-container"></span></td><td>secondary10</td><td>secondary90</td></tr>
+          <tr><td><code>tertiary</code></td><td><span class="sr-spec-color md-bg-tertiary"></span></td><td>tertiary40</td><td>tertiary80</td></tr>
+          <tr><td><code>on-tertiary</code></td><td><span class="sr-spec-color md-bg-on-tertiary"></span></td><td>tertiary100</td><td>tertiary20</td></tr>
+          <tr><td><code>tertiary-container</code></td><td><span class="sr-spec-color md-bg-tertiary-container"></span></td><td>tertiary90</td><td>tertiary30</td></tr>
+          <tr><td><code>on-tertiary-container</code></td><td><span class="sr-spec-color md-bg-on-tertiary-container"></span></td><td>tertiary10</td><td>tertiary90</td></tr>
+          <tr><td><code>error</code></td><td><span class="sr-spec-color md-bg-error"></span></td><td>error40</td><td>error80</td></tr>
+          <tr><td><code>on-error</code></td><td><span class="sr-spec-color md-bg-on-error"></span></td><td>error100</td><td>error20</td></tr>
+          <tr><td><code>error-container</code></td><td><span class="sr-spec-color md-bg-error-container"></span></td><td>error90</td><td>error30</td></tr>
+          <tr><td><code>on-error-container</code></td><td><span class="sr-spec-color md-bg-on-error-container"></span></td><td>error10</td><td>error90</td></tr>
+        </tbody>
+      </table>
+      <p class="sr-na">La muestra se pinta con el <strong>rol</strong>, no con el tono de la columna Light. Asi queda sola una fila por tema y la muestra cambia con el toggle: lo que se ve a la izquierda de cada fila es el papel del rol, no un tono fijo.</p>
+      <h3>Superficies</h3>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Rol</th><th scope="col">Muestra</th><th scope="col">Light</th><th scope="col">Dark</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>surface</code></td><td><span class="sr-spec-color md-bg-surface"></span></td><td>neutral98</td><td>neutral6</td></tr>
+          <tr><td><code>background</code></td><td><span class="sr-spec-color md-bg-background"></span></td><td>neutral98</td><td>neutral6</td></tr>
+          <tr><td><code>surface-dim</code></td><td><span class="sr-spec-color md-bg-surface-dim"></span></td><td>neutral87</td><td>neutral6</td></tr>
+          <tr><td><code>surface-bright</code></td><td><span class="sr-spec-color md-bg-surface-bright"></span></td><td>neutral98</td><td>neutral24</td></tr>
+          <tr><td><code>surface-variant</code></td><td><span class="sr-spec-color md-bg-surface-variant"></span></td><td>neutral-variant90</td><td>neutral-variant30</td></tr>
+          <tr><td><code>surface-container-lowest</code></td><td><span class="sr-spec-color md-bg-surface-container-lowest"></span></td><td>neutral100</td><td>neutral4</td></tr>
+          <tr><td><code>surface-container-low</code></td><td><span class="sr-spec-color md-bg-surface-container-low"></span></td><td>neutral96</td><td>neutral10</td></tr>
+          <tr><td><code>surface-container</code></td><td><span class="sr-spec-color md-bg-surface-container"></span></td><td>neutral94</td><td>neutral12</td></tr>
+          <tr><td><code>surface-container-high</code></td><td><span class="sr-spec-color md-bg-surface-container-high"></span></td><td>neutral92</td><td>neutral17</td></tr>
+          <tr><td><code>surface-container-highest</code></td><td><span class="sr-spec-color md-bg-surface-container-highest"></span></td><td>neutral90</td><td>neutral22</td></tr>
+        </tbody>
+      </table>
+      <p class="sr-na">Las superficies son las unicas que casi no se distinguen entre si en tema claro: <code>neutral100</code> a <code>neutral90</code> son diez pasos repartidos en toda la escalera, y en pantalla se leen como el mismo blanco. La tabla lo dice con numeros; la muestra lo deja claro a la vista. En tema oscuro el escalonado si se ve, porque el fondo es <code>neutral6</code> y la escalera sube desde ahi.</p>
+      <h3>Contenido, bordes e inversos</h3>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Rol</th><th scope="col">Muestra</th><th scope="col">Light</th><th scope="col">Dark</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>on-surface</code></td><td><span class="sr-spec-color md-bg-on-surface"></span></td><td>neutral10</td><td>neutral90</td></tr>
+          <tr><td><code>on-surface-variant</code></td><td><span class="sr-spec-color md-bg-on-surface-variant"></span></td><td>neutral-variant30</td><td>neutral-variant80</td></tr>
+          <tr><td><code>on-background</code></td><td><span class="sr-spec-color md-bg-on-background"></span></td><td>neutral10</td><td>neutral90</td></tr>
+          <tr><td><code>outline</code></td><td><span class="sr-spec-border md-border-outline"></span></td><td>neutral-variant50</td><td>neutral-variant60</td></tr>
+          <tr><td><code>outline-variant</code></td><td><span class="sr-spec-border md-border-outline-variant"></span></td><td>neutral-variant80</td><td>neutral-variant30</td></tr>
+          <tr><td><code>inverse-surface</code></td><td><span class="sr-spec-color md-bg-inverse-surface"></span></td><td>neutral20</td><td>neutral90</td></tr>
+          <tr><td><code>inverse-on-surface</code></td><td><span class="sr-spec-color md-bg-on-inverse-surface"></span></td><td>neutral95</td><td>neutral20</td></tr>
+          <tr><td><code>inverse-primary</code></td><td><span class="sr-spec-color md-bg-inverse-primary"></span></td><td>primary80</td><td>primary40</td></tr>
+          <tr><td><code>scrim</code></td><td><span class="sr-spec-color md-bg-scrim"></span></td><td>neutral0</td><td>neutral0</td></tr>
+          <tr><td><code>shadow</code></td><td><span class="sr-spec-color md-bg-shadow"></span></td><td>neutral0</td><td>neutral0</td></tr>
+          <tr><td><code>surface-tint</code></td><td><span class="sr-spec-color md-bg-surface-tint"></span></td><td>primary40</td><td>primary80</td></tr>
+        </tbody>
+      </table>
+      <p class="sr-na">Los <code>on-*</code> se muestran como fondo a proposito: son un color, no una forma de escribir texto, y asi se comparan con el resto de la columna. <code>outline-variant</code> es el tono mas claro de la tabla en tema claro y el mas oscuro en oscuro: por eso los bordes se atenúan justamente cuando el fondo se aclara, y por eso la rejilla de las tablas de este showroom da 1.7:1 en claro y 2.07:1 en oscuro. Es decoracion, no informacion, y el sistema lo fija asi a proposito.</p>
+      <p class="sr-na"><code>scrim</code> y <code>shadow</code> son los unicos roles con el mismo tono en ambos temas: negro absoluto en los dos casos, porque tapan lo que hay debajo.</p>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section">
+      <h2>Light y dark: la inversion</h2>
+      <p>El tema oscuro <strong>no es el tema claro con los colores invertidos</strong>. Cada rol tiene un tono elegido para funcionar sobre el fondo oscuro.</p>
+      <p>El rol no cambia: sigue siendo <code>primary</code>. Lo que cambia es que para ser legible sobre un fondo oscuro, el color tiene que ser claro. Poner <code>primary40</code> sobre un fondo oscuro daria un violeta casi negro, ilegible.</p>
+      <h3>La escalera de superficies se invierte</h3>
+      <p>Cada muestra esta pintada con un rol y lleva encima su texto en <code>on-surface</code>. Cambia el tema con el boton de arriba: los cinco tonos se invierten y el texto sigue siendo legible en los dos casos.</p>
+      <div class="sr-swatches">
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch--pair md-bg-surface-container-lowest md-text-on-surface"><span>lowest</span></div>
+          <span class="sr-swatch-name">surface-container-lowest</span>
+          <span class="sr-swatch-hex">neutral100 en light, neutral4 en dark</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch--pair md-bg-surface-container-low md-text-on-surface"><span>low</span></div>
+          <span class="sr-swatch-name">surface-container-low</span>
+          <span class="sr-swatch-hex">neutral96 en light, neutral10 en dark</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch--pair md-bg-surface-container md-text-on-surface"><span>container</span></div>
+          <span class="sr-swatch-name">surface-container</span>
+          <span class="sr-swatch-hex">neutral94 en light, neutral12 en dark</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch--pair md-bg-surface-container-high md-text-on-surface"><span>high</span></div>
+          <span class="sr-swatch-name">surface-container-high</span>
+          <span class="sr-swatch-hex">neutral92 en light, neutral17 en dark</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch--pair md-bg-surface-container-highest md-text-on-surface"><span>highest</span></div>
+          <span class="sr-swatch-name">surface-container-highest</span>
+          <span class="sr-swatch-hex">neutral90 en light, neutral22 en dark</span>
+        </div>
+      </div>
+      <p>En tema claro van de <code>neutral100</code> (casi blanco) a <code>neutral90</code>. En tema oscuro van de <code>neutral4</code> (casi negro) a <code>neutral22</code>: sobre fondo oscuro, <strong>mas elevado significa mas claro</strong>.</p>
+      <p>Por eso los roles usan los once tonos finos de <code>neutral</code> en vez de los base. Con los 13 tonos grandes, estos cinco escalones colapsarian al mismo gris.</p>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section">
+      <h2>Contraste de los pares on-*</h2>
+      <p>Ratios medidos con la formula de luminancia relativa de WCAG 2.1, sobre los valores que el navegador resuelve. La convencion <code>on-*</code> de M3 garantiza que el texto va contra su color de fondo emparejado; estos son los numeros reales de esa paleta.</p>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Par</th><th scope="col">Light</th><th scope="col">Dark</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>primary</code> / <code>on-primary</code></td><td>6.44</td><td>7.71</td></tr>
+          <tr><td><code>primary-container</code> / <code>on-primary-container</code></td><td>13.32</td><td>7.23</td></tr>
+          <tr><td><code>secondary</code> / <code>on-secondary</code></td><td>6.45</td><td>7.74</td></tr>
+          <tr><td><code>secondary-container</code> / <code>on-secondary-container</code></td><td>13.24</td><td>7.19</td></tr>
+          <tr><td><code>tertiary</code> / <code>on-tertiary</code></td><td>6.47</td><td>7.75</td></tr>
+          <tr><td><code>tertiary-container</code> / <code>on-tertiary-container</code></td><td>13.18</td><td>7.20</td></tr>
+          <tr><td><code>error</code> / <code>on-error</code></td><td>6.54</td><td>7.66</td></tr>
+          <tr><td><code>error-container</code> / <code>on-error-container</code></td><td>12.77</td><td>7.17</td></tr>
+          <tr><td><code>surface</code> / <code>on-surface</code></td><td>16.23</td><td>14.35</td></tr>
+          <tr><td><code>surface</code> / <code>on-surface-variant</code></td><td>8.88</td><td>10.91</td></tr>
+          <tr><td><code>inverse-surface</code> / <code>inverse-on-surface</code></td><td>11.65</td><td>10.17</td></tr>
+        </tbody>
+      </table>
+      <p class="sr-na">Todos pasan 4.5:1, el minimo de WCAG para texto normal, con margen. El mas ajustado es <code>primary</code> / <code>on-primary</code> en tema claro, a 6.44.</p>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section">
+      <h2>outline vs outline-variant</h2>
+      <p>Los dos roles se parecen y no son intercambiables. La diferencia esta en el contraste, y es medible.</p>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Rol</th><th scope="col">Light</th><th scope="col">Dark</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>outline</code> sobre <code>surface</code></td><td>4.33</td><td>5.87</td></tr>
+          <tr><td><code>outline-variant</code> sobre <code>surface</code></td><td>1.62</td><td>1.99</td></tr>
+        </tbody>
+      </table>
+      <p>Las dos muestras de la seccion <strong>Utilidades de color, subseccion Bordes</strong>, muestran esta misma comparacion. Alli se ven sobre el mismo fondo y con el mismo grosor, que es la unica forma justa de comparar dos colores de borde.</p>
+      <p>El borde se pinta con <code>md-border-outline</code> y <code>md-border-outline-variant</code>. El grosor lo aporta el componente: las utilidades de color aplican <strong>solo <code>border-color</code></strong>.</p>
+      <p class="sr-na"><strong>No existe</strong> <code>md-text-outline</code> ni <code>md-text-outline-variant</code>. Ninguna clase de <code>md-text-*</code> pinta con un tono de borde, y Google tampoco publica ninguna clase de utilidad de color. Si necesitas texto con el color de <code>outline</code>, el camino es una regla propia en el componente, no una clase.</p>
+      <p><code>outline-variant</code> esta por debajo de 3:1 a proposito. M3 lo define como decorativo: separadores y elementos que no definen un limite accesible. <code>outline</code> es el que marca el borde real de un campo de formulario.</p>
+      <ul>
+        <li><strong>Usa <code>outline</code></strong> para limites importantes: el borde de un campo de formulario, el contorno de un objetivo, cualquier cosa que deba alcanzar 3:1.</li>
+        <li><strong>Usa <code>outline-variant</code></strong> para elementos decorativos: divisores, y bordes de componentes que ya contienen dentro algo que aporta el contraste.</li>
+        <li><strong>Nunca uses <code>outline</code> para un divisor.</strong> M3 lo advierte explicitamente: los divisores tienen requisitos de contraste distintos.</li>
+        <li><strong>Nunca uses <code>outline-variant</code> para crear jerarquia visual</strong> o para definir el limite de un objetivo interactivo.</li>
+      </ul>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section">
+      <h2>Utilidades de color</h2>
+      <p><code>2-sys/colors.css</code> expone los roles como clases, para aplicarlos desde el HTML sin escribir la propiedad a mano. No define ningun token: solo consume <code>--md-sys-color-*</code>.</p>
+      <p>Son <strong>93 clases</strong> sobre 37 roles, con el nombre en orden de propiedad: <code>md-bg-</code> fondo, <code>md-text-</code> texto, <code>md-border-</code> borde.</p>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Familia</th><th scope="col">Clases</th><th scope="col">Que aplica</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>md-bg-*</code></td><td>35</td><td><code>background-color</code></td></tr>
+          <tr><td><code>md-text-*</code></td><td>35</td><td><code>color</code></td></tr>
+          <tr><td><code>md-border-*</code></td><td>23</td><td><code>border-color</code> unicamente</td></tr>
+        </tbody>
+      </table>
+      <h3>Los cuatro grupos</h3>
+      <p>Los cuatro grupos de acento, cada uno con su fondo <code>*-container</code> y su par <code>on-*-container</code>. Las dos clases van en el mismo elemento: el fondo lo da <code>md-bg-*</code> y el texto, <code>md-text-*</code>.</p>
+      <div class="sr-swatches">
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch--pair md-bg-primary-container md-text-on-primary-container"><span>primary</span></div>
+          <span class="sr-swatch-name">primary-container</span>
+          <span class="sr-swatch-hex">on-primary-container</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch--pair md-bg-secondary-container md-text-on-secondary-container"><span>secondary</span></div>
+          <span class="sr-swatch-name">secondary-container</span>
+          <span class="sr-swatch-hex">on-secondary-container</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch--pair md-bg-tertiary-container md-text-on-tertiary-container"><span>tertiary</span></div>
+          <span class="sr-swatch-name">tertiary-container</span>
+          <span class="sr-swatch-hex">on-tertiary-container</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch--pair md-bg-error-container md-text-on-error-container"><span>error</span></div>
+          <span class="sr-swatch-name">error-container</span>
+          <span class="sr-swatch-hex">on-error-container</span>
+        </div>
+      </div>
+      <h3>Superficies</h3>
+      <p>Las cinco superficies, con <code>md-bg-*</code> para el fondo y <code>md-text-on-surface</code> para el texto. La misma clase de texto sirve en las cinco: por eso existe.</p>
+      <div class="sr-swatches">
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch--pair md-bg-surface-container-lowest md-text-on-surface"><span>lowest</span></div>
+          <span class="sr-swatch-name">surface-container-lowest</span>
+          <span class="sr-swatch-hex">el mas bajo</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch--pair md-bg-surface-container-low md-text-on-surface"><span>low</span></div>
+          <span class="sr-swatch-name">surface-container-low</span>
+          <span class="sr-swatch-hex">elevacion baja</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch--pair md-bg-surface-container md-text-on-surface"><span>container</span></div>
+          <span class="sr-swatch-name">surface-container</span>
+          <span class="sr-swatch-hex">el mas usado</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch--pair md-bg-surface-container-high md-text-on-surface"><span>high</span></div>
+          <span class="sr-swatch-name">surface-container-high</span>
+          <span class="sr-swatch-hex">elevacion alta</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch--pair md-bg-surface-container-highest md-text-on-surface"><span>highest</span></div>
+          <span class="sr-swatch-name">surface-container-highest</span>
+          <span class="sr-swatch-hex">el mas elevado</span>
+        </div>
+      </div>
+
+      <h3>Bordes</h3>
+      <p><code>md-border-*</code> se comporta igual: pinta el fondo con <code>md-bg-*</code> y el borde con la utilidad de color. Estas cuatro muestras comparten el mismo fondo y el mismo grosor; lo unico que cambia es el color del borde.</p>
+      <p>El fondo es <code>surface-container</code> y no <code>surface</code> por una razon concreta: en esta paleta <code>surface</code> y <code>background</code> apuntan al mismo tono en los dos temas, asi que una muestra con <code>surface</code> se fundiria con el lienzo de la pagina y solo se veria el trazo. Con un container el relleno se distingue.</p>
+      <div class="sr-swatches">
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch--border sr-swatch--tall md-bg-surface-container md-text-on-surface md-border-outline"><span>outline</span></div>
+          <span class="sr-swatch-name">md-border-outline</span>
+          <span class="sr-swatch-hex">3.96 en light, 5.14 en dark</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch--border sr-swatch--tall md-bg-surface-container md-text-on-surface md-border-outline-variant"><span>outline-variant</span></div>
+          <span class="sr-swatch-name">md-border-outline-variant</span>
+          <span class="sr-swatch-hex">1.48 en light, 1.74 en dark</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch--border sr-swatch--tall md-bg-surface-container md-text-on-surface md-border-primary"><span>primary</span></div>
+          <span class="sr-swatch-name">md-border-primary</span>
+          <span class="sr-swatch-hex">5.60 en light, 9.56 en dark</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch--border sr-swatch--tall md-bg-surface-container md-text-on-surface md-border-error"><span>error</span></div>
+          <span class="sr-swatch-name">md-border-error</span>
+          <span class="sr-swatch-hex">5.69 en light, 9.54 en dark</span>
+        </div>
+      </div>
+      <p class="sr-na">Estos ratios se miden contra <code>surface-container</code>, el fondo de estas muestras. Cambian un poco respecto a la tabla de la seccion anterior, que los mide sobre <code>surface</code>: <code>outline</code> da 3.96 y 5.14 aqui, frente a 4.33 y 5.87 alla. Mover el fondo mueve el contraste, y por eso importa decir sobre que se midio.</p>
+      <p class="sr-na"><code>primary</code> y <code>error</code> superan el minimo de 3:1 con holgura en los dos temas. <code>outline-variant</code> se queda por debajo en los dos, que es lo que lo hace decorativo.</p>
+      <h3>Por que md-border-* cubre 23 de 37 roles</h3>
+      <p>Las utilidades de borde aplican <strong>solo <code>border-color</code></strong>, nunca el grosor. El grosor es una medida y depende del estado del componente: un separador usa <code>stroke-thin</code> (1px), el borde de un checkbox sin marcar usa <code>stroke-thick</code> (2px).</p>
+      <p>Ademas, los 14 roles sin utilidad de borde son los de superficie y de texto (<code>background</code>, <code>surface</code>, los <code>surface-container-*</code>, <code>on-surface</code>, <code>on-background</code>, <code>surface-tint</code>). No es una omision: <strong>el borde de una superficie no es una decision de la clase de color</strong>. El borde lo decide el componente, y el color del borde lo pide con el rol que corresponda a ese componente.</p>
+      <p>Ejemplo real, de <code>3-comp/divider.css</code>: el divisor lee <code>outline-variant</code> y su grosor de <code>stroke-thin</code>, por separado.</p>
+      <h3>El atajo que no existe</h3>
+      <p>No hay ninguna clase que empareje un fondo con su texto, y las dos muestras de abajo lo demuestran. La primera esta bien. La segunda es el error que el atajo habria hecho invisible.</p>
+      <div class="sr-swatches">
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch--pair md-bg-primary md-text-on-primary"><span>md-bg-primary + md-text-on-primary</span></div>
+          <span class="sr-swatch-name">Bien: el par on-* explicito</span>
+          <span class="sr-swatch-hex">6.44 en light, 7.71 en dark</span>
+        </div>
+        <div class="sr-swatch-cell">
+          <div class="sr-swatch sr-swatch--pair md-bg-primary md-text-primary"><span>md-bg-primary + md-text-primary</span></div>
+          <span class="sr-swatch-name">Mal: primary sobre primary</span>
+          <span class="sr-swatch-hex">contraste cero, ilegible</span>
+        </div>
+      </div>
+      <p>La segunda muestra es el motivo de que el par se escriba entero. Si existiera un atajo tipo <code>md-surface-primary</code> que trajera el texto consigo, el autor escribiria una sola clase, no veria el conflicto hasta tarde, y el error quedaria escondido en el marcado. Escribir las dos hace el contraste <strong>auditable en el HTML</strong>, y protege la convencion <code>on-*</code>, que es la garantia de accesibilidad del tema.</p>
+      <p class="sr-na">Fijate en que la muestra mala no "se ve de otro color": el texto desaparece. Ese es el punto. Un error de contraste no se ve mal, no se ve.</p>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section">
+      <h2>Tonos no consumidos</h2>
+      <p>De los 89 tonos, <strong>40 no los referencia ningun archivo de <code>2-sys</code> ni de <code>3-comp</code></strong>. Solo 49 tonos estan mapeados a un rol.</p>
+      <p>No es un descuido, y conviene entender por que antes de "arreglarlo":</p>
+      <ul>
+        <li>La paleta es el <strong>inventario completo</strong> que publica M3, no el catalogo de lo que hoy se usa. Es lo que permite que un componente futuro encuentre el tono que necesita sin ampliar la paleta.</li>
+        <li>Los 13 tonos base de cada familia y los 11 finos de <code>neutral</code> cubren el rango completo de luminosidad, y el mapeo por rol elige los que hacen falta.</li>
+        <li>Los tonos finos de <code>neutral</code> que no se usan todavia son los que permitirian un sexto nivel de <code>surface-container-*</code> si el diseno lo pidiera.</li>
+      </ul>
+      <p>La regla del proyecto es explicita: <em>un token que nadie consume es un token muerto</em>. Aqui se aplica al reves, y a proposito: en <code>1-ref</code> un tono sin mapear es un tono <strong>disponible</strong>, no uno roto. El que no se admite sin consumidor es un rol de <code>2-sys</code>.</p>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section">
+      <h2>Do / Don't</h2>
+      <h3>Do</h3>
+      <ul>
+        <li>Consumir el <strong>rol</strong>: <code>var(--md-sys-color-primary)</code>, que responde al tema.</li>
+        <li>Escribir el par <code>on-*</code> explicito, para que el contraste sea auditable en el HTML.</li>
+        <li>Usar <code>surface-container-*</code> para jerarquia visual, en vez de apilar sombras.</li>
+        <li>Cambiar la marca editando solo <code>1-ref/palette.css</code>.</li>
+        <li>Dejar <code>error</code> como esta: M3 lo hace estatico por defecto en cualquier esquema.</li>
+      </ul>
+      <h3>Don't</h3>
+      <ul>
+        <li>Escribir un <code>#HEX</code> fuera de <code>1-ref/</code>. Rompe la REGLA 1 y convierte un cambio de marca en una busqueda por todo el proyecto.</li>
+        <li>Leer <code>--md-ref-palette-*</code> desde <code>3-comp/</code>. Es un salto de capa, y la REGLA 2 lo prohibe.</li>
+        <li>Combinar roles que no son par <code>on-*</code>. <code>md-bg-primary</code> con <code>md-text-primary</code> es contraste cero.</li>
+        <li>Usar <code>outline</code> para un divisor, o <code>outline-variant</code> para un limite accesible.</li>
+        <li>Asumir que el tema oscuro es el claro invertido. Cada rol tiene su propio tono.</li>
+        <li>Duplicar los roles <code>surface</code> y <code>background</code> esperando que hagan algo distinto. En esta paleta apuntan al mismo tono en ambos temas.</li>
+      </ul>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section">
+      <h2>Lo que M3 define y RDM Next no tiene</h2>
+      <p>M3 documenta bastante mas que esta paleta. Se lista lo que falta, con el motivo, en vez de simularlo o dejarlo pasar.</p>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Capacidad de M3</th><th scope="col">Estado aqui</th><th scope="col">Por que</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Color dinamico por wallpaper del usuario</td><td>No implementado</td><td>Requiere analizar la imagen y calcular tonos en tiempo de ejecucion. Este sistema es CSS estatico: sin JavaScript no hay algoritmo.</td></tr>
+          <tr><td>Color dinamico por contenido (caratula, logo)</td><td>No implementado</td><td>El mismo motivo.</td></tr>
+          <tr><td>Material Theme Builder</td><td>No implementado</td><td>Es una herramienta de Figma, no una capacidad de la libreria.</td></tr>
+          <tr><td>Esquemas de marca personalizada</td><td>No implementado</td><td>Habria que elegir una marca. La paleta actual es la oficial de M3.</td></tr>
+          <tr><td>Chroma fidelity</td><td>No implementado</td><td>Depende del algoritmo de generacion de tonos, que no existe aqui.</td></tr>
+          <tr><td>Armonizacion de colores</td><td>No implementado</td><td>Igual que el anterior.</td></tr>
+          <tr><td>Contraste controlado por el usuario</td><td>No implementado</td><td>Requiere variants de tema adicionales. El paquete de tokens <code>latest/</code> de Google lo anade; aqui se sigue <code>v0.192</code>.</td></tr>
+          <tr><td>Los 12 roles <code>*-fixed</code></td><td>No adoptados</td><td>Son los unicos roles de M3 cuyo valor es identico en light y dark. Su proposito es mantener la identidad de marca entre temas, y ManGo! App no tiene esa necesidad. Agregarlos serian tokens muertos.</td></tr>
+          <tr><td><code>surface-tint</code></td><td>Existe, pero deprecado</td><td>M3 lo dice de forma explicita: <em>"Surface tint color is deprecated. Use elevation level tokens (0-5) instead."</em> Se conserva por compatibilidad con <code>v0.192</code>.</td></tr>
+        </tbody>
+      </table>
+      <p>Lo que si se adopto de M3, completo: los 37 roles, los seis grupos, los cinco niveles de <code>surface-container-*</code>, los roles <code>surface-dim</code> y <code>surface-bright</code>, la convencion <code>on-*</code>, y los 91 tonos de la paleta oficial v0.192.</p>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section">
+      <h2>Tokens</h2>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Familia</th><th scope="col">Prefijo</th><th scope="col">Tokens</th><th scope="col">Capa</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Paleta</td><td><code>--md-ref-palette-</code></td><td>91</td><td>1-ref, <code>palette.css</code></td></tr>
+          <tr><td>Roles de color</td><td><code>--md-sys-color-</code></td><td>38</td><td>2-sys, <code>theme/*.css</code></td></tr>
+          <tr><td>Utilidades de color</td><td><code>md-bg-*</code> / <code>md-text-*</code> / <code>md-border-*</code></td><td>93</td><td>2-sys, <code>colors.css</code></td></tr>
+          <tr><td>Opacidad</td><td><code>--md-ref-opacity-</code></td><td>4</td><td>1-ref, <code>opacity.css</code></td></tr>
+          <tr><td>Bordes de superficie</td><td><code>--md-sys-shape-stroke-thin</code></td><td>1</td><td>2-sys, <code>shape.css</code></td></tr>
+          <tr><td>Elevacion</td><td><code>--md-sys-elevation-*</code></td><td>6</td><td>2-sys, <code>elevation.css</code></td></tr>
+        </tbody>
+      </table>
+      <h3>El token propio que Google no publica</h3>
+      <p><code>--md-sys-color-shadow-rgb</code> vale <code>0 0 0</code>. M3 expone <code>--md-sys-color-shadow</code> pero no la variante en tripletos. Existe porque la opacidad solo se puede aplicar a un color en formato <code>rgb()</code>, y sin este token el <code>rgba</code> quedaria quemado dentro de la geometria en <code>1-ref/shadow.css</code>: la primitiva no puede decidir el color, eso es del tema.</p>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section">
+      <h2>Lo que esta capa no tiene</h2>
+      <p class="sr-na">Una paleta no tiene anatomia visual, ni slots, ni estados, ni interaccion: es una tabla de valores. Por eso esta vista no documenta shapes, sizes, padding, states, iconografia, contenido, interaccion, comportamiento, responsive, content states, composicion ni medidas. No es que no se hayan considerado: es que no aplican a una capa que no se dibuja, no se pulsa y no responde a nada.</p>
+      <p class="sr-na">La unica interaccion real de esta pagina es el toggle de tema de la barra superior, y no pertenece al sistema de color: es una utilidad del showroom, en <code>showroom/assets/showroom.js</code>.</p>
+    </article>
+
+  </main>
+</body>
+</html>
