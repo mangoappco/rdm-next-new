@@ -277,17 +277,46 @@
       <p>M3 divide un icono en tres regiones. La diferencia entre ellas es la que explica por qué un glifo de 24dp lleva 2dp de aire alrededor:</p>
       <table class="sr-table">
         <thead>
-          <tr><th scope="col">Región</th><th scope="col">Medida</th><th scope="col">Qué es</th></tr>
+          <tr><th scope="col">Región</th><th scope="col">Medida</th><th scope="col">Muestra</th><th scope="col">Qué es</th></tr>
         </thead>
         <tbody>
-          <tr><td><strong>live area</strong></td><td>20 × 20dp</td><td>Donde vive el contenido, y la región que no debería quedar oculta al hacer scroll</td></tr>
-          <tr><td><strong>padding</strong></td><td>2dp</td><td>El aire alrededor del live area</td></tr>
-          <tr><td><strong>trim area</strong></td><td>24 × 24dp</td><td>El tamaño completo del glifo</td></tr>
+          <tr><td><strong>live area</strong></td><td>20 × 20dp</td><td><span class="sr-spec-bar sr-spec-bar--250"></span></td><td>Donde vive el contenido, y la región que no debería quedar oculta al hacer scroll</td></tr>
+          <tr><td><strong>padding</strong></td><td>2dp</td><td><span class="sr-spec-bar sr-spec-bar--25"></span></td><td>El aire alrededor del live area</td></tr>
+          <tr><td><strong>trim area</strong></td><td>24 × 24dp</td><td><span class="sr-spec-bar sr-spec-bar--300"></span></td><td>El tamaño completo del glifo, y el ancho real del elemento</td></tr>
         </tbody>
       </table>
-      <p class="sr-na">El contenido se limita al live area. Si necesita más peso visual puede extenderse dentro del padding. <strong>Nunca</strong> fuera del trim area.</p>
-      <p class="sr-na">Y la retícula: la cuadrícula es de 24dp, y las formas de referencia son un cuadrado de 18dp, un círculo de 20dp de diámetro, un rectángulo vertical de 20×16dp y uno horizontal de 16×20dp.</p>
-      <p class="sr-na">Nada de esto se escribe en CSS: es geometría del dibujo. La tabla lo dice, no lo muestra, y esa es la diferencia honesta entre un dato que se puede pintar y uno que no.</p>
+      <p>El contenido se limita al live area. Si necesita más peso visual puede extenderse dentro del padding. <strong>Nunca</strong> fuera del trim area.</p>
+
+      <h3>Medido en el navegador, no supuesto</h3>
+      <p>Diez glifos (<code>add</code>, <code>delete</code>, <code>favorite</code>, <code>settings</code>, <code>check</code>, <code>star</code>, <code>search</code>, <code>close</code>, <code>share</code>, <code>download</code>), renderizados en canvas y medidos píxel a píxel sobre la tinta:</p>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Tamaño</th><th scope="col">Caja del glifo</th><th scope="col">Avance medido</th><th scope="col">Tinta medida</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>20dp</td><td><span class="sr-spec-bar sr-spec-bar--250"></span></td><td>20px, <strong>siempre</strong></td><td>10 – 18px de ancho · 10 – 16px de alto</td></tr>
+          <tr><td>24dp</td><td><span class="sr-spec-bar sr-spec-bar--300"></span></td><td>24px, <strong>siempre</strong></td><td>14 – 22px de ancho · 12 – 20px de alto</td></tr>
+          <tr><td>48dp</td><td><span class="sr-spec-bar sr-spec-bar--600"></span></td><td>48px, <strong>siempre</strong></td><td>28 – 42px de ancho · 24 – 40px de alto</td></tr>
+        </tbody>
+      </table>
+      <p>Tres cosas salen de esa tabla, y las tres cambian cómo se lee la de arriba.</p>
+      <ul>
+        <li><strong>El avance es exactamente el trim area, en los tres tamaños.</strong> La caja del glifo es cuadrada y mide lo mismo que el <code>font-size</code>. Por eso el ancho de un icono es predecible aunque el dibujo no lo ocupe: es lo que permite que los iconos de una fila alineen sin correcciones, y lo que hace que <code>.md-icon</code> no necesite <code>overflow: hidden</code>.</li>
+        <li><strong>El live area es un techo, no un valor.</strong> El live area de un icono de 24dp son 20dp, y <code>favorite</code> mide <strong>22 × 19px</strong>: 2px de más en el ancho. Se sale del live area y entra en el padding, que es justo lo que permite la especificación. A 48dp, en cambio, ninguno de estos diez glifos pasa de los 44dp del live area. El live area nunca se llena de manera uniforme, y a veces ni se alcanza.</li>
+        <li><strong>La tinta está centrada, pero no siempre al píxel.</strong> Midiendo los márgenes izquierdo y derecho de los diez glifos a 24dp: <strong>8 de 10</strong> dan idénticos los dos lados —<code>add</code> 4 y 4, <code>close</code> 5 y 5, <code>settings</code> 2 y 2—. Los dos que no son <code>search</code>, con 2 y 3, y <code>share</code>, con 1 y 3: hasta 2px de desvío, un 8% de la caja. Eso no es un error de la fuente: es una corrección óptica hecha dentro del dibujo, y por eso no hay nada que corregir desde CSS.</li>
+      </ul>
+
+      <h3>Por qué no hay un token para el live area</h3>
+      <p>Porque no sería un valor. Un <code>--md-sys-measurement-icon-live-area: 20px</code> sería incorrecto para casi todos los glifos: a 24dp solo <strong>3 de los diez</strong> tienen la tinta a exactamente 20px de ancho —<code>settings</code>, <code>star</code> y <code>share</code>— y solo <strong>2</strong> la tienen a 20px de alto. La tinta real va entre <strong>14 y 22px de ancho</strong> y entre <strong>12 y 20px de alto</strong>. Sería un máximo que nadie puede exigir, y ninguna propiedad de CSS lee dónde dibuja la fuente dentro de su caja de avance.</p>
+      <p>Es la misma categoría que el radio de 2dp, que tampoco tiene token. Y la regla del proyecto es directa: <em>un token que nadie consume es un token muerto</em>.</p>
+      <p class="sr-na">Lo que sí está declarado es el trim area, que es el tamaño real del elemento: <code>--md-sys-measurement-icon-size-small</code>, <code>-size</code>, <code>-size-large</code> y <code>-size-xlarge</code>. Ese es el número del que hay que partir.</p>
+
+      <h3>La consecuencia práctica</h3>
+      <p>No se puede juzgar el tamaño de un icono mirándolo. A 24dp <code>close</code> pinta 14px de ancho y <code>favorite</code> 22px: <strong>8px de diferencia</strong> entre dos glifos que ocupan la misma caja de 24px y conviven en la misma fila.</p>
+      <p>Por eso M3 insiste en <em>«position icons on pixel within the icon grid»</em>. Un icono se alinea por su <strong>caja</strong>, nunca por su dibujo. Y por eso los tamaños se eligen del catálogo de cuatro y no se ajustan a ojo: si se escalara un icono para que "se vea del mismo tamaño" que otro, se rompería la alineación de la fila.</p>
+
+      <h3>La retícula</h3>
+      <p class="sr-na">La cuadrícula es de 24dp, y las formas de referencia son un cuadrado de 18dp, un círculo de 20dp de diámetro, un rectángulo vertical de 20×16dp y uno horizontal de 16×20dp.</p>
     </article>
 
     <hr class="md-divider">
