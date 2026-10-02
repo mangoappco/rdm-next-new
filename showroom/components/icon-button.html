@@ -220,6 +220,83 @@
           <tr><td><code>.md-icon-button-medium</code> <span class="sr-spec-bar sr-spec-bar--none"></span></td><td>56dp</td><td>24dp</td><td>24</td><td>56×56dp</td></tr>
         </tbody>
       </table>
+
+      <h3>M3 declara cinco tamaños, y aquí hay tres</h3>
+      <p class="sr-na">La escala de <code>latest</code> tiene cinco, no tres. Los dos que faltan no están ausentes por descuido: <strong>no hay dónde ponerlos</strong>. Se listan los cinco con el estado de cada token, porque un hueco que no se ve es un hueco que alguien vuelve a tropezar.</p>
+      <table class="sr-table">
+        <thead>
+          <tr>
+            <th scope="col">Tamaño de M3</th>
+            <th scope="col">Contenedor</th>
+            <th scope="col">Glifo</th>
+            <th scope="col">Esquina del cuadrado</th>
+            <th scope="col">Trazo del outlined</th>
+            <th scope="col">Estado aquí</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>xsmall</code></td>
+            <td><span class="sr-spec-bar sr-spec-bar--400"></span> 32dp</td>
+            <td>20dp</td>
+            <td><code>medium</code> 12dp</td>
+            <td>1dp</td>
+            <td>Implementado</td>
+          </tr>
+          <tr>
+            <td><code>small</code></td>
+            <td><span class="sr-spec-bar sr-spec-bar--500"></span> 40dp</td>
+            <td>24dp</td>
+            <td><code>medium</code> 12dp</td>
+            <td>1dp</td>
+            <td>Implementado</td>
+          </tr>
+          <tr>
+            <td><code>medium</code></td>
+            <td><span class="sr-spec-bar sr-spec-bar--700"></span> 56dp</td>
+            <td>24dp</td>
+            <td><code>large</code> 16dp</td>
+            <td>1dp</td>
+            <td>Implementado</td>
+          </tr>
+          <tr>
+            <td><code>large</code></td>
+            <td><strong>96dp</strong>, sin barra porque <strong>no hay token</strong></td>
+            <td><strong>32dp</strong>, sin rol</td>
+            <td><code>extra-large</code> 28dp</td>
+            <td>2dp</td>
+            <td><strong>No implementado</strong></td>
+          </tr>
+          <tr>
+            <td><code>xlarge</code></td>
+            <td><strong>136dp</strong>, sin barra porque <strong>no hay token</strong></td>
+            <td>40dp</td>
+            <td><code>extra-large</code> 28dp</td>
+            <td>3dp</td>
+            <td><strong>No implementado</strong></td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="sr-na">Las barras de los tres primeros están a propósito; las de <code>large</code> y <code>xlarge</code> no, porque no hay specimen que dibujar. Un hueco visible en una tabla es más honesto que una celda con un número que el sistema no puede resolver.</p>
+
+      <h3>Falta una sola cosa, y no es el glifo</h3>
+      <p>La primera sorpresa es que <code>large</code> y <code>xlarge</code> <strong>sí tienen casi todo</strong>. Y no es casualidad:</p>
+      <ul>
+        <li>La esquina <code>extra-large</code> de 28dp <strong>ya existe</strong> en <code>1-ref/corner.css</code>, que declara los diez radios de M3.</li>
+        <li>Los trazos de 2dp y 3dp <strong>ya existen</strong>: son <code>--md-ref-stroke-thick</code> y <code>--md-ref-stroke-extra-thick</code>.</li>
+        <li>Los glifos de 32dp y 40dp tienen su sitio en la escala de espacio: <code>spacing-400</code> y <code>spacing-500</code>.</li>
+      </ul>
+      <p>Lo único que no tiene dónde vivir son <strong>las alturas: 96dp y 136dp</strong>. La escala de espacio del proyecto termina en <code>spacing-900</code>, que son 72dp, y <code>2-sys/</code> solo admite <code>var()</code>: un número crudo en esa capa rompe la arquitectura. Así que un 96dp tendría que entrar por <code>1-ref/</code>, y ahí es donde está la decisión que no está tomada.</p>
+
+      <h3>Y no son medidas de espacio: son alturas de contenedor</h3>
+      <p class="sr-na">Vale la pena comprobarlo, porque la primera reacción es «añadir 96 y 136 a <code>spacing.css</code>». En los tokens oficiales de M3 <strong>no hay ningún token de espacio</strong> con esos dos valores, y tampoco hay archivo de espaciado en el set: no es que falten esos dos, es que la familia completa no está. Lo que aparece es <code>$container-height</code>, en <strong>17 archivos de token</strong>: <code>button</code>, <code>icon-button</code>, <code>split-button</code>, <code>extended-fab</code>, <code>button-group</code> en sus dos variantes y los seis <code>fab</code>. Siete archivos más lo usan como <code>$container-width</code>.</p>
+      <p class="sr-na">O sea que 96dp y 136dp son una <strong>convención de alturas de contenedor</strong> del conjunto de componentes de M3, no su retícula de layout. Meterlos en <code>spacing</code> sería meterlos en la categoría equivocada, por el mismo motivo que ya escrito en <code>1-ref/corner.css</code> y en <code>1-ref/stroke.css</code>: <em>un token de radio no es un token de espaciado aunque coincida el número</em>. Si alguien cambiara la escala de espacio, las alturas de contenedor de M3 no deberían moverse con ella.</p>
+      <p class="sr-na">La familia correcta sería una nueva en <code>1-ref/</code>, del mismo modo que <code>corner.css</code> y <code>stroke.css</code> existen para poder decir «esto no es espaciado». Pero hoy la pediría un solo componente, y abrir un archivo nuevo en la capa 1 para un consumidor es exactamente lo que el proyecto no hace. Cuando se implemente <code>large</code> en <a href="button.html">Button</a> también, habrá dos consumidores y la decisión se toma sola.</p>
+
+      <h3>El glifo de <code>large</code> es una excepción de M3</h3>
+      <p class="sr-na">Los tamaños de icono que publica M3 son cuatro: 20, 24, 40 y 48dp. El <code>icon-size</code> de <code>icon-button-large</code> es de <strong>32dp</strong>, que no está en esa lista. Es una inconsistencia de los propios datos de M3, no una omisión de este proyecto, y queda documentada acá para no heredarla por descuido.</p>
+      <p class="sr-na">Ojo con una consecuencia: <code>opsz</code> se pone al tamaño del glifo, y <code>2-sys/measurement.css</code> no tiene un rol de tamaño de icono en 32dp. Habría que declararlo, o el glifo se dibujaría con un <code>opsz</code> que no le corresponde.</p>
+
       <h3>La diferencia con el botón, que es la razón de este componente</h3>
       <table class="sr-table">
         <thead>
