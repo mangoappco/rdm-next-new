@@ -1209,19 +1209,45 @@ Two conventions that are easy to break:
 
 Every file: no BOM, LF line endings, exactly one trailing newline.
 
-**Never** a non-Latin script — CJK, Hangul, Cyrillic, Greek. Those have slipped into this
-project before. The single exception today is `elevation.css`, which draws the six levels
-with box characters (`└ ─ │ ┌ ┘`) on purpose; if you find one of those anywhere else, it
-is a mistake.
+**Never prose in a non-Latin script** — CJK, Hangul, Cyrillic, Greek. Those have slipped into
+this project before, usually from a copy-paste of a spec or a translated comment. The rule is
+about *prose*: a character used as a **symbol** is not a script use. `Δ` is a mathematical sign,
+the same way `×` and `·` are, and it is fine in a contrast table.
+
+There are four files that use characters outside the Latin range on purpose, in five places. If you
+find one of these anywhere else, it is a mistake:
+
+| Where | Count | What | Why |
+| ---- | ---- | ---- | ---- |
+| `src/css/2-sys/elevation.css` | 51 | box characters `└ ─ │ ┌ ┘` | draws the six elevation levels |
+| `README.md` | 213 | box characters | the directory tree and the layer diagram |
+| `README.md` | 3 | `✅` `❌` | the allowed/prohibited column in the layering table |
+| `src/css/3-comp/button.css` | 3 | `Δ` | the colour-pair delta in a contrast table |
+| `.opencode/skills/rdm-component-showroom/SKILL.md` | 111 | box characters | **this rule**, which has to quote the exceptions in order to name them |
+
+Every use except the last is load-bearing: the box characters **are** the tree, the emoji
+**are** the verdict in that column, and `Δ` is the only symbol that says "difference" in a
+contrast table. Converting any of them to ASCII would make the document worse, not the repo
+safer. A rule that condemns a deliberate use is worse than no rule, because it teaches you to
+distrust the rule.
+
+Note that this file breaks its own rule on purpose, and it is the last row: 111 box characters,
+all of them here, quoting the exceptions in order to name them. A rule that cannot state its
+exceptions is a rule nobody can apply.
 
 ### This rule was ASCII-only once, and was wrong
 
 An earlier version of this file said `*.css`, `*.html` and `*.ps1` were **ASCII only, no
 accents**. It was never true and following it was a mistake:
 
-- all 23 files in `src/css/` carry accented Spanish in their comments — 405 non-ASCII
-  characters in total, mostly the em dash in the file header;
+- all 26 files in `src/css/` carry accented Spanish in their comments — 409 non-ASCII characters
+  in total, mostly the em dash in the file header;
 - the 7 views in `showroom/` carry accents deliberately. That text is shown to people.
+
+Audited 2026-10-02 across all 35 files: 2,366 non-ASCII characters, of which 1,536 are accents
+and `ñ`. The remaining 830 are typography — em dash, box characters (375), `·`, `–`, `…`, `→`,
+curly quotes — plus the five uses tabled above. Nothing was left to clean up: the premise that
+there were 405 characters to fix was itself the bug.
 
 The real requirement is **consistency and a safe encoding**, not ASCII. What actually
 protects the repo is the first row of the table above and the paragraph under it: no BOM,
@@ -1299,8 +1325,11 @@ the new HTML.
 **Then check encoding**, which the verifier does not cover:
 
 - no BOM, LF line endings, one trailing newline;
-- no CJK, Hangul or any other non-Latin script (they have slipped into this project
-  before). Accented Spanish is expected everywhere; see Language and encoding above.
+- no CJK, Hangul or any other non-Latin **script** (they have slipped into this project
+  before). Accented Spanish is expected everywhere; see Language and encoding above;
+- if you are editing a file, confirm its deliberate non-Latin characters are still only the
+  ones tabled above. `elevation.css` uses box characters; `README.md` uses box characters and
+  `✅`/`❌`; `button.css` uses `Δ`. Box characters anywhere else are a mistake.
 
 **Then verify in a real browser**, not by reading the code. Load the showroom and confirm
 with `getComputedStyle` that the tokens resolve to the values the documentation claims.
