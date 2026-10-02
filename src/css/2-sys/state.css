@@ -108,6 +108,17 @@
   /* 38% — disabled. No es un state layer: es la opacidad del contenido
      inactivo. Ver la nota de 1-ref/opacity.css. */
   --md-sys-state-disabled-state-layer-opacity: var(--md-ref-opacity-38);
+
+  /* 10% — el CONTENEDOR deshabilitado. Es un valor distinto del 38% del
+     contenido, y por eso necesita su propio rol.
+
+     M3 lo separa asi porque un boton deshabilitado se dibuja en dos pasos:
+     el relleno se atenua al 10% y el texto al 38%. Con un solo valor, o el
+     boton disabled se veria casi invisible o no pareceria deshabilitado.
+
+     El 10% ya existia como primitiva en 1-ref/opacity.css, pero ningun
+     componente lo pedia, asi que no habia rol. El boton es el primero. */
+  --md-sys-state-disabled-container-opacity: var(--md-ref-opacity-10);
 }
 
 /* ==========================================================================
