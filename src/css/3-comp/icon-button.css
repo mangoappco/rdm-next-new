@@ -178,6 +178,39 @@
   border-radius: var(--md-comp-icon-button-shape);
   background-color: var(--md-comp-icon-button-container-color);
 
+  /* Que el navegador no pinta su widget. `appearance` sobrevive a que el autor
+     declare background y border: sin esta linea un <button> nativo puede
+     seguir trayendo su propio fondo y su propio borde.
+
+     POR QUE AQUI SI Y EN M3 NO
+     --------------------------
+     Es tentador copiar esto de button.css, pero el motivo NO es el mismo y la
+     diferencia esta en la arquitectura, no en la receta.
+
+     El `button` de M3 SI es un <button> nativo por dentro —su nodo .button lo
+     es— y por eso su _shared.scss:87 declara `-webkit-appearance: none`. Ahi la
+     linea es copia literal.
+
+     El `icon-button` de M3 NO lo es. Su _shared.scss:19 abre con `:host` y su
+     .icon-button (linea 48) es un <div> dentro de un elemento personalizado
+     <md-icon-button>. Un div no trae chrome nativo, asi que alli la declaracion
+     no hace falta y por eso no esta. No es un olvido: es que el problema no
+     existe.
+
+     Aqui si existe, porque este componente SI es un <button> nativo, que es
+     justo lo que el showroom documenta en la seccion de accesibilidad: el
+     elemento aporta el teclado, el foco y la activacion. A cambio de ese
+     comportamiento hay que devolverle la parte visual que el navegador
+     impone, y esto es esa parte.
+
+     Verificado, con getComputedStyle: en Chrome el fondo y el borde ya son los
+     del componente, con `appearance: auto` residual, porque
+     `--md-comp-icon-button-container-color` y `--md-comp-icon-button-outline-color`
+     resuelven a `transparent`. Safari y Firefox NO estan verificados, y sin
+     ellos no se puede cerrar si esto arregla algo. Va por la misma razon que
+     en button.css: fidelidad al comportamiento de M3, no un defecto visto. */
+  -webkit-appearance: none;
+
   color: var(--md-comp-icon-button-icon-color);
   cursor: pointer;
   user-select: none;
