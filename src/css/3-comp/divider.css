@@ -98,6 +98,17 @@
    aqui quedaria congelado aunque M3 cambie el valor.
 
    ---------------------------------------------------------------------------
+   MODIFICADOR DE COLOR
+   ---------------------------------------------------------------------------
+   A diferencia de M3, que define un unico rol de color para el divisor, este
+   componente expone un modificador que reapunta su token publico de color:
+
+      <hr class="md-divider md-divider-primary">
+
+   Ver el bloque del modificador al final del archivo, donde se explica por que
+   existe y por que no se puede resolver con una clase de 2-sys.
+
+   ---------------------------------------------------------------------------
    FORCED COLORS
    ---------------------------------------------------------------------------
    Google incluye:
@@ -161,6 +172,37 @@
 
 .md-divider-middle-inset {
   padding-inline: var(--md-sys-measurement-inset);
+}
+
+/* ---------------------------------------------------------------------------
+   MODIFICADOR DE COLOR
+   ---------------------------------------------------------------------------
+   Google define UN solo rol de color para el divisor: outline-variant. No
+   ofrece ninguna variante de color.
+
+   Este proyecto si expone una, y es una decision nuestra, no de M3. La razon
+   es que el componente ya declara su token publico:
+
+       --md-comp-divider-color: var(--md-sys-color-outline-variant)
+
+   Sin una forma de reapuntarlo desde el markup, ese token solo se puede
+   cambiar con un atributo style= en linea, y REGLA 6 lo prohibe. El token
+   existia pero no era alcanzable desde el HTML: ese era el hueco real.
+
+   Por eso el modificador no inventa un color, reapunta el token que el propio
+   componente ya declara. Se documenta en el showroom como extension de RDM
+   Next, no como comportamiento de M3.
+
+   Solo puede leer de 2-sys (REGLA 2). No escribe 16px ni un #HEX (REGLA 1).
+
+   No se puede resolver composing con una utilidad de 2-sys como
+   .md-text-primary: @layer declara comp DESPUES de sys, asi que la regla del
+   componente gana el empate y el color no cambiaria. Un modificador del
+   componente, en su propia capa, si funciona.
+   ------------------------------------------------------------------------ */
+
+.md-divider-primary {
+  --md-comp-divider-color: var(--md-sys-color-primary);
 }
 
 /* Alto contraste forzado: el divisor usa el color de texto del sistema. */
