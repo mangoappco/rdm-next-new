@@ -97,6 +97,11 @@
   --md-comp-button-label-color: var(--md-sys-color-on-primary);
   --md-comp-button-elevation: var(--md-sys-elevation-level0);
 
+  /* El color del trazo del outlined. Es un token aparte del de la etiqueta
+     porque M3 los separa: el borde va en outline-variant, el texto en
+     on-surface-variant. Ver la nota de OUTLINED mas abajo. */
+  --md-comp-button-outline-color: var(--md-sys-color-outline);
+
   /* Disabled. M3 usa el mismo par en las cinco variantes: relleno al 10% y
      contenido al 38%. No es un valor unico porque el boton deshabilitado
      se dibuja en dos pasos. */
@@ -147,6 +152,11 @@
 
   border: 0;
   border-radius: var(--md-comp-button-shape);
+
+  /* La elevacion va en el elemento, no en un pseudo-elemento suyo. Ver la
+     nota larga de arriba: overflow: hidden recorta a los descendientes, y
+     la sombra de un ::before se dibujaba justo en la parte recortada. */
+  box-shadow: var(--md-comp-button-elevation);
 
   font: var(--md-sys-typescale-label-large);
 
@@ -206,6 +216,24 @@
    texto en linea, y la capa de estado lo taparia. Los dos van con -1 y con
    isolation: isolate en el boton, que es lo que los mantiene dentro de su
    propio contexto.
+
+   LA SOMBRA DE ELEVACION NO VA AQUI, VA EN EL ELEMENTO
+   ---------------------------------------------------
+   Una version anterior de este archivo ponia el box-shadow en el ::before, y
+   la elevacion no se veia: ni el boton elevated ni ningun otro la
+   mostraba.
+
+   La causa es el overflow: hidden que el boton necesita para dos cosas
+   legitimas, que son recortar la capa de estado al borde redondeado y
+   recortar la etiqueta con puntos suspensivos. Pero overflow recorta a los
+   DESCENDIENTES, y el ::before es un descendiente. Su box-shadow se dibuja
+   por FUERA de su propia caja, o sea justo en la parte que el boton
+   recorta. El resultado era que solo se veian los bordes de los lados,
+   alli donde la sombra coincidia con el interior de la caja.
+
+   La sombra exterior de un elemento no la recorta su propio overflow: solo
+   la recortan los ancestros. Por eso va en el elemento, y no en un
+   pseudo-elemento suyo.
    ------------------------------------------------------------------------ */
 
 .md-button::before {
@@ -215,7 +243,6 @@
   z-index: -1;
   background-color: var(--md-comp-button-container-color);
   border-radius: inherit;
-  box-shadow: var(--md-comp-button-elevation);
   pointer-events: none;
 }
 
@@ -270,6 +297,8 @@
 }
 
 /* ---------------------------------------------------------------------------
+
+/* ---------------------------------------------------------------------------
    EL ANILLO DE FOCUS
    ---------------------------------------------------------------------------
    M3 lo implementa con <md-focus-ring>, un elemento hermano. Aqui es un
@@ -314,10 +343,15 @@
   pointer-events: none;
 }
 
+/* La sombra se apaga aqui, en el elemento, porque ahora vive en el elemento.
+   Un boton deshabilitado no se levanta de la superficie. */
+.md-button:disabled {
+  box-shadow: var(--md-sys-elevation-level0);
+}
+
 .md-button:disabled::before {
   background-color: var(--md-comp-button-disabled-container-color);
   opacity: var(--md-comp-button-disabled-container-opacity);
-  box-shadow: var(--md-sys-elevation-level0);
 }
 
 .md-button:disabled {
@@ -430,15 +464,63 @@
    relleno es surface-container-low, un gris muy claro, y la sombra hace el
    resto. Sin la sombra seria un boton invisible sobre un fondo claro.
 
+   EN TEMA OSCURO LA ELEVACION CASI NO SE VE. Y ES M3, NO UN ERROR.
+   ---------------------------------------------------------
+   Merece su propio bloque porque se va a reportar como bug varias veces.
+
+   Medido en los dos temas, con los valores de este sistema:
+
+     tema      fondo        relleno              diferencia
+     --------  -----------  -------------------  ----------------
+     claro     #fef7ff      #f7f2fa              Δ 15 de 255
+     oscuro    #141218      #1d1b20              Δ  9 de 255
+
+   En claro la sombra rgba(0,0,0,0.3) sobre un fondo casi blanco se lee
+   sin problema. En oscuro pasan dos cosas a la vez: el relleno esta a 9
+   unidades del fondo, y la sombra es NEGRA sobre un fondo casi negro, asi
+   que no aporta nada. El boton queda plano.
+
+   Se podria subir el relleno a surface-container (#211f26, Δ 13) y se
+   veria mejor. NO se hace, y la razon es que M3 especifica
+   surface-container-low para esta variante. Desviarse para que se vea en un
+   tema seria cambiar la especificacion en silencio, y ese tipo de cambio
+   pertenece a una decision del proyecto, no a un componente que se
+   construye por pasos.
+
+   Que M3 lo acepte no significa que se entienda: significa que en un
+   producto de verdad el boton elevated se apoya en surface, no en el lienzo
+   de background, y ahi el contraste es mayor. El caso de usarlo sobre el
+   lienzo en tema oscuro es el que queda justo, y queda documentado en vez
+   de disimulado con un numero inventado.
+
+   Si manana el proyecto decide que la elevacion debe leerse tambien sobre
+   el lienzo oscuro, el sitio del cambio es este bloque, y debe hacerse en
+   los cinco temas a la vez o en ninguno.
+
    OUTLINED
    --------
    La unica con borde. El relleno queda transparente y por eso su texto es
    on-surface-variant, el gris de menor contraste: sin relleno detras, un
    primary se leeria como un enlace.
 
-   El borde usa el MISMO color que el texto. Es lo que dice M3, y tiene
-   sentido: si el borde fuera de otro color, el outlined se veria como dos
-   elementos.
+   EL BORDE Y LA ETIQUETA SON DOS TOKENS DISTINTOS
+   -----------------------------------------------
+   Una version anterior de este archivo hacia que el borde tomara el color
+   de la etiqueta. Es un error, y la tabla de specs de M3 lo dice de forma
+   explicita:
+
+       Outlined container      outline variant (outline)
+       Outlined icon & label   on surface variant
+
+   Son dos roles distintos a proposito. El borde va en outline-variant, que
+   es el gris claro; la etiqueta va en on-surface-variant, que es el gris
+   oscuro. Con el mismo token, el boton se dibuja con un solo tono de gris y
+   pierde el relieve: ademas el borde claro sobre fondo oscuro es casi
+   invisible en tema oscuro, que es justo donde mas se nota.
+
+   El borde tambien tiene su propio token, porque el color del trazo y el
+   color del texto son decisiones que pueden separarse: un outlined sobre
+   una imagen puede necesitar un borde mas claro sin tocar el texto.
 
    TEXT
    ----
@@ -485,14 +567,25 @@
 .md-button-outlined {
   --md-comp-button-container-color: transparent;
   --md-comp-button-label-color: var(--md-sys-color-on-surface-variant);
+  --md-comp-button-outline-color: var(--md-sys-color-outline-variant);
   --md-comp-button-elevation: var(--md-sys-elevation-level0);
 
-  /* El borde usa el MISMO color que la etiqueta. Es lo que dice M3: si
-     fueran distintos, el outlined se leeria como dos elementos en vez de
-     uno. */
+  /* El borde usa SU token, no el de la etiqueta. Ver la nota de OUTLINED en
+     la cabecera de VARIANTES: son dos roles distintos y M3 los separa. */
   border: var(--md-comp-button-outline-width) solid
-    var(--md-comp-button-label-color);
+    var(--md-comp-button-outline-color);
 
+  /* El borde se SUMA al tamano del boton: con box-sizing: border-box, un
+     borde de 1px a cada lado hace que el boton mida 2px mas. Si se dejara,
+     el outlined mediria 42px frente a los 40px de las demas, y se notaria
+     al alinearlos en una fila.
+
+     M3 lo resuelve con un nodo .outline aparte, con inset: 0 y el size
+     restado el doble del grosor, para que el borde se dibuje DENTRO de la
+     caja. Ese nodo es un elemento mas, y aqui no hay JavaScript para
+     crearlo. La equivalencia en CSS plano es restar el grosor del padding
+     vertical: el borde se lleva 1px arriba y 1px abajo, y el padding cede
+     esos 2px. El alto exterior sigue siendo el del tamano. */
   --md-comp-button-padding-block: calc(
     (var(--md-comp-button-height) - var(--md-comp-button-single-line-height)) / 2
     - var(--md-comp-button-outline-width)
