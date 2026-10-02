@@ -146,6 +146,12 @@
   --md-comp-icon-button-state-duration: var(--md-sys-motion-duration-short2);
   --md-comp-icon-button-state-easing: var(--md-sys-motion-easing-standard);
 
+  /* El anillo de foco. M3 lo define por separado: tres px de grosor y dos de
+     separacion. Ver el bloque del anillo, mas abajo. */
+  --md-comp-icon-button-focus-color: var(--md-sys-color-secondary);
+  --md-comp-icon-button-focus-width: var(--md-sys-shape-stroke-extra-thick);
+  --md-comp-icon-button-focus-offset: var(--md-sys-shape-stroke-thick);
+
   /* La superficie de toque. Es el mismo objetivo de 48dp que exige M3 en
      todo elemento interactivo. */
   --md-comp-icon-button-touch-size: var(--md-sys-measurement-touch-target);
@@ -255,6 +261,31 @@
 
 .md-icon-button:active::after {
   opacity: var(--md-sys-state-pressed-state-layer-opacity);
+}
+
+/* ---------------------------------------------------------------------------
+   EL ANILLO DE FOCO
+   ---------------------------------------------------------------------------
+   Aqui si hace falta, y mas que en el boton: un boton tiene etiqueta y se
+   lee sin mirar. Un boton de icono no tiene nada escrito, y sin anillo la
+   persona que navega con teclado no sabe donde esta.
+
+   M3 lo define con un grosor de 3px y un offset de 2px, que es exactamente
+   lo que un outline reproduce: el offset saca el anillo de la caja, y asi se
+   ve aunque el contenedor este lleno.
+
+   No se quita el outline nativo con outline: none. Si el navegador lo dibuja,
+   se queda; este lo sustituye declarando sus propios valores.
+
+   Que este control NO tenga ripple no lo exime del anillo: son dos senales
+   distintas. El ripple es la confirmacion tactil del toque, y el anillo es la
+   de posicion para el teclado. Un control con teclado necesita las dos.
+   ------------------------------------------------------------------------ */
+
+.md-icon-button:focus-visible {
+  outline: var(--md-comp-icon-button-focus-width) solid
+    var(--md-comp-icon-button-focus-color);
+  outline-offset: var(--md-comp-icon-button-focus-offset);
 }
 
 /* ---------------------------------------------------------------------------
