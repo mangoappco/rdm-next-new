@@ -1,0 +1,618 @@
+/* ==========================================================================
+   3-comp/button.css — COMPONENTE BUTTON
+   ==========================================================================
+
+   QUE ES ESTE COMPONENTE
+   ---------------------
+   El boton de accion de M3. Es el componente mas usado de la libreria y el
+   primero que necesita color de contenedor, elevacion, tipografia propia,
+   borde y cinco estados interactivos. Por eso va segundo: el divisor
+   probo el contrato de capas con el componente mas simple que existe, y
+   este lo prueba con uno que ya se parece a los que vendran.
+
+   ---------------------------------------------------------------------------
+   LA RECETA, SEGUN GOOGLE
+   ---------------------------------------------------------------------------
+   Fuente: material-components/material-web, tokens/versions/latest/sass/
+   _md-comp-button*.scss (M3 v34.0.21) y button/internal/_shared.scss.
+
+   A diferencia del divisor, aqui hay que elegir una version de la receta.
+   Google publica dos y una esta OBSOLETA:
+
+     md-comp-filled-button.scss   OBSOLETA. Todos sus tokens llevan
+                                  @deprecated "Use md.comp.button.filled".
+     md-comp-button-filled.scss   VIGENTE.
+
+   La diferencia no es academica. El set vigente separa lo que antes venia
+   mezclado:
+
+     OBSOLETO                        VIGENTE
+     ------------------------------   ------------------------------
+     md-comp.button.container.*      md.comp.button.filled.*
+     md-comp.button.disabled.*       md.comp.button.filled.disabled.*
+     md-comp.button.hovered.*        md.comp.button.filled.hovered.*
+
+   Este componente sigue el VIGENTE. Los valores coinciden en lo que se usa
+   aqui, asi que la eleccion no cambia un solo valor, pero documentarla
+   evita que el proximo que lea el repositorio copie la fuente vieja.
+
+   Google define ademas cinco tamanos (xsmall a xlarge). Este archivo
+   implementa tres: xsmall, small y medium. Ver "TAMANOS" mas abajo.
+
+   ---------------------------------------------------------------------------
+   POR QUE ESTE COMPONENTE NO USA WEB COMPONENTS
+   ---------------------------------------------------------------------------
+   La receta de Google se apoya en tres cosas que este proyecto no tiene:
+
+     <md-button>            un elemento personalizado
+     <md-ripple>            una animacion con JavaScript
+     <md-focus-ring>        otro elemento personalizado
+
+   Este proyecto es CSS puro: sin build, sin framework, sin JavaScript. La
+   estructura de M3 se aplana a una sola clase sobre un <button> nativo, y
+   las dos piezas de JavaScript se resuelven o se renuncian:
+
+     md-focus-ring   -> outline en :focus-visible. M3 lo define con un
+                        grosor de 3px y un offset de 2px, que es
+                        exactamente lo que un outline reproduce.
+     md-ripple       -> NO se implementa. Ver "EL RIPPLE" mas abajo.
+
+   Lo que NO se hace es imitar la receta con un <div> estilizado. El
+   componente es un <button> de verdad, con su semantica y su
+   role=button implicito. Un <div> seria un elemento que parece un boton sin
+   ser un boton, y eso es justo lo que la skill del showroom prohibe.
+
+   ---------------------------------------------------------------------------
+   TOKENS DEL COMPONENTE
+   ---------------------------------------------------------------------------
+   Capa 3. Lee UNICAMENTE de 2-sys, nunca de 1-ref (REGLA 2). Cada token
+   del componente se declara aqui con su valor por defecto, y las variantes
+   los reapuntan. Es el mismo patron que --md-comp-divider-color.
+
+   Se declaran aunque coincidan con un rol de 2-sys porque son decisiones
+   PROPIAS del boton, no del sistema: M3 cambio la altura del boton a 56dp
+   sin tocar la de ningun otro componente, y si el boton leyera el rol
+   compartido, ese cambio habria arrastrado a los demas. Ver la nota de
+   "ALTURAS" en 2-sys/measurement.css.
+   ------------------------------------------------------------------------ */
+
+/* ---------------------------------------------------------------------------
+   TOKENS DEL COMPONENTE
+   ------------------------------------------------------------------------ */
+
+.md-button {
+  /* Medidas. Cada tamano reapunta estas, no las escribe. */
+  --md-comp-button-height: var(--md-sys-measurement-button-height);
+  --md-comp-button-padding-inline: var(--md-sys-measurement-button-padding-small);
+  --md-comp-button-label-space: var(--md-sys-measurement-button-label-space);
+  --md-comp-button-icon-size: var(--md-sys-measurement-button-icon-size);
+  --md-comp-button-outline-width: var(--md-sys-shape-stroke-thin);
+
+  /* Forma. Redondeado completo por defecto, como el filled de M3. */
+  --md-comp-button-shape: var(--md-sys-shape-corner-full);
+
+  /* Color. La base es el boton filled, que es lo que M3 declara como
+     default. Las otras cuatro variantes reapuntan estos tres. */
+  --md-comp-button-container-color: var(--md-sys-color-primary);
+  --md-comp-button-label-color: var(--md-sys-color-on-primary);
+  --md-comp-button-elevation: var(--md-sys-elevation-level0);
+
+  /* Disabled. M3 usa el mismo par en las cinco variantes: relleno al 10% y
+     contenido al 38%. No es un valor unico porque el boton deshabilitado
+     se dibuja en dos pasos. */
+  --md-comp-button-disabled-container-color: var(--md-sys-color-on-surface);
+  --md-comp-button-disabled-label-color: var(--md-sys-color-on-surface);
+  --md-comp-button-disabled-container-opacity: var(--md-sys-state-disabled-container-opacity);
+
+  /* Foco. El grosor y el offset son dos tokens distintos porque M3 los
+     define por separado: 3px de grosor, 2px de separacion. */
+  --md-comp-button-focus-color: var(--md-sys-color-secondary);
+  --md-comp-button-focus-width: var(--md-sys-shape-stroke-extra-thick);
+  --md-comp-button-focus-offset: var(--md-sys-shape-stroke-thick);
+
+  /* Transicion de la capa de estado. M3 pide duration-short2 con la curva
+     standard. */
+  --md-comp-button-state-duration: var(--md-sys-motion-duration-short2);
+  --md-comp-button-state-easing: var(--md-sys-motion-easing-standard);
+
+  /* Ver "POR QUE padding-block CON CALC" mas abajo. Vive en un token para
+     que outlined pueda restarle el grosor del borde. */
+  --md-comp-button-padding-block: calc(
+    (var(--md-comp-button-height) - var(--md-comp-button-single-line-height)) / 2
+  );
+
+  /* El grosor de la etiqueta, que se calcula con calc() y no puede salir de
+     un token: depende de la altura del contenedor y del alto de una linea.
+     Ver "POR QUE padding-block CON CALC" mas abajo. */
+  --md-comp-button-single-line-height: var(--md-sys-typescale-label-large-line-height);
+
+  box-sizing: border-box;
+
+  /* Color del contenido. El fondo va en un pseudo-elemento para poder
+     atenuarlo aparte cuando disabled. Ver "EL CONTENEDOR" mas abajo. */
+  color: var(--md-comp-button-label-color);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--md-comp-button-label-space);
+
+  /* M3 usa min-height, no height: asi una etiqueta larga puede ocupar dos
+     lineas y el boton crece en vez de desbordarse. El alto de 40dp es el
+     minimo, no un tope. */
+  min-height: var(--md-comp-button-height);
+
+  padding-block: var(--md-comp-button-padding-block);
+  padding-inline: var(--md-comp-button-padding-inline);
+
+  border: 0;
+  border-radius: var(--md-comp-button-shape);
+
+  font: var(--md-sys-typescale-label-large);
+
+  /* position: relative para que los pseudo-elementos se ubiquen contra este
+     elemento, y no contra el ancestro mas cercano que los positioned.
+
+     isolation: isolate crea un contexto de apilamiento en este elemento.
+     Sin el, los dos pseudo-elementos de abajo, que van con z-index -1, se
+     pintarian en el contexto de apilamiento del ancestro y PODRIAN quedar
+     por detras de su fondo: un boton dentro de una tarjeta se veria sin
+     relleno. isolate los confines aqui sin cambiar el layout. */
+  position: relative;
+  isolation: isolate;
+
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+
+  /* La etiqueta se recorta con puntos suspensivos en vez de desbordar. Con
+     un icono al lado, min-width: 0 es lo que permite que encoja. */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------------------
+   POR QUE padding-block CON CALC
+   ---------------------------------------------------------------------------
+   M3 centra el contenido con padding, no con line-height ni con align-items
+   sobre una altura fija. La formula es:
+
+       padding-block: (altura del contenedor - alto de una linea) / 2
+
+   Se calcula en vez de fijarse porque depende de dos cosas: la altura del
+   tamano elegido y el alto de linea de la tipografia. El tamano medium, por
+   ejemplo, usa title-medium y no label-large, asi que su padding es
+   distinto aunque mida lo mismo que otro.
+
+   El calculo esta escrito con calc() sobre tokens, no sobre numeros, asi que
+   complies REGLA 1: no hay ni un px escrito aqui.
+   ------------------------------------------------------------------------ */
+
+/* ---------------------------------------------------------------------------
+   EL CONTENEDOR: UN PSEUDO-ELEMENTO, NO EL FONDO DEL ELEMENTO
+   ---------------------------------------------------------------------------
+   M3 pinta el relleno en un nodo .background aparte, no en el elemento. La
+   razon esta en disabled: el relleno se atenua al 10% y el texto al 38%, y
+   para-atenuar solo el relleno hace falta que sean dos cosas.
+
+   En CSS plano eso se resuelve igual, con ::before. El elemento queda
+   transparente y paints su fondo en ::before, al que se le puede dar
+   opacity sin arrastrar al texto.
+
+   El ::before va detras del texto por el z-index: -1. No hace falta para
+   el ::before, que ya se pinta antes que el contenido, pero si para el
+   ::after: un elemento posicionado con z-index auto se pinta ENCIMA del
+   texto en linea, y la capa de estado lo taparia. Los dos van con -1 y con
+   isolation: isolate en el boton, que es lo que los mantiene dentro de su
+   propio contexto.
+   ------------------------------------------------------------------------ */
+
+.md-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: var(--md-comp-button-container-color);
+  border-radius: inherit;
+  box-shadow: var(--md-comp-button-elevation);
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------------------------
+   LA CAPA DE ESTADO
+   ---------------------------------------------------------------------------
+   Implementa exactamente el patron que documenta 2-sys/state.css: un
+   pseudo-elemento con currentColor, opacity 0 en reposo, y una transicion
+   de opacidad.
+
+   currentColor es lo que hace que la capa tome el color de la etiqueta sin
+   declarar un token de color para ella. Por eso el boton NO tiene un
+   --md-comp-button-state-layer-color: seria el mismo valor que
+   --md-comp-button-label-color, y duplicarlo obligaria a cambiarlo dos
+   veces.
+
+   Los dos errores que 2-sys/state.css senala, y que estan resueltos aqui:
+
+     overflow: hidden    ya esta en el elemento. Sin el, la capa se derrama
+                         y el borde redondeado deja de parecer redondeado.
+     pointer-events: none  esta en ambos pseudo-elementos. Sin el, la capa
+                         intercepta los clics y el boton deja de responder.
+   ------------------------------------------------------------------------ */
+
+.md-button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: currentColor;
+  opacity: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  transition: opacity
+    var(--md-comp-button-state-duration)
+    var(--md-comp-button-state-easing);
+}
+
+/* El orden importa: :active va DESPUES de :hover, y :focus-visible despues
+   de :hover tambien. Si el usuario mantiene pulsado un boton ya iluminado
+   por hover, gana el que esta despues. */
+.md-button:hover::after {
+  opacity: var(--md-sys-state-hover-state-layer-opacity);
+}
+
+.md-button:focus-visible::after {
+  opacity: var(--md-sys-state-focus-state-layer-opacity);
+}
+
+.md-button:active::after {
+  opacity: var(--md-sys-state-pressed-state-layer-opacity);
+}
+
+/* ---------------------------------------------------------------------------
+   EL ANILLO DE FOCUS
+   ---------------------------------------------------------------------------
+   M3 lo implementa con <md-focus-ring>, un elemento hermano. Aqui es un
+   outline, que es lo que ese elemento dibuja en ultima instancia: un anillo
+   del grosor del componente, separado del borde por un offset.
+
+   Se usa :focus-visible y NO :focus. :focus tambien se dispara al hacer
+   clic con el raton, y un anillo de foco que aparece al pulsar el raton
+   ensucia la pantalla y confunde: el foco de teclado es el unico que
+   necesita senalarse.
+
+   No se quita el outline nativo con outline: none. Si el navegador lo
+   dibuja, se queda; este lo sustituye declarando sus propios valores.
+   ------------------------------------------------------------------------ */
+
+.md-button:focus-visible {
+  outline: var(--md-comp-button-focus-width) solid var(--md-comp-button-focus-color);
+  outline-offset: var(--md-comp-button-focus-offset);
+}
+
+/* ---------------------------------------------------------------------------
+   DISABLED
+   ---------------------------------------------------------------------------
+   Dos partes, y por eso dos tokens distintos:
+
+     el relleno (::before)  se pinta en on-surface con opacity 0.1
+     la etiqueta             baja a opacity 0.38
+
+   El HTML pone el atributo disabled, que es lo que aporta la semantica: un
+   boton deshabilitado no es solo un boton gris, es un boton que el
+   navegador y los lectores de pantalla saben que no esta disponible. La
+   clase .md-disabled de 2-sys/state.css hace la parte visual y el
+   pointer-events: none.
+
+   Aqui se reaplican los tokens en vez de usar .md-disabled, porque el boton
+   necesita el relleno y el contenido con intensidades DISTINTAS y
+   .md-disabled baja el elemento entero de una sola vez.
+   ------------------------------------------------------------------------ */
+
+.md-button:disabled {
+  cursor: default;
+  pointer-events: none;
+}
+
+.md-button:disabled::before {
+  background-color: var(--md-comp-button-disabled-container-color);
+  opacity: var(--md-comp-button-disabled-container-opacity);
+  box-shadow: var(--md-sys-elevation-level0);
+}
+
+.md-button:disabled {
+  color: var(--md-comp-button-disabled-label-color);
+  opacity: var(--md-sys-state-disabled-state-layer-opacity);
+}
+
+/* La capa de estado se apaga en disabled: si no, el hover dejaria un brillo
+   sobre un boton que no responde. */
+.md-button:disabled::after {
+  opacity: 0;
+}
+
+/* ---------------------------------------------------------------------------
+   EL RIPPLE: NO SE IMPLEMENTA, Y POR QUE
+   ---------------------------------------------------------------------------
+   M3 pone una onda de color que se expande desde el punto de pulsacion. La
+   implementa con <md-ripple>, que es JavaScript: necesita conocer las
+   coordenadas del puntero para dibujar la onda.
+
+   Este proyecto no tiene JavaScript, y la receta de M3 reconoce que el
+   state layer es la alternativa para contextos sin JS. Asi que el boton usa
+   la capa de estado, que es CSS puro, y renuncia al ripple.
+
+   La consecuencia visible es que la pulsacion no se comunica con una onda
+   expansiva sino con la capa al 10%. Es un estado de interaccion mas
+   sobrio, y es el que M3 usa en las superficies donde no hay ripple.
+
+   No se aproxima el ripple con una transicion de escala: seria una
+   imitacion de una animacion que no es, y se veria mal en cuanto se
+   pulsara cerca de un borde.
+   ------------------------------------------------------------------------ */
+
+/* ---------------------------------------------------------------------------
+   ICONO
+   ---------------------------------------------------------------------------
+   M3 v34 pide un padding DISTINTO cuando hay icono: el lado del icono se
+   aprieta a 16dp y el contrario se queda en 24dp, para que el boton no se
+   ensanche por llevar icono sino que se desplace.
+
+   En la version que se implementa, esos valores NO EXISTEN. La receta los
+   referencia pero no hay ningun token que los defina:
+
+     button/internal/_shared.scss:169
+       :host([has-icon]:not([trailing-icon])) {
+         padding-inline-start: var(--_with-leading-icon-leading-space);
+         padding-inline-end:   var(--_with-leading-icon-trailing-space);
+       }
+
+   --_with-leading-icon-leading-space no esta definido en ningun archivo de
+   tokens/versions/latest/sass/. Es una referencia colgante: en el SDK de
+   Google resolveria a vacio y el padding caeria al valor por defecto.
+
+   Que hacer con eso tiene tres salidas y aqui se eligio la mas honesta:
+
+     1. Inventar una formula          No. Un numero que no sale de la
+                                      especificacion no se escribe, aunque
+                                      parezca razonable.
+     2. Copiar el 16dp de la web      No. La web publica 16dp para los
+                                      tamanos de 40 y 56, pero el xsmall
+                                      tiene 12dp de padding base: copiarlo
+                                      haria que el boton con icono
+                                      ocupara MAS que sin icono.
+     3. El mismo padding con y sin   Si. El boton mantiene su padding y el
+        icono                           icono solo aporta su medida. Es lo
+                                      que la fuente de la version
+                                      implementada permite afirmar.
+
+   La consecuencia es visible y conviene decirla: el boton con icono queda
+   un poco mas holgado de lo que tendria con la regla de M3. Es una decision
+   consciente, no un descuido, y se anade en cuanto M3 defina el token.
+
+   La clase vive en el icono y no en el boton porque es el icono el que
+   necesita su medida. Asi el boton no tiene que saber de que lado esta, y
+   no hace falta :has() para detectarlo.
+   ------------------------------------------------------------------------ */
+
+.md-button-icon {
+  flex: 0 0 auto;
+  width: var(--md-comp-button-icon-size);
+  height: var(--md-comp-button-icon-size);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---------------------------------------------------------------------------
+   VARIANTES
+   ---------------------------------------------------------------------------
+   Las cinco de M3. Lo que cambia entre ellas son tres cosas: el color del
+   relleno, el color del contenido, y si llevan elevacion o borde.
+
+   Todas comparten la misma estructura, la misma altura por tamano y los
+   mismos estados. Por eso son cuatro lineas cada una y no cuatro recetas.
+
+   La matriz, de los token sets vigentes md.comp.button.<variante>:
+
+     variante    relleno                 contenido             elevacion  borde
+     ---------   ---------------------   -------------------   ---------  ------
+     elevated    surface-container-low   primary               level1     no
+     filled      primary                 on-primary            level0     no
+     tonal       secondary-container     on-secondary-container level0    no
+     outlined    transparente            on-surface-variant    level0     1px
+     text        transparente            primary               level0     no
+
+   ELEVATED
+   ---------
+   La unica con sombra. M3 la marca aparte porque es la que existe para
+   separar el componente del fondo cuando la superficie es la misma. El
+   relleno es surface-container-low, un gris muy claro, y la sombra hace el
+   resto. Sin la sombra seria un boton invisible sobre un fondo claro.
+
+   OUTLINED
+   --------
+   La unica con borde. El relleno queda transparente y por eso su texto es
+   on-surface-variant, el gris de menor contraste: sin relleno detras, un
+   primary se leeria como un enlace.
+
+   El borde usa el MISMO color que el texto. Es lo que dice M3, y tiene
+   sentido: si el borde fuera de otro color, el outlined se veria como dos
+   elementos.
+
+   TEXT
+   ----
+   Sin relleno y sin borde. Se distingue de un enlace porque M3 le asigna
+   primary, que es el color de accion, y porque tiene area tactil y estados.
+   ------------------------------------------------------------------------ */
+
+.md-button-elevated {
+  --md-comp-button-container-color: var(--md-sys-color-surface-container-low);
+  --md-comp-button-label-color: var(--md-sys-color-primary);
+  --md-comp-button-elevation: var(--md-sys-elevation-level1);
+}
+
+.md-button-filled {
+  --md-comp-button-container-color: var(--md-sys-color-primary);
+  --md-comp-button-label-color: var(--md-sys-color-on-primary);
+  --md-comp-button-elevation: var(--md-sys-elevation-level0);
+}
+
+.md-button-tonal {
+  --md-comp-button-container-color: var(--md-sys-color-secondary-container);
+  --md-comp-button-label-color: var(--md-sys-color-on-secondary-container);
+  --md-comp-button-elevation: var(--md-sys-elevation-level0);
+}
+
+/* El borde se SUMA al tamano del boton: con box-sizing: border-box, un
+   borde de 1px a cada lado hace que el boton mida 2px mas. Si se dejara,
+   el outlined mediria 42px frente a los 40px de las otras cuatro variantes,
+   y se notaria al alinearlos en una fila.
+
+   M3 lo resuelve con un truco: el borde no va en el elemento, va en un
+   nodo .outline aparte, con inset: 0 y un size restado el doble del grosor.
+   Asi el borde se dibuja DENTRO de la caja del contenedor y el tamano
+   exterior no cambia. Ese nodo es un elemento mas, y aqui no hay
+   JavaScript para crearlo.
+
+   La equivalencia en CSS plano es restar el grosor del padding vertical: el
+   borde se lleva 1px por arriba y 1px por abajo, y el padding cede
+   justamente esos 2px. El alto exterior sigue siendo el del tamano.
+
+   En horizontal no hace falta corregir nada: el ancho lo dicta el
+   contenido, y 1px de borde a cada lado es la separacion que M3 pide entre
+   el borde y la etiqueta. El padding lateral se queda como esta. */
+.md-button-outlined {
+  --md-comp-button-container-color: transparent;
+  --md-comp-button-label-color: var(--md-sys-color-on-surface-variant);
+  --md-comp-button-elevation: var(--md-sys-elevation-level0);
+
+  /* El borde usa el MISMO color que la etiqueta. Es lo que dice M3: si
+     fueran distintos, el outlined se leeria como dos elementos en vez de
+     uno. */
+  border: var(--md-comp-button-outline-width) solid
+    var(--md-comp-button-label-color);
+
+  --md-comp-button-padding-block: calc(
+    (var(--md-comp-button-height) - var(--md-comp-button-single-line-height)) / 2
+    - var(--md-comp-button-outline-width)
+  );
+}
+
+.md-button-text {
+  --md-comp-button-container-color: transparent;
+  --md-comp-button-label-color: var(--md-sys-color-primary);
+  --md-comp-button-elevation: var(--md-sys-elevation-level0);
+}
+
+/* ---------------------------------------------------------------------------
+   TAMANOS
+   ---------------------------------------------------------------------------
+   Tres de los cinco que define M3. Cada uno cambia cuatro cosas: la altura,
+   el padding lateral, el tamano del icono y la tipografia de la etiqueta.
+
+     tamano    alto   padding   icono   tipografia
+     --------  -----  --------  ------  --------------
+     xsmall    32     12        20      label-large
+     small     40     16        20      label-large
+     medium    56     24        24      title-medium
+
+   MEDIUM USA TITLE-MEDIUM, NO LABEL-LARGE
+   ---------------------------------------
+   Es el unico salto de tipografia de la escala, y conviene entender por que.
+   El tamano medium es el de la llamada a la accion principal: es el boton
+   mas grande y el mas destacado de la pantalla, y por eso su etiqueta pesa
+   mas. label-large es 14/20 y title-medium 16/24.
+
+   No es un error de M3: es la jerarquia de Sizes de M3, donde el tamano
+   del componente y la jerarquia de la etiqueta son la misma escala.
+
+   LA FAMILIA DE TIPOGRAFIA SE PISA EN CADA TAMANO
+   ----------------------------------------------
+   Cada tamano reescribe font con su typescale. Se declara font y no
+   font-size, porque typescale trae las cuatro propiedades: familia, tamano,
+   peso e interletraje. Poner solo font-size dejaria el peso de label-large
+   colgado de un tamano que ya no es de label-large.
+
+   El alto de linea tambien se actualiza, porque lo usa el calculo del
+   padding-block. Si no, el padding del medium estaria calculado con el alto
+   de linea de label-large y el texto quedaria descentrado.
+   ------------------------------------------------------------------------ */
+
+.md-button-xsmall {
+  --md-comp-button-height: var(--md-sys-measurement-button-height-xsmall);
+  --md-comp-button-padding-inline: var(--md-sys-measurement-button-padding-xsmall);
+  --md-comp-button-icon-size: var(--md-sys-measurement-button-icon-size);
+  --md-comp-button-single-line-height: var(--md-sys-typescale-label-large-line-height);
+  font: var(--md-sys-typescale-label-large);
+}
+
+.md-button-small {
+  --md-comp-button-height: var(--md-sys-measurement-button-height);
+  --md-comp-button-padding-inline: var(--md-sys-measurement-button-padding-small);
+  --md-comp-button-icon-size: var(--md-sys-measurement-button-icon-size);
+  --md-comp-button-single-line-height: var(--md-sys-typescale-label-large-line-height);
+  font: var(--md-sys-typescale-label-large);
+}
+
+.md-button-medium {
+  --md-comp-button-height: var(--md-sys-measurement-button-height-medium);
+  --md-comp-button-padding-inline: var(--md-sys-measurement-button-padding-medium);
+  --md-comp-button-icon-size: var(--md-sys-measurement-icon-size);
+  --md-comp-button-single-line-height: var(--md-sys-typescale-title-medium-line-height);
+  font: var(--md-sys-typescale-title-medium);
+}
+
+/* ---------------------------------------------------------------------------
+   LO QUE ESTE COMPONENTE NO IMPLEMENTA
+   ---------------------------------------------------------------------------
+   M3 define mas cosas para el boton. Se listan para que quede constancia de
+   que son omisiones CONSCIENTES y no olvidos:
+
+   large y xlarge        sus alturas, 96 y 136, no existen en la escala de
+                         espacio de M3. Anadirlas exigiria crear primitivas
+                         en 1-ref por un componente.
+
+   selected/unselected   el comportamiento de toggle. M3 lo paints con
+                         surface-container y on-surface-variant cuando esta
+                         sin seleccionar. Son otros 12 tokens por variante.
+
+   morph de esquina      al presionar, M3 reduce el radio (de full a
+                         medium) con una transicion de resorte. Un resorte
+                         no se expresa en una transicion CSS normal: son dos
+                         parametros fisicos, no una curva. Habria que
+                         aproximarlo con linear() y perder la fisica.
+
+   toggle selected        el checkmark que aparece cuando esta seleccionado.
+
+   Con lo que si esta, el boton cubre lo que un producto necesita. Lo que
+   falta se anade cuando un componente real lo pida, no antes.
+   ------------------------------------------------------------------------ */
+
+/* ---------------------------------------------------------------------------
+   FORCED COLORS
+   ---------------------------------------------------------------------------
+   Google lo incluye en el boton con dos ajustes: el relleno pasa a tener un
+   borde de CanvasText, porque en alto contraste el fondo puede no pintarse,
+   y el disabled pasa a GrayText con opacidad 1, porque un gris al 38% sobre
+   un fondo cualquiera deja de ser legible.
+
+   Se conservan los dos. Son los que hacen que un boton siga siendo visible
+   cuando el usuario no ve los colores.
+   ------------------------------------------------------------------------ */
+
+@media (forced-colors: active) {
+  .md-button::before {
+    border: var(--md-comp-button-outline-width) solid CanvasText;
+  }
+
+  .md-button:disabled::before {
+    border-color: GrayText;
+    opacity: 1;
+  }
+
+  .md-button:disabled {
+    color: GrayText;
+    opacity: 1;
+  }
+}
