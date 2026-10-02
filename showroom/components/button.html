@@ -43,6 +43,8 @@
       <p>Los botones piden la mayoría de las acciones de una interfaz. Son el componente más usado después del texto, y el único que comunica una acción en lugar de un contenido.</p>
     </header>
 
+    <hr class="md-divider">
+
     <article class="sr-section">
       <h2>Terminología</h2>
       <p>Antes de nada, porque M3 cambió el vocabulario y la documentación antigua lo llama de otra forma. Esta vista usa el de la especificación actual.</p>
@@ -59,6 +61,8 @@
       </table>
       <p>La sección <a href="#configuraciones">Configuraciones de color</a> agrupa las cinco por énfasis visual, de más a menos destacado. No son variantes: son cinco maneras de dibujar lo mismo.</p>
     </article>
+
+    <hr class="md-divider">
 
     <article class="sr-section">
       <h2>Uso</h2>
@@ -80,6 +84,8 @@
       <p>Demasiados botones rompen la jerarquía visual. Las acciones de baja prioridad pueden ir en un menú de desbordamiento, en <code>chips</code>, como enlaces de texto o como botones de icono.</p>
     </article>
 
+    <hr class="md-divider">
+
     <article class="sr-section">
       <h2>Default</h2>
       <div class="sr-stage">
@@ -87,6 +93,8 @@
       </div>
       <p>La clase <code>.md-button</code> sin modificador es un <strong>filled</strong> de tamaño <strong>small</strong>: la configuración por defecto de M3.</p>
     </article>
+
+    <hr class="md-divider">
 
     <article class="sr-section" id="iconografia">
       <h2>Iconografía</h2>
@@ -156,6 +164,8 @@
       <p class="sr-na">M3 aprieta el padding del lado del icono a 16dp. Pero en la versión implementada, M3 v34, <em>referencia</em> ese token y <em>no lo define</em> en ningún archivo: es una referencia colgante. Copiar el 16dp de la web tampoco valdría, porque el <code>xsmall</code> tiene 12px de base y el botón con icono ocuparía más que sin icono. Este proyecto mantiene el mismo padding con y sin icono, y lo documenta como una omisión consciente, pendiente de que M3 defina el token.</p>
     </article>
 
+    <hr class="md-divider">
+
     <article class="sr-section" id="configuraciones">
       <h2>Configuraciones de color</h2>
       <p>Cinco, ordenadas de más a menos énfasis. No son variantes: son cinco maneras de dibujar la misma acción.</p>
@@ -188,6 +198,8 @@
       <p><strong>Outlined</strong> es para acciones de énfasis medio: importantes pero no principales. Se combina bien con un filled para marcar la alternativa. M3 avisa de que es <em>muy parecido a un chip</em>, y de que sobre imágenes o vídeos puede no legerse: ahí un filled o un relleno de contraste es mejor.</p>
       <p><strong>Text</strong> es para lo de menor prioridad, sobre todo al presentar varias opciones. El contenedor no es visible hasta que alguien interactúa. M3 pide explícitamente <strong>no subrayarlo</strong>: para dar énfasis a un enlace se usa texto de enlace.</p>
     </article>
+
+    <hr class="md-divider">
 
     <article class="sr-section">
       <h2>Color</h2>
@@ -264,6 +276,8 @@
       <p class="sr-na">M3 advierte que otros roles de color sirven siempre que el contenedor y el texto tengan un contraste de 3:1, y menciona <code>tertiary</code> y <code>on-tertiary</code> como ejemplo. Es una extensión documentada, y por eso los tokens del componente son reapuntables desde el marcado sin tocar el CSS.</p>
     </article>
 
+    <hr class="md-divider">
+
     <article class="sr-section" id="variantes">
       <h2>Variantes</h2>
       <p>Dos: <strong>default</strong> y <strong>toggle</strong>. El toggle marca un estado binario, como Guardar o Favorito, y al pulsarlo puede cambiar color, forma y etiqueta.</p>
@@ -294,6 +308,8 @@
       <p>Dos reglas que solo aplican al toggle: usa un icono <em>outlined</em> sin seleccionar y el mismo icono <em>filled</em> al seleccionar, y si no hay versión filled, sube el grosor. Y si la etiqueta cambia entre estados, mantén el número de caracteres parecido en los dos: un cambio grande rompe el diseño y confunde.</p>
     </article>
 
+    <hr class="md-divider">
+
     <article class="sr-section">
       <h2>Composición</h2>
       <p>Con el <a href="divider.html">divisor</a>, que es el otro componente construido. Es el caso más común: una acción y el contenido que separa de la siguiente.</p>
@@ -304,6 +320,8 @@
       </div>
       <p class="sr-na">La composición con un segundo botón interactivo, o con un <code>chip</code> o un <code>card</code>, queda pendiente: no hay más componentes en <code>3-comp/</code> todavía.</p>
     </article>
+
+    <hr class="md-divider">
 
     <article class="sr-section" id="shapes">
       <h2>Shapes</h2>
@@ -341,6 +359,8 @@
       <p>La forma square no necesita ni un token nuevo. Lo que falta es el morph al presionar, y ese sí es un problema real: M3 lo anima con una curva de resorte, y un resorte son dos parámetros físicos, no una función de timing. Habría que aproximarlo con <code>linear()</code> y se perdería la física.</p>
     </article>
 
+    <hr class="md-divider">
+
     <article class="sr-section" id="sizes">
       <h2>Sizes</h2>
       <p>Cinco recomendaciones. Tres implementadas.</p>
@@ -374,6 +394,8 @@
       <p class="sr-na"><strong>Large y extra large no están implementados</strong> porque sus alturas, 96 y 136, no tienen token: la escala de espacio de M3 salta de 56 a 72. Anadirlas exigiría crear una primitiva en la capa de referencia por un solo componente.</p>
     </article>
 
+    <hr class="md-divider">
+
     <article class="sr-section">
       <h2>Padding</h2>
       <p>Hay dos anchos de padding para el tamaño small, y M3 cambió de opinión sobre cuál es el correcto.</p>
@@ -402,6 +424,8 @@
       <h3>El outlined cede 1px por lado</h3>
       <p>Un borde de 1px se suma al tamaño del botón, y el <code>outlined</code> mediría 42px frente a los 40px del resto. M3 lo resuelve dibujando el borde dentro de la caja, en un nodo aparte. Aquí no hay JavaScript para crearlo, así que el <code>outlined</code> descuenta el grosor del padding vertical y el alto exterior coincide.</p>
     </article>
+
+    <hr class="md-divider">
 
     <article class="sr-section" id="states">
       <h2>States</h2>
@@ -447,6 +471,8 @@
       <p>La geometría de esa capa la pone el componente, no la clase. La clase define el color y la intensidad, que es lo suyo; el <code>inset: 0</code> depende de la forma del componente, y si lo trajera la clase se derramaría en un botón con borde redondeado.</p>
     </article>
 
+    <hr class="md-divider">
+
     <article class="sr-section">
       <h2>Interacción</h2>
       <p>El botón es un <code>&lt;button&gt;</code> nativo, así que el teclado, el foco y la activación los da el navegador. El CSS solo añade la capa de estado y el anillo.</p>
@@ -466,6 +492,8 @@
       <p>Si no se apagara, el hover dejaría un brillo sobre un botón que no responde. Y <code>pointer-events: none</code> en el botón deshabilitado hace que no intercepte el puntero.</p>
     </article>
 
+    <hr class="md-divider">
+
     <article class="sr-section" id="comportamiento">
       <h2>Comportamiento</h2>
       <p>La capa de estado hace una transición de opacidad de 100ms con la curva estándar, leída de los tokens de <code>2-sys/motion.css</code>.</p>
@@ -476,6 +504,8 @@
       <h3>Clics rápidos</h3>
       <p class="sr-na">M3 recomienda usar una curva de movimiento modificada cuando se anticipan clics o pulsaciones seguidas, para evitar efectos resonantes de animaciones solapadas. No aplica aquí: sin ripple no hay dos animaciones que puedan solaparse.</p>
     </article>
+
+    <hr class="md-divider">
 
     <article class="sr-section" id="accesibilidad">
       <h2>Accesibilidad</h2>
@@ -533,6 +563,8 @@
       <p class="sr-na">El componente declara <code>text-overflow: ellipsis</code> y <code>white-space: nowrap</code>, así que trunca en vez de envolver. Es el comportamiento por defecto del SDK de M3, que permite personalizarlo, pero la especificación desaconseja truncar. Queda declarado como una tensión conocida entre la receta y la guía.</p>
     </article>
 
+    <hr class="md-divider">
+
     <article class="sr-section">
       <h2>Responsive</h2>
       <p>El ancho del contenedor se ajusta a la etiqueta, de forma dinámica. Y puede estirarse en horizontal para seguir la rejilla.</p>
@@ -546,6 +578,8 @@
       </div>
       <p>El componente declara <code>display: inline-flex</code> con <code>justify-content: center</code>, que es lo que mantiene el grupo centrado cuando el contenedor se estira. No declara un ancho: es el contenido el que lo determina.</p>
     </article>
+
+    <hr class="md-divider">
 
     <article class="sr-section">
       <h2>Anatomía</h2>
@@ -569,6 +603,8 @@
       <p>La especificación es tajante: la etiqueta es lo más importante del botón, porque describe lo que va a pasar. Debería ser <strong>muy breve, de una a tres palabras</strong>, en <strong>sentence case</strong>, que solo capitaliza la primera palabra y los nombres propios. <em>Guardar con vuelos</em>, no <em>GUARDAR CON VUELOS</em>.</p>
       <p>Y no debe truncarse ni envolver: siempre visible en una sola línea.</p>
     </article>
+
+    <hr class="md-divider">
 
     <article class="sr-section">
       <h2>Do / Don't</h2>
@@ -594,6 +630,8 @@
       </ul>
     </article>
 
+    <hr class="md-divider">
+
     <article class="sr-section">
       <h2>Medidas y tokens</h2>
       <table class="sr-table">
@@ -614,6 +652,8 @@
         </tbody>
       </table>
     </article>
+
+    <hr class="md-divider">
 
     <article class="sr-section" id="notas">
       <h2>Notas</h2>
