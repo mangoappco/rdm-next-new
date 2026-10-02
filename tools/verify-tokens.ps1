@@ -223,10 +223,28 @@ foreach ($file in $files) {
 }
 
 # Indice de TODOS los tokens definidos en el proyecto (para la regla 3).
+#
+# Se indexan dos familias, porque hay dos cosas distintas que un var() puede
+# nombrar:
+#
+#   --md-...   los tres prefijos de capa: ref, sys y comp. Son el sistema, y
+#              un nombre mal escrito es un token que no existe.
+#
+#   --_...     token local de una hoja, con el prefijo que usa M3 para lo
+#              interno y que ya aparecia en 3-comp/button.css. No pertenece a
+#              ninguna capa, asi que no se indexa por capa, pero se verifica
+#              igual: un var(--_foo) mal escrito se descarta en silencio igual
+#              que un --md-.
+#
+# El patron de REGLA 2 sigue siendo solo --md-, porque las reglas de
+# direccion de capas no aplican a un token local.
 $definedTokens = @{}
 foreach ($file in $files) {
     $code = Get-CodeOnly $file.FullName
     foreach ($m in [regex]::Matches($code, '(--md-(?:ref|sys|comp|state|elevation|shape|motion|typescale|measurement|colors?|typography)-[a-z0-9-]+)\s*:')) {
+        $definedTokens[$m.Groups[1].Value] = $true
+    }
+    foreach ($m in [regex]::Matches($code, '(--_[a-z0-9-]+)\s*:')) {
         $definedTokens[$m.Groups[1].Value] = $true
     }
 }
@@ -329,7 +347,9 @@ foreach ($file in $files) {
 
     for ($i = 0; $i -lt $lines.Count; $i++) {
         $lineText = $lines[$i]
-        foreach ($m in [regex]::Matches($lineText, 'var\((--md-[a-z0-9-]+)\)')) {
+        # --md-... son tokens de capa; --_... son tokens locales de la hoja.
+        # Los dos se verifican: un nombre mal escrito se descarta igual.
+        foreach ($m in [regex]::Matches($lineText, 'var\((--md-[a-z0-9-]+|--_[a-z0-9-]+)\)')) {
             $token = $m.Groups[1].Value
             if (-not $definedTokens.ContainsKey($token)) {
                 Add-Issue -Rule 'REGLA 3' -File $rel -Line ($i + 1) `

@@ -221,7 +221,10 @@
        .md-icon-sharp             cambia la familia a sharp
        .md-icon-filled            FILL 1
        .md-icon-baseline          baja la linea base un 11.5% del texto
-       .md-measure-icon-target-small   area tactil de 40dp, para glifo de 20dp
+       .md-measure-icon-size-small    glifo de 20dp, con opsz 20
+       .md-measure-icon-size-large    glifo de 40dp, con opsz 40
+       .md-measure-icon-size-xlarge   glifo de 48dp, con opsz 48
+       .md-measure-icon-target-small  area tactil de 40dp, para glifo de 20dp
 
    ========================================================================== */
 
@@ -301,6 +304,20 @@
    ========================================================================== */
 
 .md-icon {
+  /* El eje optico se expone como token local para que las utilidades de
+     tamaño, mas abajo, puedan reapuntarlo sin repetir las cuatro lineas de
+     font-variation-settings.
+
+     El prefijo --_ es el de M3 para tokens internos, y el que ya usa
+     button.css. NO es un --md-*: esos tres prefijos son las capas del
+     sistema, y un token local no pertenece a ninguna. tools/verify-tokens.ps1
+     lo comprueba igual, con su propia regla.
+
+     Es el patron de button.css, donde cada tamano reapunta sus propios
+     tokens en vez de reescribir la propiedad. Y aplica la misma regla que
+     M3 pide: el tamano optico y el tamano del icono se mueven juntos. */
+  --_icon-optical-size: var(--md-sys-icon-optical-size-medium);
+
   font-family: var(--md-sys-icon-font);
   font-size: var(--md-sys-measurement-icon-size);
   line-height: 1;
@@ -315,10 +332,47 @@
   font-weight: var(--md-sys-icon-weight);
 
   font-variation-settings:
-    'opsz' var(--md-sys-icon-optical-size-medium),
+    'opsz' var(--_icon-optical-size),
     'wght' var(--md-sys-icon-weight),
     'FILL' var(--md-sys-icon-fill),
     'GRAD' var(--md-sys-typescale-icon-grade);
+}
+
+/* ---------------------------------------------------------------------------
+   LOS CUATRO TAMANOS DE M3
+   ---------------------------------------------------------------------------
+   M3 publica cuatro y solo cuatro: 20, 24, 40 y 48 dp. Se declaran aqui
+   como utilidades porque el tamano de un icono es una decision que M3 pide
+   que tome el autor --el sistema tiene cuatro y no uno-- y porque el glifo
+   se escala con font-size, no con width.
+
+   Cada una reapunta TAMBIEN el eje optico. No es elegancia: es la regla de
+   M3, "match the optical weight and size of text and icon", y el motivo por
+   el que el eje existe. Un icono de 48dp con el opsz de 24 se dibuja con
+   trazo de 24 sobre una caja de 48, y se ve mas pesado de lo que deberia.
+
+   24dp es el que trae .md-icon, asi que no hace falta esta utilidad para
+   el tamaño de sistema.
+
+   NO hay utilidad para un tamano que no sea de M3. La escala oficial va
+   20, 24, 40 y 48; el 16dp que tenia el sistema antes se elimino porque
+   no esta en la especificacion y porque por debajo de 20dp M3 exige
+   etiqueta de texto. Ver 2-sys/measurement.css.
+   ------------------------------------------------------------------------ */
+
+.md-measure-icon-size-small {
+  --_icon-optical-size: var(--md-sys-icon-optical-size-small);
+  font-size: var(--md-sys-measurement-icon-size-small);
+}
+
+.md-measure-icon-size-large {
+  --_icon-optical-size: var(--md-sys-icon-optical-size-large);
+  font-size: var(--md-sys-measurement-icon-size-large);
+}
+
+.md-measure-icon-size-xlarge {
+  --_icon-optical-size: var(--md-sys-icon-optical-size-xlarge);
+  font-size: var(--md-sys-measurement-icon-size-xlarge);
 }
 
 /* ---------------------------------------------------------------------------
