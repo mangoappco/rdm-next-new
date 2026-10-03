@@ -630,6 +630,8 @@
       </table>
       <p class="sr-na"><strong>Una frontera de versión que conviene saber.</strong> Este proyecto usa los tokens <strong>v0.192</strong>. En esa generación, <code>icon-button</code> no tiene variantes de tamaño: declara un icono de 24dp y deja el contenedor en cero, esperando que lo fije un archivo por tamaño. Los tamaños están en <code>versions/latest/sass/</code>, que es la versión de diseño <strong>34.0.21</strong>.</p>
       <p class="sr-na">Es la primera vez que el proyecto cruza esa frontera. Este componente toma <strong>los tamaños de <code>latest</code> y los colores de <code>v0.192</code></strong>. Si se migra a v0.192 completa, el archivo hay que rehacerlo, y con esto se sabe qué parte es de dónde.</p>
+      <p class="sr-na"><strong>Y por qué este componente no tiene token de elevación en hover.</strong> No es una omisión: <strong>M3 no declara ningún token de elevación para ningún botón de icono</strong> —ni <code>standard</code>, ni <code>filled</code>, ni <code>tonal</code>, ni <code>outlined</code>— en ninguna de sus tres generaciones de tokens. El <code>Button</code> sí lo tiene, y sube un nivel en hover; aquí no hay nada que subir. Ver <a href="elevation.html#comportamiento">Elevation</a>.</p>
+      <p class="sr-na">La diferencia tiene una razón de medida, además: el botón de icono no tiene una variante <code>elevated</code> porque no tiene relleno propio que camuflar, y sus otras tres variantes se separan sin sombra. Aun así, la razón de peso es la de arriba: el dato de M3 dice que no hay nivel interactivo.</p>
     </article>
 
   </main>
