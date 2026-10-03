@@ -108,6 +108,21 @@
   --md-comp-button-label-color: var(--md-sys-color-on-primary);
   --md-comp-button-elevation: var(--md-sys-elevation-level0);
 
+  /* Elevacion en hover. Ver la nota de ELEVACION INTERACTIVA mas abajo: M3
+     sube UN nivel en hover, y solo en hover.
+
+     El valor por defecto es el propio nivel de reposo, por indireccion. Asi
+     una variante que no declara este token no se mueve en hover, que es lo
+     que M3 hace con outlined y con text, donde el token no existe. */
+  --md-comp-button-elevation-hover: var(--md-comp-button-elevation);
+
+  /* La transicion de la sombra. M3 usa 280ms con la curva emphasized, y su
+     propio codigo lleva un TODO para sustituirla por un token de animacion.
+     280ms no sale de ninguna duracion del sistema, asi que se usa la mas
+     cercana: medium2 son 300ms, a 20ms; medium1 son 250ms, a 30ms. */
+  --md-comp-button-elevation-duration: var(--md-sys-motion-duration-medium2);
+  --md-comp-button-elevation-easing: var(--md-sys-motion-easing-emphasized);
+
   /* El color del trazo del outlined. Es un token aparte del de la etiqueta
      porque M3 los separa: el borde va en outline-variant, el texto en
      on-surface-variant. Ver la nota de OUTLINED mas abajo. */
@@ -246,6 +261,12 @@
      larga de arriba, que ahora explica por que sigue aqui aun sin esa
      restriccion. */
   box-shadow: var(--md-comp-button-elevation);
+
+  /* Solo la sombra. La transicion de la capa de estado vive en el ::after, y
+     las dos no se pisan porque estan en elementos distintos. */
+  transition: box-shadow
+    var(--md-comp-button-elevation-duration)
+    var(--md-comp-button-elevation-easing);
 
   font-family: var(--md-comp-button-label-font);
   font-weight: var(--md-comp-button-label-weight);
@@ -635,6 +656,59 @@
 .md-button:focus-visible {
   outline: var(--md-comp-button-focus-width) solid var(--md-comp-button-focus-color);
   outline-offset: var(--md-comp-button-focus-offset);
+}
+
+/* ---------------------------------------------------------------------------
+   ELEVACION INTERACTIVA
+   ---------------------------------------------------------------------------
+   M3 sube la elevacion del boton en hover, y solo en hover. Los cuatro tokens
+   privados que declara por variante, con sus valores reales:
+
+     variante    reposo   foco   hover   pulsado   deshabilitado
+     ---------   ------   ----   -----   --------   -------------
+     filled      level0   level0 level1  level0    level0
+     tonal       level0   level0 level1  level0    level0
+     elevated    level1   level1 level2  level1    level0
+     outlined    -- no hay tokens de elevacion en M3 --
+     text        -- no hay tokens de elevacion en M3 --
+
+   Leido al reves, que es la lectura util: SOLO hover cambia el nivel, y lo
+   sube en uno. El foco se queda donde estaba, la pulsacion tambien, y el
+   deshabilitado baja a nivel 0. O sea que de los cuatro estados que este
+   archivo implementa, tres coincidian con M3 sin hacer nada, y el que faltaba
+   era el hover.
+
+   Aqui solo hay una regla. El foco y la pulsacion no necesitan ninguna porque
+   su nivel de M3 es el de reposo, y el nivel de reposo ya lo declara
+   --md-comp-button-elevation. Escribir :focus-visible o :active con el mismo
+   valor seria ruido que parece una decision.
+
+   POR QUE v0.192 NO ALCANZA PARA ESTO
+   -----------------------------------
+   Los tokens de componente de v0.192 no tienen NINGUN token de elevacion:
+   filled, tonal, elevated, outlined y text, los cinco, salen sin ellos. La
+   tabla de arriba sale de tokens/versions/latest/sass/_md-comp-button-*.scss,
+   que es la unica fuente que existe para esto. Es la misma excepcion que ya
+   esta documentada para la tipografia: aqui no hay eleccion, porque la otra
+   generacion no trae el dato.
+
+   Y hay un dato negativo que tambien viene de ahi, y que cierra el tema para
+   los botones de icono: M3 no declara ningun token de elevacion para NINGUN
+   boton de icono, ni filled ni outlined ni tonal ni standard, en ninguna de las
+   tres generaciones. No es que quedarse en nivel 0 sea una decision de este
+   proyecto: es que el token que lo diria no existe.
+
+   EL ORDEN, Y POR QUE ESTA ANTES DE DISABLED
+   ------------------------------------------
+   :hover y :disabled tienen la misma especificidad, asi que gana el que esta
+   despues. Este bloque va antes a proposito, para que la regla de disabled
+   gane y un boton deshabilitado no levante su sombra aunque se le pase el
+   raton por encima. (Ademas :disabled declara pointer-events: none, asi que
+   el hover no llega a activarse; la regla esta por si mañana eso cambia.)
+   ------------------------------------------------------------------------ */
+
+.md-button:hover {
+  box-shadow: var(--md-comp-button-elevation-hover);
 }
 
 /* ---------------------------------------------------------------------------
@@ -1041,18 +1115,28 @@
   --md-comp-button-container-color: var(--md-sys-color-surface-container-low);
   --md-comp-button-label-color: var(--md-sys-color-primary);
   --md-comp-button-elevation: var(--md-sys-elevation-level1);
+
+  /* Un nivel mas que el de reposo, que es lo que declara
+     $hovered-container-elevation en _md-comp-button-elevated.scss. */
+  --md-comp-button-elevation-hover: var(--md-sys-elevation-level2);
 }
 
 .md-button-filled {
   --md-comp-button-container-color: var(--md-sys-color-primary);
   --md-comp-button-label-color: var(--md-sys-color-on-primary);
   --md-comp-button-elevation: var(--md-sys-elevation-level0);
+
+  /* El unico caso en el que la elevacion cambia el aspecto de forma visible:
+     el filled es el unico variante que sale de nivel 0 sin sombra ninguna, y
+     el nivel 1 es justo la sombra minima que M3 dibuja. */
+  --md-comp-button-elevation-hover: var(--md-sys-elevation-level1);
 }
 
 .md-button-tonal {
   --md-comp-button-container-color: var(--md-sys-color-secondary-container);
   --md-comp-button-label-color: var(--md-sys-color-on-secondary-container);
   --md-comp-button-elevation: var(--md-sys-elevation-level0);
+  --md-comp-button-elevation-hover: var(--md-sys-elevation-level1);
 }
 
 /* El borde se SUMA al tamano del boton: con box-sizing: border-box, un
