@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Elevation — ManGo! App</title>
+  <meta name="description" content="Documentacion de la capa de elevacion de RDM Next: los seis niveles de Material Design 3, las doce clases que los aplican y la geometria de sombra que hay detras de cada uno.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../src/css/main.css">
+  <link rel="stylesheet" href="../assets/showroom.css">
+  <script src="../assets/showroom.js"></script>
+</head>
+
+<!--
+  Vista de la CAPA 2 de la elevacion (2-sys/elevation.css), con las dos capas
+  de CAPA 1 que consume: 1-ref/shadow.css.
+
+  No es un componente de 3-comp: no tiene anatomia visual, ni slots, ni
+  estados, ni interaccion. Es una escala de seis niveles, y las secciones que
+  si aplican estan confirmadas con el usuario.
+
+  Cada specimen de esta pagina se pinta con la clase .md-elevation-N real, mas
+  la clase .sr-elev del showroom, que solo aporta medidas y radio. Si un valor
+  de 1-ref cambiara, los specimens cambiarian a la vez. Ninguno esta dibujado a
+  mano.
+
+  Implementacion de referencia:
+    material-web-main/elevation/internal/_elevation.scss
+    material-web-main/button/internal/_elevation.scss
+    material-web-main/tokens/versions/v0_192/_md-sys-elevation.scss
+
+  Fuentes de M3:
+    /styles/elevation/overview
+    /styles/elevation/applying-elevation
+    /styles/elevation/tokens
+-->
+
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <main class="sr-page">
+
+    <div class="sr-bar">
+      <a class="sr-back" href="../index.html">RDM Next</a>
+      <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
+    </div>
+
+    <header class="sr-header">
+      <h1>Elevation</h1>
+      <p>Los seis niveles con los que un objeto dice que flota sobre la página. Una sombra necesita tres cosas —<strong>geometría, opacidad y color</strong>— y las tres viven en capas distintas: las medidas en <code>1-ref/shadow.css</code>, el color en el tema, y la unión de las dos aquí.</p>
+    </header>
+
+    <hr class="md-divider">
+
+    <article class="sr-section">
+      <h2>Uso</h2>
+      <h3>Qué es este archivo</h3>
+      <p><code>src/css/2-sys/elevation.css</code> es la CAPA 2 del sistema de elevación: los <strong>6 tokens</strong> de nivel y las <strong>12 clases</strong> que los aplican desde el HTML. No contiene ni un número: toda la geometría sale de <code>1-ref/shadow.css</code> y el color, del tema.</p>
+      <p>Es el <strong>único puente entre las tres capas</strong> del sistema. Las otras familias de tokens solo apuntan de <code>2-sys</code> a <code>1-ref</code>; aquí además entra <code>2-sys/theme</code>, porque una sombra es geometría <em>y</em> color a la vez.</p>
+
+      <h3>Por qué la composición está aquí y no en la capa 1</h3>
+      <p>Si la unión estuviera en <code>1-ref/shadow.css</code>, ese archivo tendría que referenciar el color del tema. Sería una <strong>dependencia circular</strong>: la primitiva dependería del sistema que la consume. Y el color quedaría <em>quemado</em> dentro de la primitiva, de modo que cambiar el tema no cambiaría la sombra.</p>
+      <p>Por eso <code>1-ref</code> solo expone parciales —cuatro números, sin color— y este archivo los junta:</p>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Dimensión</th><th scope="col">Dónde vive</th><th scope="col">Por qué ahí</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Geometría (px)</td><td><code>1-ref/shadow.css</code></td><td>Es medida cruda. Cambia con el nivel, y por eso va en la capa de valores</td></tr>
+          <tr><td>Opacidad</td><td><code>1-ref/shadow.css</code></td><td>Es un valor crudo. Declarado <strong>una vez</strong> y reutilizado por las 12 capas de sombra</td></tr>
+          <tr><td>Color</td><td><code>2-sys/theme/*.css</code></td><td>Es una decisión de tema, no una medida</td></tr>
+          <tr><td><strong>La unión de las tres</strong></td><td><code>2-sys/elevation.css</code></td><td><strong>Solo quien puede leer de las tres capas sin crear un ciclo</strong></td></tr>
+        </tbody>
+      </table>
+      <p class="sr-na">Las dos opacidades están declaradas una sola vez porque <strong>no cambian con el nivel</strong>. Lo que crece al subir de nivel es la extensión de la sombra, no su intensidad. Editar la intensidad es cambiar dos líneas; editar las doce, no.</p>
+
+      <h3>Cuándo se toca</h3>
+      <ul>
+        <li>Para cambiar la geometría de un nivel: se edita <code>1-ref/shadow.css</code> y los seis niveles se actualizan por cascada.</li>
+        <li>Para cambiar la intensidad de todas las sombras: se edita <code>--md-ref-shadow-key-opacity</code> o <code>--md-ref-shadow-ambient-opacity</code>. Dos líneas, doce sombras.</li>
+        <li>Para cambiar el color de la sombra: se edita <code>--md-sys-color-shadow-rgb</code> en el tema. La geometría no se toca.</li>
+      </ul>
+
+      <h3>Cuándo no se toca</h3>
+      <ul>
+        <li>Nunca desde <code>3-comp/</code>. Un componente no lee geometría de sombra: pide <code>--md-sys-elevation-level3</code>, no «una sombra con estos números». Es la REGLA 2 del verificador, y <code>@layer</code> la hace cumplir por el motor.</li>
+        <li>Nunca escribiendo un <code>box-shadow</code> en el marcado. La REGLA 6 lo prohíbe, y además saldría de la escala.</li>
+        <li>Nunca para resolver el mismo problema con una clase de color. La sombra y el tono son dos mecanismos distintos, y la sección <a href="#color">Color</a> dice cuándo usar cada uno.</li>
+      </ul>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section" id="ejemplo">
+      <h2>Ejemplo básico</h2>
+      <p>Dos clases y ningún número. La primera pone la sombra, la segunda el tono de superficie.</p>
+      <div class="sr-canvas">
+        <div class="sr-elev md-elevation-3 md-elevation-3-surface"></div>
+      </div>
+      <p><code>.md-elevation-3</code> aplica <code>box-shadow: var(--md-sys-elevation-level3)</code>. <code>.md-elevation-3-surface</code> aplica <code>background-color</code> con el tono que le corresponde al nivel 3.</p>
+      <p class="sr-na">Las dos son <strong>independientes</strong> y por eso el sistema las publica separadas. La sombra es la que separa de verdad; el tono marca la dirección de la jerarquía, con un contraste bajo. Juntas son la receta completa de M3, y cada una es útil sola. Los ratios medidos están en <a href="#color">Color</a>. Ver <a href="#variantes">Variantes</a>.</p>
+      <h3>Y la forma la pone el autor</h3>
+      <p>La sombra hereda el <code>border-radius</code> del elemento. No hay nada que reconfigurar: se aplica una clase de <code>2-sys/shape.css</code> y la sombra la sigue.</p>
+      <div class="sr-canvas">
+        <div class="sr-elev md-elevation-3 md-elevation-3-surface md-shape-corner-none"></div>
+        <div class="sr-elev md-elevation-3 md-elevation-3-surface"></div>
+        <div class="sr-elev md-elevation-3 md-elevation-3-surface md-shape-corner-full"></div>
+      </div>
+      <p class="sr-na">Las tres tienen exactamente la misma sombra. Lo único que cambia es el radio, y las tres clases son de <code>2-sys/shape.css</code>. El <code>corner-medium</code> del specimen del medio es el que trae <code>.sr-elev</code>.</p>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section" id="variantes">
+      <h2>Variantes</h2>
+      <p>Los seis niveles, que son la variante real de esta capa. Y cada nivel se pide de <strong>una de dos maneras</strong>, o de las dos.</p>
+
+      <h3>Solo la sombra</h3>
+      <p><code>.md-elevation-N</code> sin la clase <code>-surface</code>. El specimen queda transparente y lo único que se ve es la sombra proyectada.</p>
+      <div class="sr-grid">
+        <figure class="sr-cell">
+          <div class="sr-canvas"><div class="sr-elev md-elevation-0"></div></div>
+          <figcaption>Nivel 0 · <code>level0</code></figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-canvas"><div class="sr-elev md-elevation-1"></div></div>
+          <figcaption>Nivel 1 · <code>level1</code></figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-canvas"><div class="sr-elev md-elevation-2"></div></div>
+          <figcaption>Nivel 2 · <code>level2</code></figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-canvas"><div class="sr-elev md-elevation-3"></div></div>
+          <figcaption>Nivel 3 · <code>level3</code></figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-canvas"><div class="sr-elev md-elevation-4"></div></div>
+          <figcaption>Nivel 4 · <code>level4</code></figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-canvas"><div class="sr-elev md-elevation-5"></div></div>
+          <figcaption>Nivel 5 · <code>level5</code></figcaption>
+        </figure>
+      </div>
+      <p class="sr-na">El nivel 0 <strong>no es «sin sombra»</strong>: es la <em>sombra identidad</em>. Declara <code>0 0px 0px 0px</code> dos veces, con la opacidad puesta. Existe para que un componente pueda pedir «nivel 0» sin tratarlo como un caso especial, igual que los otros cinco niveles. Es la razón de que el botón <code>filled</code> y el <code>tonal</code> no ejecuten ninguna regla especial para no tener sombra.</p>
+      <p class="sr-na"><strong>Y aquí M3 y este proyecto difieren.</strong> El paquete de tokens más reciente de Google declara el nivel 0 como <code>--md-sys-elevation-shadow-0: none</code>, y no como una sombra de ceros. Los otros cinco niveles coinciden <strong>geometría por geometría</strong> con los de aquí. La diferencia está solo en el 0, y la de este proyecto es la que permite que un componente lea un único token sin bifurcar el caso.</p>
+
+      <h3>Solo el tono</h3>
+      <p><code>.md-elevation-N-surface</code> sin la sombra. Esta es <strong>la parte de la elevación que funciona en tema oscuro</strong>, y la que M3 recomienda usar por defecto.</p>
+      <div class="sr-grid">
+        <figure class="sr-cell">
+          <div class="sr-canvas"><div class="sr-elev md-elevation-0-surface"></div></div>
+          <figcaption>Nivel 0 · <code>surface</code></figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-canvas"><div class="sr-elev md-elevation-1-surface"></div></div>
+          <figcaption>Nivel 1 · <code>container-low</code></figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-canvas"><div class="sr-elev md-elevation-2-surface"></div></div>
+          <figcaption>Nivel 2 · <code>container</code></figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-canvas"><div class="sr-elev md-elevation-3-surface"></div></div>
+          <figcaption>Nivel 3 · <code>container-high</code></figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-canvas"><div class="sr-elev md-elevation-4-surface"></div></div>
+          <figcaption>Nivel 4 · <code>container-highest</code></figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-canvas"><div class="sr-elev md-elevation-5-surface"></div></div>
+          <figcaption>Nivel 5 · <code>surface-bright</code></figcaption>
+        </figure>
+      </div>
+      <p class="sr-na"><strong>El mapeo nivel → tono es una decisión de RDM Next, no un token de Google.</strong> M3 define la escalera <code>surface-container-*</code> y deja que cada componente elija su escalón; no relaciona los niveles con los tonos. Aquí se relacionan, para que un componente pueda pedir la elevación por nivel y obtener las dos cosas.</p>
+      <p class="sr-na">Y el aviso importante está en la sección de <a href="#color">Color</a>: <strong>en tema claro esta escalera no es monótona</strong>. El nivel 5 cae en el mismo tono que el nivel 0, con un ratio de <strong>1.00</strong> medido: no es «parecido», es idéntico.</p>
+
+      <h3>Las dos: la receta completa</h3>
+      <p>Es lo que M3 prescribe para una superficie que flota, y lo que usa <a href="button.html">Button</a> en su variante <code>elevated</code>.</p>
+      <div class="sr-grid">
+        <figure class="sr-cell">
+          <div class="sr-canvas"><div class="sr-elev md-elevation-0 md-elevation-0-surface"></div></div>
+          <figcaption>Nivel 0</figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-canvas"><div class="sr-elev md-elevation-1 md-elevation-1-surface"></div></div>
+          <figcaption>Nivel 1</figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-canvas"><div class="sr-elev md-elevation-2 md-elevation-2-surface"></div></div>
+          <figcaption>Nivel 2</figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-canvas"><div class="sr-elev md-elevation-3 md-elevation-3-surface"></div></div>
+          <figcaption>Nivel 3</figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-canvas"><div class="sr-elev md-elevation-4 md-elevation-4-surface"></div></div>
+          <figcaption>Nivel 4</figcaption>
+        </figure>
+        <figure class="sr-cell">
+          <div class="sr-canvas"><div class="sr-elev md-elevation-5 md-elevation-5-surface"></div></div>
+          <figcaption>Nivel 5</figcaption>
+        </figure>
+      </div>
+
+      <h3>Para qué sirve cada nivel</h3>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Nivel</th><th scope="col">Dp</th><th scope="col">Dónde lo usa M3</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>0</td><td>0</td><td>Sin elevación. Botones <code>filled</code>, tarjetas planas, la página misma</td></tr>
+          <tr><td>1</td><td>1</td><td>Apenas levantado. Botones <code>elevated</code>, tarjetas <code>outlined</code></td></tr>
+          <tr><td>2</td><td>3</td><td>Levantado. Menús, popovers, superficies en hover</td></tr>
+          <tr><td>3</td><td>6</td><td>Flotante. Diálogos, snackbars, bottom sheets</td></tr>
+          <tr><td>4</td><td>8</td><td>Muy flotante. Navigation drawers sobre el contenido</td></tr>
+          <tr><td>5</td><td>12</td><td>Máxima elevación. Lo que debe estar por encima de todo</td></tr>
+        </tbody>
+      </table>
+      <p class="sr-na">La columna de dp es la de M3, y <strong>no</strong> es el número de píxeles de la sombra. Es la altura nominal del nivel, un valor de la especificación. La geometría real está en <a href="#medidas">Medidas</a>. La frase de M3 que explica por qué son seis y no más: <em>«This creative constraint means you need to make thoughtful decisions about your UI's elevation story.»</em></p>
+
+      <h3>Dos niveles a la vez no significan nada</h3>
+      <p>Nada impide escribir <code>md-elevation-1 md-elevation-2</code> en el mismo elemento. Las dos clases ponen <code>box-shadow</code>, y gana la <strong>última escrita en el archivo fuente</strong>, no la última del marcado.</p>
+      <div class="sr-canvas">
+        <div class="sr-elev md-elevation-1 md-elevation-2"></div>
+      </div>
+      <p class="sr-na">Verificado en el navegador: con las dos clases en ese orden y en el inverso, el resultado es el mismo, <code>level2</code>. Las clases de <code>2-sys/elevation.css</code> están en la capa <code>sys</code> una tras otra, así que el orden del archivo decide. No es una trampa de la cascada: es el comportamiento correcto de un sistema que no necesita resolver el conflicto, porque nadie debería escribir dos niveles.</p>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section" id="color">
+      <h2>Color</h2>
+      <p>El color de la sombra no es un rol que el autor elija. Sale del tema, y hay un token que lo lleva.</p>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Rol</th><th scope="col">Token</th><th scope="col">Claro</th><th scope="col">Oscuro</th><th scope="col">Muestra</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Color de la sombra</td><td><code>--md-sys-color-shadow</code></td><td><code>#000</code></td><td><code>#000</code></td><td><span class="sr-spec-color md-bg-black"></span></td></tr>
+          <tr><td>El mismo, en tripletos</td><td><code>--md-sys-color-shadow-rgb</code></td><td><code>0 0 0</code></td><td><code>0 0 0</code></td><td><span class="sr-spec-color md-bg-black"></span></td></tr>
+          <tr><td>Opacidad de la nítida</td><td><code>--md-ref-shadow-key-opacity</code></td><td>0.30</td><td>0.30</td><td><span class="sr-spec-bar sr-spec-bar--none"></span></td></tr>
+          <tr><td>Opacidad de la difusa</td><td><code>--md-ref-shadow-ambient-opacity</code></td><td>0.15</td><td>0.15</td><td><span class="sr-spec-bar sr-spec-bar--none"></span></td></tr>
+        </tbody>
+      </table>
+      <p class="sr-na">Las dos filas de opacidad no llevan barra a propósito: un número entre 0 y 1 no ocupa espacio, y pintar una barra con él sería mentir sobre lo que el token es. La misma razón por la que la columna de ejes de <a href="typography.html">Typography</a> lleva solo el número.</p>
+
+      <h3>Por qué hay dos tokens para el mismo negro</h3>
+      <p>Porque una opacidad necesita un color al que aplicársela, y la forma antigua de escribirlo no funciona:</p>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Forma</th><th scope="col">Sintaxis</th><th scope="col">Estado</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Con coma</td><td><code>rgba(var(--md-sys-color-shadow-rgb), 0.3)</code></td><td><strong>No funciona.</strong> Es la forma antigua y está en desuso</td></tr>
+          <tr><td>Con barra</td><td><code>rgb(var(--md-sys-color-shadow-rgb) / var(--md-ref-shadow-key-opacity))</code></td><td><strong>La correcta.</strong> Es la que usa el archivo</td></tr>
+        </tbody>
+      </table>
+      <p>El resultado es <code>rgb(0 0 0 / 0.3)</code>: negro al 30%. Y por eso hace falta el token en tripletos: <code>--md-sys-color-shadow</code> vale <code>#000</code>, y un <code>#</code> no se puede partir en tres números.</p>
+
+      <h3>La escalera de tonos no es monótona en tema claro</h3>
+      <p>Los seis <code>-surface</code> apuntan a seis escalones de la escalera de superficies. En tema oscuro la escalera sube de forma constante. En tema claro <strong>no</strong>: el nivel 5 vuelve al tono más claro, que es el mismo del nivel 0.</p>
+      <table class="sr-table sr-table--tight">
+        <thead>
+          <tr><th scope="col">Nivel</th><th scope="col">Rol</th><th scope="col">Claro</th><th scope="col">Muestra</th><th scope="col">Oscuro</th><th scope="col">Muestra</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>0</td><td><code>surface</code></td><td><code>#fef7ff</code></td><td><span class="sr-spec-color sr-swatch-neutral98"></span></td><td><code>#141218</code></td><td><span class="sr-spec-color sr-swatch-neutral6"></span></td></tr>
+          <tr><td>1</td><td><code>surface-container-low</code></td><td><code>#f7f2fa</code></td><td><span class="sr-spec-color sr-swatch-neutral96"></span></td><td><code>#1d1b20</code></td><td><span class="sr-spec-color sr-swatch-neutral10"></span></td></tr>
+          <tr><td>2</td><td><code>surface-container</code></td><td><code>#f3edf7</code></td><td><span class="sr-spec-color sr-swatch-neutral94"></span></td><td><code>#211f26</code></td><td><span class="sr-spec-color sr-swatch-neutral12"></span></td></tr>
+          <tr><td>3</td><td><code>surface-container-high</code></td><td><code>#ece6f0</code></td><td><span class="sr-spec-color sr-swatch-neutral92"></span></td><td><code>#2b2930</code></td><td><span class="sr-spec-color sr-swatch-neutral17"></span></td></tr>
+          <tr><td>4</td><td><code>surface-container-highest</code></td><td><code>#e6e0e9</code></td><td><span class="sr-spec-color sr-swatch-neutral90"></span></td><td><code>#36343b</code></td><td><span class="sr-spec-color sr-swatch-neutral22"></span></td></tr>
+          <tr><td>5</td><td><code>surface-bright</code></td><td><strong><code>#fef7ff</code></strong></td><td><span class="sr-spec-color sr-swatch-neutral98"></span></td><td><code>#3b383e</code></td><td><span class="sr-spec-color sr-swatch-neutral24"></span></td></tr>
+        </tbody>
+      </table>
+      <p><strong>Las dos muestras de la última fila son idénticas, y en tema claro el nivel 5 da el mismo color que el nivel 0.</strong> Los dos valores salen del mismo tono de paleta, <code>neutral98</code>: <code>surface</code> y <code>surface-bright</code> lo comparten en tema claro.</p>
+      <p>La causa es que <code>surface-bright</code> es, por definición, «la superficie más clara posible». En tema claro eso coincide con el papel; en oscuro es el extremo de la escalera. El mapeo no es un error de lectura del archivo: es la consecuencia de haber apuntado el nivel más alto de elevación al escalón más alto de claridad.</p>
+      <p class="sr-na">Las dos columnas de muestra pintan el <strong>tono de paleta</strong> de cada tema, no el rol. Es a propósito: una muestra que usara <code>md-bg-surface</code> mostraría el valor del tema activo en las dos columnas, y la rotulada «claro» mentiría con la página en oscuro. Aquí cada muestra es lo que dice su columna, en los dos temas. La clase es del showroom y no toca ningún rol del sistema.</p>
+      <p class="sr-na"><strong>La consecuencia práctica:</strong> en tema claro, el tono no puede ser el único mecanismo para los niveles 0 y 5, porque los dos se ven iguales. La sombra sí los separa. En tema oscuro pasa lo contrario, y por eso el sistema publica las dos clases y la receta completa usa las dos.</p>
+
+      <h3>Cuándo usar la sombra y cuándo el tono</h3>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Tema</th><th scope="col">La sombra</th><th scope="col">El tono</th><th scope="col">Qué usar</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Claro</td><td><strong>2.10</strong>, el más fuerte de los dos</td><td>1.23 como máximo</td><td><strong>La sombra</strong>, y el tono como refuerzo</td></tr>
+          <tr><td>Oscuro</td><td>1.04, prácticamente nada</td><td><strong>1.61</strong>, el más fuerte de los dos</td><td><strong>El tono</strong>, y la sombra como refuerzo</td></tr>
+          <tr><td><strong>Los dos</strong></td><td colspan="2"><strong>Ninguno llega a 3:1 por sí solo en ninguno de los dos temas</strong></td><td><strong>Las dos clases, siempre</strong></td></tr>
+        </tbody>
+      </table>
+      <p>La regla que sale de la medición es más simple que «sombra en claro, tono en oscuro»: <strong>el mecanismo que funciona es el más contrastado, y en cada tema es uno distinto</strong>. En claro es la sombra; en oscuro, el tono. Los dos son insuficientes por sí solos, así que la receta completa usa los dos y no hay excepción.</p>
+      <p class="sr-na">M3 insiste en esto desde la documentación de overview: la elevación se comunica por la <strong>sombra y por el tono de superficie a la vez</strong>. Y su consecuencia es que si un componente aplica una sombra y no se ve, el problema rara vez es la sombra: es que falta el cambio de tono.</p>
+
+      <h3>Lo que separa de verdad: los ratios medidos</h3>
+      <p>El tono de cada nivel, medido contra el lienzo de la página. Son valores reales, no estimados.</p>
+      <table class="sr-table sr-table--tight">
+        <thead>
+          <tr><th scope="col">Nivel</th><th scope="col">Claro</th><th scope="col">Oscuro</th><th scope="col">Lectura</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>0</td><td><strong>1.00</strong></td><td><strong>1.00</strong></td><td>Idéntico al lienzo. Invisible, y con razón: no está levantado</td></tr>
+          <tr><td>1</td><td>1.05</td><td>1.09</td><td>Apenas se distingue</td></tr>
+          <tr><td>2</td><td>1.09</td><td>1.14</td><td>Se distingue algo más</td></tr>
+          <tr><td>3</td><td>1.16</td><td>1.29</td><td>Ya se lee la dirección</td></tr>
+          <tr><td>4</td><td>1.23</td><td>1.52</td><td>Claro en los dos temas</td></tr>
+          <tr><td>5</td><td><strong>1.00</strong></td><td>1.61</td><td><strong>En claro vuelve a ser invisible</strong>. Ver el aviso de arriba</td></tr>
+        </tbody>
+      </table>
+      <p><strong>La conclusión honesta: en tema claro ningún nivel se separa por tono.</strong> El techo es 1.23, en el nivel 4, y WCAG 1.4.11 pide <strong>3:1</strong> para el límite de un componente. Le faltan dos puntos y medio.</p>
+      <p>Y en tema oscuro el techo es 1.61, que tampoco llega. Así que la sombra no es un refuerzo opcional: es <strong>el mecanismo</strong>, y el tono es lo que da la dirección de la jerarquía, no la separación.</p>
+      <p class="sr-na">Esto no es un defecto de este proyecto, y conviene no atribuirlo a él: es una propiedad de la paleta <code>neutral</code> de M3, que está construida para superficies adyacentes y no para 3:1 entre ellas. La propia especificación lo asume, y por eso insiste en que la elevación se comunique por dos vías a la vez. Lo que sí es de este proyecto es haber elegido un mapeo de seis niveles a seis escalones de esa escalera, y eso es lo que hace visible el problema del nivel 5 en claro.</p>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section" id="shapes">
+      <h2>Shapes</h2>
+      <p>La sombra <strong>hereda</strong> el <code>border-radius</code> del elemento. No hay ninguna clase de elevación que lleve su propia forma, y no hace falta ninguna.</p>
+      <div class="sr-canvas">
+        <div class="sr-elev md-elevation-4 md-elevation-4-surface md-shape-corner-none"></div>
+        <div class="sr-elev md-elevation-4 md-elevation-4-surface md-shape-corner-small"></div>
+        <div class="sr-elev md-elevation-4 md-elevation-4-surface"></div>
+        <div class="sr-elev md-elevation-4 md-elevation-4-surface md-shape-corner-large"></div>
+      </div>
+      <p>Las cuatro sombras son <strong>idénticas</strong>. Lo único que cambia es el radio, y el que sale del marco del specimen es exactamente el mismo desenfoque y la misma extensión.</p>
+      <p class="sr-na">Esto funciona porque <code>box-shadow</code> se recorta contra la caja del elemento, y esa caja ya lleva su <code>border-radius</code>. Por eso <code>elevation.css</code> no declara ninguna forma: no tendría dónde declararla. Una sombra no sabe qué forma tiene el objeto; la hereda.</p>
+      <p class="sr-na">Y hay un detalle que solo se ve con el radio a <code>full</code>: la sombra se separa del borde en las esquinas. No es un defecto, es lo que hace que un círculo se lea como una esfera y no como un disco plano. Está en la sección de <a href="#ejemplo">Ejemplo básico</a>.</p>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section" id="comportamiento">
+      <h2>Comportamiento</h2>
+
+      <h3>No hay transición: los niveles son estáticos</h3>
+      <p><code>2-sys/elevation.css</code> no declara ni una <code>transition</code>. Cambiar de nivel es un cambio de <code>box-shadow</code> en el mismo instante en que cambia la clase, y el navegador no interpola <code>box-shadow</code> salvo que se le pida.</p>
+      <p>Esto <strong>sí</strong> funciona sin escribir nada, porque el sistema tiene tokens de movimiento para ello:</p>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Token</th><th scope="col">Valor</th><th scope="col">Qué es</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>--md-sys-motion-duration-short2</code></td><td>100ms</td><td>La duración que usa la capa de estado</td></tr>
+          <tr><td><code>--md-sys-motion-duration-medium2</code></td><td>300ms</td><td>La duración media, para transiciones de layout</td></tr>
+          <tr><td><code>--md-sys-motion-easing-standard</code></td><td><code>cubic-bezier(0.2, 0, 0, 1)</code></td><td>La curva estándar</td></tr>
+        </tbody>
+      </table>
+      <p class="sr-na">M3 documenta la animación de la elevación, y Material Web la resuelve con <code>transition-duration: 280ms</code> y la curva <code>emphasized</code>. Aquí la cifra es <strong>distinta y no es un error</strong>: 280ms no sale de ningún token del sistema, y escribirlo en un componente rompería la REGLA 1. Si algún día se quiere animar un cambio de nivel, el valor sale de la tabla de arriba.</p>
+
+      <h3>El hueco: la elevación no es interactiva</h3>
+      <p>Este es el punto donde RDM Next se aleja de M3, y conviene verlo con las dos fuentes abiertas.</p>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Estado</th><th scope="col">Material Web</th><th scope="col">RDM Next</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>:focus-within</code></td><td><code>--_focus-container-elevation</code></td><td><strong>No sube</strong>. Solo cambia la opacidad de la capa de estado</td></tr>
+          <tr><td><code>:hover</code></td><td><code>--_hover-container-elevation</code></td><td><strong>No sube</strong>. Capa de estado al 8%</td></tr>
+          <tr><td><code>:active</code></td><td><code>--_pressed-container-elevation</code></td><td><strong>No baja</strong>. Capa de estado al 10%</td></tr>
+          <tr><td><code>[disabled]</code></td><td><code>--_disabled-container-elevation</code></td><td><strong>Baja a <code>level0</code></strong></td></tr>
+        </tbody>
+      </table>
+      <p>La única fila que coincide es la última, y no por casualidad: es la única donde bajar el nivel es lo correcto sin animación. Un objeto deshabilitado no se levanta de la superficie.</p>
+      <p class="sr-na">Material Web lo resuelve con <strong>cuatro tokens privados por componente</strong> —<code>--_container-elevation</code>, <code>--_focus-</code>, <code>--_hover-</code>, <code>--_pressed-</code>— y un elemento <code>&lt;md-elevation&gt;</code> aparte que los lee. Ours no tiene ese elemento: la sombra va en el propio componente, y el componente declara <strong>un</strong> nivel. Implementar la elevación interactiva es una decisión de componente, no de esta capa: cuando se tome, el lugar natural es un token <code>--md-comp-*-elevation-hover</code> junto al que ya existe.</p>
+      <p class="sr-na">Lo que <strong>sí</strong> hay aquí es el estado deshabilitado, y es real. En <code>3-comp/button.css</code> y <code>3-comp/icon-button.css</code> la regla existe y funciona; está en la sección de <a href="#composicion">Composición</a>.</p>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section" id="anatomia">
+      <h2>Anatomía de la sombra</h2>
+      <p>Una sombra no es una cosa: son <strong>dos, superpuestas</strong>. Y la duplicidad no es decorativa, es el modelo de iluminación real: un objeto proyectado sobre una superficie produce una sombra de contacto y una sombra proyectada.</p>
+      <div class="sr-canvas">
+        <div class="sr-elev md-elevation-4 md-elevation-4-surface"></div>
+      </div>
+      <ol>
+        <li><strong>Contenedor</strong> — el elemento. Define la forma, y la sombra la hereda</li>
+        <li><strong>Key, la nítida</strong> — marca el borde y da sensación de sólido. Opacidad <strong>0.30</strong>, y es la primera que se dibuja</li>
+        <li><strong>Ambient, la difusa</strong> — se extiende por debajo y sugiere que la luz viene de arriba. Opacidad <strong>0.15</strong></li>
+      </ol>
+      <p>El orden importa y es <strong>key primero, ambient después</strong>. Es el orden que usa el propio código de Material Web, y el que produce la sombra más fiel: la nítida se dibuja sobre la difusa.</p>
+      <h3>Por qué el nivel 2 tiene la misma key que el nivel 1</h3>
+      <p>Porque el crecimiento no es lineal. Al subir del nivel 1 al 2, la <code>key</code> <strong>no cambia</strong>: es la difusa la que se separa. El nivel 2 no es «un poco más de nivel 1», es un tipo de sombra distinto.</p>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Nivel</th><th scope="col">Key</th><th scope="col">Cambia</th><th scope="col">Ambient</th><th scope="col">Cambia</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>0</td><td><code>0 0px 0px 0px</code></td><td>—</td><td><code>0 0px 0px 0px</code></td><td>—</td></tr>
+          <tr><td>1</td><td><code>0 1px 2px 0px</code></td><td><strong>Sí</strong></td><td><code>0 1px 3px 1px</code></td><td>Sí</td></tr>
+          <tr><td>2</td><td><code>0 1px 2px 0px</code></td><td><strong>NO</strong></td><td><code>0 2px 6px 2px</code></td><td><strong>Sí, y es el único cambio</strong></td></tr>
+          <tr><td>3</td><td><code>0 1px 3px 0px</code></td><td>Sí</td><td><code>0 4px 8px 3px</code></td><td>Sí</td></tr>
+          <tr><td>4</td><td><code>0 2px 3px 0px</code></td><td>Sí</td><td><code>0 6px 10px 4px</code></td><td>Sí</td></tr>
+          <tr><td>5</td><td><code>0 4px 4px 0px</code></td><td>Sí</td><td><code>0 8px 12px 6px</code></td><td>Sí</td></tr>
+        </tbody>
+      </table>
+      <p class="sr-na">Las columnas de «cambia» comparan cada nivel con el anterior. La del nivel 0 no tiene con qué compararse, y su key y su ambient son las dos de la identidad.</p>
+      <p class="sr-na">Y son esas columnas la lectura útil de la tabla: <strong>de 0 a 2, la única sombra que crece es la difusa</strong>. La key arranca a moverse en el 3, y su desplazamiento vertical también en el 4. El nivel 2 es el único que repite su key sin más remedio, y es el que hace visible que el modelo no es lineal.</p>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section" id="accesibilidad">
+      <h2>Accesibilidad</h2>
+      <p>La elevación es puramente visual. No cambia el nombre accesible de nada, no añade un rol, no recibe el foco y no aparece en el árbol de accesibilidad.</p>
+      <p>Material Web lo dice de una frase en su documentación del componente: <em>«Elevation is a visual component and does not have accessibility concerns.»</em></p>
+      <p class="sr-na">Esa frase es cierta y a la vez incompleta, y por eso esta sección existe. Lo que sigue no es un problema de la elevación: son tres propiedades de la jerarquía visual que la elevación sole ser el <em>único</em> mecanismo para comunicar, y que en tema oscuro se apagan.</p>
+
+      <h3>Una sombra no cuenta como contraste de WCAG</h3>
+      <p>WCAG 1.4.11 pide <strong>3:1</strong> para el límite de un componente. Una sombra no lo cumple, y estos son los valores medidos, no estimados.</p>
+      <table class="sr-table sr-table--tight">
+        <thead>
+          <tr><th scope="col">Capa</th><th scope="col">Opacidad</th><th scope="col">Claro</th><th scope="col">Oscuro</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Key, la nítida</td><td>0.30</td><td><strong>2.10</strong></td><td><strong>1.04</strong></td></tr>
+          <tr><td>Ambient, la difusa</td><td>0.15</td><td>1.41</td><td>1.02</td></tr>
+          <tr><td><strong>Lo que pide WCAG</strong></td><td>—</td><td colspan="2"><strong>3.00 en los dos temas</strong></td></tr>
+        </tbody>
+      </table>
+      <p>En tema claro la nítida se queda a <strong>2.10</strong>, y le falta casi un punto. En tema oscuro es <strong>1.04</strong>: prácticamente nada, porque oscurecer una superficie ya negra no produce cambio.</p>
+      <p>La consecuencia práctica es que <strong>ningún límite de interfaz puede depender solo de la sombra</strong>. Si un elemento necesita separación, la tiene que dar un <code>outline</code> o un cambio de tono. La sombra acompaña; no acota.</p>
+      <p class="sr-na">Es el mismo motivo por el que <a href="divider.html">Divider</a> usa <code>outline-variant</code> y no <code>outline</code>: una línea decorativa que solo aporta jerarquía visual no puede ser lo único que separa dos zonas de contenido. Y explica por qué <code>.md-button-elevated</code> sobre su propio color da <strong>1.00</strong> de contraste: toda su separación viene de la sombra, y la sombra no llega a 3:1. Está medido en <a href="button.html#color">Button</a>.</p>
+
+      <h3>En tema oscuro la jerarquía depende solo del tono</h3>
+      <p>Una sombra negra sobre <code>#141218</code> casi no produce contraste. Y el tono tampoco llega a 3:1: su techo en oscuro es 1.61. O sea que en tema oscuro <strong>ninguno de los dos mecanismos cumple el 3:1</strong>, y la jerarquía se comunica con los dos juntos, ninguno suficiente por sí solo. Por eso el sistema publica las dos clases y la receta completa usa las dos.</p>
+      <p>Y el caso límite es doble: el nivel 5 en tema claro vuelve al tono del nivel 0, y ahí ya no es que el contraste sea bajo, es que es <strong>exactamente 1.00</strong>. Ese nivel no tiene ningún mecanismo que lo separe del lienzo.</p>
+      <p class="sr-na">La tabla de ratios está en <a href="#color">Color</a>, y muestra los dos temas a la vez: la última fila tiene el mismo tono en las dos columnas de muestra clara.</p>
+
+      <h3>El nivel no puede ser la única señal de un estado</h3>
+      <p>Si una interfaz usa el nivel para distinguir un estado —seleccionado, activo, en foco—, hace falta una segunda señal. M3 acompaña siempre el estado visual de un cambio en la capa de estado, un cambio de color, o un cambio de forma, y un lector de pantalla necesita además el atributo semántico (<code>aria-pressed</code>, <code>aria-expanded</code>, <code>aria-selected</code>).</p>
+      <p class="sr-na">Ninguna clase de <code>elevation.css</code> lee un atributo <code>aria-*</code> ni ninguna pseudo-clase. Esas seis utilidades no tienen estado, y por eso no pueden ser la única marca de uno.</p>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section" id="composicion">
+      <h2>Composición</h2>
+      <h3>Con Button, que es el único consumidor real</h3>
+      <p><code>3-comp/button.css</code> es el único componente que pide un nivel distinto del 0. Su variante <code>elevated</code> reapunta su token propio al nivel 1:</p>
+      <div class="sr-canvas">
+        <button class="md-button md-button-elevated" type="button"><span class="md-button-label">Elevated</span>
+          <span class="md-button-touch"></span>
+          </button>
+        <button class="md-button md-button-filled" type="button"><span class="md-button-label">Filled</span>
+          <span class="md-button-touch"></span>
+          </button>
+        <button class="md-button md-button-outlined" type="button"><span class="md-button-label">Outlined</span>
+          <span class="md-button-touch"></span>
+          </button>
+      </div>
+      <p>El <code>elevated</code> y el <code>filled</code> se ven iguales aquí y no lo son: el primero es <code>surface-container-low</code> con <code>level1</code>, el segundo es <code>primary</code> con <code>level0</code>. En un lienzo oscuro el <code>elevated</code> se hunde, y es el comportamiento correcto de un nivel 1 sobre el fondo más bajo de la escalera.</p>
+      <p class="sr-na">El botón no escribe <code>box-shadow</code> con números: expone <code>--md-comp-button-elevation</code>, y la variante decide a qué nivel apunta. Es el patrón que la capa 3 repite en los tres componentes que ya existen. La diferencia entre <code>elevated</code> y las otras cuatro está medida, con los contrastes, en <a href="button.html#color">Button</a>.</p>
+
+      <h3>Con Icon Button, que se queda en el nivel 0</h3>
+      <p><code>3-comp/icon-button.css</code> declara <code>--md-comp-icon-button-elevation</code> y sus cuatro variantes apuntan a <code>level0</code>. Ninguna se levanta.</p>
+      <p class="sr-na">No es un descuido, y hay una razón de medida: el <code>elevated</code> del botón existe porque su relleno es <code>surface-container-low</code>, que sobre una superficie de color se camufla. El botón de icono no tiene una variante <code>elevated</code> porque no tiene relleno propio que camuflar: sus otras tres variantes son transparentes, <code>primary</code> o <code>secondary-container</code>, y las tres se separan sin sombra.</p>
+
+      <h3>Con un estado deshabilitado, que sí es un consumidor</h3>
+      <p>Los dos componentes con relleno bajan a <code>level0</code> en <code>:disabled</code>. Es el único estado de elevación que existe en el sistema.</p>
+      <div class="sr-canvas">
+        <button class="md-button md-button-elevated" type="button"><span class="md-button-label">Reposo</span>
+          <span class="md-button-touch"></span>
+          </button>
+        <button class="md-button md-button-elevated" type="button" disabled><span class="md-button-label">Deshabilitado</span>
+          <span class="md-button-touch"></span>
+          </button>
+      </div>
+      <p class="sr-na">La sombra se apaga en el elemento y no con <code>.md-disabled</code>, porque el botón necesita bajar el relleno y el contenido con intensidades <strong>distintas</strong>, y <code>.md-disabled</code> baja el elemento entero de una sola vez.</p>
+
+      <h3>Con un componente anidado</h3>
+      <p>El nivel se elige <strong>por relación, no por número</strong>. Un popover dentro de un diálogo está a nivel 3 aunque su propio número sea mayor: lo que cuenta es a cuántos niveles está por encima del lienzo.</p>
+      <div class="sr-canvas">
+        <div class="sr-elev md-elevation-2 md-elevation-2-surface">
+          <div class="sr-elev md-elevation-3 md-elevation-3-surface"></div>
+        </div>
+      </div>
+      <p class="sr-na">El specimen exterior es de 64dp y el interior también, así que el nivel 3 se ve por su sombra contra la superficie del nivel 2. Es el caso que M3 llama «contenedores anidados», y es la razón por la que <code>surface-container-*</code> se ordenan por énfasis y no por tono.</p>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section">
+      <h2>Do / Don't</h2>
+      <h3>DO</h3>
+      <ul>
+        <li>Pedí la elevación por <strong>nivel</strong>, nunca por números. <code>level3</code>, no «una sombra de 1px y 4px».</li>
+        <li>Usá las <strong>dos clases</strong> en una superficie que flota: es la única combinación que da los dos mecanismos a la vez, y ninguna de las dos cumple 3:1 por sí sola.</li>
+        <li>Dejá la forma al elemento. La sombra la hereda, y no hay nada que reconfigurar.</li>
+        <li>Subí un nivel por cada plano de separación real, no por cada elemento. Seis niveles son una restricción creativa, no una paleta.</li>
+        <li>Dejá el nivel 0 explícito cuando el componente pueda estar elevado. La sombra identidad existe para eso.</li>
+      </ul>
+      <h3>DON'T</h3>
+      <ul>
+        <li>No uses la sombra como <strong>único</strong> mecanismo de separación. Da 2.10 en claro y 1.04 en oscuro, y WCAG 1.4.11 pide 3:1.</li>
+        <li>No confíes en el tono solo en tema claro. Su techo es 1.23, y el nivel 5 da exactamente 1.00, igual que el nivel 0. Ver <a href="#color">Color</a>.</li>
+        <li>No escribas un <code>box-shadow</code> en el marcado. Está prohibido por la REGLA 6 y sale de la escala.</li>
+        <li>No escribas dos niveles en el mismo elemento. Gana el último del archivo, no el último del marcado, y el resultado no depende de lo que se lea.</li>
+        <li>No inventes una forma de sombra. <code>elevation.css</code> no tiene ninguna, y no debería: la forma es de <code>shape.css</code>.</li>
+        <li>No esperes que un cambio de nivel se anime. No hay <code>transition</code>; ver <a href="#comportamiento">Comportamiento</a>.</li>
+      </ul>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section" id="medidas">
+      <h2>Medidas</h2>
+      <p>La geometría completa de los seis niveles. Cada fila es un nivel, con sus dos parciales crudos de <code>1-ref/shadow.css</code> y la sombra terminada pintada al lado.</p>
+      <table class="sr-table sr-table--tight">
+        <thead>
+          <tr><th scope="col">Nivel</th><th scope="col">Key, la nítida</th><th scope="col">Ambient, la difusa</th><th scope="col">Sombra</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>0</td><td><code>0 0px 0px 0px</code></td><td><code>0 0px 0px 0px</code></td><td><span class="sr-elev sr-elev--cell md-elevation-0"></span></td></tr>
+          <tr><td>1</td><td><code>0 1px 2px 0px</code></td><td><code>0 1px 3px 1px</code></td><td><span class="sr-elev sr-elev--cell md-elevation-1"></span></td></tr>
+          <tr><td>2</td><td><code>0 1px 2px 0px</code></td><td><code>0 2px 6px 2px</code></td><td><span class="sr-elev sr-elev--cell md-elevation-2"></span></td></tr>
+          <tr><td>3</td><td><code>0 1px 3px 0px</code></td><td><code>0 4px 8px 3px</code></td><td><span class="sr-elev sr-elev--cell md-elevation-3"></span></td></tr>
+          <tr><td>4</td><td><code>0 2px 3px 0px</code></td><td><code>0 6px 10px 4px</code></td><td><span class="sr-elev sr-elev--cell md-elevation-4"></span></td></tr>
+          <tr><td>5</td><td><code>0 4px 4px 0px</code></td><td><code>0 8px 12px 6px</code></td><td><span class="sr-elev sr-elev--cell md-elevation-5"></span></td></tr>
+        </tbody>
+      </table>
+      <p class="sr-na">Cada parcial son cuatro números: <strong>desplazamiento Y, desplazamiento X, desenfoque y extensión</strong>. El color se añade en la capa 2, y por eso aquí no aparece ninguno. El orden es el inverso del habitual, y es el de M3.</p>
+      <p class="sr-na">Una fila por nivel y sin celdas combinadas, a propósito: con <code>rowspan</code> las doce celdas de sombra quedaban en las filas de la capa <em>key</em> y la segunda fila de cada nivel era una celda vacía, que es ruido visual en una tabla de datos. El nombre de cada capa ya está en el encabezado, y el orden key-primero es el del archivo.</p>
+      <p class="sr-na">La columna de la sombra usa <code>.sr-elev--cell</code>: un cuadrado de 32dp en vez de los 64dp de <code>.sr-elev</code>. No es una reducción estética, es la que hace que la sombra del nivel 5 quepa entera en la celda —esta necesita unos 18px por lado— sin que la recorte el <code>overflow: hidden</code> de la tabla.</p>
+
+      <h3>Las dos medidas que no son medidas</h3>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Token</th><th scope="col">Valor</th><th scope="col">Qué es</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>--md-ref-shadow-key-opacity</code></td><td>0.3</td><td>La intensidad de la nítida. No ocupa espacio, así que no lleva barra</td></tr>
+          <tr><td><code>--md-ref-shadow-ambient-opacity</code></td><td>0.15</td><td>La intensidad de la difusa. Idem</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Las medidas del specimen, que son de la vista</h3>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Atributo</th><th scope="col">Valor</th><th scope="col">Muestra</th><th scope="col">Token</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Lado del specimen</td><td>64px</td><td><span class="sr-spec-bar sr-spec-bar--800"></span></td><td><code>--md-ref-spacing-800</code></td></tr>
+          <tr><td>Radio del specimen</td><td>12px</td><td><span class="sr-spec-bar sr-spec-bar--none"></span></td><td><code>--md-sys-shape-corner-medium</code></td></tr>
+        </tbody>
+      </table>
+      <p class="sr-na">Estas dos <strong>no son medidas de la elevación</strong>: son las de <code>.sr-elev</code>, la clase del showroom que hace posible ver las sombras. El radio no lleva barra porque no se dibuja como una barra, y porque un radio es una forma, no una longitud.</p>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section" id="tokens">
+      <h2>Tokens</h2>
+      <h3>Los seis niveles</h3>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Token</th><th scope="col">Lo consume</th><th scope="col">Clase</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>--md-sys-elevation-level0</code></td><td>La sombra identidad. La usan las cuatro variantes de <code>button</code> sin relieve y las cuatro de <code>icon-button</code></td><td><code>.md-elevation-0</code></td></tr>
+          <tr><td><code>--md-sys-elevation-level1</code></td><td>Botones <code>elevated</code>, tarjetas <code>outlined</code></td><td><code>.md-elevation-1</code></td></tr>
+          <tr><td><code>--md-sys-elevation-level2</code></td><td>Menús, popovers</td><td><code>.md-elevation-2</code></td></tr>
+          <tr><td><code>--md-sys-elevation-level3</code></td><td>Diálogos, snackbars, bottom sheets</td><td><code>.md-elevation-3</code></td></tr>
+          <tr><td><code>--md-sys-elevation-level4</code></td><td>Navigation drawers</td><td><code>.md-elevation-4</code></td></tr>
+          <tr><td><code>--md-sys-elevation-level5</code></td><td>Máxima elevación</td><td><code>.md-elevation-5</code></td></tr>
+        </tbody>
+      </table>
+
+      <h3>La geometría y las opacidades, en la capa 1</h3>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Familia</th><th scope="col">Tokens</th><th scope="col">Qué es</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>--md-ref-shadow-key-0…5</code></td><td>6</td><td>La geometría de la sombra nítida, sin color</td></tr>
+          <tr><td><code>--md-ref-shadow-ambient-0…5</code></td><td>6</td><td>La geometría de la difusa, sin color</td></tr>
+          <tr><td><code>--md-ref-shadow-key-opacity</code></td><td>1</td><td>0.3, declarada una vez para los seis niveles</td></tr>
+          <tr><td><code>--md-ref-shadow-ambient-opacity</code></td><td>1</td><td>0.15, declarada una vez para los seis niveles</td></tr>
+        </tbody>
+      </table>
+      <p class="sr-na"><strong>14 tokens, ni uno más ni uno menos.</strong> Google <strong>no publica</strong> sombras como tokens: la geometría salió de los comentarios del código fuente de <code>&lt;md-elevation&gt;</code> en Material Web, que es donde está documentada nivel por nivel. Es el único caso del proyecto en que un valor viene de un comentario y no de un token publicado.</p>
+
+      <h3>El color, en el tema</h3>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Token</th><th scope="col">Valor</th><th scope="col">Por qué dos</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>--md-sys-color-shadow</code></td><td><code>#000</code></td><td rowspan="2">Uno es un color y el otro un triplete. La opacidad necesita el triplete: un <code>#</code> no se puede partir en tres números</td></tr>
+          <tr><td><code>--md-sys-color-shadow-rgb</code></td><td><code>0 0 0</code></td></tr>
+        </tbody>
+      </table>
+
+      <h3>Lo que el sistema NO expone</h3>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Token que no existe</th><th scope="col">Por qué</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>--md-sys-elevation-surface-tint-color</code></td><td><strong>Deprecado en M3.</strong> Google lo dice de forma explícita: <em>«Surface tint color is deprecated. Use elevation level tokens (0-5) instead.»</em> Sigue en el paquete de tokens antiguo, y este archivo no lo publica</td></tr>
+          <tr><td><code>--md-sys-elevation-level*-dp</code></td><td>M3 nombra los niveles por su altura nominal. Aquí la altura nominal va documentada en <a href="#variantes">Variantes</a> como dato, no como token: no la consume nadie</td></tr>
+          <tr><td>Un rol de «tono del nivel N»</td><td>M3 no lo define. El mapeo de las clases <code>-surface</code> es una decisión de RDM Next y vive en la clase, no en un token</td></tr>
+        </tbody>
+      </table>
+    </article>
+
+    <hr class="md-divider">
+
+    <article class="sr-section" id="rdm-next-y-m3">
+      <h2>RDM Next y M3</h2>
+      <p>Tres divergencias. Las dos primeras son <strong>decisiones de arquitectura</strong>; la tercera es un <strong>hueco del sistema</strong>. No son lo mismo, y por eso van separadas.</p>
+
+      <h3>El nombre del token oficial no significa lo mismo aquí <span class="sr-na">(decisión de arquitectura)</span></h3>
+      <p><code>--md-sys-elevation-level3</code> existe en los dos lados con el <strong>mismo nombre</strong> y <strong>valores distintos</strong>:</p>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Nivel</th><th scope="col">M3 v0.192</th><th scope="col">RDM Next</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>0</td><td><code>0</code></td><td><code>0 0px 0px 0px rgb(0 0 0 / 0.3), 0 0px 0px 0px rgb(0 0 0 / 0.15)</code></td></tr>
+          <tr><td>1</td><td><code>1</code></td><td rowspan="6"><code>key, ambient</code> con los cuatro números de cada una y el color del tema</td></tr>
+          <tr><td>2</td><td><code>3</code></td></tr>
+          <tr><td>3</td><td><code>6</code></td></tr>
+          <tr><td>4</td><td><code>8</code></td></tr>
+          <tr><td>5</td><td><code>12</code></td></tr>
+        </tbody>
+      </table>
+      <p>El de M3 es <strong>un número de dp</strong>: la altura nominal del nivel, la cifra de la especificación. El nuestro es <strong>la sombra terminada</strong>, lista para un <code>box-shadow</code>.</p>
+      <p>Se conservó el nombre oficial por la convención del proyecto —«los tokens usan el nombre de M3 en su totalidad»— y porque el nuestro cumple la función que el de Google tiene en la especificación, que es la misma: nombrar un nivel. Pero quien venga de la documentación de M3 y espere un número va a encontrar una lista de sombras, y hay que saberlo antes.</p>
+      <p class="sr-na">Verificado en <code>material-web/tokens/versions/v0_192/_md-sys-elevation.scss</code> y en <code>versions/latest/sass/_md-sys-elevation.scss</code>, donde los seis valores son <code>0px 1px 3px 6px 8px 12px</code>. También está la contradicción de fondo: <strong>el componente <code>&lt;md-elevation&gt;</code> de Material Web nunca lee esos tokens</strong>. Calcula la geometría con <code>clamp()</code> y <code>calc()</code> sobre un <code>--_level</code> privado, y lleva los valores nivel por nivel en comentarios de código. Los tokens de M3 son declarativos y no los usa nadie.</p>
+
+      <h3>La elevación se pide con un elemento, no con una clase <span class="sr-na">(decisión de arquitectura)</span></h3>
+      <p>Material Web expone un web component <code>&lt;md-elevation&gt;</code> que se coloca dentro del elemento y dibuja dos <code>::before</code> y <code>::after</code> con la opacidad en la regla, no en el color.</p>
+      <p>Aquí son <strong>doce clases</strong>, y la opacidad va dentro del color con <code>rgb(... / 0.3)</code>. La diferencia no es cosmética: un web component con shadow DOM no se puede estilizar desde fuera con clases, y este sistema es HTML y CSS estático sin capa de build. Es el mismo compromiso que explica la portada: pierde interoperabilidad directa y gana escribir menos.</p>
+
+      <h3>La elevación interactiva no está implementada <span class="sr-na">(hueco del sistema)</span></h3>
+      <p>Es el único punto de esta vista que es un <strong>hueco</strong>, y no de esta capa sino de la capa de componentes. Está desarrollado en detalle en <a href="#comportamiento">Comportamiento</a>; queda aquí para que la lista de huecos del sistema esté completa.</p>
+      <ul>
+        <li><strong>M3 sube la elevación en hover, foco y pulsación.</strong> El botón de Material Web tiene cuatro tokens privados para ello, uno por estado.</li>
+        <li><strong>RDM Next no sube nunca.</strong> Los tres componentes existentes solo mueven la opacidad de la capa de estado. El único estado de elevación real es <code>:disabled</code>, que baja a nivel 0.</li>
+        <li><strong>Dónde se resolvería:</strong> en la capa 3, con un token <code>--md-comp-*-elevation-hover</code> junto al <code>--md-comp-*-elevation</code> que ya existe. No en <code>elevation.css</code>, que no tiene estado.</li>
+        <li><strong>Por qué no se ha hecho ya:</strong> porque implementarlo bien pide una transición, y el nivel de reposo de cada componente tendría que declararse aparte. Con un solo nivel implementado en todo el catálogo —el <code>elevated</code> del botón— no hay todavía una jerarquía que la elevación interactiva vaya a expresar.</li>
+      </ul>
+      <p class="sr-na">Es el único hueco de esta capa que no es una diferencia de criterio. Los otros dos son decisiones de arquitectura, y se pueden defender; este es trabajo que falta.</p>
+    </article>
+
+  </main>
+</body>
+</html>

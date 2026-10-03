@@ -387,6 +387,121 @@
     width: 100%;
   }
 
+  /* ------------------------------------------------------------------------
+     EL SPECIMEN DE ELEVACION
+     --------------------------------------------------------------------------
+     Un cuadrado con medidas y radio de token, y NADA mas: ni fondo, ni
+     outline, ni sombra. Existe para que la sombra que se ve sea la de
+     .md-elevation-N y no la de la vista.
+
+     EL FONDO LO PONE LA CLASE, Y POR QUE TIENE QUE SER ASI
+     -------------------------------------------------------
+     El specimen lleva .md-elevation-N-surface en el marcado: la clase real de
+     2-sys/elevation.css. Si esta regla declarara un background propio, el
+     showroom le ganaria por capa (showroom va declarada despues de las cinco)
+     y las seis muestras de la escalera se verian del mismo color. Aqui no hay
+     nada que ganhar porque no hay nada que declarar.
+
+     EL OUTLINE SE QUITA, Y NO ES LO MISMO QUE EL DE .sr-swatch
+     ------------------------------------------------------------
+     Aqui si hacia falta, pero por el motivo contrario. Un anillo de 1px pegado
+     al borde de un specimen dibuja una segunda linea al lado de la sombra, y
+     con las dos a la vez el ojo no sabe cual de las dos es la que documenta la
+     vista. En .sr-swatch el contorno salva los tonos 99 y 100, que se pierden
+     sobre un fondo casi blanco; aqui el specimen ya tiene el color de su
+     nivel, y el marco lo pone el .sr-canvas de alrededor, un nivel mas alla.
+
+     EL TAMANO, Y POR QUE 64px
+     -------------------------
+     Cuadrado de 64px, que es --md-ref-spacing-800. Es el mas pequeno de la
+     escala que deja ver la extension del nivel 5 completa: 6px de spread mas
+     el desenfoque, que es la medida que mas crece con el nivel. Con los 40px
+     de --md-ref-spacing-500, que son los de un specimen de tabla, la sombra
+     del nivel 5 se sale por los cuatro lados y deja de leerse como una sombra
+     para leerse como un halo.
+
+     EL RADIO, Y POR QUE ES LA MITAD DE LA SECCION DE SHAPES
+     ------------------------------------------------------
+     12px, --md-sys-shape-corner-medium. No es decoracion: es la prueba de que
+     la sombra hereda el border-radius del elemento, que es lo unico que hay
+     que documentar en Shapes. Con corner-none sale cuadrada, con corner-full
+     sale redondeada. Las tres son clases reales de 2-sys/shape.css, y no
+     decoracion del showroom.
+
+     TAMANO EN LOS DOS EJES A PROPOSITO: un specimen cuadrado es mas
+     facil de comparar entre si, y el alto lo fija block-size para que las
+     seis celdas de una grilla queden alineadas.
+
+     Y display: block, que sin el no mide nada. Un specimen dentro de una
+     celda de tabla es un <span>, y un elemento inline ignora inline-size y
+     block-size: se computaba en 0x0 y no se veia. Medido antes de ponerlo.
+     --------------------------------------------------------------------- */
+  .sr-elev {
+    display: block;
+    inline-size: var(--md-ref-spacing-800);
+    block-size: var(--md-ref-spacing-800);
+    border-radius: var(--md-sys-shape-corner-medium);
+  }
+
+  /* El specimen de sombra DENTRO de una tabla.
+     ------------------------------------------------------------------------
+     Hace falta una clase aparte porque .sr-spec-color, que es lo que
+     documentan las tablas de color, no sirve aqui por dos motivos que estan
+     medidos y no son de gusto:
+
+       1. Fija block-size: 48px. .sr-elev pone 64px, y como .sr-spec-color
+          esta declarado despues gana el 48: el specimen quedaba en 64x48, un
+          rectangulo, y una sombra de rectangulo no se lee igual que una de
+          cuadrado.
+
+       2. Pinta un outline de 1px. Un anillo pegado al borde dibuja una
+          segunda linea justo donde va la sombra, y con las dos a la vez el
+          ojo ya no sabe cual de las dos documenta la celda. Es el mismo
+          conflicto que evita .sr-swatch--border, resuelto al reves: ahi
+          habia que quitar el contorno porque el marco era lo que se
+          queria mostrar; aqui hay que quitarlo porque lo que se quiere
+          mostrar es la sombra.
+
+     EL LADO, Y POR QUE 32px
+     -----------------------
+     Medido en la celda de la tabla de Medidas, con el padding de
+     .sr-table--tight: el presupuesto vertical es de 75px y el horizontal de
+     98px. El specimen tiene que dejar sitio a la sombra DEL NIVEL 5, que es
+     la mas grande de las seis: 6px de extension y 12px de desenfoque, unos
+     18px por lado.
+
+         75px de alto - 36px de sombra = 39px, y ahi caben los 32px con 3px
+         de margen a cada lado.
+
+     Con los 64px de .sr-elev la sombra del nivel 5 se saldria de la celda por
+     los cuatro lados, y una sombra cortada no documenta nada: parece un
+     halo. 32px es el lado mayor que entra con su sombra entera, y con
+     --tight la celda tiene los 16px de padding que hacen falta.
+
+     El radio baja a 4px por lo mismo: en 32px un radio de 12px es casi un
+     circulo, y lo que hay que ver es que la sombra sigue al radio. Con 4px
+     las cuatro esquinas se leen y la sombra se distingue de la del
+     rectangulo de al lado.
+
+     Y margin-inline: auto, para que quede CENTRADO en la celda. Sin el
+     hereda el text-align: start de la celda y se pega a la izquierda, con
+     solo los 16px del padding como holgura: la sombra del nivel 5 necesita
+     18px, y se sale encima de la celda de al lado. Centrado quedan unos
+     30px a cada lado, que es lo que necesita. La sombra se dibuja encima de
+     la celda vecina igual, porque eso no lo evita nada, pero ya no encima de
+     su texto.
+
+     Sin outline, sin fondo y sin transicion: los tres los pone la clase de
+     elevacion real que se le anada en el marcado. */
+  .sr-elev--cell {
+    display: block;
+    margin-inline: auto;
+    inline-size: var(--md-ref-spacing-400);
+    block-size: var(--md-ref-spacing-400);
+    border-radius: var(--md-sys-shape-corner-extra-small);
+    outline: none;
+  }
+
   /* Grilla de variaciones: escenario + leyenda */
   .sr-grid {
     display: grid;
