@@ -349,24 +349,41 @@
           <tr><td><code>--md-sys-motion-easing-standard</code></td><td><code>cubic-bezier(0.2, 0, 0, 1)</code></td><td>La curva estándar</td></tr>
         </tbody>
       </table>
-      <p class="sr-na">M3 documenta la animación de la elevación, y Material Web la resuelve con <code>transition-duration: 280ms</code> y la curva <code>emphasized</code>. Aquí la cifra es <strong>distinta y no es un error</strong>: 280ms no sale de ningún token del sistema, y escribirlo en un componente rompería la REGLA 1. Si algún día se quiere animar un cambio de nivel, el valor sale de la tabla de arriba.</p>
+      <p class="sr-na">M3 documenta la animación de la elevación, y Material Web la resuelve con <code>transition-duration: 280ms</code> y la curva <code>emphasized</code>. Aquí la cifra es <strong>distinta y no es un error</strong>: 280ms no sale de ningún token del sistema, y escribirlo en un componente rompería la REGLA 1. El botón usa <code>medium2</code>, 300ms, que es el token más cercano: a 20ms del valor de M3, cuando <code>medium1</code> está a 30ms. Verificado en el navegador: <code>transition-duration</code> computa <code>0.3s</code>.</p>
 
-      <h3>El hueco: la elevación no es interactiva</h3>
-      <p>Este es el punto donde RDM Next se aleja de M3, y conviene verlo con las dos fuentes abiertas.</p>
+      <h3>La elevación es interactiva, y solo en hover</h3>
+      <p>M3 declara <strong>cuatro tokens privados de elevación por variante de botón</strong>, uno por estado. No están en la documentación: están en los archivos de token, y estos son sus valores.</p>
       <table class="sr-table">
         <thead>
-          <tr><th scope="col">Estado</th><th scope="col">Material Web</th><th scope="col">RDM Next</th></tr>
+          <tr><th scope="col">Variante</th><th scope="col">Reposo</th><th scope="col">Foco</th><th scope="col">Hover</th><th scope="col">Pulsado</th><th scope="col">Deshabilitado</th></tr>
         </thead>
         <tbody>
-          <tr><td><code>:focus-within</code></td><td><code>--_focus-container-elevation</code></td><td><strong>No sube</strong>. Solo cambia la opacidad de la capa de estado</td></tr>
-          <tr><td><code>:hover</code></td><td><code>--_hover-container-elevation</code></td><td><strong>No sube</strong>. Capa de estado al 8%</td></tr>
-          <tr><td><code>:active</code></td><td><code>--_pressed-container-elevation</code></td><td><strong>No baja</strong>. Capa de estado al 10%</td></tr>
-          <tr><td><code>[disabled]</code></td><td><code>--_disabled-container-elevation</code></td><td><strong>Baja a <code>level0</code></strong></td></tr>
+          <tr><td><code>filled</code></td><td>level0</td><td>level0</td><td><strong>level1</strong></td><td>level0</td><td>level0</td></tr>
+          <tr><td><code>tonal</code></td><td>level0</td><td>level0</td><td><strong>level1</strong></td><td>level0</td><td>level0</td></tr>
+          <tr><td><code>elevated</code></td><td>level1</td><td>level1</td><td><strong>level2</strong></td><td>level1</td><td>level0</td></tr>
+          <tr><td><code>outlined</code></td><td colspan="5">No hay tokens de elevación. El nivel 0 es el único que existe</td></tr>
+          <tr><td><code>text</code></td><td colspan="5">No hay tokens de elevación. El nivel 0 es el único que existe</td></tr>
         </tbody>
       </table>
-      <p>La única fila que coincide es la última, y no por casualidad: es la única donde bajar el nivel es lo correcto sin animación. Un objeto deshabilitado no se levanta de la superficie.</p>
-      <p class="sr-na">Material Web lo resuelve con <strong>cuatro tokens privados por componente</strong> —<code>--_container-elevation</code>, <code>--_focus-</code>, <code>--_hover-</code>, <code>--_pressed-</code>— y un elemento <code>&lt;md-elevation&gt;</code> aparte que los lee. Ours no tiene ese elemento: la sombra va en el propio componente, y el componente declara <strong>un</strong> nivel. Implementar la elevación interactiva es una decisión de componente, no de esta capa: cuando se tome, el lugar natural es un token <code>--md-comp-*-elevation-hover</code> junto al que ya existe.</p>
-      <p class="sr-na">Lo que <strong>sí</strong> hay aquí es el estado deshabilitado, y es real. En <code>3-comp/button.css</code> y <code>3-comp/icon-button.css</code> la regla existe y funciona; está en la sección de <a href="#composicion">Composición</a>.</p>
+      <p>Leído al revés, que es la lectura útil: <strong>solo el hover cambia el nivel, y lo sube en uno</strong>. El foco se queda donde estaba, la pulsación también, y el deshabilitado baja a nivel 0. Un objeto deshabilitado no se levanta de la superficie, y ese es el único estado donde bajar el nivel es lo correcto sin animación.</p>
+      <p>RDM Next implementa esa tabla con <strong>una sola regla</strong>, y estos son los valores medidos en el navegador con el ratón encima de cada botón:</p>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Variante</th><th scope="col">Reposo</th><th scope="col">Hover</th><th scope="col">Sombra computada en hover</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>elevated</code></td><td>level1</td><td><strong>level2</strong></td><td><code>0 1px 2px, 0 2px 6px 2px</code></td></tr>
+          <tr><td><code>filled</code></td><td>level0</td><td><strong>level1</strong></td><td><code>0 1px 2px, 0 1px 3px 1px</code></td></tr>
+          <tr><td><code>tonal</code></td><td>level0</td><td><strong>level1</strong></td><td><code>0 1px 2px, 0 1px 3px 1px</code></td></tr>
+          <tr><td><code>outlined</code></td><td>level0</td><td>level0</td><td>Sin cambio</td></tr>
+          <tr><td><code>text</code></td><td>level0</td><td>level0</td><td>Sin cambio</td></tr>
+        </tbody>
+      </table>
+      <p>El caso del <code>filled</code> es el único en el que la elevación se ve de verdad: es el único variante que sale de nivel 0, donde no hay sombra ninguna, y el nivel 1 es justo la sombra mínima que dibuja M3. En el <code>elevated</code> el salto del 1 al 2 es un crecimiento de la sombra difusa, porque la nítida es idéntica en los dos niveles.</p>
+      <h3>Por qué el foco y la pulsación no tienen ninguna regla</h3>
+      <p>Porque su nivel en M3 es el de reposo, y el de reposo ya lo declara <code>--md-comp-button-elevation</code>. Escribir <code>:focus-visible</code> o <code>:active</code> con el mismo valor sería ruido que aparenta ser una decisión. Lo que sí hacen esos dos estados es mover la capa de estado, y eso está en <a href="button.html">Button</a>.</p>
+      <p class="sr-na">Un dato negativo que viene de los mismos archivos y que cierra el tema para los botones de icono: <strong>M3 no declara ningún token de elevación para ningún botón de icono</strong> —ni <code>standard</code>, ni <code>filled</code>, ni <code>tonal</code>, ni <code>outlined</code>— en ninguna de sus tres generaciones de tokens. No es que quedarse en nivel 0 sea una decisión de este proyecto: es que el token que lo diría no existe. Está en la sección de <a href="#composicion">Composición</a>.</p>
+      <p class="sr-na">Y el deshabilitado sí es un consumidor real, en <code>3-comp/button.css</code> y <code>3-comp/icon-button.css</code>. Medido sobre el botón <code>elevated</code> deshabilitado de esta página, con el ratón encima: sigue en nivel 0, y <code>:hover</code> ni siquiera se activa, porque el botón declara <code>pointer-events: none</code>.</p>
     </article>
 
     <hr class="md-divider">
@@ -458,10 +475,10 @@
 
       <h3>Con Icon Button, que se queda en el nivel 0</h3>
       <p><code>3-comp/icon-button.css</code> declara <code>--md-comp-icon-button-elevation</code> y sus cuatro variantes apuntan a <code>level0</code>. Ninguna se levanta.</p>
-      <p class="sr-na">No es un descuido, y hay una razón de medida: el <code>elevated</code> del botón existe porque su relleno es <code>surface-container-low</code>, que sobre una superficie de color se camufla. El botón de icono no tiene una variante <code>elevated</code> porque no tiene relleno propio que camuflar: sus otras tres variantes son transparentes, <code>primary</code> o <code>secondary-container</code>, y las tres se separan sin sombra.</p>
+      <p class="sr-na">No es un descuido, y hay dos razones. La primera es de medida: el <code>elevated</code> del botón existe porque su relleno es <code>surface-container-low</code>, que sobre una superficie de color se camufla. El botón de icono no tiene una variante <code>elevated</code> porque no tiene relleno propio que camuflar: sus otras tres variantes son transparentes, <code>primary</code> o <code>secondary-container</code>, y las tres se separan sin sombra. La segunda es de M3: <strong>no declara ningún token de elevación para ningún botón de icono</strong>, en ninguna de sus tres generaciones. El nivel 0 no es una elección conservative: es el único valor que la fuente declara.</p>
 
       <h3>Con un estado deshabilitado, que sí es un consumidor</h3>
-      <p>Los dos componentes con relleno bajan a <code>level0</code> en <code>:disabled</code>. Es el único estado de elevación que existe en el sistema.</p>
+      <p>Los dos componentes con relleno bajan a <code>level0</code> en <code>:disabled</code>. Es, con el hover, el otro estado de elevación que existe en el sistema.</p>
       <div class="sr-canvas">
         <button class="md-button md-button-elevated" type="button"><span class="md-button-label">Reposo</span>
           <span class="md-button-touch"></span>
@@ -612,7 +629,7 @@
 
     <article class="sr-section" id="rdm-next-y-m3">
       <h2>RDM Next y M3</h2>
-      <p>Tres divergencias. Las dos primeras son <strong>decisiones de arquitectura</strong>; la tercera es un <strong>hueco del sistema</strong>. No son lo mismo, y por eso van separadas.</p>
+      <p>Tres divergencias, y <strong>ninguna es un hueco abierto</strong>. Las dos primeras son <strong>decisiones de arquitectura</strong>: se pueden defender. La tercera es una <strong>decisión de implementación</strong>, y sigue siendo una diferencia con M3 aunque el trabajo que faltaba esté hecho. No son lo mismo, y por eso van separadas.</p>
 
       <h3>El nombre del token oficial no significa lo mismo aquí <span class="sr-na">(decisión de arquitectura)</span></h3>
       <p><code>--md-sys-elevation-level3</code> existe en los dos lados con el <strong>mismo nombre</strong> y <strong>valores distintos</strong>:</p>
@@ -637,15 +654,16 @@
       <p>Material Web expone un web component <code>&lt;md-elevation&gt;</code> que se coloca dentro del elemento y dibuja dos <code>::before</code> y <code>::after</code> con la opacidad en la regla, no en el color.</p>
       <p>Aquí son <strong>doce clases</strong>, y la opacidad va dentro del color con <code>rgb(... / 0.3)</code>. La diferencia no es cosmética: un web component con shadow DOM no se puede estilizar desde fuera con clases, y este sistema es HTML y CSS estático sin capa de build. Es el mismo compromiso que explica la portada: pierde interoperabilidad directa y gana escribir menos.</p>
 
-      <h3>La elevación interactiva no está implementada <span class="sr-na">(hueco del sistema)</span></h3>
-      <p>Es el único punto de esta vista que es un <strong>hueco</strong>, y no de esta capa sino de la capa de componentes. Está desarrollado en detalle en <a href="#comportamiento">Comportamiento</a>; queda aquí para que la lista de huecos del sistema esté completa.</p>
+      <h3>La elevación interactiva, y por qué 300ms y no 280 <span class="sr-na">(decisión de implementación)</span></h3>
+      <p>Esta sí fue un hueco del sistema, y ya no lo es. Queda en la lista porque el número que se usa no es el de M3, y eso hay que verlo con las dos fuentes abiertas.</p>
       <ul>
-        <li><strong>M3 sube la elevación en hover, foco y pulsación.</strong> El botón de Material Web tiene cuatro tokens privados para ello, uno por estado.</li>
-        <li><strong>RDM Next no sube nunca.</strong> Los tres componentes existentes solo mueven la opacidad de la capa de estado. El único estado de elevación real es <code>:disabled</code>, que baja a nivel 0.</li>
-        <li><strong>Dónde se resolvería:</strong> en la capa 3, con un token <code>--md-comp-*-elevation-hover</code> junto al <code>--md-comp-*-elevation</code> que ya existe. No en <code>elevation.css</code>, que no tiene estado.</li>
-        <li><strong>Por qué no se ha hecho ya:</strong> porque implementarlo bien pide una transición, y el nivel de reposo de cada componente tendría que declararse aparte. Con un solo nivel implementado en todo el catálogo —el <code>elevated</code> del botón— no hay todavía una jerarquía que la elevación interactiva vaya a expresar.</li>
+        <li><strong>Lo que hace M3:</strong> sube la elevación en <strong>hover, y solo en hover</strong>. Cada variante de botón declara cuatro tokens privados, y el de hover es el único cuyo valor difiere del de reposo.</li>
+        <li><strong>Lo que hace RDM Next:</strong> lo mismo, con un token por componente —<code>--md-comp-button-elevation-hover</code>— y una regla, <code>.md-button:hover</code>. Los valores están medidos en la tabla de <a href="#comportamiento">Comportamiento</a>.</li>
+        <li><strong>Dónde NO se resolvió:</strong> en esta capa. <code>elevation.css</code> no tiene estados y no los necesita: los seis tokens son niveles, no reacciones. La decisión de qué nivel se pide en cada estado es de la capa 3, donde vive cada componente.</li>
+        <li><strong>Por qué no hay tokens para el foco ni la pulsación:</strong> porque en M3 su valor es el de reposo. Implementarlos habría sido escribir dos reglas que no cambian nada.</li>
+        <li><strong>La única cifra que difiere:</strong> la duración. M3 usa 280ms y aquí se usa <code>medium2</code>, 300ms, porque 280ms no es ningún token de <code>2-sys/motion.css</code> y la REGLA 1 prohíbe escribirlo. Es la misma razón por la que el <code>&lt;md-elevation&gt;</code> de Google lleva un <code>TODO</code> en el sitio.</li>
       </ul>
-      <p class="sr-na">Es el único hueco de esta capa que no es una diferencia de criterio. Los otros dos son decisiones de arquitectura, y se pueden defender; este es trabajo que falta.</p>
+      <p class="sr-na">Los botones de icono no participan, y no por criterio: M3 no declara tokens de elevación para ninguno de sus variantes, en ninguna generación. Ver <a href="icon-button.html">Icon Button</a>.</p>
     </article>
 
   </main>
