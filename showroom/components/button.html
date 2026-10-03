@@ -484,16 +484,31 @@
       </div>
       <table class="sr-table">
         <thead>
-          <tr><th scope="col">Estado</th><th scope="col">En producción</th><th scope="col">Capa de estado</th><th scope="col">Efecto</th></tr>
+          <tr><th scope="col">Estado</th><th scope="col">En producción</th><th scope="col">Capa de estado</th><th scope="col">Efecto</th><th scope="col">Elevación</th></tr>
         </thead>
         <tbody>
-          <tr><td>Enabled</td><td>—</td><td>0%</td><td>Reposo</td></tr>
-          <tr><td>Hovered</td><td><code>:hover</code></td><td>8%</td><td>La capa aparece sobre el contenido</td></tr>
-          <tr><td>Focused</td><td><code>:focus-visible</code></td><td>10%</td><td>La capa aparece, más un anillo de foco de 3px</td></tr>
-          <tr><td>Pressed</td><td><code>:active</code></td><td>10%</td><td>La capa se intensifica</td></tr>
-          <tr><td>Disabled</td><td><code>[disabled]</code></td><td>0%</td><td>Relleno al 10%, contenido al 38%</td></tr>
+          <tr><td>Enabled</td><td>—</td><td>0%</td><td>Reposo</td><td>Nivel de reposo</td></tr>
+          <tr><td>Hovered</td><td><code>:hover</code></td><td>8%</td><td>La capa aparece sobre el contenido</td><td><strong>Sube un nivel</strong></td></tr>
+          <tr><td>Focused</td><td><code>:focus-visible</code></td><td>10%</td><td>La capa aparece, más un anillo de foco de 3px</td><td>Igual que en reposo</td></tr>
+          <tr><td>Pressed</td><td><code>:active</code></td><td>10%</td><td>La capa se intensifica</td><td>Igual que en reposo</td></tr>
+          <tr><td>Disabled</td><td><code>[disabled]</code></td><td>0%</td><td>Relleno al 10%, contenido al 38%</td><td><strong>Baja a nivel 0</strong></td></tr>
         </tbody>
       </table>
+      <p>La columna de elevación es la única que depende de la variante, y por eso va aparte. Estos son los niveles, medidos en el navegador con el ratón encima de cada botón:</p>
+      <table class="sr-table">
+        <thead>
+          <tr><th scope="col">Variante</th><th scope="col">Reposo</th><th scope="col">Hover</th><th scope="col">Lectura</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>elevated</code></td><td>level1</td><td><strong>level2</strong></td><td>Crece la difusa; la nítida es idéntica en los dos niveles</td></tr>
+          <tr><td><code>filled</code></td><td>level0</td><td><strong>level1</strong></td><td>El único caso en el que se ve de verdad: sale de la sombra identidad</td></tr>
+          <tr><td><code>tonal</code></td><td>level0</td><td><strong>level1</strong></td><td>Igual que <code>filled</code></td></tr>
+          <tr><td><code>outlined</code></td><td>level0</td><td>level0</td><td>M3 no declara tokens de elevación para esta variante</td></tr>
+          <tr><td><code>text</code></td><td>level0</td><td>level0</td><td>M3 no declara tokens de elevación para esta variante</td></tr>
+        </tbody>
+      </table>
+      <p class="sr-na"><strong>El hover es el único estado que cambia la elevación, y la sube en uno.</strong> Es lo que declaran los tokens de M3: el <code>focused</code> y el <code>pressed</code> tienen el mismo valor que el de reposo, así que no tienen ninguna regla propia. Pasa el ratón por encima de las muestras de arriba: la diferencia se ve en el <code>filled</code> y en el <code>elevated</code>, y no se ve en ninguna otra parte.</p>
+      <p class="sr-na">A diferencia de la capa de estado, el hover <strong>no se puede enseñar con una celda</strong>. No hay ninguna clase que lo fuerce, porque las pseudo-clases no leen atributos, y el valor al que sube sale de un token que no existe fuera del componente. Las cinco celdas de arriba muestran la capa, no la elevación.</p>
       <p>El <code>outlined</code> y el <code>text</code> tienen el relleno invisible en reposo, pero se comportan igual que el resto en disabled, hover, focus y pressed. M3 lo dice de forma explícita para los dos.</p>
       <h3>En producción y en esta página son dos cosas distintas</h3>
       <p>En un producto, la capa de estado es el <code>::after</code> del botón y la activa una pseudo-clase. El autor no hace nada: sale sola de la interacción.</p>
@@ -528,6 +543,13 @@
       <h2>Comportamiento</h2>
       <p>La capa de estado hace una transición de opacidad de 100ms con la curva estándar, leída de los tokens de <code>2-sys/motion.css</code>.</p>
       <p>El color de la capa sale de <code>currentColor</code>, así que toma el de la etiqueta sin declarar un token propio. Por eso el componente no tiene un <code>--md-comp-button-state-layer-color</code>: sería el mismo valor que el de la etiqueta, y duplicarlo obligaría a cambiarlo dos veces.</p>
+      <h3>La sombra sube un nivel en hover</h3>
+      <p>El botón lleva una transición de <code>box-shadow</code> de <strong>300ms</strong> con la curva <code>emphasized</code>, leída de los mismos tokens de <code>2-sys/motion.css</code>. Medido en el navegador: <code>transition-duration</code> computa <code>0.3s</code> y <code>transition-property</code>, <code>box-shadow</code>.</p>
+      <p>M3 usa 280ms, y esa cifra no es un token del sistema: no está en la escala de duraciones, y escribirla en un componente rompería la REGLA 1. Se usa <code>medium2</code>, que son 300ms, el valor disponible más cercano: a 20ms del de M3, cuando <code>medium1</code> está a 30ms. Es la misma razón por la que el <code>&lt;md-elevation&gt;</code> de Material Web lleva un <code>TODO</code> en el sitio.</p>
+      <p class="sr-na">La transición va en el elemento y la de la capa de estado en su <code>::after</code>, así que no se pisan. Y los tokens viven en la capa 3 porque es la única que puede saber qué nivel se pide en cada estado: <code>2-sys/elevation.css</code> declara niveles, no reacciones. Ver <a href="elevation.html#comportamiento">Elevation</a>.</p>
+      <h3>Por qué el hover es el único estado con regla</h3>
+      <p>Porque es el único cuyo valor de M3 difiere del de reposo. Los cuatro tokens privados que declara cada variante dan esto: <code>filled</code> y <code>tonal</code> suben de 0 a 1 en hover, <code>elevated</code> de 1 a 2, y el <code>focused</code> y el <code>pressed</code> repiten el de reposo. Escribir reglas para esos dos últimos sería ruido que aparenta ser una decisión.</p>
+      <p class="sr-na">El <code>elevated</code> es el único que tiene una sombra en reposo, y por eso es el que más se nota el cambio. El <code>filled</code> es el que más lo gana: sale de la sombra identidad, que no dibuja nada, y pasa a la sombra mínima de M3. Los valores están en la sección de <a href="#states">States</a>.</p>
       <h3>El ripple de M3</h3>
       <p>M3 pone una onda de color que se expande desde el punto de pulsación, y la implementa con un elemento que necesita JavaScript para conocer las coordenadas del puntero. Este proyecto no tiene JavaScript. La propia especificación reconoce la capa de estado como la alternativa sin JS.</p>
       <p>La consecuencia visible: la pulsación se comunica con la capa al 10% en vez de con una onda. No se ha aproximado con una transición de escala, porque sería una imitación de una animación que no es.</p>
@@ -738,8 +760,14 @@
           <tr><td>Grosor del anillo de foco</td><td>3px</td><td><code>--md-comp-button-focus-width</code></td></tr>
           <tr><td>Separación del anillo</td><td>2px</td><td><code>--md-comp-button-focus-offset</code></td></tr>
           <tr><td>Transición de la capa</td><td>100ms</td><td><code>--md-comp-button-state-duration</code></td></tr>
+          <tr><td>Elevación en reposo</td><td>level0, y level1 en <code>elevated</code></td><td><code>--md-comp-button-elevation</code></td></tr>
+          <tr><td>Elevación en hover</td><td>level1, y level2 en <code>elevated</code></td><td><code>--md-comp-button-elevation-hover</code></td></tr>
+          <tr><td>Transición de la sombra</td><td>300ms</td><td><code>--md-comp-button-elevation-duration</code></td></tr>
+          <tr><td>Curva de la sombra</td><td>emphasized</td><td><code>--md-comp-button-elevation-easing</code></td></tr>
         </tbody>
       </table>
+      <p class="sr-na">Los dos tokens de elevación son reapuntables desde el marcado por la misma vía que los demás: una regla de la capa del showroom que escriba <code>--md-comp-button-elevation-hover</code>. Medido: una regla de la capa <code>showroom</code> que lo apunta a <code>level4</code> hace que un <code>filled</code> en hover compute <code>0 2px 3px, 0 6px 10px 4px</code>, que es la geometría del nivel 4. Es lo que hacen <code>.md-button-outlined</code> y <code>.md-button-text</code> al no declararlo, que es exactamente lo que hace M3, donde esas dos variantes no tienen token de elevación.</p>
+      <p class="sr-na">Los otros dos, la duración y la curva, existen para que el componente no escriba un número. Y por eso son dos y no uno: la REGLA 1 prohíbe los <code>ms</code> en <code>3-comp/</code>, y la duración sola no alcanza porque la curva también es un valor de <code>2-sys/motion.css</code>.</p>
     </article>
 
     <hr class="md-divider">
