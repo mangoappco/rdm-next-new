@@ -43,10 +43,23 @@
    El color del divisor NO se aplica al fondo del elemento. Se aplica al
    `color` del texto, y el `::before` lo toma con `currentColor`.
 
-   La razon: asi el divisor hereda el color del contexto. Si un contenedor
-   tiene `color: var(--md-sys-color-primary)`, el divisor que contiene se ve
-   primario sin que nadie le pase una clase. Es el mismo patron que usa la
-   capa de estado en 2-sys/state.css, y es una decision de M3, no nuestra.
+   OJO CON LO QUE ESTO NO ES, porque es facil deducirlo al reves:
+   `currentColor` NO hace que el divisor herede el color de su contenedor.
+
+   `.md-divider` declara `color` el mismo, y una declaracion gana a la
+   herencia. Medido en el navegador: un `<hr class="md-divider">` dentro de un
+   contenedor con `color: var(--md-sys-color-primary)` se sigue viendo en
+   `outline-variant` (#cac4d0 en claro), no en `primary`.
+
+   Lo que si hace `currentColor` es que la linea siga al `color` DEL PROPIO
+   elemento, y eso es exactamente lo que hace falta: permite reapuntar
+   `--md-comp-divider-color` desde el markup sin tener que tocar el `::before`.
+   Si un divisor tiene que adoptar el color de su contexto, hay que cambiar
+   el token, no confiar en la herencia: es lo que hace `.md-divider-primary`.
+
+   Es el mismo patron que usa la capa de estado en 2-sys/state.css, y es una
+   decision de M3, no nuestra: el `:host` de Material Web declara `color`
+   con el mismo rol y el mismo `::before`.
 
    ---------------------------------------------------------------------------
    POR QUE `display: flex`

@@ -53,9 +53,18 @@
        --sr-line-strong outline. Lo que separa SECCIONES y acota la pagina.
                         Aqui el usuario tiene que poder ver donde acaba una
                         seccion y empieza otra, asi que va por encima del
-                        3:1 de WCAG 1.4.11: 4.55:1 en claro y 6.10:1 en
-                        oscuro. Con outline-variant se quedaba en 1.70:1 y
-                        las secciones se fundian con el fondo. */
+                        3:1 de WCAG 1.4.11: 4.33:1 en claro y 5.87:1 en
+                        oscuro, medidos sobre el fondo real del separador, que
+                        es `surface` de .sr-page. Con outline-variant se
+                        quedaba en 1.62:1 y 1.99:1 y las secciones se fundian
+                        con el fondo.
+
+                        Ojo con el fondo de la medicion: 4.55:1 y 6.10:1 son
+                        los mismos dos tonos medidos sobre
+                        surface-container-lowest, la superficie de .sr-table, y
+                        no es donde vive el separador. El 3:1 se cumple en los
+                        dos fondos, pero la cifra que describe esta separacion
+                        es la primera. */
     --sr-line:        var(--md-sys-color-outline-variant);
     --sr-line-strong: var(--md-sys-color-outline);
     --sr-stage-bg: var(--md-sys-color-surface-container-low);
@@ -954,6 +963,56 @@
   .sr-spec-rule {
     display: block;
     border-block-start: var(--md-sys-shape-stroke-thin) solid currentColor;
+  }
+
+  /* ------------------------------------------------------------------------
+     SPECIMEN DE UNA LINEA
+     --------------------------------------------------------------------------
+     El marco donde se dibuja un <hr> de 1px dentro de una celda de tabla.
+
+     Existe por el divisor, y por una sola razon, que es una colision de rol.
+
+     La linea del divisor por defecto es `--md-sys-color-outline-variant`, y la
+     rejilla de .sr-table dibuja sus bordes con `--sr-line`, que es
+     `--md-sys-color-outline-variant`. Son el MISMO token. Sin marco, la
+     muestra se soldaba con la celda que la rodeaba y no se distinguia donde
+     empezaba ni donde terminaba. Medido sobre surface-container-lowest: la
+     muestra da 1.70:1 en claro y 2.07:1 en oscuro, y el borde de la celda, el
+     mismo tono. En la fila del inset era peor: los 16px del lado inicial se
+     confundian con la rejilla y no se veian.
+
+     Y por eso el marco va en `outline` y no en `--sr-line`. El rol decorativo
+     lo ocupa la propia muestra: un marco del mismo color no aportaria nada. Es
+     el mismo criterio que separa --sr-line de --sr-line-strong mas arriba,
+     aplicado al marco de un specimen. Medido: `outline` da 4.55:1 en claro y
+     6.10:1 en oscuro sobre la superficie de la tabla, y por eso el marco se ve
+     donde la muestra, deliberadamente, no.
+
+     EL FONDO
+     ---------
+     `surface-container-low`, el mismo que pinta .sr-stage, para que la muestra
+     se lea igual dentro y fuera de la tabla. Aqui el criterio no es maximizes
+     contraste sino que el ojo sepa donde empieza el specimen.
+
+     POR QUE GRID Y NO UN BLOQUE
+     ---------------------------
+     Un <hr> es una caja de 1px de alto: como bloque normal se pegaba al borde
+     superior del marco y la mitad del marco quedaba debajo. `display: grid`
+     con `align-items: center` la centra en vertical. El ANCHO lo sigue mandando
+     el `width: 100%` del componente.
+
+     Y el marco no declara padding a proposito: si lo declarara, el inset del
+     divisor se mediria contra el marco y no contra la celda, y la fila que
+     documenta 16px estaria mostrando otra medida. Un specimen tiene que medir
+     lo que mide el componente, no lo que el marco le agrega. */
+  .sr-spec-line {
+    display: grid;
+    align-items: center;
+    block-size: var(--md-ref-spacing-500);
+    background-color: var(--sr-stage-bg);
+    border-radius: var(--md-sys-shape-corner-small);
+    outline: var(--md-sys-shape-stroke-thin) solid var(--md-sys-color-outline);
+    outline-offset: calc(var(--md-ref-spacing-0) - var(--md-sys-shape-stroke-thin));
   }
 
   /* Indice de componentes (index.html) */
