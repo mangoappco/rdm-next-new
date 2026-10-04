@@ -64,6 +64,30 @@
                   libreria publique siempre un punto de entrada para iconos,
                   aunque todavia no haya ningun componente que lo use.
 
+      REGLA 10 Toda clase del sistema que usa el showroom existe
+               Recorre los atributos class de todo el HTML del showroom y
+               comprueba que cada clase con prefijo md- este declarada en
+               alguna hoja de src/css/.
+
+               Por que necesita una regla: una clase inexistente no da error,
+               da silenciosidad. No hay warning, no hay regla invalida, no hay
+               nada en consola. El elemento se dibuja con lo que le hereden y
+               la pagina parece que funciona.
+
+               Los dos fallos reales queatrapa:
+                 - .md-bg-black en la vista de Elevation, dos specimens que
+                   no pintaban nada: la celda decia #000 y la muestra salia
+                   transparente. Se resolvia con .md-bg-shadow, que si existe.
+                 - El borrado de las 32 clases .md-type-* de 2-sys. Las cuatro
+                   vistas del showroom llevaban md-type-body-medium en el body,
+                   y reset.css ya no declara tipografia en el body, asi que al
+                   borrarlas TODO el showroom paso a renderizar en Times New
+                   Roman a 16px. El verificador paso las nueve reglas porque
+                   ninguna comprobaba que una clase existiera.
+
+               Solo se miran las clases md-*, no las sr-*: esas son el chrome
+               del propio showroom y viven en su capa, no en la libreria.
+
 .PARAMETER Quiet
     No muestra el detalle de cada archivo que pasa. Solo el resumen.
 
@@ -937,6 +961,72 @@ else {
     }
 }
 
+# ============================================================================
+# REGLA 10 - Toda clase del sistema que usa el showroom existe
+# ---------------------------------------------------------------------------
+# Se construye el conjunto de clases que la libreria declara, y despues se
+# recorren los atributos class de todo el HTML del showroom buscando prefijos
+# md- que no esten en ese conjunto.
+#
+# POR QUE NO BASTA CON QUE EL VERIFICADOR PASE
+# --------------------------------------------
+# Una clase que no existe no produce ningun fallo del motor: la regla que la
+# declaraba no esta, y el elemento se dibuja con lo que herede. No hay aviso,
+# no hay warning, no hay nada en consola. Es el fallo mas silencioso que hay,
+# y por eso conviene mirarlo explicitamente.
+#
+# COMO SE EXTRAEN LAS CLASES DECLARADAS
+# -------------------------------------
+# Se lee el codigo SIN comentarios de las hojas de src/css/, y se buscan
+# selectores de clase. El conjunto es un superconjunto a proposito: el regex
+# tambien recoge cosas que no son clases (una unidad dentro de un valor, por
+# ejemplo). Que sobre es inofensivo, porque aqui solo se pregunta "esta
+# definida": responder que si cuando la verdad es que no daria un falso
+# negativo, que es el unico error posible en esta comprobacion.
+#
+# POR QUE SOLO md-* Y NO sr-*
+# -----------------------------
+# Las clases sr-* son el chrome del showroom y viven en
+# showroom/assets/showroom.css, que esta fuera de src/css/ y por tanto fuera de
+# Get-CssFiles. La frontera que importa es la de la libreria: lo que el
+# showroom le pide al sistema.
+#
+# POR QUE SE EXCLUYE showroom/templates/
+# --------------------------------------
+# El template es un andamiaje, no una vista: lleva nombres de clase de ejemplo
+# (md-componente) que el autor sustituye al copiarlo, y no esta enlazado desde
+# la portada, asi que no se sirve. Comprobarlo daria trece fallos permanentes
+# que nadie podria corregir sin romper la plantilla. Lo que si se comprueba es
+# que cada vista ya escrita pase.
+# ============================================================================
+
+$definedClasses = @{}
+
+foreach ($file in $files) {
+    $code = Get-CodeOnly $file.FullName
+    foreach ($m in [regex]::Matches($code, '\.([a-zA-Z][a-zA-Z0-9_-]*)')) {
+        $definedClasses[$m.Groups[1].Value] = $true
+    }
+}
+
+foreach ($html in $htmlFiles) {
+    # El template es un andamiaje con clases de ejemplo, no una vista.
+    if ($html.FullName -match '\\showroom\\templates\\') { continue }
+
+    $raw = [IO.File]::ReadAllText($html.FullName)
+    $rel = Get-RelPath $html.FullName $ProjectRoot
+
+    foreach ($m in [regex]::Matches($raw, 'class\s*=\s*"([^"]*)"')) {
+        foreach ($cls in ($m.Groups[1].Value -split '\s+')) {
+            if ($cls -and $cls -like 'md-*' -and -not $definedClasses.ContainsKey($cls)) {
+                Add-Issue -Rule 'REGLA 10' -File $rel -Line 0 `
+                          -Message "la clase '$cls' no existe: ninguna hoja de src/css/ la declara. El elemento se dibujara con lo que herede, y no avisa" `
+                          -Snippet $m.Value
+            }
+        }
+    }
+}
+
 Write-Host '  Reglas aplicadas:' -ForegroundColor DarkGray
 Write-Host '    REGLA 1  sin valores crudos fuera de 1-ref'
 Write-Host '    REGLA 2  direccion de dependencias entre capas'
@@ -947,10 +1037,11 @@ Write-Host '    REGLA 6  sin estilos inline ni <style> en el showroom'
 Write-Host '    REGLA 7  sincronizacion de bloques de tema'
 Write-Host '    REGLA 8  formato, specimens y contraste de las tablas de tokens'
 Write-Host '    REGLA 9  los iconos se piden con .md-icon, no con la clase de Google'
+Write-Host '    REGLA 10 toda clase md-* que usa el showroom existe en src/css'
 Write-Host ''
 
 if ($script:Issues.Count -eq 0) {
-    Write-Host '  OK - La arquitectura se respeta en las 9 reglas.' -ForegroundColor Green
+    Write-Host '  OK - La arquitectura se respeta en las 10 reglas.' -ForegroundColor Green
     Write-Host ''
     exit 0
 }

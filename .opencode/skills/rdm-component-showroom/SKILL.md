@@ -1136,7 +1136,7 @@ Declared in `src/css/main.css`, in this order. The order **is** the precedence t
 | `3-comp/` | componentes | `--md-sys-*` |
 | `utilities` | atajos de alto nivel | reserved, currently empty |
 
-## The 9 rules, enforced by `tools/verify-tokens.ps1`
+## The 10 rules, enforced by `tools/verify-tokens.ps1`
 
 Run it before committing, always:
 
@@ -1155,6 +1155,7 @@ powershell -ExecutionPolicy Bypass -File .\tools\verify-tokens.ps1
 | REGLA 7 | The two blocks of each theme file stay synchronized |
 | REGLA 8 | Token tables in the showroom paint their value and meet contrast |
 | REGLA 9 | Icons are requested with `.md-icon`, never with Google's class |
+| REGLA 10 | Every `md-*` class the showroom uses is actually declared in `src/css/` |
 
 ## What a showroom may and may not do
 
@@ -1174,6 +1175,15 @@ powershell -ExecutionPolicy Bypass -File .\tools\verify-tokens.ps1
 - put `material-symbols-*` in a `class` attribute (REGLA 9). Google's sheet is
   loaded whole by `1-ref/iconfont.css`, so that class is available and already
   neutralised by the layer: using it *works* and hides the bug. Use `.md-icon`.
+- use an `md-*` class that no sheet declares (REGLA 10). A missing class does not
+  error, it fails silently: the element renders with whatever it inherits and the
+  page looks fine. This is how `.md-bg-black` shipped two empty swatches, and how
+  deleting the 32 `.md-type-*` classes left the whole showroom in Times New Roman.
+
+`showroom/templates/` is exempt from REGLA 10: it is a scaffold holding example
+class names (`md-componente`) that the author replaces when copying it, and it is
+not linked from the portada. Checking it would produce permanent failures nobody
+could fix without breaking the template.
 
 If demonstrating a component requires a token that does not exist, **report the gap to the
 user** before creating it. A showroom that needs a token the system does not have has
@@ -1318,7 +1328,7 @@ This project has its own verifier. It is not optional, and it is not covered by 
 powershell -ExecutionPolicy Bypass -File .\tools\verify-tokens.ps1
 ```
 
-It must print `OK - La arquitectura se respeta en las 9 reglas` and exit 0. This is what
+It must print `OK - La arquitectura se respeta en las 10 reglas` and exit 0. This is what
 proves REGLA 6 in particular: that no `style=` attribute and no `<style>` block crept into
 the new HTML.
 
