@@ -178,51 +178,60 @@
   border-radius: var(--md-comp-icon-button-shape);
   background-color: var(--md-comp-icon-button-container-color);
 
-  /* Que el navegador no pinta su widget. `appearance` sobrevive a que el autor
-     declare background y border: sin esta linea un <button> nativo puede
-     seguir trayendo su propio fondo y su propio borde.
+  /* AQUI HUBO UNA DECLARACION `-webkit-appearance: none`, Y YA NO ESTA
+     ------------------------------------------------------------------
+     Este componente es un <button> nativo, y un <button> nativo puede pintar
+     su propio fondo y su propio borde por mucho que el autor declare
+     `background` y `border`. Por eso se declaraba aqui. Se midio, y en los
+     tres motores la linea no cambia un solo pixel de este componente. Se
+     quita, y lo que sigue es la medicion y el motivo.
 
-     POR QUE AQUI SI Y EN M3 NO
-     --------------------------
-     Es tentador copiar esto de button.css, pero el motivo NO es el mismo y la
-     diferencia esta en la arquitectura, no en la receta.
+     LA MEDICION
+     -----------
+     Captura de pantalla del elemento real, comparada pixel a pixel con la
+     misma captura cambiando solo `appearance` a `auto`. Se comprobo que el
+     cambio de propiedad ocurria de verdad, leyendo las dos: `appearance` y
+     `-webkit-appearance` pasaban de `none` a `auto`.
 
-     El `button` de M3 SI es un <button> nativo por dentro —su nodo .button lo
-     es— y por eso su _shared.scss:87 declara `-webkit-appearance: none`. Ahi la
-     linea es copia literal.
+     WebKit 26.6, build de Playwright instalado FUERA de este proyecto:
 
-     El `icon-button` de M3 NO lo es. Su _shared.scss:19 abre con `:host` y su
-     .icon-button (linea 48) es un <div> dentro de un elemento personalizado
-     <md-icon-button>. Un div no trae chrome nativo, asi que alli la declaracion
-     no hace falta y por eso no esta. No es un olvido: es que el problema no
-     existe.
+       <button> desnudo, auto contra none                 4722 px distintos
+       los 7 .md-icon-button de la vista, auto contra none    0 px distintos
 
-     Aqui si existe, porque este componente SI es un <button> nativo, que es
-     justo lo que el showroom documenta en la seccion de accesibilidad: el
-     elemento aporta el teclado, el foco y la activacion. A cambio de ese
-     comportamiento hay que devolverle la parte visual que el navegador
-     impone, y esto es esa parte.
+     Chromium, las mismas dos mediciones: 4669 px y 0 px. Y el commit anterior
+     ya habia medido Firefox con firefox --headless: tambien 0 px.
 
-     Verificado, con getComputedStyle: en Chrome `appearance` computada a `none`
-     en los 26 .md-icon-button de la vista, incluidos los deshabilitados, y el
-     fondo y el borde ya son los del componente porque
-     `--md-comp-icon-button-container-color` y `--md-comp-icon-button-outline-color`
-     resuelven a `transparent`.
+     QUE 0 px NO SIGNIFICA QUE `appearance` NO FUNCIONE
+     --------------------------------------------------
+     Los 4722 px del boton desnudo son la prueba de que si: la propiedad hace
+     exactamente lo que tiene que hacer. Lo que dice el 0 px de los siete
+     botones es que este componente ya no pinta widget nativo sin la linea.
 
-     Firefox, verificado con firefox --headless sobre los componentes reales: el
-     boton de icono se dibuja bien, con glifo y sin chrome nativo. Comparando
-     `appearance: none` contra `appearance: auto`, no hay diferencia visible.
+     Y eso tambien se midio, quitando una declaracion cada vez sobre un
+     <button> de prueba. En WebKit basta CUALQUIERA de estas para que el
+     widget desaparezca:
 
-     O sea que en los dos navegadores comprobados esta linea NO cambia nada
-     observable. Safari NO esta verificado: WebKit no corre en Windows sin
-     instalar su build, y ahi es donde podria quedar el riesgo, si queda alguno.
+       background, con color o transparente        0 px
+       border: 0                                  0 px
+       display: inline-flex                       0 px
 
-     Se conserva, y con un aviso: si WebKit resultara ser inocuo igual, esta
-     linea seria una declaracion sin efecto verificable, y entonces lo
-     honesto seria quitarla. Queda pendiente de esa comprobacion. Va por la
-     misma razon que en button.css: fidelidad al comportamiento de M3, no un
-     defecto visto. */
-  -webkit-appearance: none;
+     Este componente declara las tres. Por eso la linea no anade nada.
+
+     POR QUE SE QUITA AQUI Y NO SE QUITA EN button.css
+     --------------------------------------------------
+     Por de donde viene la declaracion, no por el elemento: en los dos casos
+     es un <button> nativo.
+
+     Aqui no es la receta de M3. El icon-button de M3 es un <div> dentro de un
+     <md-icon-button> —su _shared.scss:19 abre con `:host` y su .icon-button de
+     la linea 48 es un div— y un div no trae chrome nativo, asi que alla no hay
+     nada que declarar. Era una adaptacion nuestra, y una adaptacion que se ha
+     medido como inocua es una declaracion sin efecto verificable.
+
+     En button.css se queda por el motivo contrario: el nodo .button de M3 SI
+     es un <button> nativo, y su _shared.scss:87 declara
+     `-webkit-appearance: none` de forma literal. Ahi la linea es copia de la
+     receta, y quitarla seria apartarse de ella sin un motivo medido. */
 
   color: var(--md-comp-icon-button-icon-color);
   cursor: pointer;
