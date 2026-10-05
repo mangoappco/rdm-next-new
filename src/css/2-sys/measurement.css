@@ -180,8 +180,14 @@
      envuelve llega a 48dp. Por eso estos roles son distintos entre si.
      ====================================================================== */
 
-  /* Altura del boton. 40dp, mas bajo que el area tactil. */
-  --md-sys-measurement-button-height: var(--md-ref-spacing-500);
+  /* Altura del boton. 40dp, mas bajo que el area tactil.
+
+     Se lee de 1-ref/container-height.css y no de spacing.css, aunque 40px
+     este en la escala de espacio. La razon es la misma que ya esta escrito
+     en corner.css: una altura de contenedor no es un espaciado, y el nombre
+     del rol tiene que decir eso. Ver la nota de POR QUE UNA FAMILIA PROPIA
+     en 1-ref/container-height.css. */
+  --md-sys-measurement-button-height: var(--md-ref-container-height-small);
 
   /* Alto de una fila de lista estandar. */
   --md-sys-measurement-list-item-height: var(--md-ref-spacing-600);
@@ -208,15 +214,17 @@
      repetir el patron cuando se cubran large y xlarge.
 
      Dato: la escala de espacio de M3 tiene un salto de 24 entre space-700
-     (56) y space-900 (72). No hay ningun token de 96, y por eso el tamano
-     large no se puede expresar sin inventar uno.
+     (56) y space-900 (72), y su tope es 72. Los dos numeros que faltan, 96 y
+     136, estan fuera de esa escala, y por eso viven en
+     1-ref/container-height.css y no en spacing.css. Los numeros no cambian:
+     32, 40 y 56 son los mismos de antes.
      ====================================================================== */
 
   /* Altura del boton pequeno: 32dp, para acciones terciarias y toolbars. */
-  --md-sys-measurement-button-height-xsmall: var(--md-ref-spacing-400);
+  --md-sys-measurement-button-height-xsmall: var(--md-ref-container-height-xsmall);
 
   /* Altura del boton mediano: 56dp, la llamada a la accion principal. */
-  --md-sys-measurement-button-height-medium: var(--md-ref-spacing-700);
+  --md-sys-measurement-button-height-medium: var(--md-ref-container-height-medium);
 
   /* ==========================================================================
      MEDIDAS PROPIAS DEL BOTON
@@ -356,19 +364,21 @@
 
      LO QUE NO SE DECLARA: large y xlarge
      ------------------------------------
-     Sus contenedores miden 96 y 136, y ninguno de los dos numeros existe en
-     la escala de espacio de M3, que termina en 72. Anadirlos a 1-ref seria
-     crear primitivas por un componente, que es exactamente lo que este
-     proyecto no hace.
+     Sus contenedores miden 96 y 136. Los dos numeros YA EXISTEN, en
+     1-ref/container-height.css, que se creo precisamente para esto: no caben
+     en la escala de espacio de M3, que termina en 72, y M3 no les da otro
+     nombre que el de `$container-height`.
 
-     Es el mismo motivo por el que 3-comp/button.css no declara large ni
-     xlarge, y por el que su cabecera lo dice. Se anaden cuando un
-     componente real los pida, no antes.
+     Lo que no se declara son los ROLES de 2-sys, y por la regla de siempre:
+     un rol que ningun componente pide es un token muerto. Ni button.css ni
+     icon-button.css implementan todavia esos dos tamanos, asi que declararlos
+     aqui seria justement lo que el proyecto no hace. Se anaden el dia que un
+     componente los pida, y la primitiva ya esta esperandoles.
      ======================================================================= */
 
-  --md-sys-measurement-icon-button-height-xsmall: var(--md-ref-spacing-400);
-  --md-sys-measurement-icon-button-height-small:  var(--md-ref-spacing-500);
-  --md-sys-measurement-icon-button-height-medium: var(--md-ref-spacing-700);
+  --md-sys-measurement-icon-button-height-xsmall: var(--md-ref-container-height-xsmall);
+  --md-sys-measurement-icon-button-height-small:  var(--md-ref-container-height-small);
+  --md-sys-measurement-icon-button-height-medium: var(--md-ref-container-height-medium);
 
   --md-sys-measurement-icon-button-icon-xsmall: var(--md-ref-spacing-250);
   --md-sys-measurement-icon-button-icon-small:  var(--md-ref-spacing-300);

@@ -73,18 +73,18 @@
    ...en la capa mas baja, ganando al margen de 8px del navegador y perdiendo
    contra `.md-p-4 { padding: 16px }`, sin discusion posible.
 
-   POR QUE ESTO NOS PROTEGE
+   QUE @layer NO BLOQUEA var()
    ------------------------
-   Nuestra regla dice que 3-comp/ NO puede leer tokens de 1-ref/. Con @layer,
-   esa regla deja de ser una convencion y pasa a estar GARANTIZADA por el
-   motor del navegador: aunque alguien cometa el error de escribir
+   Nuestra regla dice que 3-comp/ NO puede leer tokens de 1-ref/. @layer NO
+   lo impide: var(--md-ref-*) en 3-comp/ resuelve igual, porque @layer solo
+   decide que regla gana en empate de especificidad, no que variables existen:
 
-       .mi-boton { color: var(--md-ref-palette-primary40); }
+       .mi-boton { color: var(--md-ref-palette-primary40); }  -- funciona, y esta mal --
 
-   la capa `ref` pierde contra `sys`, y el valor correcto gana.
+   La que si lo impide es la REGLA 2 de tools/verify-tokens.ps1.
 
-   Es defensa en profundidad: la arquitectura estadocumentada Y el motor la
-   hace cumplir.
+   @layer queda como defensa de cascada (comp gana a sys, sys a ref), no como candado de
+   dependencias.
 
    ---------------------------------------------------------------------------
    EL ORDEN DE IMPORTACION Y POR QUE IMPORTA
@@ -169,6 +169,7 @@
    propio que la mete en la capa `reset`. Ver el bloque de abajo.
    ========================================================================== */
 @import url("1-ref/corner.css")    layer(ref);
+@import url("1-ref/container-height.css") layer(ref);
 @import url("1-ref/easing.css")    layer(ref);
 @import url("1-ref/iconfont.css")  layer(ref);
 @import url("1-ref/opacity.css")   layer(ref);

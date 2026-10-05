@@ -1,0 +1,94 @@
+/* ==========================================================================
+   1-ref/container-height.css — ALTURAS DE CONTENEDOR (valores crudos)
+   ==========================================================================
+   QUE ES ESTE ARCHIVO
+   -------------------
+   CAPA 1 del sistema. Cinco medidas crudas, en px, que NO son espaciado.
+
+   POR QUE UN ARCHIVO PROPIO Y NO spacing.css
+   -------------------------------------------
+   M3 usa cinco alturas de contenedor en TODOS sus botones, y son las mismas
+   cinco en cada uno. Leidas de sus propios archivos de token:
+
+     tamano     container-height    icon-size
+     -------    ----------------    ---------
+     xsmall     32px                20px  (button)   20px  (icon-button)
+     small      40px                20px  (button)   24px  (icon-button)
+     medium     56px                24px               24px
+     large      96px                32px               32px
+     xlarge     136px               40px               40px
+
+   Verificado en tokens/versions/latest/sass/_md-comp-button-*.scss y en los
+   cuatro _md-comp-icon-button-*.scss. Las alturas coinciden una a una entre
+   los dos componentes; los tamanos de icono se diferencian solo en `small`.
+
+   Y aqui esta el problema. La escala de espacio de spacing.css es oficial de
+   M3 y va de Space 0 a Space 900, con Space N = (N / 100) x 8dp. Su tope es
+   Space 900 = 72px. Las alturas que faltan estan FUERA de esa escala:
+
+     96px    seria Space 1200
+     136px   seria Space 1700
+
+   O sea que 96 y 136 no son "los dos siguientes" de la reticula de espacio:
+   no existen en ella. Anadirlos a spacing.css obligaria a ese archivo a
+   dejar de ser la escala oficial de M3, que es su afirmacion central y la
+   razon de que los primitivos se llames como se llaman.
+
+   Y el nombre que M3 les da dice exactamente que son otra cosa:
+   `$container-height`. En M3 no hay NINGUN token de espacio -- no un archivo
+   de espaciado, ninguno -- y en cambio `$container-height` aparece en 17
+   archivos de token: button, icon-button, split-button, extended-fab,
+   button-group en sus dos variantes y los seis fab. Siete archivos mas lo
+   usan como `$container-width`.
+
+   Es el mismo argumento que ya esta escrito dos veces en este repositorio:
+
+     "un token de radio no es un token de espaciado aunque coincida el numero"
+     -- 1-ref/corner.css
+     "stroke no es spacing" -- 1-ref/stroke.css
+
+   Y el criterio se aplica igual al numero que coincide. Los tres primeros
+   valores, 32, 40 y 56, SI estan en la escala de espacio, asi que durante un
+   tiempo se leyeron de ahi y el sistema funciono. Lo que pasa es que si una
+   medida no es espaciado, tampoco lo es cuando el numero coincide con un
+   token de espaciado: leerla de spacing.css daria a entender que
+   `--md-sys-measurement-button-height` es una medida de retícula, y no lo es.
+   Es la altura de un boton, que es lo que M3 dice.
+
+   ASI QUE ESTOS CINCO VALORES, Y NO LOS TRES QUE HOY ESTABAN
+   ----------------------------------------------------------
+   Aqui estan los cinco, no solo los dos que faltan. Declarar 96 y 136 en un
+   archivo aparte mientras 32, 40 y 56 se leen de spacing.css seria tener la
+   misma familia en dos fuentes de verdad, y el valor duplicado en dos sitios
+   es exactamente lo que la capa 1 existe para evitar.
+
+   Y dos de los cinco todavia no los consume nadie: `large` y `xlarge` no estan
+   implementados todavia en button.css ni en icon-button.css. Se queda asi, y
+   es el mismo criterio de 1-ref/stroke.css, que declara `none`, `thin` y
+   `thick` cuando solo `thin` se usaba: la regla de los tokens muertos es para
+   la capa 2, donde un rol sin consumidor es un rol muerto. En la capa 1 los
+   valores primitivos se declaran cuando existen, y quien no los pide todavia
+   no ensucia la escala con numeros inventados.
+
+   LO QUE ESTA Y LO QUE NO ESTA
+   ----------------------------
+   De los cinco, M3 declara los cinco. No hay ninguna extension propia aqui:
+   ni un valor inventado, ni un nombre que no sea de M3. Los tres que ya
+   estaban puestos tienen el mismo numero que antes, asi que ningun
+   componente cambia de medida: 32, 40 y 56 siguen siendo 32, 40 y 56. Lo
+   unico que cambia es de donde se leen.
+
+   ========================================================================== */
+
+:root {
+  /* ------------------------------------------------------------------------
+     LOS CINCO TAMANOS DE M3
+     El nombre del token es el del tamano, que es como los llama M3. Asi un
+     componente pide "la altura de un boton large" y no "un numero".
+     --------------------------------------------------------------------- */
+  --md-ref-container-height-xsmall: 32px;
+  --md-ref-container-height-small: 40px;
+  --md-ref-container-height-medium: 56px;
+  --md-ref-container-height-large: 96px;
+  --md-ref-container-height-xlarge: 136px;
+}

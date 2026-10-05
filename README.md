@@ -422,9 +422,9 @@ la arquitectura prohíbe: la primitiva no puede decidir el color, eso es del tem
 tiene respaldo en M3 — el margen lateral de página y la separación entre secciones no
 aparecen en la especificación — y, más importante, el ritmo de página no es un token:
 depende de cuántas secciones hay y de qué contienen. Esa decisión pertenece a un
-componente de `3-comp/`, que consumirá `1-ref/spacing.css` directamente. Un componente
-puede leer `1-ref` por su cuenta; lo que la arquitectura prohíbe es que un componente lea
-tokens de *otro* componente, o que `3-comp` salte `2-sys` en un token compartido.
+componente de `3-comp/`, que consumirá un rol de `2-sys/` (creándolo primero si no
+existe). `3-comp/` nunca lee `1-ref/` directamente (REGLA 2 estricta); lo que la arquitectura prohíbe es el salto de capa y que un componente lea
+tokens de *otro* componente.
 
 **Qué aporta `measurement.css` sobre `spacing.css`:** el número no explica su
 propósito. `48px` a secas no dice por qué es 48; `--md-sys-measurement-touch-target`
@@ -433,8 +433,18 @@ el mínimo táctil pasara a 44px por decisión de accesibilidad, se edita **una 
 `2-sys` y ningún componente se entera, porque ninguno conoce el 48 — todos pidieron
 `touch-target`. Sin esta capa habría 40 lugares que editar.
 
-A diferencia de los radios, **todos** los roles de `measurement` caen en la escala de
-`spacing`. Es el único archivo de `2-sys` sin una sola excepción.
+Casi todos los roles de `measurement` caen en la escala de `spacing`. **La excepción son
+las alturas de contenedor**, que se leen de `1-ref/container-height.css`: los cinco tamaños
+de botón de M3 miden 32, 40, 56, 96 y 136dp, y los dos últimos **no existen** en la escala
+oficial de espacio, que termina en Space 900 = 72px.
+
+No es que sobre un valor, es que la escala no llega. Y el motivo de que sean primitivas
+propias está en el nombre que les da M3: `$container-height`, no un token de espaciado —
+M3 no publica ningún archivo de espaciado, y `$container-height` aparece en 17 archivos de
+token de sus componentes. Los tres primeros valores, 32, 40 y 56, sí estaban en la escala y
+se leían de ahí; ahora se leen de la familia nueva, porque si una medida no es espaciado
+tampoco lo es cuando el número coincide con un token de espaciado. Es el mismo criterio que
+gobierna `corner.css` y `stroke.css`, aplicado al caso en que el número sí coincide.
 
 **Sobre el área táctil:** 48dp es el mínimo de zona táctil de Android, un requisito de
 accesibilidad (≈9mm; la recomendación es 7–10mm; iOS usa 44×44pt). No es el tamaño del
