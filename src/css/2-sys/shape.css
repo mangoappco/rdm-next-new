@@ -37,11 +37,16 @@
        --md-sys-shape-corner-full              9999px     Pastilla, circulo
 
    MAS VARIANTES: -top, -start y -end de los radios que las publican (ver
-   abajo). En total este archivo define 15 roles de esquina.
+   abajo). En total este archivo define 15 roles de esquina: los 10 de la
+   escala mas los 5 que redondean solo algunos lados.
 
-   A esos se suma 1 rol de grosor de trazo (--md-sys-shape-stroke-thin), que
-   vive en este archivo porque el stroke es una forma, no un espaciado. En
-   total: 16 roles.
+   A esos se suman 4 roles de grosor de trazo —--md-sys-shape-stroke-none,
+   -thin, -thick y -extra-thick—, que viven en este archivo porque el stroke
+   es una forma, no un espaciado. En total: 19 roles.
+
+   La cifra de grosor estaba en 1 cuando solo existia `thin`. El boton y el
+   boton de icono anadieron `none`, `thick` y `extra-thick`, y el conteo no
+   se actualizo.
 
    POR QUE EL NOMBRE IMPORTA MAS QUE EL NUMERO
    -------------------------------------------
@@ -75,6 +80,11 @@
        --md-sys-shape-corner-large-top        16px 16px 0 0
        --md-sys-shape-corner-large-start      16px 0 0 16px
        --md-sys-shape-corner-large-end        0 16px 16px 0
+
+   Y dos mas que antes no se listaban aqui, y que estan declaradas mas abajo:
+
+       --md-sys-shape-corner-extra-large-top    28px 28px 0 0
+       --md-sys-shape-corner-extra-small-top 4px 4px 0 0
 
    ---------------------------------------------------------------------------
    RELACION CON LAS OTRAS CAPAS
@@ -215,6 +225,7 @@
 .md-shape-corner-large-top     { border-radius: var(--md-sys-shape-corner-large-top); }
 .md-shape-corner-large-start   { border-radius: var(--md-sys-shape-corner-large-start); }
 .md-shape-corner-large-end     { border-radius: var(--md-sys-shape-corner-large-end); }
+.md-shape-corner-extra-large-top { border-radius: var(--md-sys-shape-corner-extra-large-top); }
 .md-shape-corner-extra-small-top { border-radius: var(--md-sys-shape-corner-extra-small-top); }
 
 /* --- Grosor de trazo --- */

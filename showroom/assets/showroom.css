@@ -502,6 +502,54 @@
     outline: none;
   }
 
+  /* ------------------------------------------------------------------------
+     EL SPECIMEN DE FORMA
+     --------------------------------------------------------------------------
+     Un rectangulo con medidas y relleno de token, y NADA mas: ni radio
+     propio, ni borde, ni sombra. Existe para que la forma que se ve sea la
+     de .md-shape-corner-* y no la de la vista.
+
+     EL TAMANO, Y POR QUE 144 x 64
+     ------------------------------
+     inline-size: 144px (spacing-900 x 2), block-size: 64px (spacing-800). Es
+     el rectangulo menor que distingue los ocho primeros radios de la escala:
+     a 64px de alto, extra-extra-large (48px) y full (9999px) convergen en
+     pastilla, porque el navegador escala los radios cuya suma supera el lado.
+     Esa convergencia no es un defecto del specimen: es el dato que documenta
+     la seccion de Sizes.
+
+     EL RELLENO, Y POR QUE primary-container
+     -----------------------------------------
+     La forma no trae color: un radio es geometria, no un rol. El relleno lo
+     pone la vista con primary-container, que se lee en los dos temas. Es
+     chrome del showroom, no una propiedad de la forma.
+
+     SIN RADIO Y SIN CONTORNO, A PROPOSITO
+     ---------------------------------------
+     El radio lo pone .md-shape-corner-* desde el marcado: si esta regla
+     declarara uno, la capa showroom ganaria por orden y todas las muestras
+     se verian iguales. Y sin outline por el mismo motivo que .sr-elev: un
+     anillo pegado al borde dibuja una segunda linea justo donde va la curva,
+     y el ojo ya no sabe cual de las dos documenta la muestra.
+
+     display: block, como .sr-elev: un specimen en linea ignora inline-size
+     y block-size y se computa en 0x0.
+     --------------------------------------------------------------------- */
+  .sr-shape {
+    display: block;
+    inline-size: calc(var(--md-ref-spacing-900) * 2);
+    block-size: var(--md-ref-spacing-800);
+    background-color: var(--md-sys-color-primary-container);
+  }
+
+  /* Variante cuadrada: 64 x 64. Existe por el caso de full, que sobre un
+     cuadrado es un circulo y sobre el rectangulo es una pastilla. Es la
+     prueba de que 9999px no es una medida sino una intencion, y esta en la
+     seccion de Shapes. */
+  .sr-shape--square {
+    inline-size: var(--md-ref-spacing-800);
+  }
+
   /* Grilla de variaciones: escenario + leyenda */
   .sr-grid {
     display: grid;
@@ -1079,6 +1127,16 @@
     display: block;
     border-block-start: var(--md-sys-shape-stroke-thin) solid currentColor;
   }
+
+  /* Ancho = token de trazo. Solo thin tiene clase real en la libreria
+     (.md-shape-stroke-thin): el grosor pertenece al componente que lo usa,
+     no a una utilidad de autor (ver cabecera de 1-ref/stroke.css). Estas
+     tres pintan el token para la tabla, igual que .sr-spec-bar pinta los de
+     espacio. --none no pinta nada: un trazo de 0px no ocupa ni un pixel, y
+     por eso usa el mismo display:none que .sr-spec-bar--none. */
+  .sr-spec-rule--thick { border-block-start-width: var(--md-sys-shape-stroke-thick); }
+  .sr-spec-rule--extra-thick { border-block-start-width: var(--md-sys-shape-stroke-extra-thick); }
+  .sr-spec-rule--none { display: none; }
 
   /* ------------------------------------------------------------------------
      SPECIMEN DE UNA LINEA
