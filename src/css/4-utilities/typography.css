@@ -1,0 +1,278 @@
+/* ==========================================================================
+   4-utilities/typography.css — CLASES UTILITARIAS TIPOGRAFICAS (Capa 4)
+   ==========================================================================
+
+   QUE ES ESTE ARCHIVO
+   -------------------
+   CAPA 4 del sistema. Expone los 15 estilos del typescale como clases:
+
+       <h1 class="md-type-headline-medium">Titulo de pagina</h1>
+       <p class="md-type-body-large">Parrafo de lectura.</p>
+       <button class="md-type-label-large">Accion</button>
+
+   ORIGEN
+   ------
+   Movido desde 2-system-tokens/typography.css en la auditoria M3. Las
+   clases no cambiaron: solo su capa. Los 92 tokens --md-sys-typescale-*
+   (15 estilos x 5 sub-tokens + 15 compuestos + 2 weight-prominent) siguen
+   en 2-system-tokens/typography.css.
+
+   Estas clases leen roles de la Capa 2 (--md-sys-typescale-*) y, para los
+   ajustes de fuente variable, primitivas de la Capa 1
+   (--md-ref-typeface-*). La Capa 4 puede consumir ambas; lo que no puede
+   es definir tokens nuevos.
+
+   POR QUE EXISTEN SI HAY TOKENS COMPUESTOS
+   ----------------------------------------
+   Porque el atajo `font` NO puede expresar letter-spacing. Estas clases
+   usan las PROPIEDADES DISCRETAS, por lo que conservan el tracking, que es
+   parte de lo que hace legible un texto.
+
+   Google lo dice en su propio archivo de tokens: usar el token compuesto
+   "reduce la fidelidad" y recomienda las propiedades discretas.
+
+   Si solo se define el estilo y no el tamano (por ejemplo, para que un
+   componente decida el tamano pero herede el resto del estilo), existe la
+   variante .md-type-<estilo>-style, que aplica SOLO familia, peso y
+   tracking, sin tocar font-size ni line-height.
+   ========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   LO QUE ESTE ARCHIVO YA NO DECLARA
+   --------------------------------------------------------------------------
+     --md-sys-typescale-icon-optical-size-small
+     --md-sys-typescale-icon-optical-size-medium
+
+   Se movieron a 2-system-tokens/icon.css, con el nombre
+   --md-sys-icon-optical-size-*.
+
+   El eje optical size pertenece a la fuente de los ICONOS, Material
+   Symbols. No al texto: Google Sans Flex dibuja las etiquetas y no tiene
+   ese eje. Por eso nunca debio ser un bloque del typescale, ni usar el
+   prefijo typescale: el prefijo dice "esto es texto", y el icono no lo es.
+
+   Ver 2-system-tokens/icon.css para por que existen como numeros y no como
+   medidas, que es la parte que no es obvia.
+   ------------------------------------------------------------------------ */
+
+/* --- DISPLAY --- */
+.md-type-display-large {
+  font-family: var(--md-sys-typescale-display-large-font);
+  font-weight: var(--md-sys-typescale-display-large-weight);
+  font-size: var(--md-sys-typescale-display-large-size);
+  line-height: var(--md-sys-typescale-display-large-line-height);
+  letter-spacing: var(--md-sys-typescale-display-large-tracking);
+  font-optical-sizing: var(--md-ref-typeface-font-optical-sizing);
+  font-variation-settings: var(--md-ref-typeface-font-variation-settings);
+}
+.md-type-display-medium {
+  font-family: var(--md-sys-typescale-display-medium-font);
+  font-weight: var(--md-sys-typescale-display-medium-weight);
+  font-size: var(--md-sys-typescale-display-medium-size);
+  line-height: var(--md-sys-typescale-display-medium-line-height);
+  letter-spacing: var(--md-sys-typescale-display-medium-tracking);
+  font-optical-sizing: var(--md-ref-typeface-font-optical-sizing);
+  font-variation-settings: var(--md-ref-typeface-font-variation-settings);
+}
+.md-type-display-small {
+  font-family: var(--md-sys-typescale-display-small-font);
+  font-weight: var(--md-sys-typescale-display-small-weight);
+  font-size: var(--md-sys-typescale-display-small-size);
+  line-height: var(--md-sys-typescale-display-small-line-height);
+  letter-spacing: var(--md-sys-typescale-display-small-tracking);
+  font-optical-sizing: var(--md-ref-typeface-font-optical-sizing);
+  font-variation-settings: var(--md-ref-typeface-font-variation-settings);
+}
+
+/* --- HEADLINE --- */
+.md-type-headline-large {
+  font-family: var(--md-sys-typescale-headline-large-font);
+  font-weight: var(--md-sys-typescale-headline-large-weight);
+  font-size: var(--md-sys-typescale-headline-large-size);
+  line-height: var(--md-sys-typescale-headline-large-line-height);
+  letter-spacing: var(--md-sys-typescale-headline-large-tracking);
+  font-optical-sizing: var(--md-ref-typeface-font-optical-sizing);
+  font-variation-settings: var(--md-ref-typeface-font-variation-settings);
+}
+.md-type-headline-medium {
+  font-family: var(--md-sys-typescale-headline-medium-font);
+  font-weight: var(--md-sys-typescale-headline-medium-weight);
+  font-size: var(--md-sys-typescale-headline-medium-size);
+  line-height: var(--md-sys-typescale-headline-medium-line-height);
+  letter-spacing: var(--md-sys-typescale-headline-medium-tracking);
+  font-optical-sizing: var(--md-ref-typeface-font-optical-sizing);
+  font-variation-settings: var(--md-ref-typeface-font-variation-settings);
+}
+.md-type-headline-small {
+  font-family: var(--md-sys-typescale-headline-small-font);
+  font-weight: var(--md-sys-typescale-headline-small-weight);
+  font-size: var(--md-sys-typescale-headline-small-size);
+  line-height: var(--md-sys-typescale-headline-small-line-height);
+  letter-spacing: var(--md-sys-typescale-headline-small-tracking);
+  font-optical-sizing: var(--md-ref-typeface-font-optical-sizing);
+  font-variation-settings: var(--md-ref-typeface-font-variation-settings);
+}
+
+/* --- TITLE --- */
+.md-type-title-large {
+  font-family: var(--md-sys-typescale-title-large-font);
+  font-weight: var(--md-sys-typescale-title-large-weight);
+  font-size: var(--md-sys-typescale-title-large-size);
+  line-height: var(--md-sys-typescale-title-large-line-height);
+  letter-spacing: var(--md-sys-typescale-title-large-tracking);
+  font-optical-sizing: var(--md-ref-typeface-font-optical-sizing);
+  font-variation-settings: var(--md-ref-typeface-font-variation-settings);
+}
+.md-type-title-medium {
+  font-family: var(--md-sys-typescale-title-medium-font);
+  font-weight: var(--md-sys-typescale-title-medium-weight);
+  font-size: var(--md-sys-typescale-title-medium-size);
+  line-height: var(--md-sys-typescale-title-medium-line-height);
+  letter-spacing: var(--md-sys-typescale-title-medium-tracking);
+  font-optical-sizing: var(--md-ref-typeface-font-optical-sizing);
+  font-variation-settings: var(--md-ref-typeface-font-variation-settings);
+}
+.md-type-title-small {
+  font-family: var(--md-sys-typescale-title-small-font);
+  font-weight: var(--md-sys-typescale-title-small-weight);
+  font-size: var(--md-sys-typescale-title-small-size);
+  line-height: var(--md-sys-typescale-title-small-line-height);
+  letter-spacing: var(--md-sys-typescale-title-small-tracking);
+  font-optical-sizing: var(--md-ref-typeface-font-optical-sizing);
+  font-variation-settings: var(--md-ref-typeface-font-variation-settings);
+}
+
+/* --- BODY --- */
+.md-type-body-large {
+  font-family: var(--md-sys-typescale-body-large-font);
+  font-weight: var(--md-sys-typescale-body-large-weight);
+  font-size: var(--md-sys-typescale-body-large-size);
+  line-height: var(--md-sys-typescale-body-large-line-height);
+  letter-spacing: var(--md-sys-typescale-body-large-tracking);
+  font-optical-sizing: var(--md-ref-typeface-font-optical-sizing);
+  font-variation-settings: var(--md-ref-typeface-font-variation-settings);
+}
+.md-type-body-medium {
+  font-family: var(--md-sys-typescale-body-medium-font);
+  font-weight: var(--md-sys-typescale-body-medium-weight);
+  font-size: var(--md-sys-typescale-body-medium-size);
+  line-height: var(--md-sys-typescale-body-medium-line-height);
+  letter-spacing: var(--md-sys-typescale-body-medium-tracking);
+  font-optical-sizing: var(--md-ref-typeface-font-optical-sizing);
+  font-variation-settings: var(--md-ref-typeface-font-variation-settings);
+}
+.md-type-body-small {
+  font-family: var(--md-sys-typescale-body-small-font);
+  font-weight: var(--md-sys-typescale-body-small-weight);
+  font-size: var(--md-sys-typescale-body-small-size);
+  line-height: var(--md-sys-typescale-body-small-line-height);
+  letter-spacing: var(--md-sys-typescale-body-small-tracking);
+  font-optical-sizing: var(--md-ref-typeface-font-optical-sizing);
+  font-variation-settings: var(--md-ref-typeface-font-variation-settings);
+}
+
+/* --- LABEL --- */
+.md-type-label-large {
+  font-family: var(--md-sys-typescale-label-large-font);
+  font-weight: var(--md-sys-typescale-label-large-weight);
+  font-size: var(--md-sys-typescale-label-large-size);
+  line-height: var(--md-sys-typescale-label-large-line-height);
+  letter-spacing: var(--md-sys-typescale-label-large-tracking);
+  font-optical-sizing: var(--md-ref-typeface-font-optical-sizing);
+  font-variation-settings: var(--md-ref-typeface-font-variation-settings);
+}
+.md-type-label-medium {
+  font-family: var(--md-sys-typescale-label-medium-font);
+  font-weight: var(--md-sys-typescale-label-medium-weight);
+  font-size: var(--md-sys-typescale-label-medium-size);
+  line-height: var(--md-sys-typescale-label-medium-line-height);
+  letter-spacing: var(--md-sys-typescale-label-medium-tracking);
+  font-optical-sizing: var(--md-ref-typeface-font-optical-sizing);
+  font-variation-settings: var(--md-ref-typeface-font-variation-settings);
+}
+.md-type-label-small {
+  font-family: var(--md-sys-typescale-label-small-font);
+  font-weight: var(--md-sys-typescale-label-small-weight);
+  font-size: var(--md-sys-typescale-label-small-size);
+  line-height: var(--md-sys-typescale-label-small-line-height);
+  letter-spacing: var(--md-sys-typescale-label-small-tracking);
+  font-optical-sizing: var(--md-ref-typeface-font-optical-sizing);
+  font-variation-settings: var(--md-ref-typeface-font-variation-settings);
+}
+
+/* -------------------------------------------------------------------------
+   VARIANTES -style : familia, peso y tracking SIN fijar el tamano
+   -------------------------------------------------------------------------
+   Estas variantes NO tocan font-size ni line-height. Son para cuando un
+   componente quiere heredar el "tono" de un estilo (la familia, el peso y
+   el espaciado entre letras) pero decidir el tamano por su cuenta.
+
+   Ejemplo: el texto de una etiqueta dentro de un chip puede querer el tono
+   de label-medium pero el tamano lo fija el componente.
+
+   A diferencia de los tokens compuestos, el tracking SI se preserva, porque
+   letter-spacing es una propiedad discreta.
+   ------------------------------------------------------------------------- */
+.md-type-display-large-style   { font-family: var(--md-sys-typescale-display-large-font);   font-weight: var(--md-sys-typescale-display-large-weight);   letter-spacing: var(--md-sys-typescale-display-large-tracking); font-optical-sizing: var(--md-ref-typeface-font-optical-sizing); font-variation-settings: var(--md-ref-typeface-font-variation-settings); }
+.md-type-display-medium-style  { font-family: var(--md-sys-typescale-display-medium-font);  font-weight: var(--md-sys-typescale-display-medium-weight);  letter-spacing: var(--md-sys-typescale-display-medium-tracking); font-optical-sizing: var(--md-ref-typeface-font-optical-sizing); font-variation-settings: var(--md-ref-typeface-font-variation-settings); }
+.md-type-display-small-style   { font-family: var(--md-sys-typescale-display-small-font);   font-weight: var(--md-sys-typescale-display-small-weight);   letter-spacing: var(--md-sys-typescale-display-small-tracking); font-optical-sizing: var(--md-ref-typeface-font-optical-sizing); font-variation-settings: var(--md-ref-typeface-font-variation-settings); }
+.md-type-headline-large-style  { font-family: var(--md-sys-typescale-headline-large-font);  font-weight: var(--md-sys-typescale-headline-large-weight);  letter-spacing: var(--md-sys-typescale-headline-large-tracking); font-optical-sizing: var(--md-ref-typeface-font-optical-sizing); font-variation-settings: var(--md-ref-typeface-font-variation-settings); }
+.md-type-headline-medium-style { font-family: var(--md-sys-typescale-headline-medium-font); font-weight: var(--md-sys-typescale-headline-medium-weight); letter-spacing: var(--md-sys-typescale-headline-medium-tracking); font-optical-sizing: var(--md-ref-typeface-font-optical-sizing); font-variation-settings: var(--md-ref-typeface-font-variation-settings); }
+.md-type-headline-small-style  { font-family: var(--md-sys-typescale-headline-small-font);  font-weight: var(--md-sys-typescale-headline-small-weight);  letter-spacing: var(--md-sys-typescale-headline-small-tracking); font-optical-sizing: var(--md-ref-typeface-font-optical-sizing); font-variation-settings: var(--md-ref-typeface-font-variation-settings); }
+.md-type-title-large-style     { font-family: var(--md-sys-typescale-title-large-font);     font-weight: var(--md-sys-typescale-title-large-weight);     letter-spacing: var(--md-sys-typescale-title-large-tracking); font-optical-sizing: var(--md-ref-typeface-font-optical-sizing); font-variation-settings: var(--md-ref-typeface-font-variation-settings); }
+.md-type-title-medium-style    { font-family: var(--md-sys-typescale-title-medium-font);    font-weight: var(--md-sys-typescale-title-medium-weight);    letter-spacing: var(--md-sys-typescale-title-medium-tracking); font-optical-sizing: var(--md-ref-typeface-font-optical-sizing); font-variation-settings: var(--md-ref-typeface-font-variation-settings); }
+.md-type-title-small-style     { font-family: var(--md-sys-typescale-title-small-font);     font-weight: var(--md-sys-typescale-title-small-weight);     letter-spacing: var(--md-sys-typescale-title-small-tracking); font-optical-sizing: var(--md-ref-typeface-font-optical-sizing); font-variation-settings: var(--md-ref-typeface-font-variation-settings); }
+.md-type-body-large-style      { font-family: var(--md-sys-typescale-body-large-font);      font-weight: var(--md-sys-typescale-body-large-weight);      letter-spacing: var(--md-sys-typescale-body-large-tracking); font-optical-sizing: var(--md-ref-typeface-font-optical-sizing); font-variation-settings: var(--md-ref-typeface-font-variation-settings); }
+.md-type-body-medium-style     { font-family: var(--md-sys-typescale-body-medium-font);     font-weight: var(--md-sys-typescale-body-medium-weight);     letter-spacing: var(--md-sys-typescale-body-medium-tracking); font-optical-sizing: var(--md-ref-typeface-font-optical-sizing); font-variation-settings: var(--md-ref-typeface-font-variation-settings); }
+.md-type-body-small-style      { font-family: var(--md-sys-typescale-body-small-font);      font-weight: var(--md-sys-typescale-body-small-weight);      letter-spacing: var(--md-sys-typescale-body-small-tracking); font-optical-sizing: var(--md-ref-typeface-font-optical-sizing); font-variation-settings: var(--md-ref-typeface-font-variation-settings); }
+.md-type-label-large-style     { font-family: var(--md-sys-typescale-label-large-font);     font-weight: var(--md-sys-typescale-label-large-weight);     letter-spacing: var(--md-sys-typescale-label-large-tracking); font-optical-sizing: var(--md-ref-typeface-font-optical-sizing); font-variation-settings: var(--md-ref-typeface-font-variation-settings); }
+.md-type-label-medium-style    { font-family: var(--md-sys-typescale-label-medium-font);    font-weight: var(--md-sys-typescale-label-medium-weight);    letter-spacing: var(--md-sys-typescale-label-medium-tracking); font-optical-sizing: var(--md-ref-typeface-font-optical-sizing); font-variation-settings: var(--md-ref-typeface-font-variation-settings); }
+.md-type-label-small-style     { font-family: var(--md-sys-typescale-label-small-font);     font-weight: var(--md-sys-typescale-label-small-weight);     letter-spacing: var(--md-sys-typescale-label-small-tracking); font-optical-sizing: var(--md-ref-typeface-font-optical-sizing); font-variation-settings: var(--md-ref-typeface-font-variation-settings); }
+
+/* -------------------------------------------------------------------------
+   PESO PROMINENTE
+   -------------------------------------------------------------------------
+   Estas DOS clases NO declaran font-optical-sizing ni font-variation-settings,
+   y es a proposito: solo cambian el peso de su clase base.
+
+   Son dos, no tres, porque Google no publica weight-prominent para
+   label-small. Verificado en tokens/versions/v0_192/_md-sys-typescale.scss:
+   solo existen label-large-weight-prominent y label-medium-weight-prominent.
+
+       <button class="md-type-label-large md-type-label-large-prominent">
+
+   Los ajustes de variable font ya vienen de `md-type-label-large`.
+   Repetirlos aqui seria duplicarlos sin efecto: el navegador solo aplica el
+   ultimo valor declarado, asi que volver a escribirlos no cambiaria nada.
+
+   -------------------------------------------------------------------------
+   EL GUION DEL MODIFICADOR
+   -------------------------------------------------------------------------
+   Google escribe el modificador con UN guion:
+
+       .md-typescale-label-medium-prominent
+
+   Este archivo usaba dos (--prominent). No habia una razon tecnica: era la
+   convencion de modificador de BEM, que aqui no aplica, porque el proyecto
+   no usa BEM y ninguna otra clase tiene modificadores.
+
+   Se normalizo a un guion para que coincida con el nombre oficial y con los
+   tokens, que siempre lo llevaron con uno:
+
+       --md-sys-typescale-label-medium-weight-prominent
+
+   O sea: el token tenia un guion desde siempre, y la clase dos. Ahora las
+   dos cosas usan uno.
+
+   -------------------------------------------------------------------------
+   Variante BOLD (700) que v0.192 define para DOS de los tres estilos label,
+   label-large y label-medium. Se combina con la clase base usando el
+   modificador de M3:
+
+       class="md-type-label-large md-type-label-large-prominent"
+   ------------------------------------------------------------------------- */
+.md-type-label-large-prominent { font-weight: var(--md-sys-typescale-label-large-weight-prominent); }
+.md-type-label-medium-prominent { font-weight: var(--md-sys-typescale-label-medium-weight-prominent); }
+/* NO existe .md-type-label-small-prominent, y es intencional: Google no
+   publica weight-prominent para label-small. Ver la cabecera de este
+   bloque. */

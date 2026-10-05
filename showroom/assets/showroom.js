@@ -1,5 +1,5 @@
 /* showroom/assets/showroom.js - toggle de tema y tablas scrolleables.
-   Mismo mecanismo que src/2-sys/theme/:
+   Mismo mecanismo que src/2-system-tokens/theme/:
      sin atributo        -> sigue al sistema (prefers-color-scheme)
      data-theme="light"  -> claro, ignora el SO
      data-theme="dark"   -> oscuro, ignora el SO

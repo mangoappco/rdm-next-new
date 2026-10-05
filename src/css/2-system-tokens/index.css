@@ -1,0 +1,22 @@
+/* ==========================================================================
+   2-system-tokens/index.css — INDICE DE LA CAPA 2
+   --------------------------------------------------------------------------
+   Reexporta los 9 roles semanticos. El tema claro va PRIMERO y el oscuro
+   ULTIMO, por convencion de legibilidad (cada archivo trae sus propios
+   bloques con @media, asi que el orden ya no decide el comportamiento;
+   tools/verify-tokens.ps1 REGLA 4 sigue comprobando la convencion).
+
+   Se importa desde src/css/main.css en la capa `sys`.
+   ========================================================================== */
+
+@import url("theme/theme.light.css");
+@import url("elevation.css");
+@import url("icon.css");
+@import url("measurement.css");
+@import url("motion.css");
+@import url("shape.css");
+@import url("state.css");
+@import url("typography.css");
+
+/* El tema oscuro va AL ULTIMO a proposito. */
+@import url("theme/theme.dark.css");

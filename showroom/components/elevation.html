@@ -14,16 +14,16 @@
 </head>
 
 <!--
-  Vista de la CAPA 2 de la elevacion (2-sys/elevation.css), con las dos capas
-  de CAPA 1 que consume: 1-ref/shadow.css.
+  Vista de la CAPA 2 de la elevacion (2-system-tokens/elevation.css), con las dos capas
+  de CAPA 1 que consume: 1-reference-tokens/shadow.css.
 
-  No es un componente de 3-comp: no tiene anatomia visual, ni slots, ni
+  No es un componente de 3-components: no tiene anatomia visual, ni slots, ni
   estados, ni interaccion. Es una escala de seis niveles, y las secciones que
   si aplican estan confirmadas con el usuario.
 
   Cada specimen de esta pagina se pinta con la clase .md-elevation-N real, mas
   la clase .sr-elev del showroom, que solo aporta medidas y radio. Si un valor
-  de 1-ref cambiara, los specimens cambiarian a la vez. Ninguno esta dibujado a
+  de 1-reference-tokens cambiara, los specimens cambiarian a la vez. Ninguno esta dibujado a
   mano.
 
   Implementacion de referencia:
@@ -47,7 +47,7 @@
 
     <header class="sr-header">
       <h1>Elevation</h1>
-      <p>Los seis niveles con los que un objeto dice que flota sobre la página. Una sombra necesita tres cosas —<strong>geometría, opacidad y color</strong>— y las tres viven en capas distintas: las medidas en <code>1-ref/shadow.css</code>, el color en el tema, y la unión de las dos aquí.</p>
+      <p>Los seis niveles con los que un objeto dice que flota sobre la página. Una sombra necesita tres cosas —<strong>geometría, opacidad y color</strong>— y las tres viven en capas distintas: las medidas en <code>1-reference-tokens/shadow.css</code>, el color en el tema, y la unión de las dos aquí.</p>
     </header>
 
     <hr class="md-divider">
@@ -55,35 +55,35 @@
     <article class="sr-section">
       <h2>Uso</h2>
       <h3>Qué es este archivo</h3>
-      <p><code>src/css/2-sys/elevation.css</code> es la CAPA 2 del sistema de elevación: los <strong>6 tokens</strong> de nivel y las <strong>12 clases</strong> que los aplican desde el HTML. No contiene ni un número: toda la geometría sale de <code>1-ref/shadow.css</code> y el color, del tema.</p>
-      <p>Es el <strong>único puente entre las tres capas</strong> del sistema. Las otras familias de tokens solo apuntan de <code>2-sys</code> a <code>1-ref</code>; aquí además entra <code>2-sys/theme</code>, porque una sombra es geometría <em>y</em> color a la vez.</p>
+      <p><code>src/css/2-system-tokens/elevation.css</code> es la CAPA 2 del sistema de elevación: los <strong>6 tokens</strong> de nivel y las <strong>12 clases</strong> que los aplican desde el HTML. No contiene ni un número: toda la geometría sale de <code>1-reference-tokens/shadow.css</code> y el color, del tema.</p>
+      <p>Es el <strong>único puente entre las tres familias</strong> de la cadena de tokens. Las otras familias solo apuntan de <code>2-system-tokens</code> a <code>1-reference-tokens</code>; aquí además entra <code>2-system-tokens/theme</code>, porque una sombra es geometría <em>y</em> color a la vez.</p>
 
       <h3>Por qué la composición está aquí y no en la capa 1</h3>
-      <p>Si la unión estuviera en <code>1-ref/shadow.css</code>, ese archivo tendría que referenciar el color del tema. Sería una <strong>dependencia circular</strong>: la primitiva dependería del sistema que la consume. Y el color quedaría <em>quemado</em> dentro de la primitiva, de modo que cambiar el tema no cambiaría la sombra.</p>
-      <p>Por eso <code>1-ref</code> solo expone parciales —cuatro números, sin color— y este archivo los junta:</p>
+      <p>Si la unión estuviera en <code>1-reference-tokens/shadow.css</code>, ese archivo tendría que referenciar el color del tema. Sería una <strong>dependencia circular</strong>: la primitiva dependería del sistema que la consume. Y el color quedaría <em>quemado</em> dentro de la primitiva, de modo que cambiar el tema no cambiaría la sombra.</p>
+      <p>Por eso <code>1-reference-tokens</code> solo expone parciales —cuatro números, sin color— y este archivo los junta:</p>
       <table class="sr-table">
         <thead>
           <tr><th scope="col">Dimensión</th><th scope="col">Dónde vive</th><th scope="col">Por qué ahí</th></tr>
         </thead>
         <tbody>
-          <tr><td>Geometría (px)</td><td><code>1-ref/shadow.css</code></td><td>Es medida cruda. Cambia con el nivel, y por eso va en la capa de valores</td></tr>
-          <tr><td>Opacidad</td><td><code>1-ref/shadow.css</code></td><td>Es un valor crudo. Declarado <strong>una vez</strong> y reutilizado por las 12 capas de sombra</td></tr>
-          <tr><td>Color</td><td><code>2-sys/theme/*.css</code></td><td>Es una decisión de tema, no una medida</td></tr>
-          <tr><td><strong>La unión de las tres</strong></td><td><code>2-sys/elevation.css</code></td><td><strong>Solo quien puede leer de las tres capas sin crear un ciclo</strong></td></tr>
+          <tr><td>Geometría (px)</td><td><code>1-reference-tokens/shadow.css</code></td><td>Es medida cruda. Cambia con el nivel, y por eso va en la capa de valores</td></tr>
+          <tr><td>Opacidad</td><td><code>1-reference-tokens/shadow.css</code></td><td>Es un valor crudo. Declarado <strong>una vez</strong> y reutilizado por las 12 capas de sombra</td></tr>
+          <tr><td>Color</td><td><code>2-system-tokens/theme/*.css</code></td><td>Es una decisión de tema, no una medida</td></tr>
+          <tr><td><strong>La unión de las tres</strong></td><td><code>2-system-tokens/elevation.css</code></td><td><strong>Solo quien puede leer de las tres familias sin crear un ciclo</strong></td></tr>
         </tbody>
       </table>
       <p class="sr-na">Las dos opacidades están declaradas una sola vez porque <strong>no cambian con el nivel</strong>. Lo que crece al subir de nivel es la extensión de la sombra, no su intensidad. Editar la intensidad es cambiar dos líneas; editar las doce, no.</p>
 
       <h3>Cuándo se toca</h3>
       <ul>
-        <li>Para cambiar la geometría de un nivel: se edita <code>1-ref/shadow.css</code> y los seis niveles se actualizan por cascada.</li>
+        <li>Para cambiar la geometría de un nivel: se edita <code>1-reference-tokens/shadow.css</code> y los seis niveles se actualizan por cascada.</li>
         <li>Para cambiar la intensidad de todas las sombras: se edita <code>--md-ref-shadow-key-opacity</code> o <code>--md-ref-shadow-ambient-opacity</code>. Dos líneas, doce sombras.</li>
         <li>Para cambiar el color de la sombra: se edita <code>--md-sys-color-shadow-rgb</code> en el tema. La geometría no se toca.</li>
       </ul>
 
       <h3>Cuándo no se toca</h3>
       <ul>
-        <li>Nunca desde <code>3-comp/</code>. Un componente no lee geometría de sombra: pide <code>--md-sys-elevation-level3</code>, no «una sombra con estos números». Es la REGLA 2 del verificador, y <code>@layer</code> la hace cumplir por el motor.</li>
+        <li>Nunca desde <code>3-components/</code>. Un componente no lee geometría de sombra: pide <code>--md-sys-elevation-level3</code>, no «una sombra con estos números». Es la REGLA 2 del verificador, y <code>@layer</code> la hace cumplir por el motor.</li>
         <li>Nunca escribiendo un <code>box-shadow</code> en el marcado. La REGLA 6 lo prohíbe, y además saldría de la escala.</li>
         <li>Nunca para resolver el mismo problema con una clase de color. La sombra y el tono son dos mecanismos distintos, y la sección <a href="#color">Color</a> dice cuándo usar cada uno.</li>
       </ul>
@@ -100,13 +100,13 @@
       <p><code>.md-elevation-3</code> aplica <code>box-shadow: var(--md-sys-elevation-level3)</code>. <code>.md-elevation-3-surface</code> aplica <code>background-color</code> con el tono que le corresponde al nivel 3.</p>
       <p class="sr-na">Las dos son <strong>independientes</strong> y por eso el sistema las publica separadas. La sombra es la que separa de verdad; el tono marca la dirección de la jerarquía, con un contraste bajo. Juntas son la receta completa de M3, y cada una es útil sola. Los ratios medidos están en <a href="#color">Color</a>. Ver <a href="#variantes">Variantes</a>.</p>
       <h3>Y la forma la pone el autor</h3>
-      <p>La sombra hereda el <code>border-radius</code> del elemento. No hay nada que reconfigurar: se aplica una clase de <code>2-sys/shape.css</code> y la sombra la sigue.</p>
+      <p>La sombra hereda el <code>border-radius</code> del elemento. No hay nada que reconfigurar: se aplica una clase de <code>2-system-tokens/shape.css</code> y la sombra la sigue.</p>
       <div class="sr-canvas">
         <div class="sr-elev md-elevation-3 md-elevation-3-surface md-shape-corner-none"></div>
         <div class="sr-elev md-elevation-3 md-elevation-3-surface"></div>
         <div class="sr-elev md-elevation-3 md-elevation-3-surface md-shape-corner-full"></div>
       </div>
-      <p class="sr-na">Las tres tienen exactamente la misma sombra. Lo único que cambia es el radio, y las tres clases son de <code>2-sys/shape.css</code>. El <code>corner-medium</code> del specimen del medio es el que trae <code>.sr-elev</code>.</p>
+      <p class="sr-na">Las tres tienen exactamente la misma sombra. Lo único que cambia es el radio, y las tres clases son de <code>2-system-tokens/shape.css</code>. El <code>corner-medium</code> del specimen del medio es el que trae <code>.sr-elev</code>.</p>
     </article>
 
     <hr class="md-divider">
@@ -227,7 +227,7 @@
       <div class="sr-canvas">
         <div class="sr-elev md-elevation-1 md-elevation-2"></div>
       </div>
-      <p class="sr-na">Verificado en el navegador: con las dos clases en ese orden y en el inverso, el resultado es el mismo, <code>level2</code>. Las clases de <code>2-sys/elevation.css</code> están en la capa <code>sys</code> una tras otra, así que el orden del archivo decide. No es una trampa de la cascada: es el comportamiento correcto de un sistema que no necesita resolver el conflicto, porque nadie debería escribir dos niveles.</p>
+      <p class="sr-na">Verificado en el navegador: con las dos clases en ese orden y en el inverso, el resultado es el mismo, <code>level2</code>. Las clases de <code>2-system-tokens/elevation.css</code> están en la capa <code>sys</code> una tras otra, así que el orden del archivo decide. No es una trampa de la cascada: es el comportamiento correcto de un sistema que no necesita resolver el conflicto, porque nadie debería escribir dos niveles.</p>
     </article>
 
     <hr class="md-divider">
@@ -337,7 +337,7 @@
       <h2>Comportamiento</h2>
 
       <h3>No hay transición: los niveles son estáticos</h3>
-      <p><code>2-sys/elevation.css</code> no declara ni una <code>transition</code>. Cambiar de nivel es un cambio de <code>box-shadow</code> en el mismo instante en que cambia la clase, y el navegador no interpola <code>box-shadow</code> salvo que se le pida.</p>
+      <p><code>2-system-tokens/elevation.css</code> no declara ni una <code>transition</code>. Cambiar de nivel es un cambio de <code>box-shadow</code> en el mismo instante en que cambia la clase, y el navegador no interpola <code>box-shadow</code> salvo que se le pida.</p>
       <p>Esto <strong>sí</strong> funciona sin escribir nada, porque el sistema tiene tokens de movimiento para ello:</p>
       <table class="sr-table">
         <thead>
@@ -383,7 +383,7 @@
       <h3>Por qué el foco y la pulsación no tienen ninguna regla</h3>
       <p>Porque su nivel en M3 es el de reposo, y el de reposo ya lo declara <code>--md-comp-button-elevation</code>. Escribir <code>:focus-visible</code> o <code>:active</code> con el mismo valor sería ruido que aparenta ser una decisión. Lo que sí hacen esos dos estados es mover la capa de estado, y eso está en <a href="button.html">Button</a>.</p>
       <p class="sr-na">Un dato negativo que viene de los mismos archivos y que cierra el tema para los botones de icono: <strong>M3 no declara ningún token de elevación para ningún botón de icono</strong> —ni <code>standard</code>, ni <code>filled</code>, ni <code>tonal</code>, ni <code>outlined</code>— en ninguna de sus tres generaciones de tokens. No es que quedarse en nivel 0 sea una decisión de este proyecto: es que el token que lo diría no existe. Está en la sección de <a href="#composicion">Composición</a>.</p>
-      <p class="sr-na">Y el deshabilitado sí es un consumidor real, en <code>3-comp/button.css</code> y <code>3-comp/icon-button.css</code>. Medido sobre el botón <code>elevated</code> deshabilitado de esta página, con el ratón encima: sigue en nivel 0, y <code>:hover</code> ni siquiera se activa, porque el botón declara <code>pointer-events: none</code>.</p>
+      <p class="sr-na">Y el deshabilitado sí es un consumidor real, en <code>3-components/button.css</code> y <code>3-components/icon-button.css</code>. Medido sobre el botón <code>elevated</code> deshabilitado de esta página, con el ratón encima: sigue en nivel 0, y <code>:hover</code> ni siquiera se activa, porque el botón declara <code>pointer-events: none</code>.</p>
     </article>
 
     <hr class="md-divider">
@@ -458,7 +458,7 @@
     <article class="sr-section" id="composicion">
       <h2>Composición</h2>
       <h3>Con Button, que es el único consumidor real</h3>
-      <p><code>3-comp/button.css</code> es el único componente que pide un nivel distinto del 0. Su variante <code>elevated</code> reapunta su token propio al nivel 1:</p>
+      <p><code>3-components/button.css</code> es el único componente que pide un nivel distinto del 0. Su variante <code>elevated</code> reapunta su token propio al nivel 1:</p>
       <div class="sr-canvas">
         <button class="md-button md-button-elevated" type="button"><span class="md-button-label">Elevated</span>
           <span class="md-button-touch"></span>
@@ -474,7 +474,7 @@
       <p class="sr-na">El botón no escribe <code>box-shadow</code> con números: expone <code>--md-comp-button-elevation</code>, y la variante decide a qué nivel apunta. Es el patrón que la capa 3 repite en los tres componentes que ya existen. La diferencia entre <code>elevated</code> y las otras cuatro está medida, con los contrastes, en <a href="button.html#color">Button</a>.</p>
 
       <h3>Con Icon Button, que se queda en el nivel 0</h3>
-      <p><code>3-comp/icon-button.css</code> declara <code>--md-comp-icon-button-elevation</code> y sus cuatro variantes apuntan a <code>level0</code>. Ninguna se levanta.</p>
+      <p><code>3-components/icon-button.css</code> declara <code>--md-comp-icon-button-elevation</code> y sus cuatro variantes apuntan a <code>level0</code>. Ninguna se levanta.</p>
       <p class="sr-na">No es un descuido, y hay dos razones. La primera es de medida: el <code>elevated</code> del botón existe porque su relleno es <code>surface-container-low</code>, que sobre una superficie de color se camufla. El botón de icono no tiene una variante <code>elevated</code> porque no tiene relleno propio que camuflar: sus otras tres variantes son transparentes, <code>primary</code> o <code>secondary-container</code>, y las tres se separan sin sombra. La segunda es de M3: <strong>no declara ningún token de elevación para ningún botón de icono</strong>, en ninguna de sus tres generaciones. El nivel 0 no es una elección conservative: es el único valor que la fuente declara.</p>
 
       <h3>Con un estado deshabilitado, que sí es un consumidor</h3>
@@ -526,7 +526,7 @@
 
     <article class="sr-section" id="medidas">
       <h2>Medidas</h2>
-      <p>La geometría completa de los seis niveles. Cada fila es un nivel, con sus dos parciales crudos de <code>1-ref/shadow.css</code> y la sombra terminada pintada al lado.</p>
+      <p>La geometría completa de los seis niveles. Cada fila es un nivel, con sus dos parciales crudos de <code>1-reference-tokens/shadow.css</code> y la sombra terminada pintada al lado.</p>
       <table class="sr-table sr-table--tight">
         <thead>
           <tr><th scope="col">Nivel</th><th scope="col">Key, la nítida</th><th scope="col">Ambient, la difusa</th><th scope="col">Sombra</th></tr>
@@ -661,7 +661,7 @@
         <li><strong>Lo que hace RDM Next:</strong> lo mismo, con un token por componente —<code>--md-comp-button-elevation-hover</code>— y una regla, <code>.md-button:hover</code>. Los valores están medidos en la tabla de <a href="#comportamiento">Comportamiento</a>.</li>
         <li><strong>Dónde NO se resolvió:</strong> en esta capa. <code>elevation.css</code> no tiene estados y no los necesita: los seis tokens son niveles, no reacciones. La decisión de qué nivel se pide en cada estado es de la capa 3, donde vive cada componente.</li>
         <li><strong>Por qué no hay tokens para el foco ni la pulsación:</strong> porque en M3 su valor es el de reposo. Implementarlos habría sido escribir dos reglas que no cambian nada.</li>
-        <li><strong>La única cifra que difiere:</strong> la duración. M3 usa 280ms y aquí se usa <code>medium2</code>, 300ms, porque 280ms no es ningún token de <code>2-sys/motion.css</code> y la REGLA 1 prohíbe escribirlo. Es la misma razón por la que el <code>&lt;md-elevation&gt;</code> de Google lleva un <code>TODO</code> en el sitio.</li>
+        <li><strong>La única cifra que difiere:</strong> la duración. M3 usa 280ms y aquí se usa <code>medium2</code>, 300ms, porque 280ms no es ningún token de <code>2-system-tokens/motion.css</code> y la REGLA 1 prohíbe escribirlo. Es la misma razón por la que el <code>&lt;md-elevation&gt;</code> de Google lleva un <code>TODO</code> en el sitio.</li>
       </ul>
       <p class="sr-na">Los botones de icono no participan, y no por criterio: M3 no declara tokens de elevación para ninguno de sus variantes, en ninguna generación. Ver <a href="icon-button.html">Icon Button</a>.</p>
     </article>

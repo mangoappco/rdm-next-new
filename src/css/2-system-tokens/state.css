@@ -1,0 +1,125 @@
+/* ==========================================================================
+   2-system-tokens/state.css â€” TOKENS SEMANTICOS DE STATE LAYER (solo var())
+   ==========================================================================
+
+   QUE ES UN STATE LAYER
+   ---------------------
+   Es una capa semitransparente que se coloca ENCIMA de un elemento para
+   indicar su estado actual. Cuando pasas el puntero sobre un boton, lo que
+   ves no es un boton que cambia de color: es el MISMO boton con una capa
+   encima.
+
+   Segun la especificacion de M3, el state layer:
+
+     - Tiene una opacidad FIJA para cada estado.
+     - Usa el MISMO COLOR que el contenido del elemento.
+     - Solo puede haber UNO a la vez: nunca hover y pressed simultaneos.
+     - Mide 40dp de tamaÃ±o, dentro de un area tactil de 48dp.
+
+   ---------------------------------------------------------------------------
+   LA REGLA QUE MAS IMPORTANTE Y QUE MAS SE OLVIDA
+   ------------------------------------------------
+   El state layer USA EL COLOR DEL CONTENIDO. No tiene color propio.
+
+   M3 lo dice asi:
+
+       "The state layer is an overlay with a fixed opacity for each state
+        and uses the same color as the content."
+
+   Ejemplo que da la especificacion: si un componente usa el color
+   `secondary-container` para su contenedor y `on-secondary-container` para
+   su texto, la capa de estado es un overlay con el color
+   `on-secondary-container`, NO con el del contenedor.
+
+   En CSS esto se resuelve con `currentColor`, que es la palabra clave que
+   significa "el color que este elemento ya tiene". Al usarla, la capa toma
+   automaticamente el color del texto o del icono que tiene encima, sin
+   necesidad de declarar un token de color para ella.
+
+   POR QUE ESTO ES TAN IMPORTANTE
+   ------------------------------
+   Si la capa tuviera su propio color, cada componente tendria que decidir
+   cual usar, y serian decenas de decisiones repetidas. Con `currentColor`,
+   la capa se adapta sola al componente donde se aplica. Un solo selector
+   sirve para toda la interfaz.
+
+   ---------------------------------------------------------------------------
+   LOS 5 ESTADOS
+   --------------
+     hover     El puntero esta encima. El estado mas frecuente.
+     focus     El elemento tiene el foco del teclado.
+     pressed   El elemento esta siendo pulsado.
+     dragged   El elemento se esta arrastrando.
+     disabled  El elemento esta inactivo.
+
+   focus y pressed comparten el valor 10%: ambas responden a una intencion
+   activa del usuario. dragged usa 16%, mas intenso, porque arrastrar es una
+   accion sostenida en el tiempo y necesita leerse mientras el dedo mueve.
+
+   disabled (38%) NO es un state layer: es la opacidad que se aplica al
+   contenido de un elemento inactivo. Se expone en este archivo porque
+   comparte naturaleza, pero se usa de forma distinta. Ver 1-reference-tokens/opacity.css.
+
+   ---------------------------------------------------------------------------
+   LA DISCREPANCIA DE VALORES ENTRE FUENTES DE GOOGLE
+   -------------------------------------------------
+   focus y pressed tienen dos valores circulando en la propia especificacion
+   de Google:
+
+       documentacion m3.material.io ....... 0.10
+       _md-sys-state.scss de Material Web .. 0.12
+
+   Este proyecto sigue la DOCUMENTACION (0.10). La razon y las consecuencias
+   estan documentadas en 1-reference-tokens/opacity.css. Si Google unifica el valor, se
+   cambia una sola linea ahi y todo el sistema se actualiza.
+
+   ---------------------------------------------------------------------------
+   RELACION CON LAS OTRAS CAPAS
+   -----------------------------
+       1-reference-tokens/opacity.css    <- los 5 valores crudos
+              |
+              v
+       2-system-tokens/state.css      <- ESTE: los 5 roles (las utilidades viven en 4-utilities/state.css)
+              |
+              v
+       3-components/button.css    <- el componente define sus estados
+
+   ========================================================================== */
+
+:root {
+  /* ------------------------------------------------------------------------
+     LOS 5 ROLES DE STATE LAYER
+     Cada uno mapea a su valor crudo en 1-reference-tokens/opacity.css.
+     --------------------------------------------------------------------- */
+
+  /* 8% â€” hover. El estado mas frecuente de la interfaz. */
+  --md-sys-state-hover-state-layer-opacity: var(--md-ref-opacity-8);
+
+  /* 10% â€” focus por teclado. Senala "estoy aqui" durante el recorrido con tab. */
+  --md-sys-state-focus-state-layer-opacity: var(--md-ref-opacity-10);
+
+  /* 10% â€” pressed. Mismo valor que focus: ambos responden a una intencion
+     activa del usuario. */
+  --md-sys-state-pressed-state-layer-opacity: var(--md-ref-opacity-10);
+
+  /* 16% â€” dragged. El mas intenso de los tres de interaccion. */
+  --md-sys-state-dragged-state-layer-opacity: var(--md-ref-opacity-16);
+
+  /* 38% â€” disabled. No es un state layer: es la opacidad del contenido
+     inactivo. Ver la nota de 1-reference-tokens/opacity.css. */
+  --md-sys-state-disabled-state-layer-opacity: var(--md-ref-opacity-38);
+
+  /* 10% â€” el CONTENEDOR deshabilitado. Es un valor distinto del 38% del
+     contenido, y por eso necesita su propio rol.
+
+     M3 lo separa asi porque un boton deshabilitado se dibuja en dos pasos:
+     el relleno se atenua al 10% y el texto al 38%. Con un solo valor, o el
+     boton disabled se veria casi invisible o no pareceria deshabilitado.
+
+     El 10% ya existia como primitiva en 1-reference-tokens/opacity.css, pero ningun
+     componente lo pedia, asi que no habia rol. El boton es el primero. */
+  --md-sys-state-disabled-container-opacity: var(--md-ref-opacity-10);
+}
+
+/* Las clases utilitarias de esta familia se mudaron a 4-utilities/ en la auditoria M3:
+   la Capa 2 solo declara tokens. Ver 4-utilities/index.css. */

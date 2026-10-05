@@ -1,0 +1,44 @@
+/* ==========================================================================
+   4-utilities/measurement.css — CLASES UTILITARIAS DE MEDIDA (Capa 4)
+   ==========================================================================
+
+   QUE ES ESTE ARCHIVO
+   -------------------
+   CAPA 4 del sistema. Expone el area tactil minima y el par icono/area
+   de M3 como clases para el HTML.
+
+   ORIGEN
+   ------
+   Movido desde 2-system-tokens/measurement.css en la auditoria M3. Las
+   clases no cambiaron: solo su capa. Los roles --md-sys-measurement-*
+   siguen en 2-system-tokens/measurement.css.
+
+   POR QUE MIN-WIDTH/MIN-HEIGHT Y NO WIDTH/HEIGHT
+   ----------------------------------------------
+   Estas clases NO aplican alto ni ancho directamente, porque un componente
+   casi nunca quiere que el HTML le fije la dimension: eso rompe los
+   layouts fluidos y el zoom del usuario.
+
+   En su lugar, exponen el area tactil minima mediante MIN-WIDTH y
+   MIN-HEIGHT. Es la manera correcta de garantizar los 48dp sin imponer un
+   tamano fijo: el elemento puede crecer si su contenido lo pide, pero
+   nunca baja de 48dp.
+
+   Esta es una diferencia importante frente a las utilidades de color, que
+   si aplican su propiedad directamente. Aqui la dimension casi nunca se
+   hereda del HTML: se resuelve en el componente.
+   ========================================================================== */
+
+/* Area tactil minima: garantiza los 48dp sin fijar la dimension. */
+.md-measure-touch-target {
+  min-width: var(--md-sys-measurement-touch-target);
+  min-height: var(--md-sys-measurement-touch-target);
+}
+
+/* Icono con su area tactil: glifo de 24dp, area de 48dp. El par que da M3. */
+.md-measure-icon {
+  width: var(--md-sys-measurement-icon-size);
+  height: var(--md-sys-measurement-icon-size);
+  min-width: var(--md-sys-measurement-icon-target);
+  min-height: var(--md-sys-measurement-icon-target);
+}

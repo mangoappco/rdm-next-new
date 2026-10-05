@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Color - ManGo! App</title>
-  <meta name="description" content="Documentacion de la capa de color de RDM Next: los 89 tonos crudos de 1-ref/palette.css, los 37 roles de 2-sys y su mapeo por tema, segun Material Design 3.">
+  <meta name="description" content="Documentacion de la capa de color de RDM Next: los 89 tonos crudos de 1-reference-tokens/palette.css, los 37 roles de 2-system-tokens y su mapeo por tema, segun Material Design 3.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap" rel="stylesheet">
@@ -14,14 +14,14 @@
 </head>
 
 <!--
-  Vista de la CAPA 1 (1-ref/palette.css) y de la capa 2 del color.
+  Vista de la CAPA 1 (1-reference-tokens/palette.css) y de la capa 2 del color.
 
-  No es un componente de 3-comp: no tiene anatomia, ni slots, ni estados,
+  No es un componente de 3-components: no tiene anatomia, ni slots, ni estados,
   ni interaccion. Es una tabla de valores, y las secciones que si aplican
   estan confirmadas con el usuario.
 
   Las clases .sr-swatch-* viven en showroom/assets/showroom.css, no en la
-  libreria: 1-ref no lleva clase por decision de arquitectura.
+  libreria: 1-reference-tokens no lleva clase por decision de arquitectura.
 -->
 
 <body class="md-bg-background md-text-on-background md-type-body-medium">
@@ -34,7 +34,7 @@
 
     <header class="sr-header">
       <h1>Color</h1>
-      <p>Los tonos crudos de la paleta y los roles que los consumen. Es el unico camino del sistema donde el color se decide: un #HEX se escribe en 1-ref, un tema elige que tono le toca a cada rol, y un componente pide el rol sin saber que color hay debajo.</p>
+      <p>Los tonos crudos de la paleta y los roles que los consumen. Es el unico camino del sistema donde el color se decide: un #HEX se escribe en 1-reference-tokens, un tema elige que tono le toca a cada rol, y un componente pide el rol sin saber que color hay debajo.</p>
     </header>
 
     <hr class="md-divider">
@@ -42,19 +42,19 @@
     <article class="sr-section">
       <h2>Uso</h2>
       <h3>Que es este archivo</h3>
-      <p><code>src/css/1-ref/palette.css</code> es la CAPA 1 del sistema de color: 89 tonos <code>#HEX</code> en 6 familias, mas <code>black</code> y <code>white</code> absolutos. Son valores crudos, sin significado de diseno. Es el unico archivo del proyecto donde se permite escribir un color literal.</p>
+      <p><code>src/css/1-reference-tokens/palette.css</code> es la CAPA 1 del sistema de color: 89 tonos <code>#HEX</code> en 6 familias, mas <code>black</code> y <code>white</code> absolutos. Son valores crudos, sin significado de diseno. Es el unico archivo del proyecto donde se permite escribir un color literal.</p>
       <p>Los tonos verificados uno a uno contra <code>material-web/tokens/versions/v0_192/_md-ref-palette.scss</code>: <strong>91 de 91 identicos, cero diferencias</strong>. Es la paleta oficial de Material Design 3, version de tokens v0.192.</p>
 
       <h3>Cuando se toca</h3>
       <ul>
         <li>Para cambiar el color de marca de la app: se edita este archivo y las capas superiores se actualizan solas por cascada.</li>
-        <li>Para cambiar que tono recibe un rol: se edita <code>2-sys/theme/theme.light.css</code> o <code>theme.dark.css</code>, nunca la paleta.</li>
+        <li>Para cambiar que tono recibe un rol: se edita <code>2-system-tokens/theme/theme.light.css</code> o <code>theme.dark.css</code>, nunca la paleta.</li>
         <li>Para agregar un tono nuevo: se escribe aqui, y luego un rol que lo consuma. Un tono que nadie mapea es un tono disponible, no uno roto.</li>
       </ul>
 
       <h3>Cuando no se toca</h3>
       <ul>
-        <li>Nunca desde <code>3-comp/</code>. Un componente no lee la paleta: lee un rol de <code>2-sys</code>. Es la REGLA 2 del verificador, y <code>@layer</code> la hace cumplir por el motor.</li>
+        <li>Nunca desde <code>3-components/</code>. Un componente no lee la paleta: lee un rol de <code>2-system-tokens</code>. Es la REGLA 2 del verificador, y <code>@layer</code> la hace cumplir por el motor.</li>
         <li>Nunca parathofff de un rol a un tono suelto en el marcado. Un componente pide <code>--md-sys-color-primary</code>, jamas <code>#6750a4</code>.</li>
       </ul>
     </article>
@@ -116,7 +116,7 @@
 
     <article class="sr-section">
       <h2>Catalogo de los 89 tonos</h2>
-      <p>Los 89 tonos tal cual los declara <code>1-ref/palette.css</code>. Debajo de cada muestra, el nombre del tono y su valor. Las muestras se pintan con clases del showroom que consumen el token real: si un tono cambiara, cambiarian aqui tambien.</p>
+      <p>Los 89 tonos tal cual los declara <code>1-reference-tokens/palette.css</code>. Debajo de cada muestra, el nombre del tono y su valor. Las muestras se pintan con clases del showroom que consumen el token real: si un tono cambiara, cambiarian aqui tambien.</p>
       <p class="sr-na">Cada muestra lleva un contorno tenue a proposito: sin el, los tonos 99 y 100 se perderian sobre el fondo de la pagina, que en tema claro es casi blanco.</p>
 
       <h3>Primary</h3>
@@ -831,7 +831,7 @@
 
     <article class="sr-section">
       <h2>Utilidades de color</h2>
-      <p><code>2-sys/colors.css</code> expone los roles como clases, para aplicarlos desde el HTML sin escribir la propiedad a mano. No define ningun token: solo consume <code>--md-sys-color-*</code>.</p>
+      <p><code>4-utilities/color.css</code> expone los roles como clases, para aplicarlos desde el HTML sin escribir la propiedad a mano. No define ningun token: solo consume <code>--md-sys-color-*</code>.</p>
       <p>Son <strong>93 clases</strong> sobre 37 roles, con el nombre en orden de propiedad: <code>md-bg-</code> fondo, <code>md-text-</code> texto, <code>md-border-</code> borde.</p>
       <table class="sr-table">
         <thead>
@@ -927,7 +927,7 @@
       <h3>Por que md-border-* cubre 23 de 37 roles</h3>
       <p>Las utilidades de borde aplican <strong>solo <code>border-color</code></strong>, nunca el grosor. El grosor es una medida y depende del estado del componente: un separador usa <code>stroke-thin</code> (1px), el borde de un checkbox sin marcar usa <code>stroke-thick</code> (2px).</p>
       <p>Ademas, los 14 roles sin utilidad de borde son los de superficie y de texto (<code>background</code>, <code>surface</code>, los <code>surface-container-*</code>, <code>on-surface</code>, <code>on-background</code>, <code>surface-tint</code>). No es una omision: <strong>el borde de una superficie no es una decision de la clase de color</strong>. El borde lo decide el componente, y el color del borde lo pide con el rol que corresponda a ese componente.</p>
-      <p>Ejemplo real, de <code>3-comp/divider.css</code>: el divisor lee <code>outline-variant</code> y su grosor de <code>stroke-thin</code>, por separado.</p>
+      <p>Ejemplo real, de <code>3-components/divider.css</code>: el divisor lee <code>outline-variant</code> y su grosor de <code>stroke-thin</code>, por separado.</p>
       <h3>El atajo que no existe</h3>
       <p>No hay ninguna clase que empareje un fondo con su texto, y las dos muestras de abajo lo demuestran. La primera esta bien. La segunda es el error que el atajo habria hecho invisible.</p>
       <div class="sr-swatches">
@@ -950,14 +950,14 @@
 
     <article class="sr-section">
       <h2>Tonos no consumidos</h2>
-      <p>De los 89 tonos, <strong>40 no los referencia ningun archivo de <code>2-sys</code> ni de <code>3-comp</code></strong>. Solo 49 tonos estan mapeados a un rol.</p>
+      <p>De los 89 tonos, <strong>40 no los referencia ningun archivo de <code>2-system-tokens</code> ni de <code>3-components</code></strong>. Solo 49 tonos estan mapeados a un rol.</p>
       <p>No es un descuido, y conviene entender por que antes de "arreglarlo":</p>
       <ul>
         <li>La paleta es el <strong>inventario completo</strong> que publica M3, no el catalogo de lo que hoy se usa. Es lo que permite que un componente futuro encuentre el tono que necesita sin ampliar la paleta.</li>
         <li>Los 13 tonos base de cada familia y los 11 finos de <code>neutral</code> cubren el rango completo de luminosidad, y el mapeo por rol elige los que hacen falta.</li>
         <li>Los tonos finos de <code>neutral</code> que no se usan todavia son los que permitirian un sexto nivel de <code>surface-container-*</code> si el diseno lo pidiera.</li>
       </ul>
-      <p>La regla del proyecto es explicita: <em>un token que nadie consume es un token muerto</em>. Aqui se aplica al reves, y a proposito: en <code>1-ref</code> un tono sin mapear es un tono <strong>disponible</strong>, no uno roto. El que no se admite sin consumidor es un rol de <code>2-sys</code>.</p>
+      <p>La regla del proyecto es explicita: <em>un token que nadie consume es un token muerto</em>. Aqui se aplica al reves, y a proposito: en <code>1-reference-tokens</code> un tono sin mapear es un tono <strong>disponible</strong>, no uno roto. El que no se admite sin consumidor es un rol de <code>2-system-tokens</code>.</p>
     </article>
 
     <hr class="md-divider">
@@ -969,13 +969,13 @@
         <li>Consumir el <strong>rol</strong>: <code>var(--md-sys-color-primary)</code>, que responde al tema.</li>
         <li>Escribir el par <code>on-*</code> explicito, para que el contraste sea auditable en el HTML.</li>
         <li>Usar <code>surface-container-*</code> para jerarquia visual, en vez de apilar sombras.</li>
-        <li>Cambiar la marca editando solo <code>1-ref/palette.css</code>.</li>
+        <li>Cambiar la marca editando solo <code>1-reference-tokens/palette.css</code>.</li>
         <li>Dejar <code>error</code> como esta: M3 lo hace estatico por defecto en cualquier esquema.</li>
       </ul>
       <h3>Don't</h3>
       <ul>
-        <li>Escribir un <code>#HEX</code> fuera de <code>1-ref/</code>. Rompe la REGLA 1 y convierte un cambio de marca en una busqueda por todo el proyecto.</li>
-        <li>Leer <code>--md-ref-palette-*</code> desde <code>3-comp/</code>. Es un salto de capa, y la REGLA 2 lo prohibe.</li>
+        <li>Escribir un <code>#HEX</code> fuera de <code>1-reference-tokens/</code>. Rompe la REGLA 1 y convierte un cambio de marca en una busqueda por todo el proyecto.</li>
+        <li>Leer <code>--md-ref-palette-*</code> desde <code>3-components/</code>. Es un salto de capa, y la REGLA 2 lo prohibe.</li>
         <li>Combinar roles que no son par <code>on-*</code>. <code>md-bg-primary</code> con <code>md-text-primary</code> es contraste cero.</li>
         <li>Usar <code>outline</code> para un divisor, o <code>outline-variant</code> para un limite accesible.</li>
         <li>Asumir que el tema oscuro es el claro invertido. Cada rol tiene su propio tono.</li>
@@ -1016,16 +1016,16 @@
           <tr><th scope="col">Familia</th><th scope="col">Prefijo</th><th scope="col">Tokens</th><th scope="col">Capa</th></tr>
         </thead>
         <tbody>
-          <tr><td>Paleta</td><td><code>--md-ref-palette-</code></td><td>91</td><td>1-ref, <code>palette.css</code></td></tr>
-          <tr><td>Roles de color</td><td><code>--md-sys-color-</code></td><td>38</td><td>2-sys, <code>theme/*.css</code></td></tr>
-          <tr><td>Utilidades de color</td><td><code>md-bg-*</code> / <code>md-text-*</code> / <code>md-border-*</code></td><td>93</td><td>2-sys, <code>colors.css</code></td></tr>
-          <tr><td>Opacidad</td><td><code>--md-ref-opacity-</code></td><td>4</td><td>1-ref, <code>opacity.css</code></td></tr>
-          <tr><td>Bordes de superficie</td><td><code>--md-sys-shape-stroke-thin</code></td><td>1</td><td>2-sys, <code>shape.css</code></td></tr>
-          <tr><td>Elevacion</td><td><code>--md-sys-elevation-*</code></td><td>6</td><td>2-sys, <code>elevation.css</code></td></tr>
+          <tr><td>Paleta</td><td><code>--md-ref-palette-</code></td><td>91</td><td>1-reference-tokens, <code>palette.css</code></td></tr>
+          <tr><td>Roles de color</td><td><code>--md-sys-color-</code></td><td>38</td><td>2-system-tokens, <code>theme/*.css</code></td></tr>
+          <tr><td>Utilidades de color</td><td><code>md-bg-*</code> / <code>md-text-*</code> / <code>md-border-*</code></td><td>93</td><td>4-utilities, <code>color.css</code></td></tr>
+          <tr><td>Opacidad</td><td><code>--md-ref-opacity-</code></td><td>4</td><td>1-reference-tokens, <code>opacity.css</code></td></tr>
+          <tr><td>Bordes de superficie</td><td><code>--md-sys-shape-stroke-thin</code></td><td>1</td><td>2-system-tokens, <code>shape.css</code></td></tr>
+          <tr><td>Elevacion</td><td><code>--md-sys-elevation-*</code></td><td>6</td><td>2-system-tokens, <code>elevation.css</code></td></tr>
         </tbody>
       </table>
       <h3>El token propio que Google no publica</h3>
-      <p><code>--md-sys-color-shadow-rgb</code> vale <code>0 0 0</code>. M3 expone <code>--md-sys-color-shadow</code> pero no la variante en tripletos. Existe porque la opacidad solo se puede aplicar a un color en formato <code>rgb()</code>, y sin este token el <code>rgba</code> quedaria quemado dentro de la geometria en <code>1-ref/shadow.css</code>: la primitiva no puede decidir el color, eso es del tema.</p>
+      <p><code>--md-sys-color-shadow-rgb</code> vale <code>0 0 0</code>. M3 expone <code>--md-sys-color-shadow</code> pero no la variante en tripletos. Existe porque la opacidad solo se puede aplicar a un color en formato <code>rgb()</code>, y sin este token el <code>rgba</code> quedaria quemado dentro de la geometria en <code>1-reference-tokens/shadow.css</code>: la primitiva no puede decidir el color, eso es del tema.</p>
     </article>
 
     <hr class="md-divider">

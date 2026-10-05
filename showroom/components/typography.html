@@ -14,15 +14,15 @@
 </head>
 
 <!--
-  Vista de la CAPA 2 de la tipografía (2-sys/typography.css), con las
-  CAPA 1 que consume: 1-ref/typeface.css y 1-ref/typescale.css.
+  Vista de la CAPA 2 de la tipografía (2-system-tokens/typography.css), con las
+  CAPA 1 que consume: 1-reference-tokens/typeface.css y 1-reference-tokens/typescale.css.
 
-  No es un componente de 3-comp: no tiene anatomia visual, ni slots, ni
+  No es un componente de 3-components: no tiene anatomia visual, ni slots, ni
   estados, ni interaccion. Es una escala de estilos, y las secciones que si
   aplican estan confirmadas con el usuario.
 
   Cada especimen de esta pagina se pinta con la clase .md-type-* real, leida
-  de la capa sys. Si un valor de 1-ref cambiara, los 32 especimenes
+  de la capa sys. Si un valor de 1-reference-tokens cambiara, los 32 especimenes
   cambiarian a la vez. Ninguno esta dibujado a mano.
 
   Las clases .sr-* viven en showroom/assets/showroom.css, no en la libreria.
@@ -46,7 +46,7 @@
     <article class="sr-section">
       <h2>Uso</h2>
       <h3>Qué es este archivo</h3>
-      <p><code>src/css/2-sys/typography.css</code> es la CAPA 2 del sistema tipográfico: los <strong>92 tokens</strong> que describen los quince estilos de M3, y las <strong>32 clases</strong> que los aplican desde el HTML. No contiene ni un número: todo lo que dice sale de <code>1-ref/typeface.css</code> y de <code>1-ref/typescale.css</code>.</p>
+      <p><code>src/css/2-system-tokens/typography.css</code> es la CAPA 2 del sistema tipográfico: los <strong>92 tokens</strong> que describen los quince estilos de M3, y las <strong>32 clases</strong> que los aplican desde el HTML. No contiene ni un número: todo lo que dice sale de <code>1-reference-tokens/typeface.css</code> y de <code>1-reference-tokens/typescale.css</code>.</p>
       <p>Los 92 tokens son 15 estilos por 5 sub-tokens, más 15 tokens compuestos, más 2 de peso destacado. Las 32 clases son 15 de estilo completo, 15 de estilo sin tamaño, y 2 de peso destacado.</p>
 
       <h3>Cómo se llega aquí</h3>
@@ -55,13 +55,13 @@
           <tr><th scope="col">Capa</th><th scope="col">Archivo</th><th scope="col">Que aporta</th><th scope="col">Tokens</th></tr>
         </thead>
         <tbody>
-          <tr><td>1</td><td><code>1-ref/typeface.css</code></td><td>La familia, los tres pesos, los ajustes de fuente variable y el tamaño óptico de los iconos.</td><td>9</td></tr>
-          <tr><td>1</td><td><code>1-ref/typescale.css</code></td><td>Las tres medidas de cada estilo: cuerpo, interlineado e interletraje.</td><td>45</td></tr>
-          <tr><td>2</td><td><code>2-sys/typography.css</code></td><td>Los quince estilos como roles, los compuestos, y las clases que los aplican.</td><td>92</td></tr>
-          <tr><td>3</td><td><code>3-comp/button.css</code></td><td>Pide <code>label-large</code> y <code>title-medium</code>. Nunca escribe un tamaño.</td><td>0</td></tr>
+          <tr><td>1</td><td><code>1-reference-tokens/typeface.css</code></td><td>La familia, los tres pesos, los ajustes de fuente variable y el tamaño óptico de los iconos.</td><td>9</td></tr>
+          <tr><td>1</td><td><code>1-reference-tokens/typescale.css</code></td><td>Las tres medidas de cada estilo: cuerpo, interlineado e interletraje.</td><td>45</td></tr>
+          <tr><td>2</td><td><code>2-system-tokens/typography.css</code></td><td>Los quince estilos como roles, los compuestos, y las clases que los aplican.</td><td>92</td></tr>
+          <tr><td>3</td><td><code>3-components/button.css</code></td><td>Pide <code>label-large</code> y <code>title-medium</code>. Nunca escribe un tamaño.</td><td>0</td></tr>
         </tbody>
       </table>
-      <p class="sr-na">La última fila es la prueba de que la capa funciona: el boton no declara ningun valor tipográfico propio. Reapunta los sub-tokens de 2-sys, y si manana <code>body-large</code> cambia de 16 a 18px, el boton lo seguira sin tocar una línea.</p>
+      <p class="sr-na">La última fila es la prueba de que la capa funciona: el boton no declara ningun valor tipográfico propio. Reapunta los sub-tokens de 2-system-tokens, y si manana <code>body-large</code> cambia de 16 a 18px, el boton lo seguira sin tocar una línea.</p>
 
       <h3>Que estilo para que uso</h3>
       <p>M3 organiza la escala en <strong>cinco roles</strong> y cada rol tiene <strong>tres tamaños</strong>: grande, mediano y pequeno. Los nombres describen para que sirve el texto, no lo grande que es.</p>
@@ -80,14 +80,14 @@
 
       <h3>Cuando se toca</h3>
       <ul>
-        <li>Para cambiar el cuerpo de un texto: se edita <code>1-ref/typescale.css</code> y las tres capas superiores se actualizan por cascada.</li>
-        <li>Para cambiar la fuente del sistema: se edita <code>1-ref/typeface.css</code>, en el token de familia. No se escribe el nombre de la fuente en ningun componente.</li>
-        <li>Para cambiar de tema tipográfico: se reapuntan los sub-tokens de 2-sys desde el componente que lo necesite. El token de 1-ref no se mueve.</li>
+        <li>Para cambiar el cuerpo de un texto: se edita <code>1-reference-tokens/typescale.css</code> y las tres capas superiores se actualizan por cascada.</li>
+        <li>Para cambiar la fuente del sistema: se edita <code>1-reference-tokens/typeface.css</code>, en el token de familia. No se escribe el nombre de la fuente en ningun componente.</li>
+        <li>Para cambiar de tema tipográfico: se reapuntan los sub-tokens de 2-system-tokens desde el componente que lo necesite. El token de 1-reference-tokens no se mueve.</li>
       </ul>
 
       <h3>Cuando no se toca</h3>
       <ul>
-        <li>Nunca desde <code>3-comp/</code> un componente lee tokens de <code>1-ref/</code>. Es la REGLA 2 del verificador, y <code>@layer</code> la hace cumplir por el motor.</li>
+        <li>Nunca desde <code>3-components/</code> un componente lee tokens de <code>1-reference-tokens/</code>. Es la REGLA 2 del verificador, y <code>@layer</code> la hace cumplir por el motor.</li>
         <li>Nunca escribiendo un tamaño suelto en el marcado. Un <code>font-size: 18px</code> en un <code>style=</code> esta prohibido por la REGLA 6 y además sale de la escala.</li>
         <li>Nunca para prorizar el cuerpo de un texto. Si un texto necesita más tamaño, el problema casi siempre es que le toca un rol equivocado, no que el rol sea pequeno.</li>
       </ul>
@@ -108,7 +108,7 @@
           <span class="md-type-label-large">Accion</span>
         </button>
       </div>
-      <p class="sr-na">El boton no lleva <code>md-type-label-large</code> en el marcado porque no la necesita: <code>3-comp/button.css</code> ya le pone <code>label-large</code> por dentro. Ver la sección <strong>Comportamiento</strong>.</p>
+      <p class="sr-na">El boton no lleva <code>md-type-label-large</code> en el marcado porque no la necesita: <code>3-components/button.css</code> ya le pone <code>label-large</code> por dentro. Ver la sección <strong>Comportamiento</strong>.</p>
 
       <h3>Sin clase no hay estilo</h3>
       <p>El <code>&lt;body&gt;</code> de esta vista lleva <code>md-type-body-medium</code>, y de ahi sale el 14/20. Un elemento que no lleva ninguna clase <code>md-type-*</code> no tiene estilo del sistema: hereda lo que le llegue.</p>
@@ -117,7 +117,7 @@
         <div>Sin clase</div>
       </div>
       <p class="sr-na">El <code>&lt;div&gt;</code> sin clase no esta a 16px ni a 24px: hereda el 14/20 del <code>&lt;body&gt;</code>. Los dos son el mismo elemento, lo único que los diferencia es la clase.</p>
-      <p class="sr-na">Los specimens de esta pagina van en <code>&lt;div&gt;</code> y no en <code>&lt;p&gt;</code> ni en <code>&lt;h3&gt;</code>, y el motivo es la capa <code>showroom</code>: <code>.sr-section p</code> y <code>.sr-section h3</code> declaran su propia tipografía, y esa capa es la más fuerte del sistema, así que le gana a <code>2-sys</code>. Un specimen en un <code>&lt;p&gt;</code> se veria siempre a 14px y no del estilo que documenta. Es la misma regla de la sección <strong>Comportamiento</strong>, vista desde el propio showroom.</p>
+      <p class="sr-na">Los specimens de esta pagina van en <code>&lt;div&gt;</code> y no en <code>&lt;p&gt;</code> ni en <code>&lt;h3&gt;</code>, y el motivo es la capa <code>showroom</code>: <code>.sr-section p</code> y <code>.sr-section h3</code> declaran su propia tipografía, y esa capa es la más fuerte del sistema, así que le gana a <code>2-system-tokens</code>. Un specimen en un <code>&lt;p&gt;</code> se veria siempre a 14px y no del estilo que documenta. Es la misma regla de la sección <strong>Comportamiento</strong>, vista desde el propio showroom.</p>
     </article>
 
     <hr class="md-divider">
@@ -363,7 +363,7 @@
           <tr><th scope="col">Eje oficial</th><th scope="col">Como lo resuelve este sistema</th></tr>
         </thead>
         <tbody>
-          <tr><td><code>wght</code></td><td><code>font-weight</code>, con los tres pesos de <code>1-ref/typeface.css</code>.</td></tr>
+          <tr><td><code>wght</code></td><td><code>font-weight</code>, con los tres pesos de <code>1-reference-tokens/typeface.css</code>.</td></tr>
           <tr><td><code>opsz</code></td><td><code>font-optical-sizing: auto</code>, deja que el navegador elija el corte.</td></tr>
           <tr><td><code>slnt</code>, <code>wdth</code>, <code>GRAD</code>, <code>ROND</code></td><td>Fijados en neutro por <code>font-variation-settings</code>.</td></tr>
           <tr><td><code>hexp</code>, <code>fill</code>, <code>crsv</code></td><td>No se implementan. No hay componente que los pida.</td></tr>
@@ -384,14 +384,14 @@
 
     <article class="sr-section">
       <h2>Color</h2>
-      <p class="sr-na">Este componente no tiene color. La tipografía no pinta nada por si misma: el color lo aporta la familia de utilidades de <code>2-sys/colors.css</code>, con <code>md-text-*</code>. Un <code>&lt;p class="md-type-body-large"&gt;</code> sin color toma el del ancestro más cercano. La tipografía y el color son dos ejes ortogonales, y por eso esta pagina documenta uno solo. Ver la vista del <a href="color.html">Color</a> para el otro.</p>
+      <p class="sr-na">Este componente no tiene color. La tipografía no pinta nada por si misma: el color lo aporta la familia de utilidades de <code>4-utilities/color.css</code>, con <code>md-text-*</code>. Un <code>&lt;p class="md-type-body-large"&gt;</code> sin color toma el del ancestro más cercano. La tipografía y el color son dos ejes ortogonales, y por eso esta pagina documenta uno solo. Ver la vista del <a href="color.html">Color</a> para el otro.</p>
     </article>
 
     <hr class="md-divider">
 
     <article class="sr-section">
       <h2>Shapes</h2>
-      <p class="sr-na">Este componente no tiene formas. La tipografía no declara radios, ni bordes, ni contorno: no hay nada que redondear. La forma de un elemento la aporta su contenedor, y si la que se quiere es redondeada, se pide un <code>md-shape-corner-*</code> de <code>2-sys/shape.css</code>. Ver la sección <strong>Composición</strong> para un ejemplo.</p>
+      <p class="sr-na">Este componente no tiene formas. La tipografía no declara radios, ni bordes, ni contorno: no hay nada que redondear. La forma de un elemento la aporta su contenedor, y si la que se quiere es redondeada, se pide un <code>md-shape-corner-*</code> de <code>2-system-tokens/shape.css</code>. Ver la sección <strong>Composición</strong> para un ejemplo.</p>
     </article>
 
     <hr class="md-divider">
@@ -428,7 +428,7 @@
 
     <article class="sr-section">
       <h2>Padding</h2>
-      <p class="sr-na">Este componente no tiene padding. La tipografía no es un contenedor: no envuelve nada y no empuja nada. El espacio entre un texto y el borde de su caja lo decide el componente que lo contiene, con los tokens de <code>2-sys/measurement.css</code>. Un <code>&lt;p&gt;</code> con <code>md-type-body-large</code> no trae ningun margen propio.</p>
+      <p class="sr-na">Este componente no tiene padding. La tipografía no es un contenedor: no envuelve nada y no empuja nada. El espacio entre un texto y el borde de su caja lo decide el componente que lo contiene, con los tokens de <code>2-system-tokens/measurement.css</code>. Un <code>&lt;p&gt;</code> con <code>md-type-body-large</code> no trae ningun margen propio.</p>
     </article>
 
     <hr class="md-divider">
@@ -442,11 +442,11 @@
 
     <article class="sr-section">
       <h2>Iconografia</h2>
-      <p>Una clase tipográfica no dibuja iconos. Google Sans Flex dibuja letras, y los iconos son Material Symbols, otra fuente. <code>2-sys/typography.css</code> no expone ningun token de icono, y antes si lo hacia: los dos tokens del eje de tamaño óptico vivian aquí y ahora estan en <code>2-sys/icon.css</code>.</p>
+      <p>Una clase tipográfica no dibuja iconos. Google Sans Flex dibuja letras, y los iconos son Material Symbols, otra fuente. <code>2-system-tokens/typography.css</code> no expone ningun token de icono, y antes si lo hacia: los dos tokens del eje de tamaño óptico vivian aquí y ahora estan en <code>2-system-tokens/icon.css</code>.</p>
       <p>El motivo de la mudanza es que un icono no es un texto con otro tamaño. La fuente de iconos tiene sus propios ejes, su propio color y su propio criterio, así que su escala se documenta aparte, en la vista de iconos.</p>
       <table class="sr-table">
         <thead>
-          <tr><th scope="col">Token, en <code>2-sys/icon.css</code></th><th scope="col">Valor</th><th scope="col">Qué es</th></tr>
+          <tr><th scope="col">Token, en <code>2-system-tokens/icon.css</code></th><th scope="col">Valor</th><th scope="col">Qué es</th></tr>
         </thead>
         <tbody>
           <tr><td><code>--md-sys-icon-optical-size-small</code></td><td>20</td><td>Tamaño óptico pequeno.</td></tr>
@@ -457,7 +457,7 @@
       </table>
       <p class="sr-na">Antes eran dos valores y ahora son cuatro. El eje <code>opsz</code> pertenece a la fuente de Material Symbols y <strong>no cambia el tamaño del glifo</strong>: lo que cambia es el grosor del trazo, para que un glifo se lea con el mismo peso visual al tamaño para el que fue dibujado.</p>
       <p>De los cuatro, el boton de este sistema usa el pequeno en <code>xsmall</code> y <code>small</code>, y el mediano en <code>medium</code>. Ver la sección <strong>Iconografia</strong> de la vista del <a href="button.html">Button</a>.</p>
-      <p>El icono de un boton se pinta con <code>.md-icon</code>, la clase de <code>2-sys/icon.css</code>. No con la clase de Google: la fuente de iconos se carga completa y trae sus propias utilidades, y usarlas funciona a la vez que oculta el defecto. Es lo que comprueba la REGLA 9 del verificador.</p>
+      <p>El icono de un boton se pinta con <code>.md-icon</code>, la clase de <code>2-system-tokens/icon.css</code>. No con la clase de Google: la fuente de iconos se carga completa y trae sus propias utilidades, y usarlas funciona a la vez que oculta el defecto. Es lo que comprueba la REGLA 9 del verificador.</p>
     </article>
 
     <hr class="md-divider">
@@ -481,12 +481,12 @@
       <p class="sr-na">Comprobado en el navegador: dentro de un <code>md-type-body-large</code>, un hijo sin clase computa 16px / 24px / +0.5px, y un hijo con <code>md-type-label-small</code> computa 11px / 16px / +0.5px. La herencia funciona y la clase propia manda.</p>
 
       <h3>El caso del componente</h3>
-      <p>Cuando un componente ya trae tipografía propia, poner <code>md-type-*</code> encima no siempre hace lo que parece. El boton es el ejemplo: <code>3-comp/button.css</code> fija las cinco propiedades en la capa <code>comp</code>, y <code>2-sys</code> pierde contra <code>comp</code> en un empate de especificidad.</p>
+      <p>Cuando un componente ya trae tipografía propia, poner <code>md-type-*</code> encima lo pisa: la utilidad vive en la capa <code>utilities</code>, la última de la cascada. El boton es el ejemplo: <code>3-components/button.css</code> fija las cinco propiedades en la capa <code>comp</code>, y <code>utilities</code> gana el empate por orden de capas.</p>
       <div class="sr-stage">
         <button type="button" class="md-button md-button-filled md-button-small">Accion</button>
         <button type="button" class="md-button md-button-filled md-button-small md-type-display-large">Con display-large</button>
       </div>
-      <p class="sr-na">El segundo boton pide <code>display-large</code>, de 57px, y sigue siendo pequeno. No es un fallo: la capa del componente gana a la de la utilidad por el orden de <code>@layer</code>. Si necesitas que el texto de un boton sea de otro rol, se cambia el componente, no la etiqueta.</p>
+      <p class="sr-na">El segundo boton pide <code>display-large</code>, de 57px, y se dibuja grande: la utilidad pisa la receta del componente. No es un fallo: es la doctrina utility-first (la opinión final del autor gana). Si el texto de un boton debe ser de otro rol de forma estable, se cambia el componente, no la etiqueta: componer funciona, pero salta la receta.</p>
     </article>
 
     <hr class="md-divider">
@@ -503,17 +503,17 @@
       <p>Una clase tipográfica no tiene animaciones. Lo que hace no es moverse, sino ganar o perder en la cascada. Y ese comportamiento, en un sistema con capas, es lo que hay que entender.</p>
 
       <h3>El orden de las capas decide quien manda</h3>
-      <p><code>main.css</code> declara <code>@layer reset, ref, sys, comp, utilities</code>. En un empate de especificidad, gana la capa de la derecha. Una clase <code>.md-type-*</code> vive en <code>sys</code>.</p>
+      <p><code>main.css</code> declara <code>@layer reset, ref, sys, comp, utilities</code>. En un empate de especificidad, gana la capa de la derecha. Una clase <code>.md-type-*</code> vive en <code>utilities</code>, la última.</p>
       <ul>
-        <li>Contra el reset: gana <code>sys</code>. Una clase siempre le gana al navegador.</li>
-        <li>Contra un componente: gana <code>comp</code>. El componente manda sobre la utilidad.</li>
+        <li>Contra el reset: gana <code>utilities</code>. Una clase siempre le gana al navegador.</li>
+        <li>Contra un componente: gana <code>utilities</code>. La opinión final del autor pisa la receta. Es deliberado.</li>
         <li>Contra otro <code>md-type-*</code>: manda la que esta después en el marcado, si tienen la misma especificidad.</li>
       </ul>
-      <p>La regla general del proyecto es que <code>3-comp</code> no lee <code>1-ref</code>, y el motor lo hace cumplir: aunque un componente escribiera un valor de la capa cruda, la capa <code>sys</code> le ganaria. Es defensa en profundidad.</p>
+      <p>La regla general del proyecto es que <code>3-components</code> no lee <code>1-reference-tokens</code>. Eso no lo hace cumplir <code>@layer</code> —las capas deciden empates entre reglas, no qué variables existen—, sino la REGLA 2 del verificador. Es defensa en profundidad: cada mecanismo cubre lo que el otro no ve.</p>
 
-      <h3>El componente gana, y por que importa</h3>
-      <p>El boton lleva <code>label-large</code> por dentro. Si le pones <code>md-type-body-medium</code> al <code>&lt;button&gt;</code>, el componente gana en las cinco propiedades, porque <code>comp</code> esta declarado después de <code>sys</code>. La clase no hace nada. Se ve en la sección <strong>Modelo de contenido y herencia</strong>.</p>
-      <p class="sr-na">Esta es la misma mecanica que impide componer mal un divisor: <code>&lt;hr class="md-divider md-text-primary"&gt;</code> tampoco cambia de color, porque el divisor fija su propio color en la capa <code>comp</code> y la utilidad de texto es de <code>sys</code>. La lesson es siempre la misma: si quieres cambiar como se ve un componente, se cambia el componente.</p>
+      <h3>La utilidad gana, y por que importa</h3>
+      <p>El boton lleva <code>label-large</code> por dentro. Si le pones <code>md-type-body-medium</code> al <code>&lt;button&gt;</code>, la utilidad gana en las cinco propiedades, porque <code>utilities</code> esta declarada después de <code>comp</code>. Se ve en la sección <strong>Modelo de contenido y herencia</strong>.</p>
+      <p class="sr-na">Es la misma mecánica que permite componer un divisor: <code>&lt;hr class="md-divider md-text-primary"&gt;</code> sí cambia de color, porque la utilidad de texto es de <code>utilities</code> y el divisor fija el suyo en <code>comp</code>. La lección es siempre la misma: componer funciona, pero salta la receta; si el cambio debe ser estable, se cambia el componente.</p>
 
       <h3>Sin transicion</h3>
       <p>No hay <code>transition</code> ni <code>animation</code> en este archivo. El único ajuste que la tipografía produce es estatico: un valor que se aplica al instante y no se mueve.</p>
@@ -541,7 +541,7 @@
         <li><code>font-optical-sizing</code>: deja que el navegador elija el corte óptico según el tamaño real.</li>
         <li><code>font-variation-settings</code>: fija los cuatro ejes neutros (<code>slnt</code> 0, <code>wdth</code> 100, <code>GRAD</code> 0, <code>ROND</code> 0).</li>
       </ul>
-      <p class="sr-na">Estos dos los lee <code>2-sys/typography.css</code> directamente de <code>1-ref/typeface.css</code>, y es legal: la REGLA 2 solo prohibe que <code>3-comp</code> lea <code>1-ref</code>. Un componente, en cambio, no puede leerlos, y por eso el boton no los declara.</p>
+      <p class="sr-na">Estos dos los lee <code>2-system-tokens/typography.css</code> directamente de <code>1-reference-tokens/typeface.css</code>, y es legal: la REGLA 2 solo prohibe que <code>3-components</code> lea <code>1-reference-tokens</code>. Un componente, en cambio, no puede leerlos, y por eso el boton no los declara.</p>
     </article>
 
     <hr class="md-divider">
@@ -583,7 +583,7 @@
       </table>
       <p>Este sistema <strong>no lo implementa</strong>, y es una decisión consciente, no un olvido.</p>
       <p class="sr-na">La especificacion avisa de algo que aquí tiene consecuencia directa: "los componentes con altura fija estan construidos para valores pequenos y puede que no se adapten". El <code>md-button</code> tiene altura fija (32, 40 y 56) y calculo su <code>padding-block</code> sobre el interlineado del estilo. Con un texto en nastaliq o en telugu, esa altura no alcanza. Se documenta aquí como límite conocido del sistema, en lugar de resolverlo con un número inventado.</p>
-      <p class="sr-na">Cuando se implemente, la cifra exacta de cada categoría hay que sacarla de la tabla oficial de la especificacion y escribirla en <code>1-ref/typescale.css</code>. No se estima.</p>
+      <p class="sr-na">Cuando se implemente, la cifra exacta de cada categoría hay que sacarla de la tabla oficial de la especificacion y escribirla en <code>1-reference-tokens/typescale.css</code>. No se estima.</p>
 
       <h3>Ampliar el texto</h3>
       <p>La escala esta en unidades <code>px</code>, no <code>rem</code>. Eso significa que el texto <strong>no cambia de tamaño</strong> cuando el usuario sube el tamaño de fuente en su navegador. Es una decisión documentada, y el motivo es que el resto de la capa 1, el espacio y los trazos, también esta en px, para que 1dp = 1px.</p>
@@ -594,7 +594,7 @@
 
     <article class="sr-section">
       <h2>Responsive</h2>
-      <p class="sr-na">Este componente no tiene comportamiento responsive propio. Los quince estilos son los mismos en un movil y en un monitor: no hay <code>clamp()</code>, ni <code>vw</code>, ni media queries en <code>2-sys/typography.css</code>. Un titulo de 32px mide 32px en cualquier pantalla. Lo que cambia con el ancho es la decisión de que rol usar en cada caso, y esa decisión la toma el marcado de cada vista, no la escala.</p>
+      <p class="sr-na">Este componente no tiene comportamiento responsive propio. Los quince estilos son los mismos en un movil y en un monitor: no hay <code>clamp()</code>, ni <code>vw</code>, ni media queries en <code>2-system-tokens/typography.css</code>. Un titulo de 32px mide 32px en cualquier pantalla. Lo que cambia con el ancho es la decisión de que rol usar en cada caso, y esa decisión la toma el marcado de cada vista, no la escala.</p>
     </article>
 
     <hr class="md-divider">
@@ -669,7 +669,7 @@
 
     <article class="sr-section">
       <h2>Medidas y tokens</h2>
-      <p>Los 92 tokens de <code>2-sys/typography.css</code>, agrupados por lo que hacen.</p>
+      <p>Los 92 tokens de <code>2-system-tokens/typography.css</code>, agrupados por lo que hacen.</p>
 
       <h3>Anatomia de un token</h3>
       <div class="sr-stage"><code>--md-sys-typescale-&lt;estilo&gt;-&lt;subtoken&gt;</code></div>
@@ -731,9 +731,9 @@
       <p class="sr-na">Solo dos. No hay <code>label-small-weight-prominent</code>: Google no lo publica.</p>
 
       <h3>Los de icono ya no estan aquí</h3>
-      <p class="sr-na"><code>2-sys/typography.css</code> ya no declara ningun token de icono. Los cuatro del eje de tamaño óptico se movieron a <code>2-sys/icon.css</code>, con el nombre <code>--md-sys-icon-optical-size-*</code>, y se documentan en la sección <strong>Iconografia</strong> de esta misma pagina. Los 92 tokens que quedan aquí son todos de texto.</p>
+      <p class="sr-na"><code>2-system-tokens/typography.css</code> ya no declara ningun token de icono. Los cuatro del eje de tamaño óptico se movieron a <code>2-system-tokens/icon.css</code>, con el nombre <code>--md-sys-icon-optical-size-*</code>, y se documentan en la sección <strong>Iconografia</strong> de esta misma pagina. Los 92 tokens que quedan aquí son todos de texto.</p>
 
-      <h3>Los tokens de 1-ref que consume</h3>
+      <h3>Los tokens de 1-reference-tokens que consume</h3>
       <p>Sin estos 54 tokens, los 92 de la capa 2 no resolverian nada. Se declaran en dos archivos distintos, y la division es deliberada: uno es <em>quien</em> escribe y con que peso, el otro es <em>que tamaño</em>.</p>
       <table class="sr-table">
         <thead>
@@ -752,9 +752,9 @@
           <tr><th scope="col">Que</th><th scope="col">Cuantos</th><th scope="col">Nota</th></tr>
         </thead>
         <tbody>
-          <tr><td>Tokens de 2-sys</td><td>92</td><td>15 estilos x 5 sub-tokens, más 15 compuestos, más 2 de peso destacado.</td></tr>
-          <tr><td>Clases de 2-sys</td><td>32</td><td>15 de estilo completo, 15 con <code>-style</code>, 2 con <code>-prominent</code>.</td></tr>
-          <tr><td>Tokens de 1-ref</td><td>54</td><td>Los que se leen desde la capa 2.</td></tr>
+          <tr><td>Tokens de 2-system-tokens</td><td>92</td><td>15 estilos x 5 sub-tokens, más 15 compuestos, más 2 de peso destacado.</td></tr>
+          <tr><td>Clases de 2-system-tokens</td><td>32</td><td>15 de estilo completo, 15 con <code>-style</code>, 2 con <code>-prominent</code>.</td></tr>
+          <tr><td>Tokens de 1-reference-tokens</td><td>54</td><td>Los que se leen desde la capa 2.</td></tr>
         </tbody>
       </table>
     </article>

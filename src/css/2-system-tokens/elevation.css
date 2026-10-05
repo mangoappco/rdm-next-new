@@ -1,0 +1,175 @@
+/* ==========================================================================
+   2-system-tokens/elevation.css â€” TOKENS SEMANTICOS DE ELEVACION (solo var())
+   ==========================================================================
+
+   QUE ES ESTE ARCHIVO
+   -------------------
+   CAPA 2 del sistema. Aqui viven los 6 NIVELES de elevacion de M3: el rol
+   que un componente pide cuando dice "esto flota sobre la pagina".
+
+   Este archivo es el PUENTE entre dos capas:
+
+     geometria  de  1-reference-tokens/shadow.css     (medidas en px)
+     color      de  2-system-tokens/theme/*.css    (el tema actual)
+
+   Y es justamente por eso que vive en la capa 2. La geometria sola no es una
+   sombra; el color solo no es una sombra. La sombra es la union de ambos.
+
+   ---------------------------------------------------------------------------
+   POR QUE LA COMPOSICION ESTA EN 2-system-tokens Y NO EN 1-reference-tokens
+   ----------------------------------------------------
+   Aqui es donde se resuelve el problema mas sutil de la elevacion.
+
+   Una sombra necesita tres cosas:
+
+     1. GEOMETRIA   cuanto se desplaza y desenfoca      -> 1-reference-tokens/shadow.css
+     2. COLOR       de que color es la sombra           -> 2-system-tokens/theme
+     3. OPACIDAD   /intensidad                        -> 1-reference-tokens/shadow.css
+
+   La geometria y la opacidad son medidas crudas: van en la capa 1.
+   El color es una decision de tema: va en la capa 2.
+
+   Si la composicion estuviera en 1-reference-tokens/shadow.css, ese archivo tendria que
+   referenciar el color del tema. Eso seria una dependencia circular: la
+   primitiva dependeria del sistema que la consume. Y el color quedaria
+   QUEMADO en la primitiva, de modo que cambiar el tema no cambiaria la
+   sombra.
+
+   Por eso 1-reference-tokens expone solo parciales:
+
+       --md-ref-shadow-key-1:     0 1px 2px 0px;   <-- medidas
+       --md-ref-shadow-key-opacity: 0.3;            <-- intensidad
+
+   Y este archivo los une con el color del tema para formar la sombra
+   completa.
+
+   ---------------------------------------------------------------------------
+   LA SINTAXIS rgb() CON BARRA
+   ----------------------------
+   Para aplicar opacidad sobre un color que viene de un token, se usa la
+   sintaxis moderna:
+
+       rgb(var(--md-sys-color-shadow-rgb) / var(--md-ref-shadow-key-opacity))
+            â””â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜   â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+             triplet del tema            opacidad de 1-reference-tokens
+
+   El resultado es `rgb(0 0 0 / 0.3)`: negro al 30%.
+
+   OJO con la confusion habitual: la forma antigua
+   `rgba(var(--color), 0.3)` (con coma) esta en desuso y no funciona con esta
+   sintaxis. La correcta es con barra y sin coma, que es la que se usa aqui.
+
+   ---------------------------------------------------------------------------
+   POR QUE HAY UNA OPACIDAD PARA KEY Y OTRA PARA AMBIENT
+   -----------------------------------------------------
+   M3 dibuja cada sombra en dos capas con intensidades distintas:
+
+     key      0.30  nitida, define el borde, da sensacion de solido
+     ambient  0.15  difusa, proyecta la luz, da sensacion de distancia
+
+   Son las dos unicas opacidades del sistema, declaradas UNA vez en 1-reference-tokens.
+   No estan repetidas en los 6 niveles, porque no cambian con el nivel: lo
+   que crece con la elevacion es laextension de la sombra, no su intensidad.
+
+   ---------------------------------------------------------------------------
+   POR QUE NO SE USA SURFACE-TINT
+   -------------------------------
+   Historial de M3: antes, la elevacion se comunicaba superponiendo el color
+   primario sobre la superficie (surface tint). Ese mecanismo esta
+   DEPRECADO en la especificacion actual, y Google lo dice de forma explicita:
+
+       "Surface tint color is deprecated. Use elevation level tokens
+        (0-5) instead."
+
+   Por eso este archivo NO expone --md-sys-elevation-surface-tint-color, aunque
+   todavia aparezca en el paquete de tokens antiguo de Google. La elevacion
+   moderna se expresa con los tonos de superficie (--md-sys-color-surface-
+   container-*) mas estos niveles de sombra.
+
+   ---------------------------------------------------------------------------
+   CADA NIVEL SE USA EN UN LUGAR CONCRETO
+   --------------------------------------
+     0  Sin elevacion. Botones filled, tarjetas planas, la pagina misma.
+     1  Apenas levantado. Botones elevated, tarjetas outlined.
+     2  Levantado. Menus, popovers, hover de un boton.
+     3  Flotante. Dialogos, snackbars, bottom sheets.
+     4  Muy flotante. Navigation drawers sobre el contenido.
+     5  Maxima elevacion. Lo que debe estar por encima de todo.
+
+   En un tema oscuro, la sombra casi no se ve: una sombra negra sobre una
+   superficie negra no produce contraste. Por eso M3 insiste en que la
+   elevacion se comunique tambien por TONO de superficie. La sombra es el
+   refuerzo, no el mecanismo principal.
+
+   ---------------------------------------------------------------------------
+   RELACION CON LAS OTRAS CAPAS
+   -----------------------------
+       1-reference-tokens/shadow.css   <-- 12 geometrias + 2 opacidades
+       2-system-tokens/theme/*.css  <-- --md-sys-color-shadow-rgb (el color)
+              |
+              v
+       2-system-tokens/elevation.css <-- ESTE: une ambos en 6 sombras completas
+              |
+              v
+       3-components/dialog.css  <-- el componente pide "level 3", no numeros
+
+   ========================================================================== */
+
+:root {
+  /* ------------------------------------------------------------------------
+     LOS 6 NIVELES
+     Cada uno une su geometria key + ambient con el color del tema.
+
+     El orden es siempre KEY primero, luego AMBIENT. Es el orden que usa el
+     propio codigo de Material Web y el que produce la sombra mas fiel:
+     la nitida se dibuja sobre la difusa.
+
+     Formato de cada parcial: desplazamientoY desplazamientoX desenfoque
+     extension.
+     ====================================================================== */
+
+  /* Nivel 0 â€” sin elevacion. La sombra identidad. */
+  --md-sys-elevation-level0:
+    var(--md-ref-shadow-key-0)
+    rgb(var(--md-sys-color-shadow-rgb) / var(--md-ref-shadow-key-opacity)),
+    var(--md-ref-shadow-ambient-0)
+    rgb(var(--md-sys-color-shadow-rgb) / var(--md-ref-shadow-ambient-opacity));
+
+  /* Nivel 1 â€” apenas levantado. Botones elevated, tarjetas outlined. */
+  --md-sys-elevation-level1:
+    var(--md-ref-shadow-key-1)
+    rgb(var(--md-sys-color-shadow-rgb) / var(--md-ref-shadow-key-opacity)),
+    var(--md-ref-shadow-ambient-1)
+    rgb(var(--md-sys-color-shadow-rgb) / var(--md-ref-shadow-ambient-opacity));
+
+  /* Nivel 2 â€” levantado. Menus y popovers. */
+  --md-sys-elevation-level2:
+    var(--md-ref-shadow-key-2)
+    rgb(var(--md-sys-color-shadow-rgb) / var(--md-ref-shadow-key-opacity)),
+    var(--md-ref-shadow-ambient-2)
+    rgb(var(--md-sys-color-shadow-rgb) / var(--md-ref-shadow-ambient-opacity));
+
+  /* Nivel 3 â€” flotante. Dialogos, snackbars, bottom sheets. */
+  --md-sys-elevation-level3:
+    var(--md-ref-shadow-key-3)
+    rgb(var(--md-sys-color-shadow-rgb) / var(--md-ref-shadow-key-opacity)),
+    var(--md-ref-shadow-ambient-3)
+    rgb(var(--md-sys-color-shadow-rgb) / var(--md-ref-shadow-ambient-opacity));
+
+  /* Nivel 4 â€” muy flotante. Navigation drawer. */
+  --md-sys-elevation-level4:
+    var(--md-ref-shadow-key-4)
+    rgb(var(--md-sys-color-shadow-rgb) / var(--md-ref-shadow-key-opacity)),
+    var(--md-ref-shadow-ambient-4)
+    rgb(var(--md-sys-color-shadow-rgb) / var(--md-ref-shadow-ambient-opacity));
+
+  /* Nivel 5 â€” maxima elevacion. */
+  --md-sys-elevation-level5:
+    var(--md-ref-shadow-key-5)
+    rgb(var(--md-sys-color-shadow-rgb) / var(--md-ref-shadow-key-opacity)),
+    var(--md-ref-shadow-ambient-5)
+    rgb(var(--md-sys-color-shadow-rgb) / var(--md-ref-shadow-ambient-opacity));
+}
+
+/* Las clases utilitarias de esta familia se mudaron a 4-utilities/ en la auditoria M3:
+   la Capa 2 solo declara tokens. Ver 4-utilities/index.css. */

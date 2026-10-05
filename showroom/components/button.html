@@ -12,7 +12,7 @@
        cuatro ejes (weight, fill, optical size, grade).
 
        YA NO SE CARGA NADA DESDE AQUI. La fuente la carga la libreria, en
-       1-ref/iconfont.css, que main.css importa en la capa ref. Estaba aqui
+       1-reference-tokens/iconfont.css, que main.css importa en la capa ref. Estaba aqui
        porque era un asset del showroom: la app de produccion carga el mismo
        orquestador y no tendria como obtener los iconos.
 
@@ -143,9 +143,9 @@
       <h3>La fuente se carga en una capa, y por qué importa</h3>
       <p>Google sirve la URL de Material Symbols con una clase utilitaria incluida, <code>.material-symbols-outlined</code>, que declara su propio <code>font-size: 24px</code>. Si esa hoja se carga con un <code>&lt;link&gt;</code>, su regla llega <strong>sin capa</strong>, y en CSS una regla sin capa gana a cualquier regla con capa, sin importar la especificidad. El orden de las cinco capas solo decide entre reglas que están dentro de alguna capa, así que no protege de esto.</p>
       <p>El efecto fue medido y no era sutil. El componente declaraba 20dp de glifo en <code>xsmall</code> y <code>small</code>, y la caja medía 20×20 como corresponde. Pero la tinta del glifo llegaba a medir <strong>24×28 dentro de una caja de 20×20</strong>, y el <code>overflow: hidden</code> del botón la recortaba. Afectaba a los seis iconos de esta vista, no solo a uno.</p>
-      <p>La fuente la carga la librería, en <code>src/css/1-ref/iconfont.css</code>, con <code>@import … layer(reset)</code>. Al entrar en la capa más débil, la regla de Google deja de ganarle al componente y el <code>font-size</code> vuelve a decidirlo el token del tamaño del botón. Es exactamente el trabajo que hace el orden de capas del proyecto, y se estaba perdiendo por una línea de HTML.</p>
+      <p>La fuente la carga la librería, en <code>src/css/1-reference-tokens/iconfont.css</code>, con <code>@import … layer(reset)</code>. Al entrar en la capa más débil, la regla de Google deja de ganarle al componente y el <code>font-size</code> vuelve a decidirlo el token del tamaño del botón. Es exactamente el trabajo que hace el orden de capas del proyecto, y se estaba perdiendo por una línea de HTML.</p>
       <p>Un <code>&lt;link&gt;</code> no admite <code>layer()</code>. La única forma de meter una hoja externa en una capa es <code>@import</code>, y para que el navegador la descubra tiene que ir en un archivo CSS. Por eso la fuente vive en la librería y no en el <code>&lt;head&gt;</code> de cada vista, que es donde se carga Google Sans Flex: su hoja solo trae <code>@font-face</code>, sin ninguna regla de utilidad que compita.</p>
-      <p class="sr-na">La clase de Google <strong>no se usa</strong>. El sistema declara su propia <code>.md-icon</code> en <code>2-sys/icon.css</code>, con el prefijo que usan las otras 167 utilidades. Así el componente y la utilidad pelean solo entre reglas del sistema, y no hace falta una capa para separarlos. La REGLA 9 del verificador impide que la clase de Google vuelva a colarse en el marcado: el fallo ya se cometió una vez, y una regla que no existe es un fallo que se repite.</p>
+      <p class="sr-na">La clase de Google <strong>no se usa</strong>. El sistema declara su propia <code>.md-icon</code> en <code>2-system-tokens/icon.css</code>, con el prefijo que usan las otras 167 utilidades. Así el componente y la utilidad pelean solo entre reglas del sistema, y no hace falta una capa para separarlos. La REGLA 9 del verificador impide que la clase de Google vuelva a colarse en el marcado: el fallo ya se cometió una vez, y una regla que no existe es un fallo que se repite.</p>
       <h3>El tamaño del glifo</h3>
       <table class="sr-table">
         <thead>
@@ -173,7 +173,7 @@
       <h3>El grado cambia con el tema</h3>
       <p>Este es el detalle que hace que el icono se lea bien en oscuro. Material Symbols dibuja sus glifos con un trazo pensado para fondo claro. Puesto sobre fondo oscuro, ese trazo claro se ve más pesado de lo que es, porque el ojo lo compensa contra el fondo.</p>
       <p>Por eso <code>GRAD</code> no es un número fijo sino un <strong>token de tema</strong>: <code>0</code> en claro y <code>−25</code> en oscuro, igual que el color de un texto. Cambia el tema con el botón de arriba y mira el icono.</p>
-      <p class="sr-na">El <code>−25</code> no viene de la especificación de M3, que no da un número para este caso. Es un valor de diseño, tomado de <code>rdm-next-old</code>, la versión anterior de este mismo sistema, donde los botones con icono se veían bien. Vive en <code>1-ref/typeface.css</code> como primitiva para que quede un solo sitio donde cambiarlo.</p>
+      <p class="sr-na">El <code>−25</code> no viene de la especificación de M3, que no da un número para este caso. Es un valor de diseño, tomado de <code>rdm-next-old</code>, la versión anterior de este mismo sistema, donde los botones con icono se veían bien. Vive en <code>1-reference-tokens/typeface.css</code> como primitiva para que quede un solo sitio donde cambiarlo.</p>
       <h3>El tamaño óptico no cambia el tamaño</h3>
       <p class="sr-na"><code>opsz</code> y <code>GRAD</code> tocan los dos el grosor del trazo, y conviene no confundirlos. <code>opsz</code> no cambia el tamaño del glifo: medido, con <code>opsz</code> 20 y con <code>opsz</code> 48 el glifo ocupa la misma caja. Lo que decide el tamaño es el <code>font-size</code>.</p>
       <p class="sr-na">Los ejes se declaran en el icono y no en el botón, porque <code>font-variation-settings</code> se hereda: en el botón contaminaría la etiqueta, que está dibujada con otra fuente sin esos ejes.</p>
@@ -330,7 +330,7 @@
           <span class="md-button-touch"></span>
           </button>
       </div>
-      <p class="sr-na">La composición con un segundo botón interactivo, o con un <code>chip</code> o un <code>card</code>, queda pendiente: no hay más componentes en <code>3-comp/</code> todavía.</p>
+      <p class="sr-na">La composición con un segundo botón interactivo, o con un <code>chip</code> o un <code>card</code>, queda pendiente: no hay más componentes en <code>3-components/</code> todavía.</p>
     </article>
 
     <hr class="md-divider">
@@ -355,7 +355,7 @@
         </tbody>
       </table>
       <h3>Qué radios necesita y cuáles faltan</h3>
-      <p class="sr-na">Solo está implementada <code>round</code>, que es <code>corner-full</code>. <strong>La forma square no está implementada</strong>, y antes de decir que cuesta trabajo conviene mirar el mapa: <strong>todos los valores que M3 pide ya existen</strong> en <code>2-sys/shape.css</code>.</p>
+      <p class="sr-na">Solo está implementada <code>round</code>, que es <code>corner-full</code>. <strong>La forma square no está implementada</strong>, y antes de decir que cuesta trabajo conviene mirar el mapa: <strong>todos los valores que M3 pide ya existen</strong> en <code>2-system-tokens/shape.css</code>.</p>
       <table class="sr-table">
         <thead>
           <tr><th scope="col">Lo que pide M3</th><th scope="col">Valor</th><th scope="col">Token que ya existe</th></tr>
@@ -512,7 +512,7 @@
       <p>El <code>outlined</code> y el <code>text</code> tienen el relleno invisible en reposo, pero se comportan igual que el resto en disabled, hover, focus y pressed. M3 lo dice de forma explícita para los dos.</p>
       <h3>En producción y en esta página son dos cosas distintas</h3>
       <p>En un producto, la capa de estado es el <code>::after</code> del botón y la activa una pseudo-clase. El autor no hace nada: sale sola de la interacción.</p>
-      <p>Una pseudo-clase <strong>no se puede activar desde el marcado</strong>. No hay atributo que la fuerce, porque las pseudo-clases no leen atributos. Así que para enseñar las cinco celdas a la vez, el botón acepta un hijo con una clase de <code>2-sys/state.css</code>: <code>&lt;span class="md-state-layer-hover"&gt;&lt;/span&gt;</code>.</p>
+      <p>Una pseudo-clase <strong>no se puede activar desde el marcado</strong>. No hay atributo que la fuerce, porque las pseudo-clases no leen atributos. Así que para enseñar las cinco celdas a la vez, el botón acepta un hijo con una clase de <code>2-system-tokens/state.css</code>: <code>&lt;span class="md-state-layer-hover"&gt;&lt;/span&gt;</code>.</p>
       <p>La geometría de esa capa la pone el componente, no la clase. La clase define el color y la intensidad, que es lo suyo; el <code>inset: 0</code> depende de la forma del componente, y si lo trajera la clase se derramaría en un botón con borde redondeado.</p>
     </article>
 
@@ -541,12 +541,12 @@
 
     <article class="sr-section" id="comportamiento">
       <h2>Comportamiento</h2>
-      <p>La capa de estado hace una transición de opacidad de 100ms con la curva estándar, leída de los tokens de <code>2-sys/motion.css</code>.</p>
+      <p>La capa de estado hace una transición de opacidad de 100ms con la curva estándar, leída de los tokens de <code>2-system-tokens/motion.css</code>.</p>
       <p>El color de la capa sale de <code>currentColor</code>, así que toma el de la etiqueta sin declarar un token propio. Por eso el componente no tiene un <code>--md-comp-button-state-layer-color</code>: sería el mismo valor que el de la etiqueta, y duplicarlo obligaría a cambiarlo dos veces.</p>
       <h3>La sombra sube un nivel en hover</h3>
-      <p>El botón lleva una transición de <code>box-shadow</code> de <strong>300ms</strong> con la curva <code>emphasized</code>, leída de los mismos tokens de <code>2-sys/motion.css</code>. Medido en el navegador: <code>transition-duration</code> computa <code>0.3s</code> y <code>transition-property</code>, <code>box-shadow</code>.</p>
+      <p>El botón lleva una transición de <code>box-shadow</code> de <strong>300ms</strong> con la curva <code>emphasized</code>, leída de los mismos tokens de <code>2-system-tokens/motion.css</code>. Medido en el navegador: <code>transition-duration</code> computa <code>0.3s</code> y <code>transition-property</code>, <code>box-shadow</code>.</p>
       <p>M3 usa 280ms, y esa cifra no es un token del sistema: no está en la escala de duraciones, y escribirla en un componente rompería la REGLA 1. Se usa <code>medium2</code>, que son 300ms, el valor disponible más cercano: a 20ms del de M3, cuando <code>medium1</code> está a 30ms. Es la misma razón por la que el <code>&lt;md-elevation&gt;</code> de Material Web lleva un <code>TODO</code> en el sitio.</p>
-      <p class="sr-na">La transición va en el elemento y la de la capa de estado en su <code>::after</code>, así que no se pisan. Y los tokens viven en la capa 3 porque es la única que puede saber qué nivel se pide en cada estado: <code>2-sys/elevation.css</code> declara niveles, no reacciones. Ver <a href="elevation.html#comportamiento">Elevation</a>.</p>
+      <p class="sr-na">La transición va en el elemento y la de la capa de estado en su <code>::after</code>, así que no se pisan. Y los tokens viven en la capa 3 porque es la única que puede saber qué nivel se pide en cada estado: <code>2-system-tokens/elevation.css</code> declara niveles, no reacciones. Ver <a href="elevation.html#comportamiento">Elevation</a>.</p>
       <h3>Por qué el hover es el único estado con regla</h3>
       <p>Porque es el único cuyo valor de M3 difiere del de reposo. Los cuatro tokens privados que declara cada variante dan esto: <code>filled</code> y <code>tonal</code> suben de 0 a 1 en hover, <code>elevated</code> de 1 a 2, y el <code>focused</code> y el <code>pressed</code> repiten el de reposo. Escribir reglas para esos dos últimos sería ruido que aparenta ser una decisión.</p>
       <p class="sr-na">El <code>elevated</code> es el único que tiene una sombra en reposo, y por eso es el que más se nota el cambio. El <code>filled</code> es el que más lo gana: sale de la sombra identidad, que no dibuja nada, y pasa a la sombra mínima de M3. Los valores están en la sección de <a href="#states">States</a>.</p>
@@ -603,20 +603,19 @@
           <span class="md-icon-button-icon md-icon" aria-hidden="true">add</span>
         </button>
       </div>
-      <p class="sr-na">El botón de arriba lleva <code>.md-measure-touch-target</code>, de <code>2-sys/measurement.css</code>. Es un <a href="icon-button.html">Icon Button</a> extra small, que M3 mide en <strong>32dp</strong>. Con la utilidad, medido en el navegador, da <strong>48×48</strong>: la utilidad no agranda el área de toque, agranda el botón. El control queda un 50% más grande de lo que pide el diseño, y sigue sin tener por qué área de toque: ya la tiene de serie.</p>
+      <p class="sr-na">El botón de arriba lleva <code>.md-measure-touch-target</code>, de <code>4-utilities/measurement.css</code>. Es un <a href="icon-button.html">Icon Button</a> extra small, que M3 mide en <strong>32dp</strong>. Con la utilidad, medido en el navegador, da <strong>48×48</strong>: la utilidad no agranda el área de toque, agranda el botón. El control queda un 50% más grande de lo que pide el diseño, y sigue sin tener por qué área de toque: ya la tiene de serie.</p>
       <p class="sr-na">Antes de migrar esto a <code>icon-button</code>, el mismo contraejemplo medía 48×32, porque el botón declaraba su propio alto y ganaba la pelea de capas. Con el componente nuevo la deformación se ve en los dos ejes, que es lo que se ve a simple vista.</p>
-      <p>Además le falta el otro problema. La utilidad vive en <code>sys</code> y el botón declara su propio alto en <code>comp</code>, que está declarada <em>después</em>. A igualdad de especificidad, gana <code>comp</code>:</p>
+      <p>Y la deformación no es una pelea de capas: el componente declara <code>inline-size</code> y <code>block-size</code> (32px) y la utilidad declara <code>min-width</code> y <code>min-height</code> (48px). Son propiedades distintas, así que ni siquiera compiten en la cascada; el mínimo recorta al tamaño por mecánica normal de CSS y el botón crece a 48×48. El resultado medido arriba es el comportamiento actual:</p>
       <table class="sr-table">
         <thead>
           <tr><th scope="col">Medida</th><th scope="col">Declarado en</th><th scope="col">Computado</th></tr>
         </thead>
         <tbody>
-          <tr><td>min-width</td><td>sys, la utilidad</td><td>48px, correcto</td></tr>
-          <tr><td>min-height</td><td>comp, el componente</td><td>32px, <strong>no cumple</strong></td></tr>
+          <tr><td>min-width</td><td>utilities, la utilidad</td><td>48px: recorta al ancho y deforma lo visible</td></tr>
+          <tr><td>min-height</td><td>utilities, la utilidad</td><td>48px: recorta al alto y deforma lo visible</td></tr>
         </tbody>
       </table>
-      <p>Es el mismo fenómeno que impide que una utilidad de <code>2-sys</code> cambie el color de un componente: una clase de <code>2-sys</code> puede fijar algo que el componente no toque, y no puede pisar algo que el componente sí fije.</p>
-      <p><strong>Consecuencia:</strong> el requisito de 48×48 de M3 <strong>no se puede cumplir con una utilidad</strong>, ni por capas ni por motivo. Necesita algo del propio componente, que es lo que hace el siguiente bloque.</p>
+      <p>Que la utilidad gane no la hace servir: una clase de <code>4-utilities</code> solo puede cambiar el tamaño de la caja, y la caja <em>es</em> el área visible. El requisito de 48×48 de M3 pide un área pulsable mayor que el área visible, y eso necesita algo del propio componente —una superficie invisible—, que es lo que hace el siguiente bloque.</p>
       <h4>La superficie va en todos los botones, no solo en los chicos</h4>
       <p>Un elemento hijo que se dibuja por encima del control sin ocupar sitio en el flujo. Es lo que hace M3 con su elemento <code>.touch</code>, en <code>button/internal/_touch-target.scss</code>.</p>
       <p class="sr-na"><strong>El hallazgo que cambió esta vista.</strong> El botón por defecto de este sistema mide <strong>40dp</strong>, no 56: <code>--md-sys-measurement-button-height</code> es <code>spacing-500</code>, y su propio comentario dice que es el tamaño <code>small</code> de M3. O sea que el botón de sistema queda <strong>8dp por debajo</strong> del objetivo de 48dp, y solo <code>medium</code> lo pasa.</p>
@@ -651,7 +650,7 @@
           <tr><td><code>icon-button</code></td><td>medium</td><td>56dp</td><td>24dp</td></tr>
         </tbody>
       </table>
-      <p class="sr-na">Solo difiere en <code>small</code>, y es una diferencia real: <code>icon-button</code> pone 24dp de glifo donde <code>button</code> pone 20dp. El ejemplo de arriba usa <code>button</code> extra small, así que le corresponde 20dp, que es lo que renderiza. <code>icon-button</code> ya está implementado en este proyecto, como componente aparte: vive en <code>3-comp/icon-button.css</code> y se consume con <code>.md-icon-button</code>.</p>
+      <p class="sr-na">Solo difiere en <code>small</code>, y es una diferencia real: <code>icon-button</code> pone 24dp de glifo donde <code>button</code> pone 20dp. El ejemplo de arriba usa <code>button</code> extra small, así que le corresponde 20dp, que es lo que renderiza. <code>icon-button</code> ya está implementado en este proyecto, como componente aparte: vive en <code>3-components/icon-button.css</code> y se consume con <code>.md-icon-button</code>.</p>
       <h3>Teclado</h3>
       <table class="sr-table">
         <thead>
@@ -767,7 +766,7 @@
         </tbody>
       </table>
       <p class="sr-na">Los dos tokens de elevación son reapuntables desde el marcado por la misma vía que los demás: una regla de la capa del showroom que escriba <code>--md-comp-button-elevation-hover</code>. Medido: una regla de la capa <code>showroom</code> que lo apunta a <code>level4</code> hace que un <code>filled</code> en hover compute <code>0 2px 3px, 0 6px 10px 4px</code>, que es la geometría del nivel 4. Es lo que hacen <code>.md-button-outlined</code> y <code>.md-button-text</code> al no declararlo, que es exactamente lo que hace M3, donde esas dos variantes no tienen token de elevación.</p>
-      <p class="sr-na">Los otros dos, la duración y la curva, existen para que el componente no escriba un número. Y por eso son dos y no uno: la REGLA 1 prohíbe los <code>ms</code> en <code>3-comp/</code>, y la duración sola no alcanza porque la curva también es un valor de <code>2-sys/motion.css</code>.</p>
+      <p class="sr-na">Los otros dos, la duración y la curva, existen para que el componente no escriba un número. Y por eso son dos y no uno: la REGLA 1 prohíbe los <code>ms</code> en <code>3-components/</code>, y la duración sola no alcanza porque la curva también es un valor de <code>2-system-tokens/motion.css</code>.</p>
     </article>
 
     <hr class="md-divider">
@@ -778,12 +777,12 @@
       <h3>La etiqueta necesita su propio elemento</h3>
       <p>Desde esta versión, todo botón con etiqueta visible la envuelve en <code>&lt;span class="md-button-label"&gt;</code>. No es una preferencia de formato: es lo que hace posible el área táctil.</p>
       <p>El <code>overflow: hidden</code> del botón recortaba a los descendientes, y una superficie de toque de 48dp en un botón de 32dp tiene que <em>sobresalir</em>. Con el recorte en el botón, se recortaba con él. M3 tiene el mismo problema resuelto de la misma manera: en <code>button/internal/_shared.scss</code>, el <code>overflow: hidden</code> está en <code>.label</code>, línea 132, y el botón no lo lleva.</p>
-      <p>Lo que se ganó aparte: la sombra de elevación ya no depende de estar en el elemento. Antes tenía que estar ahí porque un pseudo-elemento con sombra se dibujaba justo en la parte que el <code>overflow</code> recortaba. Hoy se podría mover al <code>::before</code> sin romperse, y sigue en el elemento por simplicidad. Ver la nota de la elevación en <code>3-comp/button.css</code>.</p>
+      <p>Lo que se ganó aparte: la sombra de elevación ya no depende de estar en el elemento. Antes tenía que estar ahí porque un pseudo-elemento con sombra se dibujaba justo en la parte que el <code>overflow</code> recortaba. Hoy se podría mover al <code>::before</code> sin romperse, y sigue en el elemento por simplicidad. Ver la nota de la elevación en <code>3-components/button.css</code>.</p>
       <h3>El área táctil</h3>
       <p>Implementada. <code>.md-button-touch</code> es un elemento hijo, no un modificador, y se documenta con la medida medida en <a href="#accesibilidad">Accesibilidad</a>.</p>
       <p>Los botones de tamaño <code>medium</code> miden 56dp y cumplen sin la superficie. Los de <code>xsmall</code> y <code>small</code>, que miden 32dp y 40dp, la necesitan.</p>
       <h3>El botón de icono</h3>
-      <p class="sr-na">M3 define <code>icon-button</code> como un componente aparte de <code>button</code>, con sus propios tamaños de glifo, y aquí está igual: <code>3-comp/icon-button.css</code>, que expone <code>.md-icon-button</code> y sus cuatro variantes —<code>standard</code>, <code>filled</code>, <code>filled-tonal</code> y <code>outlined</code>—, que son las cuatro que define M3. De los cinco tamaños de M3 están tres: <code>xsmall</code>, <code>small</code> y <code>medium</code>. Faltan <code>large</code> y <code>xlarge</code>. Ver <a href="#accesibilidad">Accesibilidad</a> con la tabla comparada.</p>
+      <p class="sr-na">M3 define <code>icon-button</code> como un componente aparte de <code>button</code>, con sus propios tamaños de glifo, y aquí está igual: <code>3-components/icon-button.css</code>, que expone <code>.md-icon-button</code> y sus cuatro variantes —<code>standard</code>, <code>filled</code>, <code>filled-tonal</code> y <code>outlined</code>—, que son las cuatro que define M3. De los cinco tamaños de M3 están tres: <code>xsmall</code>, <code>small</code> y <code>medium</code>. Faltan <code>large</code> y <code>xlarge</code>. Ver <a href="#accesibilidad">Accesibilidad</a> con la tabla comparada.</p>
       <h3>El botón toggle</h3>
       <p>La segunda variante de M3. Ver <a href="#variantes">Variantes</a> con la tabla completa de lo que falta.</p>
       <h3>La forma square y el morph al presionar</h3>

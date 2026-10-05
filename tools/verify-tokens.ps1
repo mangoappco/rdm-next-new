@@ -3,18 +3,21 @@
     Verificador de la arquitectura de tokens de RDM Next.
 
 .DESCRIPTION
-    Comprueba que las reglas de la arquitectura de 3 capas se cumplen de forma
+    Comprueba que las reglas de la arquitectura de 4 capas se cumplen de forma
     automatica, y que no haya regresiones antes de cada commit.
 
     Las reglas que verifica:
 
-      REGLA 1  Sin valores crudos fuera de 1-ref
-               Ni #HEX, ni px, ni ms/s, ni rem, ni %, ni deg, ni numeros sin unidad sueltos en 2-sys y 3-comp.
+      REGLA 1  Sin valores crudos fuera de 1-reference-tokens
+               Ni #HEX, ni px, ni ms/s, ni rem, ni %, ni deg, ni numeros sin
+               unidad sueltos en 2-system-tokens, 3-components ni 4-utilities.
 
       REGLA 2  Direccion de las dependencias
-               3-comp no puede leer 1-ref (salto de capa prohibido).
-               1-ref no puede leer 2-sys ni 3-comp (dependencia circular).
-               2-sys no puede leer 3-comp.
+               3-components no puede leer 1-reference-tokens (salto de capa
+               prohibido). 1-reference-tokens no puede leer 2-system-tokens
+               ni 3-components (dependencia circular). 2-system-tokens no
+               puede leer 3-components. 4-utilities es permisiva por diseno:
+               puede leer las capas 1 y 2.
 
       REGLA 3  Todo token referenciado existe
                Un var(--md-...) sin definir produce una regla invalida que el
@@ -52,7 +55,7 @@
       REGLA 9  El icono se pide con las clases del sistema
                a) Ningun HTML puede llevar material-symbols-* en un atributo
                   de clase. Esa clase la trae la hoja de Google, que
-                  1-ref/iconfont.css mete en la capa ref.reset precisamente
+                  1-reference-tokens/iconfont.css mete en la capa ref.reset precisamente
                   para que no compita. Como la hoja entera entra con ella, se
                   podria usar y creerse que funciona; el fallo ya se cometio
                   una vez y perdia el font-size del componente.
@@ -60,7 +63,7 @@
                   aparece legitimamente en la prosa del showroom, que explica
                   por que no se usa, y buscarlo en todo el archivo seria un
                   falso positivo permanente.
-               b) 2-sys/icon.css tiene que declarar .md-icon. Garantiza que la
+               b) 4-utilities/icon.css tiene que declarar .md-icon. Garantiza que la
                   libreria publique siempre un punto de entrada para iconos,
                   aunque todavia no haya ningun componente que lo use.
 
@@ -78,7 +81,7 @@
                  - .md-bg-black en la vista de Elevation, dos specimens que
                    no pintaban nada: la celda decia #000 y la muestra salia
                    transparente. Se resolvia con .md-bg-shadow, que si existe.
-                 - El borrado de las 32 clases .md-type-* de 2-sys. Las cuatro
+                 - El borrado de las 32 clases .md-type-* de 4-utilities. Las cuatro
                    vistas del showroom llevaban md-type-body-medium en el body,
                    y reset.css ya no declara tipografia en el body, asi que al
                    borrarlas TODO el showroom paso a renderizar en Times New
@@ -98,8 +101,9 @@
     .\tools\verify-tokens.ps1 -Quiet
 
 .NOTES
-    Archivo de la CAPA 0 (herramienta). No pertenece a 1-ref, 2-sys ni 3-comp,
-    y por eso no es escaneado por si mismo.
+    Archivo de la CAPA 0 (herramienta). No pertenece a 1-reference-tokens,
+    2-system-tokens, 3-components ni 4-utilities, y por eso no es escaneado
+    por si mismo.
 #>
 
 [CmdletBinding()]
@@ -165,9 +169,10 @@ function Get-CssFiles {
             # dentro de las carpetas de capas, mas el reset de la raiz de src/css/
             # (el reset no va en una carpeta numerada: no es un token de M3,
             #  es un reinicio del navegador. Ver la cabecera de src/css/reset.css)
-            ($cssRel.StartsWith('1-ref\') -or
-             $cssRel.StartsWith('2-sys\') -or
-             $cssRel.StartsWith('3-comp\') -or
+            ($cssRel.StartsWith('1-reference-tokens\') -or
+             $cssRel.StartsWith('2-system-tokens\') -or
+             $cssRel.StartsWith('3-components\') -or
+             $cssRel.StartsWith('4-utilities\') -or
              $cssRel -eq 'reset.css')
         }
 }
@@ -197,9 +202,10 @@ function Get-Layer {
     param([string]$Relative)
 
     if ($Relative -eq 'reset.css') { return 'reset' }
-    if ($Relative.StartsWith('1-ref\') -or $Relative -eq '1-ref') { return 'ref' }
-    if ($Relative.StartsWith('2-sys\') -or $Relative -eq '2-sys') { return 'sys' }
-    if ($Relative.StartsWith('3-comp\') -or $Relative -eq '3-comp') { return 'comp' }
+    if ($Relative.StartsWith('1-reference-tokens\') -or $Relative -eq '1-reference-tokens') { return 'ref' }
+    if ($Relative.StartsWith('2-system-tokens\') -or $Relative -eq '2-system-tokens') { return 'sys' }
+    if ($Relative.StartsWith('3-components\') -or $Relative -eq '3-components') { return 'comp' }
+    if ($Relative.StartsWith('4-utilities\') -or $Relative -eq '4-utilities') { return 'utilities' }
     return '?'
 }
 
@@ -255,7 +261,7 @@ foreach ($file in $files) {
 #              un nombre mal escrito es un token que no existe.
 #
 #   --_...     token local de una hoja, con el prefijo que usa M3 para lo
-#              interno y que ya aparecia en 3-comp/button.css. No pertenece a
+#              interno y que ya aparecia en 3-components/button.css. No pertenece a
 #              ninguna capa, asi que no se indexa por capa, pero se verifica
 #              igual: un var(--_foo) mal escrito se descarta en silencio igual
 #              que un --md-.
@@ -278,7 +284,7 @@ Write-Host "  Tokens definidos : $($definedTokens.Count)"
 Write-Host ''
 
 # ============================================================================
-# REGLA 1 - Sin valores crudos fuera de 1-ref
+# REGLA 1 - Sin valores crudos fuera de 1-reference-tokens
 # ============================================================================
 #
 # Exenciones deliberadas (valores-identidad, no decisiones de tema):
@@ -320,7 +326,7 @@ foreach ($file in $files) {
         )) {
             foreach ($m in [regex]::Matches($probe, $check.Pattern)) {
                 Add-Issue -Rule 'REGLA 1' -File $rel -Line ($i + 1) `
-                          -Message "valor crudo ($($check.Name)) fuera de 1-ref" `
+                          -Message "valor crudo ($($check.Name)) fuera de 1-reference-tokens" `
                           -Snippet $lineText.Trim()
             }
         }
@@ -329,6 +335,12 @@ foreach ($file in $files) {
 
 # ============================================================================
 # REGLA 2 - Direccion de las dependencias
+# ----------------------------------------------------------------------------
+# La capa `utilities` es deliberadamente permisiva y no aparece abajo: una
+# utilidad puede leer --md-ref-* y --md-sys-* (asi lo exige su trabajo, y
+# .md-type-* y .md-icon-* lo hacen). Lo que ninguna capa hace es leer una
+# familia --md-utilities-*, porque no existe: las utilidades no definen
+# tokens nuevos, solo clases.
 # ============================================================================
 
 foreach ($file in $files) {
@@ -347,23 +359,23 @@ foreach ($file in $files) {
 
             if ($layer -eq 'comp' -and $target -eq 'ref') {
                 $violation = $true
-                $why = '3-comp no puede leer 1-ref: salto de capa prohibido'
+                $why = '3-components no puede leer 1-reference-tokens: salto de capa prohibido'
             }
             if ($layer -eq 'ref' -and $target -eq 'sys') {
                 $violation = $true
-                $why = '1-ref no puede leer 2-sys: dependencia circular'
+                $why = '1-reference-tokens no puede leer 2-system-tokens: dependencia circular'
             }
             if ($layer -eq 'ref' -and $target -eq 'comp') {
                 $violation = $true
-                $why = '1-ref no puede leer 3-comp: dependencia circular'
+                $why = '1-reference-tokens no puede leer 3-components: dependencia circular'
             }
             if ($layer -eq 'sys' -and $target -eq 'comp') {
                 $violation = $true
-                $why = '2-sys no puede leer 3-comp: dependencia invertida'
+                $why = '2-system-tokens no puede leer 3-components: dependencia invertida'
             }
             if ($layer -eq 'reset' -and $target -eq 'comp') {
                 $violation = $true
-                $why = 'reset no puede leer 3-comp: el reset es la base y no depende de componentes'
+                $why = 'reset no puede leer 3-components: el reset es la base y no depende de componentes'
             }
 
             if ($violation) {
@@ -410,15 +422,33 @@ else {
     $mainCode = Get-CodeOnly $mainPath
     $imports = [regex]::Matches($mainCode, '@import url\("([^"]+)"\)\s*layer\((\w+)\)')
 
-    $seq = @($imports | ForEach-Object { $_.Groups[1].Value })
-    $iLight = [array]::IndexOf($seq, '2-sys/theme/theme.light.css')
-    $iDark  = [array]::IndexOf($seq, '2-sys/theme/theme.dark.css')
+    # main.css importa indices (*/index.css), no hojas. Para comprobar el
+    # orden de los temas hay que expandir un nivel: cada import que apunte
+    # a un index.css se sustituye por los @import de ese indice, en orden,
+    # resueltos de forma relativa al directorio del indice.
+    $seq = @()
+    foreach ($imp in $imports) {
+        $target = $imp.Groups[1].Value
+        if ($target -match '/index\.css$') {
+            $idxPath = Join-Path $CssRoot ($target -replace '/', '\')
+            if (Test-Path $idxPath) {
+                $idxCode = Get-CodeOnly $idxPath
+                foreach ($sub in [regex]::Matches($idxCode, '@import url\("([^"]+)"\)')) {
+                    $seq += ($target -replace '/index\.css$', '') + '/' + $sub.Groups[1].Value
+                }
+                continue
+            }
+        }
+        $seq += $target
+    }
+    $iLight = [array]::IndexOf($seq, '2-system-tokens/theme/theme.light.css')
+    $iDark  = [array]::IndexOf($seq, '2-system-tokens/theme/theme.dark.css')
 
     if ($iLight -lt 0) {
-        Add-Issue -Rule 'REGLA 4' -File 'src/css/main.css' -Line 0 -Message 'no importa 2-sys/theme/theme.light.css' -Snippet ''
+        Add-Issue -Rule 'REGLA 4' -File 'src/css/main.css' -Line 0 -Message 'no importa 2-system-tokens/theme/theme.light.css (ni directo ni via 2-system-tokens/index.css)' -Snippet ''
     }
     elseif ($iDark -lt 0) {
-        Add-Issue -Rule 'REGLA 4' -File 'src/css/main.css' -Line 0 -Message 'no importa 2-sys/theme/theme.dark.css' -Snippet ''
+        Add-Issue -Rule 'REGLA 4' -File 'src/css/main.css' -Line 0 -Message 'no importa 2-system-tokens/theme/theme.dark.css (ni directo ni via 2-system-tokens/index.css)' -Snippet ''
     }
     elseif ($iLight -gt $iDark) {
         Add-Issue -Rule 'REGLA 4' -File 'src/css/main.css' -Line 0 `
@@ -435,6 +465,19 @@ else {
         if (-not (Test-Path $p)) {
             Add-Issue -Rule 'REGLA 5' -File 'src/css/main.css' -Line 0 `
                       -Message "importa un archivo que no existe: $($imp.Groups[1].Value)" -Snippet ''
+        }
+        elseif ($imp.Groups[1].Value -match '/index\.css$') {
+            # El indice existe: sus hojas tambien deben existir, resueltas
+            # de forma relativa al directorio del indice.
+            $idxDir = [IO.Path]::GetDirectoryName($p)
+            $idxCode = Get-CodeOnly $p
+            foreach ($sub in [regex]::Matches($idxCode, '@import url\("([^"]+)"\)')) {
+                $sp = Join-Path $idxDir ($sub.Groups[1].Value -replace '/', '\')
+                if (-not (Test-Path $sp)) {
+                    Add-Issue -Rule 'REGLA 5' -File 'src/css/main.css' -Line 0 `
+                              -Message "el indice $($imp.Groups[1].Value) importa una hoja que no existe: $($sub.Groups[1].Value)" -Snippet ''
+                }
+            }
         }
     }
 }
@@ -500,7 +543,7 @@ else {
 
 # Estructura de carpetas esperada. Las tres primeras son relativas a src/css/
 # (la libreria); las dos siguientes son relativas a la raiz del repositorio.
-$expectedInCss = @('1-ref', '2-sys', '2-sys\theme', '3-comp')
+$expectedInCss = @('1-reference-tokens', '2-system-tokens', '2-system-tokens\theme', '3-components', '4-utilities')
 foreach ($dir in $expectedInCss) {
     if (-not (Test-Path (Join-Path $CssRoot $dir))) {
         Add-Issue -Rule 'REGLA 5' -File "src/css/$dir" -Line 0 -Message 'falta el directorio esperado' -Snippet ''
@@ -515,7 +558,8 @@ foreach ($dir in $expectedInRoot) {
 }
 
 # Toda hoja escaneada debe pertenecer a una capa conocida. Si Get-Layer no
-# reconoce una ruta, la REGLA 1 la trataria como si no fuera de 1-ref y la
+# reconoce una ruta, la REGLA 1 la trataria como si no fuera de
+# 1-reference-tokens y la
 # REGLA 2 no revisaria sus dependencias: dos reglas apagadas en silencio.
 foreach ($file in $files) {
     if ((Get-Layer $file.CssRelative) -eq '?') {
@@ -536,7 +580,7 @@ foreach ($file in $files) {
 #
 #   b) Ningun HTML del proyecto lleva un bloque <style> propio.
 #      Si el showroom necesita CSS que el sistema no ofrece, la respuesta es
-#      crear el token o la utilidad en 2-sys/3-comp, no parchear el HTML.
+#      crear el token o la utilidad en 2-system-tokens/3-components/4-utilities, no parchear el HTML.
 #
 # El punto (b) es tan importante como el (a): un <style> dentro del HTML es
 # la forma "limpia" de la misma prohibicion, y seria el hueco por donde
@@ -561,14 +605,14 @@ foreach ($html in $htmlFiles) {
         # a) atributo de estilo en linea
         foreach ($m in [regex]::Matches($lineText, '<[a-zA-Z][^>]*?\sstyle\s*=')) {
             Add-Issue -Rule 'REGLA 6' -File $rel -Line ($i + 1) `
-                      -Message 'estilo en linea prohibido: el HTML debe consumir el sistema con clases de 2-sys o 3-comp. Si falta un token o una utilidad, creala en la capa correspondiente' `
+                      -Message 'estilo en linea prohibido: el HTML debe consumir el sistema con clases de 4-utilities o 3-components. Si falta un token o una utilidad, creala en la capa correspondiente' `
                       -Snippet $lineText.Trim()
         }
 
         # b) bloque de estilos propio en el HTML
         if ($lineText -match '<style[\s>]') {
             Add-Issue -Rule 'REGLA 6' -File $rel -Line ($i + 1) `
-                      -Message 'bloque <style> en el HTML prohibido: el CSS pertenece a las capas 1-ref, 2-sys o 3-comp' `
+                      -Message 'bloque <style> en el HTML prohibido: el CSS pertenece a las capas 1-reference-tokens, 2-system-tokens, 3-components o 4-utilities' `
                       -Snippet $lineText.Trim()
         }
     }
@@ -591,7 +635,7 @@ foreach ($html in $htmlFiles) {
 # ============================================================================
 
 # Rutas relativas a src/css/ ($CssRoot).
-$themeFiles = @('2-sys\theme\theme.light.css', '2-sys\theme\theme.dark.css')
+$themeFiles = @('2-system-tokens\theme\theme.light.css', '2-system-tokens\theme\theme.dark.css')
 
 foreach ($tf in $themeFiles) {
     $path = Join-Path $CssRoot $tf
@@ -729,7 +773,7 @@ else {
     # c) Contraste del texto de la tabla, leido del arbol real de tokens.
     #
     # No se comprueba el color que escribe showroom.css sino el que RESUELVE,
-    # siguiendo la cadena hasta 1-ref/palette.css. Asi el check no se rompe cada
+    # siguiendo la cadena hasta 1-reference-tokens/palette.css. Asi el check no se rompe cada
     # vez que la paleta cambia, y detecta el fallo real: un rol nuevo que
     # documenta la tabla y no da 3:1.
     #
@@ -756,19 +800,19 @@ else {
     function Get-TokenValue {
         param([string]$Token, [string]$ThemeFile)
 
-        # El rol de color vive en 2-sys/theme/<tema>.css, NO en 2-sys/colors.css:
-        # colors.css publica las utilidades de clase, y los roles los escriben
-        # los dos bloques de cada tema. Se resuelve desde ahi.
+        # El rol de color vive en 2-system-tokens/theme/<tema>.css. Las clases
+        # .md-bg-*/.md-text-* que lo exponen viven en 4-utilities/color.css:
+        # exponer no es definir, y por eso se resuelve desde el tema.
         $txt = [System.IO.File]::ReadAllText((Join-Path $CssRoot $ThemeFile))
         $m = [regex]::Match($txt, [regex]::Escape($Token) + '\s*:\s*var\((--md-ref-palette-[a-z0-9-]+)\)')
         if (-not $m.Success) { return $null }
         $ref = $m.Groups[1].Value
 
-        # La paleta usa las dos formas: 1-ref/palette.css escribe los extremos
+        # La paleta usa las dos formas: 1-reference-tokens/palette.css escribe los extremos
         # en 3 digitos (#000, #fff) y el resto en 6. Se aceptan ambas y se
         # expande la corta, porque neutral100 es justamente el fondo de la
         # tabla en tema claro.
-        $pal = [System.IO.File]::ReadAllText((Join-Path $CssRoot '1-ref\palette.css'))
+        $pal = [System.IO.File]::ReadAllText((Join-Path $CssRoot '1-reference-tokens\palette.css'))
         # OJO con el orden de las alternativas: la de 6 digitos va PRIMERO.
         # En una alternancia el motor prueba las ramas de izquierda a derecha y
         # se queda con la primera que case, sin mirar el resto. Con {3} primero,
@@ -820,8 +864,8 @@ else {
     )
 
     $temas = @(
-        @{ Nombre = 'claro'; Archivo = '2-sys\theme\theme.light.css' }
-        @{ Nombre = 'oscuro'; Archivo = '2-sys\theme\theme.dark.css' }
+        @{ Nombre = 'claro'; Archivo = '2-system-tokens\theme\theme.light.css' }
+        @{ Nombre = 'oscuro'; Archivo = '2-system-tokens\theme\theme.dark.css' }
     )
 
     foreach ($tema in $temas) {
@@ -915,10 +959,10 @@ else {
 # utilidad que Google trae en esa hoja.
 #
 # a) Esas clases no se usan. La libreria declara su propia .md-icon en
-#    2-sys/icon.css, con el prefijo que usan las otras 167 utilidades.
+#    4-utilities/icon.css, con el prefijo que usan las otras 177 utilidades.
 #
 #    Por que esto necesita una regla y no una convencion: el @import de
-#    1-ref/iconfont.css carga la hoja COMPLETA de Google, clase incluida. Es
+#    1-reference-tokens/iconfont.css carga la hoja COMPLETA de Google, clase incluida. Es
 #    decir que la clase ajena esta disponible y ademas neutralizada por la
 #    capa, asi que usarla FUNCIONA y no delata nada. Lo unico que se pierde es
 #    que el componente deje de controlar su tamano de glifo, y eso se ve
@@ -929,7 +973,7 @@ else {
 #    de Google encima de la del componente, el glifo se dibuja a 24px dentro de
 #    una caja de 20x20 y el overflow del boton lo recorta. Silencioso.
 #
-# b) 2-sys/icon.css tiene que existir y declarar .md-icon. Sin ella, la
+# b) 4-utilities/icon.css tiene que existir y declarar .md-icon. Sin ella, la
 #    libreria carga una fuente que no tiene forma de aplicar, y el fallo es
 #    un icono que no aparece. Se comprueba por propiedad y no por cantidad:
 #    basta con que el selector este.
@@ -949,26 +993,26 @@ foreach ($html in $htmlFiles) {
         foreach ($cls in ($m.Groups[1].Value -split '\s+')) {
             if ($cls -and $cls -like 'material-symbols*') {
                 Add-Issue -Rule 'REGLA 9' -File $rel -Line 0 `
-                          -Message "la clase '$cls' es de Google, no del sistema: declararia su propio font-size y le ganaria al componente. Usar .md-icon de 2-sys/icon.css" `
+                          -Message "la clase '$cls' es de Google, no del sistema: declararia su propio font-size y le ganaria al componente. Usar .md-icon de 4-utilities/icon.css" `
                           -Snippet $m.Value
             }
         }
     }
 }
 
-# b) 2-sys/icon.css existe y publica .md-icon
+# b) 4-utilities/icon.css existe y publica .md-icon
 
-$iconCss = Join-Path $CssRoot '2-sys\icon.css'
+$iconCss = Join-Path $CssRoot '4-utilities\icon.css'
 
 if (-not (Test-Path $iconCss)) {
-    Add-Issue -Rule 'REGLA 9' -File 'src/css/2-sys/icon.css' -Line 0 `
-              -Message 'no existe: sin el, 1-ref/iconfont.css carga una fuente que la libreria no tiene forma de aplicar' `
+    Add-Issue -Rule 'REGLA 9' -File 'src/css/4-utilities/icon.css' -Line 0 `
+              -Message 'no existe: sin el, 1-reference-tokens/iconfont.css carga una fuente que la libreria no tiene forma de aplicar' `
               -Snippet ''
 }
 else {
     $iconRaw = [IO.File]::ReadAllText($iconCss)
     if (-not ($iconRaw -match '(?m)^\s*\.md-icon\s*\{')) {
-        Add-Issue -Rule 'REGLA 9' -File 'src/css/2-sys/icon.css' -Line 0 `
+        Add-Issue -Rule 'REGLA 9' -File 'src/css/4-utilities/icon.css' -Line 0 `
                   -Message 'no declara .md-icon: la libreria debe publicar siempre un punto de entrada para iconos' `
                   -Snippet ''
     }
@@ -1041,7 +1085,7 @@ foreach ($html in $htmlFiles) {
 }
 
 Write-Host '  Reglas aplicadas:' -ForegroundColor DarkGray
-Write-Host '    REGLA 1  sin valores crudos fuera de 1-ref'
+Write-Host '    REGLA 1  sin valores crudos fuera de 1-reference-tokens'
 Write-Host '    REGLA 2  direccion de dependencias entre capas'
 Write-Host '    REGLA 3  todo token referenciado existe'
 Write-Host '    REGLA 4  orden de theme.light antes que theme.dark'

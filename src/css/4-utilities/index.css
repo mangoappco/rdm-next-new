@@ -1,0 +1,23 @@
+/* ==========================================================================
+   4-utilities/index.css — INDICE DE LA CAPA 4
+   --------------------------------------------------------------------------
+   Reexporta las 178 clases utilitarias, una familia por archivo. Cada una
+   consume UNICAMENTE var() de 1-reference-tokens/ o 2-system-tokens/.
+
+   El orden dentro de la capa es alfabetico y NO tiene importancia
+   funcional: con la misma especificidad, una utilidad solo compite con
+   otra si fijan la misma propiedad, y cada familia fija la suya.
+
+   Se importa desde src/css/main.css en la capa `utilities`, la ULTIMA de
+   la cascada: una utilidad gana contra cualquier componente en empate de
+   especificidad. Es deliberado (doctrina utility-first).
+   ========================================================================== */
+
+@import url("color.css");
+@import url("elevation.css");
+@import url("icon.css");
+@import url("measurement.css");
+@import url("motion.css");
+@import url("shape.css");
+@import url("state.css");
+@import url("typography.css");

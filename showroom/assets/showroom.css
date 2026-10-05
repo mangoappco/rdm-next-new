@@ -6,8 +6,8 @@
    Todo vive en @layer showroom, declarada despues de las cinco capas de
    main.css. Ningun selector toca clases .md-*.
 
-   Tokens: color, tipografia y forma de 2-sys; ritmo de pagina de 1-ref/spacing
-   (ver cabecera de 2-sys/measurement.css). Unico valor crudo: ver max-width
+   Tokens: color, tipografia y forma de 2-system-tokens; ritmo de pagina de 1-reference-tokens/spacing
+   (ver cabecera de 2-system-tokens/measurement.css). Unico valor crudo: ver max-width
    del layout, que usa calc() sobre spacing-900.
    ========================================================================== */
 
@@ -31,13 +31,13 @@
      Los cuatro son multiplos de 8dp, el ritmo base de la reticula de M3, y los
      cuatro caen en la escala oficial Space 0-900. Ninguno es un numero suelto.
 
-     POR QUE NO ES UN TOKEN DE 2-sys
+     POR QUE NO ES UN TOKEN DE 2-system-tokens
      --------------------------------
      measurement.css quito a proposito los roles de reticula (page-margin,
      section-gap, item-gap): el ritmo depende de cuantas secciones hay y de que
      contienen, asi que es una decision de la pagina y no del sistema de
      medidas. Aqui se cumple: la escala vive en la capa showroom y se lee de
-     1-ref, igual que hacia el resto del archivo.
+     1-reference-tokens, igual que hacia el resto del archivo.
      --------------------------------------------------------------------- */
   :root {
     --sr-space-xs: var(--md-ref-spacing-100);
@@ -188,7 +188,7 @@
 
      Y hay que neutralizar su margen a mano: <hr> trae margin-block: 0.5em del
      navegador (7px con el cuerpo de 14px), ni reset.css lo anula ni
-     3-comp/divider.css lo resetea, asi que se filtra. Sin `margin: 0` el
+     3-components/divider.css lo resetea, asi que se filtra. Sin `margin: 0` el
      separador mide 16 + 7 + 1 + 7 + 16 = 47px en vez de 33, y el ritmo de la
      pagina queda en una cifra que nadie eligio.
 
@@ -397,7 +397,7 @@
      EL FONDO LO PONE LA CLASE, Y POR QUE TIENE QUE SER ASI
      -------------------------------------------------------
      El specimen lleva .md-elevation-N-surface en el marcado: la clase real de
-     2-sys/elevation.css. Si esta regla declarara un background propio, el
+     2-system-tokens/elevation.css. Si esta regla declarara un background propio, el
      showroom le ganaria por capa (showroom va declarada despues de las cinco)
      y las seis muestras de la escalera se verian del mismo color. Aqui no hay
      nada que ganhar porque no hay nada que declarar.
@@ -425,7 +425,7 @@
      12px, --md-sys-shape-corner-medium. No es decoracion: es la prueba de que
      la sombra hereda el border-radius del elemento, que es lo unico que hay
      que documentar en Shapes. Con corner-none sale cuadrada, con corner-full
-     sale redondeada. Las tres son clases reales de 2-sys/shape.css, y no
+     sale redondeada. Las tres son clases reales de 2-system-tokens/shape.css, y no
      decoracion del showroom.
 
      TAMANO EN LOS DOS EJES A PROPOSITO: un specimen cuadrado es mas
@@ -577,11 +577,11 @@
   }
 
   /* ------------------------------------------------------------------------
-     SWATCHES DE LA PALETA (1-ref/palette.css)
+     SWATCHES DE LA PALETA (1-reference-tokens/palette.css)
      --------------------------------------------------------------------------
      Estas clases existen SOLO para pintar los 89 tonos crudos de la paleta.
 
-     Por que estan en el showroom y no en la libreria: 1-ref no lleva clase,
+     Por que estan en el showroom y no en la libreria: 1-reference-tokens no lleva clase,
      por decision documentada (README seccion 2). Publicar .md-bg-palette-*
      expondria al HTML de producto una capa que hoy es privada, y cualquier
      componente podria saltarse los roles saltandose la capa 2. Un swatch no
@@ -631,7 +631,7 @@
      dentro. Es la que demuestra contraste, porque el par se ve en la propia
      celda y no en dos muestras separadas que hay que comparar de memoria.
 
-     Aqui no hay un padre que fije el color: las utilidades de 2-sys se
+     Aqui no hay un padre que fije el color: las utilidades de 2-system-tokens se
      aplican al mismo elemento que pinta el fondo, asi que no hay herencia que
      compita con md-text-*. Ese es el motivo de que esta variante funcione
      donde un .sr-stage (que fija color) no dejaba distinguir nada. */
@@ -737,7 +737,7 @@
 
      Contorno con `border` real y `overflow: hidden`, no inset box-shadow: el
      radio de la superficie solo recorta con overflow (misma razon que
-     documenta src/css/3-comp/card.css), y el inset se pinta DEBAJO del fondo
+     documenta src/css/3-components/card.css), y el inset se pinta DEBAJO del fondo
      de las celdas hijas, asi que el tinte del th lo tapaba y el borde
      superior de la tabla quedaba invisible.
 
@@ -1051,7 +1051,7 @@
      surface-container-low es JUSTAMENTE el fondo que lleva .sr-stage: sobre el
      stage el boton se dibujaria encima de su propio color, y la comparacion no
      existiria. Es el caso inverso al de .sr-surface, y el motivo de que las dos
-     clases vivan en la capa del showroom y no en 2-sys.
+     clases vivan en la capa del showroom y no en 2-system-tokens.
 
      El color lo pone la utilidad .md-bg-background desde el marcado, no esta
      regla, y por el mismo motivo que .sr-swatch--pair: aqui no hay un padre que
@@ -1099,7 +1099,7 @@
     display: none;
   }
 
-  /* Ancho = token. Se generan desde src/css/1-ref/spacing.css: los 17
+  /* Ancho = token. Se generan desde src/css/1-reference-tokens/spacing.css: los 17
      tokens que existen alli, ni uno mas ni uno menos. El nombre replica el
      token, como las clases sr-swatch-*. */
   .sr-spec-bar--0   { inline-size: var(--md-ref-spacing-0); }
@@ -1130,7 +1130,7 @@
 
   /* Ancho = token de trazo. Solo thin tiene clase real en la libreria
      (.md-shape-stroke-thin): el grosor pertenece al componente que lo usa,
-     no a una utilidad de autor (ver cabecera de 1-ref/stroke.css). Estas
+     no a una utilidad de autor (ver cabecera de 1-reference-tokens/stroke.css). Estas
      tres pintan el token para la tabla, igual que .sr-spec-bar pinta los de
      espacio. --none no pinta nada: un trazo de 0px no ocupa ni un pixel, y
      por eso usa el mismo display:none que .sr-spec-bar--none. */
@@ -1234,7 +1234,7 @@
   /* ------------------------------------------------------------------------
      LOS 89 TONOS
      --------------------------------------------------------------------------
-     Una clase por tono, generada desde src/css/1-ref/palette.css. El nombre
+     Una clase por tono, generada desde src/css/1-reference-tokens/palette.css. El nombre
      replica el token: .sr-swatch-primary40 pinta --md-ref-palette-primary40.
 
      El orden de las familias es el del archivo fuente, no el alfabetico, y las

@@ -1,0 +1,138 @@
+/* ==========================================================================
+   1-reference-tokens/opacity.css — PRIMITIVAS DE OPACIDAD (valores crudos)
+   ==========================================================================
+
+   QUE ES ESTE ARCHIVO
+   -------------------
+   CAPA 1 del sistema. Aqui viven los valores numericos crudos de opacidad
+   del sistema. Es el unico lugar donde se escribe un decimal suelto para
+   controlar la intensidad de una capa.
+
+   ---------------------------------------------------------------------------
+   UNA DISCREPANCIA EN LA PROPIA ESPECIFICACION DE GOOGLE
+   ------------------------------------------------------
+   Este archivo documenta un conflicto real entre las dos fuentes oficiales de
+   Material Design 3, porque alguien va a tropezarse con el.
+
+   FUENTE A — la documentacion web (fuente primaria)
+       https://m3.material.io/foundations/interaction/states/state-layers
+
+           hover    0.08
+           focus    0.10
+           pressed  0.10
+           dragged  0.16
+           disabled 0.38
+
+   FUENTE B — el codigo de Material Web (implementacion de referencia)
+       material-web/tokens/versions/v0_192/_md-sys-state.scss
+
+           hover    0.08
+           focus    0.12      <-- DISTINTO
+           pressed  0.12      <-- DISTINTO
+           dragged  0.16
+           (disabled no existe en este archivo)
+
+   Google publica 0.10 en la documentacion y 0.12 en su propio codigo. Es una
+   inconsistencia real de la especificacion, no un error de transcripcion.
+
+   POR QUE ESTE PROYECTO SIGUE LA DOCUMENTACION (0.10)
+   ---------------------------------------------------
+   La documentacion publica es la que lee un desarrollador para saber que
+   escribir. Ademas, el propio paquete de tokens antiguo de Google
+   (material-tokens/css/state.css) declara:
+
+       --md-sys-state-focus-state-layer-opacity: 0.11999999731779099
+
+   O sea: la version antigua de los tokens dice 0.12, y la documentacion
+   actual dice 0.10. Es una evolucion del valor, no un error de una sola
+   fuente.
+
+   ESTE PROYECTO SIGUE 0.10 por ser el valor vigente en la especificacion.
+
+   QUE PASA SI GOOGLE UNIFICA EL VALOR
+   -----------------------------------
+   Aqui es donde la arquitectura de 4 capas demuestra su valor. Si Google
+   decide que el valor correcto es 0.12 (o cualquier otro), se cambia UNA
+   sola linea de este archivo:
+
+       --md-ref-opacity-10: 0.1;   ->   --md-ref-opacity-12: 0.12;
+
+   Y los 5 roles de 2-system-tokens/state.css, las utilidades, el showroom y ManGo!
+   App se actualizan automaticamente por cascada. Ese es exactamente el
+   escenario para el que existe la capa 1.
+
+   ---------------------------------------------------------------------------
+   POR QUE opacity Y NO "alpha"
+   -----------------------------
+   En CSS el termino correcto es ALPHA (el canal de transparencia) y se
+   escribe con `opacity`. El nombre del token sigue la convencion de M3, que
+   usa "state-layer-opacity".
+
+   ---------------------------------------------------------------------------
+   LOS 5 VALORES DEL SISTEMA
+   -------------------------
+     8%    hover   La capa mas tenue. El estado mas frecuente de todos:
+                    cada vez que el puntero recorre la interfaz, aparece.
+     10%   focus   Foco por teclado. Mismo valor que pressed.
+     10%   pressed El elemento esta siendo pulsado.
+     16%   dragged El elemento se esta arrastrando. Es el mas intenso de los
+                    tres de interaccion, porque arrastrar es una accion
+                    deliberada y sostenida, no un roce del puntero.
+     38%   disabled El elemento esta inactivo. No es un state layer: es la
+                    opacidad del CONTENIDO deshabilitado. Se expone aqui
+                    porque comparte naturaleza (es una opacidad cruda) y
+                    porque el componente disabled-container de M3 usa 0.38.
+
+   ---------------------------------------------------------------------------
+   RELACION CON LAS OTRAS CAPAS
+   -----------------------------
+       1-reference-tokens/opacity.css   <-- ESTOS 5 valores crudos
+              |
+              v
+       2-system-tokens/state.css     <-- los 5 roles semanticos
+              |
+              v
+       3-components/button.css   <-- el componente aplica la capa al hacer hover
+
+   ========================================================================== */
+
+:root {
+  /* ------------------------------------------------------------------------
+     OPACIDADES DE STATE LAYER
+     Las tres primeras capas de interaccion del sistema.
+     --------------------------------------------------------------------- */
+
+  /* 8% — hover. El estado mas frecuente: cada vez que el puntero recorre la
+     interfaz. Tambien la mas tenue, porque el usuario ya ve el cambio por el
+     movimiento del puntero; la capa solo lo confirma. */
+  --md-ref-opacity-8: 0.08;
+
+  /* 10% — focus por teclado. Comparte valor con pressed, y por un motivo:
+     ambas son respuestas a una intencion activa del usuario. El recorrido
+     con tabulador necesita una senal clara de "estoy aqui". */
+  --md-ref-opacity-10: 0.1;
+
+  /* 16% — dragged. El mas intenso de los tres de interaccion, porque
+     arrastrar es una accion deliberada y sostenida en el tiempo, no un roce
+     del puntero. Necesita pesar mas para leerse mientras el dedo mueve. */
+  --md-ref-opacity-16: 0.16;
+
+  /* ------------------------------------------------------------------------
+     OPACIDAD DE CONTENIDO DESHABILITADO
+     ---------------------------------------------------------------------
+     38%. Este valor no es un state layer: es la opacidad que se aplica al
+     CONTENIDO de un elemento inactivo (texto e iconos atenuados).
+
+     Se incluye en este archivo por dos razones:
+
+       1. Es una opacidad cruda, y este es el archivo donde viven las
+          opacidades crudas del sistema.
+       2. El valor es real y lo usa el sistema: el componente
+          elevated-card de M3 declara `disabled-container-opacity: 0.38`.
+
+     La distincion importa porque se usan en sitios distintos:
+       state layer  -> una CAPA encima del elemento
+       disabled     -> el CONTENIDO del elemento, atenuado
+     --------------------------------------------------------------------- */
+  --md-ref-opacity-38: 0.38;
+}

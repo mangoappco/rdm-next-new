@@ -9,11 +9,18 @@
 
        <link rel="stylesheet" href="src/css/main.css">
 
-   A partir de aqui se cargan las 24 hojas del sistema en el orden correcto.
+   A partir de aqui se cargan las cuatro capas del sistema en el orden
+   correcto, cada una a traves de su indice:
 
-   NO se importan los archivos individuales. Si ManGo! App importa button.css
-   sin main.css, las variables que ese archivo usa no existen y el componente
-   se ve roto. main.css garantiza que toda la cadena este presente.
+       @import '1-reference-tokens/index.css';
+       @import '2-system-tokens/index.css';
+       @import '3-components/index.css';
+       @import '4-utilities/index.css';
+
+   NO se importan los archivos individuales. Si ManGo! App importa
+   button.css sin main.css, las variables que ese archivo usa no existen y
+   el componente se ve roto. main.css garantiza que toda la cadena este
+   presente.
 
    ---------------------------------------------------------------------------
    POR QUE EXISTE EL ORDEN ENTRE CAPAS: @layer
@@ -32,8 +39,9 @@
 
        @layer reset, ref, sys, comp, utilities;
 
-   Cualquier regla de la capa `ref` PIERDE SIEMPRE contra una de `sys`, y
-   cualquier regla de `sys` PIERDE SIEMPRE contra una de `comp`.
+   Cualquier regla de la capa `ref` PIERDE SIEMPRE contra una de `sys`,
+   cualquier regla de `sys` PIERDE SIEMPRE contra una de `comp`, y
+   cualquier regla de `comp` PIERDE SIEMPRE contra una de `utilities`.
 
    ---------------------------------------------------------------------------
    LAS CINCO CAPAS, DE LA MAS DEBIL A LA MAS FUERTE
@@ -46,8 +54,9 @@
        comp        Componentes: button, card, dialog.
        utilities   La mas fuerte. Atajos de alto nivel.
 
-   Cada capa solo pierde contra las que estan a su derecha. `ref` pierde contra
-   `sys`; `sys` pierde contra `comp`; `comp` pierde contra `utilities`.
+   Cada capa solo pierde contra las que estan a su derecha. `ref` pierde
+   contra `sys`; `sys` pierde contra `comp`; `comp` pierde contra
+   `utilities`.
 
    ---------------------------------------------------------------------------
    POR QUE `reset` VA EN SU PROPIA CAPA Y NO DENTRO DE `utilities`
@@ -58,8 +67,8 @@
                 contra todo lo nuestro. Un reset que impusiera su opinion
                 dejaria al sistema sin control sobre la pagina.
 
-     utilities  Impone. Gana contra los componentes, para que un atajo de alto
-                nivel pueda sobrescribir una receta sin pelear por
+     utilities  Impone. Gana contra los componentes, para que un atajo de
+                alto nivel pueda sobrescribir una receta sin pelear por
                 especificidad.
 
    En una misma capa, la precedencia entre reset y utilidad la decidiria el
@@ -70,36 +79,42 @@
 
        @layer reset { body { margin: 0 } }
 
-   ...en la capa mas baja, ganando al margen de 8px del navegador y perdiendo
-   contra `.md-p-4 { padding: 16px }`, sin discusion posible.
+   ...en la capa mas baja, ganando al margen de 8px del navegador y
+   perdiendo contra `.md-p-4 { padding: 16px }`, sin discusion posible.
 
    QUE @layer NO BLOQUEA var()
    ------------------------
-   Nuestra regla dice que 3-comp/ NO puede leer tokens de 1-ref/. @layer NO
-   lo impide: var(--md-ref-*) en 3-comp/ resuelve igual, porque @layer solo
-   decide que regla gana en empate de especificidad, no que variables existen:
+   Nuestra regla dice que 3-components/ NO puede leer tokens de
+   1-reference-tokens/. @layer NO lo impide:
+   var(--md-ref-*) en 3-components/ resuelve igual, porque @layer solo
+   decide que regla gana en empate de especificidad, no que variables
+   existen:
 
        .mi-boton { color: var(--md-ref-palette-primary40); }  -- funciona, y esta mal --
 
    La que si lo impide es la REGLA 2 de tools/verify-tokens.ps1.
 
-   @layer queda como defensa de cascada (comp gana a sys, sys a ref), no como candado de
-   dependencias.
+   @layer queda como defensa de cascada (comp gana a sys, sys a ref), no
+   como candado de dependencias.
 
    ---------------------------------------------------------------------------
    EL ORDEN DE IMPORTACION Y POR QUE IMPORTA
    ------------------------------------------
-   Las hojas se importan en cascada: 1-ref, luego 2-sys, luego 3-comp.
+   Las capas se importan en cascada: 1-reference-tokens, luego
+   2-system-tokens, luego 3-components, luego 4-utilities. Cada capa entra
+   por su indice, y cada indice lista sus hojas.
 
-   Dentro de cada capa, el orden importa por una razon tecnica concreta, no
-   por estetica. Se documenta caso por caso mas abajo.
+   Dentro de la Capa 2, el tema claro va primero y el oscuro ultimo, por
+   convencion de legibilidad. Cada archivo de tema trae sus propios bloques
+   con @media, asi que el orden ya no decide el comportamiento; la
+   REGLA 4 del verificador sigue comprobando la convencion.
 
    ---------------------------------------------------------------------------
    NOTA SOBRE LOS @import Y EL RENDIMIENTO
    --------------------------------------
-   Los @import de CSS son lentos. Cada uno es una peticion de red separada que
-   el navegador descubre SOLO despues de parsear el archivo anterior. En una
-   cadena de 20 imports, el navegador los va pidiendo en cascada.
+   Los @import de CSS son lentos. Cada uno es una peticion de red separada
+   que el navegador descubre SOLO despues de parsear el archivo anterior.
+   En una cadena larga, el navegador los va pidiendo en cascada.
 
    Google Chrome avisa de esto en su documentacion: un @import bloquea el
    descubrimiento de recursos posteriores.
@@ -107,18 +122,18 @@
    POR QUE AUN ASI LOS USAMOS AQUI
    --------------------------------
    El showroom es un proyecto de referencia, no un sitio en produccion. La
-   claridad de ver la cadena completa de dependencias en un solo archivo tiene
-   mas valor que las milisegundos.
+   claridad de ver la cadena completa de dependencias en un solo archivo
+   tiene mas valor que los milisegundos.
 
-   PARA UN SITIO EN PRODUCCION: usar una herramienta de build (postcss-import,
-   lightningcss, sass) que aplane los 24 archivos en un solo bundle. El
-   resultado es identico en bytes, pero en UNA peticion de red.
+   PARA UN SITIO EN PRODUCCION: usar una herramienta de build
+   (postcss-import, lightningcss, sass) que aplane los archivos en un solo
+   bundle. El resultado es identico en bytes, pero en UNA peticion de red.
 
    La UNICA excepcion a esta regla, y si es una excepcion importante, es la
-   fuente Roboto: NO se carga aqui. Se carga desde cada vista del showroom con
-   <link> y preconnect, porque el @import de una fuente es lo mas lento que
-   existe: el navegador no puede ni siquiera empezar a leer el CSS hasta que
-   termina de descargar el archivo de fuente.
+   fuente Roboto: NO se carga aqui. Se carga desde cada vista del showroom
+   con <link> y preconnect, porque el @import de una fuente es lo mas lento
+   que existe: el navegador no puede ni siquiera empezar a leer el CSS hasta
+   que termina de descargar el archivo de fuente.
 
    ========================================================================== */
 
@@ -129,9 +144,9 @@
    --------------------------------------------------------------------------
    Es la PRIMERA importacion del archivo, y la capa mas baja de la cascada.
 
-   Este archivo no es un token de M3: es un reinicio del navegador. Por eso NO
-   va en 1-ref/. Va suelto en la raiz de css/, al lado de este orquestador, y
-   en su propia capa.
+   Este archivo no es un token de M3: es un reinicio del navegador. Por eso
+   NO va en 1-reference-tokens/. Va suelto en la raiz de css/, al lado de
+   este orquestador, y en su propia capa.
 
    QUE LOGRA, CON LOS DOS REQUISITOS OPUESTOS DE UN RESET
    ------------------------------------------------------
@@ -142,8 +157,8 @@
      Pierde contra el sistema. Al declararse la primera, pierde contra ref,
      sys, comp y utilities.
 
-   Body hereda tipografia y colores base, con lo cual el HTML del showroom no
-   necesita clases para lo basico. Ver la cabecera de reset.css para el
+   Body hereda tipografia y colores base, con lo cual el HTML del showroom
+   no necesita clases para lo basico. Ver la cabecera de reset.css para el
    detalle de cada regla.
    ========================================================================== */
 @import url("reset.css") layer(reset);
@@ -151,35 +166,21 @@
 /* ==========================================================================
    CAPA 1 — REFERENCIA (valores crudos)
    --------------------------------------------------------------------------
-   Aqui viven los valores sin interpretar: los tonos de la paleta, las medidas
-   del espacio, los radios, las duraciones, las curvas, las sombras y las
-   opacidades.
+   Aqui viven los valores sin interpretar: los tonos de la paleta, las
+   medidas del espacio, los radios, las duraciones, las curvas, las sombras
+   y las opacidades.
 
    Ninguna de estas hojas referencia a otra capa. Son la base del sistema.
-
-   El orden dentro de la capa es alfabetico y NO tiene importancia funcional:
-   ninguna de estas hojas depende de otra. Se mantiene alfabetico para que sea
-   facil encontrar un archivo.
+   Ver 1-reference-tokens/index.css para la lista completa (12 hojas).
 
    LA EXCEPCION: iconfont.css
    ---------------------------
    iconfont.css no es una hoja de tokens: es la de una fuente. Se importa
-   igualmente en `ref`, porque lo que declara ES una primitiva --las familias
-   de Material Symbols y los cuatro ejes--, pero trae consigo un `@import`
-   propio que la mete en la capa `reset`. Ver el bloque de abajo.
+   igualmente en `ref`, porque lo que declara ES una primitiva --las
+   familias de Material Symbols y los cuatro ejes--, pero trae consigo un
+   `@import` propio que la mete en la capa `reset`. Ver el bloque de abajo.
    ========================================================================== */
-@import url("1-ref/corner.css")    layer(ref);
-@import url("1-ref/container-height.css") layer(ref);
-@import url("1-ref/easing.css")    layer(ref);
-@import url("1-ref/iconfont.css")  layer(ref);
-@import url("1-ref/opacity.css")   layer(ref);
-@import url("1-ref/palette.css")   layer(ref);
-@import url("1-ref/shadow.css")    layer(ref);
-@import url("1-ref/spacing.css")   layer(ref);
-@import url("1-ref/stroke.css")    layer(ref);
-@import url("1-ref/time.css")      layer(ref);
-@import url("1-ref/typeface.css")  layer(ref);
-@import url("1-ref/typescale.css") layer(ref);
+@import url("1-reference-tokens/index.css") layer(ref);
 
 /* --------------------------------------------------------------------------
    POR QUE LA FUENTE DE ICONOS SE CARGA CON @import Y LA DE TEXTO NO
@@ -187,28 +188,28 @@
    Es la unica asimetria del orquestador, y hay que entenderla porque parece
    una contradiccion.
 
-   Google Sans Flex, en 1-ref/typeface.css, se carga con `<link>` en cada
-   vista. Su hoja en Google Fonts solo trae `@font-face`: ninguna regla que
-   compita con las capas, asi que un `<link>` no tiene nada que romper. Y
-   `<link>` evita el coste del `@import`, que retrasa el descubrimiento de los
-   recursos posteriores.
+   Google Sans Flex, en 1-reference-tokens/typeface.css, se carga con
+   `<link>` en cada vista. Su hoja en Google Fonts solo trae `@font-face`:
+   ninguna regla que compita con las capas, asi que un `<link>` no tiene
+   nada que romper. Y `<link>` evita el coste del `@import`, que retrasa el
+   descubrimiento de los recursos posteriores.
 
-   Material Symbols no puede ir con `<link>`. Su hoja trae ADEMAS tres clases
-   de utilidad --.material-symbols-outlined, -rounded y -sharp-- que declaran
-   su propio `font-size: 24px`. Con un `<link>` esas reglas llegan SIN CAPA, y
-   en CSS una regla sin capa gana a cualquier regla con capa sin importar la
-   especificidad. El orden de este archivo solo decide entre reglas que estan
-   dentro de alguna capa, asi que no protege de eso.
+   Material Symbols no puede ir con `<link>`. Su hoja trae ADEMAS tres
+   clases de utilidad --.material-symbols-outlined, -rounded y -sharp-- que
+   declaran su propio `font-size: 24px`. Con un `<link>` esas reglas llegan
+   SIN CAPA, y en CSS una regla sin capa gana a cualquier regla con capa
+   sin importar la especificidad. El orden de este archivo solo decide
+   entre reglas que estan dentro de alguna capa, asi que no protege de eso.
 
    Medido en el navegador: `.md-button-icon` declaraba 20px en el boton
-   pequeno y computaba bien, pero la regla de Google le ganaba y el glifo se
-   dibujaba a 24px. La caja seguia midiendo 20x20 y la tinta del glifo media
-   24x28, recortada por el overflow del boton.
+   pequeno y computaba bien, pero la regla de Google le ganaba y el glifo
+   se dibujaba a 24px. La caja seguia midiendo 20x20 y la tinta del glifo
+   media 24x28, recortada por el overflow del boton.
 
-   Un `<link>` no admite `layer()`. La unica forma de meter una hoja externa
-   en una capa es `@import ... layer(...)`, y para que el navegador la
-   descubra tiene que ir en un archivo CSS. Por eso vive en 1-ref/ y no en el
-   `<head>` de cada vista.
+   Un `<link>` no admite `layer()`. La unica forma de meter una hoja
+   externa en una capa es `@import ... layer(...)`, y para que el navegador
+   la descubra tiene que ir en un archivo CSS. Por eso vive en
+   1-reference-tokens/ y no en el `<head>` de cada vista.
 
    LA CAPA ANIDADA ref.reset
    --------------------------
@@ -222,7 +223,8 @@
    rompe el verificador: REGLA 5 solo exige que este archivo declare el
    orden de las cinco capas del sistema, y esto no altera esa declaracion.
 
-   Mismo argumento, desarrollado, en la cabecera de 1-ref/iconfont.css.
+   Mismo argumento, desarrollado, en la cabecera de
+   1-reference-tokens/iconfont.css.
    -------------------------------------------------------------------------- */
 
 /* ==========================================================================
@@ -230,7 +232,8 @@
    --------------------------------------------------------------------------
    Aqui viven los ROLES: primary, surface, corner-medium, duration-short2,
    elevation-level3. Cada uno apunta a un valor de la capa 1, y cada uno es
-   sensible al tema activo.
+   sensible al tema activo. Esta capa SOLO declara tokens: las clases que
+   antes vivian aqui se mudaron a 4-utilities/ en la auditoria M3.
 
    Estan en la capa `sys`, que gana siempre a la capa `ref`.
 
@@ -272,87 +275,74 @@
    EL ORDEN DE IMPORTACION YA NO ES CRITICO
    ---------------------------------------
    Antes, sin @media, el tema por defecto lo decia el orden de las hojas:
-   gana el ultimo en declararse. Ahora cada archivo tiene sus propios bloques
-   con @media, y el orden no afecta el comportamiento del tema.
+   gana el ultimo en declararse. Ahora cada archivo tiene sus propios
+   bloques con @media, y el orden no afecta el comportamiento del tema.
 
-   Se mantiene light primero, dark despues como convencion de legibilidad,
-   y la REGLA 4 del verificador la sigue comprobando, pero invertirla ya no
-   rompe el tema: solo cambia el orden en que se declaran las reglas.
+   Se mantiene light primero, dark despues como convencion de legibilidad
+   (ver 2-system-tokens/index.css), y la REGLA 4 del verificador la sigue
+   comprobando, pero invertirla ya no rompe el tema: solo cambia el orden
+   en que se declaran las reglas.
    ========================================================================== */
-@import url("2-sys/theme/theme.light.css") layer(sys);
-@import url("2-sys/colors.css")            layer(sys);
-@import url("2-sys/elevation.css")         layer(sys);
-@import url("2-sys/icon.css")              layer(sys);
-@import url("2-sys/measurement.css")        layer(sys);
-@import url("2-sys/motion.css")            layer(sys);
-@import url("2-sys/shape.css")             layer(sys);
-@import url("2-sys/state.css")             layer(sys);
-@import url("2-sys/typography.css")        layer(sys);
-
-/* El tema oscuro va AL ULTIMO a proposito. Ver la nota critica de arriba.
-   Este es el ultimo import del sistema de tokens. */
-@import url("2-sys/theme/theme.dark.css")  layer(sys);
+@import url("2-system-tokens/index.css") layer(sys);
 
 /* ==========================================================================
    CAPA 3 — COMPONENTES
    --------------------------------------------------------------------------
-   Un archivo por componente. Cada uno consume UNICAMENTE tokens de 2-sys/.
+   Un archivo por componente. Cada uno consume UNICAMENTE tokens de la
+   Capa 2 (REGLA 2) y nunca toca 1-reference-tokens/ directamente.
 
    El primero es divider: dos tokens, sin variaciones de tipo. Es el mas
    simple del catalogo y sirve para probar el contrato de capas con un
-   archivo real. Se agregan aqui a medida que se implementen, uno por vez.
-
-   Cuando se agreguen, deben ir en esta capa, nunca directamente en la raiz.
+   archivo real. Se agregan en 3-components/index.css a medida que se
+   implementen, uno por vez.
    ========================================================================== */
-
-/* --- 3-comp/ --- */
-@import url("3-comp/divider.css") layer(comp);
-@import url("3-comp/button.css")  layer(comp);
-@import url("3-comp/icon-button.css") layer(comp);
-/* @import url("3-comp/card.css")   layer(comp);   */
-/* @import url("3-comp/dialog.css") layer(comp);   */
+@import url("3-components/index.css") layer(comp);
 
 /* ==========================================================================
-   CAPA UTILITIES — CLASES AUXILIARES
+   CAPA 4 — UTILIDADES (clases atomicas)
    --------------------------------------------------------------------------
-   Las utilidades del sistema se mueven a su propia capa, separada de los
-   tokens.
+   Las 178 clases utilitarias del sistema: color, tipografia, forma,
+   elevacion, icono, estado, medida y movimiento. Son atajos de proposito
+   unico para escribir rapido desde el HTML (.md-bg-primary,
+   .md-type-body-large, .md-elevation-3).
 
-   POR QUE UNA CAPA SEPARADA
-   -------------------------
-   Las utilidades (md-bg-primary, md-type-body-large, md-elevation-3) son
-   atajos para escribir rapido desde el HTML. Los componentes, en cambio, son
-   recetas que traducen tokens a estilos.
+   POR QUE UNA CAPA SEPARADA Y POR QUE ES LA ULTIMA
+   -------------------------------------------------
+   Las utilidades y los componentes hacen cosas distintas. Un componente es
+   una receta que traduce tokens a estilos; una utilidad es la opinion
+   final del autor sobre la pagina, aplicada AL FINAL de la cascada.
 
-   La diferencia es de jerarquia. Y como `utilities` es la ULTIMA capa de la
-   declaracion, tiene maxima prioridad de sobreescritura: una utilidad gana
-   contra cualquier componente, sin importar el orden de escritura dentro de
-   cada archivo.
+   Como `utilities` es la ULTIMA capa de la declaracion, tiene maxima
+   prioridad: una utilidad gana contra cualquier componente en empate de
+   especificidad, sin pelear por orden de escritura. Es la doctrina
+   utility-first (Tailwind funciona igual).
 
-   Eso es deliberado. Una utilidad es la opinion final del autor sobre la
-   pagina, y se aplica AL FINAL de la cascada. Un componente que quiera
-   proteger su receta frente a un atajo lo hace con una capa propia, no
-   esperando que la especificidad le salve.
+   Consecuencia honesta de la auditoria M3: antes de ella, las utilidades
+   vivian en la Capa 2 y PERDIAN contra los componentes. Varias partes del
+   proyecto documentaban esa derrota como garantia (por ejemplo, el
+   modificador .md-divider-primary existia porque .md-text-primary "no
+   podia" cambiar el color del divisor). Tras la mudanza a la Capa 4, una
+   utilidad SI puede sobrescribir una receta de componente. Los
+   modificadores de componente siguen existiendo como API semantica, pero
+   ya no como unico camino.
 
-   UTILIDADES ADEMAS DE ESTA CAPA, DEBEN ESTAR EN SU CAPA NATURAL
-   --------------------------------------------------------------
-   Las utilidades de color viven en 2-sys/colors.css, las de tipografia en
-   2-sys/typography.css, etc. Todas se importan en la capa `sys`, porque son
-   utilidades de una familia concreta de token, no atajos de alto nivel.
-
-   La capa `utilities` esta reservada para las utilidades de ALTO NIVEL que no
-   pertenecen a ninguna familia concreta.
+   REGLAS DE LA CAPA
+   ------------------
+   Solo clases de proposito unico. Consumen var(--md-sys-*) o
+   var(--md-ref-*) directos; no definen tokens nuevos ni contienen
+   recetas de componente. Ver 4-utilities/index.css para la lista (8
+   familias).
    ========================================================================== */
-
-/* --- utilities/ (se poblara cuando existan utilidades globales) --- */
-/* @import url("utilities/accessibility.css") layer(utilities); */
+@import url("4-utilities/index.css") layer(utilities);
 
 /* ==========================================================================
    FIN DEL ORQUESTADOR
    ==========================================================================
-   24 archivos importados. El sistema de tokens esta completo y ya tiene su
-   primer componente.
+   5 imports que expanden a 33 hojas: 1 de reset, 12 de referencia, 9 de
+   sistema (7 roles + 2 temas), 3 componentes y 8 utilidades, mas los 4
+   indices. El sistema de tokens esta completo y la Capa 4 reune todas las
+   clases atomicas.
 
-   Para empezar a construir componentes, el siguiente paso es 3-comp/, que se
-   agrega en este mismo archivo en la seccion de arriba.
+   Para empezar a construir componentes, el siguiente paso es
+   3-components/, que se agrega en 3-components/index.css.
    ========================================================================== */

@@ -79,14 +79,14 @@
                              fondo de la pantalla.
 
      font-family             Hereda Google Sans Flex a TODO el documento, con el
-                             stack de respaldo de 1-ref/typeface.css. Se usa
+                             stack de respaldo de 1-reference-tokens/typeface.css. Se usa
                              la familia BRAND: es la del sistema.
 
      background/color        No estan aqui. Ver la nota de abajo.
 
                               El fondo y el color son decisiones de TEMA, no del
                               navegador, asi que los declara cada vista sobre su
-                              <body> con clases de 2-sys/. El tema sigue mandando
+                              <body> con clases de 2-system-tokens/. El tema sigue mandando
                               igual: si cambia data-theme, o si cambia
                               prefers-color-scheme, el fondo y el texto cambian
                               con el, sin tocar el HTML.
@@ -123,7 +123,7 @@
      no pertenecen a la capa que anula al navegador.
 
      Consecuencia: el fondo, el color y la fuente los declara cada vista, con
-     clases de 2-sys/ sobre el propio <body>:
+     clases de 2-system-tokens/ sobre el propio <body>:
 
        <body class="md-bg-background md-text-on-background md-type-body-medium">
 
@@ -298,7 +298,7 @@
      FORMULARIOS
      ------------------------------------------------------------------------
      Los controles del navegador traen estilos propios que compiten con los
-     de M3. No se neutralizan aqui: un componente de formulario de 3-comp/
+     de M3. No se neutralizan aqui: un componente de formulario de 3-components/
      debe definirlos con sus propios tokens, porque un input de M3 no es un
      input nativo pelado.
 

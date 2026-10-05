@@ -1,0 +1,18 @@
+/* ==========================================================================
+   3-components/index.css — INDICE DE LA CAPA 3
+   --------------------------------------------------------------------------
+   Reexporta los componentes, uno por archivo. Cada uno consume
+   UNICAMENTE tokens de 2-system-tokens/ (REGLA 2).
+
+   El primero es divider: dos tokens, sin variaciones de tipo. Es el mas
+   simple del catalogo y sirve para probar el contrato de capas con un
+   archivo real. Se agregan aqui a medida que se implementen, uno por vez.
+
+   Se importa desde src/css/main.css en la capa `comp`.
+   ========================================================================== */
+
+@import url("divider.css");
+@import url("button.css");
+@import url("icon-button.css");
+/* @import url("card.css");   */
+/* @import url("dialog.css"); */

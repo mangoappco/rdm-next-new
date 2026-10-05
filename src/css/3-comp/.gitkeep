@@ -1,7 +1,0 @@
-# Marcador de directorio vacio.
-#
-# Git no rastrea carpetas, solo archivos. Este archivo existe unicamente para
-# que `css/3-comp/` quede versionada desde el primer commit y no aparezca como
-# carpeta fantasma al clonar el repositorio.
-#
-# ELIMINAR este archivo cuando se agregue el primer componente real.

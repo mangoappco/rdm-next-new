@@ -1,0 +1,266 @@
+/* ==========================================================================
+   2-system-tokens/typography.css - TOKENS SEMANTICOS DE TIPOGRAFIA (solo var())
+   ==========================================================================
+
+   QUE ES ESTE ARCHIVO
+   -------------------
+   CAPA 2 del sistema. Aqui viven los 15 ESTILOS de tipografia de M3: los
+   roles tipograficos que un componente pide cuando dice "quiero un titulo
+   de pagina".
+
+   Este archivo NO contiene medidas. Solo declara que composicion corresponde
+   a cada estilo. Las medidas crudas viven en 1-reference-tokens/typescale.css y la
+   familia y los pesos en 1-reference-tokens/typeface.css.
+
+   ---------------------------------------------------------------------------
+   LOS CINCO SUB-TOKENS DE UN ESTILO
+   ---------------------------------------------------------------------------
+   Cada estilo se compone de cinco partes:
+
+       --md-sys-typescale-<estilo>-font         familia de la fuente
+       --md-sys-typescale-<estilo>-weight      peso
+       --md-sys-typescale-<estilo>-size        cuerpo
+       --md-sys-typescale-<estilo>-line-height interlineado
+       --md-sys-typescale-<estilo>-tracking    espaciado entre letras
+
+   EJEMPLO REAL, el estilo body-large:
+
+       --md-sys-typescale-body-large-size:
+         var(--md-ref-typescale-body-large-size);          -> 16px
+       --md-sys-typescale-body-large-line-height:
+         var(--md-ref-typescale-body-large-line-height);   -> 24px
+       --md-sys-typescale-body-large-tracking:
+         var(--md-ref-typescale-body-large-tracking);      -> 0.5px
+       --md-sys-typescale-body-large-weight:
+         var(--md-ref-typeface-weight-regular);            -> 400
+       --md-sys-typescale-body-large-font:
+         var(--md-ref-typeface-plain);                     -> Google Sans Flex
+
+   Que este archivo no escriba "16px" es lo que mantiene el sistema coherente:
+   cambiar el tamano de body-large se resuelve en 1-reference-tokens/typescale.css y las
+   15 estilos, el showroom y la app de produccion se actualizan juntos.
+
+   ---------------------------------------------------------------------------
+   EL TOKEN COMPUESTO Y SU LIMITACION REAL
+   ---------------------------------------------------------------------------
+   M3 publica ademas un token compuesto por estilo:
+
+       --md-sys-typescale-body-large:
+         var(--md-ref-typeface-weight-regular)
+         var(--md-ref-typescale-body-large-size)
+         / var(--md-ref-typescale-body-large-line-height)
+         var(--md-ref-typeface-plain);
+
+   OJO CON ESTO. El token compuesto NO incluye el tracking, y no es un
+   capricho: la forma abreviada `font` de CSS no puede expresar
+   `letter-spacing`. Si se usara el atajo, el espaciado entre letras se
+   perderia.
+
+   Google lo advierte de forma explicita en su archivo de tokens, con un
+   warning que dice literalmente que usar el token compuesto reduce la
+   fidelidad y que conviene usar las propiedades discretas.
+
+   Por eso este archivo define el compuesto para quien quiera atajos, pero
+   las clases .md-type-* de abajo usan SIEMPRE las propiedades discretas para
+   no perder el tracking. Esa es la razon de que existan.
+
+   ---------------------------------------------------------------------------
+   LOS PESOS POR FAMILIA
+   ---------------------------------------------------------------------------
+   M3 reparte los pesos de forma consistente, y entenderlo evita errores:
+
+     display-*   regular (400)   brand    6 estilos
+     headline-*  regular (400)   brand    3 estilos
+     title-large regular (400)   brand
+     title-medium/small  medium (500)  plain   2 estilos
+     body-*      regular (400)   plain    3 estilos
+     label-*     medium  (500)   plain    3 estilos
+
+   El patron: los titulos usan la fuente BRAND; el texto corriente usa PLAIN.
+   Y los estilos "label" usan peso MEDIUM porque son texto de interfaz corto
+   que necesita afirmarse sin competir con los titulos.
+
+   v0.192 anade ademas `weight-prominent` (bold 700) a DOS de los tres estilos
+   label, para cuando un boton o un chip necesita mas enfasis del normal.
+   No al tercero: ver el bloque de PESO PROMINENTE, mas abajo.
+
+   ---------------------------------------------------------------------------
+   RELACION CON LAS OTRAS CAPAS
+   -----------------------------
+       1-reference-tokens/typescale.css   <-- 45 medidas crudas (px)
+       1-reference-tokens/typeface.css    <-- Google Sans Flex, pesos 400/500/700
+              |
+              v
+       2-system-tokens/typography.css  <-- ESTE: los 15 estilos, solo var()
+              |
+              v
+       3-components/button.css     <-- el componente usa md-type-label-large
+
+   ========================================================================== */
+
+:root {
+  /* ==========================================================================
+     DISPLAY - enfasis maximo
+     --------------------------------------------------------------------------
+     Peso regular, fuente brand. Reservados para momentos puntuales: nunca
+     como titulo corriente.
+     ====================================================================== */
+
+  --md-sys-typescale-display-large-weight: var(--md-ref-typeface-weight-regular);
+  --md-sys-typescale-display-large-size: var(--md-ref-typescale-display-large-size);
+  --md-sys-typescale-display-large-line-height: var(--md-ref-typescale-display-large-line-height);
+  --md-sys-typescale-display-large-tracking: var(--md-ref-typescale-display-large-tracking);
+  --md-sys-typescale-display-large-font: var(--md-ref-typeface-brand);
+
+  --md-sys-typescale-display-medium-weight: var(--md-ref-typeface-weight-regular);
+  --md-sys-typescale-display-medium-size: var(--md-ref-typescale-display-medium-size);
+  --md-sys-typescale-display-medium-line-height: var(--md-ref-typescale-display-medium-line-height);
+  --md-sys-typescale-display-medium-tracking: var(--md-ref-typescale-display-medium-tracking);
+  --md-sys-typescale-display-medium-font: var(--md-ref-typeface-brand);
+
+  --md-sys-typescale-display-small-weight: var(--md-ref-typeface-weight-regular);
+  --md-sys-typescale-display-small-size: var(--md-ref-typescale-display-small-size);
+  --md-sys-typescale-display-small-line-height: var(--md-ref-typescale-display-small-line-height);
+  --md-sys-typescale-display-small-tracking: var(--md-ref-typescale-display-small-tracking);
+  --md-sys-typescale-display-small-font: var(--md-ref-typeface-brand);
+
+  /* ==========================================================================
+     HEADLINE - titulos de pagina y seccion
+     ====================================================================== */
+
+  --md-sys-typescale-headline-large-weight: var(--md-ref-typeface-weight-regular);
+  --md-sys-typescale-headline-large-size: var(--md-ref-typescale-headline-large-size);
+  --md-sys-typescale-headline-large-line-height: var(--md-ref-typescale-headline-large-line-height);
+  --md-sys-typescale-headline-large-tracking: var(--md-ref-typescale-headline-large-tracking);
+  --md-sys-typescale-headline-large-font: var(--md-ref-typeface-brand);
+
+  --md-sys-typescale-headline-medium-weight: var(--md-ref-typeface-weight-regular);
+  --md-sys-typescale-headline-medium-size: var(--md-ref-typescale-headline-medium-size);
+  --md-sys-typescale-headline-medium-line-height: var(--md-ref-typescale-headline-medium-line-height);
+  --md-sys-typescale-headline-medium-tracking: var(--md-ref-typescale-headline-medium-tracking);
+  --md-sys-typescale-headline-medium-font: var(--md-ref-typeface-brand);
+
+  --md-sys-typescale-headline-small-weight: var(--md-ref-typeface-weight-regular);
+  --md-sys-typescale-headline-small-size: var(--md-ref-typescale-headline-small-size);
+  --md-sys-typescale-headline-small-line-height: var(--md-ref-typescale-headline-small-line-height);
+  --md-sys-typescale-headline-small-tracking: var(--md-ref-typescale-headline-small-tracking);
+  --md-sys-typescale-headline-small-font: var(--md-ref-typeface-brand);
+
+  /* ==========================================================================
+     TITLE - titulos dentro de un componente
+     --------------------------------------------------------------------------
+     El salto importante de M3: title-large sigue siendo brand/regular, pero
+     title-medium y title-small pasan a plain/medium. Esa distincion separa
+     "titulo de pagina" de "titulo de componente".
+     ====================================================================== */
+
+  --md-sys-typescale-title-large-weight: var(--md-ref-typeface-weight-regular);
+  --md-sys-typescale-title-large-size: var(--md-ref-typescale-title-large-size);
+  --md-sys-typescale-title-large-line-height: var(--md-ref-typescale-title-large-line-height);
+  --md-sys-typescale-title-large-tracking: var(--md-ref-typescale-title-large-tracking);
+  --md-sys-typescale-title-large-font: var(--md-ref-typeface-brand);
+
+  --md-sys-typescale-title-medium-weight: var(--md-ref-typeface-weight-medium);
+  --md-sys-typescale-title-medium-size: var(--md-ref-typescale-title-medium-size);
+  --md-sys-typescale-title-medium-line-height: var(--md-ref-typescale-title-medium-line-height);
+  --md-sys-typescale-title-medium-tracking: var(--md-ref-typescale-title-medium-tracking);
+  --md-sys-typescale-title-medium-font: var(--md-ref-typeface-plain);
+
+  --md-sys-typescale-title-small-weight: var(--md-ref-typeface-weight-medium);
+  --md-sys-typescale-title-small-size: var(--md-ref-typescale-title-small-size);
+  --md-sys-typescale-title-small-line-height: var(--md-ref-typescale-title-small-line-height);
+  --md-sys-typescale-title-small-tracking: var(--md-ref-typescale-title-small-tracking);
+  --md-sys-typescale-title-small-font: var(--md-ref-typeface-plain);
+
+  /* ==========================================================================
+     BODY - texto de lectura
+     ====================================================================== */
+
+  --md-sys-typescale-body-large-weight: var(--md-ref-typeface-weight-regular);
+  --md-sys-typescale-body-large-size: var(--md-ref-typescale-body-large-size);
+  --md-sys-typescale-body-large-line-height: var(--md-ref-typescale-body-large-line-height);
+  --md-sys-typescale-body-large-tracking: var(--md-ref-typescale-body-large-tracking);
+  --md-sys-typescale-body-large-font: var(--md-ref-typeface-plain);
+
+  --md-sys-typescale-body-medium-weight: var(--md-ref-typeface-weight-regular);
+  --md-sys-typescale-body-medium-size: var(--md-ref-typescale-body-medium-size);
+  --md-sys-typescale-body-medium-line-height: var(--md-ref-typescale-body-medium-line-height);
+  --md-sys-typescale-body-medium-tracking: var(--md-ref-typescale-body-medium-tracking);
+  --md-sys-typescale-body-medium-font: var(--md-ref-typeface-plain);
+
+  --md-sys-typescale-body-small-weight: var(--md-ref-typeface-weight-regular);
+  --md-sys-typescale-body-small-size: var(--md-ref-typescale-body-small-size);
+  --md-sys-typescale-body-small-line-height: var(--md-ref-typescale-body-small-line-height);
+  --md-sys-typescale-body-small-tracking: var(--md-ref-typescale-body-small-tracking);
+  --md-sys-typescale-body-small-font: var(--md-ref-typeface-plain);
+
+  /* ==========================================================================
+     LABEL - texto corto de interfaz
+     --------------------------------------------------------------------------
+     Peso MEDIUM (500), no regular: es texto de interfaz y necesita afirmar-
+     se sin competir con los titulos. NUNCA usar para parrafos.
+
+     `weight-prominent` es la variante BOLD (700) que v0.192 anade para
+     botones y chips que necesitan mas enfasis. Solo existe para label-large y
+     label-medium: Google no lo publica para label-small.
+     ====================================================================== */
+
+  --md-sys-typescale-label-large-weight: var(--md-ref-typeface-weight-medium);
+  --md-sys-typescale-label-large-size: var(--md-ref-typescale-label-large-size);
+  --md-sys-typescale-label-large-line-height: var(--md-ref-typescale-label-large-line-height);
+  --md-sys-typescale-label-large-tracking: var(--md-ref-typescale-label-large-tracking);
+  --md-sys-typescale-label-large-font: var(--md-ref-typeface-plain);
+  --md-sys-typescale-label-large-weight-prominent: var(--md-ref-typeface-weight-bold);
+
+  --md-sys-typescale-label-medium-weight: var(--md-ref-typeface-weight-medium);
+  --md-sys-typescale-label-medium-size: var(--md-ref-typescale-label-medium-size);
+  --md-sys-typescale-label-medium-line-height: var(--md-ref-typescale-label-medium-line-height);
+  --md-sys-typescale-label-medium-tracking: var(--md-ref-typescale-label-medium-tracking);
+  --md-sys-typescale-label-medium-font: var(--md-ref-typeface-plain);
+  --md-sys-typescale-label-medium-weight-prominent: var(--md-ref-typeface-weight-bold);
+
+  --md-sys-typescale-label-small-weight: var(--md-ref-typeface-weight-medium);
+  --md-sys-typescale-label-small-size: var(--md-ref-typescale-label-small-size);
+  --md-sys-typescale-label-small-line-height: var(--md-ref-typescale-label-small-line-height);
+  --md-sys-typescale-label-small-tracking: var(--md-ref-typescale-label-small-tracking);
+  --md-sys-typescale-label-small-font: var(--md-ref-typeface-plain);
+  /* label-small NO tiene weight-prominent. Google no lo publica: en
+     tokens/versions/v0_192/_md-sys-typescale.scss solo existen
+     label-large-weight-prominent y label-medium-weight-prominent.
+
+     La especificacion de m3.material.io describe quince estilos "emphasized",
+     pero el SCSS de Material Web solo emite los que tienen valor, y este no
+     lo tiene. Se declaraba aqui igual; se elimino para no divergir de la
+     fuente oficial. Ver la seccion 4 del README. */
+
+  /* ==========================================================================
+     TOKENS COMPUESTOS (atajos)
+     --------------------------------------------------------------------------
+     Uno por estilo, con la sintaxis de la forma abreviada `font` de CSS.
+
+     RECUERDA: no incluyen el tracking, porque `font` no puede expresar
+     letter-spacing. Usar este atajo significa perder ese ajuste.
+
+     Para trabajo real, preferi las clases .md-type-* de mas abajo, que si
+     preservan el tracking.
+     ====================================================================== */
+
+  --md-sys-typescale-display-large: var(--md-ref-typeface-weight-regular) var(--md-ref-typescale-display-large-size)/var(--md-ref-typescale-display-large-line-height) var(--md-ref-typeface-brand);
+  --md-sys-typescale-display-medium: var(--md-ref-typeface-weight-regular) var(--md-ref-typescale-display-medium-size)/var(--md-ref-typescale-display-medium-line-height) var(--md-ref-typeface-brand);
+  --md-sys-typescale-display-small: var(--md-ref-typeface-weight-regular) var(--md-ref-typescale-display-small-size)/var(--md-ref-typescale-display-small-line-height) var(--md-ref-typeface-brand);
+  --md-sys-typescale-headline-large: var(--md-ref-typeface-weight-regular) var(--md-ref-typescale-headline-large-size)/var(--md-ref-typescale-headline-large-line-height) var(--md-ref-typeface-brand);
+  --md-sys-typescale-headline-medium: var(--md-ref-typeface-weight-regular) var(--md-ref-typescale-headline-medium-size)/var(--md-ref-typescale-headline-medium-line-height) var(--md-ref-typeface-brand);
+  --md-sys-typescale-headline-small: var(--md-ref-typeface-weight-regular) var(--md-ref-typescale-headline-small-size)/var(--md-ref-typescale-headline-small-line-height) var(--md-ref-typeface-brand);
+  --md-sys-typescale-title-large: var(--md-ref-typeface-weight-regular) var(--md-ref-typescale-title-large-size)/var(--md-ref-typescale-title-large-line-height) var(--md-ref-typeface-brand);
+  --md-sys-typescale-title-medium: var(--md-ref-typeface-weight-medium) var(--md-ref-typescale-title-medium-size)/var(--md-ref-typescale-title-medium-line-height) var(--md-ref-typeface-plain);
+  --md-sys-typescale-title-small: var(--md-ref-typeface-weight-medium) var(--md-ref-typescale-title-small-size)/var(--md-ref-typescale-title-small-line-height) var(--md-ref-typeface-plain);
+  --md-sys-typescale-body-large: var(--md-ref-typeface-weight-regular) var(--md-ref-typescale-body-large-size)/var(--md-ref-typescale-body-large-line-height) var(--md-ref-typeface-plain);
+  --md-sys-typescale-body-medium: var(--md-ref-typeface-weight-regular) var(--md-ref-typescale-body-medium-size)/var(--md-ref-typescale-body-medium-line-height) var(--md-ref-typeface-plain);
+  --md-sys-typescale-body-small: var(--md-ref-typeface-weight-regular) var(--md-ref-typescale-body-small-size)/var(--md-ref-typescale-body-small-line-height) var(--md-ref-typeface-plain);
+  --md-sys-typescale-label-large: var(--md-ref-typeface-weight-medium) var(--md-ref-typescale-label-large-size)/var(--md-ref-typescale-label-large-line-height) var(--md-ref-typeface-plain);
+  --md-sys-typescale-label-medium: var(--md-ref-typeface-weight-medium) var(--md-ref-typescale-label-medium-size)/var(--md-ref-typescale-label-medium-line-height) var(--md-ref-typeface-plain);
+  --md-sys-typescale-label-small: var(--md-ref-typeface-weight-medium) var(--md-ref-typescale-label-small-size)/var(--md-ref-typescale-label-small-line-height) var(--md-ref-typeface-plain);
+}
+
+/* Las clases utilitarias de esta familia se mudaron a 4-utilities/ en la auditoria M3:
+   la Capa 2 solo declara tokens. Ver 4-utilities/index.css. */

@@ -1,0 +1,201 @@
+/* ==========================================================================
+   1-reference-tokens/corner.css — PRIMITIVAS DE RADIO DE ESQUINA (valores crudos)
+   ==========================================================================
+
+   QUE ES ESTE ARCHIVO
+   -------------------
+   CAPA 1 del sistema. Aqui viven los RADIOS DE ESQUINA crudos: 4px, 8px,
+   12px, 16px, 28px y 9999px. Es el unico lugar donde se permite escribir un
+   radio como valor literal.
+
+   ---------------------------------------------------------------------------
+   POR QUE "corner" Y NO "radius"
+   ---------------------------------------------------------------------------
+   Google nombra estos tokens `--md-sys-shape-corner-*` en TODOS sus archivos.
+   La palabra "radius" no aparece en su nomenclatura de shape. Usar el mismo
+   nombre mantiene la analogia del proyecto: el nombre de 1-reference-tokens coincide con
+   el sufijo que usa 2-system-tokens.
+
+       --md-ref-corner-small        (medida, 1-reference-tokens)
+       --md-sys-shape-corner-small  (rol,    2-system-tokens)
+
+   Ademas, "radius" es ambiguo en CSS: `border-radius` controla tanto el
+   redondeo de las esquinas como el grosor redondeado del borde. Este archivo
+   es solo del primero.
+
+   ---------------------------------------------------------------------------
+   LOS 10 RADIOS DE M3
+   ---------------------------------------------------------------------------
+   M3 define una escala de radios con nombres semanticos, no numeros:
+
+     none                  0px       Sin redondeo. Recto puro.
+     extra-small           4px       Chips, snackbars, campos pequenos.
+     small                 8px       Menos redondeo. Bordes de lista.
+     medium               12px       El mas usado. Cards, dialogos, sheets.
+     large                16px       FABs, navigation drawer.
+     large-increased      20px       Variante ampliada de large.
+     extra-large          28px       Modal sheets, superficies redondeadas.
+     extra-large-increased 32px     Variante ampliada de extra-large.
+     extra-extra-large    48px       El radio mayor. Diálogos de pantalla
+                                      completa, superficies muy redondeadas.
+     full               9999px       Pastilla o circulo perfecto.
+
+   El nombre importa mas que el numero. Un componente no dice "12px", dice
+   "medium". Si manana M3 cambiara medium a 14px, el componente sigue
+   diciendo medium y se actualiza solo.
+
+   LOS TRES NIVELES "increased" Y "extra-extra-large"
+   -----------------------------------------------
+   Son adiciones posteriores al nucleo original de M3 (v0.192 publicaba solo
+   siete: none, extra-small, small, medium, large, extra-large, full). Google
+   los incorporo al ampliar la escala, y son COEXISTENTES: no reemplazan a
+   los anteriores, conviven con ellos.
+
+   La intencion de los "increased" es permitir a un componente subir UN paso
+   su redondeo sin cambiar de familia. Un dialogo normal usa `large` (16px);
+   el mismo dialogo en un estado expandido usa `large-increased` (20px). Es
+   un refinamiento, no un salto.
+
+   `extra-extra-large` (48px) es el tope de la escala. Se usa en superficies
+   que ocupan casi toda la pantalla, donde un radio pequeno se veria
+   ranurado y uno enorme se veria barroco.
+
+   NOTA SOBRE M3 Expressive
+   -----------------------
+   Existe una variante posterior llamada M3 Expressive que redefine algunos
+   de estos valores (por ejemplo, `large` pasa de 16dp a 20dp) y cambia `full`
+   de un valor fijo a un porcentaje. Este proyecto implementa la escala
+   BASE de M3, que es la estable y la que consumen las librerias web de
+   Google. Migrar a Expressive es una decision de proyecto, no un detalle.
+
+   ---------------------------------------------------------------------------
+   POR QUE EXISTE ESTE ARCHIVO Y NO SE USA spacing.css DIRECTAMENTE
+   ---------------------------------------------------------------------------
+   Este es el punto que conviene dejar bien documentado, porque ocho de los
+   diez valores SI coinciden con tokens de 1-reference-tokens/spacing.css:
+
+     none                  0px  = var(--md-ref-spacing-0)
+     extra-small           4px  = var(--md-ref-spacing-50)
+     small                 8px  = var(--md-ref-spacing-100)
+     medium               12px  = var(--md-ref-spacing-150)
+     large                16px  = var(--md-ref-spacing-200)
+     large-increased      20px  = var(--md-ref-spacing-250)
+     extra-large-increased 32px = var(--md-ref-spacing-400)
+     extra-extra-large    48px  = var(--md-ref-spacing-600)
+
+   Y aun asi se redefinen aqui. Es redundancia INTENCIONAL, por tres razones:
+
+   RAZON 1 — extra-large (28px) no existe en la escala de espacio
+   -----------------------------------------------------------
+   La escala oficial de M3 va 0, 25, 50, 75, 100, 125, 150, 175, 200, 250, 300,
+   400, 450... No hay ningun token de 28px. Los mas cercanos son space-300
+   (24px) y space-400 (32px), ambos a 4px de distancia.
+
+   Usar space-300 para extra-large daria 24px en vez de 28px: un 14% mas
+   pequeno de lo que M3 especifica, y visible en un modal sheet, que es
+   justamente donde el redondeo se nota.
+
+   RAZON 2 — full (9999px) no es una medida de espacio
+   ---------------------------------------------------
+   9999px es un "casi infinito". No representa una distancia: representa la
+   intencion de "redondear hasta formar una pastilla o un circulo". space-900
+   es 72px, y un radio de 72px en una tarjeta de 300px de ancho no produce una
+   pastilla, produce una esquina curva de 72px.
+
+   RAZON 3 — coherencia de la familia
+   ----------------------------------
+   Un token de radio no es un token de espaciado aunque coincida el numero.
+   Si alguien cambia la escala de espacio (por ejemplo, para una app mas
+   compacta), los radios de M3 NO deberian moverse: son parte de la
+   especificacion del sistema visual, no de su retícula de layout.
+
+   Esto es el mismo criterio que aplicamos con los tonos de `palette.css`: un
+   valor puede coincidir con otro y aun asi deserve su propio token cuando
+   significa algo distinto.
+
+   ---------------------------------------------------------------------------
+   RELACION CON LAS OTRAS CAPAS
+   -----------------------------
+       1-reference-tokens/corner.css      <-- ESTOS 7 valores crudos
+              |
+              v
+       2-system-tokens/shape.css       <-- los roles --md-sys-shape-corner-*
+              |
+              v
+       3-components/card.css       <-- el componente pide "medium", no "12px"
+
+   ========================================================================== */
+
+:root {
+  /* ------------------------------------------------------------------------
+     NONE — sin redondeo
+     Util cuando se quiere el rectangulo puro, o para anular un radio que
+     otro selector haya puesto.
+     --------------------------------------------------------------------- */
+  --md-ref-corner-none: 0px;
+
+  /* ------------------------------------------------------------------------
+     EXTRA SMALL — 4px
+     Chips, snackbars, campos de texto pequenos. El menor radio del sistema.
+     --------------------------------------------------------------------- */
+  --md-ref-corner-extra-small: 4px;
+
+  /* ------------------------------------------------------------------------
+     SMALL — 8px
+     Menos redondeo que medium. Bordes de lista, inputs, superficies
+     pequenas donde un radio grande se veria.poco comun.
+     --------------------------------------------------------------------- */
+  --md-ref-corner-small: 8px;
+
+  /* ------------------------------------------------------------------------
+     MEDIUM — 12px
+     El radio por defecto de M3. Cards, dialogos, bottom sheets.
+     Es el mas usado del sistema: si un componente no dice nada, usa medium.
+     --------------------------------------------------------------------- */
+  --md-ref-corner-medium: 12px;
+
+  /* ------------------------------------------------------------------------
+     LARGE — 16px
+     FABs, navigation drawer, superficies amplias. Se nota el redondeo sin
+     llegar a ser pastilla.
+     --------------------------------------------------------------------- */
+  --md-ref-corner-large: 16px;
+
+  /* ------------------------------------------------------------------------
+     LARGE INCREASED — 20px
+     Variante ampliada de `large`. Permite subir UN paso el redondeo sin
+     cambiar de familia: un dialogo normal usa `large`, y el mismo dialogo
+     expandido usa `large-increased`.
+     --------------------------------------------------------------------- */
+  --md-ref-corner-large-increased: 20px;
+
+  /* ------------------------------------------------------------------------
+     EXTRA LARGE — 28px
+     Modal sheets y superficies muy redondeadas.
+     Este valor NO existe en la escala de espacio de M3 (ver cabecera).
+     --------------------------------------------------------------------- */
+  --md-ref-corner-extra-large: 28px;
+
+  /* ------------------------------------------------------------------------
+     EXTRA LARGE INCREASED — 32px
+     Variante ampliada de `extra-large`. Dialogos de pantalla completa.
+     --------------------------------------------------------------------- */
+  --md-ref-corner-extra-large-increased: 32px;
+
+  /* ------------------------------------------------------------------------
+     EXTRA EXTRA LARGE — 48px
+     El tope de la escala. Superficies que ocupan casi toda la pantalla, donde
+     un radio pequeno se veria ranurado y uno enorme se veria barroco.
+     --------------------------------------------------------------------- */
+  --md-ref-corner-extra-extra-large: 48px;
+
+  /* ------------------------------------------------------------------------
+     FULL — 9999px
+     Pastilla o circulo perfecto. El valor es deliberadamente absurdamente
+     grande: cualquier radio mayor que la mitad del lado mas corto produce el
+     mismo resultado. Asi, un chip de cualquier ancho queda redondeado igual.
+
+     Este valor no viene de ninguna escala; es una convencion de M3.
+     --------------------------------------------------------------------- */
+  --md-ref-corner-full: 9999px;
+}

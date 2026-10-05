@@ -17,9 +17,9 @@
   Copiada de templates/component.template.html.
   Secciones confirmadas por Danny: las 22 de la skill, todas incluidas.
 
-  Componente: src/css/3-comp/icon-button.css
-  Tokens:    src/css/2-sys/measurement.css (alturas y glifos)
-             src/css/2-sys/shape.css       (stroke-none)
+  Componente: src/css/3-components/icon-button.css
+  Tokens:    src/css/2-system-tokens/measurement.css (alturas y glifos)
+             src/css/2-system-tokens/shape.css       (stroke-none)
   Fuente de los iconos: ver showroom/components/icon.html
 
   Fuentes de esta pagina, de M3:
@@ -282,20 +282,20 @@
       <h3>Falta una sola cosa, y no es el glifo</h3>
       <p>La primera sorpresa es que <code>large</code> y <code>xlarge</code> <strong>sí tienen casi todo</strong>. Y no es casualidad:</p>
       <ul>
-        <li>La esquina <code>extra-large</code> de 28dp <strong>ya existe</strong> en <code>1-ref/corner.css</code>, que declara los diez radios de M3.</li>
+        <li>La esquina <code>extra-large</code> de 28dp <strong>ya existe</strong> en <code>1-reference-tokens/corner.css</code>, que declara los diez radios de M3.</li>
         <li>Los trazos de 2dp y 3dp <strong>ya existen</strong>: son <code>--md-ref-stroke-thick</code> y <code>--md-ref-stroke-extra-thick</code>.</li>
         <li>Los glifos de 32dp y 40dp tienen su sitio en la escala de espacio: <code>spacing-400</code> y <code>spacing-500</code>.</li>
       </ul>
-      <p>Lo único que no tiene dónde vivir son <strong>las alturas: 96dp y 136dp</strong>. La escala de espacio del proyecto termina en <code>spacing-900</code>, que son 72dp, y <code>2-sys/</code> solo admite <code>var()</code>: un número crudo en esa capa rompe la arquitectura. Así que un 96dp tendría que entrar por <code>1-ref/</code>, y ahí es donde está la decisión que no está tomada.</p>
+      <p>Lo único que no tiene dónde vivir son <strong>las alturas: 96dp y 136dp</strong>. La escala de espacio del proyecto termina en <code>spacing-900</code>, que son 72dp, y <code>2-system-tokens/</code> solo admite <code>var()</code>: un número crudo en esa capa rompe la arquitectura. Así que un 96dp tendría que entrar por <code>1-reference-tokens/</code>, y ahí es donde está la decisión que no está tomada.</p>
 
       <h3>Y no son medidas de espacio: son alturas de contenedor</h3>
       <p class="sr-na">Vale la pena comprobarlo, porque la primera reacción es «añadir 96 y 136 a <code>spacing.css</code>». En los tokens oficiales de M3 <strong>no hay ningún token de espacio</strong> con esos dos valores, y tampoco hay archivo de espaciado en el set: no es que falten esos dos, es que la familia completa no está. Lo que aparece es <code>$container-height</code>, en <strong>17 archivos de token</strong>: <code>button</code>, <code>icon-button</code>, <code>split-button</code>, <code>extended-fab</code>, <code>button-group</code> en sus dos variantes y los seis <code>fab</code>. Siete archivos más lo usan como <code>$container-width</code>.</p>
-      <p class="sr-na">O sea que 96dp y 136dp son una <strong>convención de alturas de contenedor</strong> del conjunto de componentes de M3, no su retícula de layout. Meterlos en <code>spacing</code> sería meterlos en la categoría equivocada, por el mismo motivo que ya escrito en <code>1-ref/corner.css</code> y en <code>1-ref/stroke.css</code>: <em>un token de radio no es un token de espaciado aunque coincida el número</em>. Si alguien cambiara la escala de espacio, las alturas de contenedor de M3 no deberían moverse con ella.</p>
-      <p class="sr-na">La familia correcta sería una nueva en <code>1-ref/</code>, del mismo modo que <code>corner.css</code> y <code>stroke.css</code> existen para poder decir «esto no es espaciado». Pero hoy la pediría un solo componente, y abrir un archivo nuevo en la capa 1 para un consumidor es exactamente lo que el proyecto no hace. Cuando se implemente <code>large</code> en <a href="button.html">Button</a> también, habrá dos consumidores y la decisión se toma sola.</p>
+      <p class="sr-na">O sea que 96dp y 136dp son una <strong>convención de alturas de contenedor</strong> del conjunto de componentes de M3, no su retícula de layout. Meterlos en <code>spacing</code> sería meterlos en la categoría equivocada, por el mismo motivo que ya escrito en <code>1-reference-tokens/corner.css</code> y en <code>1-reference-tokens/stroke.css</code>: <em>un token de radio no es un token de espaciado aunque coincida el número</em>. Si alguien cambiara la escala de espacio, las alturas de contenedor de M3 no deberían moverse con ella.</p>
+      <p class="sr-na">La familia correcta sería una nueva en <code>1-reference-tokens/</code>, del mismo modo que <code>corner.css</code> y <code>stroke.css</code> existen para poder decir «esto no es espaciado». Pero hoy la pediría un solo componente, y abrir un archivo nuevo en la capa 1 para un consumidor es exactamente lo que el proyecto no hace. Cuando se implemente <code>large</code> en <a href="button.html">Button</a> también, habrá dos consumidores y la decisión se toma sola.</p>
 
       <h3>El glifo de <code>large</code> es una excepción de M3</h3>
       <p class="sr-na">Los tamaños de icono que publica M3 son cuatro: 20, 24, 40 y 48dp. El <code>icon-size</code> de <code>icon-button-large</code> es de <strong>32dp</strong>, que no está en esa lista. Es una inconsistencia de los propios datos de M3, no una omisión de este proyecto, y queda documentada acá para no heredarla por descuido.</p>
-      <p class="sr-na">Ojo con una consecuencia: <code>opsz</code> se pone al tamaño del glifo, y <code>2-sys/measurement.css</code> no tiene un rol de tamaño de icono en 32dp. Habría que declararlo, o el glifo se dibujaría con un <code>opsz</code> que no le corresponde.</p>
+      <p class="sr-na">Ojo con una consecuencia: <code>opsz</code> se pone al tamaño del glifo, y <code>2-system-tokens/measurement.css</code> no tiene un rol de tamaño de icono en 32dp. Habría que declararlo, o el glifo se dibujaría con un <code>opsz</code> que no le corresponde.</p>
 
       <h3>La diferencia con el botón, que es la razón de este componente</h3>
       <table class="sr-table">
@@ -449,7 +449,7 @@
     <article class="sr-section">
       <h2>Comportamiento</h2>
       <h3>La capa de estado</h3>
-      <p>Es una transición de opacidad de 100ms con la curva <code>standard</code>, la misma que declara <code>2-sys/state.css</code>. No hay nada más que animar.</p>
+      <p>Es una transición de opacidad de 100ms con la curva <code>standard</code>, la misma que declara <code>2-system-tokens/state.css</code>. No hay nada más que animar.</p>
       <h3>La superficie de toque</h3>
       <p>Es <code>position: absolute</code>, así que <strong>no entra en el flujo</strong>: no empuja a los hermanos, no ensancha el control y no cambia una línea del layout. Solo se acuesta encima con un área más grande que recibe el toque.</p>
       <p>Su tamaño es <code>max(48px, 100%)</code> en los dos ejes, y esa es la receta de <strong>icon-button</strong> de M3, distinta de la de <code>button</code>.</p>

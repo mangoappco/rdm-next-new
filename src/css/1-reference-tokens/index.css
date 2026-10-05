@@ -1,0 +1,23 @@
+/* ==========================================================================
+   1-reference-tokens/index.css — INDICE DE LA CAPA 1
+   --------------------------------------------------------------------------
+   Reexporta las 12 primitivas en orden alfabetico. Ninguna hoja depende de
+   otra: el orden no tiene importancia funcional.
+
+   Se importa desde src/css/main.css en la capa `ref`. Los @import sin
+   layer() heredan la capa del importador, asi que todo este indice vive
+   en `ref`.
+   ========================================================================== */
+
+@import url("container-height.css");
+@import url("corner.css");
+@import url("easing.css");
+@import url("iconfont.css");
+@import url("opacity.css");
+@import url("palette.css");
+@import url("shadow.css");
+@import url("spacing.css");
+@import url("stroke.css");
+@import url("time.css");
+@import url("typeface.css");
+@import url("typescale.css");

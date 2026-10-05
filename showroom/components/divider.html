@@ -16,7 +16,7 @@
 <!--
   Copiada de templates/component.template.html.
   Todo lo que se ve en un escenario es el componente real de
-  src/css/3-comp/divider.css: la clase .md-divider y sus modificadores. Ninguna
+  src/css/3-components/divider.css: la clase .md-divider y sus modificadores. Ninguna
   linea de este archivo esta maquetada a mano, y ninguna mide por su cuenta.
   Lo unico que el showroom pone alrededor son superficies, marcos y rejilla, que
   viven en showroom/assets/showroom.css, en su propia capa.
@@ -110,7 +110,7 @@
       </div>
       <h3>Por qué el modificador existe</h3>
       <p>El componente ya declara su token público de color, <code>--md-comp-divider-color</code>. Sin una forma de reapuntarlo desde el marcado, ese token solo se podría cambiar con un atributo <code>style</code> en línea, y la REGLA 6 lo prohíbe. El token existía pero no era alcanzable desde el HTML: ese era el hueco real.</p>
-      <p class="sr-na">El modificador <strong>no se puede resolver componiendo con una utilidad de <code>2-sys</code></strong>. Una clase como <code>.md-text-primary</code> no cambia nada: <code>main.css</code> declara <code>comp</code> después de <code>sys</code>, así que a igualdad de especificidad gana el componente, y el color se queda en <code>outline-variant</code>. Un modificador del componente, en su propia capa, sí funciona.</p>
+      <p class="sr-na">El modificador convive con la composición: una utilidad de <code>4-utilities</code> como <code>.md-text-primary</code> sobre el mismo <code>&lt;hr&gt;</code> también cambia el color, porque <code>main.css</code> declara <code>utilities</code> después de <code>comp</code>. El modificador sigue existiendo como API semántica del componente —una sola clase con intención—, no como único camino.</p>
       <h3>Lo que el color <em>no</em> hace</h3>
       <p>La línea se pinta con <code>background: currentColor</code>, y eso no significa que el divisor tome el color de su contenedor. <code>.md-divider</code> declara <code>color</code> el mismo, y una declaración gana a la herencia.</p>
       <div class="sr-stage">
@@ -255,7 +255,7 @@
           <figcaption>El caso donde el 3:1 importa</figcaption>
         </figure>
       </div>
-      <p class="sr-na">Reapuntar el token desde fuera del componente, con una regla de la capa del showroom, es el mismo mecanismo que <code>.md-divider-primary</code> y por eso funciona: las dos escriben <code>--md-comp-divider-color</code>, que es el token que el componente ya declara. Lo que no funciona es cambiar su <code>color</code> con una utilidad de <code>2-sys</code>, por el orden de capas.</p>
+      <p class="sr-na">Reapuntar el token desde fuera del componente, con una regla de la capa del showroom, es el mismo mecanismo que <code>.md-divider-primary</code> y por eso funciona: las dos escriben <code>--md-comp-divider-color</code>, que es el token que el componente ya declara. Lo que no funciona es cambiar su <code>color</code> con una utilidad de <code>2-system-tokens</code>, por el orden de capas.</p>
     </article>
 
     <hr class="md-divider">
@@ -286,7 +286,7 @@
       </div>
       <p>El divisor es un hermano del botón, no un hijo: toma el fondo del escenario, no el relleno <code>surface-container-low</code> del <code>elevated</code>. Es el caso habitual, y funciona sin ninguna clase de color.</p>
       <p class="sr-na">Cuando el divisor tiene que ir <em>dentro</em> de una superficie elevada, el color hay que aportarlo con un token, no con herencia. Ver <a href="#color">Color</a>.</p>
-      <p class="sr-na">La composición con un <code>chip</code> o un <code>card</code> queda pendiente: no hay más componentes en <code>3-comp/</code> todavía.</p>
+      <p class="sr-na">La composición con un <code>chip</code> o un <code>card</code> queda pendiente: no hay más componentes en <code>3-components/</code> todavía.</p>
     </article>
 
     <hr class="md-divider">
@@ -309,7 +309,7 @@
         </thead>
         <tbody>
           <tr><td>Poner la separación de dos secciones de página solo con el divisor.</td><td>Una línea de 1px al 1.62:1 no es un límite legible: el espacio es lo que separa secciones.</td></tr>
-          <tr><td>Escribir la línea a mano con un <code>border</code> o una utilidad de color.</td><td>El componente ya existe, y una utilidad de <code>2-sys</code> no puede cambiar su color por el orden de capas.</td></tr>
+          <tr><td>Escribir la línea a mano con un <code>border</code> o una utilidad de color.</td><td>El componente ya existe y encapsula la receta (grosor, <code>currentColor</code>, alto contraste forzado): dibujarla a mano la duplica en vez de reutilizarla.</td></tr>
           <tr><td>Usar el divisor como sustituto de un título o de un margen.</td><td>No lleva texto, así que no comunica <em>qué</em> empieza después.</td></tr>
         </tbody>
       </table>
@@ -350,17 +350,17 @@
           <tr><td><code>--md-comp-divider-thickness</code></td><td><code>--md-sys-shape-stroke-thin</code></td><td><code>1px</code></td><td><div class="sr-spec-line"><hr class="md-divider"></div></td></tr>
         </tbody>
       </table>
-      <p>Los tokens de <code>2-sys</code> que el componente <strong>no</strong> declara son dos, y los dos se piden por una razón documentada:</p>
+      <p>Los tokens de <code>2-system-tokens</code> que el componente <strong>no</strong> declara son dos, y los dos se piden por una razón documentada:</p>
       <table class="sr-table">
         <thead>
-          <tr><th scope="col">Token de 2-sys</th><th scope="col">Por qué existe</th></tr>
+          <tr><th scope="col">Token de 2-system-tokens</th><th scope="col">Por qué existe</th></tr>
         </thead>
         <tbody>
-          <tr><td><code>--md-sys-shape-stroke-thin</code></td><td>M3 escribe el grosor a pelo en el divisor. La REGLA 1 prohíbe un <code>1px</code> fuera de <code>1-ref/</code> y la REGLA 2 impide leer <code>--md-ref-stroke-thin</code> desde <code>3-comp/</code>. El rol vive en <code>shape.css</code> porque un grosor de trazo es una forma, no un espaciado.</td></tr>
+          <tr><td><code>--md-sys-shape-stroke-thin</code></td><td>M3 escribe el grosor a pelo en el divisor. La REGLA 1 prohíbe un <code>1px</code> fuera de <code>1-reference-tokens/</code> y la REGLA 2 impide leer <code>--md-ref-stroke-thin</code> desde <code>3-components/</code>. El rol vive en <code>shape.css</code> porque un grosor de trazo es una forma, no un espaciado.</td></tr>
           <tr><td><code>--md-sys-measurement-inset</code></td><td>El inset de las dos variantes. Está en <code>measurement.css</code> y no en el componente para que un cambio de valor en M3 se propague solo.</td></tr>
         </tbody>
       </table>
-      <p class="sr-na">El componente no consume ningún otro token: ni tipografía, ni forma, ni espaciado, ni capa de estado. Es el archivo más corto de <code>3-comp/</code> y su superficie de tokens es la más pequeña del catálogo.</p>
+      <p class="sr-na">El componente no consume ningún otro token: ni tipografía, ni forma, ni espaciado, ni capa de estado. Es el archivo más corto de <code>3-components/</code> y su superficie de tokens es la más pequeña del catálogo.</p>
     </article>
 
   </main>

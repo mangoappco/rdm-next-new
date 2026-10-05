@@ -1,0 +1,63 @@
+/* ==========================================================================
+   4-utilities/elevation.css — CLASES UTILITARIAS DE ELEVACION (Capa 4)
+   ==========================================================================
+
+   QUE ES ESTE ARCHIVO
+   -------------------
+   CAPA 4 del sistema. Expone los 6 niveles de elevacion como clases, para
+   aplicarlos desde el HTML sin escribir la propiedad a mano:
+
+       <div class="md-elevation-3">Dialogo flotante</div>
+
+   ORIGEN
+   ------
+   Movido desde 2-system-tokens/elevation.css en la auditoria M3. Las
+   clases no cambiaron: solo su capa. Los roles --md-sys-elevation-level*
+   siguen en 2-system-tokens/elevation.css.
+
+   Todas las declaraciones son var(). Ni un solo valor crudo.
+
+   OJO CON EL TEMA OSCURO
+   ----------------------
+   En tema oscuro la sombra es casi invisible: negro sobre negro. Si un
+   componente aplica una sombra y no se ve, el problema no suele ser la
+   sombra: es que falta el cambio de TONO de superficie.
+
+   Por eso los componentes que flotan en M3 usan las dos cosas juntas:
+
+       background: var(--md-sys-color-surface-container-high);
+       box-shadow: var(--md-sys-elevation-level3);
+
+   La sombra aporta el borde en tema claro; el tono aporta la jerarquia en
+   ambos temas. Por eso existe ademas la variante -surface, que aplica el
+   tono sin la sombra.
+   ========================================================================== */
+
+.md-elevation-0 { box-shadow: var(--md-sys-elevation-level0); }
+.md-elevation-1 { box-shadow: var(--md-sys-elevation-level1); }
+.md-elevation-2 { box-shadow: var(--md-sys-elevation-level2); }
+.md-elevation-3 { box-shadow: var(--md-sys-elevation-level3); }
+.md-elevation-4 { box-shadow: var(--md-sys-elevation-level4); }
+.md-elevation-5 { box-shadow: var(--md-sys-elevation-level5); }
+
+/* -------------------------------------------------------------------------
+   VARIANTES -surface: solo el TONO, sin sombra
+   -------------------------------------------------------------------------
+   Estas clases aplican el cambio de tono de superficie que corresponde a
+   cada nivel de elevacion, sin la sombra.
+
+   Son la parte de la elevacion que SI funciona en tema oscuro, y la que
+   M3 recomienda usar por defecto. La sombra es el refuerzo opcional.
+
+   Este mapeo de nivel a tono es una decision de RDM Next, no un token
+   publicado por Google: M3 no define "el tono del nivel 3". Define la
+   escalera surface-container-* y deja que cada componente elija. Aqui se
+   relaciona cada nivel con un escalon de esa escalera para que un
+   componente pueda pedir la elevacion por nivel y obtener ambas cosas.
+   ------------------------------------------------------------------------- */
+.md-elevation-0-surface { background-color: var(--md-sys-color-surface); }
+.md-elevation-1-surface { background-color: var(--md-sys-color-surface-container-low); }
+.md-elevation-2-surface { background-color: var(--md-sys-color-surface-container); }
+.md-elevation-3-surface { background-color: var(--md-sys-color-surface-container-high); }
+.md-elevation-4-surface { background-color: var(--md-sys-color-surface-container-highest); }
+.md-elevation-5-surface { background-color: var(--md-sys-color-surface-bright); }

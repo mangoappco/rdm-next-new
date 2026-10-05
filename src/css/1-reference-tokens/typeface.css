@@ -1,0 +1,259 @@
+/* ==========================================================================
+   1-reference-tokens/typeface.css — PRIMITIVAS TIPOGRAFICAS (valores crudos)
+   ==========================================================================
+
+   QUE ES ESTE ARCHIVO
+   -------------------
+   CAPA 1 del sistema. Aqui viven los VALORES CRUDOS de tipografia: el NOMBRE
+   de la fuente y los PESOS numericos. Es el unico lugar donde se puede
+   escribir "Google Sans Flex" o el numero 700.
+
+   POR QUE SOLO HAY 5 TOKENS
+   -------------------------
+   Material Design 3 define 15 estilos tipograficos (display, headline, title,
+   body, label) y cada uno tiene sus propios pesos. Reducirlos todos a estos
+   3 pesos base es lo que hace la escala coherente: no se puede tener un
+   "display-medium" con peso 600 si 600 no existe en el sistema.
+
+   RELACION CON LAS OTRAS CAPAS
+   -----------------------------
+       1-reference-tokens/typeface.css    <-- Google Sans Flex, 400 / 500 / 700 (CRUDOS)
+              |
+              v
+       2-system-tokens/typography.css   <-- los 15 estilos M3, cada uno con
+                                  var(--md-ref-typeface-...)
+              |
+              v
+       3-components/button.css      <-- el componente pide el ESTILO, no el peso
+
+   NOTA SOBRE EL ORDEN EN LOS ARCHIVOS DE GOOGLE
+   ---------------------------------------------
+   En el archivo oficial typography.css de Google, estos 5 tokens de referencia
+   aparecen AL FINAL del bloque :root, despues de los 15 estilos que ya los
+   consumen. Funciona (las custom properties se resuelven en tiempo de
+   calculo, no de parseo) pero invierte la jerarquia en el papel.
+
+   Este proyecto los coloca PRIMERO, en la capa que les corresponde. La
+   jerarquia del archivo refleja la jerarquia del sistema.
+
+   FUENTE: Google Sans Flex (licencia abierta, en Google Fonts)
+   -----------------------------------------------------------
+   Google Sans Flex es la tipografia de marca de Google y la que usa la propia
+   documentacion oficial de Material Design 3. Se publica en Google Fonts bajo
+   licencia abierta, asi que se puede usar en proyectos comerciales sin
+   restriccion.
+
+   Esto cambio respecto de la version estatica de Google Sans, que durante anos
+   solo autorizaba uso dentro de productos de Google. La variante Flex es el
+   caso distinto: es abierta. Por eso se elige Flex.
+
+   NOTA SOBRE LA LICENCIA
+   ----------------------
+   Google Sans (la version estatica) estuvo restringida a productos de Google
+   durante anos. Google Sans Flex es el caso distinto: se publico en Google
+   Fonts bajo licencia abierta, y se puede usar en cualquier proyecto, comercial
+   incluido. Por eso se elige Flex y no la variante estatica.
+
+   Se carga desde Google Fonts por <link> en cada vista del showroom, no desde
+   aqui. Consecuencia a tener en cuenta: el showroom requiere conexion a
+   internet para mostrar la fuente. Si
+   el proyecto llegara a necesitar funcionar offline, habria que alojarla local.
+
+   ========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   CARGA DE LA FUENTE
+   ---------------------------------------------------------------------------
+   FUENTE PRINCIPAL (la que usa el proyecto)
+   ------------------------------------------
+   Google Sans Flex se carga desde cada vista del showroom con <link> y
+   preconnect, NO desde aqui. Motivo tecnico: un @import de CSS bloquea el
+   descubrimiento de los recursos posteriores. El navegador tiene que
+   descargar ESTE archivo, terminar de parsearlo, descubrir el @import de la
+   fuente, y solo entonces puede empezar a leer el resto del CSS. Para una
+   fuente, eso es el peor caso posible: nada se puede pintar hasta que la
+   fuente este descargada.
+
+   La forma correcta es declararlo en el <head> del HTML:
+
+       <link rel="preconnect" href="https://fonts.googleapis.com">
+       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+
+   ---------------------------------------------------------------------------
+   POR QUE ESA URL NO DECLARA :wght
+   ----------------------------------
+   Es tentador escribir `:wght@400;500;700`, pero conviene NO hacerlo, y el
+   motivo es el peso real de la descarga.
+
+   Cuando se declara `:wght`, Google responde con un archivo TTF POR PESO: tres
+   peticiones y del orden de 100-200 KB cada una.
+
+   Cuando NO se declara, Google detecta que el navegador soporta woff2 y sirve
+   un unico archivo variable, del orden de 30-60 KB, que cubre los tres pesos y
+   todos los intermedios. Es entre dos y tres veces mas ligero.
+
+   Google Sans Flex es ademas una fuente VARIABLE con ejes de peso, ancho y
+   tamaño optico. Servir el archivo variable completo es lo que mas aprovecha
+   el diseño, y lo que hace que el sistema pueda pedir 450 o 520 sin pedir otro
+   archivo.
+
+   ---------------------------------------------------------------------------
+   FALLBACK: POR QUE ESTA EL @import COMENTADO
+   ---------------------------------------------------------------------------
+   Esta regla queda comentada a proposito. Si alguien importa ESTE archivo de
+   forma aislada, sin pasar por una vista del showroom, los tokens de fuente
+   seguirian declarandose pero Google Sans Flex no se descargaria: el texto se
+   veria con la fuente por defecto del sistema.
+
+   Para cubrir ese caso se descomenta la regla siguiente. El trade-off es
+   explicito: se recupera la autosuficiencia del archivo a costa de la
+   velocidad de carga, que es exactamente lo que se pierde al usar @import.
+
+   Decision del proyecto: la VIA PRINCIPAL es <link> en el HTML. Esta regla
+   queda disponible para quien necesite el archivo aislado.
+   --------------------------------------------------------------------------- */
+
+/* FALLBACK - descomentar solo si este archivo se usa sin una vista del showroom.
+@import url("https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap");
+*/
+
+:root {
+  /* ------------------------------------------------------------------------
+     FAMILY — la familia tipografica del sistema
+     ------------------------------------------------------------------------
+     Se declara un STACK COMPLETO, no solo el nombre de la fuente.
+
+     El primer elemento es Google Sans Flex. Los siguientes son respaldo, en
+     este orden:
+
+       -apple-system, BlinkMacSystemFont    fuentes nativas del sistema
+       'Segoe UI'                           Windows
+       Roboto                               Android y respaldo web
+       sans-serif                           ultima instancia, siempre presente
+
+     POR QUE UN STACK Y NO SOLO EL NOMBRE
+     -------------------------------------
+     El `display=swap` que se usa en el <link> de la fuente hace que el
+     navegador pinte el texto con una fuente provisional mientras descarga la
+     definitiva. Ese texto tiene que verse LEIBLE, no con una serif por
+     defecto.
+
+     Con el stack, esa fuente provisional es la del sistema operativo, que es
+     similar en estructura y metricas. Con solo el nombre, seria Times New
+     Roman: serifas en undede de la interfaz.
+
+     La coma final tambien importa: sin ella, si Google Sans Flex no esta
+     disponible, el navegador usaria el nombre literal de la fuente en vez de
+     pasar a la siguiente de la lista.
+     --------------------------------------------------------------------- */
+  /* Plain typeface — texto corriente, cuerpo de la app */
+  --md-ref-typeface-plain: "Google Sans Flex", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* Brand typeface — titulares y elementos de marca.
+     En M3 ambos apuntan a la misma familia. Se mantienen separados porque una
+     identidad de marca podria divergir mas adelante sin tocar los estilos de
+     texto: por ejemplo, una marca con tipografia propia en los titulos y la
+     del sistema en el cuerpo. */
+  --md-ref-typeface-brand: "Google Sans Flex", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* ------------------------------------------------------------------------
+     WEIGHTS — los tres unicos pesos del sistema
+     Regular 400  texto normal, la gran mayoria del contenido
+     Medium  500  etiquetas y titulos de seccion; mas firme sin competir
+                 con los titulos grandes
+     Bold    700  enfasis fuerte y cifras destacadas
+     --------------------------------------------------------------------- */
+  /* Bold weight */
+  --md-ref-typeface-weight-bold: 700;
+
+  /* Medium weight */
+  --md-ref-typeface-weight-medium: 500;
+
+  /* Regular weight */
+  --md-ref-typeface-weight-regular: 400;
+
+  /* ------------------------------------------------------------------------
+     AJUSTES DE VARIABLE FONT
+     --------------------------------------------------------------------------
+     Google Sans Flex no es una fuente con tres estilos fijos: es una fuente
+     VARIABLE, con seis ejes de diseño que se pueden mover de forma continua.
+
+     Estos tokens fijan los valores por defecto de los ejes que NO se tocan en
+     el uso diario. La idea es dejar el peso y el tamaño optical bajo control
+     del sistema (que ya los maneja con font-weight y font-size), y explicitar
+     que los demas ejes se quedan en su posicion neutra.
+
+     QUE HACE CADA EJE
+     ------------------
+       wght   Peso. NO se fija aqui: lo controla --md-ref-typeface-weight-*,
+              que el sistema ya usa para los tres pesos de M3.
+
+       wdth   Ancho. 100 es el ancho normal. Se fija en 100 para que una
+              fuente de respaldo con un ancho distinto no estire el texto.
+
+       slnt   Inclinacion. 0 es vertical. Google Sans Flex admite inclinacion
+              intermedia, pero M3 no la usa.
+
+       opsz   Tamano optical. `auto` deja que el navegador elija el corte
+              optico segun el tamano real del texto. Es el ajuste mas
+              importante: sin el, una fuente se dibuja con el corte de un
+              tamano fijo y se ve mal en los extremos de la escala, que aqui
+              va de 11px a 57px.
+
+       GRAD   Grado. Cambia el grosor visual SIN cambiar el ancho, y por lo
+              tanto sin alterar los saltos de linea. 0 es el valor neutro.
+
+       ROND   Redondeado de los terminales. 0 es la forma neutra.
+
+     POR QUE DECLARARLOS SI 0 Y AUTO SON LOS VALORES POR DEFECTO
+     -----------------------------------------------------------
+     Porque son EXPLICITOS, y esa es la diferencia. Un valor por defecto que
+     no se declara puede cambiar: si una actualizacion de la fuente altera el
+     valor neutral de un eje, el texto del sistema cambia de aspecto sin que
+     nadie haya tocado una linea. Declarandolo, el estado neutro queda
+     garantizado por el codigo, no por la suposicion.
+
+     ========================================================================= */
+  --md-ref-typeface-font-optical-sizing: auto;
+  --md-ref-typeface-font-variation-settings: "slnt" 0, "wdth" 100, "GRAD" 0, "ROND" 0;
+
+  /* ------------------------------------------------------------------------
+     LO QUE ESTE ARCHIVO YA NO DECLARA
+     --------------------------------------------------------------------------
+     Los dos bloques que estaban aqui se movieron a 1-reference-tokens/iconfont.css, que es
+     donde corresponde:
+
+       --md-ref-typeface-optical-size-small / -medium
+       --md-ref-typeface-icon-grade-light / -dark
+
+     Son las primitivas de los EJES de Material Symbols, la fuente de los
+     iconos. Este archivo declara la fuente con la que se dibuja el TEXTO, y
+     el texto no usa ejes de icono.
+
+     EL MOTIVO CONCRETO DEL TRASLADO: los nombres eran ambiguos
+     --------------------------------------------------
+     --md-ref-typeface-optical-size-small podia leerse como el eje opsz de
+     Google Sans Flex, que tambien lo tiene. Este mismo archivo lo menciona:
+     es la razon de que declare font-optical-sizing: auto. Con los dos ejes
+     en el mismo archivo y el mismo prefijo, un nombre asi no dice de que
+     fuente esta hablando.
+
+     En iconfont.css se llaman --md-ref-icon-optical-size-small y no puede
+     confundirse.
+
+     ADEMAS SE CORRIGIO EL GRAD
+     --------------------------
+     El -25 del tema oscuro NO es un valor de diseno local. M3 lo publica, con
+     estas palabras en la pagina de aplicar iconos:
+
+         "To match the apparent icon size, the default grade for a dark icon
+          on a light background is 0, and -25 for a light icon on a dark
+          background."
+
+     El texto que estaba aqui afirmaba lo contrario, y estaba equivocado. Ver
+     el bloque del GRAD en 1-reference-tokens/iconfont.css, que cita la especificacion y
+     explica tambien la diferencia que si existe: M3 formula la regla por
+     contraste del par icono/fondo, y este sistema por tema.
+     ========================================================================== */
+}

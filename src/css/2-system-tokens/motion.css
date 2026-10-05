@@ -1,0 +1,274 @@
+/* ==========================================================================
+   2-system-tokens/motion.css â€” TOKENS SEMANTICOS DE MOVIMIENTO (solo var())
+   ==========================================================================
+
+   QUE ES ESTE ARCHIVO
+   -------------------
+   CAPA 2 del sistema. Aqui viven los ROLES de movimiento: el nombre que un
+   componente pide cuando dice "esto debe tardar poco y frenar suave".
+
+   Este archivo NO contiene medidas ni numeros de curva. Las duraciones
+   crudas viven en 1-reference-tokens/time.css y los puntos de control en 1-reference-tokens/easing.css.
+
+   ---------------------------------------------------------------------------
+   LA REGLA DE ESTA CAPA, Y POR QUE NO TIENE EXCEPCIONES
+   -----------------------------------------------------
+   Todas las declaraciones son var(). Ni un solo ms, ni un solo decimal.
+
+   Esto incluye un detalle no obvio: cubic-bezier() SI aparece en este
+   archivo, porque una curva completa es una funcion y no un valor. Pero sus
+   cuatro numeros SI vienen de var(), uno por punto de control:
+
+       --md-sys-motion-easing-standard: cubic-bezier(
+         var(--md-ref-easing-standard-x0),
+         var(--md-ref-easing-standard-y0),
+         var(--md-ref-easing-standard-x1),
+         var(--md-ref-easing-standard-y1)
+       );
+
+   Esa es la razon de existir 1-reference-tokens/easing.css. Con el, motion.css queda
+   100% limpio y el verificador no necesita ningun caso especial.
+
+   ---------------------------------------------------------------------------
+   LAS DURACIONES: 16 VALORES AGRUPADOS EN 4 FAMILIAS
+   ----------------------------------------------------
+   M3 publica 16 duraciones numericas (50ms a 1000ms) y las agrupa en cuatro
+   familias por escala. La agrupacion es lo que le da sentido a cada numero.
+
+       short1..short4         50  100  150  200ms
+       medium1..medium4      250  300  350  400ms
+       long1..long4          450  500  550  600ms
+       extra-long1..4        700  800  900 1000ms
+
+   QUE SIGNIFICA CADA FAMILIA
+   --------------------------
+     short        Cambios de estado instantaneos. Hover, focus, pressed.
+                  El usuario debe sentir que la interfaz RESPONDE. Si un
+                  boton tarda 400ms en cambiar de color al pulsarlo, se
+                  siente lento y roto.
+
+     medium       Elementos que entran o cambian de posicion. Apertura de un
+                  menu, despliegue de un dialogo.
+
+     long         Transiciones de superficie. Entrada de un drawer completo.
+
+     extra-long   Movimiento de grandes superficies con las curvas
+                  emphasized: tienen una cola larga que hace que terminen con
+                  suavidad en lugar de frenar de golpe.
+
+   Un componente NO pide "300ms". Pide "medium2". La diferencia es que el
+   numero no sobrevive a un cambio de criterio, pero el nombre si: si el
+   sistema pasa a ser 20% mas agil, se cambia el valor de medium2 una vez y
+   el componente sigue pidiendo medium2.
+
+   ---------------------------------------------------------------------------
+   LAS CURVAS: 5 ROLES
+   ---------------------
+       standard      La curva por defecto. La mayoria de las transiciones.
+       emphasized    Transiciones que el usuario pide de forma explicita.
+                     Mas caracter, cola mas larga.
+       legacy        La curva clasica de Android/Material 2. Para superficies
+                     que aun no se han migrado.
+       linear        Velocidad constante. SOLO para spinners y barras de
+                     progreso. NUNCA para algo que entra o sale.
+
+   Y las variantes -accelerate y -decelerate de las tres primeras:
+
+     -accelerate   El elemento SALE de la pantalla. Termina rapido.
+     -decelerate   El elemento ENTRA en la pantalla. Arranca rapido y frena.
+
+   CUADRO DE USO
+   -------------
+     algo aparece   decelerate + medium/long
+     algo desaparece accelerate + short/medium
+     algo cambia    standard + short
+     algo rota      linear + (sin duracion, es continuo)
+
+   ---------------------------------------------------------------------------
+   ACCESIBILIDAD: prefers-reduced-motion
+   -------------------------------------
+   Algunas personas tienen sensibilidad al movimiento y su sistema lo
+   comunica con esta preferencia. Una transicion de 1000ms puede causar
+   nauseas o mareo real.
+
+   M3 no es indiferente a esto. La regla del proyecto es:
+
+     - Ningun componente de 3-components/ define su propia transicion.
+     - Todos consumen los roles de este archivo.
+     - Los componentes de movimiento fuerte (los que se mueven en el espacio,
+       no solo cambian de color) deben consultar
+       prefers-reduced-motion y caer a una duracion muchisima corta.
+
+   Se documenta aqui porque es una decision de SISTEMA, no de componente: si
+   cada componente lo resuelve por su cuenta, se olvida alguno.
+
+   ---------------------------------------------------------------------------
+   RELACION CON LAS OTRAS CAPAS
+   -----------------------------
+       1-reference-tokens/time.css    <-- 16 duraciones crudas (ms)
+       1-reference-tokens/easing.css  <-- 40 puntos de control (10 curvas x 4)
+              |
+              v
+       2-system-tokens/motion.css  <-- ESTE: 16 roles de duracion + 10 roles de curva
+              |
+              v
+       3-components/*.css      <-- el componente declara UNA sola transicion:
+
+         transition: background-color
+           var(--md-sys-motion-duration-short2)
+           var(--md-sys-motion-easing-standard);
+
+   ========================================================================== */
+
+:root {
+  /* ==========================================================================
+     DURACIONES â€” 16 ROLES
+     Cada uno mapea a su valor crudo en 1-reference-tokens/time.css.
+     ====================================================================== */
+
+  /* --- SHORT: cambios de estado, respuesta inmediata --- */
+
+  /* 50ms â€” apenas perceptible. El limite inferior del sistema. */
+  --md-sys-motion-duration-short1: var(--md-ref-time-duration-50);
+
+  /* 100ms â€” cambio de hover, focus o pressed. El mas usado. */
+  --md-sys-motion-duration-short2: var(--md-ref-time-duration-100);
+
+  /* 150ms â€” cambios de estado algo mas notorios. */
+  --md-sys-motion-duration-short3: var(--md-ref-time-duration-150);
+
+  /* 200ms â€” cambio de estado completo, como un ripple. */
+  --md-sys-motion-duration-short4: var(--md-ref-time-duration-200);
+
+  /* --- MEDIUM: elementos que entran o se mueven --- */
+
+  /* 250ms â€” inicio de la apertura de un panel. */
+  --md-sys-motion-duration-medium1: var(--md-ref-time-duration-250);
+
+  /* 300ms â€” apertura de un dialogo o menu. */
+  --md-sys-motion-duration-medium2: var(--md-ref-time-duration-300);
+
+  /* 350ms â€” transiciones de posicion intermedias. */
+  --md-sys-motion-duration-medium3: var(--md-ref-time-duration-350);
+
+  /* 400ms â€” transiciones de posicion completas. */
+  --md-sys-motion-duration-medium4: var(--md-ref-time-duration-400);
+
+  /* --- LONG: superficies grandes --- */
+
+  /* 450ms â€” entrada de un drawer parcial. */
+  --md-sys-motion-duration-long1: var(--md-ref-time-duration-450);
+
+  /* 500ms â€” transiciones de superficie intermedia. */
+  --md-sys-motion-duration-long2: var(--md-ref-time-duration-500);
+
+  /* 550ms â€” transiciones de superficie amplia. */
+  --md-sys-motion-duration-long3: var(--md-ref-time-duration-550);
+
+  /* 600ms â€” entrada de un drawer completo. */
+  --md-sys-motion-duration-long4: var(--md-ref-time-duration-600);
+
+  /* --- EXTRA LONG: movimiento de grandes superficies --- */
+
+  /* 700ms â€” sheet amplio con curva emphasized. */
+  --md-sys-motion-duration-extra-long1: var(--md-ref-time-duration-700);
+
+  /* 800ms â€” sheet a pantalla casi completa. */
+  --md-sys-motion-duration-extra-long2: var(--md-ref-time-duration-800);
+
+  /* 900ms â€” transiciones de superficie maxima. */
+  --md-sys-motion-duration-extra-long3: var(--md-ref-time-duration-900);
+
+  /* 1000ms â€” el tope del sistema. Con emphasized, para terminar con suavidad. */
+  --md-sys-motion-duration-extra-long4: var(--md-ref-time-duration-1000);
+
+  /* ==========================================================================
+     CURVAS â€” 10 ROLES
+     --------------------------------------------------------------------------
+     Cada cubic-bezier se compone de los cuatro puntos de control de
+     1-reference-tokens/easing.css. Ningun numero se escribe aqui.
+     ====================================================================== */
+
+  /* Standard â€” la curva por defecto del sistema */
+  --md-sys-motion-easing-standard: cubic-bezier(
+    var(--md-ref-easing-standard-x0),
+    var(--md-ref-easing-standard-y0),
+    var(--md-ref-easing-standard-x1),
+    var(--md-ref-easing-standard-y1)
+  );
+
+  /* Standard accelerate â€” algo SALE de la pantalla, termina rapido */
+  --md-sys-motion-easing-standard-accelerate: cubic-bezier(
+    var(--md-ref-easing-standard-accelerate-x0),
+    var(--md-ref-easing-standard-accelerate-y0),
+    var(--md-ref-easing-standard-accelerate-x1),
+    var(--md-ref-easing-standard-accelerate-y1)
+  );
+
+  /* Standard decelerate â€” algo ENTRA en la pantalla, frena al final */
+  --md-sys-motion-easing-standard-decelerate: cubic-bezier(
+    var(--md-ref-easing-standard-decelerate-x0),
+    var(--md-ref-easing-standard-decelerate-y0),
+    var(--md-ref-easing-standard-decelerate-x1),
+    var(--md-ref-easing-standard-decelerate-y1)
+  );
+
+  /* Emphasized â€” transiciones con caracter, cola larga */
+  --md-sys-motion-easing-emphasized: cubic-bezier(
+    var(--md-ref-easing-emphasized-x0),
+    var(--md-ref-easing-emphasized-y0),
+    var(--md-ref-easing-emphasized-x1),
+    var(--md-ref-easing-emphasized-y1)
+  );
+
+  /* Emphasized accelerate â€” salida con caracter */
+  --md-sys-motion-easing-emphasized-accelerate: cubic-bezier(
+    var(--md-ref-easing-emphasized-accelerate-x0),
+    var(--md-ref-easing-emphasized-accelerate-y0),
+    var(--md-ref-easing-emphasized-accelerate-x1),
+    var(--md-ref-easing-emphasized-accelerate-y1)
+  );
+
+  /* Emphasized decelerate â€” entrada con caracter */
+  --md-sys-motion-easing-emphasized-decelerate: cubic-bezier(
+    var(--md-ref-easing-emphasized-decelerate-x0),
+    var(--md-ref-easing-emphasized-decelerate-y0),
+    var(--md-ref-easing-emphasized-decelerate-x1),
+    var(--md-ref-easing-emphasized-decelerate-y1)
+  );
+
+  /* Legacy â€” la curva clasica de Android y Material 2 */
+  --md-sys-motion-easing-legacy: cubic-bezier(
+    var(--md-ref-easing-legacy-x0),
+    var(--md-ref-easing-legacy-y0),
+    var(--md-ref-easing-legacy-x1),
+    var(--md-ref-easing-legacy-y1)
+  );
+
+  /* Legacy accelerate */
+  --md-sys-motion-easing-legacy-accelerate: cubic-bezier(
+    var(--md-ref-easing-legacy-accelerate-x0),
+    var(--md-ref-easing-legacy-accelerate-y0),
+    var(--md-ref-easing-legacy-accelerate-x1),
+    var(--md-ref-easing-legacy-accelerate-y1)
+  );
+
+  /* Legacy decelerate */
+  --md-sys-motion-easing-legacy-decelerate: cubic-bezier(
+    var(--md-ref-easing-legacy-decelerate-x0),
+    var(--md-ref-easing-legacy-decelerate-y0),
+    var(--md-ref-easing-legacy-decelerate-x1),
+    var(--md-ref-easing-legacy-decelerate-y1)
+  );
+
+  /* Linear â€” velocidad constante. Solo spinners y barras de progreso. */
+  --md-sys-motion-easing-linear: cubic-bezier(
+    var(--md-ref-easing-linear-x0),
+    var(--md-ref-easing-linear-y0),
+    var(--md-ref-easing-linear-x1),
+    var(--md-ref-easing-linear-y1)
+  );
+}
+
+/* Las clases utilitarias de esta familia se mudaron a 4-utilities/ en la auditoria M3:
+   la Capa 2 solo declara tokens. Ver 4-utilities/index.css. */

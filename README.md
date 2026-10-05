@@ -15,40 +15,46 @@ orquestador `src/css/main.css`**. Lo que se ve aquí es exactamente lo que se ej
 
 ---
 
-## 2. Arquitectura: la jerarquía de 3 capas
+## 2. Arquitectura: la jerarquía de 4 capas
 
-El sistema se organiza en tres capas con dependencias **unidireccionales**.
-Cada capa solo puede consumir la capa inmediatamente anterior.
+El sistema se organiza en cuatro capas con dependencias **unidireccionales**.
+Los tokens fluyen hacia abajo (1 ──► 2 ──► 3) y las utilidades (4) pueden
+leer las capas 1 y 2. Nada lee la Capa 4: es el extremo final de la cascada.
 
 ```
 css/
-├── 1-ref/    Primitivas       --md-ref-*
-├── 2-sys/    Tokens semánticos --md-sys-*
-└── 3-comp/   Componentes      --md-comp-*
+├── 1-reference-tokens/  Primitivas       --md-ref-*
+├── 2-system-tokens/     Tokens semánticos --md-sys-*
+├── 3-components/        Componentes      --md-comp-*
+└── 4-utilities/         Clases atómicas  (solo clases, sin tokens nuevos)
 ```
 
 ### Regla de dependencia
 
 ```
-1-ref  ──►  2-sys  ──►  3-comp
+1-reference-tokens  ──►  2-system-tokens  ──►  3-components
  (valores)   (roles)     (componentes)
+
+4-utilities ──► lee 1-reference-tokens y 2-system-tokens (solo clases)
 ```
 
-- `3-comp/` **nunca** referencia `1-ref/` directamente.
-- `2-sys/` **nunca** referencia `3-comp/`.
-- `1-ref/` **nunca** referencia `2-sys/` ni `3-comp/` (sería dependencia circular).
+- `3-components/` **nunca** referencia `1-reference-tokens/` directamente.
+- `2-system-tokens/` **nunca** referencia `3-components/`.
+- `1-reference-tokens/` **nunca** referencia `2-system-tokens/` ni `3-components/` (sería dependencia circular).
+- `4-utilities/` **nunca** define tokens: solo clases que consumen `var()` de las capas 1 y 2.
 
 Si un componente necesita un valor crudo, **no lo usa**: pide un token semántico a
-`2-sys/`, y si ese rol no existe, se crea primero en `2-sys/`. Esa es la disciplina que
+`2-system-tokens/`, y si ese rol no existe, se crea primero en `2-system-tokens/`. Esa es la disciplina que
 hace que el tema sea cambiable sin tocar componentes.
 
 ### Prefijos de tokens
 
 | Capa     | Prefijo          | Contiene                                |
 | -------- | ---------------- | --------------------------------------- |
-| `1-ref/` | `--md-ref-*`     | Valores crudos, sin contexto semántico  |
-| `2-sys/` | `--md-sys-*`     | Roles con significado de diseño         |
-| `3-comp/`| `--md-comp-*`    | Decisiones específicas de un componente |
+| `1-reference-tokens/` | `--md-ref-*`     | Valores crudos, sin contexto semántico  |
+| `2-system-tokens/` | `--md-sys-*`     | Roles con significado de diseño         |
+| `3-components/`| `--md-comp-*`    | Decisiones específicas de un componente |
+| `4-utilities/` | *(clases `md-*`, sin tokens)* | Atajos atómicos que consumen las capas 1 y 2 |
 
 ### Prefijos de clases: el criterio tokens-largos / clases-cortas
 
@@ -144,10 +150,10 @@ Clases distintas en TODO el repositorio:  10
   .md-icon               1   experimento en labs/gb/, no parte del sistema de estilos
   .md-stories-bg-override 1  del sitio de documentación (catalog/)
 
-Clases de este proyecto:  204
-  2-sys   177   colors 93 · typography 32 · shape 15 · elevation 12
+Clases de este proyecto:  205
+  4-utilities   178   color 93 · typography 32 · shape 16 · elevation 12
                  icon 9 · motion 8 · state 6 · measurement 2
-  3-comp   27   button 12 · icon-button 11 · divider 4
+  3-components   27   button 12 · icon-button 11 · divider 4
 ```
 
 Las 6 de `state` son `.md-state-layer` más sus cuatro modificadores
@@ -155,12 +161,12 @@ Las 6 de `state` son `.md-state-layer` más sus cuatro modificadores
 contenido inactivo —no es un *state layer*: no hay capa encima, el propio contenido se
 atenúa—. Los cuatro modificadores usan un guion, según el criterio de la sección anterior.
 
-Las 27 de `3-comp` no son utilidades: son la API de cada componente, con sus variantes.
+Las 27 de `3-components` no son utilidades: son la API de cada componente, con sus variantes.
 `button.css` declara además los selectores de `.md-state-layer` y `.md-disabled` que ya
-existen en `2-sys`, porque los compone para colocar la capa; no son clases suyas, y por eso
+existen en `4-utilities`, porque los compone para colocar la capa; no son clases suyas, y por eso
 no se cuentan dos veces.
 
-**Material Web publica 8 clases de utilidad. Publicamos 204.** Compartemos una sola
+**Material Web publica 8 clases de utilidad. Publicamos 205.** Compartemos una sola
 familia: la tipográfica.
 
 La prueba más directa está en el `package.json` de la librería:
@@ -212,7 +218,7 @@ Nosotros exponemos `.md-elevation-3`. Google usa `<md-elevation>` con un `--_lev
 interno y dos sombras superpuestas. **La elevación no se pide con una clase: se pide con
 un elemento.**
 
-**3. `currentColor` para los colores.** Igual que nosotros en `2-sys/state.css`: la capa de
+**3. `currentColor` para los colores.** Igual que nosotros en `2-system-tokens/state.css`: la capa de
 estado toma el color del contenido, no un color propio.
 
 ### Qué significa para este proyecto
@@ -243,19 +249,19 @@ funcione en HTML+CSS estático sin capa de build.
 
 ## 3. La regla del hardcoding
 
-> **Los valores crudos viven exclusivamente en `src/css/1-ref/`.**
+> **Los valores crudos viven exclusivamente en `src/css/1-reference-tokens/`.**
 
 | Capa     | `#HEX`, `px`, `ms`, números sueltos | Referencias permitidas |
 | -------- | ----------------------------------- | ---------------------- |
-| `1-ref/` | ✅ Permitido                        | Ninguna                |
-| `2-sys/` | ❌ **Prohibido**                    | Solo `--md-ref-*`      |
-| `3-comp/`| ❌ **Prohibido**                    | Solo `--md-sys-*`      |
+| `1-reference-tokens/` | ✅ Permitido                        | Ninguna                |
+| `2-system-tokens/` | ❌ **Prohibido**                    | Solo `--md-ref-*`      |
+| `3-components/`| ❌ **Prohibido**                    | Solo `--md-sys-*`      |
 
-En `2-sys/` y `3-comp/` **toda** declaración debe ser un `var()`.
+En `2-system-tokens/` y `3-components/` **toda** declaración debe ser un `var()`.
 
 ### Por qué existe esta regla
 
-`1-ref/` es el **único** lugar donde se toca el tema. Si un componente tuviera
+`1-reference-tokens/` es el **único** lugar donde se toca el tema. Si un componente tuviera
 `#6750A4` hardcodeado, cambiar la paleta obligaría a editar ese componente. Al aislar
 los valores crudos en una sola capa, un cambio de marca se resuelve editando cuatro
 archivos y nada más.
@@ -275,23 +281,23 @@ Verificado contra los archivos publicados por Google. Nombres exactos:
 
 | Familia                  | Archivo          | Notas                                       |
 | ------------------------ | ---------------- | ------------------------------------------- |
-| `--md-ref-palette-*`     | `1-ref/palette.css` | 91 tonos (v0.192)                      |
-| `--md-ref-typeface-*`    | `1-ref/typeface.css`| 7 tokens: 5 de Google (plain, brand, 3 pesos) + 2 propios (`font-optical-sizing`, `font-variation-settings`) |
-| `--md-icon-font`    | `1-ref/iconfont.css` | 1 token de Google: la familia. Las otras dos familias son extensión propia |
-| `--md-ref-typescale-*`   | `1-ref/typescale.css` | 45 medidas (15 estilos × size/line-height/tracking) |
-| `--md-ref-stroke-*`      | `1-ref/stroke.css` | 3 grosores — **extensión propia**       |
-| `--md-ref-corner-*`      | `1-ref/corner.css` | 10 radios de esquina                     |
-| `--md-sys-color-*`       | `2-sys/theme/*.css` | 37 roles × 2 temas                      |
-| `md-bg-*` / `md-text-*` / `md-border-*` | `2-sys/colors.css` | 93 clases utilitarias de color |
-| `--md-sys-typescale-*`   | `2-sys/typography.css` | 92 tokens (15 estilos × 5 sub-tokens + 15 compuestos + 2 `weight-prominent`) |
-| `.md-type-*`             | `2-sys/typography.css` | 32 clases tipográficas               |
-| `--md-sys-shape-*`       | `2-sys/shape.css`| 16 roles: 15 de esquina + variantes por lado, y 1 de grosor de trazo |
-| `--md-sys-motion-*`      | `2-sys/motion.css`| 16 duraciones + 10 curvas                 |
-| `--md-ref-easing-*`      | `1-ref/easing.css`| 40 puntos de control (10 curvas × 4)      |
-| `--md-sys-elevation-*`   | `2-sys/elevation.css` | 6 niveles (key + ambient)              |
-| `--md-ref-shadow-*`      | `1-ref/shadow.css` | 14 tokens: 6 geometrías `key-*` + 6 `ambient-*` + 2 opacidades. Google **no publica** sombras: la geometría salió de los comentarios del código de `<md-elevation>` |
-| `--md-sys-state-*`       | `2-sys/state.css`| 5 roles de estado + 6 utilidades          |
-| `--md-ref-opacity-*`     | `1-ref/opacity.css`| 4 opacidades crudas                      |
+| `--md-ref-palette-*`     | `1-reference-tokens/palette.css` | 91 tonos (v0.192)                      |
+| `--md-ref-typeface-*`    | `1-reference-tokens/typeface.css`| 7 tokens: 5 de Google (plain, brand, 3 pesos) + 2 propios (`font-optical-sizing`, `font-variation-settings`) |
+| `--md-icon-font`    | `1-reference-tokens/iconfont.css` | 1 token de Google: la familia. Las otras dos familias son extensión propia |
+| `--md-ref-typescale-*`   | `1-reference-tokens/typescale.css` | 45 medidas (15 estilos × size/line-height/tracking) |
+| `--md-ref-stroke-*`      | `1-reference-tokens/stroke.css` | 3 grosores — **extensión propia**       |
+| `--md-ref-corner-*`      | `1-reference-tokens/corner.css` | 10 radios de esquina                     |
+| `--md-sys-color-*`       | `2-system-tokens/theme/*.css` | 37 roles × 2 temas                      |
+| `md-bg-*` / `md-text-*` / `md-border-*` | `4-utilities/color.css` | 93 clases utilitarias de color |
+| `--md-sys-typescale-*`   | `2-system-tokens/typography.css` | 92 tokens (15 estilos × 5 sub-tokens + 15 compuestos + 2 `weight-prominent`) |
+| `.md-type-*`             | `4-utilities/typography.css` | 32 clases tipográficas               |
+| `--md-sys-shape-*`       | `2-system-tokens/shape.css`| 16 roles: 15 de esquina + variantes por lado, y 1 de grosor de trazo |
+| `--md-sys-motion-*`      | `2-system-tokens/motion.css`| 16 duraciones + 10 curvas                 |
+| `--md-ref-easing-*`      | `1-reference-tokens/easing.css`| 40 puntos de control (10 curvas × 4)      |
+| `--md-sys-elevation-*`   | `2-system-tokens/elevation.css` | 6 niveles (key + ambient)              |
+| `--md-ref-shadow-*`      | `1-reference-tokens/shadow.css` | 14 tokens: 6 geometrías `key-*` + 6 `ambient-*` + 2 opacidades. Google **no publica** sombras: la geometría salió de los comentarios del código de `<md-elevation>` |
+| `--md-sys-state-*`       | `2-system-tokens/state.css`| 5 roles de estado + 6 utilidades          |
+| `--md-ref-opacity-*`     | `1-reference-tokens/opacity.css`| 4 opacidades crudas                      |
 
 > **Nota sobre `typescale`:** el prefijo real de Google es `typescale`, no `typography`.
 > El archivo se llama `typography.css` por legibilidad, pero los tokens usan
@@ -318,7 +324,7 @@ Verificado contra los archivos publicados por Google. Nombres exactos:
 > `md.sys.state.focus-indicator`.
 >
 > No se adoptó a propósito: cambiaría los 93 tokens de typescale por 213, y
-> `font-variation-settings` (ya presente en `1-ref/typeface.css`) cubre ese caso.
+> `font-variation-settings` (ya presente en `1-reference-tokens/typeface.css`) cubre ese caso.
 > Se anota aquí para que la diferencia sea una decisión documentada y no un olvido.
 > La escala de `corner` de `latest/` **sí** coincide con la nuestra, incluidos
 > `large-increased` y `extra-large-increased`.
@@ -332,9 +338,9 @@ Verificado contra los archivos publicados por Google. Nombres exactos:
 > Es lo que permite que el botón suba la elevación en hover, y está desarrollado en la
 > sección de Componentes.
 
-> **Nota sobre `colors.css`:** este archivo **no define variables `:root`**.
+> **Nota sobre `4-utilities/color.css`:** este archivo **no define variables `:root`**.
 > Expone los roles como clases utilitarias que consumen `var(--md-sys-color-*)`.
-> Los valores viven exclusivamente en `2-sys/theme/theme.light.css` y
+> Los valores viven exclusivamente en `2-system-tokens/theme/theme.light.css` y
 > `theme.dark.css`, porque el mismo rol necesita tonos distintos por tema
 > (`primary` es tono 40 en claro y tono 80 en oscuro); asignarlos en un archivo
 > único crearía una segunda fuente de verdad que competiría con los temas.
@@ -354,7 +360,7 @@ Verificado contra los archivos publicados por Google. Nombres exactos:
 > La vía recomendada para construir componentes sigue siendo la variable
 > directa. Las utilidades existen para el HTML del showroom, prototipos y
 > utilities genéricos. Si una utilidad crece hasta reproducir un componente M3
-> completo, ese es el indicio de que debe pasar a `3-comp/`.
+> completo, ese es el indicio de que debe pasar a `3-components/`.
 
 > **Nota sobre la versión de la paleta (v0.192):** existe una versión "compacta"
 > de la paleta con 13 tonos por familia que circulaba antes. **No alcanza** para
@@ -371,9 +377,9 @@ sobre specs oficiales de Google:
 
 | Familia                   | Archivo             | Origen                                                    |
 | ------------------------- | ------------------- | --------------------------------------------------------- |
-| `--md-ref-spacing-*`      | `1-ref/spacing.css` | Escala oficial M3 `Space 0`–`Space 900`                     |
-| `--md-sys-measurement-*`  | `2-sys/measurement.css` | 10 roles de medida (**extensión propia**) |
-| `--md-ref-stroke-*`       | `1-ref/stroke.css` | Grosor de trazo: `none`/`thin`/`thick`                  |
+| `--md-ref-spacing-*`      | `1-reference-tokens/spacing.css` | Escala oficial M3 `Space 0`–`Space 900`                     |
+| `--md-sys-measurement-*`  | `2-system-tokens/measurement.css` | 10 roles de medida (**extensión propia**) |
+| `--md-ref-stroke-*`       | `1-reference-tokens/stroke.css` | Grosor de trazo: `none`/`thin`/`thick`                  |
 
 **Detalle importante sobre la escala de espacio:** los nombres `Space 0` … `Space 900`
 **sí son oficiales de M3** (publicados en `m3.material.io/styles/spacing/tokens`, con
@@ -414,7 +420,7 @@ exacta está arriba y se puede portar sin volver a investigar el SCSS.
 **Un token nuestro que Google no publica:** `--md-sys-color-shadow-rgb` (`0 0 0`).
 Google expone `--md-sys-color-shadow` pero no la variante en tripletos. Existe porque la
 opacidad solo se puede aplicar a un color en formato `rgb()`, y sin este token el `rgba`
-quedaría quemado dentro de la geometría de `1-ref/shadow.css`, que es exactamente lo que
+quedaría quemado dentro de la geometría de `1-reference-tokens/shadow.css`, que es exactamente lo que
 la arquitectura prohíbe: la primitiva no puede decidir el color, eso es del tema.
 
 **Lo que NO está en `measurement.css`, y por qué:** los roles de retícula
@@ -422,19 +428,19 @@ la arquitectura prohíbe: la primitiva no puede decidir el color, eso es del tem
 tiene respaldo en M3 — el margen lateral de página y la separación entre secciones no
 aparecen en la especificación — y, más importante, el ritmo de página no es un token:
 depende de cuántas secciones hay y de qué contienen. Esa decisión pertenece a un
-componente de `3-comp/`, que consumirá un rol de `2-sys/` (creándolo primero si no
-existe). `3-comp/` nunca lee `1-ref/` directamente (REGLA 2 estricta); lo que la arquitectura prohíbe es el salto de capa y que un componente lea
+componente de `3-components/`, que consumirá un rol de `2-system-tokens/` (creándolo primero si no
+existe). `3-components/` nunca lee `1-reference-tokens/` directamente (REGLA 2 estricta); lo que la arquitectura prohíbe es el salto de capa y que un componente lea
 tokens de *otro* componente.
 
 **Qué aporta `measurement.css` sobre `spacing.css`:** el número no explica su
 propósito. `48px` a secas no dice por qué es 48; `--md-sys-measurement-touch-target`
 sí, porque comunica la intención. Y la intención es lo que sobrevive al cambio: si
 el mínimo táctil pasara a 44px por decisión de accesibilidad, se edita **una vez** en
-`2-sys` y ningún componente se entera, porque ninguno conoce el 48 — todos pidieron
+`2-system-tokens` y ningún componente se entera, porque ninguno conoce el 48 — todos pidieron
 `touch-target`. Sin esta capa habría 40 lugares que editar.
 
 Casi todos los roles de `measurement` caen en la escala de `spacing`. **La excepción son
-las alturas de contenedor**, que se leen de `1-ref/container-height.css`: los cinco tamaños
+las alturas de contenedor**, que se leen de `1-reference-tokens/container-height.css`: los cinco tamaños
 de botón de M3 miden 32, 40, 56, 96 y 136dp, y los dos últimos **no existen** en la escala
 oficial de espacio, que termina en Space 900 = 72px.
 
@@ -451,7 +457,7 @@ accesibilidad (≈9mm; la recomendación es 7–10mm; iOS usa 44×44pt). No es e
 elemento visible: un icono de 24×24dp tiene un área táctil de 48×48dp, y el padding
 alrededor es lo que cuenta. Por eso M3 separa los 24dp del glifo de los 48dp del área.
 
-**Unidad:** M3 está diseñado en **dp**. En web `1dp = 1px`, así que `1-ref/spacing.css`
+**Unidad:** M3 está diseñado en **dp**. En web `1dp = 1px`, así que `1-reference-tokens/spacing.css`
 escribe valores en `px` para que el mapeo contra cualquier spec de Android sea directo
 y sin conversión mental.
 
@@ -472,14 +478,14 @@ extensión nuestra construida sobre el `1px` literal que usan las specs de M3.
 Por eso las utilidades `.md-border-*` aplican **solo `border-color`**: el grosor es
 una medida y el grosor correcto depende del estado del componente (un separador es
 `thin`, el borde de un checkbox sin marcar es `thick`). Esa decisión es del
-componente en `3-comp/`, no de una clase de color.
+componente en `3-components/`, no de una clase de color.
 
-**El rol de grosor en `2-sys/shape.css`:** `--md-sys-shape-stroke-thin`.
+**El rol de grosor en `2-system-tokens/shape.css`:** `--md-sys-shape-stroke-thin`.
 
-`1-ref/stroke.css` tiene tres valores crudos, pero `2-sys/` no tenia ninguno. Ese
+`1-reference-tokens/stroke.css` tiene tres valores crudos, pero `2-system-tokens/` no tenia ninguno. Ese
 hueco se encontro al construir el primer componente real: el divisor de Google
 hardcodea `'thickness': 1px`, y aqui eso choca con dos reglas a la vez: escribir
-`1px` en `3-comp/` viola la REGLA 1, y leer `--md-ref-stroke-thin` desde `3-comp/`
+`1px` en `3-components/` viola la REGLA 1, y leer `--md-ref-stroke-thin` desde `3-components/`
 viola la REGLA 2.
 
 La salida es un token semantico:
@@ -490,9 +496,9 @@ La salida es un token semantico:
 
 Vive en `shape.css` y no en `measurement.css` porque el stroke es una **forma**, no
 un espaciado: un borde de 1px no es una distancia, es el grosor de una linea. Por eso
-`1-ref` lo tiene como primitiva aparte de `spacing`.
+`1-reference-tokens` lo tiene como primitiva aparte de `spacing`.
 
-Solo se declara `thin`. `thick` y `none` quedan en `1-ref` hasta que un componente
+Solo se declara `thin`. `thick` y `none` quedan en `1-reference-tokens` hasta que un componente
 los pida: un token que nadie consume es un token muerto.
 
 **Por qué `corner.css` no reutiliza `spacing`:** cinco de los siete radios coinciden
@@ -531,8 +537,8 @@ Este proyecto implementa la escala oficial completa de 10, verificada contra la
 tabla de tokens de `m3.material.io` y contra la documentación de shapes de
 material-components-android.
 
-**Por qué `1-ref/easing.css` existe:** las curvas `cubic-bezier` llevan cuatro números
-crudos. La alternativa era escribirlos directamente en `2-sys/motion.css` y aceptar
+**Por qué `1-reference-tokens/easing.css` existe:** las curvas `cubic-bezier` llevan cuatro números
+crudos. La alternativa era escribirlos directamente en `2-system-tokens/motion.css` y aceptar
 que ese archivo fuera **el único** de la capa 2 con valores crudos. Se descartó.
 
 Descomponiendo cada curva en sus cuatro puntos de control, `motion.css` compone:
@@ -554,21 +560,21 @@ cosas, y cada una pertenece a una capa distinta:
 
 | Dimensión       | Dónde vive                  | Por qué ahí                          |
 | --------------- | --------------------------- | ------------------------------------ |
-| Geometría (px)  | `1-ref/shadow.css`          | Es medida cruda                      |
-| Opacidad        | `1-ref/shadow.css`          | Es un valor crudo, declarado **una vez** y reutilizado por las 12 capas |
-| Color           | `2-sys/theme/*.css`         | Es una decisión de tema              |
+| Geometría (px)  | `1-reference-tokens/shadow.css`          | Es medida cruda                      |
+| Opacidad        | `1-reference-tokens/shadow.css`          | Es un valor crudo, declarado **una vez** y reutilizado por las 12 capas |
+| Color           | `2-system-tokens/theme/*.css`         | Es una decisión de tema              |
 
-`2-sys/elevation.css` es el puente que une las tres. Si la composición estuviera en
-`1-ref/`, ese archivo tendría que referenciar el color del tema —dependencia
+`2-system-tokens/elevation.css` es el puente que une las tres. Si la composición estuviera en
+`1-reference-tokens/`, ese archivo tendría que referenciar el color del tema —dependencia
 circular— y además el color quedaría *quemado* en la primitiva, de modo que cambiar
 el tema no cambiaría la sombra.
 
 ```css
-/* 1-ref/shadow.css — solo medidas */
+/* 1-reference-tokens/shadow.css — solo medidas */
 --md-ref-shadow-key-1:     0 1px 2px 0px;
 --md-ref-shadow-key-opacity: 0.3;
 
-/* 2-sys/elevation.css — geometría + color del tema */
+/* 2-system-tokens/elevation.css — geometría + color del tema */
 --md-sys-elevation-level1:
   var(--md-ref-shadow-key-1)     rgb(var(--md-sys-color-shadow-rgb) / var(--md-ref-shadow-key-opacity)),
   var(--md-ref-shadow-ambient-1) rgb(var(--md-sys-color-shadow-rgb) / var(--md-ref-shadow-ambient-opacity));
@@ -620,7 +626,7 @@ define M3 es: container → state layer → content.
 > - `_md-sys-state.scss` de Material Web (implementación) → 0.12
 >
 > Este proyecto sigue la documentación. Si Google unifica el valor, se cambia **una
-> línea** en `1-ref/opacity.css` y los 5 roles, las utilidades y toda la app se
+> línea** en `1-reference-tokens/opacity.css` y los 5 roles, las utilidades y toda la app se
 > actualizan por cascada. Es el escenario para el que existe la capa 1.
 
 **Sobre la nomenclatura de duraciones:** M3 agrupa sus 16 duraciones en cuatro
@@ -646,8 +652,8 @@ Se resuelven **sin duplicar** los ~30 tokens de color de cada tema, mediante el 
 importación en `main.css`:
 
 ```css
-@import url("2-sys/theme/theme.light.css") layer(sys);  /* 1.er plano */
-@import url("2-sys/theme/theme.dark.css")  layer(sys);  /* 2.er plano, gana por orden */
+@import url("2-system-tokens/theme/theme.light.css") layer(sys);  /* 1.er plano */
+@import url("2-system-tokens/theme/theme.dark.css")  layer(sys);  /* 2.er plano, gana por orden */
 ```
 
 | Estado                            | Coincide            | Resultado |
@@ -670,14 +676,14 @@ jerarquía quede garantizada por el motor del navegador y no solo por el orden d
 ```css
 @layer reset, ref, sys, comp, utilities;
 
-@import url("reset.css")           layer(reset);
-@import url("1-ref/palette.css")   layer(ref);
-@import url("2-sys/colors.css")    layer(sys);
-@import url("3-comp/divider.css")  layer(comp);
-@import url("3-comp/button.css")   layer(comp);
+@import url("reset.css")                      layer(reset);
+@import url("1-reference-tokens/index.css")   layer(ref);
+@import url("2-system-tokens/index.css")      layer(sys);
+@import url("3-components/index.css")         layer(comp);
+@import url("4-utilities/index.css")          layer(utilities);
 ```
 
-Efecto: aunque alguien cometa el error de usar un token `ref` dentro de `3-comp/`, la
+Efecto: aunque alguien cometa el error de usar un token `ref` dentro de `3-components/`, la
 capa `ref` **pierde siempre** frente a `sys`. La regla se convierte en una garantía del
 motor, no en una convención.
 
@@ -694,28 +700,31 @@ powershell -ExecutionPolicy Bypass -File .\tools\verify-tokens.ps1
 > para esta invocación, sin cambiar la configuración del sistema. También
 > funciona con `-File` si ejecutás desde el editor.
 
-El script escanea las 25 hojas del sistema, indexa los **532 tokens** definidos y
-aplica 9 reglas:
+El script escanea las 37 hojas del sistema, indexa los **540 tokens** definidos y
+aplica 10 reglas:
 
 | Regla | Qué detecta                                                                 | Alcance            |
 | ----- | --------------------------------------------------------------------------- | ------------------ |
-| **1** | Valores crudos: `#HEX`, `px`, `ms`, `rem`                                   | `2-sys/`, `3-comp/` |
+| **1** | Valores crudos: `#HEX`, `px`, `ms`, `rem`                                   | `2-system-tokens/`, `3-components/`, `4-utilities/` |
 | **2** | Dirección de dependencias (saltos de capa y dependencias circulares)        | todo el proyecto   |
 | **3** | Tokens referenciados que **no existen**                                     | todo el proyecto   |
-| **4** | `theme.light.css` importado **antes** que `theme.dark.css`                  | `main.css`          |
+| **4** | `theme.light.css` importado **antes** que `theme.dark.css` (convención)     | `main.css` + `2-system-tokens/index.css` |
 | **5** | Integridad: carpetas, `@layer` declarado antes de importar, imports válidos | proyecto           |
 | **6** | Estilos en línea (`style=`) o bloques `<style>` en el HTML                  | todo el HTML       |
-| **7** | Los dos bloques de cada tema declaran los mismos tokens                     | `2-sys/theme/`     |
+| **7** | Los dos bloques de cada tema declaran los mismos tokens                     | `2-system-tokens/theme/`     |
 | **8** | Las tablas de tokens del showroom pintan su valor y dan contraste           | `showroom/`        |
-| **9** | Los iconos se piden con `.md-icon`, no con la clase de Google                | HTML + `2-sys/`    |
+| **9** | Los iconos se piden con `.md-icon`, no con la clase de Google                | HTML + `4-utilities/`    |
+| **10** | Toda clase `md-*` que usa el showroom existe en `src/css/`                 | `showroom/` + `src/css/` |
 
 **La Regla 3 es la más importante.** Un `var(--md-token-inexistente)` no da error:
 el navegador descarta la regla **en silencio** y el componente se ve roto sin
 explicación. Es el fallo más difícil de detectar revisando CSS a ojo.
 
-**La Regla 4 es la más sutil.** El orden de los dos temas es el único punto del
-proyecto donde el orden de escritura cambia el comportamiento: invertido, el
-sistema arranca en oscuro para todo el mundo, y nada en el CSS lo delata.
+**La Regla 4 es la más sutil.** El orden de los dos temas se mantiene como
+convención de legibilidad (claro primero, oscuro último): cada archivo trae
+sus propios bloques con `@media`, así que invertirlo ya no cambia el
+comportamiento, solo el orden de declaración. La regla sigue comprobando la
+convención, expandiendo los índices de `main.css`.
 
 **La Regla 9 previene un fallo que ya ocurrió.** La fuente de iconos se carga con
 `@import`, y con ella entran las clases de utilidad que trae la hoja de Google. Es
@@ -763,7 +772,8 @@ rdm-next-new/
 │   └── css/                  La librería. Nada más del proyecto la importa.
 │       ├── main.css           Orquestador: @layer + @import
 │       ├── reset.css          Capa 0: anula al navegador
-│       ├── 1-ref/             Valores crudos (única capa que los permite)
+│       ├── 1-reference-tokens/             Valores crudos (única capa que los permite)
+│       │   ├── index.css        Índice: reexporta las 12 primitivas
 │       │   ├── palette.css    --md-ref-palette-*
 │       │   ├── typeface.css   --md-ref-typeface-*
 │       │   ├── iconfont.css   --md-ref-icon-* (+ carga la fuente)
@@ -775,22 +785,33 @@ rdm-next-new/
 │       │   ├── stroke.css     --md-ref-stroke-*
 │       │   ├── typescale.css  --md-ref-typescale-*
 │       │   └── time.css       --md-ref-time-*
-│       ├── 2-sys/             Tokens semánticos (solo var())
-│       │   ├── colors.css     --md-sys-color-*
+│       ├── 2-system-tokens/             Tokens semánticos (solo var(), sin clases)
+│       │   ├── index.css      Índice: claro primero, oscuro último
 │       │   ├── typography.css --md-sys-typescale-*
-│       │   ├── icon.css       --md-sys-icon-* + .md-icon
+│       │   ├── icon.css       --md-sys-icon-* (las clases .md-icon-* viven en 4-utilities/)
 │       │   ├── measurement.css--md-sys-measurement-*
 │       │   ├── motion.css     --md-sys-motion-*
 │       │   ├── shape.css      --md-sys-shape-*
 │       │   ├── elevation.css  --md-sys-elevation-*
 │       │   ├── state.css      --md-sys-state-*
 │       │   └── theme/
-│       │       ├── theme.light.css
-│       │       └── theme.dark.css
-│       └── 3-comp/            Un componente por archivo (se llena por pasos)
-│           ├── divider.css    --md-comp-divider-*
-│           ├── button.css     --md-comp-button-*
-│           └── icon-button.css--md-comp-icon-button-*
+│       │       ├── theme.light.css  --md-sys-color-* (tema claro)
+│       │       └── theme.dark.css   --md-sys-color-* (tema oscuro)
+│       ├── 3-components/            Un componente por archivo (se llena por pasos)
+│       │   ├── index.css      Índice: un @import por componente
+│       │   ├── divider.css    --md-comp-divider-*
+│       │   ├── button.css     --md-comp-button-*
+│       │   └── icon-button.css--md-comp-icon-button-*
+│       └── 4-utilities/             Clases atómicas (solo var(), sin tokens)
+│           ├── index.css      Índice: una familia por archivo
+│           ├── color.css      .md-bg-* / .md-text-* / .md-border-*
+│           ├── typography.css .md-type-* (32)
+│           ├── icon.css       .md-icon / .md-icon-* / .md-measure-icon-*
+│           ├── measurement.css.md-measure-touch-target / .md-measure-icon
+│           ├── motion.css     .md-motion-*
+│           ├── shape.css      .md-shape-*
+│           ├── elevation.css  .md-elevation-*
+│           └── state.css      .md-state-layer-* / .md-disabled
 ├── showroom/                 Documentación. No la importa nadie más.
 │   ├── index.html            Portada: título, tagline, enlaces a las vistas
 │   ├── assets/
@@ -842,12 +863,12 @@ showroom/
   `button.html`, `icon-button.html`.
 - **Y también las familias de capa 2 que son documentación por sí mismas**, aunque no
   sean componentes: `color.html`, `typography.html`, `icon.html`, `elevation.html`. La
-  vista de `elevation` documenta `2-sys/elevation.css`, que no está en `3-comp/`.
+  vista de `elevation` documenta `2-system-tokens/elevation.css`, que no está en `3-components/`.
 - Toda vista se copia de `showroom/templates/component.template.html`.
 - Toda vista carga el sistema completo (`src/css/main.css`), la fuente y los estilos del
   showroom, en ese orden. Las rutas son relativas a la profundidad del archivo: la portada
   usa `../src/css/main.css` y una vista en `components/` usa `../../src/css/main.css`.
-- Toda vista declara sus estilos base **sobre su `<body>`**, con clases de `2-sys/`.
+- Toda vista declara sus estilos base **sobre su `<body>`**, con clases de `2-system-tokens/`.
   La base **nunca** está en `reset.css`, y **nunca** en un contenedor `<div>` interior.
 
 ```html
@@ -866,7 +887,7 @@ lienzo.
 ventana, y el `reset` ya le da `min-height: 100vh`. Un `<div>` interior deja sin pintar la
 banda de abajo en un documento corto, con el color del sistema en vez del color del tema.
 
-El par fondo + texto se escribe **explícito** a propósito: `2-sys/colors.css` no ofrece
+El par fondo + texto se escribe **explícito** a propósito: `4-utilities/color.css` no ofrece
 ningún atajo que empareje un fondo con su texto, para que el contraste sea auditable en el
 marcado. El texto de apoyo usa `md-text-on-surface-variant`, el rol de menor énfasis de M3:
 no existe un `on-background-variant`.
@@ -895,17 +916,17 @@ comprueba la arquitectura, no que el componente se vea bien.
 
 | Componente | Archivo | Clases | Tokens | Vista del showroom |
 | ---------- | ------- | ------ | ------ | ------------------ |
-| Divider | `3-comp/divider.css` | 4 | 2 | `divider.html`, 19 secciones |
-| Button | `3-comp/button.css` | 12 | 29 | `button.html`, 20 secciones |
-| Icon Button | `3-comp/icon-button.css` | 11 | 16 | `icon-button.html`, 20 secciones |
+| Divider | `3-components/divider.css` | 4 | 2 | `divider.html`, 19 secciones |
+| Button | `3-components/button.css` | 12 | 29 | `button.html`, 20 secciones |
+| Icon Button | `3-components/icon-button.css` | 11 | 16 | `icon-button.html`, 20 secciones |
 
-Las "clases" son las que expone el componente, sin contar las de `2-sys` que compone para
+Las "clases" son las que expone el componente, sin contar las de `2-system-tokens` que compone para
 colocar la capa de estado: `button.css` nombra `.md-state-layer` y `.md-disabled` en sus
 selectores, pero no son clases suyas.
 
 ### Divider — el primero
 
-`src/css/3-comp/divider.css` es el primer componente construido. Es el más simple del
+`src/css/3-components/divider.css` es el primer componente construido. Es el más simple del
 catálogo de M3: dos tokens, sin variantes de tipo.
 
 **Receta**, según `material-components/material-web`:
@@ -955,11 +976,11 @@ Se usan añadiendo una clase a `.md-divider`:
 
 | Token | Capa | Valor |
 | ----- | ---- | ----- |
-| `--md-sys-color-outline-variant` | 2-sys | `#cac4d0` en light |
-| `--md-sys-shape-stroke-thin` | 2-sys | 1px |
-| `--md-sys-measurement-inset` | 2-sys | 16px |
-| `--md-comp-divider-color` | 3-comp | → outline-variant |
-| `--md-comp-divider-thickness` | 3-comp | → stroke-thin |
+| `--md-sys-color-outline-variant` | 2-system-tokens | `#cac4d0` en light |
+| `--md-sys-shape-stroke-thin` | 2-system-tokens | 1px |
+| `--md-sys-measurement-inset` | 2-system-tokens | 16px |
+| `--md-comp-divider-color` | 3-components | → outline-variant |
+| `--md-comp-divider-thickness` | 3-components | → stroke-thin |
 
 **Modificador de color (extensión de RDM Next, no de M3):** M3 define un único rol de
 color para el divisor. Aquí además existe `.md-divider-primary`, que reapunta el token
@@ -973,7 +994,7 @@ Existe por un motivo concreto: sin él, la única forma de cambiar el color desd
 markup era un atributo `style=` en línea, y la REGLA 6 lo prohíbe. El token ya estaba
 declarado, pero no era alcanzable desde el HTML.
 
-No se puede resolver componiendo con una utilidad de `2-sys` como `.md-text-primary`:
+No se puede resolver componiendo con una utilidad de `2-system-tokens` como `.md-text-primary`:
 `@layer` declara `comp` **después** de `sys`, así que la regla del componente gana el
 empate por orden de capa y el color no cambiaría. Un modificador del componente, en su
 propia capa, sí funciona.
@@ -990,7 +1011,7 @@ que leerse: `.md-divider-primary` no baja de 4.97:1 en claro ni de 7.20:1 en osc
 
 ### Button
 
-`src/css/3-comp/button.css`. Es el componente con más superficie del catálogo, porque es el
+`src/css/3-components/button.css`. Es el componente con más superficie del catálogo, porque es el
 primero completo: el que obliga a resolver casi todo lo que el sistema tenía abierto.
 
 **Cinco variantes**, y **tres tamaños**:
@@ -1010,7 +1031,7 @@ primero completo: el que obliga a resolver casi todo lo que el sistema tenía ab
 | `medium` | 56dp | 24dp | `title-medium` |
 
 M3 publica cinco tamaños de botón y aquí hay tres. Los dos que faltan, `large` y `xlarge`,
-exigen alturas de 96dp y 136dp que no tienen sitio en `1-ref/spacing.css`, y la decisión
+exigen alturas de 96dp y 136dp que no tienen sitio en `1-reference-tokens/spacing.css`, y la decisión
 —no abrir la familia en la capa 1 hasta que haya dos consumidores— está desarrollada en la
 vista del Icon Button, que es donde M3 las declara.
 
@@ -1033,7 +1054,7 @@ reconoce la capa de estado como la alternativa para contextos sin JS.
 
 ### Icon Button
 
-`src/css/3-comp/icon-button.css`. Cuatro variantes —`standard`, `filled`, `filled-tonal` y
+`src/css/3-components/icon-button.css`. Cuatro variantes —`standard`, `filled`, `filled-tonal` y
 `outlined`—, tres tamaños y una forma extra, `square`, aparte del redondeo por defecto.
 
 La diferencia con el Button que más se nota es que **no tiene etiqueta**, y eso simplifica
@@ -1059,21 +1080,21 @@ decisión más larga de todo el repositorio, y está desarrollada en la vista de
 
 ### Las vistas que no son componentes
 
-Cuatro vistas del showroom documentan familias de `1-ref/` y `2-sys/` que son
-documentación por sí mismas. Ninguna está en `3-comp/`, y ninguna es un componente: no
+Cuatro vistas del showroom documentan familias de `1-reference-tokens/` y `2-system-tokens/` que son
+documentación por sí mismas. Ninguna está en `3-components/`, y ninguna es un componente: no
 tienen anatomía, ni slots, ni estados, ni interacción.
 
 | Vista | Documenta | Secciones |
 | ----- | --------- | --------- |
-| `color.html` | `1-ref/palette.css` y `2-sys/colors.css` con los dos temas | 16 |
-| `typography.html` | `2-sys/typography.css`, `1-ref/typeface.css`, `1-ref/typescale.css` | 21 |
-| `icon.html` | `2-sys/icon.css` e `1-ref/iconfont.css` | 20 |
-| `elevation.html` | `2-sys/elevation.css` e `1-ref/shadow.css` | 13 |
+| `color.html` | `1-reference-tokens/palette.css` y `4-utilities/color.css` con los dos temas | 16 |
+| `typography.html` | `2-system-tokens/typography.css`, `1-reference-tokens/typeface.css`, `1-reference-tokens/typescale.css` | 21 |
+| `icon.html` | `2-system-tokens/icon.css` e `1-reference-tokens/iconfont.css` | 20 |
+| `elevation.html` | `2-system-tokens/elevation.css` e `1-reference-tokens/shadow.css` | 13 |
 
 ### Los siguientes
 
-`main.css` deja comentadas las líneas de importación de `3-comp/card.css` y
-`3-comp/dialog.css`, que es la forma que tiene este proyecto de decir "aquí va lo
+`3-components/index.css` deja comentadas las líneas de importación de `card.css` y
+`dialog.css`, que es la forma que tiene este proyecto de decir "aquí va lo
 siguiente" sin escribir un archivo vacío. `card` es el que además cerraría las dos vistas
 que hoy declaran la composición con `chip` y `card` como pendiente.
 
@@ -1082,7 +1103,7 @@ que hoy declaran la composición con `chip` y `card` como pendiente.
 ## 12. Iconos
 
 La fuente de los iconos es parte de la librería, no un asset del showroom. Vive en
-`1-ref/iconfont.css` y `main.css` la importa en la capa `ref`.
+`1-reference-tokens/iconfont.css` y `main.css` la importa en la capa `ref`.
 
 ### Qué publica M3
 
@@ -1095,12 +1116,12 @@ Material Web publica **dos** tokens de icono, en `tokens/_md-comp-icon.scss`:
 
 Ni un eje, ni un relleno, ni un área táctil, ni una clase. Los equivalentes aquí son
 `--md-sys-icon-font` y `--md-sys-measurement-icon-size`. El segundo **no** está en
-`2-sys/icon.css`: es una medida, así que comparte capa con las del botón y vive en
-`2-sys/measurement.css`.
+`2-system-tokens/icon.css`: es una medida, así que comparte capa con las del botón y vive en
+`2-system-tokens/measurement.css`.
 
 **Extensión propia** (no publicada por nadie como token): los ejes, el relleno, el
 desplazamiento de línea base y las familias `rounded` y `sharp`. Están documentados
-como tale en la cabecera de `1-ref/iconfont.css`.
+como tale en la cabecera de `1-reference-tokens/iconfont.css`.
 
 ### Los tres estilos y cuándo se usa cada uno
 
@@ -1156,7 +1177,7 @@ layouts más densos.
 
 Es la única asimetría del orquestador, y no es una inconsistencia.
 
-Google Sans Flex, en `1-ref/typeface.css`, se carga con `<link>`: su hoja solo trae
+Google Sans Flex, en `1-reference-tokens/typeface.css`, se carga con `<link>`: su hoja solo trae
 `@font-face`, ninguna regla que compita con las capas, y `<link>` evita el coste del
 `@import`.
 
@@ -1193,7 +1214,7 @@ haber un icono. `block` no dibuja nada hasta que la fuente llega.
 
 ### Las clases de Google no se usan
 
-El sistema declara su propia `.md-icon` en `2-sys/icon.css`. La hoja de Google **sí**
+El sistema declara su propia `.md-icon` en `2-system-tokens/icon.css`. La hoja de Google **sí**
 se carga entera —su `@import` no puede filtrar una clase— así que la clase ajena está
 disponible y además neutralizada por la capa: usarla *funciona* y no delata nada.
 Lo único que se pierde es que el componente deje de controlar el tamaño de su glifo,
@@ -1212,7 +1233,7 @@ elemento pintado la usa. Verificado: `divider.html`, que no tiene ni un icono, p
 ### Dos correcciones que hizo esta implementación
 
 **El `-25` del grado sí es oficial.** El valor estaba bien, pero la justificación que
-lo acompañaba en `1-ref/typeface.css` era falsa: decía que *«no viene de la
+lo acompañaba en `1-reference-tokens/typeface.css` era falsa: decía que *«no viene de la
 especificación de M3, que no da un número para este caso»*. M3 sí lo da:
 
 > To match the apparent icon size, the default grade for a dark icon on a light
@@ -1242,16 +1263,16 @@ son obligaciones de quien escribe el HTML.
 
 No hay token de color de icono. M3 dice que un icono toma `currentColor`: el glifo se
 dibuja con el color del texto que lo contiene. Es la misma regla que aplica
-`2-sys/state.css` a la capa de estado, y por eso un icono cambia de color solo con que
+`2-system-tokens/state.css` a la capa de estado, y por eso un icono cambia de color solo con que
 su contenedor cambie el suyo.
 
 ### Showroom
 
 **Sí hay vista de iconos:** `showroom/components/icon.html`, con las 22 secciones de la
-skill confirmadas una por una con el usuario. Documenta `2-sys/icon.css` e
-`1-ref/iconfont.css`, no un componente de `3-comp/`: los iconos son una capacidad de
-sistema y no existe `3-comp/icon.css`. El precedente es `typography.html`, que documenta
-una escala del `2-sys` de la misma manera.
+skill confirmadas una por una con el usuario. Documenta `2-system-tokens/icon.css` e
+`1-reference-tokens/iconfont.css`, no un componente de `3-components/`: los iconos son una capacidad de
+sistema y no existe `3-components/icon.css`. El precedente es `typography.html`, que documenta
+una escala del `2-system-tokens` de la misma manera.
 
 Lo que sí es cierto es lo que decía antes este párrafo: el trabajo de la fuente de iconos
 —cargarla con `@import` para poder meterla en una capa, neutralizar las tres clases de

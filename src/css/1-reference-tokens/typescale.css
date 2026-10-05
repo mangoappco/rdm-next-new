@@ -1,0 +1,203 @@
+/* ==========================================================================
+   1-reference-tokens/typescale.css — METRICAS TIPOGRAFICAS (valores crudos)
+   ==========================================================================
+
+   QUE ES ESTE ARCHIVO
+   -------------------
+   CAPA 1 del sistema. Aqui viven las MEDIDAS CRUDAS del texto: tamaño,
+   interlineado y espaciado entre letras. Es el unico lugar del proyecto
+   donde se permite escribir "57px" como tamaño de fuente.
+
+   ---------------------------------------------------------------------------
+   POR QUE ESTE ARCHIVO NO ESTA DENTRO DE typeface.css
+   ---------------------------------------------------------------------------
+   Hay una confusion facil entre dos cosas distintas:
+
+     typeface.css   QUIEN escribe      Roboto, y con que peso (400/500/700)
+     typescale.css  QUE TAMANO          57px, 64px, -0.25px
+
+   Una es identidad, la otra es medida. Google tambien las separa: publica
+   `_md-ref-typeface.scss` y `_md-sys-typescale.scss` como archivos distintos.
+
+   Cuando este proyecto solo tenia los 5 tokens de familia y peso, colapsar
+   ambas familias en typeface.css era aceptable. Al aparecer las 45 medidas
+   crudas quedo claro que son otra categoria: 1-reference-tokens/typeface.css sigue con 5
+   tokens, y las medidas viven aqui.
+
+   ---------------------------------------------------------------------------
+   LAS TRES MEDIDAS DE UN ESTILO
+   ---------------------------------------------------------------------------
+   Cada uno de los 15 estilos de M3 se define con tres medidas:
+
+     size        El cuerpo del texto. "display-large" usa 57px.
+     line-height El alto de cada linea. 64px para display-large.
+     tracking    El espaciado ENTRE letras. Puede ser negativo.
+
+   El tracking es el mas sutil de los tres y merece atencion: en letras
+   grandes se APLANA el texto (tracking negativo) porque las letras grandes
+   ya tienen suficiente aire; en letras pequenas se SEPARA (tracking
+   positivo) porque se leen peor juntas. Por eso display-large tiene
+   -0.25px y body-large tiene +0.5px.
+
+   ---------------------------------------------------------------------------
+   UNIDAD: px, aunque Google publique rem
+   ---------------------------------------
+   v0.192 publica estos valores en `rem`. Este proyecto los escribe en `px`
+   por coherencia con el resto de 1-reference-tokens: spacing, stroke y los radios de
+   shape usan px, y 1dp = 1px hace el mapeo contra las specs de Android
+   directo.
+
+   Conversion aplicada (1rem = 16px):
+
+     3.5625rem = 57px      0.875rem = 14px      0.6875rem = 11px
+     0.03125rem = 0.5px    0.009375rem = 0.15px
+
+   Todos los valores de este archivo fueron convertidos desde los rem
+   oficiales de v0.192 y son equivalentes.
+
+   ---------------------------------------------------------------------------
+   RELACION CON LAS OTRAS CAPAS
+   -----------------------------
+       1-reference-tokens/typeface.css    <-- Roboto, pesos 400/500/700
+       1-reference-tokens/typescale.css   <-- ESTE: 45 medidas crudas
+              |
+              v
+       2-system-tokens/typography.css  <-- los 15 estilos, cada uno con
+                                 var(--md-ref-typescale-...)
+                                 var(--md-ref-typeface-...)
+              |
+              v
+       3-components/button.css     <-- el componente pide el ESTILO
+
+   ---------------------------------------------------------------------------
+   CUALES ESTILOS USAR (guia de M3)
+   ---------------------------------------------------------------------------
+   M3 define 15 estilos pero advierte que un producto real no suele
+   necesitarlos todos. Jerarquia de mayor a menor:
+
+     display-*    Solo para momentos de enfasis extremo. Un titulo de
+                  bienvenida, un splash. NO usar como titulo normal.
+     headline-*   Titulos de pagina y secciones.
+     title-*      Titulos dentro de un componente: encabezado de tarjeta,
+                  titulo de dialogo.
+     body-*       Texto de lectura: parrafos, contenido de listas.
+     label-*      Texto corto de interfaz: botones, etiquetas, tabs,
+                  campos de formulario. NUNCA para parrafos largos.
+
+   El salto importante: de headline a title baja el peso de Medium a
+   Regular y se usa la fuente `plain` en lugar de `brand`. Esa distincion
+   entre "titulo de pagina" y "titulo de componente" es parte del diseno.
+
+   ========================================================================== */
+
+:root {
+  /* ==========================================================================
+     DISPLAY — enfasis maximo
+     --------------------------------------------------------------------------
+     Reservados para momentos puntuales. El tracking NEGATIVO aplana las
+     letras grandes, que ya tienen suficiente aire por si solas.
+     ====================================================================== */
+
+  /* Display Large — 57px / 64px / -0.25px */
+  --md-ref-typescale-display-large-size: 57px;
+  --md-ref-typescale-display-large-line-height: 64px;
+  --md-ref-typescale-display-large-tracking: -0.25px;
+
+  /* Display Medium — 45px / 52px / 0 */
+  --md-ref-typescale-display-medium-size: 45px;
+  --md-ref-typescale-display-medium-line-height: 52px;
+  --md-ref-typescale-display-medium-tracking: 0px;
+
+  /* Display Small — 36px / 44px / 0 */
+  --md-ref-typescale-display-small-size: 36px;
+  --md-ref-typescale-display-small-line-height: 44px;
+  --md-ref-typescale-display-small-tracking: 0px;
+
+  /* ==========================================================================
+     HEADLINE — titulos de pagina y seccion
+     ====================================================================== */
+
+  /* Headline Large — 32px / 40px / 0 */
+  --md-ref-typescale-headline-large-size: 32px;
+  --md-ref-typescale-headline-large-line-height: 40px;
+  --md-ref-typescale-headline-large-tracking: 0px;
+
+  /* Headline Medium — 28px / 36px / 0 */
+  --md-ref-typescale-headline-medium-size: 28px;
+  --md-ref-typescale-headline-medium-line-height: 36px;
+  --md-ref-typescale-headline-medium-tracking: 0px;
+
+  /* Headline Small — 24px / 32px / 0 */
+  --md-ref-typescale-headline-small-size: 24px;
+  --md-ref-typescale-headline-small-line-height: 32px;
+  --md-ref-typescale-headline-small-tracking: 0px;
+
+  /* ==========================================================================
+     TITLE — titulos dentro de un componente
+     --------------------------------------------------------------------------
+     Menor que headline. Es el titulo de una tarjeta, el encabezado de un
+     dialogo, el nombre de un campo.
+     ====================================================================== */
+
+  /* Title Large — 22px / 28px / 0 */
+  --md-ref-typescale-title-large-size: 22px;
+  --md-ref-typescale-title-large-line-height: 28px;
+  --md-ref-typescale-title-large-tracking: 0px;
+
+  /* Title Medium — 16px / 24px / +0.15px */
+  --md-ref-typescale-title-medium-size: 16px;
+  --md-ref-typescale-title-medium-line-height: 24px;
+  --md-ref-typescale-title-medium-tracking: 0.15px;
+
+  /* Title Small — 14px / 20px / +0.1px */
+  --md-ref-typescale-title-small-size: 14px;
+  --md-ref-typescale-title-small-line-height: 20px;
+  --md-ref-typescale-title-small-tracking: 0.1px;
+
+  /* ==========================================================================
+     BODY — texto de lectura
+     --------------------------------------------------------------------------
+     El contenido principal de la app: parrafos, descripciones, articulos.
+     Aqui el tracking es positivo, porque el texto chico se lee peor
+     cuando las letras van muy juntas.
+     ====================================================================== */
+
+  /* Body Large — 16px / 24px / +0.5px */
+  --md-ref-typescale-body-large-size: 16px;
+  --md-ref-typescale-body-large-line-height: 24px;
+  --md-ref-typescale-body-large-tracking: 0.5px;
+
+  /* Body Medium — 14px / 20px / +0.25px */
+  --md-ref-typescale-body-medium-size: 14px;
+  --md-ref-typescale-body-medium-line-height: 20px;
+  --md-ref-typescale-body-medium-tracking: 0.25px;
+
+  /* Body Small — 12px / 16px / +0.4px */
+  --md-ref-typescale-body-small-size: 12px;
+  --md-ref-typescale-body-small-line-height: 16px;
+  --md-ref-typescale-body-small-tracking: 0.4px;
+
+  /* ==========================================================================
+     LABEL — texto corto de interfaz
+     --------------------------------------------------------------------------
+     Botones, etiquetas de formulario, tabs, chips. NUNCA para parrafos.
+     El tracking es el mas positivo del sistema (+0.1 a +0.5px): en letra
+     pequena y mayusculas, separar las letras es lo que hace legible el
+     texto.
+     ====================================================================== */
+
+  /* Label Large — 14px / 20px / +0.1px */
+  --md-ref-typescale-label-large-size: 14px;
+  --md-ref-typescale-label-large-line-height: 20px;
+  --md-ref-typescale-label-large-tracking: 0.1px;
+
+  /* Label Medium — 12px / 16px / +0.5px */
+  --md-ref-typescale-label-medium-size: 12px;
+  --md-ref-typescale-label-medium-line-height: 16px;
+  --md-ref-typescale-label-medium-tracking: 0.5px;
+
+  /* Label Small — 11px / 16px / +0.5px */
+  --md-ref-typescale-label-small-size: 11px;
+  --md-ref-typescale-label-small-line-height: 16px;
+  --md-ref-typescale-label-small-tracking: 0.5px;
+}

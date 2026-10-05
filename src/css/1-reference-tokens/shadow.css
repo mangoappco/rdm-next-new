@@ -1,0 +1,183 @@
+/* ==========================================================================
+   1-reference-tokens/shadow.css — GEOMETRIA DE SOMBRA (valores crudos)
+   ==========================================================================
+
+   QUE ES ESTE ARCHIVO
+   -------------------
+   CAPA 1 del sistema. Aqui viven las MEDIDAS de las sombras de M3: los
+   desplazamientos, desenfoques y extensions de cada nivel, mas las dos
+   opacidades del sistema.
+
+   ---------------------------------------------------------------------------
+   POR QUE ESTA SEPARADO EN DOS CAPAS: KEY Y AMBIENT
+   ----------------------------------------------------
+   M3 dibuja cada sombra con DOS capas superpuestas, y esa duplicidad no es
+   decorativa:
+
+     KEY      La sombra nitida. Marca el borde del objeto y da sensacion de
+              solido. Opacidad 0.30.
+
+     AMBIENT  La sombra difusa. Se extiende por debajo y sugerencia que la
+              luz viene de arriba. Opacidad 0.15.
+
+   Es el modelo de iluminacion real: un objeto proyectado sobre una superficie
+   produce una sombra de contacto (nítida) y una sombra proyectada (difusa).
+   Por eso los valores NO son un aumento lineal: el nivel 2 tiene la misma
+   capa key que el nivel 1, y solo crece la ambient. El nivel 1 y el 2 se
+   distinguen por la sombra difusa, no por la nítida.
+
+   ---------------------------------------------------------------------------
+   LOS DOS MOTIVOS POR LOS QUE ESTA SEPARADO
+   -----------------------------------------
+   MOTIVO 1 — La geometría y el color son cosas distintas
+   -----------------------------------------------------
+   Este archivo guarda solo el "tamaño" de la sombra. El color lo aporta la
+   capa 2, desde el tema. Ver la seccion "POR QUE NO HAY NINGUN rgba() AQUI".
+
+   MOTIVO 2 — Las medidas son las unicas que cambian
+   -------------------------------------------------
+   La geometria de una sombra es medida fisica: px. Eso la vuelve materia
+   prima de la capa 1, igual que los espacios o los radios. El color de la
+   sombra, en cambio, es una decision de tema.
+
+   ---------------------------------------------------------------------------
+   POR QUE NO HAY NINGUN rgba() EN ESTE ARCHIVO
+   ---------------------------------------------
+   Este es el punto mas importante del archivo, y la razon de que exista
+   como unidad separada.
+
+   Un rgba() NECESITA un color. Si escribieramos:
+
+       --md-ref-shadow-key-1: 0 1px 2px 0 rgba(0, 0, 0, 0.30);
+
+   estariamos QUEMANDO el negro dentro de la primitiva. El color de la sombra
+   pasaria a estar decidido aqui, en la capa 1, y no en el tema.
+
+   Y eso es exactamente lo que la arquitectura no permite: si manana la
+   sombra del sistema dejara de ser negra, habria que editar estas 12
+   lineas. El tema deberia bastar.
+
+   Ademas, hay una razon tecnica de jerarquia: este archivo es 1-reference-tokens, y 1-reference-tokens
+   no puede referenciar tokens de 2-system-tokens. Si escribieramos
+   rgba(var(--md-sys-color-shadow-rgb), ...), la primitiva dependeria del
+   sistema que la consume: dependencia circular. Prohibida.
+
+   LA SOLUCION
+   -----------
+   Aqui se separan las dos dimensiones:
+
+     1-reference-tokens/shadow.css     geometria (este archivo) + opacidades
+     2-system-tokens/elevation.css  une la geometria con el color del tema
+
+   Cada capa hace lo que le corresponde, y cambiar el tema no toca la
+   geometria.
+
+   ---------------------------------------------------------------------------
+   FORMATO DE LOS TOKENS
+   ---------------------
+   Cada token es un PARCIAL de box-shadow: la parte de medidas, sin el color.
+
+       --md-ref-shadow-key-1:     0 1px 2px 0;
+       --md-ref-shadow-ambient-1: 0 1px 3px 1px;
+
+   Son 4 valores: desplazamiento Y, desplazamiento X, desenfoque, extension.
+   El color se anade despues en la capa 2.
+
+   ---------------------------------------------------------------------------
+   TABLA COMPLETA DE LOS 6 NIVELES
+   -------------------------------
+   Estos valores estan transcritos del codigo fuente oficial de Material Web
+   (el componente <md-elevation>), donde aparecen documentados nivel por nivel.
+
+     nivel  key (nitida)         ambient (difusa)
+     -----  -------------------  ---------------------
+      0     0 0px 0px 0px        0 0px 0px 0px
+      1     0 1px 2px 0px        0 1px 3px 1px
+      2     0 1px 2px 0px        0 2px 6px 2px
+      3     0 1px 3px 0px        0 4px 8px 3px
+      4     0 2px 3px 0px        0 6px 10px 4px
+      5     0 4px 4px 0px        0 8px 12px 6px
+
+   Fijate en el nivel 2: key IDENTICA a la del nivel 1. El aumento de altura
+   se produce solo en la ambient. Ese detalle no es un error de la tabla; es
+   exactamente como M3 modela el crecimiento de la sombra.
+
+   ---------------------------------------------------------------------------
+   LOS NIVELES Y LA JERARQUIA VISUAL
+   ----------------------------------
+     0  Sin sombra. El objeto esta plano, pegado a la superficie.
+     1  Apenas levantado. Botones, tarjetas, chips.
+     2  Levantado. Menus, popovers, superficies en hover.
+     3  Flotante. Dialogos, snackbars, bottom sheets.
+     4  Muy flotante. Drawers que se deslizan sobre el contenido.
+     5  Maxima elevacion. Lo que esta por encima de todo lo demas.
+
+   ---------------------------------------------------------------------------
+   RELACION CON LAS OTRAS CAPAS
+   -----------------------------
+       1-reference-tokens/shadow.css      <-- ESTE: geometria + opacidades
+              |
+              v
+       2-system-tokens/elevation.css   <-- une geometria + color del tema
+              |
+              v
+       3-components/dialog.css     <-- el componente pide "elevation level 3"
+                                  (no "box-shadow con estos numeros")
+
+   ========================================================================== */
+
+:root {
+  /* ------------------------------------------------------------------------
+     LAS DOS OPACIDADES DEL SISTEMA
+     --------------------------------------------------------------------------
+     Solo hay dos opacidades en todo M3. Se declaran UNA vez y las usan las
+     12 capas de sombra. Si cada sombra trajera su propio rgba, cambiar la
+     intensidad de la sombra implicaria editar 12 valores.
+     --------------------------------------------------------------------- */
+
+  /* Opacidad de la sombra nitida (key). La que define el borde del objeto. */
+  --md-ref-shadow-key-opacity: 0.3;
+
+  /* Opacidad de la sombra difusa (ambient). La que proyecta la luz. */
+  --md-ref-shadow-ambient-opacity: 0.15;
+
+  /* ==========================================================================
+     GEOMETRIA POR NIVEL
+     --------------------------------------------------------------------------
+     Cada nivel tiene dos parciales: key y ambient. Son medidas, sin color.
+     ====================================================================== */
+
+  /* --- NIVEL 0: sin elevacion ------------------------------------------- */
+  /* El objeto esta plano. "0 0px 0px 0px" es la sombra identidad: existe la
+     regla pero no proyecta nada. Se mantiene por simetria con los demas
+     niveles, para que un componente pueda pedir "elevation 0" sin tratarlo
+     como un caso especial. */
+  --md-ref-shadow-key-0: 0 0px 0px 0px;
+  --md-ref-shadow-ambient-0: 0 0px 0px 0px;
+
+  /* --- NIVEL 1: apenas levantado --------------------------------------- */
+  /* Botones, tarjetas, chips. */
+  --md-ref-shadow-key-1: 0 1px 2px 0px;
+  --md-ref-shadow-ambient-1: 0 1px 3px 1px;
+
+  /* --- NIVEL 2: levantado ---------------------------------------------- */
+  /* Menus y popovers. OJO: la key es IGUAL a la del nivel 1. Lo que cambia
+     es la ambient, que se separa mas. Es el comportamiento correcto de M3:
+     el nivel 2 no es "un poco mas de nivel 1", es un tipo de sombra
+     distinto. */
+  --md-ref-shadow-key-2: 0 1px 2px 0px;
+  --md-ref-shadow-ambient-2: 0 2px 6px 2px;
+
+  /* --- NIVEL 3: flotante ----------------------------------------------- */
+  /* Dialogos, snackbars, bottom sheets. Aqui la key ya empieza a moverse. */
+  --md-ref-shadow-key-3: 0 1px 3px 0px;
+  --md-ref-shadow-ambient-3: 0 4px 8px 3px;
+
+  /* --- NIVEL 4: muy flotante ------------------------------------------- */
+  --md-ref-shadow-key-4: 0 2px 3px 0px;
+  --md-ref-shadow-ambient-4: 0 6px 10px 4px;
+
+  /* --- NIVEL 5: maxima elevacion --------------------------------------- */
+  --md-ref-shadow-key-5: 0 4px 4px 0px;
+  --md-ref-shadow-ambient-5: 0 8px 12px 6px;
+}

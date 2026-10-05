@@ -1,0 +1,43 @@
+/* ==========================================================================
+   4-utilities/shape.css — CLASES UTILITARIAS DE FORMA (Capa 4)
+   ==========================================================================
+
+   QUE ES ESTE ARCHIVO
+   -------------------
+   CAPA 4 del sistema. Expone los roles de forma como clases:
+
+       <div class="md-shape-corner-medium">Tarjeta</div>
+       <div class="md-shape-corner-full">Chip</div>
+
+   ORIGEN
+   ------
+   Movido desde 2-system-tokens/shape.css en la auditoria M3. Las clases
+   no cambiaron: solo su capa. Los roles --md-sys-shape-corner-* y
+   --md-sys-shape-stroke-* siguen en 2-system-tokens/shape.css.
+
+   .md-shape-corner-<rol>  se aplica UNICAMENTE a `border-radius`, nunca a
+   otros ejes. Un elemento con `border-radius` en un solo lado se veria
+   como una elipse; en cuatro, como un radio de esquina. Por eso un token
+   de corner no se aplica a ejes.
+   ========================================================================== */
+
+.md-shape-corner-none          { border-radius: var(--md-sys-shape-corner-none); }
+.md-shape-corner-extra-small   { border-radius: var(--md-sys-shape-corner-extra-small); }
+.md-shape-corner-small         { border-radius: var(--md-sys-shape-corner-small); }
+.md-shape-corner-medium        { border-radius: var(--md-sys-shape-corner-medium); }
+.md-shape-corner-large         { border-radius: var(--md-sys-shape-corner-large); }
+.md-shape-corner-large-increased { border-radius: var(--md-sys-shape-corner-large-increased); }
+.md-shape-corner-extra-large   { border-radius: var(--md-sys-shape-corner-extra-large); }
+.md-shape-corner-extra-large-increased { border-radius: var(--md-sys-shape-corner-extra-large-increased); }
+.md-shape-corner-extra-extra-large { border-radius: var(--md-sys-shape-corner-extra-extra-large); }
+.md-shape-corner-full          { border-radius: var(--md-sys-shape-corner-full); }
+
+/* --- Variantes por lado --- */
+.md-shape-corner-large-top     { border-radius: var(--md-sys-shape-corner-large-top); }
+.md-shape-corner-large-start   { border-radius: var(--md-sys-shape-corner-large-start); }
+.md-shape-corner-large-end     { border-radius: var(--md-sys-shape-corner-large-end); }
+.md-shape-corner-extra-large-top { border-radius: var(--md-sys-shape-corner-extra-large-top); }
+.md-shape-corner-extra-small-top { border-radius: var(--md-sys-shape-corner-extra-small-top); }
+
+/* --- Grosor de trazo --- */
+.md-shape-stroke-thin { border-width: var(--md-sys-shape-stroke-thin); }

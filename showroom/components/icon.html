@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap" rel="stylesheet">
 
   <!-- La fuente de iconos NO se carga aqui. La carga la libreria, en
-       1-ref/iconfont.css, que main.css importa en la capa ref. Ver el
+       1-reference-tokens/iconfont.css, que main.css importa en la capa ref. Ver el
        bloque "POR QUE LA FUENTE DE ICONOS SE CARGA CON @import" de
        src/css/main.css. -->
   <link rel="stylesheet" href="../../src/css/main.css">
@@ -21,10 +21,10 @@
 <!--
   Copiada de templates/component.template.html.
   Secciones confirmadas por Danny: las 22 de la skill, todas incluidas.
-  Esta vista documenta 2-sys/icon.css y 1-ref/iconfont.css, no un
-  componente de 3-comp: los iconos son una capacidad de sistema y no existe
-  3-comp/icon.css. El precedente es typography.html, que documenta la escala
-  del 2-sys.
+  Esta vista documenta 2-system-tokens/icon.css y 1-reference-tokens/iconfont.css, no un
+  componente de 3-components: los iconos son una capacidad de sistema y no existe
+  3-components/icon.css. El precedente es typography.html, que documenta la escala
+  del 2-system-tokens.
 
   Fuentes de esta pagina, de M3:
     /styles/icons/overview
@@ -132,7 +132,7 @@
 
     <article class="sr-section">
       <h2>Color</h2>
-      <p class="sr-na"><strong>No existe un token de color de icono</strong>, y no es una omisión. M3 dice que un icono toma el color de <code>currentColor</code>: el glifo se dibuja con el color del texto que lo contiene. Es la misma regla que aplica <code>2-sys/state.css</code> a la capa de estado.</p>
+      <p class="sr-na"><strong>No existe un token de color de icono</strong>, y no es una omisión. M3 dice que un icono toma el color de <code>currentColor</code>: el glifo se dibuja con el color del texto que lo contiene. Es la misma regla que aplica <code>2-system-tokens/state.css</code> a la capa de estado.</p>
       <p>La consecuencia práctica es que un icono cambia de color <strong>solo con que su contenedor cambie el suyo</strong>, y no hace falta ninguna clase de color para icono.</p>
       <div class="sr-grid">
         <figure class="sr-cell">
@@ -156,7 +156,7 @@
     <article class="sr-section">
       <h2>Shapes</h2>
       <p class="sr-na">El sistema de iconos <strong>no tiene formas</strong>. M3 dice que las esquinas de un icono son de 2dp por defecto, que en el estilo <code>outlined</code> las interiores son cuadradas, y que en el <code>sharp</code> bajan de 2dp a 0dp.</p>
-      <p class="sr-na">Ese radio está <strong>dentro de la fuente</strong>. No hay ninguna propiedad de CSS que lo cambie. Por eso <code>1-ref/</code> no declara ningún token de esquina para iconos: no es una omisión, es que la primitiva no existe en el medio. Un <code>border-radius</code> en <code>.md-icon</code> no redondearía el glifo, redondearía la <em>caja</em>, y el glifo se vería recortado.</p>
+      <p class="sr-na">Ese radio está <strong>dentro de la fuente</strong>. No hay ninguna propiedad de CSS que lo cambie. Por eso <code>1-reference-tokens/</code> no declara ningún token de esquina para iconos: no es una omisión, es que la primitiva no existe en el medio. Un <code>border-radius</code> en <code>.md-icon</code> no redondearía el glifo, redondearía la <em>caja</em>, y el glifo se vería recortado.</p>
     </article>
 
     <hr class="md-divider">
@@ -200,7 +200,7 @@
       <p class="sr-na">El icono <strong>no tiene estados propios</strong>. No es interactivo, y no responde a <code>:hover</code>, <code>:focus-visible</code> ni <code>:active</code>.</p>
       <p class="sr-na">Lo que sí tiene son dos comportamientos heredados:</p>
       <ul>
-        <li>El <strong>color</strong> lo hereda por <code>currentColor</code>, así que la capa de estado del contenedor lo tiñe sin que el icono declare nada. Es el mismo mecanismo que usa <code>2-sys/state.css</code>.</li>
+        <li>El <strong>color</strong> lo hereda por <code>currentColor</code>, así que la capa de estado del contenedor lo tiñe sin que el icono declare nada. Es el mismo mecanismo que usa <code>2-system-tokens/state.css</code>.</li>
         <li>El <strong>inactivo</strong> se marca con <code>.md-disabled</code> al 38%, igual que el texto.</li>
       </ul>
       <p class="sr-na">Un icono dentro de un botón sigue al botón: el mismo hover que ilumina la etiqueta ilumina el glifo, porque los dos leen <code>currentColor</code>.</p>
@@ -262,7 +262,7 @@
     <article class="sr-section">
       <h2>Comportamiento</h2>
       <h3>De dónde sale la fuente</h3>
-      <p>La carga la librería, en <code>1-ref/iconfont.css</code>, con <code>@import … layer(reset)</code>. No con un <code>&lt;link&gt;</code>, por un motivo concreto:</p>
+      <p>La carga la librería, en <code>1-reference-tokens/iconfont.css</code>, con <code>@import … layer(reset)</code>. No con un <code>&lt;link&gt;</code>, por un motivo concreto:</p>
       <p class="sr-na">Google sirve esa URL con sus tres clases de utilidad incluidas, y cada una declara su propio <code>font-size: 24px</code>. Con un <code>&lt;link&gt;</code> esa regla llega <strong>sin capa</strong>, y en CSS una regla sin capa gana a cualquier regla con capa sin importar la especificidad. El <code>@import</code> anida una capa <code>ref.reset</code> que ordena antes que <code>ref</code>, <code>sys</code> y <code>comp</code>: la opinión de Google pierde contra las primitivas propias.</p>
       <h3>Qué pasa mientras carga</h3>
       <p>Un icono de Material Symbols es un texto: el marcado lleva el nombre del glifo. Con <code>display=swap</code> se vería un instante la palabra <em>download</em> donde debería haber un icono. La fuente se pide con <strong><code>display=block</code></strong>: el navegador no dibuja nada hasta que llega, y si no llega nunca muestra el texto.</p>
@@ -417,7 +417,7 @@
           <tr><td>Live area</td><td>20dp <span class="sr-spec-bar sr-spec-bar--none"></span></td><td><span class="sr-spec-bar sr-spec-bar--none"></span></td><td>No hay token: es geometría de la fuente</td></tr>
         </tbody>
       </table>
-      <h3>Primitivas — <code>1-ref/iconfont.css</code></h3>
+      <h3>Primitivas — <code>1-reference-tokens/iconfont.css</code></h3>
       <table class="sr-table">
         <thead>
           <tr><th scope="col">Familia</th><th scope="col">Outlined</th><th scope="col">Rounded</th><th scope="col">Sharp</th></tr>

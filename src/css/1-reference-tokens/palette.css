@@ -1,0 +1,231 @@
+/* ==========================================================================
+   1-reference-tokens/palette.css — PRIMITIVAS DE COLOR (valores crudos)
+   ==========================================================================
+
+   QUE ES ESTE ARCHIVO
+   -------------------
+   Es la CAPA 1 del sistema. Aqui viven los VALORES CRUDOS: codigos #HEX.
+   Es el UNICO archivo del proyecto donde se permite escribir un color literal.
+
+   POR QUE EXISTE
+   --------------
+   Si un componente escribiera `color: #6750A4`, cambiar la paleta obligaria a
+   editar ese componente. Al encerrar todos los tonos crudos en esta capa, un
+   cambio de marca se resuelve editando SOLO este archivo y las capas
+   superiores se actualizan solas por cascada.
+
+   RELACION CON LAS OTRAS CAPAS
+   -----------------------------
+   ESTA CAPA NO CONSUME NINGUN TOKEN. No puede referenciar 2-system-tokens ni 3-components:
+   hacerlo seria una dependencia circular (el color no puede depender del
+   componente que lo usa).
+
+       1-reference-tokens/palette.css   <-- ESTOS TONOS CRUDOS (116)
+              |
+              v
+       2-system-tokens/theme/*.css   <-- mapea tonos a ROLES (--md-sys-color-primary)
+              |
+              v
+       3-components/button.css   <-- el componente usa el ROL, nunca el tono
+
+   FUENTE
+   ------
+   Paleta baseline oficial de Material Design 3, Design System v0.192.
+
+       https://github.com/material-components/material-web
+       tokens/versions/v0_192/_md-ref-palette.scss
+       tokens/versions/v0_192/_md-sys-color.scss
+
+   IMPORTANTE — POR QUE ESTA PALETA Y NO OTRA
+   ------------------------------------------
+   Existe una version "compacta" de la paleta que circulaba antes y que tiene
+   solo 13 tonos por familia (0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 99,
+   100). Esa version NO alcanza para los roles `surface-container-*`, que son
+   la base del sistema de jerarquia visual de M3.
+
+   v0.192 amplia la familia neutral con los tonos finos que los containers
+   necesitan: 4, 6, 12, 17, 22, 24, 87, 92, 94, 96, 98. Sin ellos, seis
+   roles de superficie quedarian sin valor.
+
+   Ademas, esta version corrige un error de la compacta: `neutral99` pasa de
+   `#fffbfe` a `#fffbff`, un azul imperceptiblemente mas frio, que es el
+   valor que Material Web usa de verdad.
+
+   La jerarquia tonal de M3 no es un adorno: es COMO el sistema expresa
+   elevacion sin depender de sombras. Por eso la paleta correcta importa.
+
+   SOBRE EL FORMATO
+   ----------------
+   Los colores se escriben en 6 digitos (RRGGBB). La version anterior de este
+   archivo usaba 8 digitos con el canal alfa explicito (RRGGBBAA); aqui el
+   alfa es siempre opaco y se omite, que es lo que hace el CSS de Google.
+
+   LA ESCALA DE TONOS
+   ------------------
+   El numero del token NO es un indice de cantidad: es el TONO perceptual.
+   0 es negro, 100 es blanco, y en medio el gris se abre progresivamente.
+
+     primary            Accion principal de la app. El color de marca.
+     secondary          Acciones de menor enfasis, o "secundarias" al primary.
+     tertiary           Acento de contraste, para detalles que no son ni
+                        primary ni secondary.
+     error              Fallos y acciones destructivas. Derivado de rojo por
+                        convencion de accesibilidad, nunca personalizable.
+     neutral            Fondos y texto principales. La familia mas usada:
+                        sostiene toda la escala de superficies.
+     neutral-variant    Bordes, divisores y texto de apoyo. Gris con un punto
+                        de violeta, para acompanar al primary sin competir.
+     black / white      Negro y blanco absolutos, para los roles "inverse".
+
+   ========================================================================== */
+
+:root {
+  /* ------------------------------------------------------------------------
+     ERROR — familia de error
+     Se reserva para comunicar fallo. Cambiarla rompe el contrato de
+     accesibilidad que el usuario ya conoce de otras apps.
+     --------------------------------------------------------------------- */
+  --md-ref-palette-error0: #000;
+  --md-ref-palette-error10: #410e0b;
+  --md-ref-palette-error20: #601410;
+  --md-ref-palette-error30: #8c1d18;
+  --md-ref-palette-error40: #b3261e;
+  --md-ref-palette-error50: #dc362e;
+  --md-ref-palette-error60: #e46962;
+  --md-ref-palette-error70: #ec928e;
+  --md-ref-palette-error80: #f2b8b5;
+  --md-ref-palette-error90: #f9dedc;
+  --md-ref-palette-error95: #fceeee;
+  --md-ref-palette-error99: #fffbf9;
+  --md-ref-palette-error100: #fff;
+
+  /* ------------------------------------------------------------------------
+     TERTIARY — acento de contraste
+     --------------------------------------------------------------------- */
+  --md-ref-palette-tertiary0: #000;
+  --md-ref-palette-tertiary10: #31111d;
+  --md-ref-palette-tertiary20: #492532;
+  --md-ref-palette-tertiary30: #633b48;
+  --md-ref-palette-tertiary40: #7d5260;
+  --md-ref-palette-tertiary50: #986977;
+  --md-ref-palette-tertiary60: #b58392;
+  --md-ref-palette-tertiary70: #d29dac;
+  --md-ref-palette-tertiary80: #efb8c8;
+  --md-ref-palette-tertiary90: #ffd8e4;
+  --md-ref-palette-tertiary95: #ffecf1;
+  --md-ref-palette-tertiary99: #fffbfa;
+  --md-ref-palette-tertiary100: #fff;
+
+  /* ------------------------------------------------------------------------
+     SECONDARY — acento secundario
+     Menos enfasis que primary. Complementa sin robar protagonismo.
+     --------------------------------------------------------------------- */
+  --md-ref-palette-secondary0: #000;
+  --md-ref-palette-secondary10: #1d192b;
+  --md-ref-palette-secondary20: #332d41;
+  --md-ref-palette-secondary30: #4a4458;
+  --md-ref-palette-secondary40: #625b71;
+  --md-ref-palette-secondary50: #7a7289;
+  --md-ref-palette-secondary60: #958da5;
+  --md-ref-palette-secondary70: #b0a7c0;
+  --md-ref-palette-secondary80: #ccc2dc;
+  --md-ref-palette-secondary90: #e8def8;
+  --md-ref-palette-secondary95: #f6edff;
+  --md-ref-palette-secondary99: #fffbfe;
+  --md-ref-palette-secondary100: #fff;
+
+  /* ------------------------------------------------------------------------
+     PRIMARY — color de marca y accion principal
+     El tono 40 (#6750A4) es el color de acento iconic del Material Design.
+     Es el que ve el usuario la mayor parte del tiempo.
+     --------------------------------------------------------------------- */
+  --md-ref-palette-primary0: #000;
+  --md-ref-palette-primary10: #21005d;
+  --md-ref-palette-primary20: #381e72;
+  --md-ref-palette-primary30: #4f378b;
+  --md-ref-palette-primary40: #6750a4;
+  --md-ref-palette-primary50: #7f67be;
+  --md-ref-palette-primary60: #9a82db;
+  --md-ref-palette-primary70: #b69df8;
+  --md-ref-palette-primary80: #d0bcff;
+  --md-ref-palette-primary90: #eaddff;
+  --md-ref-palette-primary95: #f6edff;
+  --md-ref-palette-primary99: #fffbfe;
+  --md-ref-palette-primary100: #fff;
+
+  /* ------------------------------------------------------------------------
+     NEUTRAL VARIANT — bordes y texto de apoyo
+     Gris con un punto de violeta. Deliberadamente NO es gris puro: si lo
+     fuera, los bordes se verian "sucios" junto al primary violeta.
+     --------------------------------------------------------------------- */
+  --md-ref-palette-neutral-variant0: #000;
+  --md-ref-palette-neutral-variant10: #1d1a22;
+  --md-ref-palette-neutral-variant20: #322f37;
+  --md-ref-palette-neutral-variant30: #49454f;
+  --md-ref-palette-neutral-variant40: #605d66;
+  --md-ref-palette-neutral-variant50: #79747e;
+  --md-ref-palette-neutral-variant60: #938f99;
+  --md-ref-palette-neutral-variant70: #aea9b4;
+  --md-ref-palette-neutral-variant80: #cac4d0;
+  --md-ref-palette-neutral-variant90: #e7e0ec;
+  --md-ref-palette-neutral-variant95: #f5eefa;
+  --md-ref-palette-neutral-variant99: #fffbfe;
+  --md-ref-palette-neutral-variant100: #fff;
+
+  /* ------------------------------------------------------------------------
+     NEUTRAL — superficies y texto principal
+     Es la familia MAS extendida: 24 tonos. Sostiene toda la escalera de
+     superficies, la base del sistema de jerarquia visual de M3.
+
+     OJO CON ESTA ESCALA: los tonos estan mas juntos que en las otras
+     familias. Los "grandes" (0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 99,
+     100) son los que existian antes. Los finos (4, 6, 12, 17, 22, 24, 87,
+     92, 94, 96, 98) se añadieron despues, especificamente para que
+     surface-container-* tuviera cinco escalones distinguibles entre si.
+
+     Si se perdieran, seis roles de superficie colapsarian al mismo gris y la
+     jerarquia visual desapareceria.
+     --------------------------------------------------------------------- */
+
+  /* Tonos base */
+  --md-ref-palette-neutral0: #000;
+  --md-ref-palette-neutral10: #1d1b20;
+  --md-ref-palette-neutral20: #322f35;
+  --md-ref-palette-neutral30: #48464c;
+  --md-ref-palette-neutral40: #605d64;
+  --md-ref-palette-neutral50: #79767d;
+  --md-ref-palette-neutral60: #938f96;
+  --md-ref-palette-neutral70: #aea9b1;
+  --md-ref-palette-neutral80: #cac5cd;
+  --md-ref-palette-neutral90: #e6e0e9;
+  --md-ref-palette-neutral95: #f5eff7;
+  --md-ref-palette-neutral99: #fffbff;
+  --md-ref-palette-neutral100: #fff;
+
+  /* Tonos finos — zona oscura de la escalera de superficies.
+     Se mueven en pasos de 2 sobre un fondo casi negro: por eso son tan
+     juntos. Cada escalon es una distincion perceptible, no un salto. */
+  --md-ref-palette-neutral4: #0f0d13;
+  --md-ref-palette-neutral6: #141218;
+  --md-ref-palette-neutral12: #211f26;
+  --md-ref-palette-neutral17: #2b2930;
+  --md-ref-palette-neutral22: #36343b;
+  --md-ref-palette-neutral24: #3b383e;
+
+  /* Tonos finos — zona clara de la escalera de superficies.
+     Estos son los que usa surface-container-* en tema claro, y los que
+     ManGo! ya consume hoy: #f7f2fa, #f3edf7, #ece6f0, #e6e0e9. */
+  --md-ref-palette-neutral87: #ded8e1;
+  --md-ref-palette-neutral92: #ece6f0;
+  --md-ref-palette-neutral94: #f3edf7;
+  --md-ref-palette-neutral96: #f7f2fa;
+  --md-ref-palette-neutral98: #fef7ff;
+
+  /* ------------------------------------------------------------------------
+     BLACK / WHITE — absolutos
+     Se usan desde los roles "inverse" (superficie oscura con texto claro,
+     tipico de snackbars) y desde los tonos 0 y 100 de cada familia.
+     --------------------------------------------------------------------- */
+  --md-ref-palette-black: #000;
+  --md-ref-palette-white: #fff;
+}

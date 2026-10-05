@@ -1,6 +1,6 @@
 ---
 name: mango-component-showroom
-description: Create and maintain the RDM Next component showroom. Use this skill whenever creating, modifying, documenting, or reviewing a component showroom view. The showroom documents the real RDM Next component implementation from src/css/3-comp/ using dogfooding. Before implementing any new component showroom view, the agent MUST confirm the component exists, inspect its real implementation, propose the applicable documentation sections, ask the user to confirm each section, and wait for confirmation before writing or modifying the showroom view.
+description: Create and maintain the RDM Next component showroom. Use this skill whenever creating, modifying, documenting, or reviewing a component showroom view. The showroom documents the real RDM Next component implementation from src/css/3-components/ using dogfooding. Before implementing any new component showroom view, the agent MUST confirm the component exists, inspect its real implementation, propose the applicable documentation sections, ask the user to confirm each section, and wait for confirmation before writing or modifying the showroom view.
 ---
 
 # RDM Next Component Showroom
@@ -28,7 +28,7 @@ Read this before anything else in the skill.
 Before inspecting a component, verify it exists:
 
 ```text
-src/css/3-comp/<component>.css
+src/css/3-components/<component>.css
 ```
 
 | Situation | What to do |
@@ -43,15 +43,15 @@ this skill forbids.
 In that case, say so and stop:
 
 ```text
-src/css/3-comp/divider.css no existe todavia.
+src/css/3-components/divider.css no existe todavia.
 No hay nada que inspeccionar, y un showroom de un componente que aun no se
 construyo seria inventarlo.
 
 Construimos el componente primero?
 ```
 
-**This precondition exists because RDM Next builds its own components.** `src/src/css/3-comp/`
-is authored here, from the tokens in `1-ref/` and `2-sys/`. It does not import them from
+**This precondition exists because RDM Next builds its own components.** `src/src/css/3-components/`
+is authored here, from the tokens in `1-reference-tokens/` and `2-system-tokens/`. It does not import them from
 another library. So the component is the source, and the showroom documents it, never
 the other way around.
 
@@ -68,7 +68,7 @@ When the user asks to create a showroom view for a component, DO NOT immediately
 The mandatory workflow is:
 
 ```text
-0. Confirm src/css/3-comp/<component>.css exists
+0. Confirm src/css/3-components/<component>.css exists
         ↓
 1. Inspect the real component
         ↓
@@ -100,7 +100,7 @@ If the user has not confirmed the sections, implementation must not begin.
 # STEP 1 — INSPECT THE REAL COMPONENT
 
 Before asking the user about sections, inspect the actual implementation of
-`src/src/css/3-comp/<component>.css`, and its `@import` line in `src/css/main.css`.
+`src/src/css/3-components/<component>.css`, and its `@import` line in `src/css/3-components/index.css`.
 
 Determine, when applicable:
 
@@ -130,7 +130,7 @@ There is no JavaScript and no web component, so the "API" is:
 | Concept | What it means here |
 | ------- | ------------------ |
 | Public API | the class names the file declares |
-| Props | values the HTML author passes as additional classes from `2-sys/` |
+| Props | values the HTML author passes as additional classes from `4-utilities/` |
 | Attributes | HTML attributes the selectors respond to (`disabled`, `aria-*`, `data-*`) |
 | Slots | which child elements the selector structure expects |
 | Behavior | what the CSS does on `:hover`, `:focus-visible`, `:active`, `[disabled]` |
@@ -218,7 +218,7 @@ Example, for a hypothetical `card`:
 ```text
 Voy a crear el showroom de Card.
 
-Después de revisar src/css/3-comp/card.css, estas son las secciones:
+Después de revisar src/css/3-components/card.css, estas son las secciones:
 
 01. Header — Sí
 02. Uso — Sí
@@ -315,7 +315,7 @@ Only after this confirmation may implementation begin.
 
 ## Mandatory
 
-The showroom must use the actual RDM Next components from `src/src/css/3-comp/`.
+The showroom must use the actual RDM Next components from `src/src/css/3-components/`.
 
 If documenting:
 
@@ -326,7 +326,7 @@ Divider
 the showroom must render:
 
 ```text
-an element carrying the real class from src/css/3-comp/divider.css
+an element carrying the real class from src/css/3-components/divider.css
 ```
 
 It must NOT render:
@@ -370,17 +370,18 @@ The line that must not be crossed is writing component CSS inside the showroom.
 @layer reset, ref, sys, comp, utilities;
 ```
 
-That order **is** the precedence table, so a `2-sys` utility cannot change a property a
-`3-comp` component also sets. `comp` is declared after `sys`, so on a specificity tie the
-component wins.
+That order **is** the precedence table, so a `4-utilities` utility **overrides**
+a property a `3-components` component also sets. `utilities` is declared after
+`comp`, so on a specificity tie the utility wins. It is utility-first by design:
+the author's final word on the page beats the recipe.
 
 This bites in two ways, and both have been verified in the browser with `getComputedStyle`:
 
 | Attempted composition | Result |
 | ---------------------- | ------ |
-| `<hr class="md-divider md-text-primary">` | **No effect.** `.md-divider` sets `color`; `comp` beats `sys`, so the divider stays `outline-variant`. |
-| `<hr class="md-divider md-bg-outline-variant">` | **No effect, and wrong anyway.** It sets `background-color`, which the divider never reads: the visible line is `::before { background: currentColor }`. It would also lose the cascade. |
-| `<hr class="md-divider md-divider-primary">` | **Works.** A modifier in the component's own layer re-points the component's own token. |
+| `<hr class="md-divider md-text-primary">` | **Works.** `utilities` beats `comp`, so the divider takes `primary`. Composing works, but it bypasses the recipe: for a stable change, prefer the modifier. |
+| `<hr class="md-divider md-bg-outline-variant">` | **No effect, and wrong anyway.** It sets `background-color`, which the divider never reads: the visible line is `::before { background: currentColor }`. The cascade is won and the property is useless. |
+| `<hr class="md-divider md-divider-primary">` | **Works.** A modifier in the component's own layer re-points the component's own token. The semantic API: one class with intent. |
 
 **Before documenting a composition, verify it computes.** A class that looks right in the
 markup can be silently overridden, and the showroom would then be documenting a lie.
@@ -1087,7 +1088,7 @@ Rules:
   uses `../../src/css/main.css` and `../assets/showroom.css`. Getting this wrong
   is the most common mistake when adding a view, and it fails silently as an
   unstyled page.
-- Every view declares its base styles **on its `<body>`**, with `2-sys/` classes.
+- Every view declares its base styles **on its `<body>`**, with `4-utilities/` classes.
   The base is **never** in `reset.css`, and **never** on an inner container
   `<div>`.
 
@@ -1102,7 +1103,7 @@ Rules:
   top of it. The text on the canvas is read with `on-background`; `surface` +
   `on-surface` belong to those concrete surfaces.
 - The pair background + text is written **explicitly** on purpose:
-  `2-sys/colors.css` ships no shortcut that pairs a background with its text,
+  `4-utilities/color.css` ships no shortcut that pairs a background with its text,
   so the contrast is auditable in the markup.
 - Supporting text uses `md-text-on-surface-variant`. M3 has no
   `on-background-variant`; `on-surface-variant` is the lower-emphasis role.
@@ -1131,10 +1132,11 @@ Declared in `src/css/main.css`, in this order. The order **is** the precedence t
 | Layer | Contains | Reads from |
 | ----- | -------- | ---------- |
 | `reset` | anula al navegador, tipografia y colores base | `--md-ref-*`, `--md-sys-color-*` |
-| `1-ref/` | valores crudos: paleta, spacing, radios, tiempos | **nothing** |
-| `2-sys/` | roles semanticos: color, typescale, shape, motion, state, elevation, measurement | `--md-ref-*` |
-| `3-comp/` | componentes | `--md-sys-*` |
-| `utilities` | atajos de alto nivel | reserved, currently empty |
+| `1-reference-tokens/` | valores crudos: paleta, spacing, radios, tiempos | **nothing** |
+| `2-system-tokens/` | roles semanticos: color, typescale, shape, motion, state, elevation, measurement | `--md-ref-*` |
+| `3-components/` | componentes | `--md-sys-*` |
+| `4-utilities/` | 178 clases atomicas: color, tipografia, forma, elevacion, icono, estado, medida, movimiento | `--md-sys-*` y `--md-ref-*` |
+| `utilities` | la ultima capa: la opinion final del autor gana al componente | ver `4-utilities/` |
 
 ## The 10 rules, enforced by `tools/verify-tokens.ps1`
 
@@ -1146,8 +1148,8 @@ powershell -ExecutionPolicy Bypass -File .\tools\verify-tokens.ps1
 
 | Rule | Enforces |
 | ---- | -------- |
-| REGLA 1 | No raw values (`#HEX`, `px`, `ms`, `rem`) outside `1-ref/` |
-| REGLA 2 | Direction of dependencies: `3-comp` never reads `1-ref` |
+| REGLA 1 | No raw values (`#HEX`, `px`, `ms`, `rem`) outside `1-reference-tokens/` |
+| REGLA 2 | Direction of dependencies: `3-components` never reads `1-reference-tokens` |
 | REGLA 3 | Every referenced token exists |
 | REGLA 4 | `theme.light.css` imported before `theme.dark.css` |
 | REGLA 5 | Folder structure and `@layer` declaration are intact |
@@ -1161,19 +1163,19 @@ powershell -ExecutionPolicy Bypass -File .\tools\verify-tokens.ps1
 
 **May:**
 
-- consume classes from `1-ref`, `2-sys` and `3-comp`,
+- consume classes from `4-utilities` and `3-components` (1-reference-tokens carries no classes),
 - add new HTML markup,
 - document token names and real measurements,
-- add `src/src/css/3-comp/<component>.css` when the user confirms the sections.
+- add `src/src/css/3-components/<component>.css` when the user confirms the sections.
 
 **May not:**
 
-- write raw values outside `1-ref/` (REGLA 1),
-- read `--md-ref-*` from `3-comp/` (REGLA 2),
+- write raw values outside `1-reference-tokens/` (REGLA 1),
+- read `--md-ref-*` from `3-components/` (REGLA 2),
 - invent a token name,
 - add an inline `style=` attribute or a `<style>` block to any HTML (REGLA 6),
 - put `material-symbols-*` in a `class` attribute (REGLA 9). Google's sheet is
-  loaded whole by `1-ref/iconfont.css`, so that class is available and already
+  loaded whole by `1-reference-tokens/iconfont.css`, so that class is available and already
   neutralised by the layer: using it *works* and hides the bug. Use `.md-icon`.
 - use an `md-*` class that no sheet declares (REGLA 10). A missing class does not
   error, it fails silently: the element renders with whatever it inherits and the
@@ -1229,10 +1231,10 @@ find one of these anywhere else, it is a mistake:
 
 | Where | Count | What | Why |
 | ---- | ---- | ---- | ---- |
-| `src/css/2-sys/elevation.css` | 51 | box characters `└ ─ │ ┌ ┘` | draws the six elevation levels |
+| `src/css/2-system-tokens/elevation.css` | 51 | box characters `└ ─ │ ┌ ┘` | draws the six elevation levels |
 | `README.md` | 213 | box characters | the directory tree and the layer diagram |
 | `README.md` | 3 | `✅` `❌` | the allowed/prohibited column in the layering table |
-| `src/css/3-comp/button.css` | 3 | `Δ` | the colour-pair delta in a contrast table |
+| `src/css/3-components/button.css` | 3 | `Δ` | the colour-pair delta in a contrast table |
 | `.opencode/skills/rdm-component-showroom/SKILL.md` | 111 | box characters | **this rule**, which has to quote the exceptions in order to name them |
 
 Every use except the last is load-bearing: the box characters **are** the tree, the emoji
@@ -1297,7 +1299,7 @@ Do not create a completely different showroom structure for individual component
 
 After implementation, verify:
 
-1. The showroom uses the real component from `src/src/css/3-comp/`.
+1. The showroom uses the real component from `src/src/css/3-components/`.
 2. No fake component implementation was created.
 3. No component logic was duplicated.
 4. All displayed variants actually exist.
@@ -1404,6 +1406,6 @@ IMPLEMENT
 ASK
 ```
 
-And never document a component that does not exist yet in `src/src/css/3-comp/`.
+And never document a component that does not exist yet in `src/src/css/3-components/`.
 
 The user's explicit confirmation of the showroom sections is mandatory before implementation.

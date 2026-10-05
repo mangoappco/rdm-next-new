@@ -1,0 +1,384 @@
+/* ==========================================================================
+   2-system-tokens/theme/theme.dark.css — ROLES DE COLOR, TEMA OSCURO
+   ==========================================================================
+
+   QUE ES ESTE ARCHIVO
+   -------------------
+   La contraparte exacta de theme.light.css. Declara los MISMOS roles, con
+   tonos DISTINTOS, para el tema oscuro.
+
+   ---------------------------------------------------------------------------
+   EL MECANISMO: prefers-color-scheme + [data-theme]
+   ---------------------------------------------------------------------------
+   Este archivo declara el tema oscuro en DOS bloques que se complementan:
+
+     BLOQUE 1 — por preferencia del sistema operativo
+         @media (prefers-color-scheme: dark) {
+           html:not([data-theme="light"]) { ... }
+         }
+
+       Se aplica cuando el SO esta en oscuro Y no hay un data-theme="light"
+       explicito que lo anule.
+
+     BLOQUE 2 — por eleccion explicita del usuario
+         html[data-theme="dark"] { ... }
+
+       Se aplica cuando el toggle de ManGo! App (o cualquier otro mecanismo)
+       escribe data-theme="dark" en el <html>, sin importar lo que diga
+       el sistema operativo.
+
+   ---------------------------------------------------------------------------
+   POR QUE DOS BLOQUES Y NO UNO
+   -----------------------------
+   Un solo bloque con @media no puede cubrir el caso "el usuario eligio
+   oscuro pero su SO esta en claro", porque el @media no se cumple y el
+   bloque no se aplica. Un solo bloque sin @media no puede cubrir "el SO
+   esta en oscuro y no hay eleccion explicita", porque no hay forma de
+   expresar "cuando no hay atributo" sin :not().
+
+   La combinacion de ambos bloques cubre los cuatro casos posibles:
+
+     Sin atributo + SO en oscuro  ->  bloque 1              ->  oscuro
+     Sin atributo + SO en claro   ->  (nada de este archivo) ->  claro
+     data-theme="dark"           ->  bloque 2              ->  oscuro
+     data-theme="light"          ->  (nada de este archivo) ->  claro
+
+   ---------------------------------------------------------------------------
+   POR QUE SE DUPLICAN LOS 38 TOKENS
+   ----------------------------------
+   Los 38 tokens aparecen DOS veces en este archivo: una dentro del
+   @media y otra en el bloque de atributo. Es el costo de expresar "este
+   tema aplica cuando el SO lo pide O cuando el usuario lo elige" en CSS
+   puro, sin JavaScript.
+
+   La alternativa es light-dark(), que resuelve lo mismo con UNA sola
+   declaracion por token, pero requiere navegador moderno (Chrome 123+,
+   Safari 17.5+, Firefox 120+). Si ManGo! App debe soportar navegadores
+   viejos, esta duplicacion es el precio de la compatibilidad.
+
+   IMPORTANTE: los dos bloques deben mantenerse IDENTICOS. Si se cambia
+   un tono en uno, debe cambiarse en el otro. La REGLA 7 de
+   tools/verify-tokens.ps1 verifica esta sincronizacion automaticamente.
+
+   ---------------------------------------------------------------------------
+   POR QUE SE INVIERTEN LOS TONOS
+   ---------------------------------------------------------------------------
+   Este es el concepto mas importante del tema oscuro, y donde mas errores
+   se cometen.
+
+   En tema CLARO:
+     primary = primary40  (tono 40 = oscuro, contrasta con fondo claro)
+     surface = neutral99   (tono 99 = casi blanco)
+
+   En tema OSCURO hay que INVERTIR la logica:
+     primary = primary80  (tono 80 = claro, contrasta con fondo oscuro)
+     surface = neutral10   (tono 10 = casi negro)
+
+   El ROL no cambia: sigue siendo "primary". Lo que cambia es que, para ser
+   legible sobre un fondo oscuro, el color tiene que ser claro.
+
+   Poner primary40 sobre un fondo oscuro daria un violeta casi negro, ilegible.
+   Por eso el tema oscuro NO es "el tema claro con los colores invertidos"
+   mecanicamente: cada rol tiene un tono elegido para funcionar sobre el
+   fondo oscuro.
+
+   ---------------------------------------------------------------------------
+   EL CALCULO DE LOS CONTAINERS DE SUPERFICIE EN OSCURO
+   ---------------------------------------------------------------------------
+   En tema claro, los containers van de neutral99 (claro) hacia neutral90
+   (ligeramente mas oscuro) segun su elevacion.
+
+   En tema oscuro la escalera se INVIERTE: van de neutral10 (casi negro)
+   hacia neutral22 (mas claro), porque sobre fondo oscuro, "mas elevado"
+   significa "mas claro", no "mas oscuro".
+
+   ========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   BLOQUE 1 — TEMA OSCURO POR PREFERENCIA DEL SISTEMA OPERATIVO
+   ---------------------------------------------------------------------------
+   Se aplica cuando:
+     - El sistema operativo esta en modo oscuro
+     - Y NO hay un data-theme="light" explicito que lo anule
+
+   El selector html:not([data-theme="light"]) excluye el caso en que el
+   usuario forzo claro desde el toggle, para que en ese caso gane el
+   bloque 2 de theme.light.css.
+   ------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) {
+    /* ------------------------------------------------------------------------
+       GRUPOS DE COLOR — primary, secondary, tertiary, error
+       --------------------------------------------------------------------- */
+
+    /* primary container — fondo atenuado para el boton tonal */
+    --md-sys-color-primary-container: var(--md-ref-palette-primary30);
+    /* primary — tono 80: claro, para contrastar sobre fondo oscuro */
+    --md-sys-color-primary: var(--md-ref-palette-primary80);
+    /* on primary container — texto claro sobre el fondo atenuado */
+    --md-sys-color-on-primary-container: var(--md-ref-palette-primary90);
+    /* on primary — tono 20: oscuro, para contrastar sobre el primary claro */
+    --md-sys-color-on-primary: var(--md-ref-palette-primary20);
+
+    /* secondary container — fondo atenuado secundario */
+    --md-sys-color-secondary-container: var(--md-ref-palette-secondary30);
+    /* secondary — tono 80 en oscuro, claro sobre fondo oscuro */
+    --md-sys-color-secondary: var(--md-ref-palette-secondary80);
+    /* on secondary container — texto claro sobre el fondo secundario atenuado */
+    --md-sys-color-on-secondary-container: var(--md-ref-palette-secondary90);
+    /* on secondary — tono 20 en oscuro */
+    --md-sys-color-on-secondary: var(--md-ref-palette-secondary20);
+
+    /* tertiary container — fondo atenuado de acento */
+    --md-sys-color-tertiary-container: var(--md-ref-palette-tertiary30);
+    /* tertiary — tono 80 en oscuro */
+    --md-sys-color-tertiary: var(--md-ref-palette-tertiary80);
+    /* on tertiary container — texto claro sobre el fondo terciario atenuado */
+    --md-sys-color-on-tertiary-container: var(--md-ref-palette-tertiary90);
+    /* on tertiary — tono 20 en oscuro */
+    --md-sys-color-on-tertiary: var(--md-ref-palette-tertiary20);
+
+    /* error container — fondo atenuado de error */
+    --md-sys-color-error-container: var(--md-ref-palette-error30);
+    /* error — tono 80 en oscuro, rojo claro legible sobre fondo oscuro */
+    --md-sys-color-error: var(--md-ref-palette-error80);
+    /* on error container — texto claro sobre el fondo de error atenuado */
+    --md-sys-color-on-error-container: var(--md-ref-palette-error90);
+    /* on error — tono 20 en oscuro */
+    --md-sys-color-on-error: var(--md-ref-palette-error20);
+
+    /* ------------------------------------------------------------------------
+       SUPERFICIES
+       En tema oscuro la escalera de containers va de neutral10 (casi negro)
+       hacia neutral22 (mas claro), porque "mas elevado" = "mas claro".
+       --------------------------------------------------------------------- */
+
+    /* surface variant — superficie alternativa, tono 30 en oscuro */
+    --md-sys-color-surface-variant: var(--md-ref-palette-neutral-variant30);
+    /* surface container highest — el mas elevado, el mas claro */
+    --md-sys-color-surface-container-highest: var(--md-ref-palette-neutral22);
+    /* surface container high — elevacion alta */
+    --md-sys-color-surface-container-high: var(--md-ref-palette-neutral17);
+    /* surface container — elevacion media, el mas usado */
+    --md-sys-color-surface-container: var(--md-ref-palette-neutral12);
+    /* surface container low — elevacion baja */
+    --md-sys-color-surface-container-low: var(--md-ref-palette-neutral10);
+    /* surface container lowest — tono 4, casi indistinguible del fondo */
+    --md-sys-color-surface-container-lowest: var(--md-ref-palette-neutral4);
+    /* surface bright — superficie clara en modo oscuro */
+    --md-sys-color-surface-bright: var(--md-ref-palette-neutral24);
+    /* surface dim — superficie apagada, tono 6 */
+    --md-sys-color-surface-dim: var(--md-ref-palette-neutral6);
+    /* surface — fondo base, tono 10, casi negro */
+    --md-sys-color-surface: var(--md-ref-palette-neutral6);
+    /* background — fondo de la pagina, igual a surface en este tema */
+    --md-sys-color-background: var(--md-ref-palette-neutral6);
+
+    /* ------------------------------------------------------------------------
+       CONTENIDO
+       En oscuro, el texto principal es CLARO (tono 90), no oscuro.
+       --------------------------------------------------------------------- */
+
+    /* on surface variant — tono 80 en oscuro */
+    --md-sys-color-on-surface-variant: var(--md-ref-palette-neutral-variant80);
+    /* on surface — tono 90 en oscuro: texto claro */
+    --md-sys-color-on-surface: var(--md-ref-palette-neutral90);
+    /* on background — tono 90 en oscuro */
+    --md-sys-color-on-background: var(--md-ref-palette-neutral90);
+
+    /* ------------------------------------------------------------------------
+       BORDES
+       --------------------------------------------------------------------- */
+
+    /* outline variant — tono 30 en oscuro */
+    --md-sys-color-outline-variant: var(--md-ref-palette-neutral-variant30);
+    /* outline — tono 60 en oscuro, mas claro para que se vea el borde */
+    --md-sys-color-outline: var(--md-ref-palette-neutral-variant60);
+
+    /* ------------------------------------------------------------------------
+       INVERSOS — en oscuro, "inverse" significa claro
+       --------------------------------------------------------------------- */
+
+    /* inverse surface — superficie clara inversa */
+    --md-sys-color-inverse-surface: var(--md-ref-palette-neutral90);
+    /* on inverse surface — texto oscuro sobre la superficie clara */
+    --md-sys-color-inverse-on-surface: var(--md-ref-palette-neutral20);
+    /* inverse primary — tono 40 en oscuro, el primary claro */
+    --md-sys-color-inverse-primary: var(--md-ref-palette-primary40);
+    /* scrim — oscurece el fondo detrás de un dialogo o menu */
+    --md-sys-color-scrim: var(--md-ref-palette-neutral0);
+
+    /* ------------------------------------------------------------------------
+       SHADOW Y SURFACE TINT
+       --------------------------------------------------------------------- */
+
+    /* shadow - color de las sombras */
+    --md-sys-color-shadow: var(--md-ref-palette-neutral0);
+
+    /* shadow rgb - el MISMO color, en tripletos.
+       Necesario porque las sombras necesitan opacidad, y la opacidad solo se
+       puede aplicar a un color en formato rgb(). Sin este token, el rgba
+       quedaria quemado dentro de la geometria en 1-reference-tokens/shadow.css, que es
+       exactamente lo que la arquitectura prohibe: la primitiva no puede
+       decidir el color, eso es del tema. */
+    --md-sys-color-shadow-rgb: 0 0 0;
+    /* surface tint — tinte que se aplica a superficies elevadas */
+    --md-sys-color-surface-tint: var(--md-ref-palette-primary80);
+    /* surface tint color — color base del tinte */
+
+    /* Grado del trazo de los iconos. -25 en oscuro, y es el valor que da
+       M3: "-25 for a light icon on a dark background". Compensa el
+       visual bleed: el glifo esta dibujado para fondo claro, y sobre
+       fondo oscuro el ojo lo lee mas grueso de lo que es.
+       Ver 1-reference-tokens/iconfont.css. */
+    --md-sys-typescale-icon-grade: var(--md-ref-icon-grade-dark);
+
+    /* Declara que los controles nativos del navegador deben verse en oscuro.
+       Afecta scrollbars, formularios del sistema y el fondo del canvas. */
+    color-scheme: dark;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   BLOQUE 2 — TEMA OSCURO POR ELECCION EXPLICITA
+   ---------------------------------------------------------------------------
+   Se aplica cuando el atributo data-theme="dark" esta presente en el
+   <html>, sin importar lo que diga el sistema operativo.
+
+   Es el bloque que usa el toggle de ManGo! App cuando el usuario elige
+   "oscuro" manualmente. Sin este bloque, un usuario con SO en claro no
+   podria forzar el tema oscuro.
+
+   Los 38 tokens son IDENTICOS a los del bloque 1. Ver la nota de
+   sincronizacion en la cabecera de este archivo.
+   ------------------------------------------------------------------------- */
+html[data-theme="dark"] {
+  /* ------------------------------------------------------------------------
+     GRUPOS DE COLOR — primary, secondary, tertiary, error
+     --------------------------------------------------------------------- */
+
+  /* primary container — fondo atenuado para el boton tonal */
+  --md-sys-color-primary-container: var(--md-ref-palette-primary30);
+  /* primary — tono 80: claro, para contrastar sobre fondo oscuro */
+  --md-sys-color-primary: var(--md-ref-palette-primary80);
+  /* on primary container — texto claro sobre el fondo atenuado */
+  --md-sys-color-on-primary-container: var(--md-ref-palette-primary90);
+  /* on primary — tono 20: oscuro, para contrastar sobre el primary claro */
+  --md-sys-color-on-primary: var(--md-ref-palette-primary20);
+
+  /* secondary container — fondo atenuado secundario */
+  --md-sys-color-secondary-container: var(--md-ref-palette-secondary30);
+  /* secondary — tono 80 en oscuro, claro sobre fondo oscuro */
+  --md-sys-color-secondary: var(--md-ref-palette-secondary80);
+  /* on secondary container — texto claro sobre el fondo secundario atenuado */
+  --md-sys-color-on-secondary-container: var(--md-ref-palette-secondary90);
+  /* on secondary — tono 20 en oscuro */
+  --md-sys-color-on-secondary: var(--md-ref-palette-secondary20);
+
+  /* tertiary container — fondo atenuado de acento */
+  --md-sys-color-tertiary-container: var(--md-ref-palette-tertiary30);
+  /* tertiary — tono 80 en oscuro */
+  --md-sys-color-tertiary: var(--md-ref-palette-tertiary80);
+  /* on tertiary container — texto claro sobre el fondo terciario atenuado */
+  --md-sys-color-on-tertiary-container: var(--md-ref-palette-tertiary90);
+  /* on tertiary — tono 20 en oscuro */
+  --md-sys-color-on-tertiary: var(--md-ref-palette-tertiary20);
+
+  /* error container — fondo atenuado de error */
+  --md-sys-color-error-container: var(--md-ref-palette-error30);
+  /* error — tono 80 en oscuro, rojo claro legible sobre fondo oscuro */
+  --md-sys-color-error: var(--md-ref-palette-error80);
+  /* on error container — texto claro sobre el fondo de error atenuado */
+  --md-sys-color-on-error-container: var(--md-ref-palette-error90);
+  /* on error — tono 20 en oscuro */
+  --md-sys-color-on-error: var(--md-ref-palette-error20);
+
+  /* ------------------------------------------------------------------------
+     SUPERFICIES
+     En tema oscuro la escalera de containers va de neutral10 (casi negro)
+     hacia neutral22 (mas claro), porque "mas elevado" = "mas claro".
+     --------------------------------------------------------------------- */
+
+  /* surface variant — superficie alternativa, tono 30 en oscuro */
+  --md-sys-color-surface-variant: var(--md-ref-palette-neutral-variant30);
+  /* surface container highest — el mas elevado, el mas claro */
+  --md-sys-color-surface-container-highest: var(--md-ref-palette-neutral22);
+  /* surface container high — elevacion alta */
+  --md-sys-color-surface-container-high: var(--md-ref-palette-neutral17);
+  /* surface container — elevacion media, el mas usado */
+  --md-sys-color-surface-container: var(--md-ref-palette-neutral12);
+  /* surface container low — elevacion baja */
+  --md-sys-color-surface-container-low: var(--md-ref-palette-neutral10);
+  /* surface container lowest — tono 4, casi indistinguible del fondo */
+  --md-sys-color-surface-container-lowest: var(--md-ref-palette-neutral4);
+  /* surface bright — superficie clara en modo oscuro */
+  --md-sys-color-surface-bright: var(--md-ref-palette-neutral24);
+  /* surface dim — superficie apagada, tono 6 */
+  --md-sys-color-surface-dim: var(--md-ref-palette-neutral6);
+  /* surface — fondo base, tono 10, casi negro */
+  --md-sys-color-surface: var(--md-ref-palette-neutral6);
+  /* background — fondo de la pagina, igual a surface en este tema */
+  --md-sys-color-background: var(--md-ref-palette-neutral6);
+
+  /* ------------------------------------------------------------------------
+     CONTENIDO
+     En oscuro, el texto principal es CLARO (tono 90), no oscuro.
+     --------------------------------------------------------------------- */
+
+  /* on surface variant — tono 80 en oscuro */
+  --md-sys-color-on-surface-variant: var(--md-ref-palette-neutral-variant80);
+  /* on surface — tono 90 en oscuro: texto claro */
+  --md-sys-color-on-surface: var(--md-ref-palette-neutral90);
+  /* on background — tono 90 en oscuro */
+  --md-sys-color-on-background: var(--md-ref-palette-neutral90);
+
+  /* ------------------------------------------------------------------------
+     BORDES
+     --------------------------------------------------------------------- */
+
+  /* outline variant — tono 30 en oscuro */
+  --md-sys-color-outline-variant: var(--md-ref-palette-neutral-variant30);
+  /* outline — tono 60 en oscuro, mas claro para que se vea el borde */
+  --md-sys-color-outline: var(--md-ref-palette-neutral-variant60);
+
+  /* ------------------------------------------------------------------------
+     INVERSOS — en oscuro, "inverse" significa claro
+     --------------------------------------------------------------------- */
+
+  /* inverse surface — superficie clara inversa */
+  --md-sys-color-inverse-surface: var(--md-ref-palette-neutral90);
+  /* on inverse surface — texto oscuro sobre la superficie clara */
+  --md-sys-color-inverse-on-surface: var(--md-ref-palette-neutral20);
+  /* inverse primary — tono 40 en oscuro, el primary claro */
+  --md-sys-color-inverse-primary: var(--md-ref-palette-primary40);
+  /* scrim — oscurece el fondo detrás de un dialogo o menu */
+  --md-sys-color-scrim: var(--md-ref-palette-neutral0);
+
+  /* ------------------------------------------------------------------------
+     SHADOW Y SURFACE TINT
+     --------------------------------------------------------------------- */
+
+  /* shadow - color de las sombras */
+  --md-sys-color-shadow: var(--md-ref-palette-neutral0);
+
+  /* shadow rgb - el MISMO color, en tripletos.
+     Necesario porque las sombras necesitan opacidad, y la opacidad solo se
+     puede aplicar a un color en formato rgb(). Sin este token, el rgba
+     quedaria quemado dentro de la geometria en 1-reference-tokens/shadow.css, que es
+     exactamente lo que la arquitectura prohibe: la primitiva no puede
+     decidir el color, eso es del tema. */
+  --md-sys-color-shadow-rgb: 0 0 0;
+  /* surface tint — tinte que se aplica a superficies elevadas */
+  --md-sys-color-surface-tint: var(--md-ref-palette-primary80);
+  /* surface tint color — color base del tinte */
+
+  /* Grado del trazo de los iconos. -25 en oscuro, y es el valor que da
+     M3: "-25 for a light icon on a dark background". Compensa el visual
+     bleed: el glifo esta dibujado para fondo claro, y sobre fondo oscuro
+     el ojo lo lee mas grueso de lo que es. Ver 1-reference-tokens/iconfont.css. */
+  --md-sys-typescale-icon-grade: var(--md-ref-icon-grade-dark);
+
+  /* Declara que los controles nativos del navegador deben verse en oscuro.
+     Afecta scrollbars, formularios del sistema y el fondo del canvas. */
+  color-scheme: dark;
+}

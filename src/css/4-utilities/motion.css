@@ -1,0 +1,73 @@
+/* ==========================================================================
+   4-utilities/motion.css — CLASES UTILITARIAS DE MOVIMIENTO (Capa 4)
+   ==========================================================================
+
+   QUE ES ESTE ARCHIVO
+   -------------------
+   CAPA 4 del sistema. Expone los roles de movimiento como atajos de
+   transition. Son para prototipo y para el HTML del showroom.
+
+   ORIGEN
+   ------
+   Movido desde 2-system-tokens/motion.css en la auditoria M3. Las clases
+   no cambiaron: solo su capa. Los roles --md-sys-motion-duration-* y
+   --md-sys-motion-easing-* siguen en 2-system-tokens/motion.css.
+
+   POR QUE HAY TANTAS Y NO UNA SOLA
+   -------------------------------
+   Una clase unica tipo .md-motion con una sola transicion no serviria de
+   nada: cada elemento necesita una combinacion distinta de duracion y
+   curva. Estas clases cubren las combinaciones que M3 usa de verdad, para
+   no obligar a escribir la propiedad completa en el HTML.
+
+   RECOMENDACION DE USO
+   -------------------
+   Para componentes reales, escribir la transicion con los roles en
+   3-components/. Estas clases son un atajo, no la via principal, igual
+   que en 4-utilities/color.css.
+
+   OJO: estas clases usan `transition-property: all`, que transiciona
+   cualquier propiedad. Eso es comodo en un prototipo pero puede ser
+   riesgoso en produccion (transiciona tambien el layout, que no se anima
+   bien). Para componentes, conviene nombrar las propiedades
+   explicitamente.
+   ========================================================================== */
+
+/* --- Cambios de estado: respuesta inmediata --- */
+.md-motion-short1 {
+  transition-duration: var(--md-sys-motion-duration-short1);
+  transition-timing-function: var(--md-sys-motion-easing-standard);
+}
+.md-motion-short2 {
+  transition-duration: var(--md-sys-motion-duration-short2);
+  transition-timing-function: var(--md-sys-motion-easing-standard);
+}
+.md-motion-short3 {
+  transition-duration: var(--md-sys-motion-duration-short3);
+  transition-timing-function: var(--md-sys-motion-easing-standard);
+}
+.md-motion-short4 {
+  transition-duration: var(--md-sys-motion-duration-short4);
+  transition-timing-function: var(--md-sys-motion-easing-standard);
+}
+
+/* --- Entrada y salida de elementos --- */
+.md-motion-medium2-in {
+  transition-duration: var(--md-sys-motion-duration-medium2);
+  transition-timing-function: var(--md-sys-motion-easing-standard-decelerate);
+}
+.md-motion-medium2-out {
+  transition-duration: var(--md-sys-motion-duration-medium2);
+  transition-timing-function: var(--md-sys-motion-easing-standard-accelerate);
+}
+.md-motion-long4-in {
+  transition-duration: var(--md-sys-motion-duration-long4);
+  transition-timing-function: var(--md-sys-motion-easing-emphasized-decelerate);
+}
+
+/* --- Movimiento continuo --- */
+.md-motion-linear {
+  animation-duration: var(--md-sys-motion-duration-extra-long4);
+  animation-timing-function: var(--md-sys-motion-easing-linear);
+  animation-iteration-count: infinite;
+}
