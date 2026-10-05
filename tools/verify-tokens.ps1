@@ -9,7 +9,7 @@
     Las reglas que verifica:
 
       REGLA 1  Sin valores crudos fuera de 1-ref
-               Ni #HEX, ni px, ni ms, ni rem sueltos en 2-sys y 3-comp.
+               Ni #HEX, ni px, ni ms/s, ni rem, ni %, ni deg, ni numeros sin unidad sueltos en 2-sys y 3-comp.
 
       REGLA 2  Direccion de las dependencias
                3-comp no puede leer 1-ref (salto de capa prohibido).
@@ -280,11 +280,20 @@ Write-Host ''
 # ============================================================================
 # REGLA 1 - Sin valores crudos fuera de 1-ref
 # ============================================================================
+#
+# Exenciones deliberadas (valores-identidad, no decisiones de tema):
+#   0 y 1 sin unidad (inset: 0, border: 0, opacity: 0/1, line-height: 1)
+#   0%, 50% y 100% (centrado con translate(-50%), full-bleed con 100%)
+# Un 0 nunca cambiara por tema; un 37% o un opacity 0.3, si.
 
 $patternHex   = '#[0-9a-fA-F]{3,8}\b'
 $patternPx    = '(?<![\w-])\d+\.?\d*px'
 $patternMs    = '(?<![\w-])\d+\.?\d*ms'
 $patternRem   = '(?<![\w-])\d+\.?\d*rem'
+$patternS     = '(?<![\w-])\d+\.?\d*s\b'
+$patternPct   = '(?<![\w-])(?!(?:0|50|100)(?:\.0+)?%)\d+\.?\d*%'
+$patternDeg   = '(?<![\w-])\d+\.?\d*deg'
+$patternNum   = ':\s*(?!(?:0|1)(?:\.0+)?\s*[;,\)])\d+\.?\d*\s*[;,\)]'
 
 foreach ($file in $files) {
     $layer = Get-Layer $file.CssRelative
@@ -303,7 +312,11 @@ foreach ($file in $files) {
             @{ Pattern = $patternHex; Name = 'color #HEX' },
             @{ Pattern = $patternPx;  Name = 'medida px' },
             @{ Pattern = $patternMs;  Name = 'duracion ms' },
-            @{ Pattern = $patternRem; Name = 'medida rem' }
+            @{ Pattern = $patternRem; Name = 'medida rem' },
+            @{ Pattern = $patternS;   Name = 'duracion s' },
+            @{ Pattern = $patternPct; Name = 'porcentaje %' },
+            @{ Pattern = $patternDeg; Name = 'angulo deg' },
+            @{ Pattern = $patternNum; Name = 'numero sin unidad' }
         )) {
             foreach ($m in [regex]::Matches($probe, $check.Pattern)) {
                 Add-Issue -Rule 'REGLA 1' -File $rel -Line ($i + 1) `
