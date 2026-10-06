@@ -737,6 +737,10 @@ foreach ($tf in $themeFiles) {
 # esta fuera de src/css/, asi que sin esta seccion showroom/assets/showroom.css
 # no lo lee nadie. Y no se extiende a las capas de la libreria: alli manda
 # REGLA 1 a REGLA 7.
+#
+# Linea base del reinicio: con cero <table> en el showroom, el formato (a) y
+# los specimens (b) se omiten; el contraste (c) se mide siempre porque lee
+# los roles del sistema, no la hoja del showroom.
 # ============================================================================
 
 $showroomRoot = Join-Path $ProjectRoot 'showroom'
@@ -888,6 +892,10 @@ else {
         }
     }
 
+    # Sin tablas no hay formato que exigir (linea base del reinicio: el
+    # showroom es un index pelado). El contraste de arriba si se mide
+    # siempre, porque lee los roles del sistema y no la hoja del showroom.
+    if ($srTables -gt 0) {
     # La receta del formato v0.82, comprobada por propiedad. Cada una es un
     # requisito que se puede violar sin que la tabla se rompa, asi que ninguno
     # se deduce de los otros.
@@ -948,6 +956,7 @@ else {
         Add-Issue -Rule 'REGLA 8' -File 'showroom/assets/showroom.css' -Line 0 `
                   -Message 'no hay specimens (sr-spec-*): las tablas de tokens listarian valores sin mostrarlos' `
                   -Snippet ''
+    }
     }
 }
 

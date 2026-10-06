@@ -288,12 +288,13 @@
 /* ==========================================================================
    CAPA 3 — COMPONENTES
    --------------------------------------------------------------------------
-   Un archivo por componente. Cada uno consume UNICAMENTE tokens de la
-   Capa 2 (REGLA 2) y nunca toca 1-reference-tokens/ directamente.
+   Capa vacia (linea base del reinicio). Un archivo por componente futuro.
+   Cada uno consume UNICAMENTE tokens de la Capa 2 (REGLA 2) y nunca toca
+   1-reference-tokens/ directamente.
 
-   El primero es divider: dos tokens, sin variaciones de tipo. Es el mas
-   simple del catalogo y sirve para probar el contrato de capas con un
-   archivo real. Se agregan en 3-components/index.css a medida que se
+   Doctrina de reconstruccion: fundaciones primero (vistas documentales
+   de color / tipografia / elevacion en el showroom) y despues
+   componentes. Se agregan en 3-components/index.css a medida que se
    implementen, uno por vez.
    ========================================================================== */
 @import url("3-components/index.css") layer(comp);
@@ -338,11 +339,13 @@
 /* ==========================================================================
    FIN DEL ORQUESTADOR
    ==========================================================================
-   5 imports que expanden a 33 hojas: 1 de reset, 12 de referencia, 9 de
-   sistema (7 roles + 2 temas), 3 componentes y 8 utilidades, mas los 4
+   5 imports que expanden a 30 hojas: 1 de reset, 12 de referencia, 9 de
+   sistema (7 roles + 2 temas), 0 componentes y 8 utilidades, mas los 4
    indices. El sistema de tokens esta completo y la Capa 4 reune todas las
    clases atomicas.
 
-   Para empezar a construir componentes, el siguiente paso es
-   3-components/, que se agrega en 3-components/index.css.
+   Linea base del reinicio: la Capa 3 esta vacia y el showroom es un index
+   pelado. La reconstruccion empieza por las fundaciones (color /
+   tipografia / elevacion) y sigue con componentes, uno por vez en
+   3-components/index.css.
    ========================================================================== */
