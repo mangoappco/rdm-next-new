@@ -213,6 +213,25 @@
      decision de diseno.
      ------------------------------------------------------------------------ */
    /* ------------------------------------------------------------------------
+     BOX-SIZING GLOBAL — border-box en todo el documento
+     ------------------------------------------------------------------------
+     Sin esto, padding y borde SUMAN por fuera de la dimension declarada
+     (content-box del navegador): un body con min-height: 100vh mas padding
+     mide 100vh + padding y aparece una barra con vacio debajo. Medido en
+     el showroom al anadir la cuneta del lienzo.
+
+     Con border-box, la dimension declarada INCLUYE padding y borde: lo que
+     se escribe es lo que se mide. Los componentes ya lo pedian uno por uno
+     (.md-button, .md-icon-button, .md-divider); globalizarlo elimina la
+     repeticion sin cambiarles el comportamiento.
+     --------------------------------------------------------------------- */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  /* ------------------------------------------------------------------------
      ENCABEZADOS — sin margenes
      ------------------------------------------------------------------------
      El navegador aplica a los h1..h6 un margen calculado que NO pertenece a

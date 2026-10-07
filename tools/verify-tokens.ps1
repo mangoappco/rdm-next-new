@@ -91,6 +91,11 @@
                Solo se miran las clases md-*, no las sr-*: esas son el chrome
                del propio showroom y viven en su capa, no en la libreria.
 
+      REGLA 11 El snippet copiable es identico a su specimen
+                Cada pagina de componente son parejas specimen + codigo.
+                Compara el innerHTML de .sr-specimen contra el texto de su
+                pre.sr-code desescapado: si divergen, lo copiable miente.
+
 .PARAMETER Quiet
     No muestra el detalle de cada archivo que pasa. Solo el resumen.
 
@@ -1093,6 +1098,51 @@ foreach ($html in $htmlFiles) {
     }
 }
 
+# ============================================================================
+# REGLA 11 - El snippet copiable es identico a su specimen
+# ---------------------------------------------------------------------------
+# Cada pagina de componente son parejas specimen + codigo: lo renderizado
+# en .sr-specimen y el texto de su pre.sr-code tienen que ser IDENTICOS.
+# Si el autor edita uno y olvida el otro, la libreria miente en silencio:
+# el lector copia un markup que no es el que ve.
+#
+# Se compara el innerHTML del specimen contra el snippet desescapado,
+# normalizando solo el espacio ENTRE etiquetas (el texto interior se
+# respeta tal cual). Incluye showroom/templates/: el template es el ejemplo
+# de la convencion y tambien tiene que cumplirla.
+#
+# Limites: no soporta .sr-specimen anidados; el boton [data-copy] no se
+# verifica (showroom.js lo cablea al <pre> hermano anterior).
+# ============================================================================
+
+foreach ($html in $htmlFiles) {
+    $raw = [IO.File]::ReadAllText($html.FullName)
+    $rel = Get-RelPath $html.FullName $ProjectRoot
+
+    # Sin comentarios: el template documenta la convencion en un comentario
+    # que menciona las clases, y no es una pareja.
+    $body = [regex]::Replace($raw, '(?s)<!--.*?-->', '')
+
+    # Un specimen por pareja. El tempered greedy permite divs interiores
+    # pero no un specimen anidado dentro de otro.
+    $pairPattern = '<div class="sr-specimen">((?:(?!<div class="sr-specimen">)[\s\S])*)</div>\s*<pre class="sr-code"><code>([\s\S]*?)</code>'
+
+    foreach ($m in [regex]::Matches($body, $pairPattern)) {
+        $rendered = ($m.Groups[1].Value -replace '>\s+<', '><').Trim()
+
+        $snippet = $m.Groups[2].Value -replace '&lt;', '<' -replace '&gt;', '>' `
+                                       -replace '&quot;', '"' -replace '&#39;', "'"
+        $snippet = ($snippet -replace '&amp;', '&' -replace '>\s+<', '><').Trim()
+
+        if ($rendered -ne $snippet) {
+            $preview = $snippet.Substring(0, [Math]::Min(120, $snippet.Length))
+            Add-Issue -Rule 'REGLA 11' -File $rel -Line 0 `
+                      -Message 'el snippet no es identico a su specimen: lo copiable diverge de lo renderizado' `
+                      -Snippet $preview
+        }
+    }
+}
+
 Write-Host '  Reglas aplicadas:' -ForegroundColor DarkGray
 Write-Host '    REGLA 1  sin valores crudos fuera de 1-reference-tokens'
 Write-Host '    REGLA 2  direccion de dependencias entre capas'
@@ -1104,10 +1154,11 @@ Write-Host '    REGLA 7  sincronizacion de bloques de tema'
 Write-Host '    REGLA 8  formato, specimens y contraste de las tablas de tokens'
 Write-Host '    REGLA 9  los iconos se piden con .md-icon, no con la clase de Google'
 Write-Host '    REGLA 10 toda clase md-* que usa el showroom existe en src/css'
+Write-Host '    REGLA 11 el snippet copiable es identico a su specimen'
 Write-Host ''
 
 if ($script:Issues.Count -eq 0) {
-    Write-Host '  OK - La arquitectura se respeta en las 10 reglas.' -ForegroundColor Green
+    Write-Host '  OK - La arquitectura se respeta en las 11 reglas.' -ForegroundColor Green
     Write-Host ''
     exit 0
 }

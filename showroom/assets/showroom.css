@@ -11,7 +11,163 @@
    ========================================================================== */
 
 @layer showroom {
-  :root {
-    /* Sin ritmo propio hasta que la primera vista lo pida. */
+  /* ------------------------------------------------------------------------
+     LA PAGINA
+     --------------------------------------------------------------------------
+     Hoja surface centrada sobre el lienzo background: max-width de lectura,
+     padding de un paso de spacing en los cuatro lados y superficie propia.
+     Sin escala de ritmo todavia: un solo padding hasta que haya un segundo
+     bloque que ordenar. Lee primitivas de 1-reference-tokens y roles de
+     2-system-tokens; ningun valor crudo, ningun selector .md-*.
+     --------------------------------------------------------------------- */
+  /* ------------------------------------------------------------------------
+     EL LIENZO
+     --------------------------------------------------------------------------
+     Cuneta alrededor de la hoja: con viewport menor a 720px los margenes
+     auto de .sr-page computan a 0 y el borde tocaria el filo de la
+     ventana. Este padding lo impide en los cuatro lados. Es decision de
+     la vista, por eso vive aqui y no en el sistema.
+     --------------------------------------------------------------------- */
+  body {
+    padding: var(--md-ref-spacing-200);
+  }
+
+  /* ------------------------------------------------------------------------
+     EL ENCABEZADO
+     --------------------------------------------------------------------------
+     Unidad titulo + bajada: apilados en vertical con el gap minimo para
+     que se lean como una sola cosa. Sin estilos de bajada todavia: nacen
+     con el primer subtitulo real. Sin separacion contra lo que sigue: el
+     aire entre bloques lo decidira el gap de .sr-page cuando haya un
+     segundo bloque.
+     --------------------------------------------------------------------- */
+  .sr-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--md-ref-spacing-200);
+  }
+
+  .sr-page {
+    display: flex;
+    flex-direction: column;
+    gap: var(--md-ref-spacing-200);
+    max-width: calc(var(--md-ref-spacing-900) * 10);
+    margin-inline: auto;
+    padding: var(--md-ref-spacing-200);
+    background-color: var(--md-sys-color-surface);
+    color: var(--md-sys-color-on-surface);
+    border: var(--md-sys-shape-stroke-thin) solid var(--md-sys-color-outline-variant);
+    border-radius: var(--md-sys-shape-corner-large);
+  }
+
+  /* ------------------------------------------------------------------------
+     LA BARRA (volver + tema)
+     --------------------------------------------------------------------------
+     Fila con el enlace al indice a la izquierda y el toggle de tema a la
+     derecha, enfrentados. Sin gap propio: el aire lo pone el gap del
+     .sr-header al que pertenece.
+     --------------------------------------------------------------------- */
+  .sr-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* Boton de texto minimo, igual que .sr-copy: color primary, sin relleno,
+     con el tipo de etiqueta del sistema. */
+  .sr-toggle {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--md-sys-color-primary);
+    font: var(--md-sys-typescale-label-large);
+    cursor: pointer;
+  }
+
+  /* ------------------------------------------------------------------------
+     LA SECCION (pareja specimen + codigo)
+     --------------------------------------------------------------------------
+     Columna con un solo gap: el aire entre h2, specimen, pre y boton es
+     el mismo en los tres pares, sin margenes por bloque. El aire SOBRE el
+     h2 (separacion entre bloques de la pagina) ya lo pone el gap de
+     .sr-page; aqui solo corre el aire interno de la pareja.
+     --------------------------------------------------------------------- */
+  .sr-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--md-ref-spacing-200);
+  }
+
+  /* ------------------------------------------------------------------------
+     EL ESCENARIO DEL SPECIMEN
+     --------------------------------------------------------------------------
+     El contenedor ya existia como gancho de la REGLA 11; ahora tambien
+     viste: superficie un escalon sobre la hoja, padding y contenido
+     centrado, para que cada variante se evalue en igualdad. Sigue siendo
+     chrome (no se copia al snippet) y la REGLA 11 sigue comparando solo
+     el innerHTML, no estos estilos.
+     --------------------------------------------------------------------- */
+  .sr-specimen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--md-ref-spacing-300);
+    background-color: var(--md-sys-color-surface-container-low);
+    border-radius: var(--md-sys-shape-corner-medium);
+  }
+
+  /* ------------------------------------------------------------------------
+     EL BLOQUE DE CODIGO
+     --------------------------------------------------------------------------
+     Superficie propia con radio y borde, como una tarjeta de datos: fondo
+     de maxima profundidad para separarse de la hoja, scroll horizontal
+     cuando el markup no cabe, y <code> en monospace explicito (el reset
+     da sans al <code>, asi que sin esto los tokens se leerian en
+     proporcional). El resaltado lo pinta showroom.js con .tok-*.
+     --------------------------------------------------------------------- */
+  .sr-code {
+    margin: 0;
+    padding: var(--md-ref-spacing-200);
+    background-color: var(--md-sys-color-surface-container-lowest);
+    color: var(--md-sys-color-on-surface);
+    border: var(--md-sys-shape-stroke-thin) solid var(--md-sys-color-outline-variant);
+    border-radius: var(--md-sys-shape-corner-small);
+    overflow-x: auto;
+    font-family: monospace;
+    font-size: var(--md-ref-typescale-body-medium-size);
+  }
+
+  /* El <code> necesita su propia declaracion: el reset le asigna la sans
+     directamente, y una declaracion directa gana siempre a la herencia del
+     <pre>, sin importar las capas. Mismo caso que documentaba .sr-table
+     code en el sistema viejo. */
+  .sr-code code {
+    font-family: monospace;
+  }
+
+  /* Colores del resaltado. Roles del sistema para sobrevivir al tema:
+     etiqueta = primary, atributo = secondary, string = tertiary,
+     comentario = on-surface-variant (voz apagada de documentacion). */
+  .tok-tag { color: var(--md-sys-color-primary); }
+  .tok-attr { color: var(--md-sys-color-secondary); }
+  .tok-str { color: var(--md-sys-color-tertiary); }
+  .tok-com { color: var(--md-sys-color-on-surface-variant); }
+
+  /* ------------------------------------------------------------------------
+     EL BOTON COPIAR
+     --------------------------------------------------------------------------
+     Boton de texto minimo: color primary, sin relleno, con el tipo de
+     etiqueta del sistema. Va justo despues de cada <pre> y copia su
+     <code> via showroom.js. El feedback ("Copiado") tambien lo pone el
+     JS, asi que aqui no hay estados.
+     --------------------------------------------------------------------- */
+  .sr-copy {
+    align-self: flex-end;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--md-sys-color-primary);
+    font: var(--md-sys-typescale-label-large);
+    cursor: pointer;
   }
 }
