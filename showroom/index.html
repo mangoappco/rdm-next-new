@@ -9,13 +9,45 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
   <link rel="stylesheet" href="../src/css/main.css">
   <link rel="stylesheet" href="assets/showroom.css">
+  <script src="assets/showroom.js"></script>
 </head>
 <body class="md-bg-background md-text-on-background md-type-body-medium">
+  <!-- MAIN: inicio (hoja .sr-page) -->
   <main class="sr-page">
+
+    <!-- HEADER: inicio (titulo + descripcion) -->
     <header class="sr-header">
+      <div class="sr-bar">
+        <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
+      </div>
       <h1 class="md-type-display-large">RDM ManGo! App</h1>
-      <p class="md-type-body-large">Descripcion de la aplicacion en una o dos frases.</p>
+      <p class="md-type-body-large">Reglas de diseño para ManGo! App.</p>
     </header>
+    <!-- HEADER: fin -->
+
+    <!-- INDICE: inicio (una entrada por vista: nombre + descripcion) -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Componentes primitivos</h2>
+
+      <div class="sr-entry">
+        <p><a class="md-type-title-medium" href="components/typography.html">Typography</a></p>
+        <p class="md-type-body-medium">Utiliza la tipografía para que el contenido sea legible y visualmente atractivo.</p>
+      </div>
+
+      <div class="sr-entry">
+        <p><a class="md-type-title-medium" href="components/...">Otro componente</a></p>
+        <p class="md-type-body-medium">Descripción del otro componente.</p>
+      </div>
+
+      <div class="sr-entry">
+        <p><a class="md-type-title-medium" href="components/...">Otro componente</a></p>
+        <p class="md-type-body-medium">Descripción del otro componente.</p>
+      </div>
+
+    </section>
+    <!-- INDICE: fin -->
+
   </main>
+  <!-- MAIN: fin -->
 </body>
 </html>

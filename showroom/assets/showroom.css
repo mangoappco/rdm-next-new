@@ -73,6 +73,12 @@
     justify-content: space-between;
   }
 
+  /* Hijo unico a la derecha: el indice no tiene enlace de vuelta, asi que
+     su barra viaja solo con el toggle. */
+  .sr-bar > :only-child {
+    margin-inline-start: auto;
+  }
+
   /* Boton de texto minimo, igual que .sr-copy: color primary, sin relleno,
      con el tipo de etiqueta del sistema. */
   .sr-toggle {
@@ -96,6 +102,19 @@
     display: flex;
     flex-direction: column;
     gap: var(--md-ref-spacing-200);
+  }
+
+  /* ------------------------------------------------------------------------
+     LA ENTRADA DEL INDICE (nombre + descripcion)
+     --------------------------------------------------------------------------
+     Unidad titulo + prosa, como el header: gap minimo para que se lean
+     como una sola cosa. El aire ENTRE entradas lo pone el gap de
+     .sr-section, que es aire de bloques y va un paso mas arriba.
+     --------------------------------------------------------------------- */
+  .sr-entry {
+    display: flex;
+    flex-direction: column;
+    gap: var(--md-ref-spacing-100);
   }
 
   /* ------------------------------------------------------------------------
