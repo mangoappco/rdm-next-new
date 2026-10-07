@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Color — RDM ManGo! App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+  <link rel="stylesheet" href="../../src/css/main.css">
+  <link rel="stylesheet" href="../assets/showroom.css">
+  <script src="../assets/showroom.js"></script>
+</head>
+
+<!--
+  COMO USAR ESTE TEMPLATE (copiar a showroom/components/color.html):
+  1. Cambiar <title> y el h1 si hace falta; la descripcion ya dice la
+     doctrina de la vista.
+  2. Duplicar el bloque PAREJA por cada par fondo+texto: section > h2 +
+     .sr-specimen + pre.sr-code + button.
+  3. La muestra es UNICAMENTE utilidades (md-bg-* + md-text-*) con los
+     nombres de rol como texto. NADA de showroom sobre el color.
+  4. PROHIBIDO --md-ref-palette-*, #HEX y swatches fijos en esta vista:
+     esta pagina muestra ROLES, no paleta. Si manana el Theme Builder
+     cambia la paleta, todo lo de aqui se mueve solo. REGLA 12 lo
+     comprueba: fuga = rojo.
+  5. El snippet lleva SOLO el div de utilidades, sin wrappers: es lo que
+     se pega en ManGo! App. Lo renderizado y su snippet tienen que ser
+     identicos (REGLA 11).
+  6. El boton va justo despues de su <pre>: copia ese bloque y ningun otro.
+  7. No anidar .sr-specimen dentro de otro: REGLA 11 no lo soporta.
+
+  PENDIENTE (parejas de borde): outline y outline-variant se documentan
+  con md-border-* sobre superficie, pero un borde sin grosor ni estilo no
+  se dibuja (border-style: none inicial) y la geometria no puede venir de
+  una clase sr-* sin colarse en el snippet ni romper REGLA 11. La geometria
+  del marco de linea se decide al construir la vista real, no aqui.
+-->
+
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <main class="sr-page">
+
+    <!-- HEADER: inicio (barra + titulo + descripcion) -->
+    <header class="sr-header">
+      <div class="sr-bar">
+        <p class="md-type-body-medium"><a href="../index.html">RDM ManGo! App</a></p>
+        <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
+      </div>
+      <h1 class="md-type-display-large">Color</h1>
+      <p class="md-type-body-large">Existen 26 roles de color estándar organizados en seis grupos: primario, secundario, terciario, error, superficie y contorno.</p>
+    </header>
+    <!-- HEADER: fin -->
+
+    <!-- PAREJA: duplicar desde aqui por cada par fondo+texto.
+         Cada pareja es un <section> con su h2 (agrupacion tematica).
+         Dentro, en orden: h2 (nombre) -> .sr-specimen (render) ->
+         pre.sr-code (snippet) -> button (copiar). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Primary / On primary</h2>
+      <p class="md-type-body-medium">Utilice roles primary para los componentes más destacados de la interfaz de usuario, como el FAB, los botones de alto énfasis y los estados activos.</p>
+      <div class="sr-specimen">
+        <div class="md-bg-primary md-text-on-primary">md-bg-primary md-text-on-primary</div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-bg-primary md-text-on-primary"&gt;md-bg-primary md-text-on-primary&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+  </main>
+</body>
+</html>

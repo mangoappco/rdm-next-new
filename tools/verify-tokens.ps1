@@ -96,6 +96,10 @@
                 Compara el innerHTML de .sr-specimen contra el texto de su
                 pre.sr-code desescapado: si divergen, lo copiable miente.
 
+      REGLA 12 La vista de color muestra roles, nunca paleta
+                Falla si una vista de color referencia paleta cruda o #HEX:
+                lo pintado con primitivas no se mueve con el Theme Builder.
+
 .PARAMETER Quiet
     No muestra el detalle de cada archivo que pasa. Solo el resumen.
 
@@ -1143,6 +1147,41 @@ foreach ($html in $htmlFiles) {
     }
 }
 
+# ============================================================================
+# REGLA 12 - La vista de color muestra roles, nunca paleta
+# ---------------------------------------------------------------------------
+# La vista de color pinta UNICAMENTE roles del tema via utilidades
+# (md-bg-*, md-text-*, md-border-*). Si cuela un --md-ref-palette-*, un
+# #HEX o un swatch fijo, esa muestra deja de moverse con el Theme Builder
+# y la pagina miente en silencio: se ve bien con la paleta actual y rota
+# con cualquier otra.
+#
+# Aplica a las vistas cuyo nombre contiene 'color' (template y vista
+# real). Sin comentarios: el template nombra lo prohibido al
+# documentarlo, y eso no es una fuga.
+# ============================================================================
+
+foreach ($html in $htmlFiles) {
+    if ($html.Name -notlike '*color*') { continue }
+
+    $raw = [IO.File]::ReadAllText($html.FullName)
+    $rel = Get-RelPath $html.FullName $ProjectRoot
+    $body = [regex]::Replace($raw, '(?s)<!--.*?-->', '')
+
+    foreach ($m in [regex]::Matches($body, '--md-ref-palette-[a-z0-9-]+')) {
+        Add-Issue -Rule 'REGLA 12' -File $rel -Line 0 `
+                  -Message "paleta cruda en la vista de color: $($m.Value) (la vista pinta roles via utilidades, no primitivas)" `
+                  -Snippet $m.Value
+    }
+
+    $probe = $body -replace '--[a-z0-9-]+', 'VAR'
+    foreach ($m in [regex]::Matches($probe, '#[0-9a-fA-F]{3,8}\b')) {
+        Add-Issue -Rule 'REGLA 12' -File $rel -Line 0 `
+                  -Message "color #HEX en la vista de color (la vista pinta roles via utilidades)" `
+                  -Snippet $m.Value
+    }
+}
+
 Write-Host '  Reglas aplicadas:' -ForegroundColor DarkGray
 Write-Host '    REGLA 1  sin valores crudos fuera de 1-reference-tokens'
 Write-Host '    REGLA 2  direccion de dependencias entre capas'
@@ -1155,10 +1194,11 @@ Write-Host '    REGLA 8  formato, specimens y contraste de las tablas de tokens'
 Write-Host '    REGLA 9  los iconos se piden con .md-icon, no con la clase de Google'
 Write-Host '    REGLA 10 toda clase md-* que usa el showroom existe en src/css'
 Write-Host '    REGLA 11 el snippet copiable es identico a su specimen'
+Write-Host '    REGLA 12 la vista de color muestra roles, nunca paleta'
 Write-Host ''
 
 if ($script:Issues.Count -eq 0) {
-    Write-Host '  OK - La arquitectura se respeta en las 11 reglas.' -ForegroundColor Green
+    Write-Host '  OK - La arquitectura se respeta en las 12 reglas.' -ForegroundColor Green
     Write-Host ''
     exit 0
 }
