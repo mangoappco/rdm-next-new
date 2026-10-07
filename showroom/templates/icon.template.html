@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Icon — RDM ManGo! App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+  <link rel="stylesheet" href="../../src/css/main.css">
+  <link rel="stylesheet" href="../assets/showroom.css">
+  <script src="../assets/showroom.js"></script>
+</head>
+
+<!--
+  COMO USAR ESTE TEMPLATE (copiar a showroom/components/icon.html):
+  1. Cambiar <title> y el h1 si hace falta; la descripcion ya dice la
+     doctrina de la vista.
+  2. Cuatro parejas (un estilo cada una): el specimen trae los 4 tamanos
+     juntos y el snippet las 4 lineas. Baseline en lineas con texto: solo
+     ahi se lee su desplazamiento.
+  3. El specimen es el span con sus clases + aria-hidden (decorativo: el
+     lector no debe anunciar la palabra-ligadura). El snippet lo incluye:
+     copiarlo ensena la practica correcta. NADA de showroom sobre el icono.
+  4. Baseline vive EN LINEA con texto: solo ahi se lee su desplazamiento.
+     Su snippet es la linea entera, no el span solo.
+  5. PROHIBIDO material-symbols-* en class (REGLA 9): el punto de entrada
+     es .md-icon. Nombrarlas en prosa si esta permitido.
+  6. El boton va justo despues de su <pre>: copia ese bloque y ningun otro.
+  7. No anidar .sr-specimen dentro de otro: REGLA 11 no lo soporta.
+-->
+
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <main class="sr-page">
+
+    <!-- HEADER: inicio (barra + titulo + descripcion) -->
+    <header class="sr-header">
+      <div class="sr-bar">
+        <p class="md-type-body-medium"><a href="../index.html">RDM ManGo! App</a></p>
+        <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
+      </div>
+      <h1 class="md-type-display-large">Icon</h1>
+      <p class="md-type-body-large">Cuatro tamanos y cuatro estilos de Material Symbols, pedidos siempre con .md-icon.</p>
+    </header>
+    <!-- HEADER: fin -->
+
+    <!-- PAREJA: un estilo con sus 4 tamanos (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Rounded</h2>
+      <p class="md-type-body-medium">Trazos redondeados en los cuatro tamanos: 24 de sistema, 20 denso, 40 destacado y 48 display.</p>
+      <div class="sr-specimen">
+        <span class="md-icon md-icon-rounded md-measure-icon-size-small" aria-hidden="true">search</span>
+        <span class="md-icon md-icon-rounded" aria-hidden="true">search</span>
+        <span class="md-icon md-icon-rounded md-measure-icon-size-large" aria-hidden="true">search</span>
+        <span class="md-icon md-icon-rounded md-measure-icon-size-xlarge" aria-hidden="true">search</span>
+      </div>
+      <pre class="sr-code"><code>&lt;span class="md-icon md-icon-rounded md-measure-icon-size-small" aria-hidden="true"&gt;search&lt;/span&gt;
+&lt;span class="md-icon md-icon-rounded" aria-hidden="true"&gt;search&lt;/span&gt;
+&lt;span class="md-icon md-icon-rounded md-measure-icon-size-large" aria-hidden="true"&gt;search&lt;/span&gt;
+&lt;span class="md-icon md-icon-rounded md-measure-icon-size-xlarge" aria-hidden="true"&gt;search&lt;/span&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: un estilo con sus 4 tamanos (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Sharp</h2>
+      <p class="md-type-body-medium">Trazos rectos en los cuatro tamanos.</p>
+      <div class="sr-specimen">
+        <span class="md-icon md-icon-sharp md-measure-icon-size-small" aria-hidden="true">home</span>
+        <span class="md-icon md-icon-sharp" aria-hidden="true">home</span>
+        <span class="md-icon md-icon-sharp md-measure-icon-size-large" aria-hidden="true">home</span>
+        <span class="md-icon md-icon-sharp md-measure-icon-size-xlarge" aria-hidden="true">home</span>
+      </div>
+      <pre class="sr-code"><code>&lt;span class="md-icon md-icon-sharp md-measure-icon-size-small" aria-hidden="true"&gt;home&lt;/span&gt;
+&lt;span class="md-icon md-icon-sharp" aria-hidden="true"&gt;home&lt;/span&gt;
+&lt;span class="md-icon md-icon-sharp md-measure-icon-size-large" aria-hidden="true"&gt;home&lt;/span&gt;
+&lt;span class="md-icon md-icon-sharp md-measure-icon-size-xlarge" aria-hidden="true"&gt;home&lt;/span&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: un estilo con sus 4 tamanos (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Filled</h2>
+      <p class="md-type-body-medium">Glifo relleno en los cuatro tamanos.</p>
+      <div class="sr-specimen">
+        <span class="md-icon md-icon-filled md-measure-icon-size-small" aria-hidden="true">settings</span>
+        <span class="md-icon md-icon-filled" aria-hidden="true">settings</span>
+        <span class="md-icon md-icon-filled md-measure-icon-size-large" aria-hidden="true">settings</span>
+        <span class="md-icon md-icon-filled md-measure-icon-size-xlarge" aria-hidden="true">settings</span>
+      </div>
+      <pre class="sr-code"><code>&lt;span class="md-icon md-icon-filled md-measure-icon-size-small" aria-hidden="true"&gt;settings&lt;/span&gt;
+&lt;span class="md-icon md-icon-filled" aria-hidden="true"&gt;settings&lt;/span&gt;
+&lt;span class="md-icon md-icon-filled md-measure-icon-size-large" aria-hidden="true"&gt;settings&lt;/span&gt;
+&lt;span class="md-icon md-icon-filled md-measure-icon-size-xlarge" aria-hidden="true"&gt;settings&lt;/span&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: fill como estado (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Filled as state</h2>
+      <p class="md-type-body-medium">Sin rellenar y rellenado: el mismo glifo en sus dos estados, como en navegacion.</p>
+      <div class="sr-specimen">
+        <span class="md-icon" aria-hidden="true">favorite_border</span>
+        <span class="md-icon md-icon-filled" aria-hidden="true">favorite</span>
+      </div>
+      <pre class="sr-code"><code>&lt;span class="md-icon" aria-hidden="true"&gt;favorite_border&lt;/span&gt;
+&lt;span class="md-icon md-icon-filled" aria-hidden="true"&gt;favorite&lt;/span&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: baseline por tamano (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Baseline 20</h2>
+      <p class="md-type-body-medium">Leading denso: icono de 20 en caja de 28.</p>
+      <div class="sr-specimen">
+        <p class="md-type-title-large"><span class="md-icon md-icon-baseline md-measure-icon-size-small" aria-hidden="true">favorite</span> Destacado</p>
+      </div>
+      <pre class="sr-code"><code>&lt;p class="md-type-title-large"&gt;&lt;span class="md-icon md-icon-baseline md-measure-icon-size-small" aria-hidden="true"&gt;favorite&lt;/span&gt; Destacado&lt;/p&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: baseline por tamano (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Baseline 24</h2>
+      <p class="md-type-body-medium">Sistema en titular: icono de 24 en caja de 44.</p>
+      <div class="sr-specimen">
+        <p class="md-type-display-small">Resaltado <span class="md-icon md-icon-baseline" aria-hidden="true">favorite</span></p>
+      </div>
+      <pre class="sr-code"><code>&lt;p class="md-type-display-small"&gt;Resaltado &lt;span class="md-icon md-icon-baseline" aria-hidden="true"&gt;favorite&lt;/span&gt;&lt;/p&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: baseline por tamano (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Baseline 40</h2>
+      <p class="md-type-body-medium">Destacado en display: icono de 40 en caja de 64.</p>
+      <div class="sr-specimen">
+        <p class="md-type-display-large"><span class="md-icon md-icon-baseline md-measure-icon-size-large" aria-hidden="true">favorite</span> Gigante</p>
+      </div>
+      <pre class="sr-code"><code>&lt;p class="md-type-display-large"&gt;&lt;span class="md-icon md-icon-baseline md-measure-icon-size-large" aria-hidden="true"&gt;favorite&lt;/span&gt; Gigante&lt;/p&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: baseline por tamano (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Baseline 48</h2>
+      <p class="md-type-body-medium">Monumental en display: icono de 48 en caja de 64, emparejado por fin.</p>
+      <div class="sr-specimen">
+        <p class="md-type-display-large">Monumental <span class="md-icon md-icon-baseline md-measure-icon-size-xlarge" aria-hidden="true">favorite</span></p>
+      </div>
+      <pre class="sr-code"><code>&lt;p class="md-type-display-large"&gt;Monumental &lt;span class="md-icon md-icon-baseline md-measure-icon-size-xlarge" aria-hidden="true"&gt;favorite&lt;/span&gt;&lt;/p&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+  </main>
+</body>
+</html>
