@@ -12,29 +12,8 @@
   <script src="../assets/showroom.js"></script>
 </head>
 
-<!--
-  COMO USAR ESTE TEMPLATE (copiar a showroom/components/color.html):
-  1. Cambiar <title> y el h1 si hace falta; la descripcion ya dice la
-     doctrina de la vista.
-  2. Duplicar el bloque PAREJA por cada par fondo+texto: section > h2 +
-     .sr-specimen + pre.sr-code + button.
-  3. La muestra es UNICAMENTE utilidades (md-bg-* + md-text-*) con los
-     nombres de rol como texto. NADA de showroom sobre el color.
-  4. PROHIBIDO --md-ref-palette-*, #HEX y swatches fijos en esta vista:
-     esta pagina muestra ROLES, no paleta. Si manana el Theme Builder
-     cambia la paleta, todo lo de aqui se mueve solo. REGLA 12 lo
-     comprueba: fuga = rojo.
-  5. El snippet lleva SOLO el div de utilidades, sin wrappers: es lo que
-     se pega en ManGo! App. Lo renderizado y su snippet tienen que ser
-     identicos (REGLA 11).
-  6. El boton va justo despues de su <pre>: copia ese bloque y ningun otro.
-  7. No anidar .sr-specimen dentro de otro: REGLA 11 no lo soporta.
-
-  PENDIENTE RESUELTO (parejas de borde): outline y outline-variant se
-  muestran como FONDO demostrativo (sr-tone-* sobre el rol), no como borde:
-  el objetivo es el tono, no la forma ni el uso. Sin snippet (como scrim),
-  sin geometria pendiente.
--->
+<!-- Vista de fundacion: roles de color en pares fondo+texto.
+     Molde: showroom/templates/color.template.html. -->
 
 <body class="md-bg-background md-text-on-background md-type-body-medium">
   <main class="sr-page">

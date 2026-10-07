@@ -131,8 +131,48 @@
     align-items: center;
     justify-content: center;
     padding: var(--md-ref-spacing-300);
-    background-color: var(--md-sys-color-surface-container-low);
+    background-color: var(--md-sys-color-surface-container);
     border-radius: var(--md-sys-shape-corner-medium);
+  }
+
+  /* ------------------------------------------------------------------------
+     EL AIRE DE LA MUESTRA EN BLOQUE
+     --------------------------------------------------------------------------
+     Un div de muestra dentro del escenario respira con este padding. Va por
+     selector estructural (.sr-specimen > div) y no por clase, a proposito:
+     una clase sr-* en la muestra se colaria en el snippet o romperia
+     REGLA 11, y el color sigue viviendo UNICAMENTE en las utilidades del
+     marcado. Limite honesto: aplica a todo div directo de escenario; si un
+     specimen futuro no lo quiere, se revisa aqui.
+     --------------------------------------------------------------------- */
+  .sr-specimen > div {
+    padding: var(--md-ref-spacing-200);
+  }
+
+  /* ------------------------------------------------------------------------
+     MUESTRAS DE TONO (demo, sin uso)
+     --------------------------------------------------------------------------
+     Cajas pintadas con el tono del rol, solo para mostrarlo: outline no
+     tiene utilidades de fondo ni texto (el sistema las retiene a proposito),
+     asi que el swatch vive aqui. Lee UNICAMENTE roles de 2-system-tokens:
+     con el Theme Builder se mueve solo, y REGLA 12 lo permite (solo
+     prohibe paleta cruda y #HEX). Solo en parejas de muestra sin snippet.
+     --------------------------------------------------------------------- */
+  .sr-tone-outline {
+    background-color: var(--md-sys-color-outline);
+    color: var(--md-sys-color-surface-container-lowest);
+  }
+  .sr-tone-outline-variant {
+    background-color: var(--md-sys-color-outline-variant);
+    color: var(--md-sys-color-on-surface);
+  }
+  .sr-tone-surface-tint {
+    background-color: var(--md-sys-color-surface-tint);
+    color: var(--md-sys-color-surface-container-lowest);
+  }
+  .sr-tone-shadow {
+    background-color: var(--md-sys-color-shadow);
+    color: var(--md-sys-color-surface-container-lowest);
   }
 
   /* ------------------------------------------------------------------------

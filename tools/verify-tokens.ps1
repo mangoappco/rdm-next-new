@@ -1066,13 +1066,14 @@ else {
 # Get-CssFiles. La frontera que importa es la de la libreria: lo que el
 # showroom le pide al sistema.
 #
-# POR QUE SE EXCLUYE showroom/templates/
-# --------------------------------------
-# El template es un andamiaje, no una vista: lleva nombres de clase de ejemplo
-# (md-componente) que el autor sustituye al copiarlo, y no esta enlazado desde
-# la portada, asi que no se sirve. Comprobarlo daria trece fallos permanentes
-# que nadie podria corregir sin romper la plantilla. Lo que si se comprueba es
-# que cada vista ya escrita pase.
+# showroom/templates/ SI SE COMPRUEBA
+# ----------------------------------
+# Antes se excluia porque el template llevaba clases de ejemplo
+# (md-componente). Ya no: los templates usan solo clases reales, y la
+# exclusion escondio un typo real (md-text-inverse-on-surface en vez de
+# md-text-on-inverse-surface, texto invisible en la pareja Inverse). Si un
+# template futuro necesita placeholders, se excluye ese archivo con motivo,
+# no el directorio entero.
 # ============================================================================
 
 $definedClasses = @{}
@@ -1085,9 +1086,11 @@ foreach ($file in $files) {
 }
 
 foreach ($html in $htmlFiles) {
-    # El template es un andamiaje con clases de ejemplo, no una vista.
-    if ($html.FullName -match '\\showroom\\templates\\') { continue }
-
+    # Sin exclusion para showroom/templates/: los templates usan solo
+    # clases reales (el placeholder md-componente se elimino al poblarlos
+    # con specimens de verdad). Fue justo aqui donde un typo de orden
+    # (md-text-inverse-on-surface en vez de md-text-on-inverse-surface)
+    # paso en verde: la exclusion lo volvia invisible.
     $raw = [IO.File]::ReadAllText($html.FullName)
     $rel = Get-RelPath $html.FullName $ProjectRoot
 
