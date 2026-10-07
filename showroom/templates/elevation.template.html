@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Elevation — RDM ManGo! App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+  <link rel="stylesheet" href="../../src/css/main.css">
+  <link rel="stylesheet" href="../assets/showroom.css">
+  <script src="../assets/showroom.js"></script>
+</head>
+
+<!--
+  COMO USAR ESTE TEMPLATE (copiar a showroom/components/elevation.html):
+  1. Cambiar <title> y el h1 si hace falta; la descripcion ya dice la
+     doctrina de la vista.
+  2. Cada pareja es un <section> con su h2: specimen + snippet + boton.
+  3. La muestra lleva sombra Y superficie (md-elevation-N +
+     md-elevation-N-surface): se copia tal cual y rinde sola. NADA de
+     showroom sobre la elevacion.
+  4. El tamano (288px) lo pone .sr-specimen-tall, el mismo lienzo de
+     shapes: el marcado queda puro y REGLA 11 compara solo el interior.
+  5. El boton va justo despues de su <pre>: copia ese bloque y ningun otro.
+  6. No anidar .sr-specimen dentro de otro: REGLA 11 no lo soporta.
+-->
+
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <main class="sr-page">
+
+    <!-- HEADER: inicio (barra + titulo + descripcion) -->
+    <header class="sr-header">
+      <div class="sr-bar">
+        <p class="md-type-body-medium"><a href="../index.html">RDM ManGo! App</a></p>
+        <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
+      </div>
+      <h1 class="md-type-display-large">Elevation</h1>
+      <p class="md-type-body-large">Seis niveles de sombra con su superficie tonal: la distancia sobre la pagina. En tema oscuro la sombra casi no se ve y el tono hace el trabajo.</p>
+    </header>
+    <!-- HEADER: fin -->
+
+    <!-- PAREJA: un nivel por section (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Level 0</h2>
+      <p class="md-type-body-medium">Sin sombra: el nivel del lienzo.</p>
+      <div class="sr-specimen sr-specimen-tall">
+        <div class="md-elevation-0-surface md-elevation-0">Level 0</div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-elevation-0-surface md-elevation-0"&gt;Level 0&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: un nivel por section (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Level 1</h2>
+      <p class="md-type-body-medium">Despegue minimo: superficies que flotan apenas.</p>
+      <div class="sr-specimen sr-specimen-tall">
+        <div class="md-elevation-1-surface md-elevation-1">Level 1</div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-elevation-1-surface md-elevation-1"&gt;Level 1&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: un nivel por section (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Level 2</h2>
+      <p class="md-type-body-medium">Elevacion media-baja: menus y tarjetas elevadas.</p>
+      <div class="sr-specimen sr-specimen-tall">
+        <div class="md-elevation-2-surface md-elevation-2">Level 2</div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-elevation-2-surface md-elevation-2"&gt;Level 2&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: un nivel por section (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Level 3</h2>
+      <p class="md-type-body-medium">Elevacion media-alta: dialogos, snackbars y FAB.</p>
+      <div class="sr-specimen sr-specimen-tall">
+        <div class="md-elevation-3-surface md-elevation-3">Level 3</div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-elevation-3-surface md-elevation-3"&gt;Level 3&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: un nivel por section (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Level 4</h2>
+      <p class="md-type-body-medium">Elevacion alta: dialogos grandes y hojas modales.</p>
+      <div class="sr-specimen sr-specimen-tall">
+        <div class="md-elevation-4-surface md-elevation-4">Level 4</div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-elevation-4-surface md-elevation-4"&gt;Level 4&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: un nivel por section (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Level 5</h2>
+      <p class="md-type-body-medium">Maxima elevacion: lo que flota sobre todo.</p>
+      <div class="sr-specimen sr-specimen-tall">
+        <div class="md-elevation-5-surface md-elevation-5">Level 5</div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-elevation-5-surface md-elevation-5"&gt;Level 5&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+  </main>
+</body>
+</html>
