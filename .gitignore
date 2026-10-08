@@ -34,3 +34,14 @@ build/
 # Sistema: este proyecto NO usa frameworks CSS de terceros.
 # Si alguna vez se introduce uno, debe declararse aqui de forma explicita
 # para que la violacion sea visible en la revision, no silenciosa.
+
+# ---------------------------------------------------------------------------
+# Herramienta local de trabajo
+# ---------------------------------------------------------------------------
+# showroom/lab.html es el banco de pruebas: se pega ahi el snippet que se
+# esta mirando y se comprueba que rinde con SOLO main.css. Es un cuaderno
+# personal, no documentacion del design system, asi que su contenido cambia
+# con cada componente y no se versiona. Por eso tampoco hay enlace en
+# showroom/index.html: un enlace a un archivo que no existe en un clon
+# seria un 404 en la portada del catalogo.
+showroom/lab.html
