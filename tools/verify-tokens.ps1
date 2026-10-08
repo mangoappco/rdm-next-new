@@ -100,6 +100,12 @@
                 Falla si una vista de color referencia paleta cruda o #HEX:
                 lo pintado con primitivas no se mueve con el Theme Builder.
 
+      REGLA 13 El snippet es autonomo: rinde con solo main.css
+                 Cada bloque pre.sr-code se desescapa y se lee como si se
+                 pegara en una pagina que solo importe main.css: ninguna
+                 clase que no sea del sistema, ningun estilo en linea y
+                 ningun style/link/script propios.
+
 .PARAMETER Quiet
     No muestra el detalle de cada archivo que pasa. Solo el resumen.
 
@@ -1197,6 +1203,82 @@ foreach ($html in $htmlFiles) {
     }
 }
 
+# ============================================================================
+# REGLA 13 - El snippet es autonomo: rinde con solo main.css
+# ---------------------------------------------------------------------------
+# El contrato del showroom es que lo que se copia funciona en cualquier
+# pagina que importe main.css. Eso se puede comprobar sin navegador: si el
+# snippet solo lleva clases que existen en src/css/, y nada mas, entonces
+# main.css es todo lo que necesita.
+#
+# QUE SE COMPRUEBA Y POR QUE CADA COSA
+# -------------------------------------
+#   a) Ninguna clase que no sea del sistema (sr-*, o sin prefijo). Las sr-*
+#      viven en showroom/assets/showroom.css: un snippet que las use solo
+#      renderizara dentro del showroom, y es justo el fallo que la regla
+#      persigue. REGLA 10 ya comprueba que las md-* existan de verdad; aqui
+#      se comprueba que no haya NADA MAS.
+#
+#   b) Ningun estilo en linea. REGLA 6 no lo ve aqui: busca '<letra' y
+#      dentro de un snippet las etiquetas estan escapadas (&lt;button), asi
+#      que un style= colado en lo copiable pasaria inadvertido.
+#
+#   c) Ningun <style>, <link> ni <script>. Un snippet que traiga cualquiera
+#      de ellos ya no se sostiene con main.css: necesita su propia hoja o su
+#      propio codigo.
+#
+# POR QUE SE ESCANEA CADA pre Y NO CADA PAREJA
+# --------------------------------------------
+# REGLA 11 recorre specimen + pre emparejados y por definicion se salta un
+# pre sin specimen (y uno anidado, que no soporta). Esta regla no necesita
+# al specimen: le da igual que el codigo este emparejado o no, porque lo que
+# se juzga es el codigo en si. Asi que recorre todos los bloques pre.sr-code
+# y no arrastra los limites del emparejamiento.
+#
+# LIMITE HONESTO
+# --------------
+# Es una comprobacion ESTATICA: garantiza que al snippet no le falta nada de
+# main.css. No puede garantizar como se ve pegado en un contexto que no sea
+# el del showroom (por ejemplo, que un contenedor padre no lo aplaste), y eso
+# no es comprobable sin renderizar. Lo que si queda fijo es la parte que
+# antes se perdia en silencio: la dependencia del chrome.
+# ============================================================================
+
+foreach ($html in $htmlFiles) {
+    $raw = [IO.File]::ReadAllText($html.FullName)
+    $rel = Get-RelPath $html.FullName $ProjectRoot
+    $body = [regex]::Replace($raw, '(?s)<!--.*?-->', '')
+
+    foreach ($m in [regex]::Matches($body, '<pre class="sr-code"><code>([\s\S]*?)</code>')) {
+        # Se lee el snippet DESESCAPADO, que es lo que acaba en el portapapeles.
+        $code = $m.Groups[1].Value -replace '&lt;', '<' -replace '&gt;', '>' `
+                                       -replace '&quot;', '"' -replace '&#39;', "'" `
+                                       -replace '&amp;', '&'
+
+        foreach ($cm in [regex]::Matches($code, 'class\s*=\s*"([^"]*)"')) {
+            foreach ($cls in ($cm.Groups[1].Value -split '\s+')) {
+                if ($cls -and $cls -notlike 'md-*') {
+                    Add-Issue -Rule 'REGLA 13' -File $rel -Line 0 `
+                              -Message "el snippet usa '$cls', que no es una clase del sistema: no renderizara con solo main.css (las sr-* viven en el chrome del showroom)" `
+                              -Snippet $cls
+                }
+            }
+        }
+
+        foreach ($sm in [regex]::Matches($code, '<[a-zA-Z][^>]*?\sstyle\s*=')) {
+            Add-Issue -Rule 'REGLA 13' -File $rel -Line 0 `
+                      -Message 'el snippet lleva estilo en linea: lo pegable se posiciona con clases del sistema, no con style=' `
+                      -Snippet $sm.Value
+        }
+
+        foreach ($tm in [regex]::Matches($code, '<(style|link|script)[\s>]')) {
+            Add-Issue -Rule 'REGLA 13' -File $rel -Line 0 `
+                      -Message "el snippet trae un <$($tm.Groups[1].Value)> propio: el copiable tiene que sostenerse con main.css y nada mas" `
+                      -Snippet $tm.Value
+        }
+    }
+}
+
 Write-Host '  Reglas aplicadas:' -ForegroundColor DarkGray
 Write-Host '    REGLA 1  sin valores crudos fuera de 1-reference-tokens'
 Write-Host '    REGLA 2  direccion de dependencias entre capas'
@@ -1210,10 +1292,11 @@ Write-Host '    REGLA 9  los iconos se piden con .md-icon, no con la clase de Go
 Write-Host '    REGLA 10 toda clase md-* que usa el showroom existe en src/css'
 Write-Host '    REGLA 11 el snippet copiable es identico a su specimen'
 Write-Host '    REGLA 12 la vista de color muestra roles, nunca paleta'
+Write-Host '    REGLA 13 el snippet es autonomo: rinde con solo main.css'
 Write-Host ''
 
 if ($script:Issues.Count -eq 0) {
-    Write-Host '  OK - La arquitectura se respeta en las 12 reglas.' -ForegroundColor Green
+    Write-Host '  OK - La arquitectura se respeta en las 13 reglas.' -ForegroundColor Green
     Write-Host ''
     exit 0
 }
