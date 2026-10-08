@@ -136,6 +136,13 @@
     border-radius: var(--md-sys-shape-corner-medium);
   }
 
+  /* Aire entre ejemplos del mismo specimen (botones en fila): opt-in por
+     escenario para no separar las cajas de color, que van pegadas a
+     proposito. Clases del escenario, invisibles para REGLA 11. */
+  .sr-specimen-gap {
+    gap: var(--md-ref-spacing-200);
+  }
+
   /* ------------------------------------------------------------------------
      ESCENARIO ALTO (muestras de forma y estado)
      --------------------------------------------------------------------------

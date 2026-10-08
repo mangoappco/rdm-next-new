@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Icon button — RDM ManGo! App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+  <link rel="stylesheet" href="../../src/css/main.css">
+  <link rel="stylesheet" href="../assets/showroom.css">
+  <script src="../assets/showroom.js"></script>
+</head>
+
+<!-- Vista de componente: accion con un solo icono, variante standard.
+     Molde: showroom/templates/icon-button.template.html. -->
+
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <main class="sr-page">
+
+    <!-- HEADER: inicio (barra + titulo + descripcion) -->
+    <header class="sr-header">
+      <div class="sr-bar">
+        <p class="md-type-body-medium"><a href="../index.html">RDM ManGo! App</a></p>
+        <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
+      </div>
+      <h1 class="md-type-display-large">Icon button</h1>
+      <p class="md-type-body-large">Accion con un solo icono: cuatro variantes y tres tamanos en contenedor propio.</p>
+    </header>
+    <!-- HEADER: fin -->
+
+    <hr class="md-divider">
+
+    <!-- PAREJA: variante con sus 3 tamanos (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Standard</h2>
+      <p class="md-type-body-medium">Icono sobre la superficie, sin relleno: 32, 40 y 56.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-icon-button md-icon-button-standard md-icon-button-xsmall" type="button" aria-label="Eliminar"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
+        <button class="md-icon-button md-icon-button-standard md-icon-button-small" type="button" aria-label="Eliminar"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
+        <button class="md-icon-button md-icon-button-standard md-icon-button-medium" type="button" aria-label="Eliminar"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-icon-button md-icon-button-standard md-icon-button-xsmall" type="button" aria-label="Eliminar"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-icon-button md-icon-button-standard md-icon-button-small" type="button" aria-label="Eliminar"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-icon-button md-icon-button-standard md-icon-button-medium" type="button" aria-label="Eliminar"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+  </main>
+</body>
+</html>

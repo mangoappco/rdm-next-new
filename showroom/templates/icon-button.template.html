@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Icon button — RDM ManGo! App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+  <link rel="stylesheet" href="../../src/css/main.css">
+  <link rel="stylesheet" href="../assets/showroom.css">
+  <script src="../assets/showroom.js"></script>
+</head>
+
+<!--
+  COMO USAR ESTE TEMPLATE (copiar a showroom/components/icon-button.html):
+  1. Cambiar <title> y el h1 si hace falta; la descripcion ya dice la
+     doctrina de la vista.
+  2. Parejas por variante (specimen + pre + boton). Cada specimen trae sus
+     botones y el snippet los mismos bloques completos (button + icono +
+     touch). NADA de showroom sobre el componente.
+  3. aria-label SIEMPRE (sin etiqueta visible) y glifo con aria-hidden.
+  4. El seleccionado es aria-pressed="true" puro CSS: la app lo conmuta.
+  5. El boton va justo despues de su <pre>: copia ese bloque y ningun otro.
+  6. No anidar .sr-specimen dentro de otro: REGLA 11 no lo soporta.
+-->
+
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <main class="sr-page">
+
+    <!-- HEADER: inicio (barra + titulo + descripcion) -->
+    <header class="sr-header">
+      <div class="sr-bar">
+        <p class="md-type-body-medium"><a href="../index.html">RDM ManGo! App</a></p>
+        <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
+      </div>
+      <h1 class="md-type-display-large">Icon button</h1>
+      <p class="md-type-body-large">Componente interactivo compacto diseñado para ejecutar acciones con un solo clic donde el símbolo visual es autosuficiente para comunicar el significado.</p>
+    </header>
+    <!-- HEADER: fin -->
+
+    <hr class="md-divider">
+
+    <!-- PAREJA: variante con sus 3 tamanos (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Standard</h2>
+      <p class="md-type-body-medium">Icono sobre la superficie, sin relleno. Tamano de sistema: small (40).</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-icon-button md-icon-button-standard md-icon-button-small" type="button" aria-label="Eliminar"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-icon-button md-icon-button-standard md-icon-button-small" type="button" aria-label="Eliminar"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+  </main>
+</body>
+</html>
