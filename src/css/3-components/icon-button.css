@@ -178,9 +178,15 @@
      standard tendria un borde invisible de 1px que le recortaria 2px al
      area de contenido (box-sizing: border-box). */
 
-  /* Estado. La capa toma currentColor: sin token propio de color. */
-  --md-comp-icon-button-state-duration: var(--md-sys-motion-duration-short2);
-  --md-comp-icon-button-state-easing: var(--md-sys-motion-easing-standard);
+  /* Estado. La capa toma currentColor: sin token propio de color.
+     MEDIDO: con short2 el 88% del cambio ocurre en los primeros 50ms, y se
+     siente instantaneo aunque la transicion exista. medium2 (300ms) da al
+     ojo tiempo a seguir el teñido, y standard-decelerate frena al final en
+     vez de rematar de golpe, que es la forma de un asentamiento.
+     Nota honesta: esto alarga el cambio, no lo hace mas suave; con un
+     teñido del 10% la suavidad viene de la curva, no de los milisegundos. */
+  --md-comp-icon-button-state-duration: var(--md-sys-motion-duration-medium2);
+  --md-comp-icon-button-state-easing: var(--md-sys-motion-easing-standard-decelerate);
 
   /* Anillo de foco M3: 3px de grosor, 2px de separacion. */
   --md-comp-icon-button-focus-color: var(--md-sys-color-secondary);
