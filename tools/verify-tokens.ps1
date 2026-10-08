@@ -1131,8 +1131,11 @@ foreach ($html in $htmlFiles) {
     $body = [regex]::Replace($raw, '(?s)<!--.*?-->', '')
 
     # Un specimen por pareja. El tempered greedy permite divs interiores
-    # pero no un specimen anidado dentro de otro.
-    $pairPattern = '<div class="sr-specimen">((?:(?!<div class="sr-specimen">)[\s\S])*)</div>\s*<pre class="sr-code"><code>([\s\S]*?)</code>'
+    # pero no un specimen anidado dentro de otro. Inicio y exclusion
+    # aceptan sufijos (.sr-specimen-tall): con la clase exacta, los tall
+    # eran invisibles (ni se revisaban ni frenaban al vecino, que los
+    # tragaba hasta su <pre>).
+    $pairPattern = '<div class="sr-specimen(?:\s[^>]*)?">((?:(?!<div class="sr-specimen(?:\s[^>]*)?">)[\s\S])*)</div>\s*<pre class="sr-code"><code>([\s\S]*?)</code>'
 
     foreach ($m in [regex]::Matches($body, $pairPattern)) {
         $rendered = ($m.Groups[1].Value -replace '>\s+<', '><').Trim()

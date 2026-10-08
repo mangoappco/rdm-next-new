@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>State — RDM ManGo! App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+  <link rel="stylesheet" href="../../src/css/main.css">
+  <link rel="stylesheet" href="../assets/showroom.css">
+  <script src="../assets/showroom.js"></script>
+</head>
+
+<!--
+  COMO USAR ESTE TEMPLATE (copiar a showroom/components/state.html):
+  1. Cambiar <title> y el h1 si hace falta; la descripcion ya dice la
+     doctrina de la vista.
+  2. Un lienzo con las 5 capas (caja + span cada una) mas la pareja
+     Disabled aparte: dos mecanicas, dos specimens (tinte superpuesto vs
+     atenuacion propia).
+  3. El snippet lleva caja + span juntos: la caja aporta colores y contexto,
+     el span color y opacidad. El relative lo pone el chrome (.sr-specimen
+     > div); en la app lo pone el componente huesped.
+  4. El boton va justo despues de su <pre>: copia ese bloque y ningun otro.
+  5. No anidar .sr-specimen dentro de otro: REGLA 11 no lo soporta.
+-->
+
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <main class="sr-page">
+
+    <!-- HEADER: inicio (barra + titulo + descripcion) -->
+    <header class="sr-header">
+      <div class="sr-bar">
+        <p class="md-type-body-medium"><a href="../index.html">RDM ManGo! App</a></p>
+        <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
+      </div>
+      <h1 class="md-type-display-large">State</h1>
+      <p class="md-type-body-large">Seis capas de estado sobre primary: lo que tiñe la interaccion.</p>
+    </header>
+    <!-- HEADER: fin -->
+
+    <!-- LIENZO: las 5 capas juntas (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">States</h2>
+      <p class="md-type-body-medium">Enabled 0, hover 8, focus 10, pressed 10 y dragged 16 sobre primary: el texto intacto, el fondo tine.</p>
+      <div class="sr-specimen">
+        <div class="md-bg-primary md-text-on-primary">Enabled<br>0%<span class="md-state-layer"></span></div>
+        <div class="md-bg-primary md-text-on-primary">Hover<br>8%<span class="md-state-layer-hover"></span></div>
+        <div class="md-bg-primary md-text-on-primary">Focus<br>10%<span class="md-state-layer-focus"></span></div>
+        <div class="md-bg-primary md-text-on-primary">Pressed<br>10%<span class="md-state-layer-pressed"></span></div>
+        <div class="md-bg-primary md-text-on-primary">Dragged<br>16%<span class="md-state-layer-dragged"></span></div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-bg-primary md-text-on-primary"&gt;Enabled&lt;br&gt;0%&lt;span class="md-state-layer"&gt;&lt;/span&gt;&lt;/div&gt;
+&lt;div class="md-bg-primary md-text-on-primary"&gt;Hover&lt;br&gt;8%&lt;span class="md-state-layer-hover"&gt;&lt;/span&gt;&lt;/div&gt;
+&lt;div class="md-bg-primary md-text-on-primary"&gt;Focus&lt;br&gt;10%&lt;span class="md-state-layer-focus"&gt;&lt;/span&gt;&lt;/div&gt;
+&lt;div class="md-bg-primary md-text-on-primary"&gt;Pressed&lt;br&gt;10%&lt;span class="md-state-layer-pressed"&gt;&lt;/span&gt;&lt;/div&gt;
+&lt;div class="md-bg-primary md-text-on-primary"&gt;Dragged&lt;br&gt;16%&lt;span class="md-state-layer-dragged"&gt;&lt;/span&gt;&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- LIENZO: hasta aqui -->
+
+    <!-- PAREJA: disabled en su specimen (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Disabled</h2>
+      <p class="md-type-body-medium">Otra mecanica: aqui se apaga todo, texto incluido.</p>
+      <div class="sr-specimen">
+        <div class="md-bg-primary md-text-on-primary md-disabled">Disabled<br>38%</div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-bg-primary md-text-on-primary md-disabled"&gt;Disabled&lt;br&gt;38%&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+  </main>
+</body>
+</html>

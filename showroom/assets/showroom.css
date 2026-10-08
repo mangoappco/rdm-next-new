@@ -137,7 +137,7 @@
   }
 
   /* ------------------------------------------------------------------------
-     ESCENARIO ALTO (muestras de forma)
+     ESCENARIO ALTO (muestras de forma y estado)
      --------------------------------------------------------------------------
      Altura minima para que los radios grandes se lean sin converger en
      pildora (el mayor es 48px). Va en el escenario, no en la muestra: el
@@ -145,12 +145,30 @@
      interior del specimen sin ver esta clase. Contenido centrado en los
      dos ejes.
      --------------------------------------------------------------------- */
+  .sr-specimen-tall {
+    min-height: calc(var(--md-ref-spacing-900) * 2);
+  }
+
   .sr-specimen-tall > div {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: calc(var(--md-ref-spacing-900) * 2);
+    min-height: inherit;
     width: calc(var(--md-ref-spacing-900) * 4);
+  }
+
+  /* Caja con capa en escenario simple: mismo contrato (la caja aporta el
+     contexto, el span el tinte), sin altura minima. Generaliza el relative
+     a todo div directo de escenario: sin hijos posicionados es inocuo. */
+  .sr-specimen > div {
+    position: relative;
+  }
+
+  .sr-specimen > div > span[class*="md-state-layer"] {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
   }
 
   /* ------------------------------------------------------------------------
