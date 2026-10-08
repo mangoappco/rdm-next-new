@@ -213,6 +213,17 @@
   cursor: pointer;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+
+  /* El subrayado SOLO aparece cuando el control se usa como <a>. El glifo
+     de Material Symbols es texto, asi que el navegador le dibuja el
+     subrayado del enlace debajo, en el color del icono: sobre el relleno
+     filled se ve una rayita blanca atravesando el engranaje.
+
+     Se quita aqui y no en el reset porque el reset no debe tomar partido
+     sobre los enlaces de texto, que si los necesitan por accesibilidad. Lo
+     que se lo quita es ESTE componente, que no es un enlace de texto sino
+     un control con icono. */
+  text-decoration: none;
 }
 
 /* ---------------------------------------------------------------------------

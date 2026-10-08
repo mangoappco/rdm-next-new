@@ -243,6 +243,20 @@
     </section>
     <!-- PAREJA: hasta aqui -->
 
+    <!-- PAREJA: el mismo componente como enlace (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Navegación</h2>
+      <p class="md-type-body-medium">M3 permite el mismo componente como enlace cuando navega: cambia &lt;a&gt; por &lt;button&gt; y type por href. Sin diferencias de estilo. href es obligatorio: sin el no hay enlace, no es enfocable con el teclado, y :disabled no existe para enlaces (si hay que deshabilitar, es un boton).</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <a class="md-icon-button md-icon-button-filled md-icon-button-small" href="#" aria-label="Ajustes"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></a>
+        <a class="md-icon-button md-icon-button-standard md-icon-button-small" href="#" aria-label="Notificaciones"><span class="md-icon-button-icon md-icon" aria-hidden="true">notifications</span><span class="md-icon-button-touch"></span></a>
+      </div>
+      <pre class="sr-code"><code>&lt;a class="md-icon-button md-icon-button-filled md-icon-button-small" href="#" aria-label="Ajustes"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/a&gt;
+&lt;a class="md-icon-button md-icon-button-standard md-icon-button-small" href="#" aria-label="Notificaciones"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;notifications&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/a&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
   </main>
 </body>
 </html>
