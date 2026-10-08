@@ -20,6 +20,9 @@
      botones y el snippet los mismos bloques completos (button + icono +
      touch). NADA de showroom sobre el componente.
   3. aria-label SIEMPRE (sin etiqueta visible) y glifo con aria-hidden.
+      En un toggle, la etiqueta cambia con el estado SOLO si es una accion
+      ("Anadir a favoritos" / "Quitar de favoritos"); si es un sustantivo
+      ("Favorito") se queda, porque aria-pressed ya anuncia el estado.
   4. El estado seleccionado necesita el modificador .md-icon-button-toggle
       Y aria-pressed: el atributo solo, sin el modificador, no cambia el
       color (M3 separa default y toggle como variantes distintas).
@@ -253,6 +256,20 @@
       </div>
       <pre class="sr-code"><code>&lt;a class="md-icon-button md-icon-button-filled md-icon-button-small" href="#" aria-label="Ajustes"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/a&gt;
 &lt;a class="md-icon-button md-icon-button-standard md-icon-button-small" href="#" aria-label="Notificaciones"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;notifications&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/a&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: la etiqueta de un toggle (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Etiqueta del toggle</h2>
+      <p class="md-type-body-medium">aria-pressed ya anuncia el estado ("favorito, comprimido"), asi que una etiqueta con SUSTANTIVO se queda quieta: "Favorito". Pero si la etiqueta es una ACCION hay que cambiarla con el estado, porque si no dice "Anadir a favoritos" estando ya en favoritos. El CSS no puede cambiar un aria-label, asi que lo conmuta la app: estos dos botones son el mismo en los dos momentos.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-icon-button md-icon-button-filled md-icon-button-small md-icon-button-toggle" type="button" aria-label="Anadir a favoritos" aria-pressed="false"><span class="md-icon-button-icon md-icon" aria-hidden="true">star</span><span class="md-icon-button-touch"></span></button>
+        <button class="md-icon-button md-icon-button-filled md-icon-button-small md-icon-button-toggle" type="button" aria-label="Quitar de favoritos" aria-pressed="true"><span class="md-icon-button-icon md-icon" aria-hidden="true">star</span><span class="md-icon-button-touch"></span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-icon-button md-icon-button-filled md-icon-button-small md-icon-button-toggle" type="button" aria-label="Anadir a favoritos" aria-pressed="false"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;star&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-icon-button md-icon-button-filled md-icon-button-small md-icon-button-toggle" type="button" aria-label="Quitar de favoritos" aria-pressed="true"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;star&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
     <!-- PAREJA: hasta aqui -->
