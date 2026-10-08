@@ -1,0 +1,25 @@
+# ==========================================================================
+# .htaccess — SOLO ENTORNO DE DESARROLLO (XAMPP)
+# --------------------------------------------------------------------------
+# Por que existe: main.css carga las cuatro capas con @import, y cada archivo
+# importado se cachea por separado. Un hard refresh (Ctrl+Shift+R) no siempre
+# los invalida, porque el navegador reutiliza la cadena ya descargada. El
+# sintoma es desconcertante: se edita una hoja de la capa 3, se recarga, y el
+# cambio no aparece aunque el HTML ya sea nuevo.
+#
+# La solucion de desarrollo es no cachear nada. En produccion esto NO debe
+# copiarse: sin cache, cada visitante descarga las 36 hojas.
+#
+# El IfModule esta a proposito: si el modulo headers no estuviera cargado,
+# estas reglas se ignoran en vez de devolver un error 500.
+#
+# OJO, si editas el bloque de comentarios: en Apache el # tiene que estar en
+# la PRIMERA columna. Una linea de continuacion que empiece con espacios se
+# parsea como una directiva y el servidor devuelve 500.
+# ==========================================================================
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(css|html|js)$">
+    Header set Cache-Control "no-store"
+  </FilesMatch>
+</IfModule>
