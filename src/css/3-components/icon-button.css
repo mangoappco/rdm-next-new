@@ -50,15 +50,34 @@
    y no solo el atributo. Los cuatro valores por variante estan al pie del
    archivo, con los nombres de token de M3.
 
-   LO QUE NO IMPLEMENTA: morph con resorte, toggle con texto y checkmark, y el
-   tooltip que M3 pide en web (no existe todavia en el sistema). Ver las notas
-   al pie de cada bloque.
+   LO QUE NO IMPLEMENTA: morph con resorte, toggle con checkmark (y con texto),
+   y el tooltip que M3 pide en web (no existe todavia en el sistema). Ver las
+   notas al pie de cada bloque.
 
-   Los tres morph de forma existen pero NO tienen transicion, y no es un
-   olvido: M3 les pone un resorte, que CSS no expresa con cubic-bezier. El
-   unico morph que se podria animar sin mentir (esquinas finitas) se midio y
-   resulto ser el 99.8% del recorrido sin cambio visible. Ver la nota del
-   bloque de la base.
+   POR QUE NO HAY RESORTE, MEDIDO
+   -------------------------------
+   M3 Expressive separa dos tipos de resorte, y la distinction decide el
+   caso:
+
+     spatial   forma, tamaño y posicion. Amortiguacion 0.73: REBOTA un 3.4%,
+               y se asienta en unos 600ms
+     effects   color y opacidad. Amortiguacion 1.0: criticamente amortiguado,
+               NO rebota, y se asienta en unos 170ms
+
+   El unico cambio de este componente que usaria un spatial es el morph de
+   forma. Su rebote del 3.4% sobre un radio de 12px son 0.4px de pasado: por
+   debajo de lo que se perceives. Y por debajo de eso esta el bloqueo mayor,
+   que no es de movimiento sino de geometria: el 99.8% del recorrido del
+   morph se dibuja identico, porque corner-full son 9999px y el navegador
+   recorta cualquier radio a la mitad del lado. Ver la nota del bloque de la
+   base, donde esta medido con una prueba de 1000ms.
+
+   En el resto del componente, M3 usaria effects, que al no rebotar es
+   justamente lo que ya hace una cubic-bezier. Anadir un linear() muestreado
+   del resorte no cambiaria nada perceptible.
+
+   Asi que los tres morph existen pero no tienen transicion, y no es un
+   olvido: es lo que medido deja en pie.
 
    ANATOMIA DEL MARCADO
       <button class="md-icon-button" type="button" aria-label="Eliminar">
