@@ -198,4 +198,31 @@
      Este valor no viene de ninguna escala; es una convencion de M3.
      --------------------------------------------------------------------- */
   --md-ref-corner-full: 9999px;
+
+  /* ------------------------------------------------------------------------
+     HALF — la mitad de la altura de cada tamano del icon-button
+     --------------------------------------------------------------------------
+     M3 Expressive define la forma "round" de un boton de icono como "exact
+     half-height radii", no como corner-full. Y no es un detalle de nombre:
+     con 9999px el navegador RECORTA el radio a la mitad del lado mas corto,
+     con lo que se dibuja igual, pero el valor calculado sigue siendo 9999
+     durante toda la transicion y el 99.8% del recorrido del morph queda
+     pintado con el mismo pixel.
+
+     Con un radio finito el morph se ve. Medido: en small el recorrido pasa
+     de 20px a 8px, que son 12px de radio que si se ven.
+
+     No se declaran como una formula (calc(alto / 2)) porque el 2 seria un
+     numero crudo en la capa 3, que REGLA 1 no deja. Aqui los cinco.
+
+     NOTA: 28 y 68 no estan en la escala de espaciado (va 24 -> 32 y
+     64 -> 72), asi que son primitivas propias, como los anchos del
+     icon-button. Los otros tres (16, 20 y 48) si existen alli, pero se
+     declaran aqui para que la familia se lea junta.
+     --------------------------------------------------------------------- */
+  --md-ref-corner-half-xsmall: 16px;
+  --md-ref-corner-half-small: 20px;
+  --md-ref-corner-half-medium: 28px;
+  --md-ref-corner-half-large: 48px;
+  --md-ref-corner-half-xlarge: 68px;
 }

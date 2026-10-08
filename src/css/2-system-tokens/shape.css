@@ -136,6 +136,28 @@
   --md-sys-shape-corner-full: var(--md-ref-corner-full);
 
   /* ------------------------------------------------------------------------
+     HALF — media altura del boton de icono
+     --------------------------------------------------------------------------
+     M3 define la forma round de un icon button como "exact half-height
+     radii". Se publica como familia propia y no como alias de corner-full
+     por dos razones, y las dos medidas:
+
+       - con corner-full el radio calculado sigue en 9999 durante toda la
+         transicion (el recorte es del navegador, no del valor), asi que el
+         99.8% del recorrido del morph se pinta igual
+       - un radio finito permite que el morph se vea: en small son 12px de
+         recorrido, de 20 a 8
+
+     El rendered NO cambia: 9999px ya se dibujaba a media altura. Lo que
+     cambia es que ahora el valor dice la verdad y ademas se puede animar.
+     ------------------------------------------------------------------------ */
+  --md-sys-shape-corner-half-xsmall: var(--md-ref-corner-half-xsmall);
+  --md-sys-shape-corner-half-small:  var(--md-ref-corner-half-small);
+  --md-sys-shape-corner-half-medium: var(--md-ref-corner-half-medium);
+  --md-sys-shape-corner-half-large:  var(--md-ref-corner-half-large);
+  --md-sys-shape-corner-half-xlarge: var(--md-ref-corner-half-xlarge);
+
+  /* ------------------------------------------------------------------------
      RADIO POR LADO
      Componentes que redondean solo algunas esquinas. En CSS el orden es:
      arriba-izq, arriba-der, abajo-der, abajo-izq (sentido horario).

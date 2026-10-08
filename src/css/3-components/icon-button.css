@@ -147,8 +147,14 @@
      Por eso el token, y no un valor fijo. */
   --md-sys-icon-fill: var(--md-sys-icon-fill-full);
 
-  /* Forma. Dos tokens porque se INVIERTEN al seleccionarse. */
-  --md-comp-icon-button-shape: var(--md-sys-shape-corner-full);
+  /* Forma. Dos tokens porque se INVIERTEN al seleccionarse. El round es la
+     media altura del tamano, que es como lo define M3 Expressive ("exact
+     half-height radii"), y no corner-full: con 9999px el navegador recorta
+     el radio al pintar, pero el valor calculado sigue en 9999 durante toda
+     la transicion, y el 99.8% del recorrido del morph queda con el mismo
+     pixel. Con un radio finito el morph se ve. Ver la nota de transicion,
+     mas abajo. */
+  --md-comp-icon-button-shape: var(--md-sys-shape-corner-half-small);
   --md-comp-icon-button-selected-shape: var(--md-sys-shape-corner-medium);
 
   /* Y un tercero para el morph de pulsado, que M3 Expressive separa del
@@ -218,21 +224,23 @@
   background-color: var(--md-comp-icon-button-container-color);
   box-shadow: var(--md-comp-icon-button-elevation);
 
-  /* Sin transicion en el radio, a proposito, y con la razon medida:
+  /* El radio SI transiciona, y antes no podia. Con corner-full (9999px) el
+   navegador recorta al pintar, pero el valor calculado se queda en 9999
+   durante toda la transicion: el morph gastaba el 99.8% del recorrido
+   pintando el mismo pixel, y lo unico que se veia era un salto final.
 
-   corner-full son 9999px y el navegador recorta cualquier radio mayor que la
-   mitad del lado, dibujandolo IDENTICO a esa mitad. El morph round->square
-   (9999px -> 12px) gasta por tanto el 99.8% del recorrido pintando el mismo
-   pixel: lo unico que se percibiria es tiempo sin cambio y un salto final.
+   Con el round declarado como media altura (media altura de verdad, no
+   9999) el recorrido es finito y de verdad: en small son 12px de radio, de
+   20 a 8. Medido en el navegador con esta misma transicion.
 
-   Comprobado en vivo con una prueba de 1000ms con esquinas FINITAS (20px ->
-   0px), donde el radio si viaja pixel a pixel: 20 -> 17 -> 13.7 -> 10.3 ->
-   7 -> 3.7 -> 0 a lo largo del segundo entero. La mecanica funciona; la
-   geometria de corner-full la hace inutil. Por eso el morph queda
-   instantaneo.
+   Curva y duracion son las de la capa de estado: mismo par, mismo tiempo.
+   M3 aqui pondria un resorte (ver la nota del resorte en la cabecera), que
+   rebotaria un 3.4%: 0.4px sobre un radio de 12px, por debajo de lo que se
+   percibe. Asi que la curva del sistema es lo honesto. */
 
-   M3 tampoco declara duracion ni curva para este cambio: declara un resorte,
-   que CSS no puede expresar con cubic-bezier. */
+transition: border-radius
+    var(--md-comp-icon-button-state-duration)
+    var(--md-comp-icon-button-state-easing);
 
   color: var(--md-comp-icon-button-icon-color);
   cursor: pointer;
@@ -371,6 +379,7 @@
 
 .md-icon-button-xsmall {
   --md-sys-icon-optical-size: var(--md-sys-icon-optical-size-small);
+  --md-comp-icon-button-shape: var(--md-sys-shape-corner-half-xsmall);
   --md-comp-icon-button-height: var(--md-sys-measurement-icon-button-height-xsmall);
   --md-comp-icon-button-icon-size: var(--md-sys-measurement-icon-button-icon-xsmall);
   --md-comp-icon-button-width-narrow: var(--md-sys-measurement-icon-button-width-xsmall-narrow);
@@ -385,6 +394,7 @@
 }
 
 .md-icon-button-medium {
+  --md-comp-icon-button-shape: var(--md-sys-shape-corner-half-medium);
   --md-comp-icon-button-height: var(--md-sys-measurement-icon-button-height-medium);
   --md-comp-icon-button-icon-size: var(--md-sys-measurement-icon-button-icon-medium);
   --md-comp-icon-button-width-narrow: var(--md-sys-measurement-icon-button-width-medium-narrow);
@@ -393,6 +403,7 @@
 
 .md-icon-button-large {
   --md-sys-icon-optical-size: var(--md-sys-icon-optical-size-large);
+  --md-comp-icon-button-shape: var(--md-sys-shape-corner-half-large);
   --md-comp-icon-button-height: var(--md-sys-measurement-icon-button-height-large);
   --md-comp-icon-button-icon-size: var(--md-sys-measurement-icon-button-icon-large);
   --md-comp-icon-button-width-narrow: var(--md-sys-measurement-icon-button-width-large-narrow);
@@ -401,6 +412,7 @@
 
 .md-icon-button-xlarge {
   --md-sys-icon-optical-size: var(--md-sys-icon-optical-size-xlarge);
+  --md-comp-icon-button-shape: var(--md-sys-shape-corner-half-xlarge);
   --md-comp-icon-button-height: var(--md-sys-measurement-icon-button-height-xlarge);
   --md-comp-icon-button-icon-size: var(--md-sys-measurement-icon-button-icon-xlarge);
   --md-comp-icon-button-width-narrow: var(--md-sys-measurement-icon-button-width-xlarge-narrow);
