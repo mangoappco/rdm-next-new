@@ -261,12 +261,42 @@
     var(--md-ref-easing-legacy-decelerate-y1)
   );
 
-  /* Linear â€” velocidad constante. Solo spinners y barras de progreso. */
+  /* Linear — velocidad constante. Solo spinners y barras de progreso. */
   --md-sys-motion-easing-linear: cubic-bezier(
     var(--md-ref-easing-linear-x0),
     var(--md-ref-easing-linear-y0),
     var(--md-ref-easing-linear-x1),
     var(--md-ref-easing-linear-y1)
+  );
+
+  /* ------------------------------------------------------------------------
+     LAS DOS CURVAS DE M3 EXPRESSIVE
+     ------------------------------------------------------------------------
+     effects (color y opacidad) y spatial (tamano, posicion y morph de forma).
+     Las dos van acompanadas de su duracion canonica, que ya existe en el
+     sistema y por eso no se declara aqui:
+
+       effects + short4  = 200ms
+       spatial + long2   = 500ms
+
+     La spatial trae un punto de control en 1.06, pero su segundo punto esta en
+     1.00 muy temprano (x = 0.18) y lo arrastra hacia abajo: calculado, su
+     pico es 1.0006, o sea un rebote del 0.06%. Sobre un morph de 12px de
+     recorrido son 0.01px, que no se ven. Se adopta igual por fidelidad al
+     token, no por el rebote.
+     ------------------------------------------------------------------------ */
+  --md-sys-motion-easing-effects-default: cubic-bezier(
+    var(--md-ref-easing-effects-default-x0),
+    var(--md-ref-easing-effects-default-y0),
+    var(--md-ref-easing-effects-default-x1),
+    var(--md-ref-easing-effects-default-y1)
+  );
+
+  --md-sys-motion-easing-spatial-default: cubic-bezier(
+    var(--md-ref-easing-spatial-default-x0),
+    var(--md-ref-easing-spatial-default-y0),
+    var(--md-ref-easing-spatial-default-x1),
+    var(--md-ref-easing-spatial-default-y1)
   );
 }
 

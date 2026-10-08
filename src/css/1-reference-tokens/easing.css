@@ -199,4 +199,37 @@
   --md-ref-easing-linear-y0: 0;
   --md-ref-easing-linear-x1: 1;
   --md-ref-easing-linear-y1: 1;
+
+  /* ==========================================================================
+     LAS DOS CURVAS DE M3 EXPRESSIVE
+     --------------------------------------------------------------------------
+     M3 Expressive no publica su sistema por pares (una curva para un tipo de
+     movimiento), sino por TRIOS: rapido, por defecto y lento, y
+     para DOS familias de movimiento. De ahi salen estas dos.
+
+     effects   COLOR Y OPACIDAD. Curva que sube deprisa y frena (0.80 ya en el
+               primer punto de control). Sin rebote: y nunca pasa de 1. Con
+               short4 (200ms) es el par canonico para la capa de estado de
+               cualquier control.
+
+     spatial   TAMAÑO, POSICION Y MORPH DE FORMA. Trae un punto de control
+               en 1.06, aunque el rebote real medido es del 0.06% (el segundo
+               punto, en 1.00 y muy temprano, lo aplana). Con long2 (500ms)
+               es el par canonico para un cambio de forma.
+
+     Lo que las distingue de las diez clasicas no es el rebote: es que son
+     las unicas que M3 asocia a una FAMILIA de movimiento (color y opacidad
+     por un lado, forma y posicion por otro), y cada familia lleva su
+     duracion. Ninguna curva clasica puede hacer ese papel porque ninguna
+     viene con una duracion asociada.
+     ====================================================================== */
+  --md-ref-easing-effects-default-x0: 0.34;
+  --md-ref-easing-effects-default-y0: 0.80;
+  --md-ref-easing-effects-default-x1: 0.34;
+  --md-ref-easing-effects-default-y1: 1.00;
+
+  --md-ref-easing-spatial-default-x0: 0.27;
+  --md-ref-easing-spatial-default-y0: 1.06;
+  --md-ref-easing-spatial-default-x1: 0.18;
+  --md-ref-easing-spatial-default-y1: 1.00;
 }

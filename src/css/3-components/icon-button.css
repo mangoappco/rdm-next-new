@@ -55,29 +55,33 @@
    notas al pie de cada bloque.
 
    POR QUE NO HAY RESORTE, MEDIDO
-   -------------------------------
-   M3 Expressive separa dos tipos de resorte, y la distinction decide el
-   caso:
+   RESORTE Y CURVAS: LO QUE SE ADOPTO Y POR QUE
+   -------------------------------------------
+   M3 Expressive publica su motion en dos familias, y cada familia trae su
+   curva Y su duracion. Se adoptan las dos, tal cual:
 
-     spatial   forma, tamaño y posicion. Amortiguacion 0.73: REBOTA un 3.4%,
-               y se asienta en unos 600ms
-     effects   color y opacidad. Amortiguacion 1.0: criticamente amortiguado,
-               NO rebota, y se asienta en unos 170ms
+     effects   color y opacidad (la capa de estado)
+               0.34, 0.80, 0.34, 1.00  +  short4 = 200ms
+     spatial   tamano, posicion y morph de forma (el radio)
+               0.27, 1.06, 0.18, 1.00  +  long2  = 500ms
 
-   El unico cambio de este componente que usaria un spatial es el morph de
-   forma. Su rebote del 3.4% sobre un radio de 12px son 0.4px de pasado: por
-   debajo de lo que se perceives. Y por debajo de eso esta el bloqueo mayor,
-   que no es de movimiento sino de geometria: el 99.8% del recorrido del
-   morph se dibuja identico, porque corner-full son 9999px y el navegador
-   recorta cualquier radio a la mitad del lado. Ver la nota del bloque de la
-   base, donde esta medido con una prueba de 1000ms.
+   Que sean dos pares y no uno es lo importante: antes el tinte y el morph
+   compartian duracion, y quedaban los dos mal. El tinte tardaba 300ms (un
+   tramo que M3 reserva para "medium area of the screen") siendo el cambio
+   mas pequeno del componente, y el morph corria a velocidad de color.
 
-   En el resto del componente, M3 usaria effects, que al no rebotar es
-   justamente lo que ya hace una cubic-bezier. Anadir un linear() muestreado
-   del resorte no cambiaria nada perceptible.
+   SOBRE EL REBOTE, CORREGIDO POR MEDICION
+   -----------------------------------------
+   La curva spatial trae un punto de control en 1.06, y por el numero parece
+   que se pasa de largo un 6%. No: su segundo punto esta en 1.00 y muy
+   temprano (x = 0.18), y lo aplana. Calculado, el pico es 1.0006, o sea un
+   rebote del 0.06%: sobre un recorrido de 12px de radio son 0.01px. Se
+   adopta igual, por fidelidad al token, no porque se note.
 
-   Asi que los tres morph existen pero no tienen transicion, y no es un
-   olvido: es lo que medido deja en pie.
+   M3 define estas curvas como la proyeccion de un resorte (spatial con
+   amortiguacion 0.73, que rebotaria un 3.4%: 0.4px aqui, tambien por
+   debajo de lo perceptible). La proyeccion es lo que se puede escribir en
+   CSS; el resorte, no.
 
    ANATOMIA DEL MARCADO
       <button class="md-icon-button" type="button" aria-label="Eliminar">
@@ -185,14 +189,23 @@
      area de contenido (box-sizing: border-box). */
 
   /* Estado. La capa toma currentColor: sin token propio de color.
-     MEDIDO: con short2 el 88% del cambio ocurre en los primeros 50ms, y se
-     siente instantaneo aunque la transicion exista. medium2 (300ms) da al
-     ojo tiempo a seguir el teñido, y standard-decelerate frena al final en
-     vez de rematar de golpe, que es la forma de un asentamiento.
-     Nota honesta: esto alarga el cambio, no lo hace mas suave; con un
-     teñido del 10% la suavidad viene de la curva, no de los milisegundos. */
-  --md-comp-icon-button-state-duration: var(--md-sys-motion-duration-medium2);
-  --md-comp-icon-button-state-easing: var(--md-sys-motion-easing-standard-decelerate);
+
+     M3 Expressive separa el movimiento en dos familias, y por eso aqui hay
+     DOS pares y no uno:
+
+       effects   color y opacidad, que es esta capa de estado. Curva effects
+                 (sube deprisa y frena) + short4 = 200ms.
+       spatial   tamano, posicion y morph de forma, que es el radio. Curva
+                 spatial + long2 = 500ms.
+
+     Antes los dos compartian par, y el tinte de un boton de 40px tardaba
+     300ms: un tramo que M3 reserva para "medium area of the screen"
+     aplicado al cambio mas pequeno del componente. */
+  --md-comp-icon-button-state-duration: var(--md-sys-motion-duration-short4);
+  --md-comp-icon-button-state-easing: var(--md-sys-motion-easing-effects-default);
+
+  --md-comp-icon-button-morph-duration: var(--md-sys-motion-duration-long2);
+  --md-comp-icon-button-morph-easing: var(--md-sys-motion-easing-spatial-default);
 
   /* Anillo de foco M3: 3px de grosor, 2px de separacion. */
   --md-comp-icon-button-focus-color: var(--md-sys-color-secondary);
@@ -233,14 +246,16 @@
    9999) el recorrido es finito y de verdad: en small son 12px de radio, de
    20 a 8. Medido en el navegador con esta misma transicion.
 
-   Curva y duracion son las de la capa de estado: mismo par, mismo tiempo.
-   M3 aqui pondria un resorte (ver la nota del resorte en la cabecera), que
-   rebotaria un 3.4%: 0.4px sobre un radio de 12px, por debajo de lo que se
-   percibe. Asi que la curva del sistema es lo honesto. */
+   Curva y duracion son las de la familia SPATIAL (long2 + la curva spatial),
+   no las de la capa de estado: el cambio de forma es spatial segun M3, y el
+   cambio de color es effects. Son dos movimientos distintos y por eso no
+   comparten par. El rebote de la curva spatial, calculado, es del 0.06%
+   (0.01px sobre un recorrido de 12): se adopta por fidelidad al token, no
+   porque se note. */
 
-transition: border-radius
-    var(--md-comp-icon-button-state-duration)
-    var(--md-comp-icon-button-state-easing);
+ transition: border-radius
+    var(--md-comp-icon-button-morph-duration)
+    var(--md-comp-icon-button-morph-easing);
 
   color: var(--md-comp-icon-button-icon-color);
   cursor: pointer;
