@@ -384,6 +384,29 @@
   --md-sys-measurement-icon-button-icon-small:  var(--md-ref-spacing-300);
   --md-sys-measurement-icon-button-icon-medium: var(--md-ref-spacing-300);
 
+  /* ------------------------------------------------------------------------
+     LOS ANCHOS: narrow y wide de cada tamano
+     --------------------------------------------------------------------------
+     El ancho es un eje aparte del alto (M3 Expressive), y por eso son tokens
+     nuevos y no un alias de la altura.
+
+     EL DE EN MEDIO NO SE DECLARA: "uniform" es, en M3, exactamente la altura
+     del tamano (32/32, 40/40, 56/56). Declararlo seria escribir el mismo
+     numero dos veces y abrir la puerta a que se desincronicen; el componente
+     reapunta su ancho a la altura, asi queda cuadrado por defecto.
+
+     Solo se declaran los dos extremos, y de los tres tamanos que el
+     componente implementa: large y xlarge (64/128 y 104/184) siguen sin
+     rol, por la misma regla de siempre.
+     ------------------------------------------------------------------------ */
+  --md-sys-measurement-icon-button-width-xsmall-narrow: var(--md-ref-container-width-icon-button-xsmall-narrow);
+  --md-sys-measurement-icon-button-width-small-narrow:  var(--md-ref-container-width-icon-button-small-narrow);
+  --md-sys-measurement-icon-button-width-medium-narrow: var(--md-ref-container-width-icon-button-medium-narrow);
+
+  --md-sys-measurement-icon-button-width-xsmall-wide: var(--md-ref-container-width-icon-button-xsmall-wide);
+  --md-sys-measurement-icon-button-width-small-wide:  var(--md-ref-container-width-icon-button-small-wide);
+  --md-sys-measurement-icon-button-width-medium-wide: var(--md-ref-container-width-icon-button-medium-wide);
+
   /* ==========================================================================
      INSET DE DIVISOR
      --------------------------------------------------------------------------

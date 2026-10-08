@@ -91,4 +91,35 @@
   --md-ref-container-height-medium: 56px;
   --md-ref-container-height-large: 96px;
   --md-ref-container-height-xlarge: 136px;
+
+  /* ------------------------------------------------------------------------
+     LOS ANCHOS DEL ICON-BUTTON (M3 Expressive)
+     ------------------------------------------------------------------------
+     El ancho es un eje APARTE del alto: cada tamaño tiene tres anchos, y el
+     de en medio ("uniform") es siempre igual a su altura, asi que no se
+     declara aqui. Solo los dos extremos:
+
+        tamano    narrow   uniform   wide
+        xsmall     28        32       40
+        small      32        40       52
+        medium     48        56       72
+
+     POR QUE NO REAPUNTAN A LA ESCALA DE ESPACIADO
+     ---------------------------------------------
+     Cuatro de los seis si existen alli (32, 40, 48 y 72), pero 28 y 52 no:
+     la escala va 24 -> 32 y 48 -> 56, y no tiene esos dos saltos. Son medidas
+     de este componente, no un escalon del espaciado, asi que se declaran
+     aqui como primitivas propias. Estirar la escala de espaciado para que
+     entraran dos numeros de un componente seria ensuciarla.
+
+     Nombres: se distinguen de las alturas a proposito. Un token llamado
+     "container-height" que valiera 28 seria una mentira, asi que llevan
+     "width" en el nombre.
+     ------------------------------------------------------------------------ */
+  --md-ref-container-width-icon-button-xsmall-narrow: 28px;
+  --md-ref-container-width-icon-button-small-narrow: 32px;
+  --md-ref-container-width-icon-button-medium-narrow: 48px;
+  --md-ref-container-width-icon-button-xsmall-wide: 40px;
+  --md-ref-container-width-icon-button-small-wide: 52px;
+  --md-ref-container-width-icon-button-medium-wide: 72px;
 }
