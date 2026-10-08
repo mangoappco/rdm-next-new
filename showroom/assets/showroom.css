@@ -149,12 +149,19 @@
     min-height: calc(var(--md-ref-spacing-900) * 2);
   }
 
-  .sr-specimen-tall > div {
+  .sr-specimen-tall > div:not(.md-divider-vertical) {
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: inherit;
     width: calc(var(--md-ref-spacing-900) * 4);
+  }
+
+  /* Divisor vertical en escenario alto: conserva su ancho de 1px (el de la
+     receta) y toma altura minima del lienzo. Sin esto, la regla de arriba
+     lo convertiria en un bloque de 288px. */
+  .sr-specimen-tall > div.md-divider-vertical {
+    min-height: calc(var(--md-ref-spacing-900) * 2);
   }
 
   /* Caja con capa en escenario simple: mismo contrato (la caja aporta el
@@ -181,13 +188,13 @@
      marcado. Limite honesto: aplica a todo div directo de escenario; si un
      specimen futuro no lo quiere, se revisa aqui.
 
-     EXCLUYE .sr-meter y .sr-motion-dot a proposito: el contenedor de
-     medida y los puntos de movimiento llevan la clase .sr-specimen y el
-     combinador hijo alcanzaria a las barras y a los puntos, pisando sus
-     anchos con un suelo de 32px (16+16 de padding con border-box). Medido
-     dos veces: barras 0-400 y puntos de motion rendian 32x32 identicos.
+     EXCLUYE .sr-meter, .sr-motion-dot y .md-divider-vertical a proposito:
+     el contenedor de medida, los puntos de movimiento y los divisores
+     verticales caen bajo este selector y el padding les pisaria la medida
+     con un suelo de 32px. Medido tres veces: barras, puntos y divisor
+     vertical rendian 32 de ancho.
      --------------------------------------------------------------------- */
-  .sr-specimen:not(.sr-meter) > div:not(.sr-motion-dot) {
+  .sr-specimen:not(.sr-meter) > div:not(.sr-motion-dot):not(.md-divider-vertical) {
     padding: var(--md-ref-spacing-200);
   }
 

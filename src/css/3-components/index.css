@@ -1,12 +1,16 @@
 /* ==========================================================================
    3-components/index.css — INDICE DE LA CAPA 3
    --------------------------------------------------------------------------
-   Capa 3 vacia (linea base del reinicio). Cada componente futuro consume
-   UNICAMENTE tokens de 2-system-tokens/ (REGLA 2) y se agrega aqui, uno
-   por vez.
+   Reexporta los componentes, uno por archivo. Cada uno consume
+   UNICAMENTE tokens de 2-system-tokens/ (REGLA 2).
 
-   Doctrina de reconstruccion: fundaciones primero (vistas documentales de
-   color / tipografia / elevacion en el showroom) y despues componentes.
+   El primero es divider: el contrato minimo reabierto tras el reinicio.
+   Se agregan aqui a medida que se implementen, uno por vez.
+
+   Doctrina de reconstruccion: fundaciones primero (vistas documentales
+   en el showroom) y despues componentes.
 
    Se importa desde src/css/main.css en la capa `comp`.
    ========================================================================== */
+
+@import url("divider.css");

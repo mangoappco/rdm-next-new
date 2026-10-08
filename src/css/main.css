@@ -288,14 +288,12 @@
 /* ==========================================================================
    CAPA 3 — COMPONENTES
    --------------------------------------------------------------------------
-   Capa vacia (linea base del reinicio). Un archivo por componente futuro.
-   Cada uno consume UNICAMENTE tokens de la Capa 2 (REGLA 2) y nunca toca
+   Reabierta tras el reinicio: un archivo por componente. Cada uno consume
+   UNICAMENTE tokens de la Capa 2 (REGLA 2) y nunca toca
    1-reference-tokens/ directamente.
 
-   Doctrina de reconstruccion: fundaciones primero (vistas documentales
-   de color / tipografia / elevacion en el showroom) y despues
-   componentes. Se agregan en 3-components/index.css a medida que se
-   implementen, uno por vez.
+   El primero es divider: el contrato minimo. Se agregan en
+   3-components/index.css a medida que se implementen, uno por vez.
    ========================================================================== */
 @import url("3-components/index.css") layer(comp);
 
@@ -339,13 +337,11 @@
 /* ==========================================================================
    FIN DEL ORQUESTADOR
    ==========================================================================
-   5 imports que expanden a 30 hojas: 1 de reset, 12 de referencia, 9 de
-   sistema (7 roles + 2 temas), 0 componentes y 8 utilidades, mas los 4
+   5 imports que expanden a 31 hojas: 1 de reset, 12 de referencia, 9 de
+   sistema (7 roles + 2 temas), 1 componente y 8 utilidades, mas los 4
    indices. El sistema de tokens esta completo y la Capa 4 reune todas las
    clases atomicas.
 
-   Linea base del reinicio: la Capa 3 esta vacia y el showroom es un index
-   pelado. La reconstruccion empieza por las fundaciones (color /
-   tipografia / elevacion) y sigue con componentes, uno por vez en
-   3-components/index.css.
+   La Capa 3 se reabrio con divider y el showroom documenta fundaciones y
+   componentes, uno por vez en 3-components/index.css.
    ========================================================================== */

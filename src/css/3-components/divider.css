@@ -1,0 +1,121 @@
+/* ==========================================================================
+   3-components/divider.css — SEPARADOR LINEAL (Capa 3)
+   ==========================================================================
+
+   QUE ES ESTE ARCHIVO
+   -------------------
+   CAPA 3 del sistema. El componente mas simple del catalogo: una linea de
+   1px en el rol outline-variant, sin variantes de tipo ni estados.
+
+   Decisiones confirmadas con el usuario (grill 2026-10-08):
+     orientacion  horizontal + vertical
+     grosor       fijo 1px (thin), sin variantes
+     color        solo outline-variant, sin modificadores
+     sangrias     clases inset fijas con valor por token
+     semantica    <hr> nativo + <div role="separator"> para vertical
+     contenido    linea pura, sin slots
+     margenes     ninguno, los decide el padre
+     estados      ninguno
+
+   RECETA M3 (material-web)
+   ------------------------
+   color: outline-variant, thickness: 1px.
+   Se conservan tres decisiones de la receta:
+     1. currentColor en vez de background directo: el color se declara en
+        `color` y el ::before lo toma. Permite reapuntar el token comp
+        sin tocar el ::before.
+     2. display: flex, para que el ::before ocupe el 100%.
+     3. border: 0, porque el <hr> nativo trae un borde que sumaria al height
+        y el divisor mediria 2px en vez de 1px.
+
+   Lo que currentColor NO hace: no hereda del contenedor. .md-divider
+   declara `color`, y una declaracion gana a la herencia.
+
+   VERTICAL (uso canonico M3, mismos tokens)
+   -----------------------------------------
+   M3 documenta el divisor vertical para pantallas amplias y Compose
+   publica VerticalDivider. Mismos tokens, ejes intercambiados.
+   La semantica la pone el autor en el marcado:
+     horizontal  <hr class="md-divider">
+     vertical    <div class="md-divider md-divider-vertical"
+                      role="separator" aria-orientation="vertical"></div>
+
+   INSETS
+   ------
+   Tres variantes segun M3: full-width (0), inset (16dp al inicio) y
+   middle-inset (16dp en ambos lados). El valor viene del rol
+   --md-sys-measurement-inset, nunca de un numero escrito aqui.
+   En vertical, las mismas clases aplican sobre el eje de bloque.
+
+   RELACION CON LAS OTRAS CAPAS
+   -----------------------------
+     2-system-tokens/shape.css        <-- grosor (--md-sys-shape-stroke-thin)
+     2-system-tokens/theme/*.css      <-- color (--md-sys-color-outline-variant)
+     2-system-tokens/measurement.css  <-- inset (--md-sys-measurement-inset)
+     3-components/divider.css         <-- ESTE: tokens comp + 4 clases
+   ========================================================================== */
+
+.md-divider {
+  --md-comp-divider-color: var(--md-sys-color-outline-variant);
+  --md-comp-divider-thickness: var(--md-sys-shape-stroke-thin);
+
+  border: 0;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  color: var(--md-comp-divider-color);
+  height: var(--md-comp-divider-thickness);
+  width: 100%;
+}
+
+.md-divider::before {
+  content: "";
+  background: currentColor;
+  height: 100%;
+  width: 100%;
+}
+
+/* Inset horizontal: 16dp al inicio. */
+.md-divider-inset {
+  padding-inline-start: var(--md-sys-measurement-inset);
+}
+
+/* Middle-inset horizontal: 16dp en ambos lados. */
+.md-divider-middle-inset {
+  padding-inline: var(--md-sys-measurement-inset);
+}
+
+/* Variante vertical: ejes intercambiados, mismo grosor y color. */
+.md-divider-vertical {
+  position: relative;
+  width: var(--md-comp-divider-thickness);
+  height: 100%;
+}
+
+/* El ::before vertical NO puede usar height: 100%: el div solo tiene
+   min-height (altura indefinida) y el porcentaje computa a 0, pintando
+   0x0. Con absolute + inset: 0 se ancla a la caja de padding sin
+   porcentajes, y mide lo que mida el div. */
+.md-divider-vertical::before {
+  position: absolute;
+  inset: 0;
+}
+
+/* Las mismas sangrias sobre el eje de bloque en vertical. */
+.md-divider-vertical.md-divider-inset {
+  padding-inline-start: 0;
+  padding-block-start: var(--md-sys-measurement-inset);
+}
+
+.md-divider-vertical.md-divider-middle-inset {
+  padding-inline: 0;
+  padding-block: var(--md-sys-measurement-inset);
+}
+
+/* Alto contraste forzado (receta M3): el trazo usa el color de texto del
+   sistema para seguir visible en cualquier tema forzado. */
+@media (forced-colors: active) {
+  .md-divider::before {
+    background: CanvasText;
+  }
+}
