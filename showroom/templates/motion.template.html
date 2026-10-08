@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Motion — RDM ManGo! App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+  <link rel="stylesheet" href="../../src/css/main.css">
+  <link rel="stylesheet" href="../assets/showroom.css">
+  <script src="../assets/showroom.js"></script>
+</head>
+
+<!--
+  COMO USAR ESTE TEMPLATE (copiar a showroom/components/motion.html):
+  1. Cambiar <title> y el h1 si hace falta; la descripcion ya dice la
+     doctrina de la vista.
+  2. Dieciseis duraciones (curva standard) + standard y emphasized: loops
+     de lado a lado del lienzo con el tiempo real. Sin pre ni boton (el
+     movimiento lo consumen componentes, no autores).
+  3. Cada loop = .sr-motion-dot + .sr-motion-loop + .sr-motion-dN: el
+     keyframe es generico y el tiempo viene de tokens. Nada de showroom
+     sobre el movimiento salvo el loop demostrativo.
+-->
+
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <main class="sr-page">
+
+    <!-- HEADER: inicio (barra + titulo + descripcion) -->
+    <header class="sr-header">
+      <div class="sr-bar">
+        <p class="md-type-body-medium"><a href="../index.html">RDM ManGo! App</a></p>
+        <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
+      </div>
+      <h1 class="md-type-display-large">Motion</h1>
+      <p class="md-type-body-large">Dieciseis duraciones y dos curvas en loops reales: el tiempo se ve, no se lista.</p>
+    </header>
+    <!-- HEADER: fin -->
+
+    <!-- LOOP: una duracion por section (h2 + specimen). Sin snippet. -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Short 1 · 50ms</h2>
+      <p class="md-type-body-medium">Lo instantaneo: toggles de icono y ripples que confirman al dedo.</p>
+      <div class="sr-specimen sr-motion-lane">
+        <div class="sr-motion-dot sr-motion-loop sr-motion-d50"></div>
+      </div>
+    </section>
+    <!-- LOOP: hasta aqui -->
+
+    <!-- LOOP: una duracion por section (h2 + specimen). Sin snippet. -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Short 2 · 100ms</h2>
+      <p class="md-type-body-medium">Capas de estado: hover y focus que aparecen sin anunciarse.</p>
+      <div class="sr-specimen sr-motion-lane">
+        <div class="sr-motion-dot sr-motion-loop sr-motion-d100"></div>
+      </div>
+    </section>
+    <!-- LOOP: hasta aqui -->
+
+    <!-- LOOP: una duracion por section (h2 + specimen). Sin snippet. -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Short 3 · 150ms</h2>
+      <p class="md-type-body-medium">Fades de entrada y salida en menus compactos.</p>
+      <div class="sr-specimen sr-motion-lane">
+        <div class="sr-motion-dot sr-motion-loop sr-motion-d150"></div>
+      </div>
+    </section>
+    <!-- LOOP: hasta aqui -->
+
+    <!-- LOOP: una duracion por section (h2 + specimen). Sin snippet. -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Short 4 · 200ms</h2>
+      <p class="md-type-body-medium">Tooltips y snackbars que entran y salen.</p>
+      <div class="sr-specimen sr-motion-lane">
+        <div class="sr-motion-dot sr-motion-loop sr-motion-d200"></div>
+      </div>
+    </section>
+    <!-- LOOP: hasta aqui -->
+
+    <!-- LOOP: una duracion por section (h2 + specimen). Sin snippet. -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Medium 1 · 250ms</h2>
+      <p class="md-type-body-medium">Expansion de tarjetas y listas que crecen.</p>
+      <div class="sr-specimen sr-motion-lane">
+        <div class="sr-motion-dot sr-motion-loop sr-motion-d250"></div>
+      </div>
+    </section>
+    <!-- LOOP: hasta aqui -->
+
+    <!-- LOOP: una duracion por section (h2 + specimen). Sin snippet. -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Medium 2 · 300ms</h2>
+      <p class="md-type-body-medium">Dialogos y sheets que entran a escena.</p>
+      <div class="sr-specimen sr-motion-lane">
+        <div class="sr-motion-dot sr-motion-loop sr-motion-d300"></div>
+      </div>
+    </section>
+    <!-- LOOP: hasta aqui -->
+
+    <!-- LOOP: una duracion por section (h2 + specimen). Sin snippet. -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Medium 3 · 350ms</h2>
+      <p class="md-type-body-medium">Navegacion entre secciones con peso.</p>
+      <div class="sr-specimen sr-motion-lane">
+        <div class="sr-motion-dot sr-motion-loop sr-motion-d350"></div>
+      </div>
+    </section>
+    <!-- LOOP: hasta aqui -->
+
+    <!-- LOOP: una duracion por section (h2 + specimen). Sin snippet. -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Medium 4 · 400ms</h2>
+      <p class="md-type-body-medium">Transiciones de pantalla completa que orientan.</p>
+      <div class="sr-specimen sr-motion-lane">
+        <div class="sr-motion-dot sr-motion-loop sr-motion-d400"></div>
+      </div>
+    </section>
+    <!-- LOOP: hasta aqui -->
+
+    <!-- LOOP: una duracion por section (h2 + specimen). Sin snippet. -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Long 1 · 450ms</h2>
+      <p class="md-type-body-medium">Apertura de navigation drawer sobre el contenido.</p>
+      <div class="sr-specimen sr-motion-lane">
+        <div class="sr-motion-dot sr-motion-loop sr-motion-d450"></div>
+      </div>
+    </section>
+    <!-- LOOP: hasta aqui -->
+
+    <!-- LOOP: una duracion por section (h2 + specimen). Sin snippet. -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Long 2 · 500ms</h2>
+      <p class="md-type-body-medium">Cambio de pantalla con morphing de contenedor.</p>
+      <div class="sr-specimen sr-motion-lane">
+        <div class="sr-motion-dot sr-motion-loop sr-motion-d500"></div>
+      </div>
+    </section>
+    <!-- LOOP: hasta aqui -->
+
+    <!-- LOOP: una duracion por section (h2 + specimen). Sin snippet. -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Long 3 · 550ms</h2>
+      <p class="md-type-body-medium">Shared element que viaja entre vistas.</p>
+      <div class="sr-specimen sr-motion-lane">
+        <div class="sr-motion-dot sr-motion-loop sr-motion-d550"></div>
+      </div>
+    </section>
+    <!-- LOOP: hasta aqui -->
+
+    <!-- LOOP: una duracion por section (h2 + specimen). Sin snippet. -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Long 4 · 600ms</h2>
+      <p class="md-type-body-medium">Dialogos grandes que ocupan la escena.</p>
+      <div class="sr-specimen sr-motion-lane">
+        <div class="sr-motion-dot sr-motion-loop sr-motion-d600"></div>
+      </div>
+    </section>
+    <!-- LOOP: hasta aqui -->
+
+    <!-- LOOP: una duracion por section (h2 + specimen). Sin snippet. -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Extra long 1 · 700ms</h2>
+      <p class="md-type-body-medium">Onboarding: secuencias que ensenan con calma.</p>
+      <div class="sr-specimen sr-motion-lane">
+        <div class="sr-motion-dot sr-motion-loop sr-motion-d700"></div>
+      </div>
+    </section>
+    <!-- LOOP: hasta aqui -->
+
+    <!-- LOOP: una duracion por section (h2 + specimen). Sin snippet. -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Extra long 2 · 800ms</h2>
+      <p class="md-type-body-medium">Transiciones heroicas de primer uso.</p>
+      <div class="sr-specimen sr-motion-lane">
+        <div class="sr-motion-dot sr-motion-loop sr-motion-d800"></div>
+      </div>
+    </section>
+    <!-- LOOP: hasta aqui -->
+
+    <!-- LOOP: una duracion por section (h2 + specimen). Sin snippet. -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Extra long 3 · 900ms</h2>
+      <p class="md-type-body-medium">Splash screens y momentos de marca.</p>
+      <div class="sr-specimen sr-motion-lane">
+        <div class="sr-motion-dot sr-motion-loop sr-motion-d900"></div>
+      </div>
+    </section>
+    <!-- LOOP: hasta aqui -->
+
+    <!-- LOOP: una duracion por section (h2 + specimen). Sin snippet. -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Extra long 4 · 1000ms</h2>
+      <p class="md-type-body-medium">El segundo completo: celebraciones y logros desbloqueados.</p>
+      <div class="sr-specimen sr-motion-lane">
+        <div class="sr-motion-dot sr-motion-loop sr-motion-d1000"></div>
+      </div>
+    </section>
+    <!-- LOOP: hasta aqui -->
+
+    <!-- LOOP: una curva por section (h2 + specimen). Sin snippet. -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Easing standard</h2>
+      <p class="md-type-body-medium">Entradas y salidas pequenas: la curva de todos los dias.</p>
+      <div class="sr-specimen sr-motion-lane">
+        <div class="sr-motion-dot sr-motion-easing-standard"></div>
+      </div>
+    </section>
+    <!-- LOOP: hasta aqui -->
+
+    <!-- LOOP: una curva por section (h2 + specimen). Sin snippet. -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Easing emphasized</h2>
+      <p class="md-type-body-medium">FAB que se transforma y superficies que responden con caracter.</p>
+      <div class="sr-specimen sr-motion-lane">
+        <div class="sr-motion-dot sr-motion-easing-emphasized"></div>
+      </div>
+    </section>
+    <!-- LOOP: hasta aqui -->
+
+  </main>
+</body>
+</html>

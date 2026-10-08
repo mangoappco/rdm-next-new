@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Measurement — RDM ManGo! App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+  <link rel="stylesheet" href="../../src/css/main.css">
+  <link rel="stylesheet" href="../assets/showroom.css">
+  <script src="../assets/showroom.js"></script>
+</head>
+
+<!--
+  COMO USAR ESTE TEMPLATE (copiar a showroom/components/measurement.html):
+  1. Cambiar <title> y el h1 si hace falta; la descripcion ya dice la
+     doctrina de la vista.
+  2. Seis grupos (tactil, alturas, boton, iconos, icon-button, inset).
+     Cada fila es etiqueta + barra reutilizando .sr-meter-bar--N (el ancho
+     es el dato en ambas vistas). Sin pre ni boton: los roles los consumen
+     componentes, no autores (muestra pura, como spacing).
+-->
+
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <main class="sr-page">
+
+    <!-- HEADER: inicio (barra + titulo + descripcion) -->
+    <header class="sr-header">
+      <div class="sr-bar">
+        <p class="md-type-body-medium"><a href="../index.html">RDM ManGo! App</a></p>
+        <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
+      </div>
+      <h1 class="md-type-display-large">Measurement</h1>
+      <p class="md-type-body-large">Treinta roles de medida con intencion: lo que spacing significa cuando se usa.</p>
+    </header>
+    <!-- HEADER: fin -->
+
+    <!-- GRUPO: area tactil. -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Touch</h2>
+      <p class="md-type-body-medium">El minimo tocable y su separacion.</p>
+      <div class="sr-specimen sr-meter">
+        <p class="md-type-body-medium">touch-target · 48px · area minima</p>
+        <div class="sr-meter-bar--600"></div>
+        <p class="md-type-body-medium">touch-target-spacing · 8px · separacion entre areas</p>
+        <div class="sr-meter-bar--100"></div>
+      </div>
+      <!-- Sin pre ni boton: los roles los consumen componentes, no autores. -->
+    </section>
+    <!-- GRUPO: hasta aqui -->
+
+    <!-- GRUPO: alturas de componente. -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Heights</h2>
+      <p class="md-type-body-medium">Alturas que comparten varios componentes.</p>
+      <div class="sr-specimen sr-meter">
+        <p class="md-type-body-medium">button-height · 40px</p>
+        <div class="sr-meter-bar--500"></div>
+        <p class="md-type-body-medium">list-item-height · 48px</p>
+        <div class="sr-meter-bar--600"></div>
+        <p class="md-type-body-medium">top-bar-height · 48px</p>
+        <div class="sr-meter-bar--600"></div>
+        <p class="md-type-body-medium">navigation-bar-height · 64px</p>
+        <div class="sr-meter-bar--800"></div>
+        <p class="md-type-body-medium">tab-height · 48px</p>
+        <div class="sr-meter-bar--600"></div>
+        <p class="md-type-body-medium">button-height-xsmall · 32px</p>
+        <div class="sr-meter-bar--400"></div>
+        <p class="md-type-body-medium">button-height-medium · 56px</p>
+        <div class="sr-meter-bar--700"></div>
+      </div>
+      <!-- Sin pre ni boton: los roles los consumen componentes, no autores. -->
+    </section>
+    <!-- GRUPO: hasta aqui -->
+
+    <!-- GRUPO: medidas del boton. -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Button</h2>
+      <p class="md-type-body-medium">Rellenos, separaciones y glifos del boton.</p>
+      <div class="sr-specimen sr-meter">
+        <p class="md-type-body-medium">button-label-space · 8px</p>
+        <div class="sr-meter-bar--100"></div>
+        <p class="md-type-body-medium">button-padding-xsmall · 12px</p>
+        <div class="sr-meter-bar--150"></div>
+        <p class="md-type-body-medium">button-padding-small · 16px</p>
+        <div class="sr-meter-bar--200"></div>
+        <p class="md-type-body-medium">button-padding-medium · 24px</p>
+        <div class="sr-meter-bar--300"></div>
+        <p class="md-type-body-medium">button-icon-size · 20px</p>
+        <div class="sr-meter-bar--250"></div>
+        <p class="md-type-body-medium">button-icon-size-medium · 24px</p>
+        <div class="sr-meter-bar--300"></div>
+      </div>
+      <!-- Sin pre ni boton: los roles los consumen componentes, no autores. -->
+    </section>
+    <!-- GRUPO: hasta aqui -->
+
+    <!-- GRUPO: medidas de iconos. -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Icons</h2>
+      <p class="md-type-body-medium">Glifos, contenedores y areas del par icono-objetivo.</p>
+      <div class="sr-specimen sr-meter">
+        <p class="md-type-body-medium">icon-size · 24px</p>
+        <div class="sr-meter-bar--300"></div>
+        <p class="md-type-body-medium">icon-size-small · 20px</p>
+        <div class="sr-meter-bar--250"></div>
+        <p class="md-type-body-medium">icon-size-large · 40px</p>
+        <div class="sr-meter-bar--500"></div>
+        <p class="md-type-body-medium">icon-size-xlarge · 48px</p>
+        <div class="sr-meter-bar--600"></div>
+        <p class="md-type-body-medium">icon-container · 48px</p>
+        <div class="sr-meter-bar--600"></div>
+        <p class="md-type-body-medium">icon-target · 48px</p>
+        <div class="sr-meter-bar--600"></div>
+        <p class="md-type-body-medium">icon-target-small · 40px</p>
+        <div class="sr-meter-bar--500"></div>
+      </div>
+      <!-- Sin pre ni boton: los roles los consumen componentes, no autores. -->
+    </section>
+    <!-- GRUPO: hasta aqui -->
+
+    <!-- GRUPO: boton de icono. -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Icon button</h2>
+      <p class="md-type-body-medium">Contenedores y glifos del componente aparte.</p>
+      <div class="sr-specimen sr-meter">
+        <p class="md-type-body-medium">icon-button-height-xsmall · 32px</p>
+        <div class="sr-meter-bar--400"></div>
+        <p class="md-type-body-medium">icon-button-height-small · 40px</p>
+        <div class="sr-meter-bar--500"></div>
+        <p class="md-type-body-medium">icon-button-height-medium · 56px</p>
+        <div class="sr-meter-bar--700"></div>
+        <p class="md-type-body-medium">icon-button-icon-xsmall · 20px</p>
+        <div class="sr-meter-bar--250"></div>
+        <p class="md-type-body-medium">icon-button-icon-small · 24px</p>
+        <div class="sr-meter-bar--300"></div>
+        <p class="md-type-body-medium">icon-button-icon-medium · 24px</p>
+        <div class="sr-meter-bar--300"></div>
+      </div>
+      <!-- Sin pre ni boton: los roles los consumen componentes, no autores. -->
+    </section>
+    <!-- GRUPO: hasta aqui -->
+
+    <!-- GRUPO: inset del divisor. -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Inset</h2>
+      <p class="md-type-body-medium">Separacion lateral de las variantes del divisor.</p>
+      <div class="sr-specimen sr-meter">
+        <p class="md-type-body-medium">inset · 16px</p>
+        <div class="sr-meter-bar--200"></div>
+      </div>
+      <!-- Sin pre ni boton: los roles los consumen componentes, no autores. -->
+    </section>
+    <!-- GRUPO: hasta aqui -->
+
+  </main>
+</body>
+</html>

@@ -1138,6 +1138,15 @@ foreach ($html in $htmlFiles) {
     $pairPattern = '<div class="sr-specimen(?:\s[^>]*)?">((?:(?!<div class="sr-specimen(?:\s[^>]*)?">)[\s\S])*)</div>\s*<pre class="sr-code"><code>([\s\S]*?)</code>'
 
     foreach ($m in [regex]::Matches($body, $pairPattern)) {
+        # Doctrina: todo snippet es HTML pegable para maquetar. Un pre que
+        # no empieza con &lt; (CSS u otro texto) viola la doctrina.
+        if ($m.Groups[2].Value.Trim() -notmatch '^&lt;') {
+            Add-Issue -Rule 'REGLA 11' -File $rel -Line 0 `
+                      -Message 'snippet no pegable: todo snippet es HTML para maquetar (empieza con &lt;)' `
+                      -Snippet $m.Groups[2].Value.Trim().Substring(0, [Math]::Min(60, $m.Groups[2].Value.Trim().Length))
+            continue
+        }
+
         $rendered = ($m.Groups[1].Value -replace '>\s+<', '><').Trim()
 
         $snippet = $m.Groups[2].Value -replace '&lt;', '<' -replace '&gt;', '>' `

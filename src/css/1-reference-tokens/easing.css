@@ -134,19 +134,15 @@
   /* ==========================================================================
      EMPHASIZED — transiciones que el usuario pide de forma explicita
      --------------------------------------------------------------------------
-     En v0.192 es identica a standard (0.2, 0, 0, 1). La version actual de M3
+     En v0.192 era identica a standard (0.2, 0, 0, 1). La version actual de M3
      le da una cola mas larga: el elemento pasa rapido y se desliza con una
      deceleration larga al final, que es lo que aporta el "caracter" de
-     M3 Expressive.
-
-     Se mantiene como token separado igual que en Google, aunque hoy coincida:
-     cuando Google actualice el valor, este proyecto solo tiene que cambiar
-     los cuatro numeros de aqui y las 5 variantes (standard, accelerate,
-     decelerate) se actualizan solas.
+     M3 Expressive. Se adoptan los valores vigentes (0.05, 0.7, 0.1, 1); la
+     separacion en token propio ya existia justo para este cambio.
      ====================================================================== */
-  --md-ref-easing-emphasized-x0: 0.2;
-  --md-ref-easing-emphasized-y0: 0;
-  --md-ref-easing-emphasized-x1: 0;
+  --md-ref-easing-emphasized-x0: 0.05;
+  --md-ref-easing-emphasized-y0: 0.7;
+  --md-ref-easing-emphasized-x1: 0.1;
   --md-ref-easing-emphasized-y1: 1;
 
   /* Emphasized accelerate — (0.3, 0, 0.8, 0.15) */

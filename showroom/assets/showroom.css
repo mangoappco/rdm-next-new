@@ -181,13 +181,13 @@
      marcado. Limite honesto: aplica a todo div directo de escenario; si un
      specimen futuro no lo quiere, se revisa aqui.
 
-     EXCLUYE .sr-meter a proposito: el contenedor de medida lleva la clase
-     .sr-specimen y el combinador hijo alcanzaria a las barras, pisando sus
-     anchos con un suelo de 32px (16+16 de padding con border-box). Medido:
-     las barras 0-400 rendian 32x32 identicas. Las barras son medida, no
-     muestra con aire: su ancho es el dato.
+     EXCLUYE .sr-meter y .sr-motion-dot a proposito: el contenedor de
+     medida y los puntos de movimiento llevan la clase .sr-specimen y el
+     combinador hijo alcanzaria a las barras y a los puntos, pisando sus
+     anchos con un suelo de 32px (16+16 de padding con border-box). Medido
+     dos veces: barras 0-400 y puntos de motion rendian 32x32 identicos.
      --------------------------------------------------------------------- */
-  .sr-specimen:not(.sr-meter) > div {
+  .sr-specimen:not(.sr-meter) > div:not(.sr-motion-dot) {
     padding: var(--md-ref-spacing-200);
   }
 
@@ -274,6 +274,72 @@
   .sr-meter-bar--700 { inline-size: var(--md-ref-spacing-700); }
   .sr-meter-bar--800 { inline-size: var(--md-ref-spacing-800); }
   .sr-meter-bar--900 { inline-size: var(--md-ref-spacing-900); }
+
+  /* ------------------------------------------------------------------------
+     MOVIMIENTO (vista motion)
+     --------------------------------------------------------------------------
+     Loops que muestran el tiempo de verdad: el keyframe es generico (ida
+     y vuelta sobre 64px) y cada clase aporta duracion y curva desde tokens
+     del sistema. Sin pre ni boton: el movimiento lo consumen componentes.
+     Con prefers-reduced-motion todo queda quieto (accesibilidad).
+     --------------------------------------------------------------------- */
+  @keyframes sr-slide {
+    from { left: var(--md-ref-spacing-200); }
+    to { left: calc(100% - var(--md-ref-spacing-200) - var(--md-ref-spacing-300)); }
+  }
+
+  .sr-motion-lane {
+    position: relative;
+    min-height: var(--md-ref-spacing-900);
+  }
+
+  .sr-specimen > .sr-motion-dot {
+    position: absolute;
+    top: calc(50% - var(--md-ref-spacing-150) / 2);
+    display: block;
+    inline-size: var(--md-ref-spacing-300);
+    block-size: var(--md-ref-spacing-300);
+    background-color: var(--md-sys-color-primary);
+    border-radius: var(--md-sys-shape-corner-small);
+  }
+
+  .sr-motion-loop {
+    animation-name: sr-slide;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-timing-function: var(--md-sys-motion-easing-standard);
+  }
+
+  /* Una clase por duracion (de corta a extra-larga), ni una mas. */
+  .sr-motion-d50   { animation-duration: var(--md-sys-motion-duration-short1); }
+  .sr-motion-d100  { animation-duration: var(--md-sys-motion-duration-short2); }
+  .sr-motion-d150  { animation-duration: var(--md-sys-motion-duration-short3); }
+  .sr-motion-d200  { animation-duration: var(--md-sys-motion-duration-short4); }
+  .sr-motion-d250  { animation-duration: var(--md-sys-motion-duration-medium1); }
+  .sr-motion-d300  { animation-duration: var(--md-sys-motion-duration-medium2); }
+  .sr-motion-d350  { animation-duration: var(--md-sys-motion-duration-medium3); }
+  .sr-motion-d400  { animation-duration: var(--md-sys-motion-duration-medium4); }
+  .sr-motion-d450  { animation-duration: var(--md-sys-motion-duration-long1); }
+  .sr-motion-d500  { animation-duration: var(--md-sys-motion-duration-long2); }
+  .sr-motion-d550  { animation-duration: var(--md-sys-motion-duration-long3); }
+  .sr-motion-d600  { animation-duration: var(--md-sys-motion-duration-long4); }
+  .sr-motion-d700  { animation-duration: var(--md-sys-motion-duration-extra-long1); }
+  .sr-motion-d800  { animation-duration: var(--md-sys-motion-duration-extra-long2); }
+  .sr-motion-d900  { animation-duration: var(--md-sys-motion-duration-extra-long3); }
+  .sr-motion-d1000 { animation-duration: var(--md-sys-motion-duration-extra-long4); }
+
+  /* Curvas canonicas a duracion media de trabajo. Autosuficientes (traen
+     nombre e iteracion): el marcado no combina dos clases de animacion. */
+  .sr-motion-easing-standard { animation: sr-slide var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-standard) infinite alternate; }
+  .sr-motion-easing-emphasized { animation: sr-slide var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized) infinite alternate; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sr-motion-loop,
+    .sr-motion-easing-standard,
+    .sr-motion-easing-emphasized {
+      animation: none;
+    }
+  }
 
   /* ------------------------------------------------------------------------
      EL BLOQUE DE CODIGO
