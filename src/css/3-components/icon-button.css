@@ -96,6 +96,21 @@
      identico al del eje FILL, mas abajo. */
   --md-sys-icon-optical-size: var(--md-sys-icon-optical-size-medium);
 
+  /* Y el TAMAÑO del glifo, que es un agujero distinto y mas gordo: sin esto
+     los cinco contenedores crecian pero el glifo se quedaba en 24px en los
+     cinco. .md-icon declara font-size en utilities, la capa mas fuerte, asi
+     que la regla de este componente que pone el font-size del glifo perdia
+     siempre y era codigo muerto (la caja si crecia, porque esa dimension si
+     la ganaba comp). Reapuntar el rol que .md-icon LEE es lo que lo arregla,
+     y de paso no necesita tocar la capa 4.
+
+     Ojo con los dos pares: este es el de la longitud (px, el tamano de la
+     caja del glifo) y --md-sys-icon-optical-size el del numero (el eje
+     opsz). No son el mismo valor y no deben unificarse: en large la caja
+     mide 32 y el optico es 40. Ver por que estan separados en
+     2-system-tokens/icon.css. */
+  --md-sys-measurement-icon-size: var(--md-comp-icon-button-icon-size);
+
   /* Eje FILL del glifo. NO se declara font-variation-settings aqui: el glifo
      lleva .md-icon, que esta en utilities, la capa mas fuerte del sistema, y
      gana a esta capa sin importar la especificidad. Una regla del componente
