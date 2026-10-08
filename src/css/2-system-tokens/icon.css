@@ -250,13 +250,28 @@
   --md-sys-icon-weight: var(--md-ref-icon-weight-regular);
 
   /* ------------------------------------------------------------------------
-     RELLENO
-     ------------------------------------------------------------------------
-     El extremo sin relleno. El lleno lo declara .md-icon-filled, que es lo
-     que hace que un token que no es el de sistema siga siendo alcanzable
-     desde el HTML sin escribir un estilo en linea.
-     ------------------------------------------------------------------------ */
-  --md-sys-icon-fill: var(--md-ref-icon-fill-none);
+      RELLENO
+      ------------------------------------------------------------------------
+      TRES roles: los dos extremos con nombre, y el que se aplica por
+      defecto. Antes solo existia --md-sys-icon-fill (el extremo sin relleno) y
+      el lleno vivia unico en .md-icon-filled: bastaba para el HTML, pero
+      dejaba a la capa 3 sin puerta, porque no puede leer la capa 4 ni saltarse
+      la capa 2.
+
+      El par con nombre (fill-none / fill-full) es lo que permite QUE SE
+      APUNTEN uno al otro. Un componente que quiera el extremo sin relleno
+      desde dentro de si mismo no puede escribir --md-sys-icon-fill:
+      var(--md-sys-icon-fill), porque seria una referencia circular.
+
+      --md-sys-icon-fill sigue siendo el valor por defecto (sin relleno) y es
+      el que lee .md-icon. El icon-button NO lo usa para su glifo: lo reapunta
+      en su propio elemento, porque .md-icon esta en utilities, la capa mas
+      fuerte del sistema, y gana a cualquier regla de comp sin importar la
+      especificidad. Un componente no puede ganar esa pelea.
+      ------------------------------------------------------------------------ */
+  --md-sys-icon-fill: var(--md-sys-icon-fill-none);
+  --md-sys-icon-fill-none: var(--md-ref-icon-fill-none);
+  --md-sys-icon-fill-full: var(--md-ref-icon-fill-full);
 
   /* ------------------------------------------------------------------------
      TAMANO OPTICO
