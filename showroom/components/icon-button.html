@@ -12,8 +12,8 @@
   <script src="../assets/showroom.js"></script>
 </head>
 
-<!-- Vista de componente: accion con un solo icono, variante standard.
-     Molde: showroom/templates/icon-button.template.html. -->
+<!-- Vista de componente: accion con un solo icono, con sus tres estados
+     por color. Molde: showroom/templates/icon-button.template.html. -->
 
 <body class="md-bg-background md-text-on-background md-type-body-medium">
   <main class="sr-page">
@@ -25,7 +25,7 @@
         <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
       </div>
       <h1 class="md-type-display-large">Icon button</h1>
-      <p class="md-type-body-large">Accion con un solo icono: cuatro variantes y tres tamanos en contenedor propio.</p>
+      <p class="md-type-body-large">Componente interactivo compacto diseñado para ejecutar acciones con un solo clic donde el símbolo visual es autosuficiente para comunicar el significado.</p>
     </header>
     <!-- HEADER: fin -->
 
@@ -34,15 +34,179 @@
     <!-- PAREJA: variante con sus 3 tamanos (h2 + specimen + pre + boton). -->
     <section class="sr-section">
       <h2 class="md-type-title-large">Standard</h2>
-      <p class="md-type-body-medium">Icono sobre la superficie, sin relleno: 32, 40 y 56.</p>
+      <p class="md-type-body-medium">Icono sobre la superficie, sin relleno. Tamano de sistema: small (40).</p>
       <div class="sr-specimen sr-specimen-gap">
-        <button class="md-icon-button md-icon-button-standard md-icon-button-xsmall" type="button" aria-label="Eliminar"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
         <button class="md-icon-button md-icon-button-standard md-icon-button-small" type="button" aria-label="Eliminar"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
-        <button class="md-icon-button md-icon-button-standard md-icon-button-medium" type="button" aria-label="Eliminar"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
       </div>
-      <pre class="sr-code"><code>&lt;button class="md-icon-button md-icon-button-standard md-icon-button-xsmall" type="button" aria-label="Eliminar"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
-&lt;button class="md-icon-button md-icon-button-standard md-icon-button-small" type="button" aria-label="Eliminar"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
-&lt;button class="md-icon-button md-icon-button-standard md-icon-button-medium" type="button" aria-label="Eliminar"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <pre class="sr-code"><code>&lt;button class="md-icon-button md-icon-button-standard md-icon-button-small" type="button" aria-label="Eliminar"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: los 4 colores juntos (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Colors</h2>
+      <p class="md-type-body-medium">Filled, tonal, outlined y standard uno al lado del otro.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" aria-label="Eliminar"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
+        <button class="md-icon-button md-icon-button-filled-tonal md-icon-button-small" type="button" aria-label="Eliminar"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
+        <button class="md-icon-button md-icon-button-outlined md-icon-button-small" type="button" aria-label="Eliminar"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
+        <button class="md-icon-button md-icon-button-standard md-icon-button-small" type="button" aria-label="Eliminar"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" aria-label="Eliminar"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-icon-button md-icon-button-filled-tonal md-icon-button-small" type="button" aria-label="Eliminar"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-icon-button md-icon-button-outlined md-icon-button-small" type="button" aria-label="Eliminar"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-icon-button md-icon-button-standard md-icon-button-small" type="button" aria-label="Eliminar"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: los 3 tamanos juntos (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Sizes</h2>
+      <p class="md-type-body-medium">xsmall 32, small 40 y medium 56 uno al lado del otro: la escala completa.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-icon-button md-icon-button-filled md-icon-button-xsmall" type="button" aria-label="Eliminar"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
+        <button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" aria-label="Eliminar"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
+        <button class="md-icon-button md-icon-button-filled md-icon-button-medium" type="button" aria-label="Eliminar"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-icon-button md-icon-button-filled md-icon-button-xsmall" type="button" aria-label="Eliminar"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" aria-label="Eliminar"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-icon-button md-icon-button-filled md-icon-button-medium" type="button" aria-label="Eliminar"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: las 2 formas (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Shapes</h2>
+      <p class="md-type-body-medium">Round y square en filled small: las dos formas del componente.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" aria-label="Eliminar"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
+        <button class="md-icon-button md-icon-button-filled md-icon-button-small md-icon-button-square" type="button" aria-label="Eliminar"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" aria-label="Eliminar"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-icon-button md-icon-button-filled md-icon-button-small md-icon-button-square" type="button" aria-label="Eliminar"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: estados estaticos (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">States filled</h2>
+      <p class="md-type-body-medium">Enabled y disabled en filled small: hover, focus y pressed se ven interactuando.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" aria-label="Eliminar"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
+        <button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" aria-label="Eliminar" disabled><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" aria-label="Eliminar"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" aria-label="Eliminar" disabled&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: estados tonal (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">States tonal</h2>
+      <p class="md-type-body-medium">Enabled y disabled en filled tonal small: hover, focus y pressed se ven interactuando.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-icon-button md-icon-button-filled-tonal md-icon-button-small" type="button" aria-label="Eliminar"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
+        <button class="md-icon-button md-icon-button-filled-tonal md-icon-button-small" type="button" aria-label="Eliminar" disabled><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-icon-button md-icon-button-filled-tonal md-icon-button-small" type="button" aria-label="Eliminar"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-icon-button md-icon-button-filled-tonal md-icon-button-small" type="button" aria-label="Eliminar" disabled&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: estados outlined (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">States outlined</h2>
+      <p class="md-type-body-medium">Enabled y disabled en outlined small: hover, focus y pressed se ven interactuando.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-icon-button md-icon-button-outlined md-icon-button-small" type="button" aria-label="Eliminar"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
+        <button class="md-icon-button md-icon-button-outlined md-icon-button-small" type="button" aria-label="Eliminar" disabled><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-icon-button md-icon-button-outlined md-icon-button-small" type="button" aria-label="Eliminar"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-icon-button md-icon-button-outlined md-icon-button-small" type="button" aria-label="Eliminar" disabled&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: estados standard (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">States standard</h2>
+      <p class="md-type-body-medium">Enabled y disabled en standard small: hover, focus y pressed se ven interactuando.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-icon-button md-icon-button-standard md-icon-button-small" type="button" aria-label="Eliminar"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
+        <button class="md-icon-button md-icon-button-standard md-icon-button-small" type="button" aria-label="Eliminar" disabled><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-icon-button md-icon-button-standard md-icon-button-small" type="button" aria-label="Eliminar"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-icon-button md-icon-button-standard md-icon-button-small" type="button" aria-label="Eliminar" disabled&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+      <!-- PAREJA: la matriz de M3, una pareja por color (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Default y toggle filled</h2>
+      <p class="md-type-body-medium">Los tres estados de la fila filled de M3: default (accion), toggle sin seleccionar y toggle seleccionado. El toggle necesita md-icon-button-toggle; el default no lleva atributo porque no tiene estado.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" aria-label="Ajustes"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
+        <button class="md-icon-button md-icon-button-filled md-icon-button-small md-icon-button-toggle" type="button" aria-label="Ajustes" aria-pressed="false"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
+        <button class="md-icon-button md-icon-button-filled md-icon-button-small md-icon-button-toggle" type="button" aria-label="Ajustes" aria-pressed="true"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" aria-label="Ajustes"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-icon-button md-icon-button-filled md-icon-button-small md-icon-button-toggle" type="button" aria-label="Ajustes" aria-pressed="false"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-icon-button md-icon-button-filled md-icon-button-small md-icon-button-toggle" type="button" aria-label="Ajustes" aria-pressed="true"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: la misma matriz en tonal. -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Default y toggle tonal</h2>
+      <p class="md-type-body-medium">Los tres estados de la fila tonal. Al seleccionar recupera el secondary-container; el glifo tambien se rellena.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-icon-button md-icon-button-filled-tonal md-icon-button-small" type="button" aria-label="Ajustes"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
+        <button class="md-icon-button md-icon-button-filled-tonal md-icon-button-small md-icon-button-toggle" type="button" aria-label="Ajustes" aria-pressed="false"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
+        <button class="md-icon-button md-icon-button-filled-tonal md-icon-button-small md-icon-button-toggle" type="button" aria-label="Ajustes" aria-pressed="true"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-icon-button md-icon-button-filled-tonal md-icon-button-small" type="button" aria-label="Ajustes"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-icon-button md-icon-button-filled-tonal md-icon-button-small md-icon-button-toggle" type="button" aria-label="Ajustes" aria-pressed="false"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-icon-button md-icon-button-filled-tonal md-icon-button-small md-icon-button-toggle" type="button" aria-label="Ajustes" aria-pressed="true"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: la misma matriz en outlined. -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Default y toggle outlined</h2>
+      <p class="md-type-body-medium">Los tres estados de la fila outlined. El seleccionado es el unico del componente que se invierte: inverse-surface con inverse-on-surface.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-icon-button md-icon-button-outlined md-icon-button-small" type="button" aria-label="Ajustes"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
+        <button class="md-icon-button md-icon-button-outlined md-icon-button-small md-icon-button-toggle" type="button" aria-label="Ajustes" aria-pressed="false"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
+        <button class="md-icon-button md-icon-button-outlined md-icon-button-small md-icon-button-toggle" type="button" aria-label="Ajustes" aria-pressed="true"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-icon-button md-icon-button-outlined md-icon-button-small" type="button" aria-label="Ajustes"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-icon-button md-icon-button-outlined md-icon-button-small md-icon-button-toggle" type="button" aria-label="Ajustes" aria-pressed="false"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-icon-button md-icon-button-outlined md-icon-button-small md-icon-button-toggle" type="button" aria-label="Ajustes" aria-pressed="true"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: la misma matriz en standard. -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Default y toggle standard</h2>
+      <p class="md-type-body-medium">Los tres estados de la fila standard. Sin relleno en ninguno: la seleccion solo cambia el color del glifo, su relleno y la forma.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-icon-button md-icon-button-standard md-icon-button-small" type="button" aria-label="Ajustes"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
+        <button class="md-icon-button md-icon-button-standard md-icon-button-small md-icon-button-toggle" type="button" aria-label="Ajustes" aria-pressed="false"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
+        <button class="md-icon-button md-icon-button-standard md-icon-button-small md-icon-button-toggle" type="button" aria-label="Ajustes" aria-pressed="true"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-icon-button md-icon-button-standard md-icon-button-small" type="button" aria-label="Ajustes"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-icon-button md-icon-button-standard md-icon-button-small md-icon-button-toggle" type="button" aria-label="Ajustes" aria-pressed="false"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-icon-button md-icon-button-standard md-icon-button-small md-icon-button-toggle" type="button" aria-label="Ajustes" aria-pressed="true"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
     <!-- PAREJA: hasta aqui -->
