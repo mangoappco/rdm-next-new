@@ -227,6 +227,11 @@
   .sr-meter {
     display: flex;
     flex-direction: column;
+    /* stretch y no center: este contenedor lleva tambien .sr-specimen,
+       cuyo align-items:center colapsaria a ancho 0 a los hijos sin ancho
+       propio (las .sr-rule vacias). Las barras con inline-size ni se
+       enteran; las reglas si. Medido en shapes. */
+    align-items: stretch;
     gap: var(--md-ref-spacing-100);
     width: 100%;
   }
@@ -340,6 +345,23 @@
       animation: none;
     }
   }
+
+  /* ------------------------------------------------------------------------
+     REGLAS DE TRAZO (vista shapes)
+     --------------------------------------------------------------------------
+     Cuatro lineas con el grosor del rol: estilo solido y color corriente
+     del chrome, ancho del rol. Muestra pura sin snippet (el ancho solo no
+     rinde): el trazo viaja dentro de las recetas que lo gastan.
+     --------------------------------------------------------------------- */
+  .sr-rule {
+    display: block;
+    border-block-start-width: var(--md-sys-shape-stroke-thin);
+    border-block-start-style: solid;
+    border-block-start-color: var(--md-sys-color-outline-variant);
+  }
+  .sr-rule--none { border-block-start-width: var(--md-sys-shape-stroke-none); }
+  .sr-rule--thick { border-block-start-width: var(--md-sys-shape-stroke-thick); }
+  .sr-rule--extra-thick { border-block-start-width: var(--md-sys-shape-stroke-extra-thick); }
 
   /* ------------------------------------------------------------------------
      EL BLOQUE DE CODIGO
