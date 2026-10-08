@@ -36,6 +36,15 @@
      tamaño, mas abajo, puedan reapuntarlo sin repetir las cuatro lineas de
      font-variation-settings.
 
+     Y se lee de --md-sys-icon-optical-size, el rol SIN SUFIJO, no del
+     mediano fijo. La diferencia no es de estilo, es de alcance: escribiendo
+     el mediano aqui, esta clase cerraba la puerta a los componentes. Al
+     leer el rol, un componente lo reapunta en su propio elemento y el glifo
+     lo hereda, con lo que el optico puede seguir al tamano del glifo (que
+     es lo que M3 pide: un glifo de 40px dibujado con el optico de 24 sale
+     con el trazo mas fino). Es el mismo patron que --md-sys-icon-fill, que
+     el icon-button reapunta para el toggle.
+
      El prefijo --_ es el de M3 para tokens internos, y el que ya usa
      button.css. NO es un --md-*: esos tres prefijos son las capas del
      sistema, y un token local no pertenece a ninguna.
@@ -44,7 +53,7 @@
      Es el patron de button.css, donde cada tamano reapunta sus propios
      tokens en vez de reescribir la propiedad. Y aplica la misma regla que
      M3 pide: el tamano optico y el tamano del icono se mueven juntos. */
-  --_icon-optical-size: var(--md-sys-icon-optical-size-medium);
+  --_icon-optical-size: var(--md-sys-icon-optical-size);
 
   font-family: var(--md-sys-icon-font);
   font-size: var(--md-sys-measurement-icon-size);

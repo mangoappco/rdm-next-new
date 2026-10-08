@@ -13,25 +13,36 @@
       xsmall   contenedor 32px    glifo 20px
       small    contenedor 40px    glifo 24px
       medium   contenedor 56px    glifo 24px
+      large    contenedor 96px    glifo 32px
+      xlarge   contenedor 136px   glifo 40px
 
    ANCHOS (M3 Expressive: eje aparte del alto)
-      narrow    xsmall 28   small 32   medium 48
-      uniform   el mismo valor que el alto (32 / 40 / 56)
-      wide      xsmall 40   small 52   medium 72
+      narrow    xsmall 28   small 32   medium 48   large 64   xlarge 104
+      uniform   el mismo valor que el alto (32 / 40 / 56 / 96 / 136)
+      wide      xsmall 40   small 52   medium 72   large 128  xlarge 184
       El ancho no cambia la altura, el glifo ni el area tactil de 48dp.
       Sin clase = uniform: se reapunta a la altura, no se duplica el valor.
 
-   FORMAS (M3 Expressive: tres morph distintos)
+   TAMANO OPTICO DEL GLIFO (sigue a su tamano fisico, como pide M3)
+      xsmall 20   small 24   medium 24   large 40   xlarge 48
+      No se declara con un token propio: .md-icon lee el rol sin sufijo
+      --md-sys-icon-optical-size, y este componente lo reapunta en su
+      elemento, que es lo que el glifo hereda. Antes .md-icon fijaba el
+      mediano y ningun componente podia apartarse de ahi.
+
+   FORMAS (M3 Expressive: tres morph distintos, y escalan con el tamano)
       reposo round     corner-full        (el navegador lo recorta a media altura)
-      reposo square    corner-medium      xsmall/small; medium sube a corner-large
-      al pulsar        corner-small       xsmall/small; medium sube a corner-medium
+      reposo square    corner-medium      xsmall/small; medium corner-large;
+                                           large/xlarge corner-extra-large
+      al pulsar        corner-small       xsmall/small; medium corner-medium;
+                                           large/xlarge corner-large
       al seleccionar   se INVIERTE la de reposo (round -> corner-medium)
 
    COLORES (tokens/versions/v0_192)
       icono               on-surface-variant
       seleccionado        primary (solo en standard)
       deshabilitado       on-surface al 38%
-      capa de estado      40 x 40, corner-full
+      capa de estado      inset 0 (toma el tamano del contenedor), corner-full
 
    TOGGLE. M3 separa default y toggle como variantes distintas: el toggle trae
    un contenedor "no seleccionado" propio y el seleccionado tiene su par de
@@ -39,30 +50,15 @@
    y no solo el atributo. Los cuatro valores por variante estan al pie del
    archivo, con los nombres de token de M3.
 
-   FORMA (se invierte al seleccionarse)
-      round    corner-full     seleccionado -> corner-medium
-      square   corner-medium   seleccionado -> corner-full
-      En medium, el cuadrado usa corner-large (contenedor de 56dp).
-
-   LO QUE NO IMPLEMENTA: large/xlarge (96/136 fuera de escala, sus primitivas
-   estan en capa 1 esperando rol), morph con resorte, toggle con texto y
-   checkmark. Ver notas al pie de cada bloque.
+   LO QUE NO IMPLEMENTA: morph con resorte, toggle con texto y checkmark, y el
+   tooltip que M3 pide en web (no existe todavia en el sistema). Ver las notas
+   al pie de cada bloque.
 
    Los tres morph de forma existen pero NO tienen transicion, y no es un
    olvido: M3 les pone un resorte, que CSS no expresa con cubic-bezier. El
-   unico morph que se podria animar sin mentir (esquinas finitas) se
-   midio y resulto ser 99.8% del recorrido sin cambio visible. Ver la nota
-   del bloque de la base.
-
-   UNA DESVIACION CONOCIDA: el eje opsz. M3 quiere que el tamano optico del
-   glifo siga a su tamano fisico (20 en xsmall, 24 en small y medium), y este
-   componente lo pedia con un token propio. No puede: los cuatro ejes los
-   declara .md-icon, que esta en utilities, la capa mas fuerte del sistema, y
-   ahí --_icon-optical-size va al mediano sin dejar puerta. Un componente no
-   puede ganar esa pelea (y el token habria sido codigo muerto). Consecuencia:
-   el glifo del xsmall se dibuja con opsz 24 en vez de 20. Se ve en la
-   pareja Sizes: el glifo de 20px se dibuja con el grosor de uno de 24.
-   Arreglarlo exige que .md-icon deje de fijar el eje, que es capa 4.
+   unico morph que se podria animar sin mentir (esquinas finitas) se midio y
+   resulto ser el 99.8% del recorrido sin cambio visible. Ver la nota del
+   bloque de la base.
 
    ANATOMIA DEL MARCADO
       <button class="md-icon-button" type="button" aria-label="Eliminar">
@@ -92,6 +88,13 @@
   --md-comp-icon-button-width: var(--md-comp-icon-button-height);
   --md-comp-icon-button-width-narrow: var(--md-sys-measurement-icon-button-width-small-narrow);
   --md-comp-icon-button-width-wide: var(--md-sys-measurement-icon-button-width-small-wide);
+
+  /* Tamano optico del glifo, por el MISMO motivo que el ancho: se reapunta
+     el rol del sistema en este elemento y .md-icon lo hereda. Antes esto no
+     se podia hacer, porque .md-icon fijaba el mediano por su cuenta, y un
+     glifo de 20 o de 40 salia con el grosor de uno de 24. El patron es
+     identico al del eje FILL, mas abajo. */
+  --md-sys-icon-optical-size: var(--md-sys-icon-optical-size-medium);
 
   /* Eje FILL del glifo. NO se declara font-variation-settings aqui: el glifo
      lleva .md-icon, que esta en utilities, la capa mas fuerte del sistema, y
@@ -304,12 +307,19 @@
 /* ---------------------------------------------------------------------------
    TAMANOS
    --------------------------------------------------------------------------
-   Cada tamano declara sus tres anchos (uniform se deduce de la altura), no
-   solo el alto: los modificadores narrow y wide no saben que tamano llevan,
-   asi que el tamano tiene que dejarles el valor preparado.
+   Los cinco de M3. Cada uno declara sus tres anchos (uniform se deduce de la
+   altura), no solo el alto: los modificadores narrow y wide no saben que
+   tamano llevan, asi que el tamano tiene que dejarles el valor preparado.
+
+   Cada uno declara ademas su tamano optico, porque en M3 el optico sigue al
+   glifo: 20 en xsmall, 24 en small y medium, 40 en large, 48 en xlarge.
+
+   Los dos grandes no son solo "mas grande": la forma tambien sube de escalon,
+   y eso se resuelve mas abajo, junto a las formas.
    ------------------------------------------------------------------------ */
 
 .md-icon-button-xsmall {
+  --md-sys-icon-optical-size: var(--md-sys-icon-optical-size-small);
   --md-comp-icon-button-height: var(--md-sys-measurement-icon-button-height-xsmall);
   --md-comp-icon-button-icon-size: var(--md-sys-measurement-icon-button-icon-xsmall);
   --md-comp-icon-button-width-narrow: var(--md-sys-measurement-icon-button-width-xsmall-narrow);
@@ -328,6 +338,22 @@
   --md-comp-icon-button-icon-size: var(--md-sys-measurement-icon-button-icon-medium);
   --md-comp-icon-button-width-narrow: var(--md-sys-measurement-icon-button-width-medium-narrow);
   --md-comp-icon-button-width-wide: var(--md-sys-measurement-icon-button-width-medium-wide);
+}
+
+.md-icon-button-large {
+  --md-sys-icon-optical-size: var(--md-sys-icon-optical-size-large);
+  --md-comp-icon-button-height: var(--md-sys-measurement-icon-button-height-large);
+  --md-comp-icon-button-icon-size: var(--md-sys-measurement-icon-button-icon-large);
+  --md-comp-icon-button-width-narrow: var(--md-sys-measurement-icon-button-width-large-narrow);
+  --md-comp-icon-button-width-wide: var(--md-sys-measurement-icon-button-width-large-wide);
+}
+
+.md-icon-button-xlarge {
+  --md-sys-icon-optical-size: var(--md-sys-icon-optical-size-xlarge);
+  --md-comp-icon-button-height: var(--md-sys-measurement-icon-button-height-xlarge);
+  --md-comp-icon-button-icon-size: var(--md-sys-measurement-icon-button-icon-xlarge);
+  --md-comp-icon-button-width-narrow: var(--md-sys-measurement-icon-button-width-xlarge-narrow);
+  --md-comp-icon-button-width-wide: var(--md-sys-measurement-icon-button-width-xlarge-wide);
 }
 
 /* ---------------------------------------------------------------------------
@@ -368,6 +394,21 @@
 /* El morph de pulsado sube a corner-medium en medium (12px), como en M3. */
 .md-icon-button-medium {
   --md-comp-icon-button-pressed-shape: var(--md-sys-shape-corner-medium);
+}
+
+/* Los dos grandes suben otro escalon de forma, y en los DOS gestos: el
+   cuadrado de reposo pasa a corner-extra-large (28px) y el morph de pulsado a
+   corner-large (16px). En M3 Expressive la forma escala con el tamano, no se
+   queda en un valor fijo. */
+.md-icon-button-large,
+.md-icon-button-xlarge {
+  --md-comp-icon-button-pressed-shape: var(--md-sys-shape-corner-large);
+}
+
+.md-icon-button-large.md-icon-button-square,
+.md-icon-button-xlarge.md-icon-button-square {
+  --md-comp-icon-button-shape: var(--md-sys-shape-corner-extra-large);
+  --md-comp-icon-button-selected-shape: var(--md-sys-shape-corner-full);
 }
 
 /* El seleccionado SOLO invierte la forma aqui. El color lo pone el par de

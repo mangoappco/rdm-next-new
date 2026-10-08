@@ -379,10 +379,14 @@
   --md-sys-measurement-icon-button-height-xsmall: var(--md-ref-container-height-xsmall);
   --md-sys-measurement-icon-button-height-small:  var(--md-ref-container-height-small);
   --md-sys-measurement-icon-button-height-medium: var(--md-ref-container-height-medium);
+  --md-sys-measurement-icon-button-height-large:  var(--md-ref-container-height-large);
+  --md-sys-measurement-icon-button-height-xlarge: var(--md-ref-container-height-xlarge);
 
   --md-sys-measurement-icon-button-icon-xsmall: var(--md-ref-spacing-250);
   --md-sys-measurement-icon-button-icon-small:  var(--md-ref-spacing-300);
   --md-sys-measurement-icon-button-icon-medium: var(--md-ref-spacing-300);
+  --md-sys-measurement-icon-button-icon-large:  var(--md-ref-spacing-400);
+  --md-sys-measurement-icon-button-icon-xlarge: var(--md-ref-spacing-500);
 
   /* ------------------------------------------------------------------------
      LOS ANCHOS: narrow y wide de cada tamano
@@ -395,9 +399,9 @@
      numero dos veces y abrir la puerta a que se desincronicen; el componente
      reapunta su ancho a la altura, asi queda cuadrado por defecto.
 
-     Solo se declaran los dos extremos, y de los tres tamanos que el
-     componente implementa: large y xlarge (64/128 y 104/184) siguen sin
-     rol, por la misma regla de siempre.
+     Los diez extremos de los cinco tamanos estan declarados. Lo que sigue
+     sin rol es otra cosa: button.css todavia no implementa large ni xlarge,
+     y ahi sus roles no se declaran hasta que los pida.
      ------------------------------------------------------------------------ */
   --md-sys-measurement-icon-button-width-xsmall-narrow: var(--md-ref-container-width-icon-button-xsmall-narrow);
   --md-sys-measurement-icon-button-width-small-narrow:  var(--md-ref-container-width-icon-button-small-narrow);
@@ -406,6 +410,10 @@
   --md-sys-measurement-icon-button-width-xsmall-wide: var(--md-ref-container-width-icon-button-xsmall-wide);
   --md-sys-measurement-icon-button-width-small-wide:  var(--md-ref-container-width-icon-button-small-wide);
   --md-sys-measurement-icon-button-width-medium-wide: var(--md-ref-container-width-icon-button-medium-wide);
+  --md-sys-measurement-icon-button-width-large-narrow:  var(--md-ref-container-width-icon-button-large-narrow);
+  --md-sys-measurement-icon-button-width-large-wide:    var(--md-ref-container-width-icon-button-large-wide);
+  --md-sys-measurement-icon-button-width-xlarge-narrow: var(--md-ref-container-width-icon-button-xlarge-narrow);
+  --md-sys-measurement-icon-button-width-xlarge-wide:   var(--md-ref-container-width-icon-button-xlarge-wide);
 
   /* ==========================================================================
      INSET DE DIVISOR

@@ -283,11 +283,21 @@
      Los cuatro se declaran aunque .md-icon solo use el mediano, porque los
      demas los consumen los componentes segun su tamano. Un componente los
      pide por su propia cuenta; la familia existe para que pueda.
+
+      Y el quinto, el que se aplica por defecto, es el que .md-icon lee: asi
+      un componente lo reapunta en su elemento y el optico sigue a su glifo.
      ------------------------------------------------------------------------ */
   --md-sys-icon-optical-size-small:  var(--md-ref-icon-optical-size-small);
   --md-sys-icon-optical-size-medium: var(--md-ref-icon-optical-size-medium);
   --md-sys-icon-optical-size-large:  var(--md-ref-icon-optical-size-large);
   --md-sys-icon-optical-size-xlarge: var(--md-ref-icon-optical-size-xlarge);
+
+  /* El que se aplica por defecto, sin sufijo, como --md-sys-icon-fill.
+     Existe para que .md-icon NO fije el mediano por su cuenta: lo lee de
+     aqui, y asi un componente puede reapuntarlo en su elemento (el glifo lo
+     hereda) para que el optico siga al tamano del glifo, que es lo que M3
+     pide. Ver el patron en 3-components/icon-button.css. */
+  --md-sys-icon-optical-size: var(--md-sys-icon-optical-size-medium);
 
   /* ------------------------------------------------------------------------
      DESPLAZAMIENTO DE LA LINEA BASE

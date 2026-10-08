@@ -103,14 +103,16 @@
         xsmall     28        32       40
         small      32        40       52
         medium     48        56       72
+        large      64        96      128
+        xlarge    104       136      184
 
      POR QUE NO REAPUNTAN A LA ESCALA DE ESPACIADO
      ---------------------------------------------
-     Cuatro de los seis si existen alli (32, 40, 48 y 72), pero 28 y 52 no:
-     la escala va 24 -> 32 y 48 -> 56, y no tiene esos dos saltos. Son medidas
-     de este componente, no un escalon del espaciado, asi que se declaran
-     aqui como primitivas propias. Estirar la escala de espaciado para que
-     entraran dos numeros de un componente seria ensuciarla.
+     Cuatro de los diez si existen alli (32, 40, 48 y 72), pero 28, 52, 128,
+     104 y 184 no: la escala va 24 -> 32 y 48 -> 56, y se acaba en 72. Son
+     medidas de este componente, no un escalon del espaciado, asi que se
+     declaran aqui como primitivas propias. Estirar la escala de espaciado
+     para que entraran cinco numeros de un componente seria ensuciarla.
 
      Nombres: se distinguen de las alturas a proposito. Un token llamado
      "container-height" que valiera 28 seria una mentira, asi que llevan
@@ -122,4 +124,8 @@
   --md-ref-container-width-icon-button-xsmall-wide: 40px;
   --md-ref-container-width-icon-button-small-wide: 52px;
   --md-ref-container-width-icon-button-medium-wide: 72px;
+  --md-ref-container-width-icon-button-large-narrow: 64px;
+  --md-ref-container-width-icon-button-large-wide: 128px;
+  --md-ref-container-width-icon-button-xlarge-narrow: 104px;
+  --md-ref-container-width-icon-button-xlarge-wide: 184px;
 }
