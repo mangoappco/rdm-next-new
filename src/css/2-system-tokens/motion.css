@@ -62,8 +62,8 @@
    el componente sigue pidiendo medium2.
 
    ---------------------------------------------------------------------------
-   LAS CURVAS: 5 ROLES
-   ---------------------
+   LAS CURVAS: 12 ROLES EN 6 FAMILIAS
+   ---------------------------------
        standard      La curva por defecto. La mayoria de las transiciones.
        emphasized    Transiciones que el usuario pide de forma explicita.
                      Mas caracter, cola mas larga.
@@ -77,12 +77,31 @@
      -accelerate   El elemento SALE de la pantalla. Termina rapido.
      -decelerate   El elemento ENTRA en la pantalla. Arranca rapido y frena.
 
+   MAS DOS DE M3 EXPRESSIVE, QUE NO SON UNA VARIANTE MAS
+   ------------------------------------------------------
+   Las seis familias anteriores son el sistema clasico: el autor elige una
+   curva y una duracion por separado. Expressive cambio eso. Publica el
+   motion por FAMILIA DE MOVIMIENTO, y cada familia trae su curva Y su
+   duracion, como un par inseparable:
+
+       effects   color y opacidad      + short4 (200ms)
+       spatial   tamano, posicion y forma + long2 (500ms)
+
+   Que sean un par es lo que cambia la manera de usarlo: no se puede
+   aplicar una sin la otra, y por eso no se versionan con -accelerate
+   ni -decelerate. Estan declaradas mas abajo, al final del bloque de
+   curvas. Ver tambien la nota de cada una.
+
    CUADRO DE USO
    -------------
-     algo aparece   decelerate + medium/long
-     algo desaparece accelerate + short/medium
-     algo cambia    standard + short
-     algo rota      linear + (sin duracion, es continuo)
+     algo aparece      decelerate + medium/long
+     algo desaparece   accelerate + short/medium
+     algo cambia       effects + short4   <-- Expressive
+     algo cambia de forma  spatial + long2  <-- Expressive
+     algo rota         linear + (sin duracion, es continuo)
+
+   La fila "algo cambia" no dice "standard + short" como antes, porque
+   ningun componente del sistema usa ya ese par.
 
    ---------------------------------------------------------------------------
    ACCESIBILIDAD: prefers-reduced-motion
@@ -106,17 +125,26 @@
    RELACION CON LAS OTRAS CAPAS
    -----------------------------
        1-reference-tokens/time.css    <-- 16 duraciones crudas (ms)
-       1-reference-tokens/easing.css  <-- 40 puntos de control (10 curvas x 4)
+       1-reference-tokens/easing.css  <-- 48 puntos de control (12 curvas x 4)
               |
               v
-       2-system-tokens/motion.css  <-- ESTE: 16 roles de duracion + 10 roles de curva
+       2-system-tokens/motion.css  <-- ESTE: 16 roles de duracion + 12 roles de curva
               |
               v
-       3-components/*.css      <-- el componente declara UNA sola transicion:
+       3-components/*.css      <-- el componente declara UNA transicion por
+                                  familia de movimiento, cada una con su par:
 
-         transition: background-color
-           var(--md-sys-motion-duration-short2)
-           var(--md-sys-motion-easing-standard);
+         el icono-button, que tiene las dos:
+           transition: opacity
+             var(--md-sys-motion-duration-short4)
+             var(--md-sys-motion-easing-effects-default);
+           transition: border-radius
+             var(--md-sys-motion-duration-long2)
+             var(--md-sys-motion-easing-spatial-default);
+
+         Un cambio de color y un cambio de forma no se mueven igual, asi
+       que no comparten par. Compartirlo era el error: el tinte tardaba
+       medium2 y el morph corria a velocidad de color.
 
    ========================================================================== */
 

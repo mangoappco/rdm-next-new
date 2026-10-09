@@ -25,7 +25,7 @@
         <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
       </div>
       <h1 class="md-type-display-large">Motion</h1>
-      <p class="md-type-body-large">Dieciseis duraciones y dos curvas en loops reales: el tiempo se ve, no se lista.</p>
+      <p class="md-type-body-large">Dieciseis duraciones y cuatro curvas en loops reales. Las otras ocho son variantes de estas: el tiempo se ve, no se lista.</p>
     </header>
 
     <hr class="md-divider">
@@ -34,7 +34,7 @@
     <!-- LOOP: una duracion por section (h2 + specimen). Sin snippet. -->
     <section class="sr-section">
       <h2 class="md-type-title-large">Short 1 · 50ms</h2>
-      <p class="md-type-body-medium">Lo instantaneo: toggles de icono y ripples que confirman al dedo.</p>
+      <p class="md-type-body-medium">Lo instantaneo: un ripple que confirma al dedo. Tan corto que no se ve el movimiento; se nota que no falta.</p>
       <div class="sr-specimen sr-motion-lane">
         <div class="sr-motion-dot sr-motion-loop sr-motion-d50"></div>
       </div>
@@ -44,7 +44,7 @@
     <!-- LOOP: una duracion por section (h2 + specimen). Sin snippet. -->
     <section class="sr-section">
       <h2 class="md-type-title-large">Short 2 · 100ms</h2>
-      <p class="md-type-body-medium">Capas de estado: hover y focus que aparecen sin anunciarse.</p>
+      <p class="md-type-body-medium">Lo que el dedo ya habia pedido cerrar y vuelve a tocar: cambios de utilidad en una zona pequena de la pantalla.</p>
       <div class="sr-specimen sr-motion-lane">
         <div class="sr-motion-dot sr-motion-loop sr-motion-d100"></div>
       </div>
@@ -64,7 +64,7 @@
     <!-- LOOP: una duracion por section (h2 + specimen). Sin snippet. -->
     <section class="sr-section">
       <h2 class="md-type-title-large">Short 4 · 200ms</h2>
-      <p class="md-type-body-medium">Tooltips y snackbars que entran y salen.</p>
+      <p class="md-type-body-medium">La capa de estado de cualquier control: hover, focus y pressed. M3 lo dice con otras palabras, "selection controls have a short duration of 200ms", y en Expressive es la pareja de la curva effects, mas abajo.</p>
       <div class="sr-specimen sr-motion-lane">
         <div class="sr-motion-dot sr-motion-loop sr-motion-d200"></div>
       </div>
@@ -124,7 +124,7 @@
     <!-- LOOP: una duracion por section (h2 + specimen). Sin snippet. -->
     <section class="sr-section">
       <h2 class="md-type-title-large">Long 2 · 500ms</h2>
-      <p class="md-type-body-medium">Cambio de pantalla con morphing de contenedor.</p>
+      <p class="md-type-body-medium">Cambio de forma: el morph del icono-button, de pildora a casi cuadrada al pulsarse. En Expressive es la pareja de la curva spatial: 500ms aunque el boton mida 40px, porque el movimiento es de forma y no de color.</p>
       <div class="sr-specimen sr-motion-lane">
         <div class="sr-motion-dot sr-motion-loop sr-motion-d500"></div>
       </div>
@@ -184,7 +184,7 @@
     <!-- LOOP: una duracion por section (h2 + specimen). Sin snippet. -->
     <section class="sr-section">
       <h2 class="md-type-title-large">Extra long 4 · 1000ms</h2>
-      <p class="md-type-body-medium">El segundo completo: celebraciones y logros desbloqueados.</p>
+      <p class="md-type-body-medium">El segundo completo: celebraciones y logros desbloqueados. Tambien es la duracion del bucle continuo: con la curva linear es un spinner o una barra de progreso, que es el unico uso que esa curva tiene.</p>
       <div class="sr-specimen sr-motion-lane">
         <div class="sr-motion-dot sr-motion-loop sr-motion-d1000"></div>
       </div>
@@ -195,6 +195,8 @@
     <section class="sr-section">
       <h2 class="md-type-title-large">Easing standard</h2>
       <p class="md-type-body-medium">Entradas y salidas pequenas: la curva de todos los dias.</p>
+      <p class="md-type-body-medium">Es la base de un trio de tres roles: standard, standard-accelerate (el elemento sale y termina rapido) y standard-decelerate (el elemento entra, arranca rapido y frena). El loop de arriba muestra solo la base, que es la que se usa sola.</p>
+      <p class="md-type-body-medium">Junto a ella sobrevive la familia legacy, de Material 2: legacy, legacy-accelerate y legacy-decelerate. Mismo trio, misma logica, y la misma razon de existir: superficies que aun no se han migrado. Ningun componente las usa hoy.</p>
       <div class="sr-specimen sr-motion-lane">
         <div class="sr-motion-dot sr-motion-easing-standard"></div>
       </div>
@@ -205,8 +207,32 @@
     <section class="sr-section">
       <h2 class="md-type-title-large">Easing emphasized</h2>
       <p class="md-type-body-medium">FAB que se transforma y superficies que responden con caracter.</p>
+      <p class="md-type-body-medium">Tambien un trio: emphasized, emphasized-accelerate y emphasized-decelerate. Su cola larga es lo que la hace distinta de standard, y por eso M3 la reserva para superficies grandes o para cuando el usuario ha pedido el movimiento de forma explicita.</p>
       <div class="sr-specimen sr-motion-lane">
         <div class="sr-motion-dot sr-motion-easing-emphasized"></div>
+      </div>
+    </section>
+    <!-- LOOP: hasta aqui -->
+
+    <!-- LOOP: una curva por section (h2 + specimen). Sin snippet. -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Easing effects default · 200ms</h2>
+      <p class="md-type-body-medium">La primera de las dos de M3 Expressive. Sube deprisa y frena: el 80% del teñido esta hecho en el primer cuarto del tiempo.</p>
+      <p class="md-type-body-medium">Va a 200ms y no a 300ms porque su duracion es parte del par. Expressive publica las curvas por familia de movimiento, no sueltas: esta es la de color y opacidad, y su pareja canonica es short4, la duracion de la capa de estado. Es lo que usa el icono-button al teñirse.</p>
+      <div class="sr-specimen sr-motion-lane">
+        <div class="sr-motion-dot sr-motion-easing-effects"></div>
+      </div>
+    </section>
+    <!-- LOOP: hasta aqui -->
+
+    <!-- LOOP: una curva por section (h2 + specimen). Sin snippet. -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Easing spatial default · 500ms</h2>
+      <p class="md-type-body-medium">La segunda. Esta es la de tamano, posicion y morph de forma, y el punto va visiblemente mas lento que el de arriba: es correcto, es lo que manda su par.</p>
+      <p class="md-type-body-medium">Su pareja canonica es long2, 500ms. El nombre spatial no viene de que se mueva mucho por el espacio: viene de que el objeto cambia de FORMA, y por eso un boton de 40px que cambia de pildora a casi cuadrada se mueve 500ms. Por el nombre se creeria que es un movimiento de pantalla; no lo es.</p>
+      <p class="md-type-body-medium">Trae un punto de control en 1.06, pero el segundo esta en 1.00 y muy temprano y lo aplana: calculado, el rebote real es del 0.06%, unos 0.01px sobre un recorrido de 12. No se nota. Se usa igual por fidelidad al token.</p>
+      <div class="sr-specimen sr-motion-lane">
+        <div class="sr-motion-dot sr-motion-easing-spatial"></div>
       </div>
     </section>
     <!-- LOOP: hasta aqui -->

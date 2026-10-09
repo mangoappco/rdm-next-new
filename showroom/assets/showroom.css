@@ -348,14 +348,26 @@
   .sr-motion-d1000 { animation-duration: var(--md-sys-motion-duration-extra-long4); }
 
   /* Curvas canonicas a duracion media de trabajo. Autosuficientes (traen
-     nombre e iteracion): el marcado no combina dos clases de animacion. */
+     nombre e iteracion): el marcado no combina dos clases de animacion.
+
+     LAS DOS DE EXPRESSIVE VAN A SU DURACION CANONICA, no a medium2. Es lo
+     que las hace distintas: en M3 Expressive una curva nunca se usa sola,
+     se publica con la duracion de su familia (effects + short4, spatial +
+     long2). Mostrarlas a 300ms las dejaria teaches una curva sin su par,
+     que es justo lo que esa parte del sistema dice que no se haga. Por eso
+     el punto de spatial va visiblemente mas lento que los de arriba: no es
+     un fallo de medida, es la verdad del par. */
   .sr-motion-easing-standard { animation: sr-slide var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-standard) infinite alternate; }
   .sr-motion-easing-emphasized { animation: sr-slide var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized) infinite alternate; }
+  .sr-motion-easing-effects { animation: sr-slide var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-effects-default) infinite alternate; }
+  .sr-motion-easing-spatial { animation: sr-slide var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-spatial-default) infinite alternate; }
 
   @media (prefers-reduced-motion: reduce) {
     .sr-motion-loop,
     .sr-motion-easing-standard,
-    .sr-motion-easing-emphasized {
+    .sr-motion-easing-emphasized,
+    .sr-motion-easing-effects,
+    .sr-motion-easing-spatial {
       animation: none;
     }
   }
