@@ -205,13 +205,15 @@
      MEDIDAS DEL BOTON
      --------------------------------------------------------------------------
      M3 define el boton en cinco tamanos (xsmall, small, medium, large,
-     xlarge). Aqui estan los tres primeros; large y xlarge no estan porque
-     sus alturas (96 y 136) no existen en la escala de espacio de M3, asi que
-     anadirlos exigiria crear primitivas en 1-reference-tokens.
+     xlarge). Aqui estan los cinco. Antes solo havia tres, y el motivo por el
+     que faltaban large y xlarge era que sus alturas (96 y 136) no estan en la
+     escala de espacio de M3 y habian creado primitivas propias en capa 1 para
+     dar cabida a los del icon-button. Esas primitivas ya existen, asi que el
+     bloqueo desaparecio.
 
      `--md-sys-measurement-button-height` es el tamano small y es el que M3
-     llama "default". Los otros dos llevan el sufijo del tamano para poder
-     repetir el patron cuando se cubran large y xlarge.
+     llama "default". Los otros cuatro llevan el sufijo del tamano, igual que
+     en el icon-button.
 
      Dato: la escala de espacio de M3 tiene un salto de 24 entre space-700
      (56) y space-900 (72), y su tope es 72. Los dos numeros que faltan, 96 y
@@ -225,6 +227,21 @@
 
   /* Altura del boton mediano: 56dp, la llamada a la accion principal. */
   --md-sys-measurement-button-height-medium: var(--md-ref-container-height-medium);
+
+  /* Altura del boton grande: 96dp, y del xl: 136dp. Los dos se declaran
+     ahora, y el motivo por el que faltaban ya no existe: decia que anadirlos
+     "exigiria crear primitivas en 1-reference-tokens", y esas primitivas se
+     crearon ahi (--md-ref-container-height-large y -xlarge) cuando el
+     icon-button implemento sus dos tamanos grandes. El bloqueo era de capa 1,
+     y la capa 1 ya no bloquea. Ver 1-reference-tokens/container-height.css,
+     que es donde esta el razonamiento de por que 96 y 136 no son spacing. */
+  --md-sys-measurement-button-height-large: var(--md-ref-container-height-large);
+  --md-sys-measurement-button-height-xlarge: var(--md-ref-container-height-xlarge);
+
+  /* Ancho minimo del boton. M3 lo declara como literal en su SCSS, no como
+     token; aqui es un rol como cualquier otro. Ver la nota larga del
+     primitivo, que explica por que NO se copia su formula de calc(). */
+  --md-sys-measurement-button-min-width: var(--md-ref-container-width-button-min);
 
   /* ==========================================================================
      MEDIDAS PROPIAS DEL BOTON
@@ -241,14 +258,42 @@
      ====================================================================== */
 
   /* Separacion entre el icono y la etiqueta. M3 la fija en 8dp para los tres
-     tamanos, asi que un solo rol cubre los tres. */
+     tamanos pequenos, asi que un solo rol los cubre; los dos grandes la
+     suben a 12 y 16. Leido en los mismos mixins que el padding: `--icon-
+     label-space` vale 8 en xs, sm y md, 12 en lg y 16 en xl. */
   --md-sys-measurement-button-label-space: var(--md-ref-spacing-100);
+  --md-sys-measurement-button-label-space-large:  var(--md-ref-spacing-150);
+  --md-sys-measurement-button-label-space-xlarge: var(--md-ref-spacing-200);
 
   /* Padding lateral del boton. M3 usa el mismo valor a izquierda y a
      derecha, asi que un rol por tamono sirve para ambos lados. */
   --md-sys-measurement-button-padding-xsmall: var(--md-ref-spacing-150);
   --md-sys-measurement-button-padding-small:  var(--md-ref-spacing-200);
   --md-sys-measurement-button-padding-medium: var(--md-ref-spacing-300);
+  --md-sys-measurement-button-padding-large:   var(--md-ref-spacing-600);
+  --md-sys-measurement-button-padding-xlarge:  var(--md-ref-spacing-800);
+
+  /* ESTOS CINCO NO ERAN UN VALOR PLANO, y es el dato que hace que este
+     bloque se lea entero. El padding del boton crece con el tamano en la
+     misma medida que la caja, y no es un valor unico:
+
+         xsmall  12px    small  16px    medium 24px
+         large   48px    xlarge 64px
+
+     Leido en labs/gb/components/button/_button-tokens.scss, mixins xs, sm,
+     md, lg y xl: `--leading-space` y `--trailing-space` con esos cinco
+     valores. Los tres primeros ya estaban declarados aqui; large y xlarge
+     se anaden con el dato, no por extrapolacion.
+
+     Y el salto no es regular: de 12 a 16 a 24 se multiplica por 1,3, pero
+     de 24 a 48 se duplica. No es una progresion de la retícula de espacio,
+     asi que extrapolar el siguiente (128) habria sido inventar. Los 64 del
+     xlarge estan en la escala (space-800) por casualidad, no por diseno.
+
+     Ojo con el nombre: "padding" aqui es el espacio a CADA lado, no el
+     total. 24px de padding son 48px entre los bordes del texto. El archivo
+     de M3 los llama `--leading-space` y `--trailing-space`, que es mas
+     exacto que "padding-x". */
 
   /* ==========================================================================
      MEDIDAS DE ICONOS
@@ -339,6 +384,46 @@
      _md-comp-button-medium.scss. Es el mismo valor que el icono generico del
      sistema, asi que se apoya en el rol comun en vez de fijar un numero. */
   --md-sys-measurement-button-icon-size-medium: var(--md-sys-measurement-icon-size);
+
+  /* El glifo del BOTON es un eje propio y NO se puede leer del icono-button,
+     porque los dos componentes coinciden en cuatro de los cinco tamanos y
+     se separan justo en small:
+
+         tamano     button    icon-button
+         xsmall      20          20
+         small       20          24     <-- aqui
+         medium      24          24
+         large       32          32
+         xlarge      40          40
+
+     Es el mismo argumento que el ancho: cada componente tiene su medida, y
+     que coincida con la del otro no las convierte en la misma. Y por eso
+     estos roles NO se leen de los del icono-button, aunque quatro de los
+     cinco numeros sean los mismos.
+
+     small y medium ya estaban, y siguen apoyandose en los roles genericos de
+     icono porque ahi el numero coincide y asi hay un solo sitio que editar.
+     Los tres que se anaden (xsmall, large, xlarge) van directos a la escala
+     de espacio, por el motivo que explica la nota de abajo. */
+  --md-sys-measurement-button-icon-size-xsmall: var(--md-sys-measurement-icon-size-small);
+  --md-sys-measurement-button-icon-size-large:  var(--md-ref-spacing-400);
+  --md-sys-measurement-button-icon-size-xlarge: var(--md-ref-spacing-500);
+
+  /* OJO, una correccion mia que el navegador cazo: los dos de arriba
+     apuntaban a `--md-sys-measurement-icon-size-large` y `-xlarge`, que son
+     los roles GENERICOS de icono del sistema, y esos valen 40 y 48. El
+     boton large quiere 32 y el xlarge 40.
+
+     Parecia la misma cosa porque los genericos tambien se llaman large y
+     xlarge, y porque en el glifo pequeno si coincide: los dos van a 20. La
+     divergencia aparece solo en los dos tamanos grandes, y por eso solo ahi
+     se nota.
+
+     O sea que los roles del glifo del boton NO se leen de los del icono, ni
+     siquiera de los del icono-button. Los tres son ejes separados con tres
+     listas de numeros. Apuntar a la escala de espacio, como se hace aqui y en
+     el resto del bloque, es lo que evita esta confusion: el numero esta a
+     la vista. */
 
   /* ==========================================================================
      MEDIDAS DEL BOTON DE ICONO

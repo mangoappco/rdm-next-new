@@ -62,13 +62,20 @@
    misma familia en dos fuentes de verdad, y el valor duplicado en dos sitios
    es exactamente lo que la capa 1 existe para evitar.
 
-   Y dos de los cinco todavia no los consume nadie: `large` y `xlarge` no estan
-   implementados todavia en button.css ni en icon-button.css. Se queda asi, y
-   es el mismo criterio de 1-reference-tokens/stroke.css, que declara `none`, `thin` y
+   Y dos de los cinco los consumia solo uno de los dos componentes: `large` y
+   `xlarge` los implemento el icon-button, y el boton todavia no. Se queda asi,
+   y es el mismo criterio de 1-reference-tokens/stroke.css, que declara `none`, `thin` y
    `thick` cuando solo `thin` se usaba: la regla de los tokens muertos es para
    la capa 2, donde un rol sin consumidor es un rol muerto. En la capa 1 los
    valores primitivos se declaran cuando existen, y quien no los pide todavia
    no ensucia la escala con numeros inventados.
+
+   ACTUALIZADO: este parrafo estaba escrito cuando ningun componente usaba
+   `large` ni `xlarge`, y citaba icon-button.css como si tampoco los
+   tuviera. Los implemento en 09ab81b (large) y fb97b5c (xlarge). Un
+   comentario que afirma que algo no esta implementado, en un archivo que si
+   lo esta, es peor que no comentarlo: avisa a quien lea y le hace
+   buscar un fallo que no existe.
 
    LO QUE ESTA Y LO QUE NO ESTA
    ----------------------------
@@ -128,4 +135,37 @@
   --md-ref-container-width-icon-button-large-wide: 128px;
   --md-ref-container-width-icon-button-xlarge-narrow: 104px;
   --md-ref-container-width-icon-button-xlarge-wide: 184px;
+
+  /* ------------------------------------------------------------------------
+     EL ANCHO MINIMO DEL BOTON
+     ------------------------------------------------------------------------
+     M3 lo declara, pero NO como token: es un literal en su SCSS compartido,
+     con el valor escrito en el codigo y en el comentario de al lado:
+
+         // Buttons have a default min-width of 64px. This can be overridden
+         // by setting a smaller min-width on the host.
+         min-width: calc(64px - var(--_leading-space) - var(--_trailing-space));
+
+     Verificado en button/internal/_shared.scss:94 de material-web 34.0.21.
+     Buscado en tokens/versions/latest/sass/_md-comp-button-*.scss: no hay
+     ningun token de ancho minimo en ninguna de las cinco hojas de tamano.
+
+     Aqui si es una medida de contenedor, asi que este archivo es el sitio.
+     Y no se confunde con los diez de arriba, que son anchos de un ANCHO
+     concreto: este es el minimo, que no es un ancho sino una cota.
+
+     OJO CON LA FORMULA, que aqui no se copia
+     ---------------------------------------
+     M3 escribe `calc(64px - leading - trailing)` porque su host es
+     content-box: el min-width aplica al contenido y el padding se suma
+     fuera, asi que restar los dos espacios da 64px de total.
+
+     Este sistema tiene border-box global (reset.css:231), donde el
+     min-width aplica al BORDE y el padding va dentro. Copiar la formula
+     tal cual daria 64 - 24 - 24 = 16px de caja de borde con 48px de
+     padding dentro: el minimo se lo comeria el padding y el boton
+     mediria 48px en vez de 64. El equivalente correcto con border-box es
+     el 64px a secas. Por eso aqui solo esta el numero.
+     ------------------------------------------------------------------------ */
+  --md-ref-container-width-button-min: 64px;
 }

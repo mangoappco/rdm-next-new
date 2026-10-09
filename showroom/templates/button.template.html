@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Button — RDM ManGo! App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+  <link rel="stylesheet" href="../../src/css/main.css">
+  <link rel="stylesheet" href="../assets/showroom.css">
+  <script src="../assets/showroom.js"></script>
+</head>
+
+<!--
+  COMO USAR ESTE TEMPLATE (copiar a showroom/components/button.html):
+  1. Cambiar <title> y el h1. La descripcion del header ya dice el alcance.
+  2. Parejas por seccion (specimen + pre + boton). El specimen y el <pre>
+     llevan EXACTAMENTE el mismo marcado: REGLA 11 compara los dos.
+  3. NADA de showroom dentro del snippet (REGLA 13): sin sr-*, sin barras
+     medidoras. Si una seccion necesita mas contexto que sus botones, ese
+     contexto va en el parrafo de arriba, no en el bloque copiable.
+  4. El glifo lleva SIEMPRE aria-hidden="true" y la clase .md-icon (REGLA 9).
+     La etiqueta de texto es el nombre accesible, asi que el glifo no se
+     anuncia: sin aria-hidden el boton se leeria dos veces.
+  5. El boton de Copiar va justo despues de su <pre>. Copia ese bloque y
+     ningun otro.
+
+  LO QUE ESTA VISTA NO DICE, Y POR QUE
+  ------------------------------------
+  Tres secciones de la lista de 22 se resuelven sin seccion propia:
+
+    Responsive       este componente no tiene ni un media query. Se dice en
+                     la descripcion del header.
+    Content States   no hay loading, ni empty, ni error: el estado de
+                     contenido lo resuelve quien llama, no el boton.
+    Tokens / Medidas el sistema ya las tiene en su sitio, y esa duplicacion
+                     aqui seria una copia que se desincroniza:
+                       showroom/components/measurement.html  -> medidas
+                       showroom/components/motion.html      -> pares
+                       showroom/components/shapes.html      -> radios
+
+  Y dos se dicen como ausentes dentro de otra seccion, porque asi es como se
+  pueden ver sin mentir:
+    la variante square      -> seccion "Morph de forma"
+    el estado selected      -> seccion "Lo que no hace"
+-->
+
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <main class="sr-page">
+
+    <!-- HEADER: inicio (barra + titulo + descripcion) -->
+    <header class="sr-header">
+      <div class="sr-bar">
+        <p class="md-type-body-medium"><a href="../index.html">RDM ManGo! App</a></p>
+        <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
+      </div>
+      <h1 class="md-type-display-large">Button</h1>
+      <p class="md-type-body-large">El boton de accion de M3 en su variante filled, con los cinco tamanos y las tres formas de icono. Solo filled: las otras cuatro variantes no estan todavia. El componente no tiene comportamiento responsive ni estados de contenido.</p>
+    </header>
+    <!-- HEADER: fin -->
+
+    <hr class="md-divider">
+
+    <!-- PAREJA: el ejemplo basico (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Filled</h2>
+      <p class="md-type-body-medium">Fondo primary, texto on-primary, sin borde. Es la variante por defecto y la de mayor enfasis: la accion principal de una vista. Tamano de sistema small (40px), que es el que M3 llama default. La etiqueta va en un span propio, porque el hueco entre icono y texto lo pone el <code>gap</code> del contenedor y un nodo de texto suelto no se puede apuntar.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-button" type="button"><span class="md-button-label">Guardar cambios</span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-button" type="button"&gt;&lt;span class="md-button-label"&gt;Guardar cambios&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: los cinco tamanos (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Sizes</h2>
+      <p class="md-type-body-medium">xsmall 32, small 40, medium 56, large 96 y xlarge 136. Los cinco grow con la etiqueta: el padding va de 12 a 64, el glifo de 20 a 40 y la tipografia de 14 a 32. Eso ultimo es lo que mas sorprende de M3 y lo mas facil de no Implementar: <code>label-large</code> en los dos pequenos, <code>title-medium</code> en medium, <code>headline-small</code> en large y <code>headline-large</code> en xlarge. Un boton de 136px con texto de 14px se ve roto.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-button md-button-xsmall" type="button"><span class="md-button-label">Guardar</span></button>
+        <button class="md-button md-button-small" type="button"><span class="md-button-label">Guardar</span></button>
+        <button class="md-button md-button-medium" type="button"><span class="md-button-label">Guardar</span></button>
+        <button class="md-button md-button-large" type="button"><span class="md-button-label">Guardar</span></button>
+        <button class="md-button md-button-xlarge" type="button"><span class="md-button-label">Guardar</span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-button md-button-xsmall" type="button"&gt;&lt;span class="md-button-label"&gt;Guardar&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-small" type="button"&gt;&lt;span class="md-button-label"&gt;Guardar&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-medium" type="button"&gt;&lt;span class="md-button-label"&gt;Guardar&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-large" type="button"&gt;&lt;span class="md-button-label"&gt;Guardar&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-xlarge" type="button"&gt;&lt;span class="md-button-label"&gt;Guardar&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: icono lider y posterior (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Icono</h2>
+      <p class="md-type-body-medium">Lider o posterior, y el hueco entre glifo y etiqueta tambien crece con el tamano: 8px en los tres pequenos, 12 en large y 16 en xlarge. El icono es opcional y va en su propio span. El glifo se dibuja relleno (<code>FILL</code> 1) en los cinco tamanos: es lo que declara M3 para el boton.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-button" type="button"><span class="md-button-icon md-icon" aria-hidden="true">add</span><span class="md-button-label">Anadir</span></button>
+        <button class="md-button" type="button"><span class="md-button-label">Continuar</span><span class="md-button-icon md-icon" aria-hidden="true">arrow_forward</span></button>
+        <button class="md-button md-button-large" type="button"><span class="md-button-icon md-icon" aria-hidden="true">add</span><span class="md-button-label">Anadir</span></button>
+        <button class="md-button md-button-large" type="button"><span class="md-button-label">Continuar</span><span class="md-button-icon md-icon" aria-hidden="true">arrow_forward</span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-button" type="button"&gt;&lt;span class="md-button-icon md-icon" aria-hidden="true"&gt;add&lt;/span&gt;&lt;span class="md-button-label"&gt;Anadir&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button" type="button"&gt;&lt;span class="md-button-label"&gt;Continuar&lt;/span&gt;&lt;span class="md-button-icon md-icon" aria-hidden="true"&gt;arrow_forward&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-large" type="button"&gt;&lt;span class="md-button-icon md-icon" aria-hidden="true"&gt;add&lt;/span&gt;&lt;span class="md-button-label"&gt;Anadir&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-large" type="button"&gt;&lt;span class="md-button-label"&gt;Continuar&lt;/span&gt;&lt;span class="md-button-icon md-icon" aria-hidden="true"&gt;arrow_forward&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: el ancho minimo (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Ancho minimo</h2>
+      <p class="md-type-body-medium">Ningun boton baja de 64px de ancho, que es el minimo de M3. Sin el, una etiqueta corta deja una pildora de 30px que cuesta de apuntar. Ojo con el valor: M3 lo escribe como <code>calc(64px - leading - trailing)</code> porque su contenedor es <code>content-box</code>. Este sistema usa <code>border-box</code>, donde el min-width va al borde y el padding va dentro, asi que copiar esa formula daria 16px de caja con 48px de padding encima: un boton de 48. Aqui es 64px a secas.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-button" type="button"><span class="md-button-label">OK</span></button>
+        <button class="md-button" type="button"><span class="md-button-label">Cancelar</span></button>
+        <button class="md-button" type="button"><span class="md-button-label">Guardar los cambios de esta vista</span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-button" type="button"&gt;&lt;span class="md-button-label"&gt;OK&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button" type="button"&gt;&lt;span class="md-button-label"&gt;Cancelar&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button" type="button"&gt;&lt;span class="md-button-label"&gt;Guardar los cambios de esta vista&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: los cuatro estados (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">States</h2>
+      <p class="md-type-body-medium">La capa de estado es un pseudo con <code>currentColor</code>, y por eso no tiene color propio: en las cinco variantes de M3 toma el de la etiqueta, que aqui es on-primary. Las intensidades son las del sistema: 0.08 al pasar el raton, 0.10 con el foco de teclado, 0.10 al pulsar. El deshabilitado NO es bajar el boton entero: el relleno va a on-surface al 10% y el texto al 38%, dos opacidades distintas, y por eso el relleno se pinta en un pseudo aparte. El anillo de foco son 3px de <code>secondary</code> con 2px de separacion, y sale con <code>:focus-visible</code>, no con <code>:focus</code>, para que el raton no lo dispare.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-button" type="button"><span class="md-button-label">Reposo</span></button>
+        <button class="md-button" type="button" disabled><span class="md-button-label">Deshabilitado</span></button>
+        <a class="md-button" href="#"><span class="md-button-label">Como enlace</span></a>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-button" type="button"&gt;&lt;span class="md-button-label"&gt;Reposo&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button" type="button" disabled&gt;&lt;span class="md-button-label"&gt;Deshabilitado&lt;/span&gt;&lt;/button&gt;
+&lt;a class="md-button" href="#"&gt;&lt;span class="md-button-label"&gt;Como enlace&lt;/span&gt;&lt;/a&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: el morph de forma (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Morph de forma</h2>
+      <p class="md-type-body-medium">En reposo el boton es una pildora (<code>corner-full</code>) en los cinco tamanos. Al pulsarse el radio baja a un valor FINITO, y M3 lo escalona con el tamano: 8px en xsmall y small, 12 en medium, 16 en large y xlarge. Tarda 500ms, que es la familia <code>spatial</code>. El recorrido es de 9999px a 8px, y se ve por la misma razon que se ve el del icono-button: son dos numeros distintos, no el mismo numero dos veces. Con un valor alto que se recorta al pintar, el 99% del recorrido dibujaria el mismo pixel. La variante <code>square</code> de M3 NO esta todavia: es un segundo eje de forma, no un color.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-button md-button-xsmall" type="button"><span class="md-button-label">8px</span></button>
+        <button class="md-button md-button-small" type="button"><span class="md-button-label">8px</span></button>
+        <button class="md-button md-button-medium" type="button"><span class="md-button-label">12px</span></button>
+        <button class="md-button md-button-large" type="button"><span class="md-button-label">16px</span></button>
+        <button class="md-button md-button-xlarge" type="button"><span class="md-button-label">16px</span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-button md-button-xsmall" type="button"&gt;&lt;span class="md-button-label"&gt;8px&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-small" type="button"&gt;&lt;span class="md-button-label"&gt;8px&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-medium" type="button"&gt;&lt;span class="md-button-label"&gt;12px&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-large" type="button"&gt;&lt;span class="md-button-label"&gt;16px&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-xlarge" type="button"&gt;&lt;span class="md-button-label"&gt;16px&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: la trampa de las utilidades de color (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Lo que no hace</h2>
+      <p class="md-type-body-medium"><strong>No se recolorea con <code>md-bg-*</code>.</strong> El primero es el boton de siempre; el segundo lleva <code>md-bg-error</code> y se ve IGUAL. La utilidad gana la cascada (la capa utilities va la ultima), asi que pone su <code>background-color</code> en el elemento, pero el relleno visible del boton lo pinta un <code>::before</code>. Gana la cascada y no cambia nada. Lo mismo que ya pasa con el divider y <code>md-bg-outline-variant</code>. Para cambiar el color de un boton hay que reapuntar su token de componente, y hoy no hay ninguna clase publica que lo haga.</p>
+      <p class="md-type-body-medium">Lo que SII funciona es <code>md-text-*</code>, porque pinta <code>color</code>, que la etiqueta y el glifo heredan. Y las utilidades de tipografia ganan al componente: aqui se ve, el segundo boton lleva <code>md-type-body-small</code> y su etiqueta baja a 12px aunque el componente pida 16. Es el criterio del sistema: la opinion del autor va por delante de la receta.</p>
+      <p class="md-type-body-medium">Tambien faltan la variante <code>square</code> y el estado <code>selected</code>, ambos por no tener un caso real en la app. Y el padding cuando hay icono: M3 lo trata como un ajuste aparte del padding base, con cuatro variables propias, pero sus valores por defecto viven en un archivo que no esta en la copia local de material-web. Se deja sin implementar antes que escribir un numero recordado.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-button" type="button"><span class="md-button-label">Normal</span></button>
+        <button class="md-button md-bg-error" type="button"><span class="md-button-label">Con md-bg-error</span></button>
+        <button class="md-button md-button-medium md-type-body-small" type="button"><span class="md-button-label">Con md-type-body-small</span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-button" type="button"&gt;&lt;span class="md-button-label"&gt;Normal&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-bg-error" type="button"&gt;&lt;span class="md-button-label"&gt;Con md-bg-error&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-medium md-type-body-small" type="button"&gt;&lt;span class="md-button-label"&gt;Con md-type-body-small&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+  </main>
+</body>
+</html>
