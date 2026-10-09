@@ -72,12 +72,16 @@
       fuera por lo mismo que el toggle con checkmark del icono-button: sin un
       caso real en la app, no se implementa.
 
-   4. EL RESORTE DEL MORPH. M3 declara `pressed-container-corner-size-motion-
-      spring-damping` y `-stiffness` para el cambio de forma al pulsar. Aqui
-      va con la curva spatial de 2-system-tokens, que es la proyeccion que M3
-      publica para web. Es el mismo criterio que ya se documento en
-      icon-button.css, y la razon es identica: el resorte no se puede escribir
-      en CSS.
+4. TODO EL MOVIMIENTO, y no solo el resorte. El componente se construye
+     paso a paso, y el motion todavia no es su turno: ni la transicion de
+     la capa de estado (que seria effects + short4, 200ms) ni el morph de
+     forma (spatial + long2, 500ms). Los tres estados cambian la opacidad de
+     golpe.
+
+     Nota para cuando vuelva el morph: M3 declara ademas
+     `pressed-container-corner-size-motion-spring-damping` y `-stiffness`,
+     y aqui ira con la curva spatial, que es la proyeccion que M3 publica
+     para web. El resorte no se puede escribir en CSS.
 
    --------------------------------------------------------------------------
    LO QUE SI ES IGUAL QUE EL ICON-BUTTON, Y POR QUE
@@ -105,8 +109,9 @@
      5 tamanos   xsmall (32) small (40) medium (56) large (96) xlarge (136)
      3 iconos    ninguno / lider / posterior
      4 estados   hover, focus-visible, active, disabled
-     1 forma     round (corner-full), con morph de pulsado por tamano
+     1 forma     round (corner-full)
      ademas      forced-colors, etiqueta como <a>, area tactil
+     sin motion  sin transicion de capa de estado y sin morph de forma
 
    ========================================================================== */
 
@@ -176,17 +181,12 @@
      aqui va corner-full. Se deja anotado porque es la clase de detalle que
      hace que "media altura" suene a respuesta obvia y no lo es.
 
-     Y el MORPH de pulsado, que M3 si declara por tamano:
-
-         xsmall  corner-small      small   corner-small
-         medium  corner-medium     large   corner-large
-         xlarge  corner-large
-
-     Es el mismo patron que el morph de forma del icono-button, con la misma
-     familia de movimiento (spatial, 500ms), y por el mismo motivo: el
-     recorrido es finito y de verdad cuando el radio es un numero, no 9999px. */
+     EL MORPH DE PULSADO NO ESTA TODAVIA. M3 si lo declara, y por tamano
+     (xsmall y small a corner-small, medium a corner-medium, large y xlarge a
+     corner-large), pero se quita de aqui a proposito para construir el
+     componente paso a paso. Vuelve como un par propio: el token de destino,
+     la regla :active y la transicion de 500ms. */
   --md-comp-button-shape: var(--md-sys-shape-corner-full);
-  --md-comp-button-pressed-shape: var(--md-sys-shape-corner-small);
 
   /* ------------------------------------------------------------------------
      COLOR: LA VARIANTE FILLED
@@ -246,23 +246,23 @@
   --md-sys-measurement-icon-size: var(--md-comp-button-icon-size);
 
   /* ------------------------------------------------------------------------
-     MOVIMIENTO: DOS PARES, COMO EN EL ICON-BUTTON
+     EL MOVIMIENTO NO ESTA TODAVIA
      ------------------------------------------------------------------------
-       effects   color y opacidad, que es la capa de estado y el relleno.
-                 Curva effects + short4 = 200ms.
-       spatial   forma, que es el morph de pulsado del radio.
-                 Curva spatial + long2 = 500ms.
+     Ni la transicion de la capa de estado ni el morph de forma. Se quitan a
+     proposito para construir el componente paso a paso.
 
-     Un boton tiene los dos movimientos y no son el mismo: teñirse y cambiar
-     de forma. Es el mismo reparto que en el icono-button, y por la misma
-     razon: antes compartian par y los dos quedaban mal. */
-  --md-comp-button-state-duration: var(--md-sys-motion-duration-short4);
-  --md-comp-button-state-easing: var(--md-sys-motion-easing-effects-default);
+     Cuando vuelvan son DOS pares, no uno compartido, porque son dos
+     movimientos distintos:
 
-  --md-comp-button-morph-duration: var(--md-sys-motion-duration-long2);
-  --md-comp-button-morph-easing: var(--md-sys-motion-easing-spatial-default);
+       effects   color y opacidad (la capa de estado). Curva effects +
+                 short4 = 200ms.
+       spatial   forma (el morph del radio). Curva spatial + long2 = 500ms.
 
-  /* ------------------------------------------------------------------------
+     Compartir par era el error que ya se corrigio una vez en el
+     icono-button: el teñido tardaba 300ms y el morph corria a velocidad de
+     color. No se vuelve a caer en eso.
+
+     ------------------------------------------------------------------------
      ANILLO DE FOCO
      ------------------------------------------------------------------------
      3px de grosor y 2px de separacion, los dos del sistema. `:focus-visible`
@@ -303,18 +303,12 @@
   background-color: transparent;
   box-shadow: var(--md-comp-button-elevation);
 
-  /* El radio SI transiciona, por el mismo motivo que en el icono-button: con
-     9999px el navegador recorta al pintar pero el valor calculado se queda
-     en 9999 durante toda la transicion, y el recorrido no se ve. Aqui el
-     reposo es corner-full (9999px) y el destino es un radio FINITO
-     (corner-small, 8px), asi que el morph es de 9999px a 8px.
-
-     Es un recorrido mas largo que el del icono-button, pero visible por el
-     mismo motivo: son dos numeros, no el mismo numero dos veces. La curva es
-     la spatial de 500ms, la misma del icono-button. */
-  transition: border-radius
-    var(--md-comp-button-morph-duration)
-    var(--md-comp-button-morph-easing);
+  /* Sin `transition` de border-radius todavia: el morph de forma entra en un
+     paso propio. Anotado lo que hay que mirar al meterlo, porque es el mismo
+     problema que se resolvio en el icono-button: el reposo es corner-full
+     (9999px) y el destino un radio FINITO (corner-small, 8px), asi que el
+     recorrido es de 9999px a 8px y se ve. El día que se recorta al pintar, el
+     99% del recorrido dibuja el mismo pixel. */
 
   font: var(--md-comp-button-label-text);
   color: var(--md-comp-button-label-color);
@@ -411,9 +405,10 @@
   opacity: 0;
   border-radius: inherit;
   pointer-events: none;
-  transition: opacity
-    var(--md-comp-button-state-duration)
-    var(--md-comp-button-state-easing);
+
+  /* Sin `transition` de opacity todavia. Los tres estados de abajo cambian la
+     opacidad de golpe, y al meter la transicion tienen que ser
+     effects + short4 (200ms), no uno compartido con el morph. */
 }
 
 /* :active despues de :hover y :focus-visible: mantener pulsado un control ya
@@ -430,17 +425,12 @@
   opacity: var(--md-sys-state-pressed-state-layer-opacity);
 }
 
-/* ---------------------------------------------------------------------------
-   EL MORPH DE FORMA AL PULSAR
-   ---------------------------------------------------------------------------
-   M3 lo declara por tamano (`pressed-container-shape` en cada hoja de
-   tamano). El destino lo pone la clase de tamano, no este bloque: el base es
-   small y sus 8px.
-   ------------------------------------------------------------------------ */
-
-.md-button:active {
-  border-radius: var(--md-comp-button-pressed-shape);
-}
+/* Sin morph de forma todavia. M3 lo declara por tamano
+   (`pressed-container-shape`): corner-small en xsmall y small, corner-medium
+   en medium, corner-large en large y xlarge. Cuando entre son tres cosas:
+   el token --md-comp-button-pressed-shape, una reaparuntada por clase de
+   tamano, y esta regla :active. Sin ella, el radio se queda en el
+   corner-full de reposo. */
 
 /* ---------------------------------------------------------------------------
    EL ANILLO DE FOCO
@@ -548,7 +538,6 @@
   --md-comp-button-height: var(--md-sys-measurement-button-height-xsmall);
   --md-comp-button-icon-size: var(--md-sys-measurement-button-icon-size-xsmall);
   --md-comp-button-padding-x: var(--md-sys-measurement-button-padding-xsmall);
-  --md-comp-button-pressed-shape: var(--md-sys-shape-corner-small);
   --md-comp-button-label-text: var(--md-sys-typescale-label-large);
 }
 
@@ -556,7 +545,6 @@
   --md-comp-button-height: var(--md-sys-measurement-button-height);
   --md-comp-button-icon-size: var(--md-sys-measurement-button-icon-size);
   --md-comp-button-padding-x: var(--md-sys-measurement-button-padding-small);
-  --md-comp-button-pressed-shape: var(--md-sys-shape-corner-small);
   --md-comp-button-label-text: var(--md-sys-typescale-label-large);
 }
 
@@ -564,7 +552,6 @@
   --md-comp-button-height: var(--md-sys-measurement-button-height-medium);
   --md-comp-button-icon-size: var(--md-sys-measurement-button-icon-size-medium);
   --md-comp-button-padding-x: var(--md-sys-measurement-button-padding-medium);
-  --md-comp-button-pressed-shape: var(--md-sys-shape-corner-medium);
   --md-comp-button-label-text: var(--md-sys-typescale-title-medium);
 }
 
@@ -573,7 +560,6 @@
   --md-comp-button-icon-size: var(--md-sys-measurement-button-icon-size-large);
   --md-comp-button-padding-x: var(--md-sys-measurement-button-padding-large);
   --md-comp-button-label-space: var(--md-sys-measurement-button-label-space-large);
-  --md-comp-button-pressed-shape: var(--md-sys-shape-corner-large);
   --md-comp-button-label-text: var(--md-sys-typescale-headline-small);
 }
 
@@ -582,7 +568,6 @@
   --md-comp-button-icon-size: var(--md-sys-measurement-button-icon-size-xlarge);
   --md-comp-button-padding-x: var(--md-sys-measurement-button-padding-xlarge);
   --md-comp-button-label-space: var(--md-sys-measurement-button-label-space-xlarge);
-  --md-comp-button-pressed-shape: var(--md-sys-shape-corner-large);
   --md-comp-button-label-text: var(--md-sys-typescale-headline-large);
 }
 
