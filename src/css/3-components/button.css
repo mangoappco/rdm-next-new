@@ -511,16 +511,28 @@
 /* ---------------------------------------------------------------------------
    LA SUPERFICIE DE TOQUE
    ---------------------------------------------------------------------------
-   Solo en alto. Un boton con etiqueta ya supera los 48dp de ancho; lo que
-   puede quedarse corto es el alto, en xsmall.
+   Copiada de M3 con la geometria de M3. Ver button/internal/_touch-target.scss:
+
+       .touch { position: absolute; top: 50%;
+                height: max(48px, 100%); left: 0; right: 0;
+                transform: translateY(-50%); }
+
+   El detalle que importa y que se puede perder al translated: `left: 0;
+   right: 0`. El span va VACIO, asi que su ancho es cero y sin esos dos la
+   superficie de toque no tendria extension horizontal ninguna. Solo el alto
+   sube, porque un boton con etiqueta ya es ancho de sobra y lo que se queda
+   corto es el alto, en xsmall.
+
+   Traducido con las propiedades logicas del sistema, que es lo que se usa en
+   todo el archivo.
    ------------------------------------------------------------------------ */
 
 .md-button-touch {
   position: absolute;
   inset-block-start: 50%;
-  inset-inline-start: 50%;
+  inset-inline: 0;
   block-size: max(var(--md-comp-button-touch-size), 100%);
-  transform: translate(-50%, -50%);
+  transform: translateY(-50%);
 }
 
 /* ---------------------------------------------------------------------------
