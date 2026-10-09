@@ -56,7 +56,7 @@
         <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
       </div>
       <h1 class="md-type-display-large">Button</h1>
-      <p class="md-type-body-large">El boton de accion de M3 en su variante filled, con los cinco tamanos y las tres formas de icono. Solo filled: las otras cuatro variantes no estan todavia. El componente no tiene comportamiento responsive ni estados de contenido.</p>
+      <p class="md-type-body-large">La variante filled del boton de M3, con los cinco tamanos. Las otras cuatro variantes no estan todavia.</p>
     </header>
     <!-- HEADER: fin -->
 
@@ -65,7 +65,7 @@
     <!-- PAREJA: el ejemplo basico (h2 + specimen + pre + boton). -->
     <section class="sr-section">
       <h2 class="md-type-title-large">Filled</h2>
-      <p class="md-type-body-medium">Fondo primary, texto on-primary, sin borde. Es la variante por defecto y la de mayor enfasis: la accion principal de una vista. Tamano de sistema small (40px), que es el que M3 llama default. La etiqueta va en un span propio, porque el hueco entre icono y texto lo pone el <code>gap</code> del contenedor y un nodo de texto suelto no se puede apuntar.</p>
+      <p class="md-type-body-medium">Fondo primary, texto on-primary, sin borde. La accion principal de una vista.</p>
       <div class="sr-specimen sr-specimen-gap">
         <button class="md-button" type="button"><span class="md-button-label">Guardar cambios</span></button>
       </div>
@@ -77,7 +77,7 @@
     <!-- PAREJA: los cinco tamanos (h2 + specimen + pre + boton). -->
     <section class="sr-section">
       <h2 class="md-type-title-large">Sizes</h2>
-      <p class="md-type-body-medium">xsmall 32, small 40, medium 56, large 96 y xlarge 136. Los cinco grow con la etiqueta: el padding va de 12 a 64, el glifo de 20 a 40 y la tipografia de 14 a 32. Eso ultimo es lo que mas sorprende de M3 y lo mas facil de no Implementar: <code>label-large</code> en los dos pequenos, <code>title-medium</code> en medium, <code>headline-small</code> en large y <code>headline-large</code> en xlarge. Un boton de 136px con texto de 14px se ve roto.</p>
+      <p class="md-type-body-medium">Los cinco de M3: 32, 40, 56, 96 y 136. Padding, glifo y tipografia crecen con la caja.</p>
       <div class="sr-specimen sr-specimen-gap">
         <button class="md-button md-button-xsmall" type="button"><span class="md-button-label">Guardar</span></button>
         <button class="md-button md-button-small" type="button"><span class="md-button-label">Guardar</span></button>
@@ -97,7 +97,7 @@
     <!-- PAREJA: icono lider y posterior (h2 + specimen + pre + boton). -->
     <section class="sr-section">
       <h2 class="md-type-title-large">Icono</h2>
-      <p class="md-type-body-medium">Lider o posterior, y el hueco entre glifo y etiqueta tambien crece con el tamano: 8px en los tres pequenos, 12 en large y 16 en xlarge. El icono es opcional y va en su propio span. El glifo se dibuja relleno (<code>FILL</code> 1) en los cinco tamanos: es lo que declara M3 para el boton.</p>
+      <p class="md-type-body-medium">Lider o posterior, y opcional. El hueco con la etiqueta va de 8 a 16px.</p>
       <div class="sr-specimen sr-specimen-gap">
         <button class="md-button" type="button"><span class="md-button-icon md-icon" aria-hidden="true">add</span><span class="md-button-label">Anadir</span></button>
         <button class="md-button" type="button"><span class="md-button-label">Continuar</span><span class="md-button-icon md-icon" aria-hidden="true">arrow_forward</span></button>
@@ -115,7 +115,7 @@
     <!-- PAREJA: el ancho minimo (h2 + specimen + pre + boton). -->
     <section class="sr-section">
       <h2 class="md-type-title-large">Ancho minimo</h2>
-      <p class="md-type-body-medium">Ningun boton baja de 64px de ancho, que es el minimo de M3. Sin el, una etiqueta corta deja una pildora de 30px que cuesta de apuntar. Ojo con el valor: M3 lo escribe como <code>calc(64px - leading - trailing)</code> porque su contenedor es <code>content-box</code>. Este sistema usa <code>border-box</code>, donde el min-width va al borde y el padding va dentro, asi que copiar esa formula daria 16px de caja con 48px de padding encima: un boton de 48. Aqui es 64px a secas.</p>
+      <p class="md-type-body-medium">Ningun boton baja de 64px de ancho. Sin el, una etiqueta corta deja una pildora de 30px.</p>
       <div class="sr-specimen sr-specimen-gap">
         <button class="md-button" type="button"><span class="md-button-label">OK</span></button>
         <button class="md-button" type="button"><span class="md-button-label">Cancelar</span></button>
@@ -131,7 +131,7 @@
     <!-- PAREJA: los cuatro estados (h2 + specimen + pre + boton). -->
     <section class="sr-section">
       <h2 class="md-type-title-large">States</h2>
-      <p class="md-type-body-medium">La capa de estado es un pseudo con <code>currentColor</code>, y por eso no tiene color propio: en las cinco variantes de M3 toma el de la etiqueta, que aqui es on-primary. Las intensidades son las del sistema: 0.08 al pasar el raton, 0.10 con el foco de teclado, 0.10 al pulsar. El deshabilitado NO es bajar el boton entero: el relleno va a on-surface al 10% y el texto al 38%, dos opacidades distintas, y por eso el relleno se pinta en un pseudo aparte. El anillo de foco son 3px de <code>secondary</code> con 2px de separacion, y sale con <code>:focus-visible</code>, no con <code>:focus</code>, para que el raton no lo dispare.</p>
+      <p class="md-type-body-medium">Capa de estado con currentColor: 0.08 al pasar, 0.10 con foco o pulsado. El deshabilitado baja el relleno al 10% y el texto al 38%.</p>
       <div class="sr-specimen sr-specimen-gap">
         <button class="md-button" type="button"><span class="md-button-label">Reposo</span></button>
         <button class="md-button" type="button" disabled><span class="md-button-label">Deshabilitado</span></button>
@@ -147,7 +147,7 @@
     <!-- PAREJA: el morph de forma (h2 + specimen + pre + boton). -->
     <section class="sr-section">
       <h2 class="md-type-title-large">Morph de forma</h2>
-      <p class="md-type-body-medium">En reposo el boton es una pildora (<code>corner-full</code>) en los cinco tamanos. Al pulsarse el radio baja a un valor FINITO, y M3 lo escalona con el tamano: 8px en xsmall y small, 12 en medium, 16 en large y xlarge. Tarda 500ms, que es la familia <code>spatial</code>. El recorrido es de 9999px a 8px, y se ve por la misma razon que se ve el del icono-button: son dos numeros distintos, no el mismo numero dos veces. Con un valor alto que se recorta al pintar, el 99% del recorrido dibujaria el mismo pixel. La variante <code>square</code> de M3 NO esta todavia: es un segundo eje de forma, no un color.</p>
+      <p class="md-type-body-medium">Pildora en reposo, radio finito al pulsar: 8, 8, 12, 16 y 16 segun el tamano. Tarda 500ms.</p>
       <div class="sr-specimen sr-specimen-gap">
         <button class="md-button md-button-xsmall" type="button"><span class="md-button-label">8px</span></button>
         <button class="md-button md-button-small" type="button"><span class="md-button-label">8px</span></button>
@@ -167,9 +167,8 @@
     <!-- PAREJA: la trampa de las utilidades de color (h2 + specimen + pre + boton). -->
     <section class="sr-section">
       <h2 class="md-type-title-large">Lo que no hace</h2>
-      <p class="md-type-body-medium"><strong>No se recolorea con <code>md-bg-*</code>.</strong> El primero es el boton de siempre; el segundo lleva <code>md-bg-error</code> y se ve IGUAL. La utilidad gana la cascada (la capa utilities va la ultima), asi que pone su <code>background-color</code> en el elemento, pero el relleno visible del boton lo pinta un <code>::before</code>. Gana la cascada y no cambia nada. Lo mismo que ya pasa con el divider y <code>md-bg-outline-variant</code>. Para cambiar el color de un boton hay que reapuntar su token de componente, y hoy no hay ninguna clase publica que lo haga.</p>
-      <p class="md-type-body-medium">Lo que SII funciona es <code>md-text-*</code>, porque pinta <code>color</code>, que la etiqueta y el glifo heredan. Y las utilidades de tipografia ganan al componente: aqui se ve, el segundo boton lleva <code>md-type-body-small</code> y su etiqueta baja a 12px aunque el componente pida 16. Es el criterio del sistema: la opinion del autor va por delante de la receta.</p>
-      <p class="md-type-body-medium">Tambien faltan la variante <code>square</code> y el estado <code>selected</code>, ambos por no tener un caso real en la app. Y el padding cuando hay icono: M3 lo trata como un ajuste aparte del padding base, con cuatro variables propias, pero sus valores por defecto viven en un archivo que no esta en la copia local de material-web. Se deja sin implementar antes que escribir un numero recordado.</p>
+      <p class="md-type-body-medium"><strong>md-bg-* no recolorea el boton</strong>, aunque gane la cascada: el relleno lo pinta un <code>::before</code>. <code>md-text-*</code> si funciona, y las utilidades de tipo ganan al componente.</p>
+      <p class="md-type-body-medium">Faltan <code>square</code>, <code>selected</code> y el padding con icono: sin valor verificable, no se inventan.</p>
       <div class="sr-specimen sr-specimen-gap">
         <button class="md-button" type="button"><span class="md-button-label">Normal</span></button>
         <button class="md-button md-bg-error" type="button"><span class="md-button-label">Con md-bg-error</span></button>
