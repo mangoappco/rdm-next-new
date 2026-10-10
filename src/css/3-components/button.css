@@ -168,6 +168,22 @@
      receta, que es el criterio que lleva puesto desde el principio. */
   --md-comp-button-label-text: var(--md-sys-typescale-label-large);
 
+  /* El tracking va APARTE del atajo `font` de arriba, porque el atajo no puede
+     expresarlo. Es lo que dice la cabecera de 4-utilities/typography.css, y es
+     la misma linea que declara M3 justo detras de su `font`.
+
+     Sin ella el boton HEREDA el tracking de su contenedor, y entonces el mismo
+     boton mide distinto segun donde se pegue. Medido en el showroom, que
+     lleva `md-type-body-medium` en el body (0.25px): la MISMA etiqueta
+     "Label" mide 34.02px dentro de un <button> y 35.27px dentro de un <a>. Un
+     pixel y cuarto, porque el navegador aplica `letter-spacing: normal` a los
+     controles de formulario y el enlace no lo hereda.
+
+     O sea, el mismo defecto que el del `vertical-align` pero al reves: aqui el
+     componente se ve afectado por su ancestro. El boton tiene que sostenerse
+     solo con main.css, y sostenerse significa tambien MEDIR igual. */
+  --md-comp-button-label-text-tracking: var(--md-sys-typescale-label-large-tracking);
+
   /* ------------------------------------------------------------------------
      FORMA
      ------------------------------------------------------------------------
@@ -341,6 +357,7 @@
      el mismo pixel y lo unico que se ve es un salto final. */
 
   font: var(--md-comp-button-label-text);
+  letter-spacing: var(--md-comp-button-label-text-tracking);
   color: var(--md-comp-button-label-color);
   cursor: pointer;
   user-select: none;
@@ -603,6 +620,7 @@
   --md-comp-button-icon-size: var(--md-sys-measurement-button-icon-size-medium);
   --md-comp-button-padding-x: var(--md-sys-measurement-button-padding-medium);
   --md-comp-button-label-text: var(--md-sys-typescale-title-medium);
+  --md-comp-button-label-text-tracking: var(--md-sys-typescale-title-medium-tracking);
 }
 
 .md-button-large {
@@ -611,6 +629,7 @@
   --md-comp-button-padding-x: var(--md-sys-measurement-button-padding-large);
   --md-comp-button-label-space: var(--md-sys-measurement-button-label-space-large);
   --md-comp-button-label-text: var(--md-sys-typescale-headline-small);
+  --md-comp-button-label-text-tracking: var(--md-sys-typescale-headline-small-tracking);
 }
 
 .md-button-xlarge {
@@ -619,6 +638,7 @@
   --md-comp-button-padding-x: var(--md-sys-measurement-button-padding-xlarge);
   --md-comp-button-label-space: var(--md-sys-measurement-button-label-space-xlarge);
   --md-comp-button-label-text: var(--md-sys-typescale-headline-large);
+  --md-comp-button-label-text-tracking: var(--md-sys-typescale-headline-large-tracking);
 }
 
 /* ---------------------------------------------------------------------------
