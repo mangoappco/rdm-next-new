@@ -584,6 +584,94 @@
 }
 
 /* ---------------------------------------------------------------------------
+   LAS CINCO VARIANTES DE COLOR
+   ---------------------------------------------------------------------------
+   M3 publica cinco, y cada una es un componente distinto en material-web
+   (`md-filled-button`, `md-filled-tonal-button`, ...). Aqui son cinco clases
+   de un solo componente, y la BASE es filled: no hay `.md-button-filled`
+   porque filled es lo que trae `.md-button` sin modificador.
+
+   Es al reves que en el icono-button, y es una decision, no un descuido. Alli
+   la base es el estado cero (transparente, sin borde) y las variantes AÑADEN.
+   Aqui la base es la variante mas vestida y las demas la DESVISTEN: text y
+   outlined ponen el contenedor en transparente. Un estado cero invertiria eso,
+   pero obligaria a que el primer par de la vista se llamara distinto, y el
+   criterio de esa vista es que el primer par es la variante principal.
+
+   Los cuatro valores de cada una, leidos de los tokens publicados
+   (tokens/versions/latest/sass/_md-comp-button-{filled,tonal,elevated,
+   outlined,text}.scss):
+
+       variante    container             etiqueta              elevacion  borde
+       filled      primary                on-primary             level0     -
+       tonal       secondary-container    on-secondary-container  level0     -
+       elevated    surface-container-low  primary                level1     -
+       outlined    (transparente)         on-surface-variant     level0     1px
+       text        (transparente)         primary                level0     -
+
+   "filled" es la fila de la base y por eso no tiene regla propia.
+
+   La capa de estado no necesita token de color en ninguna: usa currentColor y
+   el host lo toma de su etiqueta. En M3 el `hovered-state-layer-color` de las
+   cinco es IGUAL al `label-text-color` de esa misma variante, asi que sale
+   solo.
+   ------------------------------------------------------------------------ */
+
+.md-button-tonal {
+  --md-comp-button-container-color: var(--md-sys-color-secondary-container);
+  --md-comp-button-label-color: var(--md-sys-color-on-secondary-container);
+}
+
+.md-button-elevated {
+  --md-comp-button-container-color: var(--md-sys-color-surface-container-low);
+  --md-comp-button-label-color: var(--md-sys-color-primary);
+  --md-comp-button-elevation: var(--md-sys-elevation-level1);
+}
+
+.md-button-outlined {
+  --md-comp-button-container-color: transparent;
+  --md-comp-button-label-color: var(--md-sys-color-on-surface-variant);
+  --md-comp-button-outline-width: var(--md-sys-shape-stroke-thin);
+  --md-comp-button-outline-color: var(--md-sys-color-outline-variant);
+}
+
+/* El borde del outlined ENGORDA con el tamano, y este es el unico sitio donde
+   el eje de tamano toca el de variante. M3 lo declara en cada hoja de tamano:
+   1px en xsmall, small y medium; 2px en large; 3px en xlarge.
+
+   Por eso son selectores compuestos y no una regla de tamano mas: si
+   `.md-button-large` declarase el grosor, un filled large heredaria un borde
+   de 2px que no debe existir. Con el selector compuesto el grosor solo
+   aparece si estan las dos clases.
+
+   Es la unica vez que este archivo usa un selector de dos clases. Se prefiere
+   eso a las cinco reglas por tamaño que harian falta de otro modo. */
+.md-button-large.md-button-outlined {
+  --md-comp-button-outline-width: var(--md-sys-shape-stroke-thick);
+}
+
+.md-button-xlarge.md-button-outlined {
+  --md-comp-button-outline-width: var(--md-sys-shape-stroke-extra-thick);
+}
+
+/* El text es el unico que no se diferencia por el color sino por la ausencia:
+   sin relleno y sin borde. NO lleva padding propio.
+
+   El boton de texto de M3 clasico traia 12px horizontales fijos, y el numero
+   circula mucho. No se aplica: en M3 Expressive el padding horizontal es solo
+   del TAMANO (12, 16, 24, 48, 64) y el mixin `text` no toca
+   `--leading-space`. Verificado en labs/gb/components/button/_button-tokens.scss:
+   los cinco valores de leading-space son de los cinco mixins de tamano, y
+   ninguna de las cinco variantes declara ninguno.
+
+   O sea que `md-button-xlarge md-button-text` lleva 64px de padding, no 12.
+   Es lo que dice M3, y es lo contrario de lo que se recuerda. */
+.md-button-text {
+  --md-comp-button-container-color: transparent;
+  --md-comp-button-label-color: var(--md-sys-color-primary);
+}
+
+/* ---------------------------------------------------------------------------
    FORCED COLORS
    ---------------------------------------------------------------------------
    En modo de alto contraste el relleno no es un color que el sistema pueda
