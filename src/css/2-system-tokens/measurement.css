@@ -385,7 +385,7 @@
      sistema, asi que se apoya en el rol comun en vez de fijar un numero. */
   --md-sys-measurement-button-icon-size-medium: var(--md-sys-measurement-icon-size);
 
-  /* El glifo del BOTON es un eje propio y NO se puede leer del icono-button,
+  /* El glifo del BOTON es un eje propio y NO se puede leer del icon-button,
      porque los dos componentes coinciden en cuatro de los cinco tamanos y
      se separan justo en small:
 
@@ -398,7 +398,7 @@
 
      Es el mismo argumento que el ancho: cada componente tiene su medida, y
      que coincida con la del otro no las convierte en la misma. Y por eso
-     estos roles NO se leen de los del icono-button, aunque quatro de los
+     estos roles NO se leen de los del icon-button, aunque quatro de los
      cinco numeros sean los mismos.
 
      small y medium ya estaban, y siguen apoyandose en los roles genericos de
@@ -420,7 +420,7 @@
      se nota.
 
      O sea que los roles del glifo del boton NO se leen de los del icono, ni
-     siquiera de los del icono-button. Los tres son ejes separados con tres
+     siquiera de los del icon-button. Los tres son ejes separados con tres
      listas de numeros. Apuntar a la escala de espacio, como se hace aqui y en
      el resto del bloque, es lo que evita esta confusion: el numero esta a
      la vista. */

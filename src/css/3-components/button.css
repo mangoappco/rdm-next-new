@@ -69,7 +69,7 @@
    3. EL ESTADO `selected`. Los tokens publicados lo tienen para filled
       (`selected-container-color`, `selected-container-shape-round`). Es una
       VARIACION DE COMPORTAMIENTO, no un color: cambia relleno y forma. Queda
-      fuera por lo mismo que el toggle con checkmark del icono-button: sin un
+      fuera por lo mismo que el toggle con checkmark del icon-button: sin un
       caso real en la app, no se implementa.
 
 4. TODO EL MOVIMIENTO, y no solo el resorte. El componente se construye
@@ -204,7 +204,7 @@
      asi las cinco).
 
      Por eso la capa usa `currentColor` y no necesita token de color propio,
-     igual que en el icono-button. El componente fija el color del texto en el
+     igual que en el icon-button. El componente fija el color del texto en el
      host y la capa lo hereda. */
   --md-comp-button-container-color: var(--md-sys-color-primary);
   --md-comp-button-label-color: var(--md-sys-color-on-primary);
@@ -230,7 +230,7 @@
 
   /* Eje FILL del glifo. M3 lo declara en el boton: el `@mixin root` de
      labs/gb pone `--md-icon-fill: 1`, o sea relleno, no contorno. El del
-     icono-button empieza en relleno tambien, asi que no es una excepcion.
+     icon-button empieza en relleno tambien, asi que no es una excepcion.
 
      NO se declara `font-variation-settings` por el motivo de siempre: el
      glifo lleva `.md-icon`, que esta en utilities y gana a esta capa sin
@@ -259,7 +259,7 @@
        spatial   forma (el morph del radio). Curva spatial + long2 = 500ms.
 
      Compartir par era el error que ya se corrigio una vez en el
-     icono-button: el teñido tardaba 300ms y el morph corria a velocidad de
+     icon-button: el teñido tardaba 300ms y el morph corria a velocidad de
      color. No se vuelve a caer en eso.
 
      ------------------------------------------------------------------------
@@ -272,7 +272,7 @@
   --md-comp-button-focus-width: var(--md-sys-shape-stroke-extra-thick);
   --md-comp-button-focus-offset: var(--md-sys-shape-stroke-thick);
 
-  /* Area tactil. La del icono-button crece en los dos ejes porque su
+  /* Area tactil. La del icon-button crece en los dos ejes porque su
      contenedor es estrecho en los dos (32 o 40dp). Un boton con etiqueta ya
      es ancho de sobra, asi que aqui el minimo es el alto y el ancho no hace
      falta: se declara solo la altura. */
@@ -305,7 +305,7 @@
 
   /* Sin `transition` de border-radius todavia: el morph de forma entra en un
      paso propio. Anotado lo que hay que mirar al meterlo, porque es el mismo
-     problema que se resolvio en el icono-button: el reposo es corner-full
+     problema que se resolvio en el icon-button: el reposo es corner-full
      (9999px) y el destino un radio FINITO (corner-small, 8px), asi que el
      recorrido es de 9999px a 8px y se ve. El día que se recorta al pintar, el
      99% del recorrido dibuja el mismo pixel. */
@@ -317,7 +317,7 @@
   -webkit-tap-highlight-color: transparent;
 
   /* El subrayado se quita aqui y no en el reset por la misma razon que en el
-     icono-button: el glifo de Material Symbols es texto, asi que el navegador
+     icon-button: el glifo de Material Symbols es texto, asi que el navegador
      le dibujaria el subrayado del enlace debajo, en el color del texto, a
      traves de la etiqueta. El reset no debe tomar partido sobre los enlaces
      de texto, que si los necesitan. Lo que lo anula es ESTE componente. */
@@ -332,7 +332,7 @@
 
    `z-index: -1` con `isolation: isolate` en el host lo deja detras del texto
    sin salirse del contexto de apilamiento, que es lo mismo que hace el
-   `::after` de la capa de estado en el icono-button.
+   `::after` de la capa de estado en el icon-button.
    ------------------------------------------------------------------------ */
 
 .md-button::before {
@@ -485,7 +485,7 @@
 /* ---------------------------------------------------------------------------
    EL ICONO EN UN BOTON CON RELLENO
    ---------------------------------------------------------------------------
-   Aqui SI hace falta, y al reves que en el icono-button. Alli el glifo de
+   Aqui SI hace falta, y al reves que en el icon-button. Alli el glifo de
    las variantes con relleno fijaba su color porque la capa de estado necesitaba
    el contrario.
 
@@ -505,7 +505,7 @@
    `<a class="md-button">` funciona sin una regla de elemento: no hay `a` en
    ningun selector de este archivo. El reset se encarga del resto, y el
    `text-decoration: none` de arriba quita el subrayado. Es el mismo
-   tratamiento que el icono-button.
+   tratamiento que el icon-button.
    ------------------------------------------------------------------------ */
 
 /* ---------------------------------------------------------------------------
@@ -591,7 +591,7 @@
    de un solo componente, y la BASE es filled: no hay `.md-button-filled`
    porque filled es lo que trae `.md-button` sin modificador.
 
-   Es al reves que en el icono-button, y es una decision, no un descuido. Alli
+   Es al reves que en el icon-button, y es una decision, no un descuido. Alli
    la base es el estado cero (transparente, sin borde) y las variantes AÑADEN.
    Aqui la base es la variante mas vestida y las demas la DESVISTEN: text y
    outlined ponen el contenedor en transparente. Un estado cero invertiria eso,
@@ -642,12 +642,18 @@
 .md-button-tonal {
   --md-comp-button-container-color: var(--md-sys-color-secondary-container);
   --md-comp-button-label-color: var(--md-sys-color-on-secondary-container);
+
+  /* Al seleccionar pasa de secondary-container a `secondary`: el mismo tono,
+     un paso mas fuerte. */
 }
 
 .md-button-elevated {
   --md-comp-button-container-color: var(--md-sys-color-surface-container-low);
   --md-comp-button-label-color: var(--md-sys-color-primary);
   --md-comp-button-elevation: var(--md-sys-elevation-level1);
+
+  /* De superficie neutra a primary. La sombra se queda: es la variante
+     elevated y el nivel 1 es suyo, no del estado. */
 }
 
 .md-button-outlined {
@@ -655,6 +661,10 @@
   --md-comp-button-label-color: var(--md-sys-color-on-surface-variant);
   --md-comp-button-outline-width: var(--md-sys-shape-stroke-thin);
   --md-comp-button-outline-color: var(--md-sys-color-outline-variant);
+
+  /* INVIERTE el contraste: relleno oscuro y texto claro. Es el cambio de mayor
+     peso visual de los cinco, y a proposito: el selected de outlined es el
+     unico que parece un boton de otra familia al seleccionarse. */
 }
 
 /* El borde del outlined ENGORDA con el tamano, y este es el unico sitio donde
@@ -687,10 +697,17 @@
    ninguna de las cinco variantes declara ninguno.
 
    O sea que `md-button-xlarge md-button-text` lleva 64px de padding, no 12.
-   Es lo que dice M3, y es lo contrario de lo que se recuerda. */
+   Es lo que dice M3, y es lo contrario de lo que se recuerda.
+
+   Y sus colores de SELECCIONADO son los suyos, porque M3 no declara ninguno para
+   esta variante y "no declarar" quiere decir que se queda como esta, no que
+   hereda los de otra. Sin esto, el token del base (que es filled: primary)
+   se le colaba y un toggle de texto aparecia con relleno al seleccionarse.
+   Medido: rgb(103,80,164) donde deberia ser transparente. */
 .md-button-text {
   --md-comp-button-container-color: transparent;
   --md-comp-button-label-color: var(--md-sys-color-primary);
+
 }
 
 /* ---------------------------------------------------------------------------
@@ -698,7 +715,7 @@
    ---------------------------------------------------------------------------
    En modo de alto contraste el relleno no es un color que el sistema pueda
    respetar, asi que el boton se dibuja con el color de texto del lienzo y se
-   apaga el relleno, que es lo que hace el icono-button.
+   apaga el relleno, que es lo que hace el icon-button.
    ------------------------------------------------------------------------ */
 
 @media (forced-colors: active) {

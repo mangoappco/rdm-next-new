@@ -134,7 +134,7 @@
        3-components/*.css      <-- el componente declara UNA transicion por
                                   familia de movimiento, cada una con su par:
 
-         el icono-button, que tiene las dos:
+         el icon-button, que tiene las dos:
            transition: opacity
              var(--md-sys-motion-duration-short4)
              var(--md-sys-motion-easing-effects-default);

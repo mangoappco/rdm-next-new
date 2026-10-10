@@ -44,17 +44,10 @@
       deshabilitado       on-surface al 38%
       capa de estado      inset 0 (toma el tamano del contenedor), corner-full
 
-   TOGGLE. M3 separa default y toggle como variantes distintas: el toggle trae
-   un contenedor "no seleccionado" propio y el seleccionado tiene su par de
-   color. Por eso aria-pressed necesita el modificador .md-icon-button-toggle
-   y no solo el atributo. Los cuatro valores por variante estan al pie del
-   archivo, con los nombres de token de M3.
-
    LO QUE NO IMPLEMENTA: morph con resorte, toggle con checkmark (y con texto),
    y el tooltip que M3 pide en web (no existe todavia en el sistema). Ver las
    notas al pie de cada bloque.
 
-   POR QUE NO HAY RESORTE, MEDIDO
    RESORTE Y CURVAS: LO QUE SE ADOPTO Y POR QUE
    -------------------------------------------
    M3 Expressive publica su motion en dos familias, y cada familia trae su
@@ -144,27 +137,21 @@
      los tokens personalizados heredan, .md-icon lo lee del glifo, y ahi ya
      vale lo que decidio el boton. Sin pelea de capas.
 
-     Los tres estados no comparten valor, y M3 los distingue:
-       default         relleno    (boton de accion)
-       toggle off      contorneado
-       toggle on       relleno
-     Por eso el token, y no un valor fijo. */
+     El glifo es relleno siempre. M3 distingue tres estados (default relleno,
+     toggle off contorneado, toggle on relleno) y por eso el token, pero al
+     quitarse el toggle solo queda el default, que es relleno. */
   --md-sys-icon-fill: var(--md-sys-icon-fill-full);
 
-  /* Forma. Dos tokens porque se INVIERTEN al seleccionarse. El round es la
-     media altura del tamano, que es como lo define M3 Expressive ("exact
-     half-height radii"), y no corner-full: con 9999px el navegador recorta
-     el radio al pintar, pero el valor calculado sigue en 9999 durante toda
-     la transicion, y el 99.8% del recorrido del morph queda con el mismo
-     pixel. Con un radio finito el morph se ve. Ver la nota de transicion,
-     mas abajo. */
-  --md-comp-icon-button-shape: var(--md-sys-shape-corner-half-small);
-  --md-comp-icon-button-selected-shape: var(--md-sys-shape-corner-medium);
+  /* Forma. Un solo token, porque el componente ya no tiene estado seleccionado:
+   el toggle se quito (ManGo! App no usa botones conmutables) y con el se fue
+   tambien el morph de pulsado, por la misma razon que en el boton: un control
+   que cambia de forma en cada clic, en una app donde se hace clic cien veces,
+   distrae mas de lo que informa. Es una desviacion consciente de M3.
 
-  /* Y un tercero para el morph de pulsado, que M3 Expressive separa del
-     seleccionado: en xsmall y small es corner-small, en medium sube a
-     corner-medium (lo pone su clase de tamano). */
-  --md-comp-icon-button-pressed-shape: var(--md-sys-shape-corner-small);
+   El round es la media altura del tamano, que es como lo define M3 Expressive
+   ("exact half-height radii"), y no corner-full. Ver la nota de la transicion,
+   mas abajo. */
+  --md-comp-icon-button-shape: var(--md-sys-shape-corner-half-small);
 
   /* Color. Standard: icono sobre la superficie, sin relleno. */
   --md-comp-icon-button-container-color: transparent;
@@ -172,40 +159,23 @@
   --md-comp-icon-button-outline-width: var(--md-sys-shape-stroke-none);
   --md-comp-icon-button-outline-color: transparent;
 
-  /* Los cuatro tokens del SELECTIONADO. M3 separa default y toggle como
-     variantes distintas, y el toggle tiene un contenedor "no seleccionado"
-     propio que no es el de la variante: por eso hacen falta cuatro y no dos.
-     Un par por estado, y el par del seleccionado lo usa [aria-pressed=true].
-
-     Estos son los del STANDARD (que es la base). Cada variante de color
-     reescribe los suyos mas abajo; el toggle los aplica con un modificador. */
-  --md-comp-icon-button-toggle-container-color: transparent;
-  --md-comp-icon-button-toggle-icon-color: var(--md-sys-color-on-surface-variant);
-  --md-comp-icon-button-selected-container-color: transparent;
-  --md-comp-icon-button-selected-icon-color: var(--md-sys-color-primary);
-
   /* El grosor por defecto es none y no thin: con thin, la variante
      standard tendria un borde invisible de 1px que le recortaria 2px al
      area de contenido (box-sizing: border-box). */
 
   /* Estado. La capa toma currentColor: sin token propio de color.
 
-     M3 Expressive separa el movimiento en dos familias, y por eso aqui hay
-     DOS pares y no uno:
+     UN SOLO PAR, y es el de effects (color y opacidad) + short4 = 200ms.
 
-       effects   color y opacidad, que es esta capa de estado. Curva effects
-                 (sube deprisa y frena) + short4 = 200ms.
-       spatial   tamano, posicion y morph de forma, que es el radio. Curva
-                 spatial + long2 = 500ms.
+     Antes habia dos, porque ademas estaba el morph de forma, que es de la
+     familia spatial (long2, 500ms). Se fue con el morph: sin destino al que
+     moverse, un par de spatial no tendria nada que animar.
 
-     Antes los dos compartian par, y el tinte de un boton de 40px tardaba
-     300ms: un tramo que M3 reserva para "medium area of the screen"
-     aplicado al cambio mas pequeno del componente. */
+     Y el par de effects sigue siendo el suyo y no uno compartido, que era el
+     error que se corrigio aqui: el tinte tardaba 300ms porque usaba el par del
+     morph, y M3 reserva medium2 para "medium area of the screen". */
   --md-comp-icon-button-state-duration: var(--md-sys-motion-duration-short4);
   --md-comp-icon-button-state-easing: var(--md-sys-motion-easing-effects-default);
-
-  --md-comp-icon-button-morph-duration: var(--md-sys-motion-duration-long2);
-  --md-comp-icon-button-morph-easing: var(--md-sys-motion-easing-spatial-default);
 
   /* Anillo de foco M3: 3px de grosor, 2px de separacion. */
   --md-comp-icon-button-focus-color: var(--md-sys-color-secondary);
@@ -237,25 +207,16 @@
   background-color: var(--md-comp-icon-button-container-color);
   box-shadow: var(--md-comp-icon-button-elevation);
 
-  /* El radio SI transiciona, y antes no podia. Con corner-full (9999px) el
-   navegador recorta al pintar, pero el valor calculado se queda en 9999
-   durante toda la transicion: el morph gastaba el 99.8% del recorrido
-   pintando el mismo pixel, y lo unico que se veia era un salto final.
+  /* SIN transition de border-radius. El radio es fijo durante toda la vida del
+     componente: hay una sola forma y no hay ningun estado que la cambie.
 
-   Con el round declarado como media altura (media altura de verdad, no
-   9999) el recorrido es finito y de verdad: en small son 12px de radio, de
-   20 a 8. Medido en el navegador con esta misma transicion.
+     Este bloque estuvo aqui durante mucho tiempo con el morph de pulsado, y la
+     nota explicaba por que el recorrido tardaba 9999px en verse (el navegador
+     recorta al pintar pero el valor calculado se queda en 9999). Sin destino al
+     que moverse, la nota y la transicion sobran las dos.
 
-   Curva y duracion son las de la familia SPATIAL (long2 + la curva spatial),
-   no las de la capa de estado: el cambio de forma es spatial segun M3, y el
-   cambio de color es effects. Son dos movimientos distintos y por eso no
-   comparten par. El rebote de la curva spatial, calculado, es del 0.06%
-   (0.01px sobre un recorrido de 12): se adopta por fidelidad al token, no
-   porque se note. */
-
- transition: border-radius
-    var(--md-comp-icon-button-morph-duration)
-    var(--md-comp-icon-button-morph-easing);
+     Cuando vuelva a haber un cambio de forma, la nota vuelve con ella: el
+     destino tiene que ser un numero, no 9999, o el morph no se ve. */
 
   color: var(--md-comp-icon-button-icon-color);
   cursor: pointer;
@@ -461,17 +422,14 @@
 
 .md-icon-button-square {
   --md-comp-icon-button-shape: var(--md-sys-shape-corner-medium);
-  --md-comp-icon-button-selected-shape: var(--md-sys-shape-corner-full);
 }
 
 .md-icon-button-medium.md-icon-button-square {
   --md-comp-icon-button-shape: var(--md-sys-shape-corner-large);
-  --md-comp-icon-button-selected-shape: var(--md-sys-shape-corner-full);
 }
 
 /* El morph de pulsado sube a corner-medium en medium (12px), como en M3. */
 .md-icon-button-medium {
-  --md-comp-icon-button-pressed-shape: var(--md-sys-shape-corner-medium);
 }
 
 /* Los dos grandes suben otro escalon de forma, y en los DOS gestos: el
@@ -480,42 +438,11 @@
    queda en un valor fijo. */
 .md-icon-button-large,
 .md-icon-button-xlarge {
-  --md-comp-icon-button-pressed-shape: var(--md-sys-shape-corner-large);
 }
 
 .md-icon-button-large.md-icon-button-square,
 .md-icon-button-xlarge.md-icon-button-square {
   --md-comp-icon-button-shape: var(--md-sys-shape-corner-extra-large);
-  --md-comp-icon-button-selected-shape: var(--md-sys-shape-corner-full);
-}
-
-/* El seleccionado SOLO invierte la forma aqui. El color lo pone el par de
-   tokens selected-* de cada variante, a traves de .md-icon-button-toggle.
-
-   Antes esta regla fijaba tambien icon-color: primary para las cuatro
-   variantes: en filled y filled-tonal eso dejaba el glifo del MISMO color que
-   su relleno (primary sobre primary) y el icono se volvia invisible. Es el
-   bug que destapo el specimen Selected. */
-.md-icon-button[aria-pressed='true'] {
-  border-radius: var(--md-comp-icon-button-selected-shape);
-}
-
-/* ---------------------------------------------------------------------------
-   MORPH AL PULSAR (sin JS)
-   ---------------------------------------------------------------------------
-   M3 Expressive distingue DOS morph distintos, con tokens distintos:
-
-      al PULSAR     corner-small   (8px)   en xsmall y small
-                    corner-medium  (12px)  en medium
-      al SELECCIONAR  el par de arriba (el toggle ya lo invierte)
-
-   Antes :active reutilizaba la forma del seleccionado, con lo que un boton de
-   40px pulsado iba a 12px donde M3 pide 8px. Es un token mas y una regla, y
-   separa dos gestos que el usuario perceive distinto: el dedo y el estado.
-   ------------------------------------------------------------------------ */
-
-.md-icon-button:active {
-  border-radius: var(--md-comp-icon-button-pressed-shape);
 }
 
 /* ---------------------------------------------------------------------------
@@ -531,27 +458,12 @@
   --md-comp-icon-button-container-color: var(--md-sys-color-primary);
   --md-comp-icon-button-icon-color: var(--md-sys-color-on-primary);
   --md-comp-icon-button-elevation: var(--md-sys-elevation-level0);
-
-  /* Toggle. El no seleccionado NO lleva primary: es una superficie neutra con
-     el glifo en primary. El seleccionado vuelve al primary con el glifo en
-     on-primary. Asi la seleccion se ve en el contenedor y en el icono. */
-  --md-comp-icon-button-toggle-container-color: var(--md-sys-color-surface-container-highest);
-  --md-comp-icon-button-toggle-icon-color: var(--md-sys-color-primary);
-  --md-comp-icon-button-selected-container-color: var(--md-sys-color-primary);
-  --md-comp-icon-button-selected-icon-color: var(--md-sys-color-on-primary);
 }
 
 .md-icon-button-filled-tonal {
   --md-comp-icon-button-container-color: var(--md-sys-color-secondary-container);
   --md-comp-icon-button-icon-color: var(--md-sys-color-on-secondary-container);
   --md-comp-icon-button-elevation: var(--md-sys-elevation-level0);
-
-  /* Toggle. Mismo contenedor neutro al inicio; al seleccionar recupera el
-     secondary-container con su on-secondary-container. */
-  --md-comp-icon-button-toggle-container-color: var(--md-sys-color-surface-container-highest);
-  --md-comp-icon-button-toggle-icon-color: var(--md-sys-color-on-surface-variant);
-  --md-comp-icon-button-selected-container-color: var(--md-sys-color-secondary-container);
-  --md-comp-icon-button-selected-icon-color: var(--md-sys-color-on-secondary-container);
 }
 
 .md-icon-button-outlined {
@@ -559,50 +471,6 @@
   --md-comp-icon-button-icon-color: var(--md-sys-color-on-surface-variant);
   --md-comp-icon-button-outline-width: var(--md-sys-shape-stroke-thin);
   --md-comp-icon-button-outline-color: var(--md-sys-color-outline-variant);
-
-  /* Toggle. El seleccionado se vuelve el mas oscuro del sistema:
-     inverse-surface con inverse-on-surface. Ningun otro icono del proyecto
-     se invierte asi. */
-  --md-comp-icon-button-toggle-container-color: transparent;
-  --md-comp-icon-button-toggle-icon-color: var(--md-sys-color-on-surface-variant);
-  --md-comp-icon-button-selected-container-color: var(--md-sys-color-inverse-surface);
-  --md-comp-icon-button-selected-icon-color: var(--md-sys-color-inverse-on-surface);
-}
-
-/* ---------------------------------------------------------------------------
-   EL MODIFICADOR TOGGLE
-   ---------------------------------------------------------------------------
-   Se anade ENCIMA de una variante de color, nunca solo:
-
-      class="md-icon-button md-icon-button-filled md-icon-button-toggle"
-
-   Es lo que convierte un boton de accion en un boton con dos estados. Sin el
-   modificador, aria-pressed solo invierte la forma: el color lo decide la
-   variante, porque un boton normal no tiene estado seleccionado.
-
-   Va DESPUES de las variantes a proposito: la variante y el modificador pesan
-   lo mismo, asi que el orden del archivo es el que decide, y aqui manda el
-   toggle.
-   ------------------------------------------------------------------------ */
-
-.md-icon-button-toggle {
-  --md-comp-icon-button-container-color: var(--md-comp-icon-button-toggle-container-color);
-  --md-comp-icon-button-icon-color: var(--md-comp-icon-button-toggle-icon-color);
-
-  /* El toggle empieza con el glifo CONTORNEADO, al reves del boton de accion:
-     es el otro extremo del eje y lo que separa a simple vista un default de
-     un toggle sin seleccionar. */
-  --md-sys-icon-fill: var(--md-sys-icon-fill-none);
-}
-
-.md-icon-button-toggle[aria-pressed='true'] {
-  --md-comp-icon-button-container-color: var(--md-comp-icon-button-selected-container-color);
-  --md-comp-icon-button-icon-color: var(--md-comp-icon-button-selected-icon-color);
-
-  /* La tercera senal de M3, y la que hacia falta: el glifo pasa de
-     contorneado a relleno. Con esto la seleccion se comunica por tres
-     propiedades (relleno del glifo, color y forma) y no solo por color. */
-  --md-sys-icon-fill: var(--md-sys-icon-fill-full);
 }
 
 /* El glifo de las variantes con relleno no usa currentColor: la capa de
