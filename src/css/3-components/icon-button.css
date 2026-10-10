@@ -197,6 +197,25 @@
   align-items: center;
   justify-content: center;
 
+  /* `middle`, y NO lo que trae M3, que no declara `vertical-align` ninguno.
+     La misma linea que lleva el boton, y por el mismo motivo.
+
+     Aqui el fallo no es entre dos variantes del mismo componente: un filled y
+     un standard SI alinean entre si, porque los dos arrancan con el mismo
+     primer hijo. El fallo es al mixing con `md-button`: los dos son 40px de
+     alto en small, pero cada uno sacaba su linea base de SU primer hijo (el
+     glifo a 24px de fuente contra 24 de caja, la etiqueta del boton a 14
+     contra 20), y las dos lineas base caian a distinto sitio. Medido: 8.43px
+     de separacion en `md-icon-button-small` junto a `md-button-small`.
+
+     O sea: sin esta linea los dos componentes se separan entre si. Con ella,
+     los cuatro elementos de una fila comparten la misma linea de midline,
+     la que sea que tengan encima. Es lo que espera quien los pone juntos.
+
+     Y no toca nada mas: en un contenedor flex, como `.sr-specimen`, esta
+     propiedad no se aplica y el comportamiento es el de antes. */
+  vertical-align: middle;
+
   inline-size: var(--md-comp-icon-button-width);
   block-size: var(--md-comp-icon-button-height);
 

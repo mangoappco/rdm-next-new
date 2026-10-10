@@ -181,11 +181,15 @@
      aqui va corner-full. Se deja anotado porque es la clase de detalle que
      hace que "media altura" suene a respuesta obvia y no lo es.
 
-     EL MORPH DE PULSADO NO ESTA TODAVIA. M3 si lo declara, y por tamano
+     EL MORPH DE PULSADO NO ESTA, Y NO VUELVE. M3 si lo declara, y por tamano
      (xsmall y small a corner-small, medium a corner-medium, large y xlarge a
-     corner-large), pero se quita de aqui a proposito para construir el
-     componente paso a paso. Vuelve como un par propio: el token de destino,
-     la regla :active y la transicion de 500ms. */
+     corner-large). Se decidio no implementarlo: un control que cambia de
+     forma en cada clic, en una app donde se hace clic cien veces, distrae mas
+     de lo que informa. Es una desviacion consciente de M3, no un olvido.
+
+     Hay dos formas, y solo dos: la de reposo, que es `corner-full` en los
+     cinco tamanos, y la `square`, que `.md-button-square` activa y que escala
+     con el tamano. */
   --md-comp-button-shape: var(--md-sys-shape-corner-full);
 
   /* ------------------------------------------------------------------------
@@ -246,24 +250,23 @@
   --md-sys-measurement-icon-size: var(--md-comp-button-icon-size);
 
   /* ------------------------------------------------------------------------
-     EL MOVIMIENTO NO ESTA TODAVIA
+     EL MOVIMIENTO: LA CAPA DE ESTA TODAVIA NO
      ------------------------------------------------------------------------
-     Ni la transicion de la capa de estado ni el morph de forma. Se quitan a
-     proposito para construir el componente paso a paso.
+     Falta la transicion de opacidad de la capa de estado. El morph de forma ya
+     no cuenta: esta decidido que el boton no cambia de forma (ver la nota del
+     token de forma).
 
-     Cuando vuelvan son DOS pares, no uno compartido, porque son dos
-     movimientos distintos:
+     Cuando llegue la de opacidad, es UN par: effects + short4 = 200ms, que es
+     exactamente lo que lleva el icon-button. Alli hacen falta dos pares porque
+     alla hay dos movimientos, el teñido y el morph; aqui solo hay uno.
 
-       effects   color y opacidad (la capa de estado). Curva effects +
-                 short4 = 200ms.
-       spatial   forma (el morph del radio). Curva spatial + long2 = 500ms.
-
-     Compartir par era el error que ya se corrigio una vez en el
-     icon-button: el teñido tardaba 300ms y el morph corria a velocidad de
-     color. No se vuelve a caer en eso.
+     Compartir el par con el del morph fue el error que se corrigio una vez en
+     el icon-button: el teñido tardaba 300ms, un tramo que M3 reserva para
+     "medium area of the screen" aplicado al cambio mas pequeno del
+     componente. No se vuelve a caer en eso.
 
      ------------------------------------------------------------------------
-     ANILLO DE FOCO
+     ANILLO DE FOCUS
      ------------------------------------------------------------------------
      3px de grosor y 2px de separacion, los dos del sistema. `:focus-visible`
      y no `:focus`: el raton no necesita anillo, y `:focus` tambien salta al
@@ -290,6 +293,29 @@
   justify-content: center;
   gap: var(--md-comp-button-label-space);
 
+  /* `middle`, y NO lo que trae M3, que no declara `vertical-align` ninguno.
+     Es una linea y corrige un fallo real, medido.
+
+     El fallo: al ser `inline-flex`, el boton se alinea por su LINEA BASE, y
+     una caja inline-flex toma la suya del PRIMER elemento flexible. Ese
+     primer hijo no es siempre el mismo:
+
+       con icono     .md-button-icon   caja 32px, font-size 32px
+       sin icono     .md-button-label  caja 32px, font-size 24px
+
+     La segunda tiene 4px de medio-interlineado (32 de caja sobre 24 de fuente)
+     y la primera no (32 de caja sobre 32 de fuente). La linea base cae 8px mas
+     abajo en un caso que en el otro, y en un contenedor `block` los dos
+     botones se separan 8px. Medido en el navegador, en `md-button-large`.
+
+     El control que lo demuestra: dos botones CON icono no se mueven, ni dos
+     botones SIN icono. Solo se mueve el par mixto.
+
+     `middle` lo resuelve en los cinco tamanos y con las cinco variantes, y no
+     toca nada mas: en un contenedor flex, donde ya se alineaban, `vertical-align`
+     no se aplica. Verificado: 0.00px en los cuatro arrangements. */
+  vertical-align: middle;
+
   min-inline-size: var(--md-comp-button-min-width);
   block-size: var(--md-comp-button-height);
 
@@ -303,12 +329,16 @@
   background-color: transparent;
   box-shadow: var(--md-comp-button-elevation);
 
-  /* Sin `transition` de border-radius todavia: el morph de forma entra en un
-     paso propio. Anotado lo que hay que mirar al meterlo, porque es el mismo
-     problema que se resolvio en el icon-button: el reposo es corner-full
-     (9999px) y el destino un radio FINITO (corner-small, 8px), asi que el
-     recorrido es de 9999px a 8px y se ve. El día que se recorta al pintar, el
-     99% del recorrido dibuja el mismo pixel. */
+  /* SIN transition de border-radius, y no por falta de tiempo: el morph de
+     forma no se va a implementar (ver la nota del token de forma, mas arriba).
+     La forma es fija durante toda la vida del boton.
+
+     Lo que habria que mirar si algún dia se decide lo contrario, porque es el
+     mismo problema que se resolvio en el icon-button: el reposo es
+     corner-full (9999px) y el destino un radio FINITO (corner-small, 8px).
+     El navegador recorta el radio al pintar, pero el valor calculado se queda
+     en 9999 durante toda la transicion, asi que el 99% del recorrido dibuja
+     el mismo pixel y lo unico que se ve es un salto final. */
 
   font: var(--md-comp-button-label-text);
   color: var(--md-comp-button-label-color);
@@ -406,9 +436,12 @@
   border-radius: inherit;
   pointer-events: none;
 
-  /* Sin `transition` de opacity todavia. Los tres estados de abajo cambian la
-     opacidad de golpe, y al meter la transicion tienen que ser
-     effects + short4 (200ms), no uno compartido con el morph. */
+  /* Sin `transition` de opacity TODAVIA. Los tres estados de abajo cambian la
+     opacidad de golpe. Cuando entre, es UN par, el de effects (color y
+     opacidad) con short4 = 200ms: es lo que ya lleva el icon-button.
+
+     El par de spatial, el del morph, no hace falta aqui porque el morph no
+     va a existir. Es la diferencia entre los dos componentes. */
 }
 
 /* :active despues de :hover y :focus-visible: mantener pulsado un control ya
@@ -425,12 +458,17 @@
   opacity: var(--md-sys-state-pressed-state-layer-opacity);
 }
 
-/* Sin morph de forma todavia. M3 lo declara por tamano
-   (`pressed-container-shape`): corner-small en xsmall y small, corner-medium
-   en medium, corner-large en large y xlarge. Cuando entre son tres cosas:
-   el token --md-comp-button-pressed-shape, una reaparuntada por clase de
-   tamano, y esta regla :active. Sin ella, el radio se queda en el
-   corner-full de reposo. */
+/* Y NO hay morph de forma al pulsar, que es lo que M3 declara con
+   `pressed-container-shape`: corner-small en xsmall y small, corner-medium en
+   medium, corner-large en large y xlarge. La regla :active de arriba solo
+   cambia la opacidad de la capa de estado, y se queda ahi.
+
+   Motivo, el mismo que el del icon-button: un control que cambia de forma en
+   cada clic, en una app donde se hace clic cien veces, distrae mas de lo que
+   informa. Es una desviacion consciente de M3. Lo que habria que recuperar,
+   si algum dia se decide, son tres cosas: el token
+   --md-comp-button-pressed-shape, una reapuntada por clase de tamano y la
+   transicion de border-radius. */
 
 /* ---------------------------------------------------------------------------
    EL ANILLO DE FOCO
@@ -634,6 +672,41 @@
    Va antes que las otras cuatro para que, si alguien escribe dos, ganen
    estas y no filled. Que sea un uso incorrecto no importa; que sea
    silencioso, si. */
+/* ---------------------------------------------------------------------------
+   LA FORMA SQUARE
+   ---------------------------------------------------------------------------
+   La segunda de las dos formas del boton, y se aplica ENCIMA de cualquier
+   variante de color, como el resto de los modificadores.
+
+   Se usaba solo como destino del estado seleccionado del toggle, y al quitarse
+   el toggle se quedo sin uso. Se conserva porque M3 la declara por tamano en
+   los tokens publicados, y son tres valores que el sistema ya tiene:
+
+       xsmall, small   corner-medium      12px
+       medium          corner-large       16px
+       large, xlarge   corner-extra-large 28px
+
+   Verificado en `container-shape-square` de
+   tokens/versions/latest/sass/_md-comp-button-{xsmall,small,medium,large,
+   xlarge}.scss. El `round` de los cinco es corner-full, que es lo que trae la
+   base.
+
+   Mismo patron que en el icono-button: una clase que cambia la forma, y las
+   reapuntadas por tamano en selectores compuestos cuando el valor depende de
+   las dos clases. */
+.md-button-square {
+  --md-comp-button-shape: var(--md-sys-shape-corner-medium);
+}
+
+.md-button-medium.md-button-square {
+  --md-comp-button-shape: var(--md-sys-shape-corner-large);
+}
+
+.md-button-large.md-button-square,
+.md-button-xlarge.md-button-square {
+  --md-comp-button-shape: var(--md-sys-shape-corner-extra-large);
+}
+
 .md-button-filled {
   --md-comp-button-container-color: var(--md-sys-color-primary);
   --md-comp-button-label-color: var(--md-sys-color-on-primary);
@@ -661,10 +734,6 @@
   --md-comp-button-label-color: var(--md-sys-color-on-surface-variant);
   --md-comp-button-outline-width: var(--md-sys-shape-stroke-thin);
   --md-comp-button-outline-color: var(--md-sys-color-outline-variant);
-
-  /* INVIERTE el contraste: relleno oscuro y texto claro. Es el cambio de mayor
-     peso visual de los cinco, y a proposito: el selected de outlined es el
-     unico que parece un boton de otra familia al seleccionarse. */
 }
 
 /* El borde del outlined ENGORDA con el tamano, y este es el unico sitio donde
