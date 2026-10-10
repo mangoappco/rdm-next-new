@@ -12,8 +12,13 @@
   <script src="../assets/showroom.js"></script>
 </head>
 
-<!-- Vista de componente: el boton de accion de M3 en su variante filled.
-     Molde: showroom/templates/button.template.html. -->
+<!-- Vista de componente: el boton de M3, cinco variantes, cinco tamanos, dos formas.
+     Molde: showroom/templates/button.template.html.
+
+     Se regenera desde el molde. La version anterior, de cuando el componente solo
+     tenia filled, tenia dos pares que ya no existen: "Morph de forma" y "Lo que no
+     hace". Los dos describian el morph de pulsado y el estado seleccionado, que se
+     quitaron al decidir que ManGo! App no usa botones conmutables. -->
 
 <body class="md-bg-background md-text-on-background md-type-body-medium">
   <main class="sr-page">
@@ -25,7 +30,7 @@
         <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
       </div>
       <h1 class="md-type-display-large">Button</h1>
-      <p class="md-type-body-large">La variante filled del boton de M3, con los cinco tamanos. Las otras cuatro variantes no estan todavia.</p>
+      <p class="md-type-body-large">Los botones son los encargados de iniciar la mayoría de las acciones en una interfaz de usuario.</p>
     </header>
     <!-- HEADER: fin -->
 
@@ -33,123 +38,209 @@
 
     <!-- PAREJA: el ejemplo basico (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Filled</h2>
-      <p class="md-type-body-medium">Fondo primary, texto on-primary, sin borde. La accion principal de una vista.</p>
+      <h2 class="md-type-title-large">Clase base</h2>
+      <p class="md-type-body-medium">La clase base sola: relleno primary, sin borde, tamano small (40). Aqui la base es filled, al reves que en el icon-button.</p>
       <div class="sr-specimen sr-specimen-gap">
-        <button class="md-button" type="button"><span class="md-button-label">Guardar cambios</span></button>
+        <button class="md-button" type="button"><span class="md-button-label">Filled</span></button>
       </div>
-      <pre class="sr-code"><code>&lt;button class="md-button" type="button"&gt;&lt;span class="md-button-label"&gt;Guardar cambios&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <pre class="sr-code"><code>&lt;button class="md-button" type="button"&gt;&lt;span class="md-button-label"&gt;Filled&lt;/span&gt;&lt;/button&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
     <!-- PAREJA: hasta aqui -->
 
-    <!-- PAREJA: los cinco tamanos (h2 + specimen + pre + boton). -->
+    <!-- PAREJA: las 5 variantes de color (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Colors</h2>
+      <p class="md-type-body-medium">Las cinco de M3, de mayor a menor enfasis. La base ya es filled, asi que su clase es opcional.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-button md-button-filled" type="button"><span class="md-button-label">Filled</span></button>
+        <button class="md-button md-button-tonal" type="button"><span class="md-button-label">Tonal</span></button>
+        <button class="md-button md-button-elevated" type="button"><span class="md-button-label">Elevated</span></button>
+        <button class="md-button md-button-outlined" type="button"><span class="md-button-label">Outlined</span></button>
+        <button class="md-button md-button-text" type="button"><span class="md-button-label">Text</span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-button md-button-filled" type="button"&gt;&lt;span class="md-button-label"&gt;Filled&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-tonal" type="button"&gt;&lt;span class="md-button-label"&gt;Tonal&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-elevated" type="button"&gt;&lt;span class="md-button-label"&gt;Elevated&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-outlined" type="button"&gt;&lt;span class="md-button-label"&gt;Outlined&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-text" type="button"&gt;&lt;span class="md-button-label"&gt;Text&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: los 5 tamanos (h2 + specimen + pre + boton). -->
     <section class="sr-section">
       <h2 class="md-type-title-large">Sizes</h2>
-      <p class="md-type-body-medium">Los cinco de M3: 32, 40, 56, 96 y 136. Padding, glifo y tipografia crecen con la caja.</p>
+      <p class="md-type-body-medium">Los cinco de M3: xsmall (32), small (40), medium (56), large (96) y xlarge (136). Todo crece con la caja, incluida la tipografia de la etiqueta: 14, 14, 16, 24 y 32.</p>
       <div class="sr-specimen sr-specimen-gap">
-        <button class="md-button md-button-xsmall" type="button"><span class="md-button-label">Guardar</span></button>
-        <button class="md-button md-button-small" type="button"><span class="md-button-label">Guardar</span></button>
-        <button class="md-button md-button-medium" type="button"><span class="md-button-label">Guardar</span></button>
-        <button class="md-button md-button-large" type="button"><span class="md-button-label">Guardar</span></button>
-        <button class="md-button md-button-xlarge" type="button"><span class="md-button-label">Guardar</span></button>
+        <button class="md-button md-button-filled md-button-xsmall" type="button"><span class="md-button-label">xsmall</span></button>
+        <button class="md-button md-button-filled md-button-small" type="button"><span class="md-button-label">small</span></button>
+        <button class="md-button md-button-filled md-button-medium" type="button"><span class="md-button-label">medium</span></button>
+        <button class="md-button md-button-filled md-button-large" type="button"><span class="md-button-label">large</span></button>
+        <button class="md-button md-button-filled md-button-xlarge" type="button"><span class="md-button-label">xlarge</span></button>
       </div>
-      <pre class="sr-code"><code>&lt;button class="md-button md-button-xsmall" type="button"&gt;&lt;span class="md-button-label"&gt;Guardar&lt;/span&gt;&lt;/button&gt;
-&lt;button class="md-button md-button-small" type="button"&gt;&lt;span class="md-button-label"&gt;Guardar&lt;/span&gt;&lt;/button&gt;
-&lt;button class="md-button md-button-medium" type="button"&gt;&lt;span class="md-button-label"&gt;Guardar&lt;/span&gt;&lt;/button&gt;
-&lt;button class="md-button md-button-large" type="button"&gt;&lt;span class="md-button-label"&gt;Guardar&lt;/span&gt;&lt;/button&gt;
-&lt;button class="md-button md-button-xlarge" type="button"&gt;&lt;span class="md-button-label"&gt;Guardar&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <pre class="sr-code"><code>&lt;button class="md-button md-button-filled md-button-xsmall" type="button"&gt;&lt;span class="md-button-label"&gt;xsmall&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-filled md-button-small" type="button"&gt;&lt;span class="md-button-label"&gt;small&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-filled md-button-medium" type="button"&gt;&lt;span class="md-button-label"&gt;medium&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-filled md-button-large" type="button"&gt;&lt;span class="md-button-label"&gt;large&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-filled md-button-xlarge" type="button"&gt;&lt;span class="md-button-label"&gt;xlarge&lt;/span&gt;&lt;/button&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
     <!-- PAREJA: hasta aqui -->
 
-    <!-- PAREJA: icono lider y posterior (h2 + specimen + pre + boton). -->
+    <!-- PAREJA: las 2 formas (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Icono</h2>
-      <p class="md-type-body-medium">Lider o posterior, y opcional. El hueco con la etiqueta va de 8 a 16px.</p>
+      <h2 class="md-type-title-large">Shapes</h2>
+      <p class="md-type-body-medium">Round y square en filled small: las dos formas del componente. El square sube a 16px en medium y a 28px en large y xlarge.</p>
       <div class="sr-specimen sr-specimen-gap">
-        <button class="md-button" type="button"><span class="md-button-icon md-icon" aria-hidden="true">add</span><span class="md-button-label">Anadir</span></button>
-        <button class="md-button" type="button"><span class="md-button-label">Continuar</span><span class="md-button-icon md-icon" aria-hidden="true">arrow_forward</span></button>
-        <button class="md-button md-button-large" type="button"><span class="md-button-icon md-icon" aria-hidden="true">add</span><span class="md-button-label">Anadir</span></button>
-        <button class="md-button md-button-large" type="button"><span class="md-button-label">Continuar</span><span class="md-button-icon md-icon" aria-hidden="true">arrow_forward</span></button>
+        <button class="md-button md-button-filled md-button-small" type="button"><span class="md-button-label">Round</span></button>
+        <button class="md-button md-button-filled md-button-small md-button-square" type="button"><span class="md-button-label">Square</span></button>
       </div>
-      <pre class="sr-code"><code>&lt;button class="md-button" type="button"&gt;&lt;span class="md-button-icon md-icon" aria-hidden="true"&gt;add&lt;/span&gt;&lt;span class="md-button-label"&gt;Anadir&lt;/span&gt;&lt;/button&gt;
-&lt;button class="md-button" type="button"&gt;&lt;span class="md-button-label"&gt;Continuar&lt;/span&gt;&lt;span class="md-button-icon md-icon" aria-hidden="true"&gt;arrow_forward&lt;/span&gt;&lt;/button&gt;
-&lt;button class="md-button md-button-large" type="button"&gt;&lt;span class="md-button-icon md-icon" aria-hidden="true"&gt;add&lt;/span&gt;&lt;span class="md-button-label"&gt;Anadir&lt;/span&gt;&lt;/button&gt;
-&lt;button class="md-button md-button-large" type="button"&gt;&lt;span class="md-button-label"&gt;Continuar&lt;/span&gt;&lt;span class="md-button-icon md-icon" aria-hidden="true"&gt;arrow_forward&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <pre class="sr-code"><code>&lt;button class="md-button md-button-filled md-button-small" type="button"&gt;&lt;span class="md-button-label"&gt;Round&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-filled md-button-small md-button-square" type="button"&gt;&lt;span class="md-button-label"&gt;Square&lt;/span&gt;&lt;/button&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
     <!-- PAREJA: hasta aqui -->
 
-    <!-- PAREJA: el ancho minimo (h2 + specimen + pre + boton). -->
+    <!-- PAREJA: estados filled (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Ancho minimo</h2>
-      <p class="md-type-body-medium">Ningun boton baja de 64px de ancho. Sin el, una etiqueta corta deja una pildora de 30px.</p>
+      <h2 class="md-type-title-large">States filled</h2>
+      <p class="md-type-body-medium">Enabled y disabled en filled small: hover, focus y pressed se ven interactuando.</p>
       <div class="sr-specimen sr-specimen-gap">
-        <button class="md-button" type="button"><span class="md-button-label">OK</span></button>
-        <button class="md-button" type="button"><span class="md-button-label">Cancelar</span></button>
-        <button class="md-button" type="button"><span class="md-button-label">Guardar los cambios de esta vista</span></button>
+        <button class="md-button md-button-filled md-button-small" type="button"><span class="md-button-label">Filled</span></button>
+        <button class="md-button md-button-filled md-button-small" type="button" disabled><span class="md-button-label">Filled</span></button>
       </div>
-      <pre class="sr-code"><code>&lt;button class="md-button" type="button"&gt;&lt;span class="md-button-label"&gt;OK&lt;/span&gt;&lt;/button&gt;
-&lt;button class="md-button" type="button"&gt;&lt;span class="md-button-label"&gt;Cancelar&lt;/span&gt;&lt;/button&gt;
-&lt;button class="md-button" type="button"&gt;&lt;span class="md-button-label"&gt;Guardar los cambios de esta vista&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <pre class="sr-code"><code>&lt;button class="md-button md-button-filled md-button-small" type="button"&gt;&lt;span class="md-button-label"&gt;Filled&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-filled md-button-small" type="button" disabled&gt;&lt;span class="md-button-label"&gt;Filled&lt;/span&gt;&lt;/button&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
     <!-- PAREJA: hasta aqui -->
 
-    <!-- PAREJA: los cuatro estados (h2 + specimen + pre + boton). -->
+    <!-- PAREJA: estados tonal (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">States</h2>
-      <p class="md-type-body-medium">Capa de estado con currentColor: 0.08 al pasar, 0.10 con foco o pulsado. El deshabilitado baja el relleno al 10% y el texto al 38%.</p>
+      <h2 class="md-type-title-large">States tonal</h2>
+      <p class="md-type-body-medium">Enabled y disabled en tonal small: hover, focus y pressed se ven interactuando.</p>
       <div class="sr-specimen sr-specimen-gap">
-        <button class="md-button" type="button"><span class="md-button-label">Reposo</span></button>
-        <button class="md-button" type="button" disabled><span class="md-button-label">Deshabilitado</span></button>
-        <a class="md-button" href="#"><span class="md-button-label">Como enlace</span></a>
+        <button class="md-button md-button-tonal md-button-small" type="button"><span class="md-button-label">Tonal</span></button>
+        <button class="md-button md-button-tonal md-button-small" type="button" disabled><span class="md-button-label">Tonal</span></button>
       </div>
-      <pre class="sr-code"><code>&lt;button class="md-button" type="button"&gt;&lt;span class="md-button-label"&gt;Reposo&lt;/span&gt;&lt;/button&gt;
-&lt;button class="md-button" type="button" disabled&gt;&lt;span class="md-button-label"&gt;Deshabilitado&lt;/span&gt;&lt;/button&gt;
-&lt;a class="md-button" href="#"&gt;&lt;span class="md-button-label"&gt;Como enlace&lt;/span&gt;&lt;/a&gt;</code></pre>
+      <pre class="sr-code"><code>&lt;button class="md-button md-button-tonal md-button-small" type="button"&gt;&lt;span class="md-button-label"&gt;Tonal&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-tonal md-button-small" type="button" disabled&gt;&lt;span class="md-button-label"&gt;Tonal&lt;/span&gt;&lt;/button&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
     <!-- PAREJA: hasta aqui -->
 
-    <!-- PAREJA: el morph de forma (h2 + specimen + pre + boton). -->
+    <!-- PAREJA: estados elevated (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Morph de forma</h2>
-      <p class="md-type-body-medium">Pildora en reposo, radio finito al pulsar: 8, 8, 12, 16 y 16 segun el tamano. Tarda 500ms.</p>
+      <h2 class="md-type-title-large">States elevated</h2>
+      <p class="md-type-body-medium">Enabled y disabled en elevated small: hover, focus y pressed se ven interactuando.</p>
       <div class="sr-specimen sr-specimen-gap">
-        <button class="md-button md-button-xsmall" type="button"><span class="md-button-label">8px</span></button>
-        <button class="md-button md-button-small" type="button"><span class="md-button-label">8px</span></button>
-        <button class="md-button md-button-medium" type="button"><span class="md-button-label">12px</span></button>
-        <button class="md-button md-button-large" type="button"><span class="md-button-label">16px</span></button>
-        <button class="md-button md-button-xlarge" type="button"><span class="md-button-label">16px</span></button>
+        <button class="md-button md-button-elevated md-button-small" type="button"><span class="md-button-label">Elevated</span></button>
+        <button class="md-button md-button-elevated md-button-small" type="button" disabled><span class="md-button-label">Elevated</span></button>
       </div>
-      <pre class="sr-code"><code>&lt;button class="md-button md-button-xsmall" type="button"&gt;&lt;span class="md-button-label"&gt;8px&lt;/span&gt;&lt;/button&gt;
-&lt;button class="md-button md-button-small" type="button"&gt;&lt;span class="md-button-label"&gt;8px&lt;/span&gt;&lt;/button&gt;
-&lt;button class="md-button md-button-medium" type="button"&gt;&lt;span class="md-button-label"&gt;12px&lt;/span&gt;&lt;/button&gt;
-&lt;button class="md-button md-button-large" type="button"&gt;&lt;span class="md-button-label"&gt;16px&lt;/span&gt;&lt;/button&gt;
-&lt;button class="md-button md-button-xlarge" type="button"&gt;&lt;span class="md-button-label"&gt;16px&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <pre class="sr-code"><code>&lt;button class="md-button md-button-elevated md-button-small" type="button"&gt;&lt;span class="md-button-label"&gt;Elevated&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-elevated md-button-small" type="button" disabled&gt;&lt;span class="md-button-label"&gt;Elevated&lt;/span&gt;&lt;/button&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
     <!-- PAREJA: hasta aqui -->
 
-    <!-- PAREJA: la trampa de las utilidades de color (h2 + specimen + pre + boton). -->
+    <!-- PAREJA: estados outlined (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Lo que no hace</h2>
-      <p class="md-type-body-medium"><strong>md-bg-* no recolorea el boton</strong>, aunque gane la cascada: el relleno lo pinta un <code>::before</code>. <code>md-text-*</code> si funciona, y las utilidades de tipo ganan al componente.</p>
-      <p class="md-type-body-medium">Faltan <code>square</code>, <code>selected</code> y el padding con icono: sin valor verificable, no se inventan.</p>
+      <h2 class="md-type-title-large">States outlined</h2>
+      <p class="md-type-body-medium">Enabled y disabled en outlined small: hover, focus y pressed se ven interactuando.</p>
       <div class="sr-specimen sr-specimen-gap">
-        <button class="md-button" type="button"><span class="md-button-label">Normal</span></button>
-        <button class="md-button md-bg-error" type="button"><span class="md-button-label">Con md-bg-error</span></button>
-        <button class="md-button md-button-medium md-type-body-small" type="button"><span class="md-button-label">Con md-type-body-small</span></button>
+        <button class="md-button md-button-outlined md-button-small" type="button"><span class="md-button-label">Outlined</span></button>
+        <button class="md-button md-button-outlined md-button-small" type="button" disabled><span class="md-button-label">Outlined</span></button>
       </div>
-      <pre class="sr-code"><code>&lt;button class="md-button" type="button"&gt;&lt;span class="md-button-label"&gt;Normal&lt;/span&gt;&lt;/button&gt;
-&lt;button class="md-button md-bg-error" type="button"&gt;&lt;span class="md-button-label"&gt;Con md-bg-error&lt;/span&gt;&lt;/button&gt;
-&lt;button class="md-button md-button-medium md-type-body-small" type="button"&gt;&lt;span class="md-button-label"&gt;Con md-type-body-small&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <pre class="sr-code"><code>&lt;button class="md-button md-button-outlined md-button-small" type="button"&gt;&lt;span class="md-button-label"&gt;Outlined&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-outlined md-button-small" type="button" disabled&gt;&lt;span class="md-button-label"&gt;Outlined&lt;/span&gt;&lt;/button&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
     <!-- PAREJA: hasta aqui -->
 
+    <!-- PAREJA: estados text (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">States text</h2>
+      <p class="md-type-body-medium">Enabled y disabled en text small: hover, focus y pressed se ven interactuando.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-button md-button-text md-button-small" type="button"><span class="md-button-label">Text</span></button>
+        <button class="md-button md-button-text md-button-small" type="button" disabled><span class="md-button-label">Text</span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-button md-button-text md-button-small" type="button"&gt;&lt;span class="md-button-label"&gt;Text&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-text md-button-small" type="button" disabled&gt;&lt;span class="md-button-label"&gt;Text&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: anatomia (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Anatomy sizes</h2>
+      <p class="md-type-body-medium">Las cuatro piezas del marcado: el contenedor, el glifo, la etiqueta y la superficie de toque. El relleno y la capa de estado no son elementos: son el ::before y el ::after del contenedor.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-button md-button-filled md-button-xsmall" type="button"><span class="md-button-icon md-icon" aria-hidden="true">add</span><span class="md-button-label">Label</span><span class="md-button-touch"></span></button>
+        <button class="md-button md-button-filled md-button-small" type="button"><span class="md-button-icon md-icon" aria-hidden="true">add</span><span class="md-button-label">Label</span><span class="md-button-touch"></span></button>
+        <button class="md-button md-button-filled md-button-medium" type="button"><span class="md-button-icon md-icon" aria-hidden="true">add</span><span class="md-button-label">Label</span><span class="md-button-touch"></span></button>
+        <button class="md-button md-button-filled md-button-large" type="button"><span class="md-button-icon md-icon" aria-hidden="true">add</span><span class="md-button-label">Label</span><span class="md-button-touch"></span></button>
+        <button class="md-button md-button-filled md-button-xlarge" type="button"><span class="md-button-icon md-icon" aria-hidden="true">add</span><span class="md-button-label">Label</span><span class="md-button-touch"></span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-button md-button-filled md-button-xsmall" type="button"&gt;&lt;span class="md-button-icon md-icon" aria-hidden="true"&gt;add&lt;/span&gt;&lt;span class="md-button-label"&gt;Label&lt;/span&gt;&lt;span class="md-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-filled md-button-small" type="button"&gt;&lt;span class="md-button-icon md-icon" aria-hidden="true"&gt;add&lt;/span&gt;&lt;span class="md-button-label"&gt;Label&lt;/span&gt;&lt;span class="md-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-filled md-button-medium" type="button"&gt;&lt;span class="md-button-icon md-icon" aria-hidden="true"&gt;add&lt;/span&gt;&lt;span class="md-button-label"&gt;Label&lt;/span&gt;&lt;span class="md-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-filled md-button-large" type="button"&gt;&lt;span class="md-button-icon md-icon" aria-hidden="true"&gt;add&lt;/span&gt;&lt;span class="md-button-label"&gt;Label&lt;/span&gt;&lt;span class="md-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-filled md-button-xlarge" type="button"&gt;&lt;span class="md-button-icon md-icon" aria-hidden="true"&gt;add&lt;/span&gt;&lt;span class="md-button-label"&gt;Label&lt;/span&gt;&lt;span class="md-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: anatomia por color (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Anatomy colors</h2>
+      <p class="md-type-body-medium">Las mismas cuatro piezas en las cinco variantes. El marcado no cambia: lo único que se mueve es la clase, y con ella el color del relleno, del texto y del glifo.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-button md-button-filled md-button-small" type="button"><span class="md-button-icon md-icon" aria-hidden="true">add</span><span class="md-button-label">Label</span><span class="md-button-touch"></span></button>
+        <button class="md-button md-button-tonal md-button-small" type="button"><span class="md-button-icon md-icon" aria-hidden="true">add</span><span class="md-button-label">Label</span><span class="md-button-touch"></span></button>
+        <button class="md-button md-button-elevated md-button-small" type="button"><span class="md-button-icon md-icon" aria-hidden="true">add</span><span class="md-button-label">Label</span><span class="md-button-touch"></span></button>
+        <button class="md-button md-button-outlined md-button-small" type="button"><span class="md-button-icon md-icon" aria-hidden="true">add</span><span class="md-button-label">Label</span><span class="md-button-touch"></span></button>
+        <button class="md-button md-button-text md-button-small" type="button"><span class="md-button-icon md-icon" aria-hidden="true">add</span><span class="md-button-label">Label</span><span class="md-button-touch"></span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-button md-button-filled md-button-small" type="button"&gt;&lt;span class="md-button-icon md-icon" aria-hidden="true"&gt;add&lt;/span&gt;&lt;span class="md-button-label"&gt;Label&lt;/span&gt;&lt;span class="md-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-tonal md-button-small" type="button"&gt;&lt;span class="md-button-icon md-icon" aria-hidden="true"&gt;add&lt;/span&gt;&lt;span class="md-button-label"&gt;Label&lt;/span&gt;&lt;span class="md-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-elevated md-button-small" type="button"&gt;&lt;span class="md-button-icon md-icon" aria-hidden="true"&gt;add&lt;/span&gt;&lt;span class="md-button-label"&gt;Label&lt;/span&gt;&lt;span class="md-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-outlined md-button-small" type="button"&gt;&lt;span class="md-button-icon md-icon" aria-hidden="true"&gt;add&lt;/span&gt;&lt;span class="md-button-label"&gt;Label&lt;/span&gt;&lt;span class="md-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-text md-button-small" type="button"&gt;&lt;span class="md-button-icon md-icon" aria-hidden="true"&gt;add&lt;/span&gt;&lt;span class="md-button-label"&gt;Label&lt;/span&gt;&lt;span class="md-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: posicion del icono (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Icon position</h2>
+      <p class="md-type-body-medium">Sin icono, con icono delante o detrás. El lado lo decide el orden en el DOM y no una clase, y el padding sigue siendo 16px en los tres casos.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-button md-button-filled md-button-small" type="button"><span class="md-button-label">Label</span><span class="md-button-touch"></span></button>
+        <button class="md-button md-button-filled md-button-small" type="button"><span class="md-button-icon md-icon" aria-hidden="true">add</span><span class="md-button-label">Label</span><span class="md-button-touch"></span></button>
+        <button class="md-button md-button-filled md-button-small" type="button"><span class="md-button-label">Label</span><span class="md-button-icon md-icon" aria-hidden="true">add</span><span class="md-button-touch"></span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-button md-button-filled md-button-small" type="button"&gt;&lt;span class="md-button-label"&gt;Label&lt;/span&gt;&lt;span class="md-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-filled md-button-small" type="button"&gt;&lt;span class="md-button-icon md-icon" aria-hidden="true"&gt;add&lt;/span&gt;&lt;span class="md-button-label"&gt;Label&lt;/span&gt;&lt;span class="md-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-filled md-button-small" type="button"&gt;&lt;span class="md-button-label"&gt;Label&lt;/span&gt;&lt;span class="md-button-icon md-icon" aria-hidden="true"&gt;add&lt;/span&gt;&lt;span class="md-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: boton o enlace (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Link</h2>
+      <p class="md-type-body-medium">El mismo marcado con <code>&lt;button&gt;</code> y con <code>&lt;a&gt;</code>. El enlace no necesita ninguna clase extra: en el componente no hay ni un selector de elemento.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-button md-button-filled md-button-small" type="button"><span class="md-button-label">Label</span><span class="md-button-touch"></span></button>
+        <a class="md-button md-button-filled md-button-small" href="#"><span class="md-button-label">Label</span><span class="md-button-touch"></span></a>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-button md-button-filled md-button-small" type="button"&gt;&lt;span class="md-button-label"&gt;Label&lt;/span&gt;&lt;span class="md-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;a class="md-button md-button-filled md-button-small" href="#"&gt;&lt;span class="md-button-label"&gt;Label&lt;/span&gt;&lt;span class="md-button-touch"&gt;&lt;/span&gt;&lt;/a&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
   </main>
 </body>
 </html>
