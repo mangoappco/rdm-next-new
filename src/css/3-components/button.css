@@ -617,6 +617,28 @@
    solo.
    ------------------------------------------------------------------------ */
 
+/* La base ES filled. Esta clase no cambia nada: declara lo mismo que ya trae
+   `.md-button`, y por eso se puede escribir encima sin efecto.
+
+   Existe por dos razones, y las dos son de la vista:
+
+   1. Sin ella, el par de colores muestra cinco botones y uno sin nombre de
+      variante, que se lee como un descuido y no como una decision.
+   2. `md-button-filled` es lo que un autor escribe de memoria. Hoy no
+      existe, y una clase que no existe no falla: el navegador la descarta y
+      el boton sale filled de la base. O sea que escribirla produce filled
+      sin que la clase haga nada, y es imposible distinguirlo de que la
+      clase funcione. Medido: una clase inventada da un boton identico al de
+      la base, sin error ni aviso.
+
+   Va antes que las otras cuatro para que, si alguien escribe dos, ganen
+   estas y no filled. Que sea un uso incorrecto no importa; que sea
+   silencioso, si. */
+.md-button-filled {
+  --md-comp-button-container-color: var(--md-sys-color-primary);
+  --md-comp-button-label-color: var(--md-sys-color-on-primary);
+}
+
 .md-button-tonal {
   --md-comp-button-container-color: var(--md-sys-color-secondary-container);
   --md-comp-button-label-color: var(--md-sys-color-on-secondary-container);
