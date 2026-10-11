@@ -644,10 +644,18 @@
 /* ---------------------------------------------------------------------------
    LAS CINCO VARIANTES DE COLOR
    ---------------------------------------------------------------------------
-   M3 publica cinco, y cada una es un componente distinto en material-web
-   (`md-filled-button`, `md-filled-tonal-button`, ...). Aqui son cinco clases
-   de un solo componente, y la BASE es filled: no hay `.md-button-filled`
-   porque filled es lo que trae `.md-button` sin modificador.
+   M3 publica cinco variantes de color. Aqui son cinco clases de un solo
+   componente, y filled es la BASE: es lo que trae `.md-button` sin modificador.
+
+   Y `.md-button-filled` existe, aunque no haga falta para que se vea igual. Se
+   creo a proposito (5489438): una clase que no existe no falla, se queda sin
+   efecto en silencio, y `.md-button-filled` es justo el nombre que alguien va a
+   escribir primero. Que la base ya sea filled hace que la clase sobra; que
+   sobre no significa que se pueda escribir mal sin enterarse.
+
+   La variante tonal se llama `tonal`, no `filled-tonal`, por el mismo motivo
+   que el icono-button se renombro: Expressive quito el "filled" del nombre en
+   el refresco de 2025. Ver la nota de `.md-icon-button-tonal`.
 
    Es al reves que en el icon-button, y es una decision, no un descuido. Alli
    la base es el estado cero (transparente, sin borde) y las variantes AÑADEN.

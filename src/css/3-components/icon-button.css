@@ -479,7 +479,22 @@
   --md-comp-icon-button-elevation: var(--md-sys-elevation-level0);
 }
 
-.md-icon-button-filled-tonal {
+/* `tonal` a secas, y no `filled-tonal`, porque es el nombre de la generacion de
+   tokens que este sistema implementa. Los dos archivos lo dicen:
+
+     versions/latest/sass/_md-comp-icon-button-tonal.scss    Expressive, 2026
+     v0_192/_md-comp-filled-tonal-icon-button.scss           clasico, 2023
+
+   En el refresco de 2025 M3 quito el "filled" del nombre, y `.md-button` ya lo
+   seguia: las dos clases se llaman igual porque salen de la misma fuente. Con
+   `filled-tonal` aqui se-era el unico componente del sistema con un nombre de
+   la generacion anterior.
+
+   Consecuencia practica de renombrar: `.md-icon-button-filled-tonal` ya no
+   existe. Y una clase que no existe no falla, se queda sin efecto en silencio:
+   el boton sigue viéndose, pero sin el `secondary-container`. Por eso el
+   componente, el molde y la vista publicada van en el mismo commit. */
+.md-icon-button-tonal {
   --md-comp-icon-button-container-color: var(--md-sys-color-secondary-container);
   --md-comp-icon-button-icon-color: var(--md-sys-color-on-secondary-container);
   --md-comp-icon-button-elevation: var(--md-sys-elevation-level0);
@@ -495,7 +510,7 @@
 /* El glifo de las variantes con relleno no usa currentColor: la capa de
    estado necesitaria el color equivocado. Se fija el del icono. */
 .md-icon-button-filled .md-icon-button-icon,
-.md-icon-button-filled-tonal .md-icon-button-icon {
+.md-icon-button-tonal .md-icon-button-icon {
   color: var(--md-comp-icon-button-icon-color);
 }
 
