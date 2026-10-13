@@ -154,6 +154,17 @@
      --------------------------------------------------------------------- */
   .sr-specimen-tall {
     min-height: calc(var(--md-ref-spacing-900) * 2);
+
+    /* Contexto de posicionamiento, y por eso va aqui y no en
+       .sr-specimen. Un componente que se ancla dentro de su contenedor
+       (hoy .md-fab-anclado) necesita un padre posicionado que marque la
+       esquina: sin el, se va al del documento y se sale del recuadro.
+
+       Va en el specimen alto y no en el base porque el alto es el que
+       tiene sitio para un anclado con su separacion sin encimarse con lo
+       demas. Los dos que ya lo usan (divider y elevation) no llevan nada
+       posicionado, asi que el cambio les da igual. */
+    position: relative;
   }
 
   .sr-specimen-tall > div:not(.md-divider-vertical) {

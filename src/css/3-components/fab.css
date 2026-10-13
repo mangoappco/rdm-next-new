@@ -71,9 +71,15 @@
 
    ANATOMIA DEL MARCADO
       <button class="md-fab" type="button" aria-label="Editar">
-        <span class="md-fab-icon md-icon" aria-hidden="true">edit</span>
+        <span class="md-icon" aria-hidden="true">edit</span>
         <span class="md-fab-touch"></span>
       </button>
+
+   Una sola clase en el control y ninguna en el glifo. El icono se pide con
+   .md-icon, que es como lo pide REGLA 9 el sistema entero; ver la nota de
+   EL ICONO, mas abajo, por que aqui no hay una clase de componente
+   intermedia como la del boton (.md-button-icon) o la del icono-button
+   (.md-icon-button-icon). Medido, es redundante.
 
    aria-label SIEMPRE (sin etiqueta visible que anuncie la accion) y el
    glifo con aria-hidden (el nombre ya esta en el control).
@@ -187,32 +193,37 @@
 }
 
 /* ---------------------------------------------------------------------------
-   EL ICONO
+   EL ICONO, Y POR QUE ESTE COMPONENTE NO TIENE CLASE PROPIA PARA EL
    ---------------------------------------------------------------------------
-   Un icono de Material Symbols es texto: se escala con font-size. Los cuatro
-   ejes los declara .md-icon, que esta en utilities (REGLA 9) y es la capa
-   mas fuerte, asi que una font-variation-settings aqui seria codigo muerto.
+   El FAB se escribe con .md-icon a secas, igual que cualquier otro icono del
+   sistema (REGLA 9), y sin una clase de componente intermedia. No es
+   descuido: es que no haria nada.
 
-   El color si se fija aqui, y no por herencia, por el mismo motivo que en el
-   icon-button: la capa de estado toma currentColor del HOST y tiene que ser
-   el color del glifo, no otro. Fijandolo en los dos sitios los dos leen lo
-   mismo y no se pueden desviar.
+   MEDIDO: con y sin .md-fab-icon el glifo sale identico.
+
+     medium  24px      large  36px      opsz 24 / 40      centrado si
+     capa de estado: rgb(33, 0, 93) en los dos casos
+
+   Por que: este componente reapunta --md-sys-measurement-icon-size en su
+   propio elemento, los tokens personalizados heredan, y .md-icon lo lee del
+   glifo. Es el mismo patron que el eje --md-sys-icon-optical-size, mas
+   arriba, y el que ya documenta icon-button.css para su glifo. Ahi la
+   regla del componente sobre el glifo es texto muerto, y aqui se ha
+   comprobado y se ha quitado en vez de copiarla.
+
+   La segunda regla que se fue es la del color, que fijaba
+   --md-comp-fab-icon-color en el glifo. Tampoco hace falta: el host pone
+   color, el glifo hereda, y la capa de estado lee currentColor del host.
+   Los tres terminan en el mismo valor, medido.
+
+   Lo que deja el marcado, y es todo lo que hace falta:
+
+     <span class="md-icon" aria-hidden="true">add</span>
+
+   CONSECUENCIA EN EL DISABLED: .md-fab:disabled vuelve a bastar con su
+   selector simple, porque el glifo hereda del host y ya no hay una clase
+   intermedia a la que ganarle en especificidad. Ver la nota de abajo.
    ------------------------------------------------------------------------ */
-
-.md-fab .md-fab-icon {
-  color: var(--md-comp-fab-icon-color);
-}
-
-.md-fab-icon {
-  flex: 0 0 auto;
-  inline-size: var(--md-comp-fab-icon-size);
-  block-size: var(--md-comp-fab-icon-size);
-  font-size: var(--md-comp-fab-icon-size);
-  line-height: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
 
 /* ---------------------------------------------------------------------------
    LA CAPA DE ESTADO
@@ -291,17 +302,24 @@
    hover, pero se pone igual por si el deshabilitado se aplica con foco
    puesto. cursor y sombra se quedan en el de reposo.
 
-   OJO CON EL SELECTOR DOBLE, QUE NO ES REDUNDANTE. `.md-fab:disabled`
-   llega con (0,1,1) y el glifo lo pinta `.md-fab .md-fab-icon`, que es
-   (0,2,0) y le gana. Sin el segundo selector el glifo se quedaba en
-   on-primary-container y solo se movia la opacidad: medido, no supuesto.
-   Con `.md-fab:disabled .md-fab-icon` sube a (0,3,0) y alcanza al glifo.
-   Quitar la mitad del selector se vuelve al fallo en silencio: el FAB se
-   sigue viendo, con el tono equivocado.
+   ESTE SELECTOR ESTUVO DOBLADO UN RATO Y NO ESTABA MAL ENTONCES. Mientras
+   el marcado llevaba .md-fab-icon, el glifo lo pintaba esa regla con
+   (0,2,0) y le ganaba a .md-fab:disabled, que es (0,1,1): el host se
+   ponia en on-surface y el glifo seguia en on-primary-container. Medido,
+   un glifo claro al 38% sobre fondo claro, casi invisible. La salida fue
+   anadir .md-fab:disabled .md-fab-icon, que sube a (0,3,0).
+
+   Ahora no hace falta, y no por olvido: al quitar la clase intermedia el
+   glifo hereda color del host, asi que el selector simple ya le llega.
+   Comprobado otra vez tras el cambio: host y glifo los dos en
+   rgb(29, 27, 32), opacidad 0.38.
+
+   Se deja escrito por si alguien vuelve a anadir una clase al glifo del
+   FAB: en ese momento esta regla se vuelve a quedar corta y hay que
+   volver a doblarla. El fallo no avisa.
    ------------------------------------------------------------------------ */
 
-.md-fab:disabled,
-.md-fab:disabled .md-fab-icon {
+.md-fab:disabled {
   color: var(--md-sys-color-on-surface);
   opacity: var(--md-sys-state-disabled-state-layer-opacity);
   cursor: default;
@@ -388,6 +406,58 @@
 .md-fab-primary {
   --md-comp-fab-container-color: var(--md-sys-color-primary);
   --md-comp-fab-icon-color: var(--md-sys-color-on-primary);
+}
+
+/* ---------------------------------------------------------------------------
+   ANCLADO
+   ---------------------------------------------------------------------------
+   La base queda en el flujo, como cualquier boton. Este modificador la saca
+   y la pega en la esquina de su contenedor, que es lo que una pantalla
+   quiere de un FAB.
+
+   Tres decisiones dentro de una sola regla, y las tres van contra lo
+   primero que haria cualquiera, asi que estan escritas para no se
+   "arreglen".
+
+   NO SE POSICIONA LA BASE. M3 no lo hace: en el `fab.scss` de la guia,
+   sus 79 lineas, cero apariciones de position, y en los tokens del FAB,
+   tambien cero. La guia no trae la esquina, la trae la aplicacion. Por eso
+   esto va en un modificador y no en `.md-fab`, que a la primera le darian
+   un `fixed` a todos los FAB y los tres cayeran encima: medido, tres FAB
+   fixed con separacion 16 entre si y su contenedor daban todos (708, 814),
+   es decir, 0px de separacion entre ellos.
+
+   `absolute` y no `fixed`. Ancla al padre posicionado mas cercano, que es
+   la pantalla de una app y lo que hace falta. `fixed` ancla a la ventana,
+   que con varias en pantalla no es lo que nadie quiso. Si no hay padre
+   posicionado, cae al documento, que es el comportamiento estandar y
+   documentado en el molde.
+
+   SIN z-index. El sistema entero solo usa z-index negativo, para meter las
+   capas de estado debajo del texto (button.css, icon-button.css y aqui
+   mismo). No hay ninguna convencion de apilar hacia arriba, y un `100` aqui
+   seria un numero magico sin a donde. No hace falta: un elemento
+   posicionado ya pinta sobre el contenido estatico de su mismo contexto,
+   que es el caso de un FAB sobre una pantalla.
+
+   Dos insets y no cuatro: es una esquina, no un marco. La que elijo es la
+   de abajo-al-final (inferior-derecha en LTR), que es la de un FAB por
+   convencion: la guia de M3 lo dibuja siempre ahi y la accion vive cerca
+   del pulgar. Para cualquier otra esquina basta con escribir el inset que
+   haga falta, y no se añaden cuatro clases por si las moscas.
+
+   El valor lo da un token de capa 2 existente, --md-sys-measurement-inset,
+   que es spacing-200 y vale 16dp. Se reutiliza y no se duplica. Ese token
+   lo creo el divider para su variante inset; aqui comparte el significado
+   de "separacion de un componente respecto a su contenedor", que es el
+   mismo, y su cabecera se amplio en consecuencia. Si manana M3 mueve los
+   16dp, se toca un sitio.
+   ------------------------------------------------------------------------ */
+
+.md-fab-anclado {
+  position: absolute;
+  inset-block-end: var(--md-sys-measurement-inset);
+  inset-inline-end: var(--md-sys-measurement-inset);
 }
 
 /* ---------------------------------------------------------------------------

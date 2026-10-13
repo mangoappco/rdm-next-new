@@ -570,20 +570,29 @@
   --md-sys-measurement-icon-button-width-xlarge-wide:   var(--md-ref-container-width-icon-button-xlarge-wide);
 
   /* ==========================================================================
-     INSET DE DIVISOR
+     INSET, O LA SEPARACION DE UN COMPONENTE RESPECTO A SU CONTENEDOR
      --------------------------------------------------------------------------
-     Separacion lateral de las variantes inset y middle-inset del divisor.
+     16dp. Nacen para las variantes inset y middle-inset del divisor, y lo
+     sigue usando el divisor.
+
+     El mismo valor sirve para el caso general: un componente que se pega a
+     la esquina de su contenedor y no lleva mas separacion que esa. Es lo
+     que lee .md-fab-anclado en 3-components.
 
      M3 define tres variantes de divisor: full-width (sin inset), inset
      (padding-inline-start de 16dp) y middle-inset (padding-inline de 16dp
      en ambos lados). Este token es el valor de ese inset.
 
      Por que un token y no un numero: si manana M3 cambia el inset a 20dp,
-     se edita aqui y el divisor se actualiza solo. Si el divisor escribiera
-     16px, habria que buscar cada uso.
+     se edita aqui, y el divisor y el FAB anclado se actualizan solos. Si
+     cada uno escribiera 16px, habria que buscar cada uso.
+
+     El nombre sigue diciendo inset porque es el nombre que trajo el token:
+     son la misma medida y la misma idea, y renombrarlo solo por anadir un
+     segundo consumidor costaria mas de lo que aporta.
      ====================================================================== */
 
-  /* Inset lateral del divisor: 16dp, para las variantes inset y middle-inset */
+  /* Separacion respecto al contenedor: 16dp. Divisor inset y FAB anclado */
   --md-sys-measurement-inset: var(--md-ref-spacing-200);
 }
 
