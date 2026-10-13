@@ -449,4 +449,35 @@
      `top` lo resuelve contra la altura del bloque contenedor.
      ------------------------------------------------------------------------ */
   --md-ref-icon-baseline-shift: 0.115em;
+
+  /* ------------------------------------------------------------------------
+     EL TAMANO DE ICONO DEL FAB MEDIO (M3 Expressive)
+     ------------------------------------------------------------------------
+     Los tamanos de icono del FAB salen de la escala de espacio y NO de las
+     optical-size de arriba, que miden el eje `opsz` de la fuente y no la
+     caja del glifo: 24 es `spacing-300` y 36 es `spacing-450`. Esa via la
+     comparte con el icono-button y esta escrita en measurement.css.
+
+     El del FAB mediano mide 28, y 28 no es un paso de Space 0-900 (va
+     24 -> 32). Tampoco es una de las cuatro optical-size de arriba, que
+     son 20, 24, 40 y 48: la escalera de iconos de M3 no tiene 28 porque
+     no es un tamano de la reticula, es la medida de un componente
+     concreto.
+
+     Por eso vive aqui, con nombre propio y sin apuntar a ninguna escala.
+     El mismo criterio que ya separo `container-width` de
+     `container-height`, y la misma razon: llamarlo `spacing-325` seria
+     inventar un paso que la escala no publica.
+
+     OJO CON LA MEZCLA: 24 y 36 salen de `spacing` y este de aqui. No es un
+     descuadre sino la diferencia entre un valor que SI esta en la escala
+     y uno que no. Se encuentra lo mismo en container-height.css, con los
+     anchos del icono-button, donde cuatro de los diez si son pasos de la
+     escala y los otros seis no.
+
+     El tamano optico que lo acompana sigue siendo el medio (24): es el
+     escalon mas proximo de 28, igual que al icono de 36px del large se le
+     pone el optico grande (40). El optico sigue al escalon, no al pixel.
+     ------------------------------------------------------------------------ */
+  --md-ref-icon-size-fab-medium: 28px;
 }

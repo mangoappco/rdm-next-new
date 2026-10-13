@@ -344,23 +344,27 @@
        _md-comp-fab-medium       80 / 80   icono 28   corner-large-increased
        _md-comp-fab-large        96 / 96   icono 36   corner-extra-large
 
-     CUATRO ARCHIVOS, NO TRES. Este encabezado decia tres hasta que se miro
-     el globo de nuevo y aparecio el `medium` a 80px. Estas son las cuatro
-     medidas que publica M3, y aqui se toman tres.
+     LOS CUATRO TAMANOS SE TOMAN. Este bloque decia que el `medium` no se
+     tomaba, porque en ManGo! App nadie habia pedido un FAB de 80px. La
+     razon seguia valiendo, pero ya no es la que decide: M3 Expressive
+     publica la escalera entera del extended (small, medium y large) y sin
+     el de 80px no se puede montar su tamano medio.
 
-     `medium` NO SE TOMA, y se deja constado para que la omision no pase por
-     un error de lectura. No es que M3 no lo publique: es que en ManGo! App
-     no ha pedido nadie un FAB de 80px, y llevar cuatro tamanos de un boton
-     flotante de una sola accion por pantalla es presupuesto gastado en una
-     desicion que nadie ha hecho. En cuanto alguna pantalla lo pida, el
-     fichero ya es un `medium` a 80px con icono 28 y forma
-     `corner-large-increased` (24px): no falta investigacion, falta la
-     necesidad.
+     Se descongelo la capa 1 para poder nombrarlo. El 80 no esta en la
+     escala de espaciado, que se acaba en 72, ni en esta escalera de
+     alturas, que salta de 56 a 96, asi que tiene primitiva propia en
+     container-height.css con el nombre `container-height-fab-medium`. El
+     nombre lleva `fab` porque `container-height-medium` ya vale 56, que
+     en el FAB ES el base y no el medium.
 
-     En M3 si que no hay ni xsmall ni xlarge, y por eso estos tres roles y
-     no cinco. Un `md-fab-xlarge` no llega a pintarse; en nuestro
-     icono-button esa clase existe y daria 136px. Tener el nombre propio es
-     lo que impide esa rota.
+     El icono de 28 estaba en la misma situacion: no es paso de la escala
+     de espacio ni tamano de la reticula de iconos, asi que vive en
+     iconfont.css como `icon-size-fab-medium`.
+
+     En M3 si que no hay ni xsmall ni xlarge, y por eso estos siete roles
+     y no diez. Un `md-fab-xlarge` no llega a pintarse; en nuestro
+     icono-button esa clase existe y daria 136px. Tener el nombre propio
+     es lo que impide esa rota.
 
      ALTO Y ANCHO SE JUNTAN: los dos de M3 son siempre iguales (es un cuadrado
      perfecto), asi que se declaran una sola vez y el componente reapunta el
@@ -374,8 +378,10 @@
      `spacing-450` y cae de cajon. Sin desvio. */
   --md-sys-measurement-fab-height: var(--md-ref-container-height-medium);
   --md-sys-measurement-fab-height-small: var(--md-ref-container-height-small);
+  --md-sys-measurement-fab-height-medium: var(--md-ref-container-height-fab-medium);
   --md-sys-measurement-fab-height-large: var(--md-ref-container-height-large);
   --md-sys-measurement-fab-icon-size: var(--md-ref-spacing-300);
+  --md-sys-measurement-fab-icon-size-medium: var(--md-ref-icon-size-fab-medium);
   --md-sys-measurement-fab-icon-size-large: var(--md-ref-spacing-450);
 
   /* ==========================================================================
@@ -394,35 +400,52 @@
        1. M3 tiene ocho ficheros de color propios para el extended y ocho
           mas para la base; no los comparte con el boton.
        2. La forma es `corner-large` (16px), no la pilota del boton.
-       3. No tiene tamanos propios. `fab.md` lo dice con todas las letras:
-          "Extended FABs do not have different sizes", aunque el guion
-          publica ficheros small/medium/large. Aqui no se copia la
-          contradiccion: UN SOLO TAMANO.
+       3. Los tamanos. Durante un tiempo este bloque afirmaba lo contrario,
+          apoyado en una nota vieja de `fab.md`: "Extended FABs do not have
+          different sizes". Las specs actuales de M3 la desmienten con una
+          tabla de variantes que retira el baseline ("Not recommended. Use
+          small extended FAB") y publica small, medium y large como
+          disponibles desde M3 Expressive. Los tres ficheros de token
+          existen, y sus medidas completas son estas:
 
-     Tres roles nuevos y ni uno mas, porque el resto ya existe:
+            tamano   alto  icono  padding  hueco  forma                   tipo
+            ------   ----  -----  -------  -----  ----------------------  ---------------
+            small     56    24      16       8    corner-large            title-medium
+            medium    80    28      26      12    corner-large-increased  title-large
+            large     96    36      28      16    corner-extra-large      headline-small
 
-       height          56  reutiliza --md-sys-measurement-fab-height
-       icon            24  reutiliza --md-sys-measurement-fab-icon-size
-       shape           16  lo declara la base .md-fab, no se repite
-       label           14  reutiliza --md-sys-typescale-label-large (capa 2)
+     POR QUE EL DEFECTO ES EL SMALL Y NO EL BASELINE
+     ------------------------------------------------
+     El baseline (56, padding 16/20, hueco 12, label-large) es lo que valia
+     aqui hasta ahora, y la propia pagina de specs lo retira. El small mide
+     lo mismo pero con padding simetrico de 16 y con title-medium. Se toma
+     el que M3 recomienda, no el que estaba.
 
-     LOS DOS HUECOS: `leading-space` (16) y `trailing-space` (20). Son
-     ASIMETRICOS y esa asimetria es la marca de una version, no un descuido:
-     el icono queda pegado al borde por el lado de la lectura y el texto
-     respira mas al final de la frase. Verificado en `fab/internal/_shared.scss`
-     lineas 64-65:
+     LOS TRES PADDINGS SON SIMETRICOS, Y ESO CAMBIA COSAS
+     -----------------------------------------------------
+     El baseline era asimetrico: 16 al empezar y 20 al cerrar. Eso
+     obligaba a dos roles distintos y a una regla `:not(:has())` que
+     igualaba la variante sin icono. Expressive simetriza los tres, asi
+     que ahora hay UN SOLO hueco por tamano y la regla del sin-icono no
+     tiene nada que corregir. No se conserva por si acaso: una regla que
+     no hace nada es una regla que alguien va a tocar creyendo que si.
 
-         padding-inline-start: 16px;
-         padding-inline-end:   20px;
-
-     El hueco entre icono y etiqueta mide 12. Los tres estan en nuestra
-     escala, sin desvios: `spacing-200` (16), `spacing-250` (20) y
-     `spacing-150` (12). Como siempre, al ser de capa 2 se nombran por su
-     valor y no por el nombre que le pusiera M3, que aqui es casi el mismo
-     nombre y manana puede no serlo. */
-  --md-sys-measurement-fab-extended-leading-space: var(--md-ref-spacing-200);
-  --md-sys-measurement-fab-extended-trailing-space: var(--md-ref-spacing-250);
-  --md-sys-measurement-fab-extended-icon-label-space: var(--md-ref-spacing-150);
+     QUE REQUIERE PRIMITIVA PROPIA Y QUE NO
+     ----------------------------------------
+     El hueco de 26 (medium) y el de 28 (large) no son pasos de la escala
+     de espacio, que va 24 -> 32, asi que tienen primitiva propia en
+     spacing.css. El del small si es un paso: `spacing-200`. El icono de
+     28 tampoco lo era y vive en iconfont.css. Los otros cuatro no son
+     roles nuevos porque ya los tiene el FAB base: altura, icono, forma y
+     tipografia. */
+  --md-sys-measurement-fab-extended-inline-space: var(--md-ref-spacing-200);
+  --md-sys-measurement-fab-extended-inline-space-medium:
+    var(--md-ref-padding-extended-fab-medium-inline);
+  --md-sys-measurement-fab-extended-inline-space-large:
+    var(--md-ref-padding-extended-fab-large-inline);
+  --md-sys-measurement-fab-extended-icon-label-space: var(--md-ref-spacing-100);
+  --md-sys-measurement-fab-extended-icon-label-space-medium: var(--md-ref-spacing-150);
+  --md-sys-measurement-fab-extended-icon-label-space-large: var(--md-ref-spacing-200);
 
   /* ==========================================================================
      MEDIDAS DE ICONOS

@@ -168,4 +168,37 @@
      el 64px a secas. Por eso aqui solo esta el numero.
      ------------------------------------------------------------------------ */
   --md-ref-container-width-button-min: 64px;
+
+  /* ------------------------------------------------------------------------
+     LA ALTURA DEL FAB MEDIUM (M3 Expressive)
+     ------------------------------------------------------------------------
+     Nuestra escalera de alturas fue medida por el BOTON y por eso se llama
+     como el boton: xsmall 32, small 40, medium 56, large 96, xlarge 136.
+
+     El FAB usa otro vocabulario, y su `medium` choca con el nuestro:
+
+        tamano     boton     FAB
+        -------    -----     ---
+        small       40        40
+        medium      56        80   <-- el choque
+        large       96        96
+
+     M3 declara el del FAB en CUATRO ficheros de token que comparten el
+     valor: _md-comp-fab-medium, _md-comp-extended-fab-medium,
+     _md-comp-navigation-bar y _md-comp-bottom-app-bar. Los dos primeros
+     son de la familia FAB y son los que importan aqui.
+
+     El nombre lleva `fab` delante por lo mismo que separo `container-width`
+     de `container-height` arriba: `container-height-medium` ya vale 56, y
+     un segundo `medium` en la misma escalera seria una trampa para el que
+     leyera el nombre sin abrir este archivo.
+
+     Solo el alto. El ancho se le reapunta al alto en el componente, igual
+     que en los otros tres tamanos: el FAB es un cuadrado.
+
+     Se descongelo la capa 1 para esto. No se hizo antes porque nadie habia
+     pedido un FAB de 80px; se hace ahora porque M3 Expressive si publica la
+     escalera entera del extended, y sin este numero no hay tamano medio.
+     ------------------------------------------------------------------------ */
+  --md-ref-container-height-fab-medium: 80px;
 }

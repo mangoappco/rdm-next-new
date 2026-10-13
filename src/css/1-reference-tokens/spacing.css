@@ -129,4 +129,42 @@
 
   /* Space 900 — 72dp. Margen superior de pagina. */
   --md-ref-spacing-900: 72px;
+
+  /* ------------------------------------------------------------------------
+     ESPACIOS DE COMPONENTE QUE NO SON PASOS DE LA ESCALA (M3 Expressive)
+     ------------------------------------------------------------------------
+     El extended FAB mediano y el grande acuestan 26px y 28px de padding
+     interior, segun _md-comp-extended-fab-medium y -large.
+
+     Los dos son puntos VALIDOS de la formula de arriba (8 x 3,25 y
+     8 x 3,5), pero NO son pasos publicados de Space 0-900, que va 24 ->
+     32. Este archivo afirma reproducir esa escala tal cual, y meter dos
+     numeros de un componente en medio la dejaria de hacer: seria cambiar
+     el objeto del archivo para caber a un caso.
+
+     Por eso se declaran aqui como primitivas propias, con el mismo
+     criterio que ya separo `container-width` de `container-height`: un
+     token no puede llamarse como una cosa y valer otra.
+
+     NOMBRE, Y POR QUE NO LLEVA `spacing`
+     -------------------------------------
+     `--md-ref-padding-*` y NO `--md-ref-spacing-*`. Los que llevan
+     `spacing-` prometen ser un paso de Space 0-900, y estos no lo son:
+     un `--md-ref-spacing-325` existiria solo en este archivo y no en la
+     especificacion que el nombre reclama. La diferencia entre `padding` y
+     `spacing` es facil de pasar por alto al leer, y por eso esta nota
+     existe: lo que no se puede pasar por alto es llamar 325 a algo que
+     la escala no publica.
+
+     Solo el padding de los dos tamanos grandes. El del pequeno (16px) si
+     es un paso de la escala --`spacing-200`-- y no se duplica aqui.
+
+     Se descongelo la capa 1 para esto, junto con la altura de 80px del
+     FAB medio que vive en container-height.css. La razon es la misma en
+     los dos casos: M3 Expressive publica una escalera que nuestra escala
+     no puede expresar, y no expresarla habria dejado dos tamaños sin
+     implementar.
+     ------------------------------------------------------------------------ */
+  --md-ref-padding-extended-fab-medium-inline: 26px;
+  --md-ref-padding-extended-fab-large-inline: 28px;
 }

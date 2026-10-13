@@ -23,21 +23,28 @@
    MEDIDAS (tokens/versions/latest/sass/_md-comp-fab*.scss)
       small    contenedor 40px    glifo 24px   corner-medium
       base     contenedor 56px    glifo 24px   corner-large     (sin clase)
+      medium   contenedor 80px    glifo 28px   corner-large-increased
       large    contenedor 96px    glifo 36px   corner-extra-large
 
    M3 publica CUATRO ficheros, no tres. El cuarto es `_md-comp-fab-medium`,
-   80px con `corner-large-increased` y glifo 28, y AQUI NO SE TOMA: en ManGo!
-   App no ha pedido nadie un FAB de 80px.
+   y AQUI SE TOMA. Estuvo sin tomarse mientras nadie pidiera un FAB de
+   80px, que era cierto; se tomo cuando M3 Expressive publico la escalera
+   entera del extended, porque su tamano medio mide 80 y no se puede
+   montar de otra forma. El 80 no estaba en ninguna escala nuestra --la
+   de espacio se acaba en 72 y la de alturas salta de 56 a 96--, asi que
+   la capa 1 se descongelo para declararlo:
+   `--md-ref-container-height-fab-medium`.
 
    OJO CON LOS DOS "MEDIUM". El nuestro de 56px no tiene nombre de tamano
    porque en M3 es el base: `medium` en M3 ES el de 80px. No es que nos
    falte rebautizar nada, es que estamos usando dos vocabularios distintos
-   para la misma escalera. La seccion MEDIDAS DEL FAB de measurement.css
-   explica el recorte.
+   para la misma escalera. Aqui manda el del FAB, porque asi lo nombran
+   sus ficheros de token. La seccion MEDIDAS DEL FAB de measurement.css
+   lo trae con la tabla.
 
-   En M3 no hay ni xsmall ni xlarge. Son tres y ninguno mas. Un `md-fab-
-   xlarge` no llega a pintarse, y eso es el proposito: en el icono-button
-   esa clase existe y daria 136px.
+   En M3 no hay ni xsmall ni xlarge. Son CUATRO y ninguno mas. Un
+   `md-fab-xlarge` no llega a pintarse, y eso es el proposito: en el
+   icono-button esa clase existe y daria 136px.
 
    ANCHO Y ALTO SON SIEMPRE IGUALES: el FAB es un cuadrado perfecto en M3,
    asi que no hay eje de anchos como en el boton de icono (narrow/uniform/
@@ -45,12 +52,17 @@
    hace el icono-button con `--md-comp-icon-button-width`: dos valores que
    puedan desincronizarse es una puerta abierta.
 
-   TAMANO OPTICO DEL GLIFO (sigue a su tamano fisico, como pide M3)
-      small 24   medium 24   large 40
-      El 36 del large NO esta en nuestra escalera de iconos (20/24/40/48)
-      pero si en la de espacio: `spacing-450` = 36px. Es la misma via por la
-      que el icono-button saca sus glifos de `spacing` y no de una escalera
-      propia. Sin desvio.
+   TAMANO OPTICO DEL GLIFO (sigue al ESCALON del glifo, no al pixel)
+      small 24   base 24   medium 24   large 40
+      Ni el 36 del large ni el 28 del medium estan en nuestra escalera de
+      iconos (20/24/40/48), y los dos van por la de espacio: 36 es
+      `spacing-450` sin desvio, y 28 no es paso ninguno, asi que tiene
+      primitiva propia en iconfont.css (`icon-size-fab-medium`). Es la
+      misma via por la que el icono-button saca sus glifos de `spacing`.
+
+      El optico del medium se queda en 24, que es el escalon mas proximo
+      de 28: al de 36px del large se le pone el de 40, cuatro por encima.
+      El optico sigue al escalon, no al pixel.
 
    COLORES (tokens/versions/latest/sass/_md-comp-fab-*-container.scss)
       base                primary-container / on-primary-container
@@ -381,6 +393,20 @@
   --md-comp-fab-shape: var(--md-sys-shape-corner-medium);
   --md-comp-fab-height: var(--md-sys-measurement-fab-height-small);
   --md-comp-fab-icon-size: var(--md-sys-measurement-fab-icon-size);
+}
+
+.md-fab-medium {
+  /* M3 lo publica en `_md-comp-fab-medium.scss`: 80px de caja, glifo 28 y
+     forma corner-large-increased. Los tres traen medida propia porque
+     ninguno de los tres esta en su escala correspondiente; ver la seccion
+     MEDIDAS DEL FAB de measurement.css.
+
+     El optico NO se toca. El de la base ya es el medio (24), que es el
+     escalon mas proximo del glifo de 28, igual que al de 36px del large
+     se le pone el de 40. Solo se declaran las medidas que cambian. */
+  --md-comp-fab-shape: var(--md-sys-shape-corner-large-increased);
+  --md-comp-fab-height: var(--md-sys-measurement-fab-height-medium);
+  --md-comp-fab-icon-size: var(--md-sys-measurement-fab-icon-size-medium);
 }
 
 .md-fab-large {
