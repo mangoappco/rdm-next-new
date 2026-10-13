@@ -97,6 +97,93 @@ If the user has not confirmed the sections, implementation must not begin.
 
 ---
 
+# RULE — THE PROSE OF A PAIR IS ONE OR TWO SENTENCES
+
+Every pair (`<section class="sr-section">`) carries one paragraph of prose
+under its `<h2>`. That paragraph is a **caption**, not documentation.
+
+| | |
+| --- | --- |
+| Target | one sentence, up to about 120 characters |
+| Ceiling | two sentences, about 200. Above that, cut. |
+| What it says | what the pair shows, and what to notice in it |
+| What it never says | why, the history, the M3 comparison, the measurements, the trade-offs |
+
+The argument is already written somewhere better: the `/* ... */` header of the
+component sheet it came from, and the chat. Someone scanning a view is deciding
+which snippet to copy, and that needs the sentence, not the case.
+
+**Measured 2026-10-13**, characters per pair, counting only the paragraph that
+follows an `<h2>` inside a `section.sr-section` (not the breadcrumb):
+
+| View | Average | Max |
+| ---- | ------- | --- |
+| `shapes` | 37 | 53 |
+| `elevation` | 44 | 49 |
+| `measurement` | 44 | 52 |
+| `icon` | 58 | 93 |
+| `typography` | 61 | 93 |
+| `divider` | 68 | 145 |
+| `state` | 76 | 101 |
+| `motion` | 84 | 211 |
+| `color` | 86 | 148 |
+| `button` - the section order every other view follows | 120 | 187 |
+| `fab` | 143 | 170 |
+| `icon-button` | 148 | 287 |
+| `fab-extended` | 151 | 168 |
+| `button-group` | 199 | 274 |
+
+The token and reference views sit between 37 and 86: they name a token and stop.
+`button`, the view every other view takes its section order from, averages 120.
+That is the shape to copy.
+
+Three still sit at or over the ceiling and are not cut yet: `button-group` at
+199 average and 274 max, `icon-button` at 287 max, `motion` at 211 max.
+
+The two FAB views ran three times the reference. Every long paragraph in them
+was the same shape: the sentence that says what the pair shows, followed by the
+argument for why it is built that way. The second half belongs in the sheet.
+Both were cut the same day, keeping every fact and moving none of it:
+
+| View | Before | After |
+| ---- | ------ | ----- |
+| `fab` | 333 avg / 439 max | **143 avg / 170 max** |
+| `fab-extended` | 414 avg / 582 max | **151 avg / 168 max** |
+
+Measure with `-Encoding UTF8`. `Get-Content` without it reads a UTF-8 file as
+ANSI and counts every accented character as two, which silently inflates the
+whole table.
+
+The test is simple. Delete the paragraph and ask what the reader loses. If the
+answer is "which one to take", keep it. If the answer is "the reasoning",
+the paragraph is in the wrong file.
+
+Before and after, from the `Sizes` pair of `fab-extended.html`:
+
+```text
+BEFORE (488)
+
+Base sin clase, medium y large. Miden 56, 80 y 96px, y con el tamaño
+cambian las seis medidas: alto, forma, glifo, óptico, padding y
+tipografía. Las que no comparten los tres: el padding, 16, 26 y 28; el
+hueco entre icono y texto, 8, 12 y 16; y una tipografía distinta por
+tamaño, de title-medium a headline-small. Aquí no hay small: la escalera
+del extended empieza en 56 y no en 40, y md-fab-small encima de un
+extended no mueve nada porque sus medidas ya están reapuntadas.
+
+AFTER (133)
+
+Base sin clase, medium y large: 56, 80 y 96px. Con el tamaño cambian
+también el radio, el padding y la tipografía. Aquí no hay small.
+```
+
+Nothing factual was lost. The six measurements, the exact padding and gap
+values, the three typescales and why `md-fab-small` is inert are all still in
+`fab-extended.css`, where they were verified, and where someone who wants them
+will look.
+
+---
+
 # STEP 1 — INSPECT THE REAL COMPONENT
 
 Before asking the user about sections, inspect the actual implementation of
