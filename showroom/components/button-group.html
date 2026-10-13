@@ -18,8 +18,9 @@
      Seis pares. La variante standard, que es la unica que existe aun: el aire
      entre botones lo pone el sistema, no quien los contiene.
 
-     Los pares van con filled, escrito y no heredado, para que el nombre que
-     alguien escribe primero funcione. Solo la pareja Colors mezcla variantes.
+     Todos los pares van con filled. La pareja Colors es la unica que mezcla,
+     y lo hace con filled y text: la accion principal pinta contenedor y las
+     otras dos no.
 
      No hay connected ni boton pulsado que crezca. Lo primero es trabajo
      pendiente; lo segundo es un morph, y los morphs no se implementan en este
@@ -97,16 +98,16 @@
     <!-- PAREJA: variantes mezcladas (h2 + specimen + pre + boton). -->
     <section class="sr-section">
       <h2 class="md-type-title-large">Colors</h2>
-      <p class="md-type-body-medium">Las variantes se pueden mezclar en la misma fila: cada boton pinta su propio contenedor y el grupo solo pone el aire. La accion principal va con mas enfasis que las demas.</p>
+      <p class="md-type-body-medium">Las variantes se pueden mezclar en la misma fila: cada boton pinta su propio contenedor y el grupo solo pone el aire. La accion principal va con filled, que pinta contenedor, y las demas con text, que no.</p>
       <div class="sr-specimen sr-specimen-gap">
         <div class="md-button-group">
-          <button class="md-button md-button-tonal" type="button"><span class="md-button-label">Guardar</span></button>
+          <button class="md-button md-button-filled" type="button"><span class="md-button-label">Guardar</span></button>
           <button class="md-button md-button-text" type="button"><span class="md-button-label">Descartar</span></button>
           <button class="md-button md-button-text" type="button"><span class="md-button-label">Cancelar</span></button>
         </div>
       </div>
       <pre class="sr-code"><code>&lt;div class="md-button-group"&gt;
-  &lt;button class="md-button md-button-tonal" type="button"&gt;&lt;span class="md-button-label"&gt;Guardar&lt;/span&gt;&lt;/button&gt;
+  &lt;button class="md-button md-button-filled" type="button"&gt;&lt;span class="md-button-label"&gt;Guardar&lt;/span&gt;&lt;/button&gt;
   &lt;button class="md-button md-button-text" type="button"&gt;&lt;span class="md-button-label"&gt;Descartar&lt;/span&gt;&lt;/button&gt;
   &lt;button class="md-button md-button-text" type="button"&gt;&lt;span class="md-button-label"&gt;Cancelar&lt;/span&gt;&lt;/button&gt;
 &lt;/div&gt;</code></pre>
