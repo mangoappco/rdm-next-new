@@ -127,7 +127,7 @@
    SI con .md-fab-primary: la familia de color es la misma que en el FAB
    base y no cambia nada.
 
-   SI con .md-fab-anclado: cada clase promete algo distinto y no se pisan. El
+   SI con .md-fab-anchored: cada clase promete algo distinto y no se pisan. El
    resultado es un FAB con etiqueta pegado a la esquina de su contenedor,
    que es exactamente lo que las dos prometen por separado. Se puede medir,
    no se supone.

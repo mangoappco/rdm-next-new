@@ -65,12 +65,11 @@
 
    EL EXTENDED FAB SI, Y NO ESTE AQUI. Se metio primero como "no haria falta,
    nuestro `md-button` ya es un boton con etiqueta", y eso salio falso: M3
-   le da ocho ficheros de color propios, forma `corner-large` (no la pilota
-   del boton) y su propio archivo de medida. Como M3 tampoco lo separa en un
-   elemento nuevo -- es `<md-fab label="...">` y la clase `extended` la genera
-   shared.ts a partir de `!!this.label` -- el modificador vive en
-   `fab-extended.css` y la documentacion en su propia vista. Aqui solo queda
-   constado que existe.
+   le da juegos de token propios, forma `corner-large` (no la pilota del
+   boton) y su propio archivo. Como M3 tampoco lo separa en un componente
+   nuevo — es `<md-fab label="...">`, con la clase `extended` de
+   `getRenderClasses()` — el modificador vive en `fab-extended.css` y la
+   documentacion en su propia vista. Aqui solo queda constado que existe.
 
    LA ELEVACION NO SE ANIMA, Y NO ES UN DESCUIDO
    ---------------------------------------------
@@ -426,7 +425,7 @@
 }
 
 /* ---------------------------------------------------------------------------
-   ANCLADO
+   ANCHORED
    ---------------------------------------------------------------------------
    La base queda en el flujo, como cualquier boton. Este modificador la saca
    y la pega en la esquina de su contenedor, que es lo que una pantalla
@@ -471,7 +470,7 @@
    16dp, se toca un sitio.
    ------------------------------------------------------------------------ */
 
-.md-fab-anclado {
+.md-fab-anchored {
   position: absolute;
   inset-block-end: var(--md-sys-measurement-inset);
   inset-inline-end: var(--md-sys-measurement-inset);

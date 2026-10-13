@@ -157,7 +157,7 @@
 
     /* Contexto de posicionamiento, y por eso va aqui y no en
        .sr-specimen. Un componente que se ancla dentro de su contenedor
-       (hoy .md-fab-anclado) necesita un padre posicionado que marque la
+       (hoy .md-fab-anchored) necesita un padre posicionado que marque la
        esquina: sin el, se va al del documento y se sale del recuadro.
 
        Va en el specimen alto y no en el base porque el alto es el que

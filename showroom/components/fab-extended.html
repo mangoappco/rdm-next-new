@@ -26,7 +26,7 @@
   Clase base, Colors, Sizes, Shapes, States ... hasta Link. La pagina
   button.html es la referencia de la casa y quien entra a una vista nueva
   busca las cosas en ese orden. Aqui la lista es Clase base, Colors,
-  Sizes, Icon, States y Anclado. Sizes va justo debajo de Colors, que
+  Sizes, Icon, States y Anchored. Sizes va justo debajo de Colors, que
   es donde esta en fab.html, y se le sigue poniendo aunque el extended
   no tenga tamaños: omitir una categoria porque esta vacia obliga a
   releer toda la pagina para saber que falta algo. Ver abajo.
@@ -44,6 +44,11 @@
   mismo componente con la clase `extended` que genera shared.ts a partir de
   `!!this.label`. Aqui se copia esa forma, un modificador sobre .md-fab,
   pero la documentacion va aparte porque el alcance es distinto.
+
+  LAS CLASES VAN EN INGLES: md-fab-extended y md-fab-anchored. No
+  md-fab-extendido ni md-fab-anclado. Convencion del sistema para toda
+  clase de modificador y de componente, un solo guion y sin sufijos en
+  espanol. La prosa de las vistas sigue en espanol, que es otra cosa.
 
   LO QUE NO HAY EN ESTA VISTA, Y POR QUE
   --------------------------------------
@@ -169,12 +174,12 @@
 
     <!-- PAREJA: combinado con el anclado. -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Anclado</h2>
+      <h2 class="md-type-title-large">Anchored</h2>
       <p class="md-type-body-medium">Las dos clases a la vez: el recuadro hace de contenedor y el FAB con etiqueta se pega a su esquina inferior derecha, con los 16px del token de inset. Ninguna de las dos clases estorba a la otra, porque una decide como se pinta y la otra donde se coloca. El ancho sigue mandandolo el texto.</p>
       <div class="sr-specimen sr-specimen-tall">
-        <button class="md-fab md-fab-extended md-fab-anclado" type="button"><span class="md-icon" aria-hidden="true">reply</span>Responder<span class="md-fab-touch"></span></button>
+        <button class="md-fab md-fab-extended md-fab-anchored" type="button"><span class="md-icon" aria-hidden="true">reply</span>Responder<span class="md-fab-touch"></span></button>
       </div>
-      <pre class="sr-code"><code>&lt;button class="md-fab md-fab-extended md-fab-anclado" type="button"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;reply&lt;/span&gt;Responder&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <pre class="sr-code"><code>&lt;button class="md-fab md-fab-extended md-fab-anchored" type="button"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;reply&lt;/span&gt;Responder&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
     <!-- PAREJA: hasta aqui -->
