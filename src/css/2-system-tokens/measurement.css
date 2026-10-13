@@ -296,6 +296,43 @@
      exacto que "padding-x". */
 
   /* ==========================================================================
+     MEDIDAS DEL GRUPO DE BOTONES
+     --------------------------------------------------------------------------
+     Lo mismo que arriba, una vez mas: 3-components no puede leer
+     1-reference-tokens, asi que la separacion entre botones se pide aqui.
+
+     M3 publica CINCO, uno por tamano del grupo:
+
+         xsmall 18px    small 12px    medium 8px    large 8px    xlarge 8px
+
+     La separacion BAJA a medida que el boton crece: el grande necesita menos
+     aire para leerse como una sola cosa.
+
+     Cuatro de los cinco estan en nuestra escala y se copian tal cual. El
+     quinto no, y ese es el desvio:
+
+     XSMALL: M3 PUBLICA 18px, Y 18px NO ESTA EN LA ESCALA SPACE de M3 ni en la
+     nuestra. Nuestra escala tiene 16 (space-200) y 20 (space-250), sin nada
+     en medio, porque entre Space 200 y Space 300 M3 solo admite pasos de 8dp.
+
+     Es un literal fuera de reticula, en `_md-comp-button-group-standard-
+     xsmall.scss`, el mismo archivo donde declara su altura de 32px.
+
+     AQUI SE PONE 16px, el valor mas proximo. Un grupo xsmall queda 2px mas
+     justo de lo que pide M3, y se documenta en el componente.
+
+     Las dos alternativas que se descartaron: escribir 18px a mano en la capa
+     3, que la REGLA 1 no permite; o meter 18px en 1-reference-tokens, que
+     publica una escala oficial de M3 y no es nuestro sitio para anadirle
+     valores.
+
+     SI ALGUN DIA HACE FALTA EL 18 EXACTO, toca reabrir 1-reference-tokens y
+     decidirlo alli. No parchearlo desde aqui. */
+  --md-sys-measurement-button-group-between-space: var(--md-ref-spacing-100);
+  --md-sys-measurement-button-group-between-space-small: var(--md-ref-spacing-150);
+  --md-sys-measurement-button-group-between-space-xsmall: var(--md-ref-spacing-200);
+
+  /* ==========================================================================
      MEDIDAS DE ICONOS
      --------------------------------------------------------------------------
      M3 publica CUATRO tamanos de icono, ni uno mas: 20, 24, 40 y 48 dp.

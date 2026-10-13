@@ -200,8 +200,16 @@
      verticales caen bajo este selector y el padding les pisaria la medida
      con un suelo de 32px. Medido tres veces: barras, puntos y divisor
      vertical rendian 32 de ancho.
+
+     Y ahora .md-button-group, por OTRO motivo: no le pisa la medida sino
+     que le anade aire que su snippet no trae. Este selector pilla a todo
+     div directo de escenario, y el grupo ES un div directo, porque es
+     marcado real del bloque copiable y no cromado del showroom. Con el
+     padding, la fila rendia 16px desde el escenario y 0px desde su <pre>,
+     que es justo lo que REGLA 11 existe para impedir. Los demas
+     componentes se libran por ser <button>, que no es un div.
      --------------------------------------------------------------------- */
-  .sr-specimen:not(.sr-meter) > div:not(.sr-motion-dot):not(.md-divider-vertical) {
+  .sr-specimen:not(.sr-meter) > div:not(.sr-motion-dot):not(.md-divider-vertical):not(.md-button-group) {
     padding: var(--md-ref-spacing-200);
   }
 

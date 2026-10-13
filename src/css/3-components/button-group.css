@@ -1,0 +1,174 @@
+/* ==========================================================================
+   3-components/button-group.css - GRUPO DE BOTONES (Capa 3)
+   ==========================================================================
+
+   QUE ES ESTE ARCHIVO
+   -------------------
+   Capa 3. Los botones de accion puestos en fila, con su separacion fijada.
+
+   Se entrega UNA variante: standard, que es la fila suelta, con aire entre
+   botones y cada boton con su propia forma. La segunda, connected, se anade
+   despues: es la fila cosida, con esquinas interiores quitadas.
+
+   SOBRE QUÉ ES UNA COSA NUEVA
+   ---------------------------
+   No trae colores nuevos, ni medidas nuevas, ni formas nuevas. Trae UNA COSA
+   que el boton no tiene y que el boton NUNCA ha necesitado tener: el
+   conocimiento de que a su lado hay otro boton.
+
+   `.md-button` no sabe si tiene hermanos. `.md-button-group` si, y esa
+   informacion es todo lo que aporta.
+
+   LO QUE ESTA VERIFICADO Y DONDE
+   ------------------------------
+   De la fuente estable, y de su version:
+
+       C:\xampp\htdocs\proyectos\material-web-main
+       tokens\versions\latest\sass\_md-comp-button-group-standard-{xsmall,
+                                                                  small,
+                                                                  medium,
+                                                                  large,
+                                                                  xlarge}.scss
+       Version 34.0.21
+
+   De los cinco `between-space` publicados (18 / 12 / 8 / 8 / 8), cuatro
+   estan en nuestra escala y uno no. Ver la nota del rol en
+   2-system-tokens/measurement.css: el xsmall va con 16px y es un desvio
+   consciente, no un olvido.
+
+   De la disposicion, que los tokens publicados NO llevan, del unico sitio
+   donde esta resuelta:
+
+       labs\gb\components\buttongroup\button-group.scss
+
+   Es la misma division de autoridad que en el boton: el valor viene de la
+   fuente estable, la disposicion de un laboratorio.
+
+   --------------------------------------------------------------------------
+   LO QUE NO ESTA, Y POR QUE
+   --------------------------------------------------------------------------
+
+   1. LA VARIANTE CONNECTED.
+
+      M3 la tiene y aqui no. La cospe entre botones quitando las esquinas
+      interiores y dandole a cada uno la exterior segun su posicion, en los
+      cinco tamanos. Es el trabajo de verdad de este componente y no esta
+      hecho aun. Cuando entre, entra con estas mismas reglas de arriba.
+
+      NO es una pieza pequena, y conviene no confundirla con "otro dia la
+      hacemos": la conectada lleva `--pressed-item-width-multiplier` y una
+      transicion de ancho con resorte, que es un MORPH. Ver el punto 2.
+
+   2. EL BOTON PULSADO NO CRECE.
+
+      En M3, el boton pulsado dentro de un grupo se ensancha un 15% y los
+      demas se cierran. Es literal, en `button-group.scss`:
+
+          // Standard press width expansion
+          transition: width ... var(--motion-spring-fast-spatial)
+          width: calc-size(max(size, size * var(--pressed-item-width-multiplier)))
+
+      Eso es un morph de forma, y los morphs de pulsado NO se implementan en
+      este sistema. Tampoco en el icono-button, que tenia otro parecido
+      (cff79ca). La decision es del producto, no un recorte tecnico.
+
+      Consecuencia concreta: el grupo aqui NO puede usar la version
+      "connected" de M3 tal cual, porque esa depende del crecimiento para
+      que el grupo se lea al pulsar. Connected entra sin eso, o no entra.
+
+   3. NO ES PARA ICON-BUTTON.
+
+      La fila de `.md-icon-button` no es este componente. M3 lo define para
+      `.btn`, y el icono-button tiene su propia logica de zona tactil que
+      el grupo no conoce. Si un dia se necesita, se decide aparte.
+
+   --------------------------------------------------------------------------
+   vertical-align: MIDDLE
+   --------------------------------------------------------------------------
+   Igual que en `.md-button` y en `.md-icon-button`, que se resolvio midiendo
+   (6939afd). Un `inline-flex` se alinea por su LINEA BASE, y la coge del
+   PRIMER elemento flexible. El grupo ES un inline-flex, asi que hereda el
+   mismo defecto que ya corregimos dos veces.
+
+   Lo que le pasa al grupo y no a sus hijos: el boton de dentro ya no se
+   mueve, porque su contenedor es flex y ahi `vertical-align` no aplica. Se
+   mueve el GRUPO, al ponerlo junto a texto y a otro inline-flex. Medir en el
+   navegador, no suponer.
+
+   --------------------------------------------------------------------------
+   EL TAMANO NO SE ESCRIBE, SE INFERIERE
+   --------------------------------------------------------------------------
+   M3 no pide que la fila diga de que tamano es: lo lee de sus hijos. Aqui
+   idem, con `:has()`, asi que el snippet es solo los botones y no hay una
+   clase de tamano que acordarse de escribir.
+
+   Tres valores, no cinco, porque M3 los agrupa: medium, large y xlarge
+   miden lo mismo (8px). Solo los dos pequenos se separan del resto.
+
+   OJO CON TAMANOS MEZCLADOS: si la fila lleva un xsmall Y un medium, se
+   aplican las dos reglas `:has` y gana la ultima declarada. M3 tiene el
+   mismo comportamiento. Filas de tamanos mezclados no estan previstas.
+   ========================================================================== */
+
+.md-button-group {
+  /* ------------------------------------------------------------------------
+     SEPARACION ENTRE BOTONES
+     ------------------------------------------------------------------------
+     La base viste 8px, que es el valor de M3 para medium, large y xlarge:
+     tres de los cinco tamanos, y el que declara la raiz `.btn-group`.
+
+     El rol no vive aqui por gusto, sino por REGLA 2: 3-components no puede
+     leer 1-reference-tokens, asi que lo pide a 2-system-tokens. */
+  --md-comp-button-group-between-space: var(--md-sys-measurement-button-group-between-space);
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--md-comp-button-group-between-space);
+
+  /* `middle`, y no lo que trae M3, que no declara `vertical-align` ninguno.
+     Ver la nota de arriba sobre el defecto que hereda de ser inline-flex. */
+  vertical-align: middle;
+}
+
+/* Los dos tamanos pequenos llevan mas aire: a 32px de alto y 40px de alto,
+   8px no los lee como una unidad. M3 lo baja a medida que la caja crece.
+
+   De aqui arriba solo salen estas dos reglas porque los otros tres tamanos
+   ya miden 8px, el mismo que la base. */
+.md-button-group:has(> .md-button-xsmall) {
+  --md-comp-button-group-between-space: var(--md-sys-measurement-button-group-between-space-xsmall);
+}
+
+.md-button-group:has(> .md-button-small) {
+  --md-comp-button-group-between-space: var(--md-sys-measurement-button-group-between-space-small);
+}
+
+/* ------------------------------------------------------------------------
+   LOS BOTONES DE LA FILA
+   ------------------------------------------------------------------------
+   Tres cosas que M3 pone en `.btn-group > *` y que son el motivo de que la
+   fila se lea como fila y no como tres botones sueltos que se empiezan a
+   pegar: sin envolver, sin encogerse, cada uno con el ancho que pide.
+
+   Las tres van al hijo, no al grupo. El grupo no puede decidir por sus
+   hijos: eso es el problema del que resuelve cada uno. */
+.md-button-group > .md-button {
+  white-space: nowrap;
+  flex-shrink: 0;
+  min-inline-size: max-content;
+}
+
+/* ------------------------------------------------------------------------
+   VARIANTE STANDARD
+   ------------------------------------------------------------------------
+   La base ya ES standard, asi que esta clase no cambia nada. Se declara igual
+   que `.md-button-filled` (5489438), por el mismo motivo.
+
+   Una clase que no existe no falla: se queda sin efecto en silencio, la fila
+   se dibuja igual y no se entera nadie. El nombre que alguien va a escribir
+   primero, en una fila, es `.md-button-group-standard`, porque en M3 se ve
+   escrito en su documentacion. Que la base ya lo sea no significa que pueda
+   escribirse mal sin enterarse. */
+.md-button-group-standard {
+  --md-comp-button-group-between-space: var(--md-sys-measurement-button-group-between-space);
+}
