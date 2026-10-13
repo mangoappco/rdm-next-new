@@ -333,9 +333,19 @@
    ---------------------------------------------------------------------------
    M3 baja el icono a on-surface al 38%, sin capa de estado. pointer-events
    para que no responda aunque se vea.
+
+   OJO CON EL SELECTOR DOBLE, QUE NO ES REDUNDANTE. `.md-icon-button:
+   disabled` llega con (0,1,1) y el glifo de las variantes con relleno lo
+   pinta `.md-icon-button-filled .md-icon-button-icon`, que es (0,2,0) y le
+   gana. Sin la segunda parte del selector el host se ponia en on-surface
+   y el glifo seguia en on-primary: medido, un glifo blanco al 38% sobre
+   fondo claro, casi invisible. Con `.md-icon-button:disabled .md-icon-
+   button-icon` sube a (0,3,0) y alcanza al glifo. Quitar la mitad del
+   selector se vuelve al fallo en silencio.
    ------------------------------------------------------------------------ */
 
-.md-icon-button:disabled {
+.md-icon-button:disabled,
+.md-icon-button:disabled .md-icon-button-icon {
   color: var(--md-sys-color-on-surface);
   opacity: var(--md-sys-state-disabled-state-layer-opacity);
   cursor: default;
@@ -516,11 +526,22 @@
 
 /* ---------------------------------------------------------------------------
    FORCED COLORS
+   ---------------------------------------------------------------------------
+   El borde va con el grosor thin, y no solo con `border-color`, que es lo
+   que hacia esta regla y no dibujaba nada. Medido: la base pone el grosor
+   en `--md-sys-shape-stroke-none`, que es 0px, y recolorear un borde de
+   cero de grosor sigue sin ser un borde. El codigo se veia correcto y no
+   pintaba.
+
+   En forced-colors el sistema tira del color de Canvas, asi que solo se
+   ve lo que tiene forma: sin grosor, un standard quedaba como un glifo
+   suelto y un filled perdia su caja al perder el relleno. El grosor hay
+   que darlo aqui, con `thin`, que es 1px y el que declara M3.
    ------------------------------------------------------------------------ */
 
 @media (forced-colors: active) {
   .md-icon-button {
-    border-color: CanvasText;
+    border: var(--md-sys-shape-stroke-thin) solid CanvasText;
   }
 
   .md-icon-button:disabled {
