@@ -15,11 +15,11 @@
 <!-- Vista de componente: el boton de icono de M3, cuatro variantes y tres tamanos.
      Molde: showroom/templates/icon-button.template.html.
 
-     Regenerada al renombrar la variante tonal de md-icon-button-filled-tonal a
-     md-icon-button-tonal, el nombre de la generacion Expressive que este sistema
-     implementa. Seis lineas de aqui cambiaron con el nombre: cuatro specimens y sus
-     dos snippets, en Colors y en States tonal. -->
-
+     Once pares. El ultimo es la receta del FAB: M3 lo publica como componente
+     aparte, pero sus medidas ya estan aqui (40/56/96 con corner-medium,
+     corner-large y corner-extra-large, y elevacion level3). Lo que no esta es
+     su color, que es primary-container: el icono-button no tiene variante para
+     ese rol, ni la tiene en M3 tampoco. -->
 <body class="md-bg-background md-text-on-background md-type-body-medium">
   <main class="sr-page">
 
@@ -183,6 +183,23 @@
       </div>
       <pre class="sr-code"><code>&lt;a class="md-icon-button md-icon-button-filled md-icon-button-small" href="#" aria-label="Ajustes"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/a&gt;
 &lt;a class="md-icon-button md-icon-button-standard md-icon-button-small" href="#" aria-label="Notificaciones"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;notifications&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/a&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+
+    <!-- PAREJA: el icono-button como FAB (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Fab</h2>
+      <p class="md-type-body-medium">M3 publica el FAB aparte, pero sus medidas no son nuevas: 40, 56 y 96, con corner-medium, corner-large y corner-extra-large, y elevacion level3. Las tres coinciden con el icono-button cuadrado, asi que la receta es ese mas la sombra. Lo que NO coincide es el color: M3 pinta su FAB en primary-container y el icono-button no tiene variante para ese rol, asi que aqui va con filled, que es primary. Si un dia hace falta el color exacto, es una decision del componente y no de la receta.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-icon-button md-icon-button-filled md-icon-button-square md-icon-button-small md-elevation-3" type="button" aria-label="Ajustes"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
+        <button class="md-icon-button md-icon-button-filled md-icon-button-square md-icon-button-medium md-elevation-3" type="button" aria-label="Ajustes"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
+        <button class="md-icon-button md-icon-button-filled md-icon-button-square md-icon-button-large md-elevation-3" type="button" aria-label="Ajustes"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-icon-button md-icon-button-filled md-icon-button-square md-icon-button-small md-elevation-3" type="button" aria-label="Ajustes"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-icon-button md-icon-button-filled md-icon-button-square md-icon-button-medium md-elevation-3" type="button" aria-label="Ajustes"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-icon-button md-icon-button-filled md-icon-button-square md-icon-button-large md-elevation-3" type="button" aria-label="Ajustes"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
     <!-- PAREJA: hasta aqui -->
