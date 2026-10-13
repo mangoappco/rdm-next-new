@@ -35,6 +35,16 @@
   seleccionado" son por variante y no coinciden con los de la variante, y el
   glifo arranca contorneado en vez de relleno. Ese segundo detalle es el que
   separa un toggle de un boton de accion a simple vista.
+
+  TAMBIEN SE FUE EL PAR "Fab", Y ESTA VEZ PORQUE AHORA ES UN COMPONENTE.
+  Estuvo aqui como receta: icono-button con forma cuadrada y
+  md-elevation-3. Se quito al crear md-fab, y la receta tenia tres fallos
+  que la vista no mostraba. Daba primary donde M3 pide primary-container;
+  al heredar los cinco tamaños del icono-button ofrecia un FAB de 32px y
+  otro de 136px, que en M3 no existen; y ningun class de la receta decia
+  "fab", de modo que la afirmacion estaba en la prosa y no en el codigo.
+
+  El FAB tiene su propia vista en la seccion Accion del indice.
 -->
 
 <body class="md-bg-background md-text-on-background md-type-body-medium">
@@ -203,24 +213,6 @@
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
     <!-- PAREJA: hasta aqui -->
-
-
-    <!-- PAREJA: el icono-button como FAB (h2 + specimen + pre + boton). -->
-    <section class="sr-section">
-      <h2 class="md-type-title-large">Fab</h2>
-      <p class="md-type-body-medium">M3 publica el FAB aparte, pero sus medidas no son nuevas: 40, 56 y 96, con corner-medium, corner-large y corner-extra-large, y elevacion level3. Las tres coinciden con el icono-button cuadrado, asi que la receta es ese mas la sombra. Lo que NO coincide es el color: M3 pinta su FAB en primary-container y el icono-button no tiene variante para ese rol, asi que aqui va con filled, que es primary. Si un dia hace falta el color exacto, es una decision del componente y no de la receta.</p>
-      <div class="sr-specimen sr-specimen-gap">
-        <button class="md-icon-button md-icon-button-filled md-icon-button-square md-icon-button-small md-elevation-3" type="button" aria-label="Ajustes"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
-        <button class="md-icon-button md-icon-button-filled md-icon-button-square md-icon-button-medium md-elevation-3" type="button" aria-label="Ajustes"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
-        <button class="md-icon-button md-icon-button-filled md-icon-button-square md-icon-button-large md-elevation-3" type="button" aria-label="Ajustes"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
-      </div>
-      <pre class="sr-code"><code>&lt;button class="md-icon-button md-icon-button-filled md-icon-button-square md-icon-button-small md-elevation-3" type="button" aria-label="Ajustes"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
-&lt;button class="md-icon-button md-icon-button-filled md-icon-button-square md-icon-button-medium md-elevation-3" type="button" aria-label="Ajustes"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
-&lt;button class="md-icon-button md-icon-button-filled md-icon-button-square md-icon-button-large md-elevation-3" type="button" aria-label="Ajustes"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
-      <button type="button" class="sr-copy" data-copy>Copiar</button>
-    </section>
-    <!-- PAREJA: hasta aqui -->
-
 
   </main>
 </body>

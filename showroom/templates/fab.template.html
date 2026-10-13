@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FAB — RDM ManGo! App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+  <link rel="stylesheet" href="../../src/css/main.css">
+  <link rel="stylesheet" href="../assets/showroom.css">
+  <script src="../assets/showroom.js"></script>
+</head>
+
+<!--
+  COMO USAR ESTE TEMPLATE (copiar a showroom/components/fab.html):
+  1. Cambiar <title> y el h1. La descripcion del header ya dice el alcance.
+  2. Parejas por seccion (specimen + pre + boton). El specimen y el <pre>
+     llevan EXACTAMENTE el mismo marcado: REGLA 11 compara los dos.
+  3. NADA de showroom dentro del snippet (REGLA 13): sin sr-*, sin barras
+     medidoras. Si una seccion necesita mas contexto que su FAB, ese
+     contexto va en el parrafo de arriba, no en el bloque copiable.
+
+  LO QUE ESTA VISTA NO DICE, Y POR QUE
+  ------------------------------------
+  LA ELEVACION AL PASAR NO SE PUEDE ENSENAR AQUI. Es el unico gesto que
+  distingue al FAB de un icono-button: la sombra sube de level3 a level4
+  al poner el raton encima y vuelve a level3 al pulsar. Una vista estatica
+  no tiene raton, asi que el salto se describe en el parrafo y se mide en
+  el navegador. Tampoco se transiciona: M3 no publica un par de motion para
+  la sombra, solo un valor por estado.
+
+  NO HAY POSICIONAMIENTO, Y NO ES UN OLVIDO. Un FAB de M3 no trae
+  `position` ninguna: sus 79 lineas no tienen ni una. Ponerlo en la esquina
+  es guia de diseño, no el componente, y una caja flotante en el CSS se
+  romperia en cuanto alguien la meta en un flujo normal. Quien necesite el
+  FAB pegado a una esquina, lo posiciona desde su propio layout.
+
+  NI EXTENDED FAB NI FAB MENU. El primero es un FAB con etiqueta, y
+  `md-button` ya es un boton con etiqueta: solo falta ponerle un icono. El
+  segundo es el que se transforma y conmuta, y trae morph y toggle, los dos
+  vetados en ManGo! App.
+
+  SOLO TRES TAMANOS Y DOS COLORES. M3 publica tres tamaños para el FAB (no
+  los cinco del icono-button) y ocho variantes de color. Aqui hay dos: la
+  base, que ya es primary-container, y la explicita. Las otras seis son
+  decisiones que nadie ha tomado todavia.
+-->
+
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <main class="sr-page">
+
+    <!-- HEADER: inicio (barra + titulo + descripcion) -->
+    <header class="sr-header">
+      <div class="sr-bar">
+        <p class="md-type-body-medium"><a href="../index.html">RDM ManGo! App</a></p>
+        <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
+      </div>
+      <h1 class="md-type-display-large">FAB</h1>
+      <p class="md-type-body-large">El boton de accion principal. Tres tamaños, forma cuadrada con esquinas grandes y una sombra que sube al pasar el raton. Es un componente aparte del icono-button: en M3 lo es, y aqui tambien.</p>
+    </header>
+    <!-- HEADER: fin -->
+
+    <hr class="md-divider">
+
+    <!-- PAREJA: el ejemplo basico (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Clase base</h2>
+      <p class="md-type-body-medium">La clase base sola: 56px, primary-container, sombra level3. No pide ni tamaños ni variantes, porque la base ya trae medium y ya trae el color por defecto. Es el unico FAB que necesita una pantalla en general.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-fab" type="button" aria-label="Añadir"><span class="md-fab-icon md-icon" aria-hidden="true">add</span><span class="md-fab-touch"></span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-fab" type="button" aria-label="Añadir"&gt;&lt;span class="md-fab-icon md-icon" aria-hidden="true"&gt;add&lt;/span&gt;&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: los tres tamaños (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Sizes</h2>
+      <p class="md-type-body-medium">Small, medium (sin clase, que es la base) y large. Van de 40 a 96px, y el glifo crece con ellos: 24, 24 y 36. En M3 no hay ni xsmall ni xlarge para el FAB, y esta clase no los tiene tampoco.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-fab md-fab-small" type="button" aria-label="Añadir"><span class="md-fab-icon md-icon" aria-hidden="true">add</span><span class="md-fab-touch"></span></button>
+        <button class="md-fab" type="button" aria-label="Añadir"><span class="md-fab-icon md-icon" aria-hidden="true">add</span><span class="md-fab-touch"></span></button>
+        <button class="md-fab md-fab-large" type="button" aria-label="Añadir"><span class="md-fab-icon md-icon" aria-hidden="true">add</span><span class="md-fab-touch"></span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-fab md-fab-small" type="button" aria-label="Añadir"&gt;&lt;span class="md-fab-icon md-icon" aria-hidden="true"&gt;add&lt;/span&gt;&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-fab" type="button" aria-label="Añadir"&gt;&lt;span class="md-fab-icon md-icon" aria-hidden="true"&gt;add&lt;/span&gt;&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-fab md-fab-large" type="button" aria-label="Añadir"&gt;&lt;span class="md-fab-icon md-icon" aria-hidden="true"&gt;add&lt;/span&gt;&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: los dos colores (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Colors</h2>
+      <p class="md-type-body-medium">La base ya es primary-container, y md-fab-primary la vuelve a declarar a secas. Se enseñan las dos aunque midan igual: es el mismo precedente que md-button-filled, el nombre que alguien escribe primero tiene que existir. M3 publica seis variantes de color mas, que no estan porque nadie las ha pedido.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-fab" type="button" aria-label="Añadir"><span class="md-fab-icon md-icon" aria-hidden="true">add</span><span class="md-fab-touch"></span></button>
+        <button class="md-fab md-fab-primary" type="button" aria-label="Añadir"><span class="md-fab-icon md-icon" aria-hidden="true">add</span><span class="md-fab-touch"></span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-fab" type="button" aria-label="Añadir"&gt;&lt;span class="md-fab-icon md-icon" aria-hidden="true"&gt;add&lt;/span&gt;&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-fab md-fab-primary" type="button" aria-label="Añadir"&gt;&lt;span class="md-fab-icon md-icon" aria-hidden="true"&gt;add&lt;/span&gt;&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: deshabilitado y enlace (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Disabled y enlace</h2>
+      <p class="md-type-body-medium">Con disabled baja el glifo a on-surface al 38% y se apaga la sombra. El segundo es un <code>&lt;a&gt;</code>: mismo marcado, mismo aspecto. El subrayado se quita en el componente, porque el glifo es texto y el navegador le pone uno morado debajo.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-fab" type="button" aria-label="Añadir" disabled><span class="md-fab-icon md-icon" aria-hidden="true">add</span><span class="md-fab-touch"></span></button>
+        <a class="md-fab" href="#" aria-label="Compartir"><span class="md-fab-icon md-icon" aria-hidden="true">share</span><span class="md-fab-touch"></span></a>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-fab" type="button" aria-label="Añadir" disabled&gt;&lt;span class="md-fab-icon md-icon" aria-hidden="true"&gt;add&lt;/span&gt;&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;a class="md-fab" href="#" aria-label="Compartir"&gt;&lt;span class="md-fab-icon md-icon" aria-hidden="true"&gt;share&lt;/span&gt;&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/a&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: contra el icono-button (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">FAB y icono-button</h2>
+      <p class="md-type-body-medium">Los dos miden 56px aqui y el mismo glifo. Se diferencian en el color (primary-container contra primary), en la forma (esquinas de 16px contra redonda) y en la sombra, que el icono-button no tiene. Son componentes distintos en M3 y en el sistema, y no son intercambiables.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-fab" type="button" aria-label="Ajustes"><span class="md-fab-icon md-icon" aria-hidden="true">settings</span><span class="md-fab-touch"></span></button>
+        <button class="md-icon-button md-icon-button-filled md-icon-button-medium" type="button" aria-label="Ajustes"><span class="md-icon-button-icon md-icon" aria-hidden="true">settings</span><span class="md-icon-button-touch"></span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-fab" type="button" aria-label="Ajustes"&gt;&lt;span class="md-fab-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-icon-button md-icon-button-filled md-icon-button-medium" type="button" aria-label="Ajustes"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+  </main>
+  <!-- MAIN: fin -->
+</body>
+</html>

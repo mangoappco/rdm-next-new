@@ -333,6 +333,38 @@
   --md-sys-measurement-button-group-between-space-xsmall: var(--md-ref-spacing-200);
 
   /* ==========================================================================
+     MEDIDAS DEL FAB
+     --------------------------------------------------------------------------
+     El FAB no es un icono-button disfrazado: M3 lo publica como componente
+     aparte, con sus propias familias de token y SUS PROPIOS TRES TAMANOS.
+     Verificado en `tokens/versions/latest/sass/_md-comp-fab*.scss`, que son
+     tres archivos y ninguno mas:
+
+       _md-comp-fab-small        40 / 40   icono 24   corner-medium
+       _md-comp-fab              56 / 56   icono 24   corner-large      (base)
+       _md-comp-fab-large        96 / 96   icono 36   corner-extra-large
+
+     En M3 no hay ni xsmall ni xlarge, y por eso estos tres roles y no cinco.
+     Un `md-fab-xlarge` no llega a pintarse; en nuestro icono-button esa clase
+     existe y daria 136px. Tener el nombre propio es lo que impide esa rota.
+
+     ALTO Y ANCHO SE JUNTAN: los dos de M3 son siempre iguales (es un cuadrado
+     perfecto), asi que se declaran una sola vez y el componente reapunta el
+     ancho a la altura, como ya hace `--md-comp-icon-button-width`. Dos
+     ficheros que puedan desincronizarse es una puerta abierta.
+
+     EL 36 DEL ICONO EN LARGE SI ESTA EN NUESTRA ESCALA, solo que no en la de
+     iconos: publicamos 20, 24, 40 y 48. Pero si sale de `spacing`, que es
+     como ya lo hacemos en el icono-button (`--md-sys-measurement-icon-
+     button-icon-large` apunta a `spacing-400` = 32px), entonces 36 es
+     `spacing-450` y cae de cajón. Sin desvío. */
+  --md-sys-measurement-fab-height: var(--md-ref-container-height-medium);
+  --md-sys-measurement-fab-height-small: var(--md-ref-container-height-small);
+  --md-sys-measurement-fab-height-large: var(--md-ref-container-height-large);
+  --md-sys-measurement-fab-icon-size: var(--md-ref-spacing-300);
+  --md-sys-measurement-fab-icon-size-large: var(--md-ref-spacing-450);
+
+  /* ==========================================================================
      MEDIDAS DE ICONOS
      --------------------------------------------------------------------------
      M3 publica CUATRO tamanos de icono, ni uno mas: 20, 24, 40 y 48 dp.

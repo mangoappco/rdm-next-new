@@ -1,0 +1,416 @@
+/* ==========================================================================
+   3-components/fab.css — BOTON DE ACCION FLOTANTE (Capa 3)
+   ==========================================================================
+
+   QUE ES ESTE COMPONENTE
+   ----------------------
+   El boton flotante de accion principal, y no un icono-button disfrazado.
+   M3 lo publica como componente SEPARADO, con sus propias familias de token
+   y su propio juego de tamanos. La receta que habia antes en la vista del
+   icono-button (`md-icon-button-filled md-icon-button-square ...`) dibujaba
+   un cuadrado de 56px con elevation, pero hacia tres cosas mal, y las tres
+   en silencio:
+
+      COLOR      la receta daba `primary`/`on-primary`; M3 pide
+                 `primary-container`/`on-primary-container`. Diferencia
+                 visible: #eaddff con #21005d, no #6750a4 con #fff.
+      TAMANOS    al heredar los cinco del icono-button ofrecia un FAB de
+                 32px y otro de 136px, que en M3 no existen.
+      NOMBRE     ningun class de la receta decia "fab". La afirmacion estaba
+                 en la prosa de la vista, no en el codigo, y si se cambia una
+                 clase el snippet deja de ser un FAB sin avisar.
+
+   MEDIDAS (tokens/versions/latest/sass/_md-comp-fab*.scss: TRES archivos)
+      small    contenedor 40px    glifo 24px   corner-medium
+      medium   contenedor 56px    glifo 24px   corner-large     (sin clase)
+      large    contenedor 96px    glifo 36px   corner-extra-large
+
+   En M3 no hay ni xsmall ni xlarge. Son tres y ninguno mas. Un `md-fab-
+   xlarge` no llega a pintarse, y eso es el proposito: en el icono-button
+   esa clase existe y daria 136px.
+
+   ANCHO Y ALTO SON SIEMPRE IGUALES: el FAB es un cuadrado perfecto en M3,
+   asi que no hay eje de anchos como en el boton de icono (narrow/uniform/
+   wide). Se declara la altura una vez y el ancho se le reapunta, como ya
+   hace el icono-button con `--md-comp-icon-button-width`: dos valores que
+   puedan desincronizarse es una puerta abierta.
+
+   TAMANO OPTICO DEL GLIFO (sigue a su tamano fisico, como pide M3)
+      small 24   medium 24   large 40
+      El 36 del large NO esta en nuestra escalera de iconos (20/24/40/48)
+      pero si en la de espacio: `spacing-450` = 36px. Es la misma via por la
+      que el icono-button saca sus glifos de `spacing` y no de una escalera
+      propia. Sin desvio.
+
+   COLORES (tokens/versions/latest/sass/_md-comp-fab-*-container.scss)
+      base                primary-container / on-primary-container
+      capa de estado      on-primary-container (el color del glifo)
+      deshabilitado       on-surface al 38%
+      elevacion           level3 en reposo, EN FOCO y AL PULSAR;
+                          level4 AL PASAR EL RATON. Ese subidon es lo
+                          tipico de un FAB y el icono-button no lo tiene.
+
+   LO QUE NO IMPLEMENTA: ni extended FAB (un FAB con etiqueta: nuestro
+   `md-button` ya es un boton con etiqueta y solo falta ponerle un icono),
+   ni FAB menu (el que se transforma y conmuta: morph y toggle, los dos
+   vetados en ManGo! App). Ver el commit 27bc477.
+
+   LA ELEVACION NO SE ANIMA, Y NO ES UN DESCUIDO
+   ---------------------------------------------
+   M3 publica el cambio de elevacion como un VALOR POR ESTADO en
+   `_md-comp-fab-primary-container.scss`, no como un par de motion. Su
+   propia implementacion de referencia, `labs/gb/components/fab/fab-
+   element.ts`, no declara ninguna transicion en la sombra tampoco: la
+   elevacion salta. Aqui se hace igual, y se deja escrito para que no se
+   intente "arreglar" despues: no hay un token de motion al que apuntar.
+
+   Y tampoco choca con la capa de estado, que si se transiciona en 200ms:
+   la sombra sube de level3 a level4, que es un escalon pequeno, mientras
+   el tinte es la senal protagonista. Los dos tiempos no se perciben
+   desincronizados.
+
+   ANATOMIA DEL MARCADO
+      <button class="md-fab" type="button" aria-label="Editar">
+        <span class="md-fab-icon md-icon" aria-hidden="true">edit</span>
+        <span class="md-fab-touch"></span>
+      </button>
+
+   aria-label SIEMPRE (sin etiqueta visible que anuncie la accion) y el
+   glifo con aria-hidden (el nombre ya esta en el control).
+
+   TOKENS DEL COMPONENTE: capa 3, leen UNICAMENTE 2-system-tokens
+   (REGLA 2). Cada tamano y variante reapunta estos, ninguno escribe
+   numeros. Los cinco roles nuevos estan en
+   2-system-tokens/measurement.css, seccion MEDIDAS DEL FAB.
+   ========================================================================== */
+
+.md-fab {
+  /* Medidas. La base viste MEDIUM (56px): es el tamano por defecto de M3,
+     el unico que no lleva clase. */
+  --md-comp-fab-height: var(--md-sys-measurement-fab-height);
+  --md-comp-fab-icon-size: var(--md-sys-measurement-fab-icon-size);
+
+  /* Ancho reapuntado a la altura, nunca un valor suelto. */
+  --md-comp-fab-width: var(--md-comp-fab-height);
+
+  /* Tamano optico del glifo y su longitud: el mismo patron que el
+     icon-button. El primero lo hereda .md-icon por herencia; el segundo es
+     una regla aparte porque .md-icon declara font-size en utilities, la
+     capa mas fuerte del sistema, y cualquier font-size aqui seria codigo
+     muerto. Se reapunta el rol que .md-icon LEE. */
+  --md-sys-icon-optical-size: var(--md-sys-icon-optical-size-medium);
+  --md-sys-measurement-icon-size: var(--md-comp-fab-icon-size);
+  --md-sys-icon-fill: var(--md-sys-icon-fill-full);
+
+  /* Forma. Es la media altura del tamano, que es como define M3 la forma
+     del FAB, y escala con el tamano: corner-medium en small, corner-large
+     aqui y en medium, corner-extra-large en large. Es el mismo escalon que
+     la variante square del icono-button, no una decision nuestra. */
+  --md-comp-fab-shape: var(--md-sys-shape-corner-large);
+
+  /* Color. La base es la variante `primary-container`, que en M3 es la
+     primera de las ocho que publica. Mismo criterio que el boton: la base
+     ya ES una variante, y la explicita (.md-fab-primary) la vuelve a
+     declarar por el mismo motivo de siempre --el nombre que alguien va a
+     escribir primero tiene que existir--. Ver 5489438. */
+  --md-comp-fab-container-color: var(--md-sys-color-primary-container);
+  --md-comp-fab-icon-color: var(--md-sys-color-on-primary-container);
+
+  /* Elevacion. level3 en reposo y level4 solo al pasar el raton; M3 vuelve
+     a level3 en foco y al pulsar. */
+  --md-comp-fab-elevation: var(--md-sys-elevation-level3);
+  --md-comp-fab-elevation-hovered: var(--md-sys-elevation-level4);
+
+  /* Estado. Un solo par, effects + short4 = 200ms, igual que el boton y el
+     icon-button. La capa toma currentColor: sin token propio de color. */
+  --md-comp-fab-state-duration: var(--md-sys-motion-duration-short4);
+  --md-comp-fab-state-easing: var(--md-sys-motion-easing-effects-default);
+
+  /* Anillo de foco M3: 3px de grosor, 2px de separacion. */
+  --md-comp-fab-focus-color: var(--md-sys-color-secondary);
+  --md-comp-fab-focus-width: var(--md-sys-shape-stroke-extra-thick);
+  --md-comp-fab-focus-offset: var(--md-sys-shape-stroke-thick);
+
+  /* Area tactil 48dp de M3. Aqui SI hace falta: el FAB small mide 40dp y
+     se queda 8dp por debajo del minimo, que es justo lo que el span
+     cubre. En medium (56) y large (96) ya se pasa y `max()` lo convierte
+     en un no-op, sin tocar la caja. Se deja igual que en el icon-button
+     para que los dos componentes se comporten igual. */
+  --md-comp-fab-touch-size: var(--md-sys-measurement-touch-target);
+
+  box-sizing: border-box;
+  position: relative;
+  isolation: isolate;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  /* `middle`, y NO lo que trae M3, que no declara `vertical-align` ninguno.
+     La misma linea que llevan el boton y el icon-button. Un FAB es
+     inline-flex, asi que sin esto su linea de midline la saca su primer
+     hijo (el glifo) y se va de la linea con cualquier texto que lo rodee.
+     Medido dos veces ya en otros dos componentes: 8.00px con texto al lado
+     y 3.50px de desfase entre dos iconos sin esto.
+
+     En un contenedor flex, como `.sr-specimen`, no se aplica y el
+     comportamiento es el de antes. */
+  vertical-align: middle;
+
+  inline-size: var(--md-comp-fab-width);
+  block-size: var(--md-comp-fab-height);
+
+  padding: 0;
+  /* `none`, no `thin`: con un borde de 1px invisible se recortarian 2px al
+     area de contenido (box-sizing: border-box) y el glifo quedaria fuera de
+     centro respecto al contenedor que ve el usuario. */
+  border: 0;
+  border-radius: var(--md-comp-fab-shape);
+  background-color: var(--md-comp-fab-container-color);
+  box-shadow: var(--md-comp-fab-elevation);
+
+  color: var(--md-comp-fab-icon-color);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+
+  /* Sin `transition` de box-shadow: ver la nota de arriba sobre la
+     elevacion. Y sin `transition` de border-radius, que ademas es fija
+     durante toda la vida del componente. */
+
+  /* El subrayado SOLO aparece cuando el control se usa como <a>. El glifo
+     de Material Symbols es texto, asi que el navegador le dibuja el
+     subrayado del enlace en el color del icono: sobre el
+     `primary-container` se ve una rayita morada. Se quita aqui y no en el
+     reset, que no debe tomar partido sobre los enlaces de texto. */
+  text-decoration: none;
+}
+
+/* ---------------------------------------------------------------------------
+   EL ICONO
+   ---------------------------------------------------------------------------
+   Un icono de Material Symbols es texto: se escala con font-size. Los cuatro
+   ejes los declara .md-icon, que esta en utilities (REGLA 9) y es la capa
+   mas fuerte, asi que una font-variation-settings aqui seria codigo muerto.
+
+   El color si se fija aqui, y no por herencia, por el mismo motivo que en el
+   icon-button: la capa de estado toma currentColor del HOST y tiene que ser
+   el color del glifo, no otro. Fijandolo en los dos sitios los dos leen lo
+   mismo y no se pueden desviar.
+   ------------------------------------------------------------------------ */
+
+.md-fab .md-fab-icon {
+  color: var(--md-comp-fab-icon-color);
+}
+
+.md-fab-icon {
+  flex: 0 0 auto;
+  inline-size: var(--md-comp-fab-icon-size);
+  block-size: var(--md-comp-fab-icon-size);
+  font-size: var(--md-comp-fab-icon-size);
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---------------------------------------------------------------------------
+   LA CAPA DE ESTADO
+   ---------------------------------------------------------------------------
+   Patron de 2-system-tokens/state.css: pseudo-elemento con currentColor,
+   opacidad 0 en reposo, transicion de opacidad. Se acota por geometria
+   (inset: 0 + radius inherit): sin overflow que recortar.
+   ------------------------------------------------------------------------ */
+
+.md-fab::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: currentColor;
+  opacity: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  transition: opacity
+    var(--md-comp-fab-state-duration)
+    var(--md-comp-fab-state-easing);
+}
+
+/* :active despues de :hover y :focus-visible: mantener pulsado un control
+   ya iluminado muestra la intensidad correcta. */
+.md-fab:hover::after {
+  opacity: var(--md-sys-state-hover-state-layer-opacity);
+}
+
+.md-fab:focus-visible::after {
+  opacity: var(--md-sys-state-focus-state-layer-opacity);
+}
+
+.md-fab:active::after {
+  opacity: var(--md-sys-state-pressed-state-layer-opacity);
+}
+
+/* ---------------------------------------------------------------------------
+   LA ELEVACION EN ESTADOS
+   ---------------------------------------------------------------------------
+   Lo tipico de un FAB: la sombra sube de level3 a level4 al pasar el raton
+   y vuelve a level3 en cuanto se enfoca o se pulsa. Es lo unico que
+   distingue este componente del icono-button en comportamiento.
+
+   El orden importa: :active va despues de :hover, para que al pulsar con el
+   raton encima se lea level3 y no se quede pegado el level4 del hover.
+   ------------------------------------------------------------------------ */
+
+.md-fab:hover {
+  box-shadow: var(--md-comp-fab-elevation-hovered);
+}
+
+.md-fab:focus-visible,
+.md-fab:active {
+  box-shadow: var(--md-comp-fab-elevation);
+}
+
+/* ---------------------------------------------------------------------------
+   EL ANILLO DE FOCO
+   ---------------------------------------------------------------------------
+   :focus-visible y no :focus (el raton no necesita anillo). No se anula el
+   outline nativo: se sustituye declarando los valores propios.
+   ------------------------------------------------------------------------ */
+
+.md-fab:focus-visible {
+  outline: var(--md-comp-fab-focus-width) solid
+    var(--md-comp-fab-focus-color);
+  outline-offset: var(--md-comp-fab-focus-offset);
+}
+
+/* ---------------------------------------------------------------------------
+   DISABLED
+   ---------------------------------------------------------------------------
+   M3 baja el icono a on-surface al 38%, sin capa de estado. Y sin el
+   subidon de elevacion al pasar: pointer-events no deja que llegue el
+   hover, pero se pone igual por si el deshabilitado se aplica con foco
+   puesto. cursor y sombra se quedan en el de reposo.
+
+   OJO CON EL SELECTOR DOBLE, QUE NO ES REDUNDANTE. `.md-fab:disabled`
+   llega con (0,1,1) y el glifo lo pinta `.md-fab .md-fab-icon`, que es
+   (0,2,0) y le gana. Sin el segundo selector el glifo se quedaba en
+   on-primary-container y solo se movia la opacidad: medido, no supuesto.
+   Con `.md-fab:disabled .md-fab-icon` sube a (0,3,0) y alcanza al glifo.
+   Quitar la mitad del selector se vuelve al fallo en silencio: el FAB se
+   sigue viendo, con el tono equivocado.
+   ------------------------------------------------------------------------ */
+
+.md-fab:disabled,
+.md-fab:disabled .md-fab-icon {
+  color: var(--md-sys-color-on-surface);
+  opacity: var(--md-sys-state-disabled-state-layer-opacity);
+  cursor: default;
+  pointer-events: none;
+}
+
+.md-fab:disabled,
+.md-fab:disabled:hover {
+  box-shadow: var(--md-comp-fab-elevation);
+}
+
+/* ---------------------------------------------------------------------------
+   LA SUPERFICIE DE TOQUE
+   ---------------------------------------------------------------------------
+   Receta de iconbutton de M3: crece en LOS DOS ejes. Aqui los contenedores
+   son cuadrados y ya empiezan en 40dp, pero se deja identica para que los
+   dos componentes se comporten igual si algun dia se cambia el minimo.
+   ------------------------------------------------------------------------ */
+
+.md-fab-touch {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  block-size: max(var(--md-comp-fab-touch-size), 100%);
+  inline-size: max(var(--md-comp-fab-touch-size), 100%);
+  transform: translate(-50%, -50%);
+}
+
+/* ---------------------------------------------------------------------------
+   TAMANOS
+   --------------------------------------------------------------------------
+   Tres, y ninguno mas. M3 no publica ni xsmall ni xlarge para el FAB.
+
+   Solo small y large: medium es la base y no lleva clase, igual que hace
+   M3 con `_md-comp-fab.scss` (que es el de 56px).
+
+   Cada uno declara su tamano optico, porque en M3 el optico sigue al
+   glifo: 24 en small y medium, 40 en large. Y la forma, que escala con el
+   tamano: corner-medium, corner-large y corner-extra-large.
+   ------------------------------------------------------------------------ */
+
+.md-fab-small {
+  --md-comp-fab-shape: var(--md-sys-shape-corner-medium);
+  --md-comp-fab-height: var(--md-sys-measurement-fab-height-small);
+  --md-comp-fab-icon-size: var(--md-sys-measurement-fab-icon-size);
+}
+
+.md-fab-large {
+  /* El optico del large lo declara AQUI el componente, no M3: en
+     `_md-comp-fab-large.scss` no hay ningun `icon-optical-size`, solo el
+     tamano fisico de 36px. Sin reapuntarlo se quedaria en el mediano (24,
+     que es el que fija la base) y un glifo de 36px saldria con el trazo
+     fino de uno de 24.
+
+     Se usa el optico grande (40) por la misma proporcion que ya mantiene el
+     icono-button: alla su glifo de 32px lleva optico 40, mas que su
+     tamano fisico. El optico sigue al ESCALON del glifo, no al pixel
+     exacto. M3 no lo publica porque en la familia FAB no lo necesita, pero
+     nosotros no podemos dejar el rol sin elegir. */
+  --md-sys-icon-optical-size: var(--md-sys-icon-optical-size-large);
+  --md-comp-fab-shape: var(--md-sys-shape-corner-extra-large);
+  --md-comp-fab-height: var(--md-sys-measurement-fab-height-large);
+  --md-comp-fab-icon-size: var(--md-sys-measurement-fab-icon-size-large);
+}
+
+/* ---------------------------------------------------------------------------
+   VARIANTES
+   ---------------------------------------------------------------------------
+   M3 publica OCHO para el FAB: primary, primary-container, secondary,
+   secondary-container, tertiary, tertiary-container, branded y surface.
+
+   Aqui solo la que ya es la base, declarada otra vez. Con esta la familia
+   completa esta cubierta para ManGo! App, y las otras siete no son codigo
+   que falte sino decisiones que no han hecho falta. Apareceran si alguna
+   pantalla pide dos FAB jerarquicamente distintos, que es lo unico para lo
+   que sirven.
+
+   Ojo con lo que NO es una variante: la base no tiene ninguna. En
+   `_md-comp-fab.scss`, el fichero de M3 para el tamano por defecto, no hay
+   ni un `container-color`. El color SIEMPRE viene de una de las ocho
+   familias; aqui la base ya trae la primera.
+   ------------------------------------------------------------------------ */
+
+.md-fab-primary {
+  --md-comp-fab-container-color: var(--md-sys-color-primary);
+  --md-comp-fab-icon-color: var(--md-sys-color-on-primary);
+}
+
+/* ---------------------------------------------------------------------------
+   FORCED COLORS
+   ---------------------------------------------------------------------------
+   El borde va con el grosor thin y NO solo con `border-color`, que es lo
+   que hace el icono-button y no funciona: su base pone el grosor en
+   `stroke-none` (0px), y recolorear un borde de cero de grosor no dibuja
+   nada. En forced-colors el sistema operativo tira del color de Canvas y
+   solo se pinta lo que tiene forma. El grosor, hay que darlo aqui.
+
+   `thin` y no otro: es 1px, el mismo que declara M3 para el borde de sus
+   componentes (2-system-tokens/shape.css, que lo lee de
+   1-reference-tokens/stroke.css, el unico sitio donde se escribe el numero).
+   ------------------------------------------------------------------------ */
+
+@media (forced-colors: active) {
+  .md-fab {
+    border: var(--md-sys-shape-stroke-thin) solid CanvasText;
+  }
+
+  .md-fab:disabled {
+    color: GrayText;
+    opacity: 1;
+  }
+}
