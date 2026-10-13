@@ -131,14 +131,14 @@
     <!-- PAREJA: los tamaños (h2 + specimen + pre + boton). -->
     <section class="sr-section">
       <h2 class="md-type-title-large">Sizes</h2>
-      <p class="md-type-body-medium">Las tres miden 56px. M3 no publica tamaños para el extended FAB — <code>fab.md</code> lo escribe con todas las letras — aunque sí entrega los ficheros extended-fab-small, -medium y -large; aquí no se copia esa contradicción. El tamaño va fijo en el modificador, así que <code>md-fab-small</code> y <code>md-fab-large</code> encima de un extended no mueven nada: un <code>md-fab-small</code> de verdad baja a 40. La pareja está para que se vea el límite, no como combinación que convenga copiar.</p>
+      <p class="md-type-body-medium">Base sin clase, medium y large. Miden 56, 80 y 96px, y con el tamano cambian las seis medidas: alto, forma, glifo, optico, padding y tipografia. Las que no comparten los tres: el padding, 16, 26 y 28; el hueco entre icono y texto, 8, 12 y 16; y una tipografia distinta por tamano, de title-medium a headline-small. Aqui no hay small: la escalera del extended empieza en 56 y no en 40, y <code>md-fab-small</code> encima de un extended no mueve nada porque su medidas ya estan reapuntadas.</p>
       <div class="sr-specimen sr-specimen-gap">
-        <button class="md-fab md-fab-small md-fab-extended" type="button"><span class="md-icon" aria-hidden="true">edit</span>Editar<span class="md-fab-touch"></span></button>
         <button class="md-fab md-fab-extended" type="button"><span class="md-icon" aria-hidden="true">edit</span>Editar<span class="md-fab-touch"></span></button>
+        <button class="md-fab md-fab-medium md-fab-extended" type="button"><span class="md-icon" aria-hidden="true">edit</span>Editar<span class="md-fab-touch"></span></button>
         <button class="md-fab md-fab-large md-fab-extended" type="button"><span class="md-icon" aria-hidden="true">edit</span>Editar<span class="md-fab-touch"></span></button>
       </div>
-      <pre class="sr-code"><code>&lt;button class="md-fab md-fab-small md-fab-extended" type="button"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;Editar&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;
-&lt;button class="md-fab md-fab-extended" type="button"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;Editar&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+      <pre class="sr-code"><code>&lt;button class="md-fab md-fab-extended" type="button"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;Editar&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-fab md-fab-medium md-fab-extended" type="button"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;Editar&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;
 &lt;button class="md-fab md-fab-large md-fab-extended" type="button"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;Editar&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
@@ -147,7 +147,7 @@
     <!-- PAREJA: con y sin icono (h2 + specimen + pre + boton). -->
     <section class="sr-section">
       <h2 class="md-type-title-large">Icon</h2>
-      <p class="md-type-body-medium">Las dos formas de la misma clase, en el mismo recuadro. Con icono la caja abre con 16px y cierra con 20; sin icono abre con 20, para que la palabra no se quede pegada al borde. M3 resuelve ese salto metiendo un <code>&lt;span&gt;</code> vacío de relleno dentro del slot; aqui se pregunta si hay icono con <code>:has()</code>, que deja el snippet de un solo elemento y sin adorno. <code>fab.md</code> dice que solo los FAB extendidos pueden ir sin icono.</p>
+      <p class="md-type-body-medium">Las dos formas de la misma clase, en el mismo recuadro. Con y sin icono la caja abre y cierra igual, porque M3 Expressive simetriza el padding de los tres tamaños y ya no hay nada que igualar. Antes, con el baseline, abría con 16 y cerraba con 20 y la variante sin icono se quedaba torcida; se arreglaba preguntando con <code>:has()</code> y en M3 con un <code>&lt;span&gt;</code> vacío de relleno dentro del slot. Esa regla se retiró: una que no hace nada es una que alguien va a tocar creyendo que sí. <code>fab.md</code> dice que solo los FAB extendidos pueden ir sin icono.</p>
       <div class="sr-specimen sr-specimen-gap">
         <button class="md-fab md-fab-extended" type="button"><span class="md-icon" aria-hidden="true">navigation</span>Navegar<span class="md-fab-touch"></span></button>
         <button class="md-fab md-fab-extended" type="button">Nuevo hilo<span class="md-fab-touch"></span></button>
