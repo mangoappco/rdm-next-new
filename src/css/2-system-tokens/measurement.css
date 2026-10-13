@@ -336,13 +336,21 @@
      MEDIDAS DEL FAB
      --------------------------------------------------------------------------
      El FAB no es un icono-button disfrazado: M3 lo publica como componente
-     aparte, con sus propias familias de token y SUS PROPIOS TRES TAMANOS.
-     Verificado en `tokens/versions/latest/sass/_md-comp-fab*.scss`, que son
-     tres archivos y ninguno mas:
+     aparte, con sus propias familias de token. Verificado en
+     `tokens/versions/latest/sass/_md-comp-fab*.scss`: publica CUATRO
+     ficheros, no tres, y el cuarto no se toma:
 
        _md-comp-fab-small        40 / 40   icono 24   corner-medium
        _md-comp-fab              56 / 56   icono 24   corner-large      (base)
        _md-comp-fab-large        96 / 96   icono 36   corner-extra-large
+       _md-comp-fab-medium       80 / 80   icono 28   corner-large-increased
+
+     LOS DOS "MEDIUM" NO SON EL MISMO. El de arriba, el de 56, no lleva
+     nombre de tamano porque en M3 es el base; `medium` en M3 ES el de 80px.
+     Aqui lo de 56 se sigue llamando base, y el de 80 se queda en el suelo:
+     en ManGo! App no ha pedido nadie un FAB de 80px. Conviene escribirlo,
+     porque alguien podria creer que falta una clase; lo que falta es un
+     pedido.
 
      En M3 no hay ni xsmall ni xlarge, y por eso estos tres roles y no cinco.
      Un `md-fab-xlarge` no llega a pintarse; en nuestro icono-button esa clase
@@ -363,6 +371,43 @@
   --md-sys-measurement-fab-height-large: var(--md-ref-container-height-large);
   --md-sys-measurement-fab-icon-size: var(--md-ref-spacing-300);
   --md-sys-measurement-fab-icon-size-large: var(--md-ref-spacing-450);
+
+  /* ==========================================================================
+     MEDIDAS DEL FAB EXTENDED
+     --------------------------------------------------------------------------
+     El mismo FAB al que se le anade texto (fab-extended.css). Verificado en
+     `tokens/versions/latest/sass/_md-comp-extended-fab.scss`: los tres
+     valores que no estaban publicados antes.
+
+       hueco icono-etiqueta   12px   icono y texto, ninguno de los dos toca
+       espacio inicial        16px   borde de lectura hasta el icono
+       espacio de cierre      20px   final de la frase hasta el borde
+
+     LOS TRES ESTAN EN LA ESCALA DE ESPACIADO SIN DESVIO: 12, 16 y 20 son
+     spacing-150, spacing-200 y spacing-250. Se declaran por nombre propio y
+     no por el nombre M3, que es casi el mismo pero no tiene por que seguir
+     siendolo; el valor y el token quedan por separado aqui.
+
+     EL 20 NO ES UN 24. Se propuso 24 de memoria y no es. La fuente real no
+     es el fichero de medida sino `fab/internal/_shared.scss`, lineas 64-65,
+     donde se aplica de verdad:
+
+         padding-inline-start: 16px;
+         padding-inline-end:   20px;
+
+     La asimetria no es un descuido: el icono queda pegado al borde por el
+     lado de lectura y la frase respira al cerrar. Conviene dejar escrito de
+     donde sale cada cifra porque es de donde salio el 24: leyendo el nombre
+     del token y no el archivo que lo usa.
+
+     LO QUE YA EXISTIA y por eso no se vuelve a declarar aqui: la altura
+     (56), la forma (16), el tamano del icono (24) y la tipografia
+     (label-large). El extended no tiene tamanos propios -- `fab.md` lo dice
+     con todas las letras, "Extended FABs do not have different sizes" -- asi
+     que tampoco hay escalera que completar. */
+  --md-sys-measurement-fab-extended-icon-label-space: var(--md-ref-spacing-150);
+  --md-sys-measurement-fab-extended-leading-space: var(--md-ref-spacing-200);
+  --md-sys-measurement-fab-extended-trailing-space: var(--md-ref-spacing-250);
 
   /* ==========================================================================
      MEDIDAS DE ICONOS

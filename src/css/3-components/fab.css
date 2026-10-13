@@ -20,10 +20,20 @@
                  en la prosa de la vista, no en el codigo, y si se cambia una
                  clase el snippet deja de ser un FAB sin avisar.
 
-   MEDIDAS (tokens/versions/latest/sass/_md-comp-fab*.scss: TRES archivos)
+   MEDIDAS (tokens/versions/latest/sass/_md-comp-fab*.scss)
       small    contenedor 40px    glifo 24px   corner-medium
-      medium   contenedor 56px    glifo 24px   corner-large     (sin clase)
+      base     contenedor 56px    glifo 24px   corner-large     (sin clase)
       large    contenedor 96px    glifo 36px   corner-extra-large
+
+   M3 publica CUATRO ficheros, no tres. El cuarto es `_md-comp-fab-medium`,
+   80px con `corner-large-increased` y glifo 28, y AQUI NO SE TOMA: en ManGo!
+   App no ha pedido nadie un FAB de 80px.
+
+   OJO CON LOS DOS "MEDIUM". El nuestro de 56px no tiene nombre de tamano
+   porque en M3 es el base: `medium` en M3 ES el de 80px. No es que nos
+   falte rebautizar nada, es que estamos usando dos vocabularios distintos
+   para la misma escalera. La seccion MEDIDAS DEL FAB de measurement.css
+   explica el recorte.
 
    En M3 no hay ni xsmall ni xlarge. Son tres y ninguno mas. Un `md-fab-
    xlarge` no llega a pintarse, y eso es el proposito: en el icono-button
@@ -50,10 +60,17 @@
                           level4 AL PASAR EL RATON. Ese subidon es lo
                           tipico de un FAB y el icono-button no lo tiene.
 
-   LO QUE NO IMPLEMENTA: ni extended FAB (un FAB con etiqueta: nuestro
-   `md-button` ya es un boton con etiqueta y solo falta ponerle un icono),
-   ni FAB menu (el que se transforma y conmuta: morph y toggle, los dos
-   vetados en ManGo! App). Ver el commit 27bc477.
+   LO QUE NO IMPLEMENTA: FAB menu (el que se transforma y conmuta: morph y
+   toggle, los dos vetados en ManGo! App). Ver el commit 27bc477.
+
+   EL EXTENDED FAB SI, Y NO ESTE AQUI. Se metio primero como "no haria falta,
+   nuestro `md-button` ya es un boton con etiqueta", y eso salio falso: M3
+   le da ocho ficheros de color propios, forma `corner-large` (no la pilota
+   del boton) y su propio archivo de medida. Como M3 tampoco lo separa en un
+   elemento nuevo -- es `<md-fab label="...">` y la clase `extended` la genera
+   shared.ts a partir de `!!this.label` -- el modificador vive en
+   `fab-extended.css` y la documentacion en su propia vista. Aqui solo queda
+   constado que existe.
 
    LA ELEVACION NO SE ANIMA, Y NO ES UN DESCUIDO
    ---------------------------------------------

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FAB extended — RDM ManGo! App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+  <link rel="stylesheet" href="../../src/css/main.css">
+  <link rel="stylesheet" href="../assets/showroom.css">
+  <script src="../assets/showroom.js"></script>
+</head>
+
+<!--
+  COMO USAR ESTE TEMPLATE (copiar a showroom/components/fab-extended.html):
+  1. Cambiar <title> y el h1. La descripcion del header ya dice el alcance.
+  2. Parejas por seccion (specimen + pre + boton). El specimen y el <pre>
+     llevan EXACTAMENTE el mismo marcado: REGLA 11 compara los dos.
+  3. NADA de showroom dentro del snippet (REGLA 13): sin sr-*, sin barras
+     medidoras. Si una seccion necesita mas contexto que su FAB, ese
+     contexto va en el parrafo de arriba, no en el bloque copiable.
+
+  ORDEN DE LAS PAREJAS: ES LA MISMA DE button.html
+  -----------------------------------------------
+  Clase base, Colors, Sizes, Shapes, States ... hasta Link. La pagina
+  button.html es la referencia de la casa y quien entra a una vista nueva
+  busca las cosas en ese orden. Aqui la lista es Clase base, Colors,
+  Sizes, Icon, States y Anclado. Sizes va justo debajo de Colors, que
+  es donde esta en fab.html, y se le sigue poniendo aunque el extended
+  no tenga tamaños: omitir una categoria porque esta vacia obliga a
+  releer toda la pagina para saber que falta algo. Ver abajo.
+
+  POR QUE ESTA VISTA EXISTE Y NO ES UNA SECCION DEL FAB
+  -----------------------------------------------------
+  Porque el extended FAB es un componente con su propia carpeta en el sistema,
+  fab-extended.css, y a un componente del showroom le toca su propia pagina.
+  La familia la forman dos y no una:
+
+      fab.html          el FAB solo-icono
+      fab-extended.html  el mismo FAB, con texto
+
+  M3 tampoco lo separa en un elemento nuevo: es `<md-fab label="...">`, el
+  mismo componente con la clase `extended` que genera shared.ts a partir de
+  `!!this.label`. Aqui se copia esa forma, un modificador sobre .md-fab,
+  pero la documentacion va aparte porque el alcance es distinto.
+
+  LO QUE NO HAY EN ESTA VISTA, Y POR QUE
+  --------------------------------------
+  SOLO HAY UN TAMANO, Y LA PAREJA "Sizes" LO DEMUESTRA EN VEZ DE DECIRLO
+  ---------------------------------------------------------------------
+  M3 lo escribe con todas las letras en fab.md, "NOTE: ... Extended FABs
+  do not have different sizes", mientras publica los ficheros extended-fab-
+  small, -medium y -large. Aqui no se copia esa contradiccion: el tamano
+  esta fijo a 56px en el modificador, asi que las tres medidas de la pareja
+  Sizes salen iguales. Se midio con la clase puesta: .md-fab-small sobre un
+  extended sigue en 56px mientras que un md-fab-small de verdad baja a 40.
+
+  M3 lo impone ademas en su propio codigo, no solo en la nota: shared.ts:71
+  es `'small': this.size === 'small' && !isExtended` y fab_test.ts:95 tiene
+  un caso llamado "size classes are not set when extended". El CSS hace lo
+  que hace el test, porque aqui no hay JS.
+
+  NO HAY "Shapes": el extended tiene una sola forma, corner-large, la misma
+  de la base. button.html si tiene Shapes porque tiene square y rounded.
+
+  LA ETIQUETA NO LLEVA aria-label, Y ESO NO ES UN DESCUIDO. El texto visible
+  es ya el nombre accesible del control; anadirle aria-label lo duplicaria y
+  un lector de pantalla se quedaria con uno de los dos. En el FAB solo-icono
+  pasa lo contrario: no hay texto visible, asi que aria-label es obligatorio.
+  Las dos partes tienen escrito por que hacen lo que hacen.
+
+  NO SE PUEDE ENSENAR EL PADDING DE CERCA A OJO. Con icono es 16/20 y sin
+  icono 20/20: cuatro pixeles de diferencia que en una captura parecen lo
+  mismo. Por eso el contraste va en su propia pareja y por eso el 4 se
+  escribe en el parrafo y no en el recuadro.
+
+  NO SE VE EL ANCHO DINAMICO. El ancho lo manda el texto, asi que "Navegar"
+  y "Nuevo hilo" no miden lo mismo y ninguna pareja puede mostrarlo: hay que
+  escribir una etiqueta mas larga y mirar. Es lo contrario que en el FAB
+  base, que es un cuadrado de 56px y no depende de nada.
+-->
+
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <main class="sr-page">
+
+    <!-- HEADER: inicio (barra + titulo + descripcion) -->
+    <header class="sr-header">
+      <div class="sr-bar">
+        <p class="md-type-body-medium"><a href="../index.html">RDM ManGo! App</a></p>
+        <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
+      </div>
+      <h1 class="md-type-display-large">FAB extended</h1>
+      <p class="md-type-body-large">El mismo FAB con una etiqueta de texto, para cuando la accion necesita explicarse: icono y palabra, o solo palabra. Un tamaño de 56px, esquinas de 16px y el mismo brillo que sube al pasar el raton. Es el <code>md-fab</code> de siempre con una clase encima.</p>
+    </header>
+    <!-- HEADER: fin -->
+
+    <hr class="md-divider">
+
+    <!-- PAREJA: icono y etiqueta (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Clase base</h2>
+      <p class="md-type-body-medium">La clase base más <code>md-fab-extended</code>, con icono y con texto. El hueco de 16px a la izquierda es el del icono, y el de 20 a la derecha es el de la frase: M3 los publica asimetricos y la diferencia se nota en que la palabra respira mas al cerrar. No lleva <code>aria-label</code>: el texto visible ya es el nombre accesible.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-fab md-fab-extended" type="button"><span class="md-icon" aria-hidden="true">navigation</span>Navegar<span class="md-fab-touch"></span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-fab md-fab-extended" type="button"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;navigation&lt;/span&gt;Navegar&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: los dos colores (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Colors</h2>
+      <p class="md-type-body-medium">La familia de color es la misma del FAB base, asi que las dos clases combinan sin nada mas. La base ya es primary-container y <code>md-fab-primary</code> la vuelve a declarar. El texto hereda el color del host, igual que el icono: en las variantes de color de M3 el <code>label-text-color</code> vale lo mismo que el <code>icon-color</code> tambien al pasar y al pulsar, con lo que no hace falta una regla de color para la etiqueta.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-fab md-fab-extended" type="button"><span class="md-icon" aria-hidden="true">edit</span>Editar<span class="md-fab-touch"></span></button>
+        <button class="md-fab md-fab-primary md-fab-extended" type="button"><span class="md-icon" aria-hidden="true">edit</span>Editar<span class="md-fab-touch"></span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-fab md-fab-extended" type="button"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;Editar&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-fab md-fab-primary md-fab-extended" type="button"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;Editar&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: los tamaños (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Sizes</h2>
+      <p class="md-type-body-medium">Las tres miden 56px. M3 no publica tamaños para el extended FAB — <code>fab.md</code> lo escribe con todas las letras — aunque sí entrega los ficheros extended-fab-small, -medium y -large; aquí no se copia esa contradicción. El tamaño va fijo en el modificador, así que <code>md-fab-small</code> y <code>md-fab-large</code> encima de un extended no mueven nada: un <code>md-fab-small</code> de verdad baja a 40. La pareja está para que se vea el límite, no como combinación que convenga copiar.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-fab md-fab-small md-fab-extended" type="button"><span class="md-icon" aria-hidden="true">edit</span>Editar<span class="md-fab-touch"></span></button>
+        <button class="md-fab md-fab-extended" type="button"><span class="md-icon" aria-hidden="true">edit</span>Editar<span class="md-fab-touch"></span></button>
+        <button class="md-fab md-fab-large md-fab-extended" type="button"><span class="md-icon" aria-hidden="true">edit</span>Editar<span class="md-fab-touch"></span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-fab md-fab-small md-fab-extended" type="button"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;Editar&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-fab md-fab-extended" type="button"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;Editar&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-fab md-fab-large md-fab-extended" type="button"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;Editar&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: con y sin icono (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Icon</h2>
+      <p class="md-type-body-medium">Las dos formas de la misma clase, en el mismo recuadro. Con icono la caja abre con 16px y cierra con 20; sin icono abre con 20, para que la palabra no se quede pegada al borde. M3 resuelve ese salto metiendo un <code>&lt;span&gt;</code> vacío de relleno dentro del slot; aqui se pregunta si hay icono con <code>:has()</code>, que deja el snippet de un solo elemento y sin adorno. <code>fab.md</code> dice que solo los FAB extendidos pueden ir sin icono.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-fab md-fab-extended" type="button"><span class="md-icon" aria-hidden="true">navigation</span>Navegar<span class="md-fab-touch"></span></button>
+        <button class="md-fab md-fab-extended" type="button">Nuevo hilo<span class="md-fab-touch"></span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-fab md-fab-extended" type="button"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;navigation&lt;/span&gt;Navegar&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-fab md-fab-extended" type="button"&gt;Nuevo hilo&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: estados (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">States</h2>
+      <p class="md-type-body-medium">Reposo y deshabilitado. El texto baja a on-surface al 38% al igual que el icono, porque los dos leen del mismo color del host; ademas se apaga la sombra y se quita la capa de estado. Los otros dos estados no se ven aqui: al pasar la sombra sube de level3 a level4 con un tinte del 8%, y al enfocar aparece un anillo de 3px en secondary con 2px de separacion.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-fab md-fab-extended" type="button"><span class="md-icon" aria-hidden="true">edit</span>Editar<span class="md-fab-touch"></span></button>
+        <button class="md-fab md-fab-extended" type="button" disabled><span class="md-icon" aria-hidden="true">edit</span>Editar<span class="md-fab-touch"></span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-fab md-fab-extended" type="button"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;Editar&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-fab md-fab-extended" type="button" disabled&gt;&lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;Editar&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: combinado con el anclado. -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Anclado</h2>
+      <p class="md-type-body-medium">Las dos clases a la vez: el recuadro hace de contenedor y el FAB con etiqueta se pega a su esquina inferior derecha, con los 16px del token de inset. Ninguna de las dos clases estorba a la otra, porque una decide como se pinta y la otra donde se coloca. El ancho sigue mandandolo el texto.</p>
+      <div class="sr-specimen sr-specimen-tall">
+        <button class="md-fab md-fab-extended md-fab-anclado" type="button"><span class="md-icon" aria-hidden="true">reply</span>Responder<span class="md-fab-touch"></span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-fab md-fab-extended md-fab-anclado" type="button"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;reply&lt;/span&gt;Responder&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+  </main>
+  <!-- MAIN: fin -->
+</body>
+</html>

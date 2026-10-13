@@ -1,0 +1,222 @@
+/* ==========================================================================
+   3-components/fab-extended.css — FAB CON ETIQUETA (Capa 3)
+   ==========================================================================
+
+   QUE ES ESTE COMPONENTE
+   ----------------------
+   El FAB al que se le añade texto: icono + etiqueta, o solo etiqueta. M3 lo
+   llama "extended FAB" y NO tiene componente aparte para ello: en
+   `fab/fab.ts` el `label` es un atributo del mismo `<md-fab>`, y
+   `getRenderClasses()` devuelve la clase `extended`. El guion lo trata como
+   una variedad, no como un hermano: "FABs may be extended with a label for
+   additional emphasis".
+
+   Asi que aqui se copia esa forma: una clase sobre la base .md-fab. El
+   marcado es
+
+       <button class="md-fab md-fab-extended" type="button">
+         <span class="md-icon" aria-hidden="true">navigation</span>
+         Navegar
+       </button>
+
+   y el archivo va en fichero propio porque la vista y la documentacion
+   tambien son propias. La dependencia es siempre en el mismo sentido: el
+   extendido exige la base, y la base no sabe que existe el extendido.
+
+   COMO SE DECIDIO ESTO, Y POR QUE SE DEJO ESCRITO
+   ------------------------------------------------
+   Se descarto primero, con un "nuestro md-button ya es un boton con etiqueta
+   y solo falta ponerle el icono". Era falso, y salio falso en tres sitios
+   al mirar `tokens/versions/latest/sass/_md-comp-extended-fab*.scss`:
+
+      1. M3 tiene ocho ficheros de color propios para el extended y ocho para
+         la base. No los comparte con el boton.
+      2. La forma es corner-large (16px), no la pilota del boton.
+      3. No tiene tamanos propios (ver abajo), mientras el boton si.
+
+   Y una segunda afirmacion que tampoco cuadraba: el padding de cierre. Se
+   propuso 24px; M3 dice 20px. Verificacion en `fab/internal/_shared.scss`,
+   lineas 64-65, que es donde se aplica de verdad:
+
+         padding-inline-start: 16px;
+         padding-inline-end:   20px;
+
+   Conviene que conste porque las dos cosas las escribio alguien sin abrir el
+   fichero, y las dos acabarian en este CSS.
+
+   MEDIDAS (tokens/versions/latest/sass/_md-comp-extended-fab.scss)
+      contenedor            56px   ya existe --md-sys-measurement-fab-height
+      forma                 16px   ya la declara la base .md-fab
+      icono                 24px   ya existe --md-sys-measurement-fab-icon-size
+      hueco icono-etiqueta  12px   --md-sys-measurement-fab-extended-icon-label-space
+      espacio inicial       16px   --md-sys-measurement-fab-extended-leading-space
+      espacio de cierre     20px   --md-sys-measurement-fab-extended-trailing-space
+      tipografia            label-large 14/20  --md-sys-typescale-label-large
+
+   Tres roles nuevos, los otros cuatro ya estaban. Los tres estan en la
+   escala de espaciado sin ningun desvio, y se declaran por nombre en capa 2
+   y no por el nombre M3, que es casi el mismo pero no tiene por que seguir
+   siendolo.
+
+   SOLO UN TAMANO, Y NO ES UN DESCUIDO
+   ------------------------------------
+   `fab.md` lo dice con todas las letras:
+
+       "NOTE: ... Extended FABs do not have different sizes."
+
+   Aun asi M3 publica los ficheros extended-fab-small, -medium y -large. Es
+   una contradiccion interna suya y aqui no se copia: se reapuntan las
+   CUATRO medidas que cambian por tamano, no solo la altura, asi que
+   escribir `.md-fab-extended.md-fab-small` no baja el FAB a 40px ni le
+   cambia la forma. La primera version solo clavo la altura y fallo en
+   silencio, que es justo lo que estaba pidiendo la regla. La regla esta en
+   el CSS y no solo en la prosa, que es la forma de que no se rompa otra vez.
+
+   POR QUE :has() Y NO EL TRUCO DE M3
+   -----------------------------------
+   Sin icono, el padding de cierre es 20/20; con icono, 16/20. M3 resuelve
+   eso metiendo un span vacio por defecto DENTRO del slot del icono
+   (`shared.ts:93`, que es contenido fijo de la plantilla, no JavaScript) y
+   dandole `padding-inline-start: 4px` en `_fab.scss:130`. El boton se queda
+   en 16/20 y esos 4px de relleno cierran la cuenta a 20/20 cuando no hay
+   icono.
+
+   Aqui no hay slots ni rellenos: se pregunta directamente si hay icono.
+
+       .md-fab-extended:not(:has(> .md-icon))
+
+   Es el mismo criterio que ya usa button-group.css para no meter un wrapper
+   en el snippet, y el mismo motivo: la marca no tiene que rellenarse de
+   adorno para que el espaciado cuadre.
+
+   LA ETIQUETA NO TIENE CLASE, Y M3 SI LA TIENE
+   ----------------------------------------------
+   `shared.ts:82` renderiza el texto dentro de un `<span class="label">`,
+   con su color propio. Aqui no, y no es una falta: M3 necesita esa clase
+   porque declara tokens de color PARA ELLA, y se ha comprobado que en todas
+   las variantes que declaran los dos les da el MISMO valor que a `icon-color`
+   -- y tambien en hover, foco y pulsacion. Con la base poniendo `color` en el
+   host y la tipografia aqui, el texto hereda las dos cosas y la clase no
+   haria nada.
+
+   Que no haria nada es exactamente lo que acabo de costar retirar
+   `.md-fab-icon` del FAB base. Una clase que solo acompania al marcado es
+   una clase que alguien va a tocar creyendo que cambia algo.
+
+   (Comprobado en siete variantes; `branded` no declara `icon-color` y no
+   admite comparacion, y ademas esta fuera de alcance.)
+
+   El glifo, por su parte, esta protegido sin que tengamos que hacer nada:
+   `.md-icon` declara font-family, font-size, font-weight, line-height y
+   letter-spacing en 4-utilities, la capa mas fuerte del sistema, y el
+   `font` que aqui se pone en el host no le puede ganar. Se mide igual, no
+   se supone.
+
+   ACCESIBILIDAD: NOMBRE ES EL TEXTO
+   ----------------------------------
+   A diferencia del FAB solo-icono, que necesita `aria-label` porque no tiene
+   texto visible que anuncie la accion, el extendido TIENE el texto, y ese
+   texto es su nombre accesible. No se le pone `aria-label`: lo duplicaria y
+   un lector de pantalla se quedaria con el primero.
+
+   El icono si lleva `aria-hidden`, como siempre, porque la accion ya esta
+   nombrada por el texto.
+
+   COMPOSICION
+   ------------
+   SI con .md-fab-primary: la familia de color es la misma que en el FAB
+   base y no cambia nada.
+
+   SI con .md-fab-anclado: cada clase promete algo distinto y no se pisan. El
+   resultado es un FAB con etiqueta pegado a la esquina de su contenedor,
+   que es exactamente lo que las dos prometen por separado. Se puede medir,
+   no se supone.
+
+   NO con .md-fab-small ni .md-fab-large. No porque una regla lo prohiba:
+   porque el tamano ya esta fijo arriba a 56px y las clases de tamano no
+   hacen efecto. Un FAB extendido con la clase .md-fab-small sigue midiendo
+   56px, que es lo que M3 dice que debe pasar.
+   ========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   LA CAJA
+   ---------------------------------------------------------------------------
+   Las CUATRO medidas que reclasifican los tamaños se reapuntan en el
+   propio elemento y no se declaran de nuevo: la base ya lee esas
+   custom properties para el bloque, la forma y el glifo, y una
+   redeclarada en el mismo elemento se resuelve ahi. Un solo sitio
+   donde cambia cada medida.
+
+   Eran cuatro y no una. La primera version solo clavaba la altura, y
+   al medir salio que .md-fab-large encima de un extended seguia en
+   56px pero le ponia las esquinas de 28 y un glifo de 36: la clase
+   de tamano no bajaba la caja pero si le cambiaba la forma. Se
+   midio, no se dedujo -- las tres medidas de la pareja Sizes de la
+   vista midieron 56 pero con radio 12, 16 y 28. Un fallo silencioso
+   del tipo que este sistema se toma en serio: el boton se ve
+   "un poco distinto" y nadie sabe por que.
+
+   M3 no tiene este problema porque no es una lista de propiedades que
+   clavar: en shared.ts:71 desactiva la propia clase
+   (`'small': this.size === 'small' && !isExtended`). Aqui no hay JS
+   que quite la clase, asi que hay que apagar lo que la clase dice.
+
+   El ancho SI es `auto`, y no es una medida que falte en la escala: es que
+   el FAB extendido no tiene ancho fijo. Lo manda el texto, que es lo que
+   hace que un "Navegar" salga mas corto que un "Nuevo hilo". El de la base
+   es 56px porque un cuadrado perfecto no puede depender de nada. Aqui no es
+   un cuadrado, y darle un ancho numerico seria inventar.
+
+   padding-inline: 16/20 con icono. La asimetria no es un descuido, es como
+   lo publica M3: el icono queda pegado al borde por el lado de la lectura y
+   la frase respira mas al final.
+   ------------------------------------------------------------------------ */
+
+.md-fab-extended {
+  --md-comp-fab-height: var(--md-sys-measurement-fab-height);
+  --md-comp-fab-shape: var(--md-sys-shape-corner-large);
+  --md-comp-fab-icon-size: var(--md-sys-measurement-fab-icon-size);
+  --md-sys-icon-optical-size: var(--md-sys-icon-optical-size-medium);
+
+  inline-size: auto;
+  padding-inline: var(--md-sys-measurement-fab-extended-leading-space)
+    var(--md-sys-measurement-fab-extended-trailing-space);
+
+  /* Hueco icono-texto. Solo hay hueco si hay dos cosas que separar: con
+     un unico hijo de flujo el gap no hace efecto, asi que la variante sin
+     icono no necesita regla propia para esto. */
+  gap: var(--md-sys-measurement-fab-extended-icon-label-space);
+
+  /* label-large: weight medium, 14px, line-height 20, tracking 0.1px.
+     El mismo shorthand que usa button.css, que es el patro de la casa.
+
+     Se pone aqui y no en la etiqueta porque no hay etiqueta. El `font`
+     abarca font-family, font-size, font-weight, line-height, y todos se le
+     dan al texto heredado del host. Va ANTES de la linea de abajo a proposito. */
+  font: var(--md-sys-typescale-label-large);
+
+  /* OJO: `font` NO abarca letter-spacing, y la shorthand del sistema tampoco
+     lo trae porque la shorthand `font` de CSS no admite la propiedad. Hay que
+     declararla aparte, igual que hace button.css en su linea 360. Sin esto
+     la letra sale con `normal` en vez de 0.1px: no se ve a simple vista pero
+     cambia el ancho de la caja y por tanto el de la botonera entera.
+     Medido, no supuesto: la primera pasada daba `tracking: normal`. */
+  letter-spacing: var(--md-sys-typescale-label-large-tracking);
+}
+
+/* ---------------------------------------------------------------------------
+   SIN ICONO: 20/20 en vez de 16/20
+   ---------------------------------------------------------------------------
+   La variante que en M3 se hace con un span de relleno. Aqui se pregunta.
+
+   `> .md-icon` con el hijo directo, no cualquier descendiente: un icono
+   metido en otro contenedor no es el icono del FAB.
+
+   Especificidad: :not() y :has() toman la de su argumento, asi que esto
+   sube a (0,2,0) y le gana a la regla de arriba, que es (0,1,0). Sin
+   imports de orden ni !important.
+   ------------------------------------------------------------------------ */
+
+.md-fab-extended:not(:has(> .md-icon)) {
+  padding-inline-start: var(--md-sys-measurement-fab-extended-trailing-space);
+}
