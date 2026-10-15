@@ -83,6 +83,17 @@
    `getRenderClasses()` — el modificador vive en `fab-extended.css` y la
    documentacion en su propia vista. Aqui solo queda constado que existe.
 
+   NO TIENE SECCION SHAPES, Y NO ES UN DESCUIDO
+   ---------------------------------------------
+   La vista del boton tiene una pareja Shapes porque md-button publica dos
+   CLASES de forma que quien escribe la elige: md-button-square o la base
+   round. Aqui no hay nada que elegir. El radio no es una clase sino
+   --md-comp-fab-shape, y lo fija cada tamano: corner-medium en small,
+   corner-large en base, corner-large-increased en medium y
+   corner-extra-large en large. La forma ya esta en la pareja Sizes, que es
+   ademas donde se ve escalar; una pareja Shapes la repitiria con menos
+   contexto. Lo mismo vale para el extended.
+
    LA ELEVACION NO SE ANIMA, Y NO ES UN DESCUIDO
    ---------------------------------------------
    M3 publica el cambio de elevacion como un VALOR POR ESTADO en

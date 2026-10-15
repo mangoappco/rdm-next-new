@@ -46,6 +46,14 @@
    Conviene que conste porque las dos cosas las escribio alguien sin abrir el
    fichero, y las dos acabarian en este CSS.
 
+   TAMPOCO TIENE SECCION SHAPES EN LA VISTA
+   -----------------------------------------
+   El radio no es una clase sino --md-comp-fab-shape, y lo fija cada tamano,
+   con lo que no hay ninguna forma que elegir. La forma ya esta en la pareja
+   Sizes, que es ademas donde se ve escalar. El motivo completo, con la
+   comparacion contra la pareja Shapes de button, esta en la cabecera de
+   `fab.css`.
+
    MEDIDAS (tokens/versions/latest/sass/_md-comp-extended-fab-*.scss)
 
       tamano   alto  icono  padding  hueco  forma                   tipo
