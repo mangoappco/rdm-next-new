@@ -10,7 +10,7 @@ La librería de componentes de **RDM ManGo! App**: sistema de diseño estático,
 
 Solo prohibiciones verbales. Las reglas de showroom, de capas y de ciclo no se copian aquí: viven en la skill y en el README, apuntadas más abajo.
 
-- **Sin JavaScript** en el sistema. `showroom/lab.html` es la única excepción y está en `.gitignore`.
+- **Sin JavaScript** en el sistema. `showroom/lab.html` es la única excepción: el banco de pruebas, sin enlace en `index.html`.
 - **Sin toggles** en ManGo! App.
 - **Sin morph de pulsado** en ningún componente.
 - **Sin elevación transicionada.**

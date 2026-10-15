@@ -41,7 +41,12 @@ build/
 # showroom/lab.html es el banco de pruebas: se pega ahi el snippet que se
 # esta mirando y se comprueba que rinde con SOLO main.css. Es un cuaderno
 # personal, no documentacion del design system, asi que su contenido cambia
-# con cada componente y no se versiona. Por eso tampoco hay enlace en
-# showroom/index.html: un enlace a un archivo que no existe en un clon
-# seria un 404 en la portada del catalogo.
-showroom/lab.html
+# con cada componente. Por eso tampoco hay enlace en showroom/index.html:
+# un enlace a un archivo que no existe en un clon seria un 404 en la portada
+# del catalogo.
+#
+# VERSIONADO TEMPORALMENTE: se necesita llevar la sesion de trabajo a otra
+# maquina via push/pull. Al volver a una sola maquina, descomentar la linea
+# de abajo. Ojo: aunque este ignorado, tools/verify-tokens.ps1 lo escanea
+# igualmente, porque recorre todo *.html del proyecto.
+# showroom/lab.html
