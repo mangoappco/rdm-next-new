@@ -1205,8 +1205,16 @@ Rules:
   the portada is `ManGo! App — RDM Next`.
 - Every view carries `<meta name="description">`.
 
-When a new component is built, its view is added to `index.html` as a link, and
-the view file is created. The portada never grows beyond title + tagline + links.
+When a new component is built, three things happen in the same commit: the view
+file is created, its link is added to `index.html`, and `CONTEXT.md` at the
+project root gains a row in its components table. The portada never grows beyond
+title + tagline + links.
+
+`CONTEXT.md` is the one-screen agent context at the project root. It reuses the
+same latch `index.html` has, because a document whose only value is being
+current cannot afford a separate maintenance task. It holds only the facts that
+change with each component and the verbal prohibitions; it does not restate the
+rules below, so nothing in it needs to be kept in step with this file.
 
 ## The 5 cascade layers
 
