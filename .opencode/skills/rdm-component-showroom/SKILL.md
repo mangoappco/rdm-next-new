@@ -158,6 +158,32 @@ The test is simple. Delete the paragraph and ask what the reader loses. If the
 answer is "which one to take", keep it. If the answer is "the reasoning",
 the paragraph is in the wrong file.
 
+One case resists the cut, and it comes back with any component that owns an
+image asset. A snippet whose `src` points at `../assets/...` is **not copyable
+as it stands**, and REGLA 11 forbids making the snippet differ from the
+specimen, so the showroom's path has to be real. That is a warning, and a
+warning at the moment of copying is exactly "which one to take": it stays.
+
+What goes is the *explanation* of why the path is the showroom's, which lives
+in the component sheet. Measured on the `Clase base` pair of
+`card.template.html`, which ran 202 characters in three sentences:
+
+```text
+BEFORE (202)
+
+La clase base con sus cuatro ranuras. El medio lleva su proporción explícita
+aunque la base ya sea 16:9, para que se vea dónde va. El src es el de tu app;
+la caja la reserva la proporción, no la imagen.
+
+AFTER (92)
+
+La clase base con sus cuatro ranuras, con el medio a 16:9 explícito. El src
+es el de tu app.
+```
+
+The warning survived. "La caja la reserva la proporción, no la imagen" did
+not, and it is already in `card.css` next to the rule that produces it.
+
 Before and after, from the `Sizes` pair of `fab-extended.html`:
 
 ```text
