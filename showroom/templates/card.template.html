@@ -54,6 +54,42 @@
   pide y ninguna lo tiene. Se pone aqui porque es lo correcto, y queda
   dicho para que la diferencia con el resto no parezca un olvido.
 
+  LAS CLASES EXPLICITAS, Y POR QUE
+  -------------------------------
+  El boton de la derecha pone `md-button md-button-filled` y no solo
+  `md-button`. La base YA es filled, asi que las dos se ven igual: medido, el
+  relleno lo pinta el `::before` del boton y sale identico.
+
+  Se escribe la variante igual que el medio pone su proporcion. La clase
+  `.md-button-filled` existe justo para eso, y el motivo esta escrito en
+  `button.css:650-654`: "una clase que no existe no falla, se queda sin
+  efecto en silencio, y `.md-button-filled` es justo el nombre que alguien
+  va a escribir primero".
+
+  En un ejemplo que se copia, no saber que variante es cada boton es peor
+  que escribirla de mas. Y es el mismo criterio que la proporcion del medio:
+  el snippet declara la intention explicita aunque la base ya la traiga.
+
+  LO QUE NO LLEVA, Y POR QUE
+  -------------------------
+  `md-text-on-surface-variant` en el subtitulo. No hace falta: lo pone el
+  componente. Medido, el `<p>` del header computa `rgb(73, 69, 79)`, que es
+  `#49454f`, el valor del rol, sin ninguna utilidad. La regla es
+  `.md-card-header > :not(:first-child)`. Anadir la clase seria lo mismo dos
+  veces, y el snippet se llenaria de ruido que no aporta.
+
+  `md-button-group` en las acciones. Medido, componerlo no cambia NADA: alto,
+  `flex-wrap`, `gap` y `justify-content` salen identicos a las acciones
+  sueltas. Es porque la variante `standard` del grupo ES la fila suelta, con
+  aire entre botones, y `.md-card-actions` ya usa el mismo rol de separacion.
+  Ademas el grupo impone a sus hijos `min-inline-size: max-content` y
+  `flex-shrink: 0`, que compiten con el `flex-wrap` de la ranura cuando la
+  card se estrecha. Una clase que no aporta nada no se pone.
+
+  `.md-card-elevated` tampoco, y porque la clase no existe todavia: la base
+  YA es elevated. Aparece cuando entren filled y outlined, por el mismo caso
+  de `.md-button-filled`.
+
   LA IMAGEN, Y POR QUE EL SRC DEL SNIPPET ES DEL SHOWROOM
   ------------------------------------------------------
   `../assets/card-media.svg` no es copiable tal cual: en ManGo! App la
@@ -169,7 +205,7 @@
           </div>
           <div class="md-card-actions">
             <button class="md-button md-button-text" type="button">Action</button>
-            <button class="md-button" type="button">Primary</button>
+            <button class="md-button md-button-filled" type="button">Primary</button>
           </div>
         </article>
       </div>
@@ -186,7 +222,7 @@
   &lt;/div&gt;
   &lt;div class="md-card-actions"&gt;
     &lt;button class="md-button md-button-text" type="button"&gt;Action&lt;/button&gt;
-    &lt;button class="md-button" type="button"&gt;Primary&lt;/button&gt;
+    &lt;button class="md-button md-button-filled" type="button"&gt;Primary&lt;/button&gt;
   &lt;/div&gt;
 &lt;/article&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
