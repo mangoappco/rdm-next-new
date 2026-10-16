@@ -57,7 +57,7 @@
 
        --md-ref-opacity-10: 0.1;   ->   --md-ref-opacity-12: 0.12;
 
-   Y los 5 roles de 2-system-tokens/state.css, las utilidades, el showroom y ManGo!
+   Y los 6 roles de 2-system-tokens/state.css, las utilidades, el showroom y ManGo!
    App se actualizan automaticamente por cascada. Ese es exactamente el
    escenario para el que existe la capa 1.
 
@@ -86,10 +86,10 @@
    ---------------------------------------------------------------------------
    RELACION CON LAS OTRAS CAPAS
    -----------------------------
-       1-reference-tokens/opacity.css   <-- ESTOS 5 valores crudos
+       1-reference-tokens/opacity.css   <-- ESTOS 6 valores crudos
               |
               v
-       2-system-tokens/state.css     <-- los 5 roles semanticos
+       2-system-tokens/state.css     <-- los 6 roles semanticos
               |
               v
        3-components/button.css   <-- el componente aplica la capa al hacer hover
@@ -116,6 +116,17 @@
      arrastrar es una accion deliberada y sostenida en el tiempo, no un roce
      del puntero. Necesita pesar mas para leerse mientras el dedo mueve. */
   --md-ref-opacity-16: 0.16;
+
+  /* ------------------------------------------------------------------------
+     OPACIDAD DE BORDE DESHABILITADO (outlined card / outlined button)
+     ---------------------------------------------------------------------
+     12%. M3 lo usa exclusivamente para el borde del outlined-card y del
+     outlined-button en estado disabled: `$disabled-outline-opacity: 0.12`.
+     No es un state layer ni contenido deshabilitado: es la opacidad del
+     trazo perimetral. Se declara aqui porque es una opacidad cruda distinta
+     de las de arriba, y la capa 1 es el unico sitio donde viven los numeros.
+     --------------------------------------------------------------------- */
+  --md-ref-opacity-12: 0.12;
 
   /* ------------------------------------------------------------------------
      OPACIDAD DE CONTENIDO DESHABILITADO

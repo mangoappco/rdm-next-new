@@ -79,7 +79,7 @@
        1-reference-tokens/opacity.css    <- los 5 valores crudos
               |
               v
-       2-system-tokens/state.css      <- ESTE: los 5 roles (las utilidades viven en 4-utilities/state.css)
+       2-system-tokens/state.css      <- ESTE: los 6 roles (las utilidades viven en 4-utilities/state.css)
               |
               v
        3-components/button.css    <- el componente define sus estados
@@ -88,7 +88,7 @@
 
 :root {
   /* ------------------------------------------------------------------------
-     LOS 5 ROLES DE STATE LAYER
+     LOS 6 ROLES DE STATE LAYER
      Cada uno mapea a su valor crudo en 1-reference-tokens/opacity.css.
      --------------------------------------------------------------------- */
 
@@ -119,6 +119,17 @@
      El 10% ya existia como primitiva en 1-reference-tokens/opacity.css, pero ningun
      componente lo pedia, asi que no habia rol. El boton es el primero. */
   --md-sys-state-disabled-container-opacity: var(--md-ref-opacity-10);
+
+  /* 12% — el BORDE deshabilitado. M3 lo publica en los dos componentes que
+     llevan contorno: `_md-comp-outlined-card.scss` y `_md-comp-outlined-button.scss`,
+     los dos con `disabled-outline-opacity`. En los dos cambia el color del
+     trazo a `outline` y lo baja a este 12%.
+
+     No es el 38% del contenido ni el 10% del relleno: es el perimetro. Por eso
+     necesita rol propio en vez de reusar cualquiera de los dos anteriores.
+
+     La primitiva la declara la card; el outlined es el que la va a leer. */
+  --md-sys-state-disabled-outline-opacity: var(--md-ref-opacity-12);
 }
 
 /* Las clases utilitarias de esta familia se mudaron a 4-utilities/ en la auditoria M3:

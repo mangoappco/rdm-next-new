@@ -677,6 +677,35 @@
 
   /* Separacion respecto al contenedor: 16dp. Divisor inset y FAB anclado */
   --md-sys-measurement-inset: var(--md-ref-spacing-200);
+
+  /* ==========================================================================
+     MEDIDAS DE LA CARD
+     --------------------------------------------------------------------------
+     Padding interior de las ranuras semanticas. M3 no publica un token de
+     padding para cards; la guia visual usa 16dp consistentemente. Se declara
+     aqui como rol semantico para que el componente no lea
+     --md-ref-spacing-200 directamente (REGLA 2).
+
+     Valor: 16dp = spacing-200.
+     ====================================================================== */
+
+  --md-sys-measurement-card-padding: var(--md-ref-spacing-200);
+
+  /* Hueco entre elementos apilados dentro de una ranura (titulo/subtitulo,
+     parrafo/parrafo). 4dp.
+
+     DONDE ESTE 4dp: M3 publica un fichero de token por card, y los tres
+     (_md-comp-elevated-card, _md-comp-filled-card, _md-comp-outlined-card)
+     declaran color, elevacion, forma, estados y deshabilitado, y NINGUN token
+     de espaciado interno. El 4dp sale de la guia de composicion de cards de
+     M3, no de un token. Se declara igual porque 3-components no puede leer
+     --md-ref-spacing-50 directamente (REGLA 2), y porque 4-utilities no
+     publica ninguna utilidad de espaciado: sin este rol, el hueco entre el
+     titulo y el subtitulo no tendria de donde salir.
+
+     Es el unico numero de toda la card.css que no viene de un token de M3,
+     y queda dicho aqui para que no se lea como medido cuando no lo esta. */
+  --md-sys-measurement-card-gap: var(--md-ref-spacing-50);
 }
 
 /* Las clases utilitarias de esta familia se mudaron a 4-utilities/ en la auditoria M3:

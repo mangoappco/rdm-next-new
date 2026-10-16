@@ -83,6 +83,14 @@
      y aqui ira con la curva spatial, que es la proyeccion que M3 publica
      para web. El resorte no se puede escribir en CSS.
 
+    5. EL SPLIT BUTTON. M3 publica `-split-button-{xsmall,small,medium,large,xlarge}`
+      y tres `menu-button` (`filled`, `outlined`, `standard`). Dependen de un componente
+      `menu` que no existe en este sistema, y abrir un menu sin JavaScript es una decision
+      de arquitectura de la interaccion (`:focus-within`, `:hover`, checkbox disfrazado)
+      que no se ha tomado. Sus medidas (`container-height`) ya estan declaradas en
+      `1-reference-tokens/container-height.css:40`. Queda registrado para cuando la
+      arquitectura del menu decida que existe.
+
    --------------------------------------------------------------------------
    LO QUE SI ES IGUAL QUE EL ICON-BUTTON, Y POR QUE
    --------------------------------------------------------------------------

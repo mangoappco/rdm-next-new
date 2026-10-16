@@ -19,10 +19,14 @@
 @import url("button-group.css");
 @import url("fab.css");
 @import url("fab-extended.css");
+@import url("card.css");
 
 /* fab-extended.css va DESPUES de fab.css, y no por orden alfabetico.
    Los dos importan en la misma capa `comp`, donde la especificidad se
    resuelve por orden de escritura. La clase .md-fab-extended solo funciona
    sobre una base .md-fab que ya exista: si se pusiera antes, sus declaraciones
    sobre padding y tipografia perderian contra las de la base en cualquier
-   empate. */
+   empate.
+
+   card.css va al final: no depende de ningun componente anterior, y los
+   siguientes (dialog, etc.) no dependeran de el. */

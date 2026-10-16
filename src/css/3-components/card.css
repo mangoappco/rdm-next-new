@@ -1,0 +1,600 @@
+/* ==========================================================================
+   3-components/card.css — CARD (Capa 3)
+   ==========================================================================
+
+   QUE ES ESTE COMPONENTE
+   ----------------------
+   Una superficie contenedora con elevacion, forma y color. M3 la publica
+   como UN componente con TRES fichas de color, no tres componentes:
+   `_md-comp-elevated-card.scss`, `_md-comp-filled-card.scss` y
+   `_md-comp-outlined-card.scss`.
+
+   En esta entrega SOLO la base, que es la elevated. Las otras dos entran
+   despues, reapuntando los mismos tokens que estan declarados aqui abajo.
+
+   RECETA M3, TRANSCRITA (tokens/versions/latest/sass/, v34.0.21)
+   ------------------------------------------------------------
+   elevated:
+     container-color            surface-container-low
+     container-elevation        level1
+     container-shape            corner-medium
+     hover-container-elevation  level2
+     focus-container-elevation  level1
+     pressed-container-elevation level1
+     dragged-container-elevation level4
+     state-layer-color          on-surface (los cuatro estados)
+     icon-color / icon-size     primary / 24px
+     disabled-container-color   surface
+     disabled-container-opacity 0.38
+
+   filled:
+     surface-container-highest, level0 en reposo, level1 al pasar el raton,
+     disabled -> surface-variant al 38%.
+
+   outlined:
+     surface, level0, borde outline-variant de 1px. Al enfocar el borde
+     CAMBIA DE COLOR a on-surface, no de grosor. Deshabilitado, el borde
+     baja a `outline` con `disabled-outline-opacity: 0.12`.
+
+   LO QUE NO ESTA, Y POR QUE
+   -------------------------
+   - dragged. M3 lo publica para las tres (level4 / level3 / level3) y el
+     proyecto ya tiene `--md-sys-state-dragged-state-layer-opacity`, pero
+     arrastrar es un gesto que aqui no se puede expresar: sin JavaScript no
+     hay nada que-arrastrar. Es el mismo motivo por el que el FAB no
+     implementa su FAB menu.
+   - selected. Ver 1-reference-tokens/stroke.css, donde se retiro la linea
+     que lo profetizo. Los tres ficheros de M3 no lo publican.
+   - El icono. M3 publica `icon-color` e `icon-size` para las tres fichas,
+     pero es el icono que el autor pone DENTRO de la card, no algo que la
+     card posea. Lo compone con `.md-icon` y una utilidad de color, como
+     cualquier otro icono del sistema.
+
+   POR QUE LA BASE ES ELEVATED
+   ---------------------------
+   Es la primera de la tabla de `reset.css` y la mas vestida, igual que
+   `filled` lo es en `.md-button` y `primary-container` en `.md-fab`. Las
+   otras dos la desvesten: `filled` baja la sombra, `outlined` ademas la
+   quita y pone borde. Ese es el criterio que ya esta escrito en
+   `button.css:660-665`, aplicado a la card.
+
+   CUANDO ENTREN LAS OTRAS DOS
+   ---------------------------
+   `.md-card-filled` y `.md-card-outlined` reapuntaran
+   `--md-comp-card-container-color` y `--md-comp-card-elevation`. Y entonces
+   aparecera tambien `.md-card-elevated`, que aqui no hace falta: seria la
+   clase que ya trae la base, exactamente como `.md-button-filled` sobre
+   `.md-button` (commit 5489438). Se crea a proposito en ese momento, no
+   antes, porque antes no habria nada que distinguir.
+
+   LA ELEVACION NO SE ANIMA, Y NO ES UN DESCUIDO
+   --------------------------------------------
+   M3 publica el cambio de elevacion como un VALOR POR ESTADO en el fichero
+   de cada ficha, no como un par de motion, y su propia implementacion de
+   referencia no declara ninguna transicion de `box-shadow` en la sombra. Es
+   el mismo argumento que ya esta escrito en `fab.css`, con mas detalle.
+   Ademas el candado del proyecto lo prohibe expresamente.
+
+   El `hovered` del FAB (level3 -> level4) y el de aqui (level1 -> level2)
+   son el mismo gesto. Los dos lo saltan.
+
+   LO QUE SE DUPLICA CON LOS OTROS CINCO Y POR QUE
+   ----------------------------------------------
+   El pseudo de la capa de estado, el anillo de foco y el par de movimiento
+   son codigo casi identico al de button, icon-button, fab y fab-extended.
+   Es deliberado, por el motivo que ya esta escrito en `button.css:87-103`:
+   un archivo compartido obliga a un orden de import inamovible y a una
+   lista de selectores que hay que recordar actualizar, y un olvido en esa
+   lista NO FALLA. Un olvido silencioso es peor que codigo repetido.
+
+   ANATOMIA DEL MARCADO
+   --------------------
+   El contenedor pinta superficie, forma, borde, elevacion y capa de estado.
+   Las cuatro ranuras son HIJOS ESPERADOS: sin ellas la card sigue siendo una
+   card, pero pierde la composicion que la hace legible. No son
+   obligatorias en el sentido de que el marcado se rompa, y no hay
+   `> *` que las imponga; son las que el autor elige usar.
+
+     <article class="md-card">
+       <div class="md-card-media"></div>
+       <div class="md-card-header">
+         <h3>…</h3>
+         <p>…</p>
+       </div>
+       <div class="md-card-content">
+         <p>…</p>
+       </div>
+       <div class="md-card-actions">
+         <button class="md-button md-button-text">…</button>
+       </div>
+     </article>
+
+   QUE SE PONE Y QUE NO EN LAS RANURAS
+   -----------------------------------
+   Solo padding, tipografia y alineacion. Ni fondo, ni borde, ni sombra: una
+   ranura que pinta superficie pinta una segunda card dentro de la primera, y
+   el autor puede elegir eso con `md-bg-*` si de verdad lo quiere.
+
+   El hueco entre botones de `.md-card-actions` reutiliza el rol que M3
+   publica para el separador de un boton-group
+   (`--md-sys-measurement-button-group-between-space`, 8dp). Son el mismo
+   dato con el mismo nombre: dos botones que se tocan. Es la misma via por
+   la que el FAB anclado reutiliza `--md-sys-measurement-inset`.
+
+   TOKENS DEL COMPONENTE: capa 3, leen UNICAMENTE 2-system-tokens
+   (REGLA 2). Ninguna regla de este archivo escribe un numero.
+   ========================================================================== */
+
+.md-card {
+  /* ---------------------------------------------------------------------------
+     FORMA
+     ---------------------------------------------------------------------------
+     corner-medium, y no una clase de shape. La decision de "las cards usan
+     medium" ya esta escrita en 2-system-tokens/shape.css:55 como ejemplo de
+     lo que existe para que un componente pida un ROL y no un numero.
+     ------------------------------------------------------------------------ */
+  --md-comp-card-shape: var(--md-sys-shape-corner-medium);
+
+  /* ---------------------------------------------------------------------------
+     COLOR Y ELEVACION BASE (elevated)
+     ---------------------------------------------------------------------------
+     Las dos cosas que separan una elevated de las otras dos fichas: el tono
+     (surface-container-low, el mas bajo de la escalera que sigue siendo
+     visible sobre el lienzo) y la sombra (level1, la unica de las tres que
+     llega a verla).
+     ------------------------------------------------------------------------ */
+  --md-comp-card-container-color: var(--md-sys-color-surface-container-low);
+  --md-comp-card-elevation: var(--md-sys-elevation-level1);
+
+  /* El unico estado con elevacion propia: M3 sube a level2 al pasar el raton
+     y vuelve a level1 en cuanto se enfoca o se pulsa. Los tres los declara
+     el archivo; aqui se reapuntan por el mismo camino que el color. */
+  --md-comp-card-elevation-hovered: var(--md-sys-elevation-level2);
+
+  /* ---------------------------------------------------------------------------
+     CAPA DE ESTADO
+     ---------------------------------------------------------------------------
+     Un solo par, effects + short4 = 200ms, igual que los otros cuatro
+     componentes con capa. Toma `currentColor`: sin token propio de color.
+     ------------------------------------------------------------------------ */
+  --md-comp-card-state-duration: var(--md-sys-motion-duration-short4);
+  --md-comp-card-state-easing: var(--md-sys-motion-easing-effects-default);
+
+  /* ---------------------------------------------------------------------------
+     ANILLO DE FOCO
+     ---------------------------------------------------------------------------
+     M3 publica `focus-indicator-color: secondary`, `thickness` y
+     `outer-offset`. Los dos ultimos salen de md-sys-state-focus-indicator,
+     un token set que el proyecto no adopto: searetho por los dos roles de
+     grosor que si existen, 3px y 2px, los mismos que usan button, icon-button
+     y fab. Ver la nota de 1-reference-tokens/stroke.css:64.
+     ------------------------------------------------------------------------ */
+  --md-comp-card-focus-color: var(--md-sys-color-secondary);
+  --md-comp-card-focus-width: var(--md-sys-shape-stroke-extra-thick);
+  --md-comp-card-focus-offset: var(--md-sys-shape-stroke-thick);
+
+  box-sizing: border-box;
+  position: relative;
+  isolation: isolate;
+
+  /* Columna porque las ranuras se apilan arriba abajo y ese es el orden en
+     que se leen. Sin esto el navegador los pondria en fila. */
+  display: flex;
+  flex-direction: column;
+
+  border-radius: var(--md-comp-card-shape);
+  background-color: var(--md-comp-card-container-color);
+  box-shadow: var(--md-comp-card-elevation);
+
+  /* El color del contenido. Lo fija el host para que la capa de estado lo
+     tome con currentColor y para que las ranuras hereden el rol correcto sin
+     declararlo una vez por ranura. */
+  color: var(--md-sys-color-on-surface);
+
+  /* SIN cursor, y es una decision. Los otros cinco componentes declaran
+     `cursor: pointer` en la base porque todos son controles sin
+     excepcion. Una card no lo es: declararlo aqui fijaria la flecha
+     tambien sobre una card que sea un `<a href>`, y el enlace dejaria de
+     senalar que se puede pulsar.
+
+     Asi que no se declara nada y cada elemento conserva el suyo: un
+     `<article>` hereda la flecha, un `<a href>` conserva el puntero que le
+     da el navegador. El `<button class="md-card">` es el unico caso que el
+     navegador no resuelve solo --a los botones el navegador no les pone
+     puntero-- y lo resuelve la regla de `LA CARD QUE SE PUEDE TOCAR`.
+
+     Ver la nota de mas abajo. */
+
+  /* Sin `transition` de box-shadow: ver la nota de la elevacion. Y sin
+     `transition` de border-radius, que es fija de por vida. */
+}
+
+/* ---------------------------------------------------------------------------
+   LA CAPA DE ESTADO
+   ---------------------------------------------------------------------------
+   Patron de 2-system-tokens/state.css: pseudo-elemento con currentColor,
+   opacidad 0 en reposo, transicion de opacidad. Se acota por geometria
+   (inset: 0 + border-radius: inherit), asi que no hace falta
+   overflow: hidden, que ademas recortaria cualquier imagen que se salga.
+
+   `z-index: -1` la mete por debajo del contenido, y `isolation: isolate` en
+   el host es lo que hace que ese -1 no se escape hacia el fondo de la pagina.
+   Las dos lineas van juntas: quitar cualquiera de las dos rompe la capa.
+
+   LOS ESTADOS INTERACTIVOS ESTAN ACOTADOS A UNA CARD QUE SE PUEDA PULSAR
+   --------------------------------------------------------------------
+   Ver la nota larga de `LA CARD QUE SE PUEDE TOCAR`, mas abajo. En corto:
+   una capa de estado sobre algo que no hace nada al pulsarlo es un aviso
+   falso, asi que hover y pressed quedan para los controles.
+   ------------------------------------------------------------------------ */
+
+.md-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: currentColor;
+  opacity: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  transition: opacity
+    var(--md-comp-card-state-duration)
+    var(--md-comp-card-state-easing);
+}
+
+/* :active despues de :hover y :focus-visible: mantener pulsado un control
+   ya iluminado muestra la intensidad correcta. */
+.md-card:is(a[href], button, [tabindex]):not(:disabled):hover::after {
+  opacity: var(--md-sys-state-hover-state-layer-opacity);
+}
+
+.md-card:focus-visible::after {
+  opacity: var(--md-sys-state-focus-state-layer-opacity);
+}
+
+.md-card:is(a[href], button, [tabindex]):not(:disabled):active::after {
+  opacity: var(--md-sys-state-pressed-state-layer-opacity);
+}
+
+/* ---------------------------------------------------------------------------
+   LA ELEVACION EN ESTADOS
+   ---------------------------------------------------------------------------
+   Sin transicion, y no es un descuido: ver la nota de la cabecera.
+
+   El hover tambien va acotado a los controles, por el mismo motivo que la
+   capa de estado.
+
+   El orden importa: :active va despues de :hover, para que al pulsar con el
+   raton encima se lea level1 y no se quede pegado el level2 del hover.
+
+   `:focus-visible` va solo en su regla porque no necesita acotado: una card
+   estatica no recibe el foco, asi que no hay forma de que dispare. `:active`
+   si lo necesitaba, y por eso lleva el `:is()` de los controles. Ver la nota
+   de abajo.
+   ------------------------------------------------------------------------ */
+
+.md-card:is(a[href], button, [tabindex]):not(:disabled):hover {
+  box-shadow: var(--md-comp-card-elevation-hovered);
+}
+
+.md-card:focus-visible {
+  box-shadow: var(--md-comp-card-elevation);
+}
+
+.md-card:is(a[href], button, [tabindex]):not(:disabled):active {
+  box-shadow: var(--md-comp-card-elevation);
+}
+
+/* ---------------------------------------------------------------------------
+   EL ANILLO DE FOCO
+   ---------------------------------------------------------------------------
+   :focus-visible y no :focus, porque :focus tambien salta al hacer clic y
+   el raton no necesita anillo. No se anula el outline nativo: se sustituye
+   declarando los valores propios.
+   ------------------------------------------------------------------------ */
+
+.md-card:focus-visible {
+  outline: var(--md-comp-card-focus-width) solid
+    var(--md-comp-card-focus-color);
+  outline-offset: var(--md-comp-card-focus-offset);
+}
+
+/* ---------------------------------------------------------------------------
+   LA CARD QUE SE PUEDE TOCAR
+   ---------------------------------------------------------------------------
+   POR QUE EL HOVER NO ESTA EN LA BASE
+   -----------------------------------
+   M3 publica el hover de las tres fichas sin condiciones. En
+   `_md-comp-elevated-card.scss`:
+
+       $hover-container-elevation:  md-sys-elevation.$level2;
+       $hover-state-layer-color:    md-sys-color.$on-surface;
+       $hover-state-layer-opacity:  md-sys-state.$hover-state-layer-opacity;
+
+   Los tres tokens existen, y son los que se aplican aqui. Lo que M3 no dice
+   --porque en M3 no hace falta decirlo-- es que una card sea siempre una
+   superficie pulsable. Alli casi lo es, y por eso el hover es lo esperable.
+
+   En RDM Next `.md-card` es un contenedor, y casi nunca es pulsable. Con el
+   hover en la base, una card de solo lectura se oscurece y levanta sombra al
+   pasar el raton encima, mientras su `cursor` sigue siendo `default`: el
+   componente dice a la vez "soy pulsable" y "no soy pulsable". Eso es un
+   aviso falso, y es peor que no dar ningun feedback: el usuario pulsa y no
+   pasa nada.
+
+   ASI QUE HOVER Y PRESSED SE ACOTAN A LOS CONTROLES
+   -----------------------------------------------
+   `:is(a[href], button, [tabindex])` es la lista de lo que el navegador
+   puede enfocar con el teclado o acepta como control. Una card que se
+   declara pulsable de cualquiera de esas formas lo recibe; una estatica, no.
+
+   Y no hace falta una clase nueva: cuando la card se escriba como
+   `<a class="md-card" href="...">`, el hover ya funciona porque el elemento
+   ya es un enlace. Si hiciera falta una clase, el autor tendria que
+   acordarse de escribirla, y acordarse es justo lo que falla.
+
+   LO QUE SI NECESITA ACOTAR Y LO QUE NO, Y POR QUE ESTA NOTA FUE CORREGIDA
+   -----------------------------------------------------------------------
+   Aqui se escribio antes que "solo el hover necesita acotado" y era
+   FALSO. Decia que `:active` no podia dispararse en algo que no es
+   control, porque una card estatica no recibe el foco.
+
+   La premisa estaba bien para `:focus-visible` y mal para `:active`, que
+   no depende del foco: **`:active` se propaga a los ancestros del elemento
+   que se esta pulsando.** Al mantener pulsado un boton de dentro de la
+   card, la card tambien entra en `:active` y se oscurece, sin que nadie la
+   haya pulsado. Es el aviso falso del hover entrando por otra puerta.
+
+   O sea, el mismo problema que daba el hover, pero por otra via. Por eso
+   los dos van acotados con el mismo `:is()`.
+
+   COMO SE COMPRUEBA, Y QUE NO SE PUEDE COMPROBAR AQUI
+   ---------------------------------------------------
+   La guarda no depende del estado de interaccion sino de lo que ES el
+   elemento: `a[href]`, `button` o `[tabindex]`. Un `<article>` no es ninguna
+   de las tres cosas, tenga dentro los botones que tenga. Asi que basta
+   preguntar si el elemento pasa la guarda, y la respuesta es que no:
+
+     <article class="md-card">            no pasa  -> no puede dispararse
+     <article class="md-card"> con un     no pasa  -> no puede dispararse
+       <button> dentro
+     <a class="md-card" href>             si pasa   -> se dispara al pulsarlo
+
+   Eso cierra el caso sin depender de mantener el raton pulsado, que desde
+   un arnes sin entrada real no se puede hacer: un clic de herramienta va de
+   pulsar a soltar en el mismo instante y no deja ningun estado en el que
+   leerlo. El repositorio llama `lab.html` a su banco de pruebas por eso.
+   Lo que si se puede hacer a mano es mantener pulsado un boton de
+   `.md-card-actions` y mirar que la card no cambia.
+
+   `:focus-visible` si se queda solo. Una card estatica no es
+   enfocable, no hay forma de que reciba el foco, y por eso la regla no
+   necesita el `:is()`: ponerlo ahi seria ruido. Si algun dia la card
+   recibe `tabindex` para algo, esa regla ya entra en el `:is()` de los
+   otros dos y no habria que revisitarla.
+
+   QUE PASA SI ALGUIEN QUIERE UNA CARD ESTATICA QUE SI REACCIONE
+   -------------------------------------------------------------
+   Se le pone `tabindex="0"` y ya esta dentro del `:is()`. No hace falta
+   tocar esta hoja ni crear una clase para eso.
+
+   Y EL CURSOR TAMBIEN, PORQUE ERA EL MISMO ERROR
+   ----------------------------------------------
+   La base declaraba `cursor: default`, copiado de los otros cinco
+   componentes. Con eso, un `<a class="md-card" href>` hereda la flecha del
+   componente en vez del puntero que el navegador da a los enlaces: el hover
+   ya decia que se podia pulsar y el cursor no. Dos senales distintas en el
+   mismo elemento.
+
+   Asi que la base NO declara cursor, y este selector le da `pointer` a los
+   controles. Los tres casos quedan bien sin regla para el caso estatico:
+
+     <article class="md-card">      flecha, del navegador
+     <a class="md-card" href>      puntero, de esta regla
+     <button class="md-card">      puntero, de esta regla (el navegador no
+                                   se lo pone a los botones solo)
+
+   EL `:not(:disabled)` ESTA POR ESPECIFICIDAD, NO POR ESTILO
+   ----------------------------------------------------------
+   Sin el, un boton apagado sale con el puntero encima. No es que el orden
+   de las reglas falle: es que `:is()` hereda la especificidad de su
+   argumento mas especifico, `a[href]`, que es (0,1,1). La regla se queda en
+   (0,2,1) y le gana a `.md-card:disabled`, que es (0,2,0) -- incluso
+   poniendola despues, que es donde esta.
+
+   Medido antes de añadirlo: `<button class="md-card" disabled>` computaba
+   `cursor: pointer` con el fondo ya en `surface` y la opacidad en 0.38.
+   ------------------------------------------------------------------------ */
+
+.md-card:is(a[href], button, [tabindex]):not(:disabled) {
+  cursor: pointer;
+}
+
+/* ---------------------------------------------------------------------------
+   DISABLED — DOS VIAS, Y POR QUE NO UNA
+   ---------------------------------------------------------------------------
+   M3 publica `disabled-container-opacity: 0.38` para las tres fichas. Ese
+   38% ya es un rol del sistema, `--md-sys-state-disabled-state-layer-opacity`,
+   que es el mismo que consumen button y fab.
+
+   Una card, en cambio, casi nunca es un elemento de formulario: lo normal es
+   un `<article>` o un `<div>`, y `disabled` no existe en ninguno de los dos.
+   Por eso hay dos caminos, y ninguno inventa API:
+
+     1. Si la card ES un control (`<button class="md-card">`), esta regla
+        llega por :disabled, igual que en los otros cinco componentes.
+     2. Si es un div, el autor pone `.md-disabled` de 4-utilities/state.css,
+        que aplica el mismo 38% y el mismo pointer-events: none.
+
+   El cambio de tono a `surface` es el otro token de la ficha
+   disabled: la card deja de tener tono propio y se apoya en el de la pagina.
+   ------------------------------------------------------------------------ */
+
+.md-card:disabled {
+  --md-comp-card-container-color: var(--md-sys-color-surface);
+  opacity: var(--md-sys-state-disabled-state-layer-opacity);
+  cursor: default;
+  pointer-events: none;
+}
+
+/* La sombra se queda en la de reposo: M3 publica `disabled-container-elevation`
+   con el mismo valor que el de reposo en las tres fichas. */
+.md-card:disabled,
+.md-card:disabled:hover {
+  box-shadow: var(--md-comp-card-elevation);
+}
+
+/* ---------------------------------------------------------------------------
+   RANURA: MEDIA
+   ---------------------------------------------------------------------------
+   Sin padding a proposito: una imagen o un video van de borde a borde, y un
+   padding los separaria de la forma.
+
+   El radio se declara en vez de heredarse porque el contenido de la ranura es
+   una imagen que puede no tener ninguno: sin esto, el angulo de arriba del
+   borde de la imagen se sale de la esquina redondeada de la card. Abajo no
+   se redondea, porque en una card con mas ranuras ese borde es el interior
+   del bloque, y ahi una curva se veria como un error de dibujo.
+   ------------------------------------------------------------------------ */
+
+.md-card-media {
+  display: block;
+  overflow: hidden;
+  inline-size: 100%;
+  border-start-start-radius: var(--md-comp-card-shape);
+  border-start-end-radius: var(--md-comp-card-shape);
+}
+
+/* ---------------------------------------------------------------------------
+   RANURA: HEADER
+   ---------------------------------------------------------------------------
+   Columna con el hueco del sistema entre el titulo y el subtitulo. El padding
+   va aqui y no en el contenedor, para que una card sin header no deje una
+   franja de 16px vacia arriba.
+
+   MEDIDO, Y POR QUE EL TITULO LLEVA md-type-* Y NO SOBRA
+   ------------------------------------------------------
+   El `font` de esta ranura NO aplica a un heading real. Medido en el
+   navegador con un `<h3>` dentro:
+
+     .md-card-header   font-size 22px     (title-large, el valor de la ranura)
+     <h3>              font-size 25.74px  font-weight 700
+
+   25.74 es 22 x 1.17: el `1.17em` que el navegador aplica a los h3. No lo
+   gana la ranura porque `reset.css` CONSERVA A PROPOSITO los tamanos de
+   h1..h6 --esta escrito en reset.css:245-247-- y deja que el sistema los
+   sobreescriba despues con las clases `.md-type-*`.
+
+   O sea: no es un fallo de esta ranura ni de ese reset, es la regla del
+   proyecto. Por eso el marcado de una card con titulo es:
+
+     <h3 class="md-type-title-large">…</h3>
+
+   y la utilidad gana, porque `utilities` se declara despues de `comp` y a
+   igualdad de especificidad la ultima capa manda.
+
+   El `font` de la ranura no sobra: es lo que heredan los hijos que no son
+   headings --un `<span>`, un `<strong>`, el `<p>` del subtitulo--, y en una
+   card cuyo titulo es un `<div>` y no un `<h3>` es lo unico que da el
+   cuerpo. Lo que no puede es saltarse la regla del reset.
+   ------------------------------------------------------------------------ */
+
+.md-card-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--md-sys-measurement-card-gap);
+  padding: var(--md-sys-measurement-card-padding);
+  font: var(--md-sys-typescale-title-large);
+  color: var(--md-sys-color-on-surface);
+}
+
+/* El subtitulo, el unico hijo que M3 baja de tono. `:not(:first-child)` y no
+   una clase propia: el autor no tiene que acordarse de escribirla, y una
+   card con un solo hijo no se queda con una regla muerta.
+
+   El mismo aviso del bloque de arriba vale aqui: si el subtitulo es un <p>,
+   esta regla le da el cuerpo; si es un heading, necesita su md-type-*. */
+.md-card-header > :not(:first-child) {
+  font: var(--md-sys-typescale-body-medium);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* ---------------------------------------------------------------------------
+   RANURA: CONTENT
+   ---------------------------------------------------------------------------
+   El padding lateral se repite a proposito en vez de declarar
+   `padding: 0 <lateral> <inferior>`: los tres lados tienen el mismo valor, y
+   escribirlos uno por uno deja sitio a que dos se desincronicen sin que nada
+   lo avise. El lateral y el inferior se declaran, y el superior lo anula el
+   header cuando existe.
+
+   Cuando el header NO existe, el borde de arriba queda pegado a la primera
+   linea de texto: por eso el `padding-block-start` declarado en la base de
+   esta ranura. Se pierde el aire de arriba, que es el precio de no tener
+   header, y no al reves.
+   ------------------------------------------------------------------------ */
+
+.md-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--md-sys-measurement-card-gap);
+  padding: var(--md-sys-measurement-card-padding);
+  font: var(--md-sys-typescale-body-medium);
+  color: var(--md-sys-color-on-surface);
+}
+
+/* Con header, el content no repite el padding de arriba: el hueco entre el
+   subtitulo y el primer parrafo lo pone el gap del header.
+
+   `0` a secas, y no un token: los valores cero no son medidas, son la
+   ausencia de la propiedad. Es lo mismo que hacen button, icon-button y fab
+   con su `padding: 0`, y por lo mismo no van a la capa 1. */
+.md-card:has(> .md-card-header) > .md-card-content {
+  padding-block-start: 0;
+}
+
+/* ---------------------------------------------------------------------------
+   RANURA: ACTIONS
+   ---------------------------------------------------------------------------
+   Fila alineada al final. M3 alinea las acciones a la derecha en LTR y a la
+   izquierda en RTL, y `justify-content: flex-end` ya hace las dos cosas: es
+   el borde final del eje, no el derecho, y por eso no hay que escribir una
+   direccion.
+
+   `flex-wrap: wrap` porque dos botones largos en una pantalla estrecha no
+   tienen por que desbordar la card; bajan a la linea siguiente.
+
+   El hueco reutiliza el rol del boton-group (8dp): dos botones que se tocan
+   miden igual separados aqui y alli. Ver la nota de la cabecera.
+   ------------------------------------------------------------------------ */
+
+.md-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--md-sys-measurement-button-group-between-space);
+  padding: var(--md-sys-measurement-card-padding);
+}
+
+/* ---------------------------------------------------------------------------
+   FORCED COLORS
+   ---------------------------------------------------------------------------
+   El SO tira del color del Canvas y borra los colores propios, asi que una
+   elevated sin sombra se queda sin nada que la separe del fondo. El borde va
+   con grosor `thin` y no solo con `border-color`: recolorear un borde que no
+   tiene grosor no dibuja nada.
+
+   Es lo que ya hacen button, icon-button, fab, fab-extended y divider.
+   ------------------------------------------------------------------------ */
+
+@media (forced-colors: active) {
+  .md-card {
+    border: var(--md-sys-shape-stroke-thin) solid CanvasText;
+  }
+
+  .md-card:disabled,
+  .md-card.md-disabled {
+    border-color: GrayText;
+    opacity: 1;
+  }
+}

@@ -96,7 +96,7 @@
      text-field.css    borde en reposo             -> thin
                        focus / error               -> thick
      card.css          outlined en reposo          -> thin
-                       focus / selected            -> thick
+                       focus cambia COLOR a on-surface (grosor fijo thin)           
      chip.css          chip en reposo              -> thin
                        chip seleccionado           -> thick
      selection.css     caja o circulo sin marcar   -> thick
