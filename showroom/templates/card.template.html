@@ -79,10 +79,18 @@
   de la vista que hay que cambiar al copiar, y conviene que lo diga en voz
   alta en vez de que se descubra al pegarlo.
 
-  Y REGLA 13, que no lo pilla: su contrato es que el snippet "rinde con solo
-  main.css", y un `src` del showroom lo incumple. Pero la regla solo mira
-  clases ajenas, `style=` y `<style>`/`<link>`/`<script>`, no `src`. Un
-  archivo de imagen es el primer caso que atraviesa ese hueco.
+  LO QUE SE DIJO DE REGLA 13 Y ERA FALSO
+  -------------------------------------
+  Este bloque afirmaba que el `src` "atraviesa un hueco" de REGLA 13. No lo
+  atraviesa: la comprueba bien. Su contrato es que el snippet "rinde con
+  solo main.css", y lo que mira es que no necesite CSS ni JS ajenos --clases
+  no del sistema, `style=`, `<style>`, `<link>`, `<script>`. Una imagen
+  necesita un fichero de imagen, no una hoja de estilos: el snippet sigue
+  rindiendo con solo main.css.
+
+  El problema real nunca fue la regla. Era que una imagen rota sin
+  dimensiones colapsaba la ranura, y eso no lo comprueba ninguna regla
+  porque es cosa del navegador. Ver la nota de `.md-card-media`.
 
   LO QUE SE MIDIO ANTES DE PONERLA, Y LO QUE NO HIZO FALTA
   ------------------------------------------------------
@@ -95,6 +103,21 @@
 
   Y el redondeo de las esquinas superiores SI recorta, que es lo unico que
   justifica que `card.css` declare el radio en vez de heredarlo.
+
+  Y SI LA IMAGEN NO CARGA
+  ----------------------
+  El `img` lleva `width` y `height` a proposito. Sin ellos el navegador no
+  reserva caja y, con el `src` roto, la ranura se queda en 20px: el `alt` se
+  pinta pero en una franja ilegible. Con ellos la caja se reserva y el alt
+  se lee. Ademas se acaban los saltos de layout.
+
+  Y `.md-card-media` lleva un fondo en `surface-container-high`, un escalon
+  por debajo del tono de la propia card, para que la caja se vea mientras la
+  imagen carga o si no llega nunca. M3 no publica ningun token para esto: sus
+  tres ficheros de card no mencionan imagen, ni media, ni fallback, ni
+  aspect-ratio. La guia `labs/gb/components/card/card.scss` tampoco tiene un
+  selector de `img` en ninguna linea. Es decision nuestra, y el precio es que
+  una imagen con transparencia deja pasar el fondo.
 -->
 
 <body class="md-bg-background md-text-on-background md-type-body-medium">
@@ -116,11 +139,11 @@
     <!-- PAREJA: la clase base (h2 + specimen + pre + boton). -->
     <section class="sr-section">
       <h2 class="md-type-title-large">Clase base</h2>
-      <p class="md-type-body-medium">La clase base con sus cuatro ranuras. El <code>src</code> de la imagen es el de tu app, y el título lleva <code>md-type-title-large</code> porque el reset deja el tamaño del navegador en los h1..h6.</p>
+      <p class="md-type-body-medium">La clase base con sus cuatro ranuras. El <code>src</code> de la imagen es el de tu app, y el <code>width</code> y el <code>height</code> son los que reservan la caja: sin ellos, si la imagen falla, la ranura se queda en 20px y el <code>alt</code> no se lee.</p>
       <div class="sr-specimen">
         <article class="md-card">
           <div class="md-card-media">
-            <img src="../assets/card-media.svg" alt="Media">
+            <img src="../assets/card-media.svg" alt="Media" width="320" height="180">
           </div>
           <div class="md-card-header">
             <h3 class="md-type-title-large">Title</h3>
@@ -137,7 +160,7 @@
       </div>
       <pre class="sr-code"><code>&lt;article class="md-card"&gt;
   &lt;div class="md-card-media"&gt;
-    &lt;img src="../assets/card-media.svg" alt="Media"&gt;
+    &lt;img src="../assets/card-media.svg" alt="Media" width="320" height="180"&gt;
   &lt;/div&gt;
   &lt;div class="md-card-header"&gt;
     &lt;h3 class="md-type-title-large"&gt;Title&lt;/h3&gt;

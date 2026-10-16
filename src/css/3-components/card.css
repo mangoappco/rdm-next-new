@@ -477,12 +477,43 @@
 
    `:where()` a proposito tambien: deja la especificidad en (0,1,0), la de
    la ranura, para que una utilidad del autor pueda ganar sin fight.
+
+   Y SI LA IMAGEN NO CARGA, QUE SE VEA ALGO
+   -----------------------------------------
+   Sin dimensiones en el `img`, el navegador no reserva caja y la ranura se
+   queda en el alto minimo del elemento. Medido con el `src` roto:
+
+     <img> sin width/height        ranura 20px,  alt en una franja
+     <img> con width/height        ranura 180px, alt dentro de una caja
+
+   El texto `alt` SI se pinta en los dos casos. Lo que se pierde es la caja,
+   y con ella el texto queda ilegible. Por eso hay que declarar el alto y el
+   ancho en la etiqueta, y por eso esta ranura lleva fondo.
+
+   Con la imagen cargada el fondo no se ve, queda detras. Con la imagen rota
+   o cargandose es lo que hace visible que ahi iba una.
+
+   El color no sale de un token de M3, porque M3 no publica ninguno para
+   esto: sus tres ficheros de card no mencionan imagen, ni media, ni
+   fallback, ni aspect-ratio. Es decision nuestra.
+
+   `surface-container-high` y no el tono de la propia card, que es
+   `surface-container-low`: un escalon mas abajo hace que la caja se lea
+   como hueco y no como parte de la card. Ya existe en los dos temas.
+
+   LO QUE ESTO COBRA
+   -----------------
+   Una imagen con transparencia --un logo, un PNG con canal alfa-- deja
+   pasar este fondo. No hay forma de evitarlo en CSS: no existe selector
+   para "la imagen ha fallado", porque `onerror` es un atributo que pone
+   JavaScript. Se acepta, y es el precio de que la caja se vea.
    ------------------------------------------------------------------------ */
 
 .md-card-media {
   display: block;
   overflow: hidden;
   inline-size: 100%;
+  background-color: var(--md-sys-color-surface-container-high);
   border-start-start-radius: var(--md-comp-card-shape);
   border-start-end-radius: var(--md-comp-card-shape);
 }
