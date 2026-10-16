@@ -535,10 +535,27 @@ Then ask the user how they want to proceed.
 
 ## How to read M3 here
 
-The local copy of Material Web is available for reference:
+There is no local copy. Read M3 from GitHub, at
+`https://github.com/material-components`.
+
+| Repository | What it is | Use it for |
+| --------- | ---------- | ---------- |
+| `material-web` | Material Design Web Components, actively developed | **token values and recipes.** `tokens/versions/latest/sass/_md-comp-*.scss` |
+| `material-components-android` | the reference M3 implementation | **prose.** `docs/components/<Name>.md`, one per component |
+| `material-components-web` | MDC Web, the library *before* M3 | **nothing.** Its name looks authoritative and it is not M3 |
+| `material-components-ios`, `-flutter`, `material-components` | maintenance mode or stale | nothing |
+
+How to read them, with no checkout:
 
 ```text
-C:\xampp\htdocs\proyectos\material-web-main
+# list every file (material-web: 1830 paths; android: 6667)
+https://api.github.com/repos/material-components/material-web/git/trees/main?recursive=1
+
+# read one file
+https://raw.githubusercontent.com/material-components/material-web/main/<path>
+
+# android's default branch is master, NOT main
+https://raw.githubusercontent.com/material-components/material-components-android/master/<path>
 ```
 
 Useful facts already verified, so they do not need re-checking:
@@ -546,13 +563,50 @@ Useful facts already verified, so they do not need re-checking:
 | Fact | Detail |
 | ---- | ------ |
 | M3 publishes **no** utility classes except typography | 8 `.md-typescale-*`; zero `.md-bg-*` / `.md-text-*` / `.md-border-*` |
-| RDM Next's own utilities are a project decision | 166 of them, documented in the README |
+| RDM Next's own utilities are a project decision | documented in README section 4; count it with `grep -rhoE '^\s*\.md-[a-z0-9-]+' src/css/4-utilities/ \| sort -u \| wc -l` |
 | Token values match M3 | palette 91/91 identical, typescale 92/92 identical |
 | 12 color roles are not adopted | the `*-fixed` family; documented in README section 4 |
 | The divider is 2 roles upstream | `color = outline-variant`, `thickness = 1px` |
 
-For token values, prefer the local copy over memory. For anything about utility classes,
-remember that M3 has none: our approach is ours.
+### What is NOT readable, and how not to waste time on it
+
+| Source | Result |
+| ------ | ------ |
+| `m3.material.io` | an Angular app. 57 KB of HTML with **zero** content, identical with a Googlebot and a Bingbot user-agent, and the Wayback snapshot of 2026-10-11 holds only the shell. The prose lives in JS chunks loaded per route |
+| `api.github.com/search/code` | needs auth, returns empty unauthenticated |
+| `material-web/card/` | 404. The card component is at `labs/card/` |
+| `material-web/catalog/site/…` | 404. That tree does not exist |
+| `material-web/tokens/versions/latest/` | 404. The files are under `…/latest/sass/` |
+
+For M3 prose about a component, ask the user to paste it. Do not claim the
+site says something that was read from memory or from a summary.
+
+### Cards specifically
+
+`material-web` has **no card documentation**: `docs/components/` holds
+`button.md`, `checkbox.md`, `chip.md`, `dialog.md`, `divider.md`,
+`elevation.md` and `fab.md`, and no `card.md`.
+
+So M3 prose about cards comes from
+`material-components-android/master/docs/components/Card.md` — 21 KB, with
+sections Anatomy, Key properties, Variants, Code implementation and Theming.
+
+Two facts from it, both confirmed against `material-web`:
+
+| Fact | Detail |
+| ---- | ------ |
+| Card anatomy is six parts | Container, Headline, Subhead, Supporting text, Image, Buttons |
+| Container colour per variant | elevated `colorSurfaceContainerLow`, filled `colorSurfaceContainerHighest`, outlined `colorSurface` |
+
+And one **absence** worth knowing, because it has been asserted the other
+way: that Card.md never states an alignment for the row of actions. The only
+alignment words in it are `layout_marginEnd`, `Gravity`, `scaleType` and
+`cornerSize`. The one comparable datum is
+`material-web/dialog/internal/_dialog.scss`, which has
+`.actions { justify-content: flex-end }`.
+
+For token values, prefer the source over memory. For anything about utility
+classes, remember that M3 has none: our approach is ours.
 
 ---
 

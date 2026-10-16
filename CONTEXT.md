@@ -52,7 +52,9 @@ La hoja está hecha y verificada; **la vista tiene un solo par**, el de Clase ba
 - **Disabled tiene dos vías**: `:disabled` solo llega si la card es un `<button>`; para un `<article>` hay que usar `.md-disabled` de `4-utilities`.
 - **La alineación de `.md-card-actions` es `flex-end`, y es decisión nuestra.** M3 no publica ningún token de alineación de acciones —sus tres ficheros de card dan seis tokens y ninguno es de eso—, y `labs/gb/components/card/card.scss` no tiene selector de acciones: la card de M3 es un contenedor con un `<slot>`. La prosa de `m3.material.io/components/cards/guidelines` revisada tampoco da valor por defecto: su sección «Actions» no menciona alineación, y la única frase sobre ella está bajo «Adaptive design» —«cards and their elements can align left, right, or center as the layout scales»—, que es permiso para variar por breakpoint. El único dato comparable leído es `dialog/internal/_dialog.scss`: `.actions { justify-content: flex-end }`.
 - **La prosa de las guidelines de card sí se pudo leer**, pegada a mano: es la única fuente de M3 sobre cards legible, porque la web es Angular y su texto va en chunks de JS. Confirma tres cosas de la implementación actual: el contenedor **no tiene tamaño propio** («size is determined by the space those elements occupy»), solo el contenedor es obligatorio y todo lo demás opcional, y hay tres variantes. Su vocabulario es **Headline / Subhead / Supporting text**, no Title / Subhead / Body.
-- **Ninguna fuente de M3 sobre cards se puede leer automáticamente.** `m3.material.io` responde 57 KB sin contenido, igual con Googlebot y Bingbot, y el snapshot de Wayback del 2026-10-11 solo guarda la shell de Angular. La documentación de material-web no tiene `card.md`. Para cualquier duda de M3 sobre cards hay que pegarla a mano o deducirla del código.
+- **Ninguna fuente de M3 sobre cards se lee por la vía web.** `m3.material.io` responde 57 KB sin contenido, igual con Googlebot y Bingbot, y el snapshot de Wayback del 2026-10-11 solo guarda la shell de Angular. La prosa legible sale de `material-components-android/master/docs/components/Card.md`. Ver la sección de fuentes, arriba.
+- **`Card.md` de Android no dice nada de la alineación de la fila de acciones.** Se comprobó palabra por palabra: lo único que menciona `align` es `layout_marginEnd`, `Gravity`, `scaleType` y `cornerSize`. Confirma por segunda vía oficial lo que se había deducido de los tokens.
+- **La anatomía de M3 son seis partes**: Container, Headline, Subhead, Supporting text, Image, Buttons. Es el vocabulario que lleva el specimen de card, y coincide con el `Card.md` de Android y con las guidelines pegadas a mano.
 - **El título necesita `md-type-title-large`.** Medido: dentro de `.md-card-header` un `<h3>` computa 25.74px, no 22px, porque `reset.css:245-247` conserva a propósito los tamaños de `h1..h6`.
 
 Decidido para la vista y aún no escrito: el par de Color **no se hace** hasta que existan las otras dos variantes; el del título lleva pareja propia; el de disabled se hace con el autor en el momento.
@@ -88,6 +90,42 @@ PowerShell 7.6.7 instalado en `~/.local/powershell/`, sin sudo y sin instalador:
 En macOS **no** va `-ExecutionPolicy Bypass`: es un concepto de Windows y ahí el bloqueo de scripts no existe. El script tampoco necesitó cambios: `Get-RelPath` normaliza cualquier separador a `\` antes de comparar, que es justo lo que hace portable.
 
 Desde que corre aquí, el sustituto de bash que se usó mientras tanto ya no hace falta y no está en el repo.
+
+## Fuentes de M3
+
+No hay copia local. Se leen por GitHub, en `https://github.com/material-components`.
+
+| Repositorio | Qué es | Para qué |
+| --- | --- | --- |
+| `material-web` | Material Design Web Components, activo | **valores de token y recetas**: `tokens/versions/latest/sass/_md-comp-*.scss` |
+| `material-components-android` | la implementación de referencia de M3 | **prosa**: `docs/components/<Nombre>.md`, uno por componente |
+| `material-components-web` | MDC Web, la librería *anterior* a M3 | **nada**. El nombre parece autoritativo y no es M3 |
+| `material-components-ios`, `-flutter`, `material-components` | mantenimiento o parados | nada |
+
+Sin checkout:
+
+```
+https://api.github.com/repos/material-components/material-web/git/trees/main?recursive=1
+https://raw.githubusercontent.com/material-components/material-web/main/<ruta>
+https://raw.githubusercontent.com/material-components/material-components-android/master/<ruta>
+```
+
+La rama por defecto de Android es `master`, no `main`.
+
+### Lo que NO se lee, para no perder tiempo
+
+| Fuente | Resultado |
+| --- | --- |
+| `m3.material.io` | app de Angular. 57 KB de HTML con cero contenido, igual con Googlebot y Bingbot, y el snapshot de Wayback solo guarda la shell |
+| `api.github.com/search/code` | pide autenticación, vacío sin ella |
+| `material-web/card/` | 404. El card está en `labs/card/` |
+| `material-web/tokens/versions/latest/` | 404. Los ficheros van en `…/latest/sass/` |
+
+Para prosa de M3 hay que pegarla a mano. No se afirma lo que diga la web sin haberlo leído.
+
+### Cards en concreto
+
+`material-web` **no** tiene documentación de cards: su `docs/components/` tiene button, checkbox, chip, dialog, divider, elevation y fab, y ningún `card.md`. La prosa de cards sale de `material-components-android/master/docs/components/Card.md`, 21 KB, con anatomía, propiedades, variantes, implementación y theming.
 
 ## Dónde vive el resto
 
