@@ -3,10 +3,12 @@
   <!--
     Asset de imagen del showroom.
 
-    Las rayas de este comentario son puntos, no guiones: un comentario XML
-    no puede contener dos guiones seguidos, y un separador de ese tipo
-    vuelve el fichero invalido. El navegador lo tiraba entero sin avisar:
-    naturalWidth daba 0 y la ranura se quedaba en 20px de alto.
+    Las rayas de este comentario son puntos, y NUNCA dos guiones seguidos: un
+    comentario XML no los admite. Todo prefijo de token del sistema empieza
+    por dos guiones, asi que escribir uno aqui dentro, o un separador de
+    guiones, deja el fichero invalido y el navegador lo tira entero sin
+    avisar. Pasa dos veces en este mismo fichero, y las dos veces la senal
+    fue la misma: naturalWidth a 0 y la ranura a 20px de alto.
 
     POR QUE SVG Y NO PNG
     ====================
@@ -17,12 +19,11 @@
 
     QUE DIBUJA: NADA EN CONCRETO, A PROPOSITO
     =========================================
-    Un rectangulo gris muy claro con un bloque gris en el centro. Sin producto,
-    sin marca, sin texto, sin catalogos.
+    Un bloque gris en el centro. Sin producto, sin marca, sin texto.
 
     La primera version dibujaba una ficha de producto con su caja y su
     referencia, y era un error: la ranura .md-card-media no lee el contenido
-    de la imagen, solo la recorta. Poner un producto alInventar convertia un
+    de la imagen, solo la recorta. Poner un producto al inventar convertia un
     placeholder en una mentira, porque cualquiera que copiara el snippet se
     llevaria tambien el "Caja de Carthago". Un bloque neutro no inventa nada.
 
@@ -30,18 +31,21 @@
     contenido de ejemplo: "Title", "Subhead", "Body". Es lo que ya hace
     typography.html con sus specimens.
 
-    LOS COLORES SON DE LA PALETA, EN HEX
-    ====================================
-    Este fichero esta FUERA de src/css/, asi que la REGLA 1 no lo cubre: es
-    un asset, no una hoja de estilos. Aun asi toma los tonos de la paleta,
-    para que el bloque no choque con la card que lo contiene:
+    SIN FONDO, Y CON OPACIDAD, POR EL TEMA OSCURO
+    =============================================
+    Este fichero llevaba el fondo escrito en hexadecimal, y en tema oscuro se
+    quedaba claro: la card se ponia oscura y el bloque seguia siendo el
+    mismo gris claro.
 
-      fondo   neutral92  #ece6f0   el tono mas tenue de la escalera
-      figura  neutral87  #ded8e1   un escalon por debajo
+    Un elemento img no puede leer las variables CSS de la pagina, asi que un
+    color de tema dentro del SVG no es posible. Lo que si funciona es dejar
+    el fondo TRANSPARENTE y que lo ponga la ranura .md-card-media, que si lee
+    un rol de color de la capa 2, y ese si cambia con el tema.
 
-    Los dos tienen el leve matiz violeta de los neutros de M3. Un gris
-    puro se notaria contra una card que no lo es.
+    Y la figura lleva NEGRO CON OPACIDAD, no un gris. Con un gris fijo habria
+    que elegir el claro o el oscuro y el otro quedaria mal. Con negro al 14%
+    sobre fondo claro se ve mas oscuro, y sobre fondo oscuro se ve mas claro:
+    es contraste relativo, y el mismo valor sirve en los dos temas. Medido.
   -->
-  <rect width="320" height="180" fill="#ece6f0"/>
-  <rect x="120" y="50" width="80" height="80" rx="12" fill="#ded8e1"/>
+  <rect x="120" y="50" width="80" height="80" rx="12" fill="#000" fill-opacity="0.14"/>
 </svg>
