@@ -637,6 +637,14 @@
   pointer-events: none;
 }
 
+/* La filled se apoya en `surface-variant` y no en `surface`: es su token
+   `disabled-container-color` en M3, medido en `_md-comp-filled-card.scss`
+   (v34.0.21). Solo llega por `:disabled`: la via `.md-disabled` no cambia
+   tonos, solo opacidad, igual que en elevated. */
+.md-card-filled:disabled {
+  --md-comp-card-container-color: var(--md-sys-color-surface-variant);
+}
+
 /* La sombra se queda en la de reposo: M3 publica `disabled-container-elevation`
    con el mismo valor que el de reposo en las tres fichas. */
 .md-card:disabled,
@@ -675,8 +683,8 @@
    `DISABLED — DOS VIAS`.
    ------------------------------------------------------------------------ */
 
-.md-card:disabled,
-.md-card.md-disabled {
+.md-card-outlined:disabled,
+.md-card-outlined.md-disabled {
   /* El borde se apaga con su propia opacidad, no con la del contenedor. */
   --md-comp-card-outline-color: rgb(
     var(--md-sys-color-outline-rgb) / var(--md-sys-state-disabled-outline-opacity)
@@ -693,6 +701,28 @@
      token que la utilidad lee. Ver el bloque de `.md-disabled` en
      `4-utilities/state.css`. */
   --md-comp-disabled-opacity: 1;
+}
+
+/* Y EL CONTENIDO SI SE LAVA, CONTRA M3 Y A PROPOSITO
+   --------------------------------------------------
+   Los tokens (`disabled-outline-*` y nada mas), el mixin
+   `outlined-disabled` de M3 y hasta `labs/card` —que lo deja en TODO,
+   b/307361748— dejan el contenido a opacidad plena. Solo la ilustracion
+   de m3.material.io lo muestra lavado, y es la que manda aqui: una
+   outlined apagada con el texto intacto no se lee como apagada.
+
+   Se atenua a los HIJOS y no a la card, para no multiplicar el borde:
+   con `opacity` en la card el `outline` al 0.12 quedaria al 0.045 y se
+   perderia del todo. Asi el borde queda en su 0.12 y el contenido baja
+   al 0.38, igual que en las otras dos fichas.
+
+   Vale por las dos vias: en `:disabled` la card ya va a opacidad 1 por
+   la regla de arriba, y en `.md-disabled` la utilidad lee el token que
+   esa misma regla fija a 1. Sin ese 1 la utilidad atenuaria la card
+   entera y el borde se iria con ella. */
+.md-card-outlined:disabled > *,
+.md-card-outlined.md-disabled > * {
+  opacity: var(--md-sys-state-disabled-state-layer-opacity);
 }
 
 /* ---------------------------------------------------------------------------
@@ -1021,6 +1051,13 @@
   .md-card:disabled,
   .md-card.md-disabled {
     border-color: GrayText;
+    opacity: 1;
+  }
+
+  /* En alto contraste el contenido no se lava: el gris del sistema ya dice
+     que esta apagada, y atenuarlo la haria ilegible. */
+  .md-card-outlined:disabled > *,
+  .md-card-outlined.md-disabled > * {
     opacity: 1;
   }
 }

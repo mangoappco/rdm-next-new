@@ -14,8 +14,10 @@
 </head>
 
 <!--
-  ESTA VISTA ESTA A MEDIAS. Solo tiene el par Clase base. Se construye par a
-  par, mirando cada uno antes de escribir el siguiente.
+  ESTA VISTA ESTA A MEDIAS. Tiene ocho pares: Clase base, Variantes, Ratio,
+  Link, States y cuatro recetas de Slots que cierran como playground para
+  copiar. Se construye par a par, mirando cada uno antes de escribir el
+  siguiente.
 
   LO QUE YA ESTA Y LO QUE NO
   --------------------------
@@ -425,6 +427,201 @@
   &lt;/div&gt;
   &lt;div class="md-card-content"&gt;
     &lt;p class="md-type-body-medium"&gt;Supporting text&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/article&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+    <!-- PAREJA: estados (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">States</h2>
+      <p class="md-type-body-medium">Enabled y disabled en elevated, por las dos vías. En outlined también se lava el contenido, contra M3 y a propósito; hover, focus y pressed se ven interactuando.</p>
+      <div class="sr-specimen sr-specimen-gap">
+<article class="md-card md-card-elevated">
+  <div class="md-card-header">
+    <h3 class="md-type-title-large">Enabled</h3>
+    <p class="md-type-body-medium">Subhead</p>
+  </div>
+  <div class="md-card-content">
+    <p class="md-type-body-medium">Supporting text</p>
+  </div>
+</article>
+<button class="md-card md-card-elevated" type="button" disabled>
+  <div class="md-card-header">
+    <h3 class="md-type-title-large">Disabled</h3>
+    <p class="md-type-body-medium">Subhead</p>
+  </div>
+  <div class="md-card-content">
+    <p class="md-type-body-medium">Supporting text</p>
+  </div>
+</button>
+<article class="md-card md-card-elevated md-disabled">
+  <div class="md-card-header">
+    <h3 class="md-type-title-large">Con md-disabled</h3>
+    <p class="md-type-body-medium">Subhead</p>
+  </div>
+  <div class="md-card-content">
+    <p class="md-type-body-medium">Supporting text</p>
+  </div>
+</article>
+      </div>
+      <pre class="sr-code"><code>&lt;article class="md-card md-card-elevated"&gt;
+  &lt;div class="md-card-header"&gt;
+    &lt;h3 class="md-type-title-large"&gt;Enabled&lt;/h3&gt;
+    &lt;p class="md-type-body-medium"&gt;Subhead&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Supporting text&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/article&gt;
+&lt;button class="md-card md-card-elevated" type="button" disabled&gt;
+  &lt;div class="md-card-header"&gt;
+    &lt;h3 class="md-type-title-large"&gt;Disabled&lt;/h3&gt;
+    &lt;p class="md-type-body-medium"&gt;Subhead&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Supporting text&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/button&gt;
+&lt;article class="md-card md-card-elevated md-disabled"&gt;
+  &lt;div class="md-card-header"&gt;
+    &lt;h3 class="md-type-title-large"&gt;Con md-disabled&lt;/h3&gt;
+    &lt;p class="md-type-body-medium"&gt;Subhead&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Supporting text&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/article&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+    <!-- PAREJA: receta completa (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Slots completa</h2>
+      <p class="md-type-body-medium">Solo el contenedor es obligatorio. La completa, con las cuatro ranuras, se copia tal cual.</p>
+      <div class="sr-specimen">
+<article class="md-card md-card-elevated">
+  <div class="md-card-media md-card-media-landscape">
+    <img src="../assets/card-media.svg" alt="Media">
+  </div>
+  <div class="md-card-header">
+    <h3 class="md-type-title-large">Headline</h3>
+    <p class="md-type-body-medium">Subhead</p>
+  </div>
+  <div class="md-card-content">
+    <p class="md-type-body-medium">Supporting text que iguala todos los anchos</p>
+  </div>
+  <div class="md-card-actions">
+    <button class="md-button md-button-filled" type="button">Primary</button>
+  </div>
+</article>
+      </div>
+      <pre class="sr-code"><code>&lt;article class="md-card md-card-elevated"&gt;
+  &lt;div class="md-card-media md-card-media-landscape"&gt;
+    &lt;img src="../assets/card-media.svg" alt="Media"&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-header"&gt;
+    &lt;h3 class="md-type-title-large"&gt;Headline&lt;/h3&gt;
+    &lt;p class="md-type-body-medium"&gt;Subhead&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Supporting text que iguala todos los anchos&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-actions"&gt;
+    &lt;button class="md-button md-button-filled" type="button"&gt;Primary&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/article&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+    <!-- PAREJA: receta sin medio (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Slots sin medio</h2>
+      <p class="md-type-body-medium">Sin medio: cabecera, contenido y acciones. Quitarlo deja el resto en su sitio.</p>
+      <div class="sr-specimen">
+<article class="md-card md-card-elevated">
+  <div class="md-card-header">
+    <h3 class="md-type-title-large">Headline</h3>
+    <p class="md-type-body-medium">Subhead</p>
+  </div>
+  <div class="md-card-content">
+    <p class="md-type-body-medium">Supporting text que iguala todos los anchos</p>
+  </div>
+  <div class="md-card-actions">
+    <button class="md-button md-button-filled" type="button">Primary</button>
+  </div>
+</article>
+      </div>
+      <pre class="sr-code"><code>&lt;article class="md-card md-card-elevated"&gt;
+  &lt;div class="md-card-header"&gt;
+    &lt;h3 class="md-type-title-large"&gt;Headline&lt;/h3&gt;
+    &lt;p class="md-type-body-medium"&gt;Subhead&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Supporting text que iguala todos los anchos&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-actions"&gt;
+    &lt;button class="md-button md-button-filled" type="button"&gt;Primary&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/article&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+    <!-- PAREJA: receta medio y cabecera (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Slots medio y cabecera</h2>
+      <p class="md-type-body-medium">Medio, cabecera y contenido, sin acciones. Cierra con el mismo padding.</p>
+      <div class="sr-specimen">
+<article class="md-card md-card-elevated">
+  <div class="md-card-media md-card-media-landscape">
+    <img src="../assets/card-media.svg" alt="Media">
+  </div>
+  <div class="md-card-header">
+    <h3 class="md-type-title-large">Headline</h3>
+    <p class="md-type-body-medium">Subhead</p>
+  </div>
+  <div class="md-card-content">
+    <p class="md-type-body-medium">Supporting text que iguala todos los anchos</p>
+  </div>
+</article>
+      </div>
+      <pre class="sr-code"><code>&lt;article class="md-card md-card-elevated"&gt;
+  &lt;div class="md-card-media md-card-media-landscape"&gt;
+    &lt;img src="../assets/card-media.svg" alt="Media"&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-header"&gt;
+    &lt;h3 class="md-type-title-large"&gt;Headline&lt;/h3&gt;
+    &lt;p class="md-type-body-medium"&gt;Subhead&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Supporting text que iguala todos los anchos&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/article&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+    <!-- PAREJA: receta sin acciones (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Slots sin acciones</h2>
+      <p class="md-type-body-medium">Cabecera y contenido, sin medio ni acciones. El contenido cierra con el mismo padding.</p>
+      <div class="sr-specimen">
+<article class="md-card md-card-elevated">
+  <div class="md-card-header">
+    <h3 class="md-type-title-large">Headline</h3>
+    <p class="md-type-body-medium">Subhead</p>
+  </div>
+  <div class="md-card-content">
+    <p class="md-type-body-medium">Supporting text que iguala todos los anchos</p>
+  </div>
+</article>
+      </div>
+      <pre class="sr-code"><code>&lt;article class="md-card md-card-elevated"&gt;
+  &lt;div class="md-card-header"&gt;
+    &lt;h3 class="md-type-title-large"&gt;Headline&lt;/h3&gt;
+    &lt;p class="md-type-body-medium"&gt;Subhead&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Supporting text que iguala todos los anchos&lt;/p&gt;
   &lt;/div&gt;
 &lt;/article&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
