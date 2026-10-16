@@ -100,9 +100,17 @@
 
   EL TEXTO ES EL NOMBRE DEL ROL, Y EL SVG NO DIBUJA NADA
   ------------------------------------------------------
-  El specimen dice `Title`, `Subhead`, `Body`, `Action` y `Primary`. No es
-  una manía: es lo que ya hace `typography.html`, donde cada specimen lleva
-  el nombre del rol que esta enseñando.
+  El specimen dice `Headline`, `Subhead` y `Supporting text`. Son las palabras
+  de M3, no las nuestras: la anatomía de la card en m3.material.io lista
+  Container, Image, Button, Supporting text, Subhead y Headline. Se empezó con
+  `Title`, `Subhead` y `Body`, y `Title` no es una palabra de M3: es
+  `Headline`. Un ejemplo que se copia tiene que enseñar los nombres con los
+  que viene la especificacion.
+
+  Y los botones dicen `Action` y `Primary`, que sí son nuestros y sí están
+  inventados: M3 no nombra las acciones de una card, solo las llama botones.
+
+  El SVG, por su parte, no dibuja nada concreto.
 
   Y el asset se llama `card-media.svg` y dibuja un rectangulo gris con un
   bloque gris en el centro. La primera version dibujaba una ficha de producto
@@ -197,11 +205,11 @@
             <img src="../assets/card-media.svg" alt="Media">
           </div>
           <div class="md-card-header">
-            <h3 class="md-type-title-large">Title</h3>
+            <h3 class="md-type-title-large">Headline</h3>
             <p class="md-type-body-medium">Subhead</p>
           </div>
           <div class="md-card-content">
-            <p class="md-type-body-medium">Body</p>
+            <p class="md-type-body-medium">Supporting text</p>
           </div>
           <div class="md-card-actions">
             <button class="md-button md-button-text" type="button">Action</button>
@@ -214,11 +222,11 @@
     &lt;img src="../assets/card-media.svg" alt="Media"&gt;
   &lt;/div&gt;
   &lt;div class="md-card-header"&gt;
-    &lt;h3 class="md-type-title-large"&gt;Title&lt;/h3&gt;
+    &lt;h3 class="md-type-title-large"&gt;Headline&lt;/h3&gt;
     &lt;p class="md-type-body-medium"&gt;Subhead&lt;/p&gt;
   &lt;/div&gt;
   &lt;div class="md-card-content"&gt;
-    &lt;p class="md-type-body-medium"&gt;Body&lt;/p&gt;
+    &lt;p class="md-type-body-medium"&gt;Supporting text&lt;/p&gt;
   &lt;/div&gt;
   &lt;div class="md-card-actions"&gt;
     &lt;button class="md-button md-button-text" type="button"&gt;Action&lt;/button&gt;

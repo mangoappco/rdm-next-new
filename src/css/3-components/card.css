@@ -707,6 +707,37 @@
    el borde final del eje, no el derecho, y por eso no hay que escribir una
    direccion.
 
+   LA ALINEACION, Y DE DONDE SALE
+   -------------------------------
+   `flex-end` es DECISION NUESTRA, y conviene tener a mano de donde NO sale,
+   porque se ha preguntado varias veces.
+
+   M3 no publica ningun token de alineacion para las acciones de una card.
+   Sus tres ficheros de card dan seis tokens --container-color, container-
+   elevation, container-shape, outline-color, outline-width y state-layer-
+   color-- y ninguno es de esto. La guia `labs/gb/components/card/card.scss`
+   tampoco tiene selector de acciones: la card de M3 es un contenedor con un
+   `<slot>` y ya.
+
+   Y la prosa de m3.material.io/components/cards/guidelines, revisada, no da
+   un valor por defecto. Su seccion "Actions" --primary action area, buttons,
+   icon buttons, selection controls, linked text, multiple action areas-- no
+   menciona la alineacion. La unica frase sobre ella esta bajo "Adaptive
+   design": "Cards and their elements can align left, right, or center as the
+   layout scales", que es un PERMISO para variar segun el breakpoint, no un
+   valor por defecto. La otra mencion es el overflow menu, que si va en
+   esquina, pero es el menu y no los botones.
+
+   El unico dato comparable que si se pudo leer es el dialogo:
+   `dialog/internal/_dialog.scss` trae `.actions { justify-content: flex-end }`.
+   Las acciones de un dialogo y las de una card son el mismo tipo de gesto --
+   concluir algo-- y ahi M3 las pone al final. Se sigue esa, y se anota que es
+   decision propia.
+
+   Para cambiarla, un modificador. No la base: la base es lo que se copia sin
+   pensar, y no conviene que imponga una orientacion que M3 no publica.
+   ------------------------------------------------------------------------
+
    `flex-wrap: wrap` porque dos botones largos en una pantalla estrecha no
    tienen por que desbordar la card; bajan a la linea siguiente.
 
