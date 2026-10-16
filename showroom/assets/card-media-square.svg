@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240"
+     role="img" aria-label="Media cuadrada">
+  <!--
+    Asset de imagen del showroom, proporcion cuadrada, 1:1.
+
+    SIN USAR TODAVIA
+    ...............
+    La vista de card todavia no existe. El par Ratio de card.template.html
+    sigue sirviendo ../assets/card-media.svg en sus tres ranuras, y este
+    fichero no aparece en ninguna vista.
+
+    POR QUE NO DIBUJA NADA CONCRETO
+    ===============================
+    Ni una hamburguesa, ni una taza, ni una pieza de mercancia. El argumento
+    largo ya esta escrito en ./card-media.svg y en el propio
+    card.template.html; aqui va la version corta: la ranura .md-card-media
+    no lee el contenido de la imagen, solo la recorta, asi que un objeto
+    dibujado no informa de nada y se va al portapapeles de quien copia el
+    snippet, junto al objeto mismo.
+
+    LA TRAMPA SI ALGUIEN LO ENCHUFA EN EL PAR RATIO
+    ===============================================
+    El viewBox es el de la proporcion de su ranura, asi que object-fit:
+    contain lo deja a tamano exacto y no aparece ninguna banda. Queda
+    bonito, y es justo lo que ese par no tiene que ensenar: que la caja la
+    reserva la proporcion de la ranura y no la imagen, y que el fondo de
+    surface-container-high aparece en lo que sobra. Un solo asset en las tres
+    ranuras lo demuestra; uno por proporcion lo tapa.
+
+    RAYAS DE PUNTOS, Y NUNCA DOS GUIONES SEGUIDOS
+    ============================================
+    Este comentario es XML, y dos guiones seguidos lo vuelven invalido: el
+    navegador tira el fichero entero sin avisar y naturalWidth queda a 0. Ya
+    paso dos veces en el fichero hermano. Por eso los separadores de titulo
+    son de puntos, y por eso aqui no se escribe ningun token del sistema,
+    cuyo prefijo empieza por dos guiones.
+
+    SIN FONDO, Y CON NEGRO A OPACIDAD
+    ================================
+    El fondo lo pone la ranura, con surface-container-high. Y la figura
+    lleva negro con opacidad, no un gris: con un gris fijo habria que elegir
+    tema y el otro quedaria mal, y al 8 o al 14 por ciento es contraste
+    relativo, el mismo valor en los dos temas. Medido en el fichero hermano.
+  -->
+  <rect x="60" y="60" width="120" height="120" rx="16" fill="#000" fill-opacity="0.08"/>
+  <rect x="96" y="96" width="48" height="48" rx="12" fill="#000" fill-opacity="0.14"/>
+</svg>
