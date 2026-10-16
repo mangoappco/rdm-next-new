@@ -92,16 +92,11 @@
 
   LA IMAGEN, Y POR QUE EL SRC DEL SNIPPET ES DEL SHOWROOM
   ------------------------------------------------------
-  `../assets/card-media-landscape.svg` no es copiable tal cual: en ManGo! App
-  la imagen del producto vive en otro sitio. No es descuido, es REGLA 11: el
+  `../assets/card-media.svg` no es copiable tal cual: en ManGo! App la
+  imagen del producto vive en otro sitio. No es descuido, es REGLA 11: el
   `innerHTML` del specimen y el texto del `<pre>` tienen que ser IDENTICOS,
   y como el specimen tiene que renderizar, su ruta tiene que ser real. Si el
   specimen dijera `imagen.jpg`, no se veria nada.
-
-  Y hay uno por proporcion: `card-media-landscape`, `card-media-square` y
-  `card-media-portrait`, cada uno con el `viewBox` de la ranura donde se usa.
-  Asi el `object-fit: contain` los deja a tamano exacto y el specimen se ve
-  limpio. Ver abajo lo que eso cambia.
 
   EL TEXTO ES EL NOMBRE DEL ROL, Y EL SVG NO DIBUJA NADA
   ------------------------------------------------------
@@ -117,24 +112,22 @@
 
   El SVG, por su parte, no dibuja nada concreto.
 
-  Y los assets dibujan un rectangulo gris con un bloque gris en el centro. La
-  primera version dibujaba una ficha de producto con su caja y su referencia,
-  lo que convertia un placeholder en una mentira: quien copiara el snippet se
-  llevaba tambien el "Caja de Carthago". La ranura `.md-card-media` no lee el
-  contenido de la imagen, solo la recorta, asi que no hay nada que ganar
-  inventando una.
+  Y el asset se llama `card-media.svg` y dibuja un rectangulo gris con un
+  bloque gris en el centro. La primera version dibujaba una ficha de producto
+  con su caja y su referencia, lo que convertia un placeholder en una
+  mentira: quien copiara el snippet se llevaba tambien el "Caja de Carthago".
+  La ranura `.md-card-media` no lee el contenido de la imagen, solo la
+  recorta, asi que no hay nada que ganar inventando una.
 
-  LO QUE SE PERDIO AL PONER UN ASSET POR PROPORCION
-  -----------------------------------------------
-  `card-media.svg`, el asset generico, ya no lo usa ninguna ranura de la vista.
-  Con el, la ranura cuadrada recibia una imagen 16:9 y el `contain` dejaba
-  bandas de 70px arriba y abajo, y la vertical de 124px. Se veia que la caja
-  la reserva la RANURA y no la imagen, y que el fondo de `surface-container-high`
-  aparece justo en lo que sobra. Eso era lo que demostraba el par de Ratio.
-
-  Ahora cada asset coincide con su ranura, no hay bandas, y el fondo de
-  respaldo ya no se ve en ningun specimen. Es un intercambio, no una mejora:
-  el par se ve mejor y se ensena menos. El fondo sigue declarado en
+  LO QUE EL ASSET GENERICO ENSENA
+  --------------------------------
+  Las tres ranuras sirven `card-media.svg`, una imagen 16:9. En la cuadrada
+  el `contain` deja bandas de 70px arriba y abajo, y en la vertical de 124px.
+  Se ve que la caja la reserva la RANURA y no la imagen, y que el fondo de
+  `surface-container-high` aparece justo en lo que sobra. Eso es lo que
+  demuestra el par de Ratio, y por eso no hay un asset por proporcion: con
+  el `viewBox` igualado a cada ranura las bandas serian 0 y esa demostracion
+  no apareceria en ningun specimen. El fondo sigue declarado en
   `.md-card-media` y escrito en su nota de `card.css`.
 
   Por eso la prosa del par dice que el `src` es el de tu app. Es lo unico
