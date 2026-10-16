@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" width="320" height="180"
+     role="img" aria-label="Imagen de producto de ejemplo">
+  <!--
+    Primer asset de imagen del showroom.
+
+    Las rayas de este comentario son puntos, no guiones: un comentario XML
+    no puede contener dos guiones seguidos, y un separador de ese tipo
+    vuelve el fichero invalido. El navegador lo tiraba entero sin avisar:
+    naturalWidth daba 0 y la ranura se quedaba en 20px de alto.
+
+    POR QUE SVG Y NO PNG
+    ====================
+    Es texto. Un PNG binario en un repo cuyo .gitattributes y cuyas reglas
+    tratan todo como texto UTF-8 introduce un segundo tipo de fichero que
+    nadie revisa en un diff, y no se puede buscar dentro. Un SVG se versiona,
+    se lee en el commit y se puede corregir sin herramienta.
+
+    Y no es una captura: es una ilustracion. Una captura de pantalla dentro
+    de una card que se dibuja en el navegador es un patron que se realimenta
+    a si mismo y que envejece mal.
+
+    QUE REPRESENTA
+    ==============
+    Un producto sobre un fondo de tono. No hace falta que signifique nada
+    concreto: la ranura .md-card-media no lee el contenido de la imagen, solo
+    la recorta. Lo que se ve en la vista es el redondeo de las esquinas
+    superiores, que es lo que la ranura declara.
+
+    LOS COLORES SON LOS DEL SISTEMA, EN HEX
+    =======================================
+    Este fichero esta FUERA de src/css/, asi que la REGLA 1 no lo cubre: es
+    un asset, no una hoja de estilos. Aun asi usa los mismos tonos que la
+    paleta, para que la imagen no choque con la card que la contiene.
+  -->
+  <rect width="320" height="180" fill="#eaddff"/>
+  <rect x="0" y="138" width="320" height="42" fill="#d0bcff"/>
+  <path d="M132 60h56a10 10 0 0 1 10 10v52a10 10 0 0 1-10 10h-56a10 10 0 0 1-10-10V70a10 10 0 0 1 10-10z"
+        fill="#6750a4"/>
+  <path d="M140 74h40v9h-40z" fill="#eaddff"/>
+  <path d="M140 93h28v9h-28z" fill="#d0bcff"/>
+</svg>

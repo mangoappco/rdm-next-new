@@ -455,6 +455,28 @@
    borde de la imagen se sale de la esquina redondeada de la card. Abajo no
    se redondea, porque en una card con mas ranuras ese borde es el interior
    del bloque, y ahi una curva se veria como un error de dibujo.
+
+   Y LA IMAGEN SE ESTIRA, QUE NO ERA OBVIO
+   ---------------------------------------
+   `reset.css:311` ya pone `max-width: 100%` en `img, video, canvas, svg`,
+   asi que la imagen no desborda. Pero `max-width` es un tope, no un ancho:
+   la imagen se queda en su tamano intrinseco y NO llena la ranura.
+
+   Medido en el navegador con una imagen de 320px en una ranura de 438px:
+
+     ranura  438px
+     imagen  320px     <- 118px de superficie de card a su derecha
+
+   `inline-size: 100%` va en el HIJO, no en la ranura: la ranura ya es
+   `inline-size: 100%`, y eso no le dice nada a lo que hay dentro.
+
+   Y va AQUI y no en el reset, a proposito. Estirar a un hijo es una
+   decision de ESTE componente: una imagen suelta en un parrafo no debe
+   estirarse al 100%, y si la regla viviera en el reset lo haria. El reset
+   solo pone topes, que es lo que se puede decir de cualquier elemento.
+
+   `:where()` a proposito tambien: deja la especificidad en (0,1,0), la de
+   la ranura, para que una utilidad del autor pueda ganar sin fight.
    ------------------------------------------------------------------------ */
 
 .md-card-media {
@@ -463,6 +485,10 @@
   inline-size: 100%;
   border-start-start-radius: var(--md-comp-card-shape);
   border-start-end-radius: var(--md-comp-card-shape);
+}
+
+.md-card-media > :where(img, video, canvas) {
+  inline-size: 100%;
 }
 
 /* ---------------------------------------------------------------------------

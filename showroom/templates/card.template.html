@@ -53,6 +53,35 @@
   HAY UN <meta name="description">, Y LAS OTRAS QUINCE VISTAS NO. La skill lo
   pide y ninguna lo tiene. Se pone aqui porque es lo correcto, y queda
   dicho para que la diferencia con el resto no parezca un olvido.
+
+  LA IMAGEN, Y POR QUE EL SRC DEL SNIPPET ES DEL SHOWROOM
+  ------------------------------------------------------
+  `../assets/card-producto.svg` no es copiable tal cual: en ManGo! App la
+  imagen del producto vive en otro sitio. No es descuido, es REGLA 11: el
+  `innerHTML` del specimen y el texto del `<pre>` tienen que ser IDENTICOS,
+  y como el specimen tiene que renderizar, su ruta tiene que ser real. Si el
+  specimen dijera `producto.jpg`, no se veria nada.
+
+  Por eso la prosa del par dice que el `src` es el de tu app. Es lo unico
+  de la vista que hay que cambiar al copiar, y conviene que lo diga en voz
+  alta en vez de que se descubra al pegarlo.
+
+  Y REGLA 13, que no lo pilla: su contrato es que el snippet "rinde con solo
+  main.css", y un `src` del showroom lo incumple. Pero la regla solo mira
+  clases ajenas, `style=` y `<style>`/`<link>`/`<script>`, no `src`. Un
+  archivo de imagen es el primer caso que atraviesa ese hueco.
+
+  LO QUE SE MIDIO ANTES DE PONERLA, Y LO QUE NO HIZO FALTA
+  ------------------------------------------------------
+  Se buscaba un hueco de linea base bajo la imagen, que es lo que pasa con
+  un `<img>` en linea dentro de un contenedor. No lo hay: `reset.css:311`
+  ya declara `display: block` en `img, video, canvas, svg`, con el unico
+  reset del proyecto que se aplica a un elemento con contenido real.
+
+  Medido: la ranura y la imagen miden las dos 180px. Cero hueco.
+
+  Y el redondeo de las esquinas superiores SI recorta, que es lo unico que
+  justifica que `card.css` declare el radio en vez de heredarlo.
 -->
 
 <body class="md-bg-background md-text-on-background md-type-body-medium">
@@ -74,33 +103,39 @@
     <!-- PAREJA: la clase base (h2 + specimen + pre + boton). -->
     <section class="sr-section">
       <h2 class="md-type-title-large">Clase base</h2>
-      <p class="md-type-body-medium">La clase base con sus cuatro ranuras. El título lleva md-type-title-large porque el reset deja el tamaño del navegador en los h1..h6.</p>
+      <p class="md-type-body-medium">La clase base con sus cuatro ranuras. El <code>src</code> de la imagen es el de tu app, y el título lleva <code>md-type-title-large</code> porque el reset deja el tamaño del navegador en los h1..h6.</p>
       <div class="sr-specimen">
         <article class="md-card">
+          <div class="md-card-media">
+            <img src="../assets/card-producto.svg" alt="Caja de Carthago, modelo S">
+          </div>
           <div class="md-card-header">
-            <h3 class="md-type-title-large">Almuerzo de equipo</h3>
-            <p class="md-type-body-medium">Hoy a las 14:00</p>
+            <h3 class="md-type-title-large">Caja de Carthago</h3>
+            <p class="md-type-body-medium">Ref. 7741 · 48 almacenados</p>
           </div>
           <div class="md-card-content">
-            <p class="md-type-body-medium">Confirmar la asistencia de las cuatro personas.</p>
+            <p class="md-type-body-medium">Acabado mate de 18 mm. Se sirve con la tapa de roble a juego.</p>
           </div>
           <div class="md-card-actions">
-            <button class="md-button md-button-text" type="button">Cancelar</button>
-            <button class="md-button" type="button">Confirmar</button>
+            <button class="md-button md-button-text" type="button">Cerrar</button>
+            <button class="md-button" type="button">Editar ficha</button>
           </div>
         </article>
       </div>
       <pre class="sr-code"><code>&lt;article class="md-card"&gt;
+  &lt;div class="md-card-media"&gt;
+    &lt;img src="../assets/card-producto.svg" alt="Caja de Carthago, modelo S"&gt;
+  &lt;/div&gt;
   &lt;div class="md-card-header"&gt;
-    &lt;h3 class="md-type-title-large"&gt;Almuerzo de equipo&lt;/h3&gt;
-    &lt;p class="md-type-body-medium"&gt;Hoy a las 14:00&lt;/p&gt;
+    &lt;h3 class="md-type-title-large"&gt;Caja de Carthago&lt;/h3&gt;
+    &lt;p class="md-type-body-medium"&gt;Ref. 7741 · 48 almacenados&lt;/p&gt;
   &lt;/div&gt;
   &lt;div class="md-card-content"&gt;
-    &lt;p class="md-type-body-medium"&gt;Confirmar la asistencia de las cuatro personas.&lt;/p&gt;
+    &lt;p class="md-type-body-medium"&gt;Acabado mate de 18 mm. Se sirve con la tapa de roble a juego.&lt;/p&gt;
   &lt;/div&gt;
   &lt;div class="md-card-actions"&gt;
-    &lt;button class="md-button md-button-text" type="button"&gt;Cancelar&lt;/button&gt;
-    &lt;button class="md-button" type="button"&gt;Confirmar&lt;/button&gt;
+    &lt;button class="md-button md-button-text" type="button"&gt;Cerrar&lt;/button&gt;
+    &lt;button class="md-button" type="button"&gt;Editar ficha&lt;/button&gt;
   &lt;/div&gt;
 &lt;/article&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
