@@ -691,17 +691,30 @@ motor, no en una convención.
 
 ## 7. Verificación
 
+El script es PowerShell, y PowerShell corre en los dos sistemas:
+
 ```powershell
+# macOS y Linux (el binario se llama pwsh, y ahí no hay ExecutionPolicy)
+pwsh -File ./tools/verify-tokens.ps1
+
+# Windows
 powershell -ExecutionPolicy Bypass -File .\tools\verify-tokens.ps1
 ```
 
-> **Por qué `-ExecutionPolicy Bypass`:** la política de ejecución de PowerShell
-> en Windows deshabilita los scripts `.ps1` por defecto. El flag lo permite solo
-> para esta invocación, sin cambiar la configuración del sistema. También
-> funciona con `-File` si ejecutás desde el editor.
+> **Por qué cambia la invocación:** `-ExecutionPolicy` es un concepto de Windows,
+> y en macOS no existe: el bloqueo de scripts no está. Por eso el mismo comando
+> con el flag falla, y la forma correcta es `pwsh -File`. El flag de Windows
+> sigue haciendo falta allí porque su política deshabilita los `.ps1` por
+> defecto.
 
-El script escanea las 37 hojas del sistema, indexa los **540 tokens** definidos y
-aplica 10 reglas:
+> **El script es portable, y no por casualidad.** `Get-RelPath` normaliza
+> cualquier separador a `\` antes de comparar, así que las reglas, escritas
+> contra rutas a mano con barra invertida, funcionan igual en los dos sistemas.
+> La única línea que mira rutas en crudo es el filtro de `.git`, y en mac es
+> inocuo porque `Get-ChildItem` sin `-Force` ya salta los directorios ocultos.
+
+El script escanea las **42 hojas** del sistema, indexa los **640 tokens**
+definidos y aplica **13 reglas**:
 
 | Regla | Qué detecta                                                                 | Alcance            |
 | ----- | --------------------------------------------------------------------------- | ------------------ |

@@ -73,11 +73,24 @@ Nada de esto se ha tocado. Está anotado para que no se dé por verdad:
 - **10 de 13 moldes están desfasados** respecto a su vista publicada: `button-group`, `button`, `color`, `divider`, `elevation`, `icon`, `measurement`, `motion`, `spacing` y `state`. Llevan el bloque largo `COMO USAR ESTE TEMPLATE` donde la vista lleva el puntero de dos líneas, y se quedaron atrás en `5422fb2` (recorte de prosa), que tocó las vistas y no los moldes. Usar cualquiera de esos diez como molde arrastraría prosa ya recortada; los buenos son `fab`, `fab-extended`, `icon-button` y `card`.
 - **`navigator.clipboard` solo existe en contexto seguro**, así que abierto por la IP de la red el botón «Copiar» no tenía copia ni alternativa y quedaba muerto en las quince vistas. Corregido con un respaldo de `document.execCommand` y con texto honesto en los dos sentidos. Probado en las dos rutas: por `localhost` y por `http://10.226.28.43/`.
 
+## El verificador en macOS
+
+```
+~/.local/powershell/pwsh -NoProfile -File ./tools/verify-tokens.ps1
+```
+
+PowerShell 7.6.7 instalado en `~/.local/powershell/`, sin sudo y sin instalador: se descomprimió del tarball oficial. No está en el PATH; si se quiere, se añade con un enlace o una línea en `~/.zshrc`, y entonces el comando es `pwsh -File ./tools/verify-tokens.ps1`.
+
+En macOS **no** va `-ExecutionPolicy Bypass`: es un concepto de Windows y ahí el bloqueo de scripts no existe. El script tampoco necesitó cambios: `Get-RelPath` normaliza cualquier separador a `\` antes de comparar, que es justo lo que hace portable.
+
+Desde que corre aquí, el sustituto de bash que se usó mientras tanto ya no hace falta y no está en el repo.
+
 ## Dónde vive el resto
 
 | Qué | Dónde |
 | --- | --- |
 | Reglas del showroom, ciclo de publicación, orden de secciones, deuda de prosa | `.opencode/skills/rdm-component-showroom/SKILL.md` |
+| Cómo correr el verificador en macOS | este archivo, abajo |
 | Arquitectura de capas, nomenclatura, temas, iconos y fuentes | `README.md` |
 | Las 13 reglas automáticas y cómo se ejecutan | `tools/verify-tokens.ps1` |
 | Filosofía de las fichas del showroom | `docs/showroom-philosophy.md` |
