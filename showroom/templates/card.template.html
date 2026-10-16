@@ -154,10 +154,10 @@
     <!-- PAREJA: la clase base (h2 + specimen + pre + boton). -->
     <section class="sr-section">
       <h2 class="md-type-title-large">Clase base</h2>
-      <p class="md-type-body-medium">La clase base con sus cuatro ranuras, y el medio en 16:9. El <code>src</code> de la imagen es el de tu app; la caja la reserva la proporción de la ranura, no la imagen.</p>
+      <p class="md-type-body-medium">La clase base con sus cuatro ranuras. El medio lleva su proporción explícita aunque la base ya sea 16:9, para que se vea dónde va. El <code>src</code> es el de tu app; la caja la reserva la proporción, no la imagen.</p>
       <div class="sr-specimen">
         <article class="md-card">
-          <div class="md-card-media">
+          <div class="md-card-media md-card-media-landscape">
             <img src="../assets/card-media.svg" alt="Media">
           </div>
           <div class="md-card-header">
@@ -174,7 +174,7 @@
         </article>
       </div>
       <pre class="sr-code"><code>&lt;article class="md-card"&gt;
-  &lt;div class="md-card-media"&gt;
+  &lt;div class="md-card-media md-card-media-landscape"&gt;
     &lt;img src="../assets/card-media.svg" alt="Media"&gt;
   &lt;/div&gt;
   &lt;div class="md-card-header"&gt;
