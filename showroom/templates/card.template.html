@@ -356,6 +356,69 @@
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
     <!-- PAREJA: hasta aqui -->
+    <!-- PAREJA: la card que es el control (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Link</h2>
+      <p class="md-type-body-medium">La card es el control: el enlace navega, el boton actúa y tabindex la hace pulsable. Con acciones dentro ya no puede ser enlace.</p>
+      <div class="sr-specimen sr-specimen-gap">
+<a class="md-card" href="#">
+  <div class="md-card-header">
+    <h3 class="md-type-title-large">Enlace</h3>
+    <p class="md-type-body-medium">Subhead</p>
+  </div>
+  <div class="md-card-content">
+    <p class="md-type-body-medium">Supporting text</p>
+  </div>
+</a>
+<button class="md-card" type="button">
+  <div class="md-card-header">
+    <h3 class="md-type-title-large">Botón</h3>
+    <p class="md-type-body-medium">Subhead</p>
+  </div>
+  <div class="md-card-content">
+    <p class="md-type-body-medium">Supporting text</p>
+  </div>
+</button>
+<article class="md-card" tabindex="0">
+  <div class="md-card-header">
+    <h3 class="md-type-title-large">Con tabindex</h3>
+    <p class="md-type-body-medium">Subhead</p>
+  </div>
+  <div class="md-card-content">
+    <p class="md-type-body-medium">Supporting text</p>
+  </div>
+</article>
+      </div>
+      <pre class="sr-code"><code>&lt;a class="md-card" href="#"&gt;
+  &lt;div class="md-card-header"&gt;
+    &lt;h3 class="md-type-title-large"&gt;Enlace&lt;/h3&gt;
+    &lt;p class="md-type-body-medium"&gt;Subhead&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Supporting text&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/a&gt;
+&lt;button class="md-card" type="button"&gt;
+  &lt;div class="md-card-header"&gt;
+    &lt;h3 class="md-type-title-large"&gt;Botón&lt;/h3&gt;
+    &lt;p class="md-type-body-medium"&gt;Subhead&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Supporting text&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/button&gt;
+&lt;article class="md-card" tabindex="0"&gt;
+  &lt;div class="md-card-header"&gt;
+    &lt;h3 class="md-type-title-large"&gt;Con tabindex&lt;/h3&gt;
+    &lt;p class="md-type-body-medium"&gt;Subhead&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Supporting text&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/article&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
 
 
   </main>

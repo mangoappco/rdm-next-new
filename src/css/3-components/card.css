@@ -61,23 +61,39 @@
 
    LO QUE SE DEJO PARA DESPUES, Y POR QUE
    -------------------------------------
-   El hover de `filled` y `outlined`. Las tres fichas de M3 suben un escalon
-   al pasar el raton --a `level1` las dos que salen de `level0`, a `level2` la
-   elevated--, porque en M3 el hover lo declara la raiz y las fichas solo
-   reapuntan color y contorno, asi que lo heredan. Aqui el hover esta acotado
-   a las cards que se pueden pulsar (ver `LA CARD QUE SE PUEDE TOCAR`) y no se
-   ha tocado: hasta ahora no hay ninguna card interactiva en el sistema.
-
-   **Open:** mientras tanto `filled` y `outlined` heredan el
-   `--md-comp-card-elevation-hovered` de la base, que es `level2`. En cuanto
-   exista una card pulsable, el hover de una filled pasaria de 0 a 2, que es
-   subir dos escalones de golpe. Se arregla en el par de **Link**, que es
-   donde los estados entran.
-
-   `outlined` ademas baja el BORDE a `outline` con
+   `outlined` baja el BORDE a `outline` con
    `--md-sys-state-disabled-outline-opacity` al estar deshabilitada, y lo sube
-   a `on-surface` al enfocarse (M3 usa `:focus-within`, no `:focus`). Tampoco
-   esta: es estado, y entra con el mismo par.
+   a `on-surface` al enfocarse --M3 usa `:focus-within`, no `:focus`--. Eso es
+   estado deshabilitado, no interactividad, asi que entra con el par de
+   **States** y no con el de **Link**.
+
+   EL HOVER DE LAS TRES, YA RESUELTO
+   ---------------------------------
+   Las tres fichas de M3 suben UN escalon al pasar el raton: a `level1` las
+   dos que salen de `level0`, a `level2` la elevated. En M3 sale solo porque el
+   hover lo declara la raiz y las fichas solo reapuntan color y contorno, asi
+   que lo heredan. Aqui cada ficha declara los dos tokens, porque cada una
+   tiene su propio par y el orden del archivo no las mezcla.
+
+   MEDIDO, y lo que pasaba antes: sin el segundo par, `filled` y `outlined`
+   heredaban el `level2` de la base y su hover iba de 0 a 2, saltandose el
+   primer escalon. Peor en la outlined, que ganaba una sombra pesada al pasar
+   el raton siendo una ficha que por definicion no lleva sombra.
+
+   LA CARD QUE ES EL CONTROL
+   ------------------------
+   Aqui la card ES el control: `<a class="md-card" href>` para navegar y
+   `<button class="md-card">` para una accion. M3 hace otra cosa: deja la card
+   como `<article>` y pone encima un `<button>` transparente en `inset: 0`,
+   con los botones de dentro por encima. Se eligio el modelo propio porque no
+   obliga a escribir un boton que no se ve.
+
+   Y tiene un limite que hay que conocer: **una card con acciones NO puede ser
+   `<a>`**. El modelo de contenido de `a` no admite contenido interactivo
+   dentro, y el parser no lo repara --medido: deja los `<button>` dentro del
+   enlace y renderiza igual--, asi que el HTML invalido pasa inadvertido. Para
+   esa combinacion esta el `<button class="md-card">`, que si admite botones
+   dentro porque no es un enlace.
 
    LA ELEVACION NO SE ANIMA, Y NO ES UN DESCUIDO
    --------------------------------------------
@@ -201,6 +217,60 @@
   position: relative;
   isolation: isolate;
 
+  /* ---------------------------------------------------------------------------
+     SI LA CARD ES UN <button>, LA HOJA DE USUARIO NO SE VA SOLA
+     ---------------------------------------------------------------------------
+     `.md-card` se puede escribir como `<a href>` o como `<button>`, y es lo
+     que hace la nota de `LA CARD QUE SE PUEDE TOCAR`. Un `<button>` trae
+     estilos propios que el navegador aplica y que aqui no salen del sistema, asi
+     que hay que taparlos uno a uno.
+
+     MEDIDO, `<article class="md-card">` frente a `<button class="md-card">` con
+     el mismo contenido:
+
+       propiedad      article / a      button
+       padding-left   0                6px
+       padding-top    0                1px
+       text-align     start            center
+       appearance     none             auto
+       line-height    20px             normal
+       font-size      14px             13.33px
+       font-family    Google Sans Flex Arial
+
+     El `text-align: center` es el que mas se nota: lo heredan las ranuras, asi
+     que el titular de una card-botón sale centrado mientras el de las otras
+     dos sale a la izquierda. El `Arial` solo se ve si se escribe texto suelto
+     en la card, porque las ranuras traen su propia tipografia.
+
+     NO va en `reset.css` y no es una excepcion a su regla: alli esta escrito
+     que los controles no se neutralizan ahi, porque cada componente de
+     `3-components/` tiene que definirlo con lo suyo. Ver `reset.css:316`.
+
+     Las cuatro son no-ops en `article` y en `a`: ya computan estos mismos
+     valores. Se declaran sin condiciones porque cada una tiene sentido por si
+     sola --un contenedor no lleva padding propio, el texto se alinea al
+     inicio--, no solo cuando el elemento es un boton.
+     ------------------------------------------------------------------------ */
+  appearance: none;
+  padding: 0;
+  text-align: start;
+  font: inherit;
+
+  /* El subrayado del reset no aplica aqui, y es el unico sitio del sistema
+     donde no aplica. `reset.css` lo conserva a proposito --"no debe depender
+     solo del color"-- y para un enlace de texto en linea tiene toda la razon.
+
+     En una card-enlace la senal ya esta puesta por otra parte: la forma, la
+     elevacion al pasar el raton, la capa de estado y el cursor. El subrayado
+     ademas miente, porque solo subraya el titular y sugiere que solo el
+     titular es el enlace, cuando lo es toda la superficie.
+
+     MEDIDO: `text-decoration` se propaga a los descendientes y no se puede
+     quitar desde dentro. El `<h3>` computa `text-decoration-line: none` y aun
+     asi sale subrayado, porque lo hereda. Por eso se quita aqui y no en la
+     ranura. */
+  text-decoration: none;
+
   /* Columna porque las ranuras se apilan arriba abajo y ese es el orden en
      que se leen. Sin esto el navegador los pondria en fila. */
   display: flex;
@@ -316,11 +386,13 @@
 .md-card-filled {
   --md-comp-card-container-color: var(--md-sys-color-surface-container-highest);
   --md-comp-card-elevation: var(--md-sys-elevation-level0);
+  --md-comp-card-elevation-hovered: var(--md-sys-elevation-level1);
 }
 
 .md-card-outlined {
   --md-comp-card-container-color: var(--md-sys-color-surface);
   --md-comp-card-elevation: var(--md-sys-elevation-level0);
+  --md-comp-card-elevation-hovered: var(--md-sys-elevation-level1);
   --md-comp-card-outline-width: var(--md-sys-shape-stroke-thin);
   --md-comp-card-outline-color: var(--md-sys-color-outline-variant);
 }
