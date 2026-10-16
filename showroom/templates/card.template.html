@@ -92,11 +92,16 @@
 
   LA IMAGEN, Y POR QUE EL SRC DEL SNIPPET ES DEL SHOWROOM
   ------------------------------------------------------
-  `../assets/card-media.svg` no es copiable tal cual: en ManGo! App la
-  imagen del producto vive en otro sitio. No es descuido, es REGLA 11: el
+  `../assets/card-media-landscape.svg` no es copiable tal cual: en ManGo! App
+  la imagen del producto vive en otro sitio. No es descuido, es REGLA 11: el
   `innerHTML` del specimen y el texto del `<pre>` tienen que ser IDENTICOS,
   y como el specimen tiene que renderizar, su ruta tiene que ser real. Si el
   specimen dijera `imagen.jpg`, no se veria nada.
+
+  Y hay uno por proporcion: `card-media-landscape`, `card-media-square` y
+  `card-media-portrait`, cada uno con el `viewBox` de la ranura donde se usa.
+  Asi el `object-fit: contain` los deja a tamano exacto y el specimen se ve
+  limpio. Ver abajo lo que eso cambia.
 
   EL TEXTO ES EL NOMBRE DEL ROL, Y EL SVG NO DIBUJA NADA
   ------------------------------------------------------
@@ -112,12 +117,25 @@
 
   El SVG, por su parte, no dibuja nada concreto.
 
-  Y el asset se llama `card-media.svg` y dibuja un rectangulo gris con un
-  bloque gris en el centro. La primera version dibujaba una ficha de producto
-  con su caja y su referencia, lo que convertia un placeholder en una
-  mentira: quien copiara el snippet se llevaba tambien el "Caja de Carthago".
-  La ranura `.md-card-media` no lee el contenido de la imagen, solo la
-  recorta, asi que no hay nada que ganar inventando una.
+  Y los assets dibujan un rectangulo gris con un bloque gris en el centro. La
+  primera version dibujaba una ficha de producto con su caja y su referencia,
+  lo que convertia un placeholder en una mentira: quien copiara el snippet se
+  llevaba tambien el "Caja de Carthago". La ranura `.md-card-media` no lee el
+  contenido de la imagen, solo la recorta, asi que no hay nada que ganar
+  inventando una.
+
+  LO QUE SE PERDIO AL PONER UN ASSET POR PROPORCION
+  -----------------------------------------------
+  `card-media.svg`, el asset generico, ya no lo usa ninguna ranura de la vista.
+  Con el, la ranura cuadrada recibia una imagen 16:9 y el `contain` dejaba
+  bandas de 70px arriba y abajo, y la vertical de 124px. Se veia que la caja
+  la reserva la RANURA y no la imagen, y que el fondo de `surface-container-high`
+  aparece justo en lo que sobra. Eso era lo que demostraba el par de Ratio.
+
+  Ahora cada asset coincide con su ranura, no hay bandas, y el fondo de
+  respaldo ya no se ve en ningun specimen. Es un intercambio, no una mejora:
+  el par se ve mejor y se ensena menos. El fondo sigue declarado en
+  `.md-card-media` y escrito en su nota de `card.css`.
 
   Por eso la prosa del par dice que el `src` es el de tu app. Es lo unico
   de la vista que hay que cambiar al copiar, y conviene que lo diga en voz
@@ -202,7 +220,7 @@
       <div class="sr-specimen">
         <article class="md-card">
           <div class="md-card-media md-card-media-landscape">
-            <img src="../assets/card-media.svg" alt="Media">
+            <img src="../assets/card-media-landscape.svg" alt="Media">
           </div>
           <div class="md-card-header">
             <h3 class="md-type-title-large">Headline</h3>
@@ -219,7 +237,7 @@
       </div>
       <pre class="sr-code"><code>&lt;article class="md-card"&gt;
   &lt;div class="md-card-media md-card-media-landscape"&gt;
-    &lt;img src="../assets/card-media.svg" alt="Media"&gt;
+    &lt;img src="../assets/card-media-landscape.svg" alt="Media"&gt;
   &lt;/div&gt;
   &lt;div class="md-card-header"&gt;
     &lt;h3 class="md-type-title-large"&gt;Headline&lt;/h3&gt;
@@ -306,7 +324,7 @@
       <div class="sr-specimen sr-specimen-gap">
 <article class="md-card">
   <div class="md-card-media md-card-media-landscape">
-    <img src="../assets/card-media.svg" alt="Media">
+    <img src="../assets/card-media-landscape.svg" alt="Media">
   </div>
   <div class="md-card-content">
     <p class="md-type-body-medium">Landscape, 16:9</p>
@@ -314,7 +332,7 @@
 </article>
 <article class="md-card">
   <div class="md-card-media md-card-media-square">
-    <img src="../assets/card-media.svg" alt="Media">
+    <img src="../assets/card-media-square.svg" alt="Media">
   </div>
   <div class="md-card-content">
     <p class="md-type-body-medium">Square, 1:1</p>
@@ -322,7 +340,7 @@
 </article>
 <article class="md-card">
   <div class="md-card-media md-card-media-portrait">
-    <img src="../assets/card-media.svg" alt="Media">
+    <img src="../assets/card-media-portrait.svg" alt="Media">
   </div>
   <div class="md-card-content">
     <p class="md-type-body-medium">Portrait, 3:4</p>
@@ -331,7 +349,7 @@
       </div>
       <pre class="sr-code"><code>&lt;article class="md-card"&gt;
   &lt;div class="md-card-media md-card-media-landscape"&gt;
-    &lt;img src="../assets/card-media.svg" alt="Media"&gt;
+    &lt;img src="../assets/card-media-landscape.svg" alt="Media"&gt;
   &lt;/div&gt;
   &lt;div class="md-card-content"&gt;
     &lt;p class="md-type-body-medium"&gt;Landscape, 16:9&lt;/p&gt;
@@ -339,7 +357,7 @@
 &lt;/article&gt;
 &lt;article class="md-card"&gt;
   &lt;div class="md-card-media md-card-media-square"&gt;
-    &lt;img src="../assets/card-media.svg" alt="Media"&gt;
+    &lt;img src="../assets/card-media-square.svg" alt="Media"&gt;
   &lt;/div&gt;
   &lt;div class="md-card-content"&gt;
     &lt;p class="md-type-body-medium"&gt;Square, 1:1&lt;/p&gt;
@@ -347,7 +365,7 @@
 &lt;/article&gt;
 &lt;article class="md-card"&gt;
   &lt;div class="md-card-media md-card-media-portrait"&gt;
-    &lt;img src="../assets/card-media.svg" alt="Media"&gt;
+    &lt;img src="../assets/card-media-portrait.svg" alt="Media"&gt;
   &lt;/div&gt;
   &lt;div class="md-card-content"&gt;
     &lt;p class="md-type-body-medium"&gt;Portrait, 3:4&lt;/p&gt;
