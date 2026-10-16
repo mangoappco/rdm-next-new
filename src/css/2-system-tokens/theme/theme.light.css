@@ -179,6 +179,7 @@
     --md-sys-color-outline-variant: var(--md-ref-palette-neutral-variant80);
     /* outline — borde visible, campos de formulario y contornos */
     --md-sys-color-outline: var(--md-ref-palette-neutral-variant50);
+  --md-sys-color-outline-rgb: var(--md-ref-palette-neutral-variant50-rgb);
 
     /* ------------------------------------------------------------------------
        INVERSOS — superficies oscuras con texto claro (snackbar, menus)
@@ -323,6 +324,7 @@ html[data-theme="light"] {
   --md-sys-color-outline-variant: var(--md-ref-palette-neutral-variant80);
   /* outline — borde visible, campos de formulario y contornos */
   --md-sys-color-outline: var(--md-ref-palette-neutral-variant50);
+  --md-sys-color-outline-rgb: var(--md-ref-palette-neutral-variant50-rgb);
 
   /* ------------------------------------------------------------------------
      INVERSOS — superficies oscuras con texto claro (snackbar, menus)

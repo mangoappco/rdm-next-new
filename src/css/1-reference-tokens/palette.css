@@ -172,6 +172,19 @@
   --md-ref-palette-neutral-variant99: #fffbfe;
   --md-ref-palette-neutral-variant100: #fff;
 
+  /* Los mismos dos tonos como TRIPLE RGB, para poderles aplicar una opacidad
+     sin partir de un color ya resuelto.
+
+     --md-sys-color-outline-rgb los lee para componer el borde de una card
+     outlined deshabilitada, que M3 apaga al 0.12 en vez de bajar la opacidad
+     del contenedor. Ver `card.css`, seccion `EL BORDE DE LA OUTLINED`.
+
+     Los numeros van AQUI y no en el fichero de tema porque REGLA 1 prohibe un
+     valor crudo fuera de esta capa, y porque un `0 0 0` como el de
+     --md-sys-color-shadow-rgb no tiene de donde copiarse. */
+  --md-ref-palette-neutral-variant50-rgb: 121 116 126;
+  --md-ref-palette-neutral-variant60-rgb: 147 143 153;
+
   /* ------------------------------------------------------------------------
      NEUTRAL — superficies y texto principal
      Es la familia MAS extendida: 24 tonos. Sostiene toda la escalera de

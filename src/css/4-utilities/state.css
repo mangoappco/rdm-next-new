@@ -157,7 +157,28 @@
    Aplica la opacidad del contenido inactivo al elemento completo. No es un
    state layer: no hay capa encima, el propio contenido se atenua.
    ------------------------------------------------------------------------- */
+/* La opacidad se lee de un token propio con la del sistema como valor por
+   defecto, para que un componente pueda anularla SIN pelear con esta capa.
+
+   POR QUE HACE FALTA, Y POR QUE NO BASTA CON UNA REGLA MAS ESPECIFICA
+   ---------------------------------------------------------------
+   `@layer reset, ref, sys, comp, utilities;` pone esta utileria la ultima, y
+   en el orden de capas el que va despues gana INDEPENDIENTEMENTE de la
+   especificidad. Una regla de `3-components/` con tres clases no le gana a
+   esta con una.
+
+   La unica puerta es la indireccion: aqui se lee `--md-comp-disabled-opacity`
+   y, si el componente no la define, cae al valor del sistema. Un componente
+   que necesite la suya la declara en su capa y esta la respeta, porque un
+   `var()` no compite con una declaracion: se resuelve en el sitio donde se usa.
+
+   Medido: sin esto, una card outlined apagada con `.md-disabled` se quedaba al
+   0.38 mientras que con `:disabled` se quedaba en 1, que es la diferencia
+   entre las dos vias de apagado de una card. */
 .md-disabled {
-  opacity: var(--md-sys-state-disabled-state-layer-opacity);
+  opacity: var(
+    --md-comp-disabled-opacity,
+    var(--md-sys-state-disabled-state-layer-opacity)
+  );
   pointer-events: none;
 }

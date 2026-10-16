@@ -194,6 +194,7 @@
     --md-sys-color-outline-variant: var(--md-ref-palette-neutral-variant30);
     /* outline — tono 60 en oscuro, mas claro para que se vea el borde */
     --md-sys-color-outline: var(--md-ref-palette-neutral-variant60);
+  --md-sys-color-outline-rgb: var(--md-ref-palette-neutral-variant60-rgb);
 
     /* ------------------------------------------------------------------------
        INVERSOS — en oscuro, "inverse" significa claro
@@ -340,6 +341,7 @@ html[data-theme="dark"] {
   --md-sys-color-outline-variant: var(--md-ref-palette-neutral-variant30);
   /* outline — tono 60 en oscuro, mas claro para que se vea el borde */
   --md-sys-color-outline: var(--md-ref-palette-neutral-variant60);
+  --md-sys-color-outline-rgb: var(--md-ref-palette-neutral-variant60-rgb);
 
   /* ------------------------------------------------------------------------
      INVERSOS — en oscuro, "inverse" significa claro

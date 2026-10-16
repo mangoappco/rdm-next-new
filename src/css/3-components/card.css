@@ -634,6 +634,83 @@
 }
 
 /* ---------------------------------------------------------------------------
+   EL BORDE DE LA OUTLINED, QUE NO SE APAGA COMO EL RESTO
+   ---------------------------------------------------------------------------
+   LAS TRES FICHAS DE M3 NO COMPARTEN EL ESTADO DISHABILITADO. Medido en los
+   ficheros de tokens, v34.0.21:
+
+     elevated   disabled-container-opacity 0.38   disabled-container-color surface
+     filled     disabled-container-opacity 0.38   disabled-container-color surface-variant
+     outlined   NO TIENE disabled-container-opacity   disabled-outline-color outline
+                                                       disabled-outline-opacity  0.12
+
+   La outlined no baja la card: baja el BORDE. Es el unico caso del sistema en
+   que el estado disabled se lleva por el `outline-*` y no por el contenedor.
+
+   MEDIDO antes de esto, con una outlined apagada:
+
+     borde 1px rgb(202,196,208)   opacidad de la card 0.38
+
+   O sea al reves de lo que manda M3: se le desvanecía el contenedor entero y
+   el borde se quedaba en su color de reposo, lo que lo dejaba como un gris a
+   media tinta.
+
+   El color se compone con el triple `--md-sys-color-outline-rgb`, porque un
+   `border-color` no admite un token de opacidad. Por eso ese token existe y
+   por eso sus numeros viven en `1-reference-tokens/palette.css` y no aqui.
+
+   `:disabled` y `.md-disabled` van juntos porque son las dos vias de apagar
+   una card, y la ficha tiene que apagarse igual por las dos. Ver la nota de
+   `DISABLED — DOS VIAS`.
+   ------------------------------------------------------------------------ */
+
+.md-card:disabled,
+.md-card.md-disabled {
+  /* El borde se apaga con su propia opacidad, no con la del contenedor. */
+  --md-comp-card-outline-color: rgb(
+    var(--md-sys-color-outline-rgb) / var(--md-sys-state-disabled-outline-opacity)
+  );
+  /* Y el contenedor NO se desvanarece, que es la diferencia con las otras dos
+     fichas. Sin esta linea heredaria el 0.38 de la regla de arriba. */
+  opacity: 1;
+
+  /* La misma peticion, pero por la otra via de apagado.
+
+     `.md-disabled` esta en `utilities`, la ultima capa, y ahi el orden gana a
+     la especificidad: por mas que esta regla tenga dos clases, no le gana a
+     una sola. Por eso el 0.38 hay que anularlo por indireccion, declarando el
+     token que la utilidad lee. Ver el bloque de `.md-disabled` en
+     `4-utilities/state.css`. */
+  --md-comp-disabled-opacity: 1;
+}
+
+/* ---------------------------------------------------------------------------
+   EL BORDE AL ENFOCAR, QUE M3 APAGA POR COLOR Y NO POR GROSOR
+   ---------------------------------------------------------------------------
+   `_md-comp-outlined-card.scss` publica `$focus-outline-color:
+   md-sys-color.$on-surface`. El grosor se queda en 1px: lo que cambia es el
+   color. Es lo mismo que ya esta escrito en la cabecera de este fichero, y lo
+   que se habia retirado de `1-reference-tokens/stroke.css`.
+
+   Y usa `:focus-within`, NO `:focus`. No son lo mismo y aqui se nota:
+
+     - una card que ES el control (`<a>`, `<button>`) recibe el foco ella
+       misma, asi que los dos coinciden;
+     - una card `<article>` con botones DENTRO nunca recibe el foco --lo tiene
+       el boton hijo--, asi que `:focus` no se dispararia nunca y el borde no
+       responderia. `:focus-within` si.
+
+   Es la unica regla de esta hoja que no pasa por el `:is()` de los controles,
+   y no es una excepcion sin motivo: el acotado existia para que una card
+   estatica no se de por pulsable, y aqui no se declara ninguna interactividad,
+   solo se recolorea un borde.
+   ------------------------------------------------------------------------ */
+
+.md-card-outlined:focus-within {
+  --md-comp-card-outline-color: var(--md-sys-color-on-surface);
+}
+
+/* ---------------------------------------------------------------------------
    RANURA: MEDIA
    ---------------------------------------------------------------------------
    Sin padding a proposito: una imagen o un video van de borde a borde, y un
