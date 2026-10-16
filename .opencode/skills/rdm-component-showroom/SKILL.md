@@ -43,12 +43,17 @@ this skill forbids.
 In that case, say so and stop:
 
 ```text
-src/css/3-components/divider.css no existe todavia.
+src/css/3-components/<nombre>.css no existe todavia.
 No hay nada que inspeccionar, y un showroom de un componente que aun no se
 construyo seria inventarlo.
 
 Construimos el componente primero?
 ```
+
+Write the real name in. Do not borrow the name of a component that happens to
+exist: this file used `divider.css` as its example, and once `divider.css` was
+built the example contradicted itself and read as a claim that the divider was
+not a component.
 
 **This precondition exists because RDM Next builds its own components.** `src/src/css/3-components/`
 is authored here, from the tokens in `1-reference-tokens/` and `2-system-tokens/`. It does not import them from
@@ -421,6 +426,40 @@ Card showroom
 ```
 
 Only after this confirmation may implementation begin.
+
+## THE DIVIDER BETWEEN PAIRS
+
+One `<hr class="md-divider">` goes after the header and before the first pair.
+That one is not optional and has no exception: **all 15 published views have
+exactly one**, and `component.template.html` carries it.
+
+More dividers go in only when the kind of pair changes, when the reader would
+otherwise think the next `<h2>` belongs to the group above. Measured across the
+showroom:
+
+| View | Pairs | Dividers | Sits before |
+| ---- | ----- | -------- | ----------- |
+| `button`, `motion`, `fab`, `icon-button`, `fab-extended`, `button-group` | 6-20 | **1** | the first pair |
+| `typography` | 15 | 5 | Display - Headline - Title - Body - Label |
+| `color` | 18 | 3 | Primary - Background - Scrim |
+| `divider` | 6 | 2 | Default - **Inset** |
+| `icon` | 9 | 2 | Rounded - Baseline 20 |
+| `shapes` | 11 | 2 | Corner none - Strokes |
+
+Not one divider in the showroom is unmotivated. `typography` opens a group per
+type scale, `color` per colour group, and `divider` marks a change of *variant*,
+which is the same use at a smaller scale.
+
+**Do not add one for tidiness.** `card` has three pairs and keeps one divider:
+`Clase base`, `Variantes` and `Ratio` are all about the card, and a rule in the
+middle of three pairs reads as a cut with no reason. The test is the same as the
+prose rule: if you cannot say which pair the divider separates from which, it has
+no reason to exist.
+
+The divider here is a real component, not showroom chrome -- it is
+`.md-divider` from `3-components/`, so a view dogfoods a component it is not
+about. It still follows REGLA 11, because an `<hr>` outside any specimen is
+outside any snippet.
 
 ---
 
