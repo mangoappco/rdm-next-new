@@ -9,8 +9,9 @@
    `_md-comp-elevated-card.scss`, `_md-comp-filled-card.scss` y
    `_md-comp-outlined-card.scss`.
 
-   En esta entrega SOLO la base, que es la elevated. Las otras dos entran
-   despues, reapuntando los mismos tokens que estan declarados aqui abajo.
+   Las tres fichas estan implementadas. La base es la elevated; `filled` y
+   `outlined` reapuntan los mismos tokens que estan declarados aqui abajo y no
+   escriben ninguna propiedad.
 
    RECETA M3, TRANSCRITA (tokens/versions/latest/sass/, v34.0.21)
    ------------------------------------------------------------
@@ -58,14 +59,25 @@
    quita y pone borde. Ese es el criterio que ya esta escrito en
    `button.css:660-665`, aplicado a la card.
 
-   CUANDO ENTREN LAS OTRAS DOS
-   ---------------------------
-   `.md-card-filled` y `.md-card-outlined` reapuntaran
-   `--md-comp-card-container-color` y `--md-comp-card-elevation`. Y entonces
-   aparecera tambien `.md-card-elevated`, que aqui no hace falta: seria la
-   clase que ya trae la base, exactamente como `.md-button-filled` sobre
-   `.md-button` (commit 5489438). Se crea a proposito en ese momento, no
-   antes, porque antes no habria nada que distinguir.
+   LO QUE SE DEJO PARA DESPUES, Y POR QUE
+   -------------------------------------
+   El hover de `filled` y `outlined`. Las tres fichas de M3 suben un escalon
+   al pasar el raton --a `level1` las dos que salen de `level0`, a `level2` la
+   elevated--, porque en M3 el hover lo declara la raiz y las fichas solo
+   reapuntan color y contorno, asi que lo heredan. Aqui el hover esta acotado
+   a las cards que se pueden pulsar (ver `LA CARD QUE SE PUEDE TOCAR`) y no se
+   ha tocado: hasta ahora no hay ninguna card interactiva en el sistema.
+
+   **Open:** mientras tanto `filled` y `outlined` heredan el
+   `--md-comp-card-elevation-hovered` de la base, que es `level2`. En cuanto
+   exista una card pulsable, el hover de una filled pasaria de 0 a 2, que es
+   subir dos escalones de golpe. Se arregla en el par de **Link**, que es
+   donde los estados entran.
+
+   `outlined` ademas baja el BORDE a `outline` con
+   `--md-sys-state-disabled-outline-opacity` al estar deshabilitada, y lo sube
+   a `on-surface` al enfocarse (M3 usa `:focus-within`, no `:focus`). Tampoco
+   esta: es estado, y entra con el mismo par.
 
    LA ELEVACION NO SE ANIMA, Y NO ES UN DESCUIDO
    --------------------------------------------
@@ -152,6 +164,18 @@
   --md-comp-card-elevation-hovered: var(--md-sys-elevation-level2);
 
   /* ---------------------------------------------------------------------------
+     CONTORNO
+     ---------------------------------------------------------------------------
+     Ninguna de las tres fichas lo lleva en reposo. M3 lo declara en la raiz
+     con `--outline-width: 0` y `--outline-color: transparent`, y es la ficha
+     outlined la que sube el grosor a 1px y pone el color. Se copia el mismo
+     camino que `.md-button` --mismos dos roles, mismo par-- para que las
+     fichas de los dos componentes se lean igual.
+     ------------------------------------------------------------------------ */
+  --md-comp-card-outline-width: var(--md-sys-shape-stroke-none);
+  --md-comp-card-outline-color: transparent;
+
+  /* ---------------------------------------------------------------------------
      CAPA DE ESTADO
      ---------------------------------------------------------------------------
      Un solo par, effects + short4 = 200ms, igual que los otros cuatro
@@ -185,6 +209,8 @@
   border-radius: var(--md-comp-card-shape);
   background-color: var(--md-comp-card-container-color);
   box-shadow: var(--md-comp-card-elevation);
+  border: var(--md-comp-card-outline-width) solid
+    var(--md-comp-card-outline-color);
 
   /* `overflow: hidden` AQUI y no en la ranura de media. Es lo que hace M3:
      `labs/gb/components/card/card.scss` lo pone en la raiz de la card, y
@@ -234,6 +260,69 @@
 
   /* Sin `transition` de box-shadow: ver la nota de la elevacion. Y sin
      `transition` de border-radius, que es fija de por vida. */
+}
+
+/* ---------------------------------------------------------------------------
+   LAS TRES FICHAS DE COLOR
+   ---------------------------------------------------------------------------
+   M3 publica UNA card con TRES fichas, no tres componentes:
+   `_md-comp-elevated-card.scss`, `_md-comp-filled-card.scss` y
+   `_md-comp-outlined-card.scss`. Cada una reapunta los mismos tokens, nunca
+   escribe una propiedad: asi una ficha que cambia el color no puede
+   plasmarse en una que solo cambia el borde, y el orden de las clases deja de
+   importar.
+
+     elevated  surface-container-low      level1   sin contorno
+     filled    surface-container-highest  level0   sin contorno
+     outlined  surface                    level0   1px outline-variant
+
+   Ninguna pinta una propiedad aparte, y por eso el paso de una a otra no
+   necesita transicion: no hay nada que animar, solo dos tokens que cambian.
+   La prohibicion de animar `box-shadow` esta escrita mas arriba y aplica
+   igual aqui.
+
+   LO QUE EL BORDE LE COBRA
+   -----------------------
+   Medido con el mismo contenido en las tres: elevated y filled miden
+   134 x 120, outlined 136 x 122. Son 2px, uno por lado, y no hay forma de
+   quitarlos sin dejar de usar `border`.
+
+   `box-sizing: border-box` no ayuda, y conviene saber por que: solo manda
+   cuando hay una altura declarada. Una card es de altura automatica, y con
+   `auto` el borde se suma. En un boton, que si tiene altura de token, el
+   borde entra dentro; en una card no.
+
+   La otra cara del mismo 1px: el texto del outlined cae 17px desde el borde
+   en vez de 16, asi que su contenido queda 1px mas adentro que el de las otras
+   dos. M3 hace lo mismo --tiene `border` en la raiz--, y quitarlo para igualar
+   las medidas seria cambiar el componente para tapar la aritmetica del borde.
+
+   Medido en el navegador, no deducido.
+
+   LA BASE TAMBIEN SE ESCRIBE CON SU PROPIA CLASE
+   ---------------------------------------------
+   `.md-card-elevated` reapunta lo que `.md-card` ya declara. Es lo mismo que
+   hace `.md-button-filled` sobre `.md-button`: la clase de la variante por
+   defecto se escribe explicitamente para que un snippet se lea sin tener que
+   saber cual de las tres es la que no se pone. Ver el commit 5489438, que
+   hizo lo mismo con button.
+   ------------------------------------------------------------------------ */
+
+.md-card-elevated {
+  --md-comp-card-container-color: var(--md-sys-color-surface-container-low);
+  --md-comp-card-elevation: var(--md-sys-elevation-level1);
+}
+
+.md-card-filled {
+  --md-comp-card-container-color: var(--md-sys-color-surface-container-highest);
+  --md-comp-card-elevation: var(--md-sys-elevation-level0);
+}
+
+.md-card-outlined {
+  --md-comp-card-container-color: var(--md-sys-color-surface);
+  --md-comp-card-elevation: var(--md-sys-elevation-level0);
+  --md-comp-card-outline-width: var(--md-sys-shape-stroke-thin);
+  --md-comp-card-outline-color: var(--md-sys-color-outline-variant);
 }
 
 /* ---------------------------------------------------------------------------

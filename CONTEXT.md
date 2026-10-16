@@ -35,9 +35,11 @@ Cada componente tiene además su molde en `showroom/templates/<nombre>.template.
 
 ## Card — a medias
 
-La hoja está hecha y verificada; **la vista tiene un solo par**, el de Clase base, y se construye par a par. No está publicada ni enlazada, y no debe estarlo hasta que tenga los pares que se decidieron. El siguiente es **Variantes**: elevated, filled y outlined.
+La hoja está hecha y verificada; **la vista tiene dos pares**, Clase base y Variantes, y se construye par a par. No está publicada ni enlazada, y no debe estarlo hasta que tenga los pares que se decidieron. El siguiente es **Ratio**.
 
-- **Base = elevated.** Cuando entren `filled` y `outlined`, aparece también `.md-card-elevated`, la clase que ya trae la base, por el motivo de `.md-button-filled`.
+- **Base = elevated.** Las tres fichas están implementadas: `.md-card-elevated`, `.md-card-filled` y `.md-card-outlined`. La base **no** declara `.md-card-elevated` —la variante por defecto se escribe en el snippet explícitamente, como `.md-button-filled` sobre `.md-button` (commit 5489438)—.
+- **El borde de `outlined` cuesta 2px, y no es un descuido.** Medido con el mismo contenido en las tres: elevated y filled miden 134×120, outlined **136×122**. `box-sizing: border-box` no lo arregla porque solo manda con altura declarada, y una card es de altura automática. La otra cara: el texto del outlined cae 17px desde el borde en vez de 16. M3 hace lo mismo —tiene `border` en la raíz— e igualarlo sería cambiar el componente para tapar la aritmética del borde.
+- **Cada ficha reapunta tokens y nunca escribe una propiedad**, como en `.md-button`. Por eso el orden de las clases en el atributo no importa: con dos fichas en la misma card gana siempre la última **del fichero**, no la última escrita. Comprobado: `md-card-outlined md-card-elevated` y `md-card-elevated md-card-outlined` dan las dos veces outlined.
 - **Las tres variantes de M3 están definidas y son copiables tal cual.** De `labs/gb/components/card/_card-tokens.scss` y `card.scss` de material-web, que no se habían leído hasta ahora:
 
   | variante | container-color | elevación | contorno |
