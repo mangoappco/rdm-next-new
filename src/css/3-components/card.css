@@ -186,6 +186,33 @@
   background-color: var(--md-comp-card-container-color);
   box-shadow: var(--md-comp-card-elevation);
 
+  /* `overflow: hidden` AQUI y no en la ranura de media. Es lo que hace M3:
+     `labs/gb/components/card/card.scss` lo pone en la raiz de la card, y
+     con el radio de la propia card recorta todo lo que este dentro.
+
+     La diferencia no es de estilo, es de alcance. Con el recorte en la
+     ranura hay que declarar un radio por posicion, y solo se burungieron las
+     que se pensaron.
+
+     Medido, con el recorte en la ranura:
+
+       media ARRIBA   radio inferior 0px    correcto
+       media ABAJO    radio inferior 0px    <- se sale de la esquina de la card
+
+     En la raiz no hay posiciones que olvidar: el medio puede ir donde sea y
+     el recorte lo resuelve siempre.
+
+     LO QUE ESTO COBRA
+     -----------------
+     Recorta cualquier hijo que se salga. Una card es un contenedor y su
+     trabajo es recortar su contenido a su forma, asi que es coherente. Un
+     tooltip o un menu DENTRO de una card se verian cortados; por eso no
+     deben ir dentro.
+
+     El anillo de foco del propio control NO se ve afectado: el outline de
+     un elemento no lo recorta su propio overflow. Solo el de sus hijos. */
+  overflow: hidden;
+
   /* El color del contenido. Lo fija el host para que la capa de estado lo
      tome con currentColor y para que las ranuras hereden el rol correcto sin
      declararlo una vez por ranura. */
@@ -214,8 +241,9 @@
    ---------------------------------------------------------------------------
    Patron de 2-system-tokens/state.css: pseudo-elemento con currentColor,
    opacidad 0 en reposo, transicion de opacidad. Se acota por geometria
-   (inset: 0 + border-radius: inherit), asi que no hace falta
-   overflow: hidden, que ademas recortaria cualquier imagen que se salga.
+   (inset: 0 + border-radius: inherit), asi que no necesita su propio
+   recorte: el `overflow: hidden` de la card ya recorta el pseudo, que va
+   justo por dentro de sus bordes.
 
    `z-index: -1` la mete por debajo del contenido, y `isolation: isolate` en
    el host es lo que hace que ese -1 no se escape hacia el fondo de la pagina.
@@ -450,11 +478,27 @@
    Sin padding a proposito: una imagen o un video van de borde a borde, y un
    padding los separaria de la forma.
 
-   El radio se declara en vez de heredarse porque el contenido de la ranura es
-   una imagen que puede no tener ninguno: sin esto, el angulo de arriba del
-   borde de la imagen se sale de la esquina redondeada de la card. Abajo no
-   se redondea, porque en una card con mas ranuras ese borde es el interior
-   del bloque, y ahi una curva se veria como un error de dibujo.
+   EL RADIO NO ESTA AQUI, Y POR QUE
+   -------------------------------
+   Antes esta ranura declaraba el radio de las dos esquinas superiores. Se
+   quito: el recorte lo hace el `overflow: hidden` de la card, con el radio
+   de la propia card, que es lo que hace M3. Declararlo aqui solo servia
+   para la posicion de arriba, y el media puede ir en cualquier otra.
+
+   Medido con el radio en la ranura: con el media ABAJO, las esquinas
+   inferiores se salian de la card. Ver la nota del `overflow: hidden` en
+   `.md-card`.
+
+   Y LA PROPORCION, QUE HACE QUE LA CAJA EXISTA SIN LA IMAGEN
+   ----------------------------------------------------------
+   `aspect-ratio` con el rol de la capa 2. Es lo que hace que la ranura
+   reserve su caja antes de que la imagen exista: sin proporcion, la caja la
+   manda la imagen, y si tarda o falla la ranura cae a 20px. Medido.
+
+   Es decision nuestra. M3 no publica ninguna proporcion para el medio de
+   una card, ni en sus tres ficheros de token ni en la guia. La
+   documentacion de m3.material.io no se puede leer desde fuera porque es una
+   app de Angular que monta el texto en el cliente.
 
    Y LA IMAGEN SE ESTIRA, QUE NO ERA OBVIO
    ---------------------------------------
@@ -511,15 +555,19 @@
 
 .md-card-media {
   display: block;
-  overflow: hidden;
   inline-size: 100%;
+  aspect-ratio: var(--md-sys-measurement-card-media-aspect);
   background-color: var(--md-sys-color-surface-container-high);
-  border-start-start-radius: var(--md-comp-card-shape);
-  border-start-end-radius: var(--md-comp-card-shape);
 }
 
 .md-card-media > :where(img, video, canvas) {
   inline-size: 100%;
+  block-size: 100%;
+  /* `contain` y NO `cover`. Cover recorta lo que sobra, y en una ficha de
+     producto puede recortar el producto. Contain muestra la imagen entera y
+     deja ver el fondo de la ranura en las bandas que falten, que es justo
+     para lo que ese fondo esta. */
+  object-fit: contain;
 }
 
 /* ---------------------------------------------------------------------------

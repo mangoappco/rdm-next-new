@@ -104,20 +104,34 @@
   Y el redondeo de las esquinas superiores SI recorta, que es lo unico que
   justifica que `card.css` declare el radio en vez de heredarlo.
 
-  Y SI LA IMAGEN NO CARGA
-  ----------------------
-  El `img` lleva `width` y `height` a proposito. Sin ellos el navegador no
-  reserva caja y, con el `src` roto, la ranura se queda en 20px: el `alt` se
-  pinta pero en una franja ilegible. Con ellos la caja se reserva y el alt
-  se lee. Ademas se acaban los saltos de layout.
+  SI LA IMAGEN NO CARGA, LA CAJA ESTA
+  ----------------------------------
+  La ranura lleva `aspect-ratio`, asi que reserva su caja antes de que la
+  imagen exista: medido, 169px con la imagen cargada y 169px con el `src`
+  roto. Antes, sin proporcion, caia a 20px y el `alt` se pintaba en una
+  franja ilegible. Ese es el cambio que hace util el par de Slots.
 
-  Y `.md-card-media` lleva un fondo en `surface-container-high`, un escalon
-  por debajo del tono de la propia card, para que la caja se vea mientras la
-  imagen carga o si no llega nunca. M3 no publica ningun token para esto: sus
-  tres ficheros de card no mencionan imagen, ni media, ni fallback, ni
-  aspect-ratio. La guia `labs/gb/components/card/card.scss` tampoco tiene un
-  selector de `img` en ninguna linea. Es decision nuestra, y el precio es que
-  una imagen con transparencia deja pasar el fondo.
+  El `img` lleva ademas `width` y `height` aunque ya no sean necesarios para
+  reservar nada: son el tamano real del fichero y evitan el salto de layout
+  de antes de que cargue la hoja.
+
+  Y lleva un fondo en `surface-container-high`, un escalon por debajo del
+  tono de la card. Con la imagen puesta no se ve; rota o cargandose, es lo que
+  hace visible que ahi iba una.
+
+  M3 no publica nada de esto: ni proporcion, ni token de fondo para el medio,
+  ni selector de `img`. Sus tres ficheros de card y la guia
+  `labs/gb/components/card/card.scss` no lo mencionan. Todo es decision
+  nuestra. El precio del fondo es que una imagen con transparencia lo deja
+  pasar, y no hay forma de evitarlo en CSS porque no existe selector para
+  "la imagen ha fallado".
+
+  LO QUE SI VIENE DE M3: EL RECORTE EN LA RAIZ
+  -------------------------------------------
+  M3 pone el `overflow: hidden` en la card, no en la ranura de media. Antes
+  lo teniamos al reves, con el radio en las esquinas superiores de la ranura,
+  y con el media ABAJO las esquinas inferiores se salian de la card. Medido.
+  En la raiz no hay posiciones que olvidar.
 -->
 
 <body class="md-bg-background md-text-on-background md-type-body-medium">
@@ -139,7 +153,7 @@
     <!-- PAREJA: la clase base (h2 + specimen + pre + boton). -->
     <section class="sr-section">
       <h2 class="md-type-title-large">Clase base</h2>
-      <p class="md-type-body-medium">La clase base con sus cuatro ranuras. El <code>src</code> de la imagen es el de tu app, y el <code>width</code> y el <code>height</code> son los que reservan la caja: sin ellos, si la imagen falla, la ranura se queda en 20px y el <code>alt</code> no se lee.</p>
+      <p class="md-type-body-medium">La clase base con sus cuatro ranuras. El <code>src</code> de la imagen es el de tu app. La caja la reserva el <code>aspect-ratio</code> de la ranura, no la imagen: por eso se ve igual aunque no llegue a cargar.</p>
       <div class="sr-specimen">
         <article class="md-card">
           <div class="md-card-media">

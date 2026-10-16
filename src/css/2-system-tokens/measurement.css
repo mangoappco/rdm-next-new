@@ -706,6 +706,30 @@
      Es el unico numero de toda la card.css que no viene de un token de M3,
      y queda dicho aqui para que no se lea como medido cuando no lo esta. */
   --md-sys-measurement-card-gap: var(--md-ref-spacing-50);
+
+  /* ------------------------------------------------------------------------
+     PROPORCION DEL MEDIO DE LA CARD
+     ---------------------------------------------------------------------
+     Que proporcion tiene la ranura de imagen. 16:9 de partida.
+
+     M3 no publica ninguna: sus tres ficheros de card no mencionan
+     proporcion ni aspect-ratio, y la guia de la card tampoco. Es un rol
+     nuestro, con su primitiva en 1-reference-tokens/aspect.css.
+
+     Existe por dos razones, y las dos son practicas:
+
+       - una ranura sin proporcion NO reserva caja. La imagen manda, y si
+         tarda o falla la ranura cae al alto minimo del elemento: medido,
+         20px. Con proporcion, la caja esta reservada antes de que la
+         imagen exista.
+       - el 16:9 escrito a pelo en el componente pasaria el verificador sin
+         que nadie lo viera. Ver el hueco de REGLA 1 en aspect.css.
+
+     Que el autor pueda cambiarla desde el marcado, con una utilidad o
+     declarando el rol, es lo que hace que esto sea un token y no un
+     constante. Ver `.md-card` en 3-components/card.css.
+     --------------------------------------------------------------------- */
+  --md-sys-measurement-card-media-aspect: var(--md-ref-aspect-landscape);
 }
 
 /* Las clases utilitarias de esta familia se mudaron a 4-utilities/ en la auditoria M3:

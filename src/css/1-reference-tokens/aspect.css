@@ -1,0 +1,61 @@
+/* ==========================================================================
+   1-reference-tokens/aspect.css — PROPORCIONES (Extension propia)
+   ==========================================================================
+
+   QUE ES ESTE ARCHIVO
+   -------------------
+   Las proporciones de un medio: la relacion entre su ancho y su alto. Es la
+   unica primitiva del sistema que NO es una medida suelta. Todo lo demas --
+   espacios, radios, grosores, alturas-- es un numero. Una proporcion son dos,
+   y por eso necesita su propio archivo en vez de colarse en `spacing.css` o
+   en `corner.css`.
+
+   Es la misma disciplina de "un radio no es un token de espaciado aunque
+   coincida el numero", aplicada a otra cosa: un 16:9 no es un 16.
+
+   M3 NO PUBLICA NINGUNO
+   ----------------------
+   Ni `_md-comp-elevated-card`, ni `-filled-card`, ni `-outlined-card` --
+   los tres ficheros de card -- mencionan proporcion, aspect-ratio ni media.
+   Ni la guia `labs/gb/components/card/card.scss` la declara. La documentacion
+   de m3.material.io es una aplicacion de Angular: su HTML llega vacio, con
+   cero apariciones de "aspect" o "ratio", y el texto lo monta JavaScript en
+   el cliente, asi que no se puede leer desde fuera.
+
+   Es decir: si el valor 16/9 esta aqui, es porque lo hemos decidido
+   nosotros, y por eso lleva su nombre de rol y no una etiqueta de M3.
+
+   LO QUE REGLA 1 NO VE, Y POR QUE ESTA ARCHIVO
+   --------------------------------------------
+   `aspect-ratio: 16 / 9;` escrito en `3-components/` PASARIA el verificador.
+   No por que este bien, sino por un hueco: `$patternNum` de
+   tools/verify-tokens.ps1:317 exige que el numero sin unidad acabe en `;`,
+   `,` o `)`, y la barra se lo impide.
+
+     "aspect-ratio: 16 / 9;"    detectado: false
+     "width: 16;"               detectado: true
+
+   Dos numeros magicos colados en un componente, y el candado no los ve. Es
+   justo lo que esta capa existe para impedir, y por eso los ratios de
+   card.css salen de aqui y no de su teclado.
+
+   LOS TRES VALORES
+   ----------------
+     landscape  16 / 9   el de las tarjetas verticales: el contenido se lee
+                         de arriba abajo y el medio es una banda ancha
+     square      1 / 1   el canonico de las tarjetas horizontales, donde el
+                         medio va al lado como miniatura
+     portrait   3 / 4    el de una ficha de producto en vertical
+
+   ========================================================================== */
+
+:root {
+  /* Proporcion panoramica: la de la base de `.md-card-media`. */
+  --md-ref-aspect-landscape: 16 / 9;
+
+  /* Proporcion cuadrada: para la miniatura de una tarjeta horizontal. */
+  --md-ref-aspect-square: 1 / 1;
+
+  /* Proporcion vertical: ficha de producto en vertical. */
+  --md-ref-aspect-portrait: 3 / 4;
+}
