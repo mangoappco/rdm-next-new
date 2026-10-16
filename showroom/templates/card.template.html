@@ -56,11 +56,24 @@
 
   LA IMAGEN, Y POR QUE EL SRC DEL SNIPPET ES DEL SHOWROOM
   ------------------------------------------------------
-  `../assets/card-producto.svg` no es copiable tal cual: en ManGo! App la
+  `../assets/card-media.svg` no es copiable tal cual: en ManGo! App la
   imagen del producto vive en otro sitio. No es descuido, es REGLA 11: el
   `innerHTML` del specimen y el texto del `<pre>` tienen que ser IDENTICOS,
   y como el specimen tiene que renderizar, su ruta tiene que ser real. Si el
-  specimen dijera `producto.jpg`, no se veria nada.
+  specimen dijera `imagen.jpg`, no se veria nada.
+
+  EL TEXTO ES EL NOMBRE DEL ROL, Y EL SVG NO DIBUJA NADA
+  ------------------------------------------------------
+  El specimen dice `Title`, `Subhead`, `Body`, `Action` y `Primary`. No es
+  una manía: es lo que ya hace `typography.html`, donde cada specimen lleva
+  el nombre del rol que esta enseñando.
+
+  Y el asset se llama `card-media.svg` y dibuja un rectangulo gris con un
+  bloque gris en el centro. La primera version dibujaba una ficha de producto
+  con su caja y su referencia, lo que convertia un placeholder en una
+  mentira: quien copiara el snippet se llevaba tambien el "Caja de Carthago".
+  La ranura `.md-card-media` no lee el contenido de la imagen, solo la
+  recorta, asi que no hay nada que ganar inventando una.
 
   Por eso la prosa del par dice que el `src` es el de tu app. Es lo unico
   de la vista que hay que cambiar al copiar, y conviene que lo diga en voz
@@ -107,35 +120,35 @@
       <div class="sr-specimen">
         <article class="md-card">
           <div class="md-card-media">
-            <img src="../assets/card-producto.svg" alt="Caja de Carthago, modelo S">
+            <img src="../assets/card-media.svg" alt="Media">
           </div>
           <div class="md-card-header">
-            <h3 class="md-type-title-large">Caja de Carthago</h3>
-            <p class="md-type-body-medium">Ref. 7741 · 48 almacenados</p>
+            <h3 class="md-type-title-large">Title</h3>
+            <p class="md-type-body-medium">Subhead</p>
           </div>
           <div class="md-card-content">
-            <p class="md-type-body-medium">Acabado mate de 18 mm. Se sirve con la tapa de roble a juego.</p>
+            <p class="md-type-body-medium">Body</p>
           </div>
           <div class="md-card-actions">
-            <button class="md-button md-button-text" type="button">Cerrar</button>
-            <button class="md-button" type="button">Editar ficha</button>
+            <button class="md-button md-button-text" type="button">Action</button>
+            <button class="md-button" type="button">Primary</button>
           </div>
         </article>
       </div>
       <pre class="sr-code"><code>&lt;article class="md-card"&gt;
   &lt;div class="md-card-media"&gt;
-    &lt;img src="../assets/card-producto.svg" alt="Caja de Carthago, modelo S"&gt;
+    &lt;img src="../assets/card-media.svg" alt="Media"&gt;
   &lt;/div&gt;
   &lt;div class="md-card-header"&gt;
-    &lt;h3 class="md-type-title-large"&gt;Caja de Carthago&lt;/h3&gt;
-    &lt;p class="md-type-body-medium"&gt;Ref. 7741 · 48 almacenados&lt;/p&gt;
+    &lt;h3 class="md-type-title-large"&gt;Title&lt;/h3&gt;
+    &lt;p class="md-type-body-medium"&gt;Subhead&lt;/p&gt;
   &lt;/div&gt;
   &lt;div class="md-card-content"&gt;
-    &lt;p class="md-type-body-medium"&gt;Acabado mate de 18 mm. Se sirve con la tapa de roble a juego.&lt;/p&gt;
+    &lt;p class="md-type-body-medium"&gt;Body&lt;/p&gt;
   &lt;/div&gt;
   &lt;div class="md-card-actions"&gt;
-    &lt;button class="md-button md-button-text" type="button"&gt;Cerrar&lt;/button&gt;
-    &lt;button class="md-button" type="button"&gt;Editar ficha&lt;/button&gt;
+    &lt;button class="md-button md-button-text" type="button"&gt;Action&lt;/button&gt;
+    &lt;button class="md-button" type="button"&gt;Primary&lt;/button&gt;
   &lt;/div&gt;
 &lt;/article&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>

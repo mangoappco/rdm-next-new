@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" width="320" height="180"
+     role="img" aria-label="Imagen de ejemplo">
+  <!--
+    Asset de imagen del showroom.
+
+    Las rayas de este comentario son puntos, no guiones: un comentario XML
+    no puede contener dos guiones seguidos, y un separador de ese tipo
+    vuelve el fichero invalido. El navegador lo tiraba entero sin avisar:
+    naturalWidth daba 0 y la ranura se quedaba en 20px de alto.
+
+    POR QUE SVG Y NO PNG
+    ====================
+    Es texto. Un PNG binario en un repo cuyo .gitattributes y cuyas reglas
+    tratan todo como texto UTF-8 introduce un segundo tipo de fichero que
+    nadie revisa en un diff, y no se puede buscar dentro. Un SVG se versiona,
+    se lee en el commit y se puede corregir sin herramienta.
+
+    QUE DIBUJA: NADA EN CONCRETO, A PROPOSITO
+    =========================================
+    Un rectangulo gris muy claro con un bloque gris en el centro. Sin producto,
+    sin marca, sin texto, sin catalogos.
+
+    La primera version dibujaba una ficha de producto con su caja y su
+    referencia, y era un error: la ranura .md-card-media no lee el contenido
+    de la imagen, solo la recorta. Poner un producto alInventar convertia un
+    placeholder en una mentira, porque cualquiera que copiara el snippet se
+    llevaria tambien el "Caja de Carthago". Un bloque neutro no inventa nada.
+
+    Y por el mismo motivo el texto de la card es el NOMBRE DEL ROL y no un
+    contenido de ejemplo: "Title", "Subhead", "Body". Es lo que ya hace
+    typography.html con sus specimens.
+
+    LOS COLORES SON DE LA PALETA, EN HEX
+    ====================================
+    Este fichero esta FUERA de src/css/, asi que la REGLA 1 no lo cubre: es
+    un asset, no una hoja de estilos. Aun asi toma los tonos de la paleta,
+    para que el bloque no choque con la card que lo contiene:
+
+      fondo   neutral92  #ece6f0   el tono mas tenue de la escalera
+      figura  neutral87  #ded8e1   un escalon por debajo
+
+    Los dos tienen el leve matiz violeta de los neutros de M3. Un gris
+    puro se notaria contra una card que no lo es.
+  -->
+  <rect width="320" height="180" fill="#ece6f0"/>
+  <rect x="120" y="50" width="80" height="80" rx="12" fill="#ded8e1"/>
+</svg>
