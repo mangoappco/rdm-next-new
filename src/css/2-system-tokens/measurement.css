@@ -730,6 +730,16 @@
      constante. Ver `.md-card` en 3-components/card.css.
      --------------------------------------------------------------------- */
   --md-sys-measurement-card-media-aspect: var(--md-ref-aspect-landscape);
+
+  /* Las otras dos proporciones, para `.md-card-media-square` y
+     `-portrait`. El rol de arriba es el de la base y tambien el de la clase
+     `-landscape`, que es la misma proporcion declarada otra vez.
+
+     Los tres existen como rol y no solo como primitiva porque REGLA 2 prohibe
+     que 3-components lea 1-reference-tokens. Y existen los tres, no solo los
+     dos nuevos, para que el componente no tenga ni un solo `--md-ref-*`. */
+  --md-sys-measurement-card-media-aspect-square: var(--md-ref-aspect-square);
+  --md-sys-measurement-card-media-aspect-portrait: var(--md-ref-aspect-portrait);
 }
 
 /* Las clases utilitarias de esta familia se mudaron a 4-utilities/ en la auditoria M3:

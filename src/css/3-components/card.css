@@ -560,6 +560,47 @@
   background-color: var(--md-sys-color-surface-container-high);
 }
 
+/* ---------------------------------------------------------------------------
+   LAS TRES PROPORCIONES, POR CLASE
+   ---------------------------------------------------------------------------
+   La base es la panoramica y no lleva clase, como la base de `.md-button` es
+   la `filled` y no lleva la suya.
+
+   Y `.md-card-media-landscape` existe aun sabiendo que hace lo mismo que la
+   base. Es el mismo caso que `.md-button-filled` sobre `.md-button`: una
+   clase que no existe no falla, se queda sin efecto en silencio, y
+   `-landscape` es justo el nombre que alguien va a escribir primero al ver
+   que hay dos mas. Que sobre no significa que se pueda escribir mal sin
+   enterarse.
+
+   EL PORQUE DE LOS TRES NOMBRES
+   -----------------------------
+     landscape  16 / 9  la de una card vertical, que es la que hay: el
+                        contenido se lee de arriba abajo y el medio es una
+                        banda ancha. Es la base.
+     square      1 / 1  la canonica de una card horizontal, donde el medio va
+                        al lado como miniatura.
+     portrait    3 / 4  la ficha de producto en vertical, cuando la imagen
+                        manda y el texto acompana debajo.
+
+   Tres y no mas. La proporcion no es un numero de tamano con su secuencia:
+   no hay "mas grande que landscape", porque un medio mas grande no es una
+   card mas grande, es otra card. Si manana hace falta una 4 / 5, es otro
+   nombre y otro rol, y se anaden sin tocar estos.
+   ------------------------------------------------------------------------ */
+
+.md-card-media-landscape {
+  aspect-ratio: var(--md-sys-measurement-card-media-aspect);
+}
+
+.md-card-media-square {
+  aspect-ratio: var(--md-sys-measurement-card-media-aspect-square);
+}
+
+.md-card-media-portrait {
+  aspect-ratio: var(--md-sys-measurement-card-media-aspect-portrait);
+}
+
 .md-card-media > :where(img, video, canvas) {
   inline-size: 100%;
   block-size: 100%;

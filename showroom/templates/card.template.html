@@ -111,9 +111,10 @@
   roto. Antes, sin proporcion, caia a 20px y el `alt` se pintaba en una
   franja ilegible. Ese es el cambio que hace util el par de Slots.
 
-  El `img` lleva ademas `width` y `height` aunque ya no sean necesarios para
-  reservar nada: son el tamano real del fichero y evitan el salto de layout
-  de antes de que cargue la hoja.
+  El `img` NO lleva `width` ni `height`. Antes si, porque sin ellos la caja
+  no se reservaba; ahora la reserva el `aspect-ratio` de la ranura, asi que
+  solo quedarian para mentir: dirian el tamano de la foto de ejemplo, y en la
+  app puede ser otro.
 
   Y lleva un fondo en `surface-container-high`, un escalon por debajo del
   tono de la card. Con la imagen puesta no se ve; rota o cargandose, es lo que
@@ -153,11 +154,11 @@
     <!-- PAREJA: la clase base (h2 + specimen + pre + boton). -->
     <section class="sr-section">
       <h2 class="md-type-title-large">Clase base</h2>
-      <p class="md-type-body-medium">La clase base con sus cuatro ranuras. El <code>src</code> de la imagen es el de tu app. La caja la reserva el <code>aspect-ratio</code> de la ranura, no la imagen: por eso se ve igual aunque no llegue a cargar.</p>
+      <p class="md-type-body-medium">La clase base con sus cuatro ranuras, y el medio en 16:9. El <code>src</code> de la imagen es el de tu app; la caja la reserva la proporción de la ranura, no la imagen.</p>
       <div class="sr-specimen">
         <article class="md-card">
           <div class="md-card-media">
-            <img src="../assets/card-media.svg" alt="Media" width="320" height="180">
+            <img src="../assets/card-media.svg" alt="Media">
           </div>
           <div class="md-card-header">
             <h3 class="md-type-title-large">Title</h3>
@@ -174,7 +175,7 @@
       </div>
       <pre class="sr-code"><code>&lt;article class="md-card"&gt;
   &lt;div class="md-card-media"&gt;
-    &lt;img src="../assets/card-media.svg" alt="Media" width="320" height="180"&gt;
+    &lt;img src="../assets/card-media.svg" alt="Media"&gt;
   &lt;/div&gt;
   &lt;div class="md-card-header"&gt;
     &lt;h3 class="md-type-title-large"&gt;Title&lt;/h3&gt;
