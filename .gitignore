@@ -45,8 +45,11 @@ build/
 # un enlace a un archivo que no existe en un clon seria un 404 en la portada
 # del catalogo.
 #
-# VERSIONADO TEMPORALMENTE: se necesita llevar la sesion de trabajo a otra
-# maquina via push/pull. Al volver a una sola maquina, descomentar la linea
-# de abajo. Ojo: aunque este ignorado, tools/verify-tokens.ps1 lo escanea
-# igualmente, porque recorre todo *.html del proyecto.
-# showroom/lab.html
+# VERSIONADO TEMPORALMENTE: se necesitaba llevar la sesion de trabajo a otra
+# maquina via push/pull. Descomentado el 2026-10-16, al volver a una sola
+# maquina. Sigue en la historia --commit ea9759e-- asi que el cuaderno no se
+# pierde: deja de recibir cambios.
+# Ojo: aunque este ignorado, tools/verify-tokens.ps1 lo escanea igualmente,
+# porque recorre todo *.html del proyecto. Un `style=` aqui tumba el
+# verificador igual que en cualquier otra vista.
+showroom/lab.html
