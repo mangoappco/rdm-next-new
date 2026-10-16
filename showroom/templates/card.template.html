@@ -218,7 +218,7 @@
       <h2 class="md-type-title-large">Clase base</h2>
       <p class="md-type-body-medium">La clase base con sus cuatro ranuras, con el medio a 16:9 explícito. El <code>src</code> es el de tu app.</p>
       <div class="sr-specimen">
-        <article class="md-card">
+        <article class="md-card md-card-elevated">
           <div class="md-card-media md-card-media-landscape">
             <img src="../assets/card-media.svg" alt="Media">
           </div>
@@ -235,7 +235,7 @@
           </div>
         </article>
       </div>
-      <pre class="sr-code"><code>&lt;article class="md-card"&gt;
+      <pre class="sr-code"><code>&lt;article class="md-card md-card-elevated"&gt;
   &lt;div class="md-card-media md-card-media-landscape"&gt;
     &lt;img src="../assets/card-media.svg" alt="Media"&gt;
   &lt;/div&gt;
@@ -322,7 +322,7 @@
       <h2 class="md-type-title-large">Ratio</h2>
       <p class="md-type-body-medium">Las tres proporciones, por clase. El medio crece con el ancho, asi que una card ancha hace la imagen mas alta.</p>
       <div class="sr-specimen sr-specimen-gap">
-<article class="md-card">
+<article class="md-card md-card-elevated">
   <div class="md-card-media md-card-media-landscape">
     <img src="../assets/card-media.svg" alt="Media">
   </div>
@@ -330,7 +330,7 @@
     <p class="md-type-body-medium">Landscape, 16:9</p>
   </div>
 </article>
-<article class="md-card">
+<article class="md-card md-card-elevated">
   <div class="md-card-media md-card-media-square">
     <img src="../assets/card-media.svg" alt="Media">
   </div>
@@ -338,7 +338,7 @@
     <p class="md-type-body-medium">Square, 1:1</p>
   </div>
 </article>
-<article class="md-card">
+<article class="md-card md-card-elevated">
   <div class="md-card-media md-card-media-portrait">
     <img src="../assets/card-media.svg" alt="Media">
   </div>
@@ -347,7 +347,7 @@
   </div>
 </article>
       </div>
-      <pre class="sr-code"><code>&lt;article class="md-card"&gt;
+      <pre class="sr-code"><code>&lt;article class="md-card md-card-elevated"&gt;
   &lt;div class="md-card-media md-card-media-landscape"&gt;
     &lt;img src="../assets/card-media.svg" alt="Media"&gt;
   &lt;/div&gt;
@@ -355,7 +355,7 @@
     &lt;p class="md-type-body-medium"&gt;Landscape, 16:9&lt;/p&gt;
   &lt;/div&gt;
 &lt;/article&gt;
-&lt;article class="md-card"&gt;
+&lt;article class="md-card md-card-elevated"&gt;
   &lt;div class="md-card-media md-card-media-square"&gt;
     &lt;img src="../assets/card-media.svg" alt="Media"&gt;
   &lt;/div&gt;
@@ -363,7 +363,7 @@
     &lt;p class="md-type-body-medium"&gt;Square, 1:1&lt;/p&gt;
   &lt;/div&gt;
 &lt;/article&gt;
-&lt;article class="md-card"&gt;
+&lt;article class="md-card md-card-elevated"&gt;
   &lt;div class="md-card-media md-card-media-portrait"&gt;
     &lt;img src="../assets/card-media.svg" alt="Media"&gt;
   &lt;/div&gt;
@@ -379,7 +379,7 @@
       <h2 class="md-type-title-large">Link</h2>
       <p class="md-type-body-medium">La card es el control: el enlace navega, el boton actúa y tabindex la hace pulsable. Con acciones dentro ya no puede ser enlace.</p>
       <div class="sr-specimen sr-specimen-gap">
-<a class="md-card" href="#">
+<a class="md-card md-card-elevated" href="#">
   <div class="md-card-header">
     <h3 class="md-type-title-large">Enlace</h3>
     <p class="md-type-body-medium">Subhead</p>
@@ -388,7 +388,7 @@
     <p class="md-type-body-medium">Supporting text</p>
   </div>
 </a>
-<button class="md-card" type="button">
+<button class="md-card md-card-elevated" type="button">
   <div class="md-card-header">
     <h3 class="md-type-title-large">Botón</h3>
     <p class="md-type-body-medium">Subhead</p>
@@ -397,7 +397,7 @@
     <p class="md-type-body-medium">Supporting text</p>
   </div>
 </button>
-<article class="md-card" tabindex="0">
+<article class="md-card md-card-elevated" tabindex="0">
   <div class="md-card-header">
     <h3 class="md-type-title-large">Con tabindex</h3>
     <p class="md-type-body-medium">Subhead</p>
@@ -407,7 +407,7 @@
   </div>
 </article>
       </div>
-      <pre class="sr-code"><code>&lt;a class="md-card" href="#"&gt;
+      <pre class="sr-code"><code>&lt;a class="md-card md-card-elevated" href="#"&gt;
   &lt;div class="md-card-header"&gt;
     &lt;h3 class="md-type-title-large"&gt;Enlace&lt;/h3&gt;
     &lt;p class="md-type-body-medium"&gt;Subhead&lt;/p&gt;
@@ -416,7 +416,7 @@
     &lt;p class="md-type-body-medium"&gt;Supporting text&lt;/p&gt;
   &lt;/div&gt;
 &lt;/a&gt;
-&lt;button class="md-card" type="button"&gt;
+&lt;button class="md-card md-card-elevated" type="button"&gt;
   &lt;div class="md-card-header"&gt;
     &lt;h3 class="md-type-title-large"&gt;Botón&lt;/h3&gt;
     &lt;p class="md-type-body-medium"&gt;Subhead&lt;/p&gt;
@@ -425,7 +425,7 @@
     &lt;p class="md-type-body-medium"&gt;Supporting text&lt;/p&gt;
   &lt;/div&gt;
 &lt;/button&gt;
-&lt;article class="md-card" tabindex="0"&gt;
+&lt;article class="md-card md-card-elevated" tabindex="0"&gt;
   &lt;div class="md-card-header"&gt;
     &lt;h3 class="md-type-title-large"&gt;Con tabindex&lt;/h3&gt;
     &lt;p class="md-type-body-medium"&gt;Subhead&lt;/p&gt;

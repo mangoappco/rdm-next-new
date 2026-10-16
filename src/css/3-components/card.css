@@ -123,7 +123,18 @@
    obligatorias en el sentido de que el marcado se rompa, y no hay
    `> *` que las imponga; son las que el autor elige usar.
 
-     <article class="md-card">
+   LA FICHA SE ESCRIBE SIEMPRE, INCLUIDA LA QUE TRAE LA BASE
+   -------------------------------------------------------
+   Abajo aparece `md-card-elevated` y no solo `md-card`, y es a proposito: el
+   ejemplo es el marcado de referencia, y un ejemplo que omita la clase no
+   ensena que hay una clase. Es el mismo motivo por el que `.md-button-filled`
+   se escribe sobre `.md-button` (commit 5489438) y por el que
+   `md-card-media-landscape` se escribe aunque la base ya sea 16:9.
+
+   Al que arma snippets le sirve saber de golpe que parte se juega: sin la
+   ficha escrita hay que abrir el CSS para descubrir que existe.
+
+     <article class="md-card md-card-elevated">
        <div class="md-card-media"></div>
        <div class="md-card-header">
          <h3>…</h3>
