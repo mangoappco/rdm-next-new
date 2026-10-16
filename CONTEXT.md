@@ -68,6 +68,7 @@ Nada de esto se ha tocado. Está anotado para que no se dé por verdad:
 - FAB y extended FAB tienen 1 de las 8 familias de color de M3. Decidido y escrito en `fab.css:448-451`.
 - `4-utilities` no publica ninguna utilidad de espaciado, así que las ranuras de la card no pueden delegar su hueco al autor: lo declara el componente.
 - **10 de 13 moldes están desfasados** respecto a su vista publicada: `button-group`, `button`, `color`, `divider`, `elevation`, `icon`, `measurement`, `motion`, `spacing` y `state`. Llevan el bloque largo `COMO USAR ESTE TEMPLATE` donde la vista lleva el puntero de dos líneas, y se quedaron atrás en `5422fb2` (recorte de prosa), que tocó las vistas y no los moldes. Usar cualquiera de esos diez como molde arrastraría prosa ya recortada; los buenos son `fab`, `fab-extended`, `icon-button` y `card`.
+- **`navigator.clipboard` solo existe en contexto seguro**, así que abierto por la IP de la red el botón «Copiar» no tenía copia ni alternativa y quedaba muerto en las quince vistas. Corregido con un respaldo de `document.execCommand` y con texto honesto en los dos sentidos. Probado en las dos rutas: por `localhost` y por `http://10.226.28.43/`.
 
 ## Dónde vive el resto
 

@@ -48,6 +48,57 @@
     }
   }
 
+  /* Copia por la API del portapapeles cuando existe, y por execCommand
+     cuando no. No es una salida por el futuro: navigator.clipboard SOLO se
+     expone en contexto seguro, asi que abriendo el showroom por la IP de la
+     red --que es como se trabaja entre maquinas-- no existe. Medido en
+     http://10.226.28.43/...: isSecureContext false y navigator.clipboard
+     undefined, con document.execCommand disponible.
+
+     Antes no habia alternativa: el manejador terminaba sin hacer nada y sin
+     avisar, y el boton parecia roto. Lo hacia en las quince vistas, no solo
+     en la de card. */
+  function copyWithExecCommand(text) {
+    /* Un textarea invisible pero NO display:none, porque a un elemento sin
+       caja el navegador no le selecciona el contenido y execCommand devuelve
+       false sin explicar por que. */
+    var area = document.createElement('textarea');
+    area.value = text;
+    area.setAttribute('readonly', '');
+    area.style.position = 'fixed';
+    area.style.top = '0';
+    area.style.left = '0';
+    area.style.width = '1px';
+    area.style.height = '1px';
+    area.style.padding = '0';
+    area.style.border = 'none';
+    area.style.outline = 'none';
+    area.style.boxShadow = 'none';
+    area.style.background = 'transparent';
+    area.style.opacity = '0';
+
+    document.body.appendChild(area);
+    area.focus();
+    area.select();
+    /* En Safari antiguo hay que pedir el rango ademas de select(). */
+    if (area.setSelectionRange) area.setSelectionRange(0, text.length);
+
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+    document.body.removeChild(area);
+    return ok;
+  }
+
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).then(
+        function () { return true; },
+        function () { return copyWithExecCommand(text); }
+      );
+    }
+    return Promise.resolve(copyWithExecCommand(text));
+  }
+
   /* Cada boton [data-copy] copia el <code> del <pre> hermano inmediato
      anterior. Se copia textContent (el texto crudo), no innerHTML: el
      resaltado no contamina el portapapeles. */
@@ -60,15 +111,18 @@
         var code = pre && pre.querySelector ? pre.querySelector('code') : null;
         if (!code) return;
 
-        var done = function () {
+        var flash = function (message) {
           var original = button.textContent;
-          button.textContent = 'Copiado';
+          button.textContent = message;
           window.setTimeout(function () { button.textContent = original; }, 1500);
         };
 
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(code.textContent).then(done, done);
-        }
+        /* Se dice lo que paso, en los dos sentidos. Un boton que no cambia
+           de texto no distingue entre "no ha pasado nada" y "no he podido",
+           y el que lee no sabe si volver a pulsarlo sirve de algo. */
+        copyText(code.textContent).then(function (ok) {
+          flash(ok ? 'Copiado' : 'No se pudo copiar');
+        });
       });
     }
   }
