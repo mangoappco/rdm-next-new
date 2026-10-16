@@ -144,6 +144,44 @@
   }
 
   /* ------------------------------------------------------------------------
+     ESCENARIO EN CUADRILLA
+     --------------------------------------------------------------------------
+     .sr-specimen es flex y deja que cada hijo tome el ancho de su contenido.
+     Eso va bien para los botones, que tienen ancho propio, y se rompe con
+     las cards, que no lo tienen: M3 no publica ancho minimo para ellas --
+     "size is determined by the space those elements occupy"-- asi que el ancho
+     lo pone el texto y, si hay medio, el ancho intrinseco de la imagen.
+
+     MEDIDO con texto de copiar y pegar, contra los 638px utiles del specimen:
+
+       flex-wrap                          509 + 320 + 448        tres filas de una
+       repeat(4, 1fr)                    160 x 4               una fila, ilegible
+       lo de abajo                       311 x 2               dos filas de dos
+
+     Se queda la tercera: a 160px los titulares partian en dos lineas y el
+     medio quedaba enano. El minimo de pista es 288px
+     (--md-ref-spacing-900 es 72px, x4) y el hueco 16px, los dos tokens que
+     ya usa este mismo fichero, asi que el numero de columnas sale del ancho
+     util del specimen y no de un numero escrito aqui.
+
+     `minmax(0, 1fr)` se descarto a proposito: con minimo 0 el navegador
+     crea tantas pistas como quepan y colapsa las vacias --se midieron 1276
+     pistas, 4 con contenido y 1272 de 0px--, que funciona pero es un
+     desperdicio.
+
+     Por eso va aqui y no en la card: el marcado queda puro, el snippet se
+     copia solo y REGLA 11 compara el interior del specimen sin ver esta
+     clase. `align-items: start` pisa el `center` de .sr-specimen para que
+     las cards queden alineadas arriba y se comparen los bordes superiores.
+     --------------------------------------------------------------------- */
+  .sr-specimen-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(calc(var(--md-ref-spacing-900) * 4), 1fr));
+    gap: var(--md-ref-spacing-200);
+    align-items: start;
+  }
+
+  /* ------------------------------------------------------------------------
      ESCENARIO ALTO (muestras de forma y estado)
      --------------------------------------------------------------------------
      Altura minima para que los radios grandes se lean sin converger en
