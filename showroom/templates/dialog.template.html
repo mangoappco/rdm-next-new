@@ -15,8 +15,9 @@
 </head>
 
 <!--
-  Esta vista tiene cuatro pares: Clase base, Sin titular, Modal y Lista. Se
-  construyen par a par, mirando cada uno antes de escribir el siguiente.
+  Esta vista tiene cinco pares: Clase base, Sin titular, Modal, Lista y
+  Divisor. Se construyen par a par, mirando cada uno antes de escribir el
+  siguiente.
 
   LO QUE SELEE DE M3, Y DE DONDE
   -------------------------------
@@ -112,6 +113,54 @@
   primero con ese id. No hay error, no hay aviso y no se ve: simplemente se
   borra el producto equivocado, que es el peor modo de fallo que hay en un
   POS. Por eso el par de abajo lleva los tres dialogs con id distinto.
+
+  EL DIVISOR, Y POR QUE VA EN `absolute`
+  -------------------------------------
+  El par es casi entero una decision de M3, y se leyo de su fuente:
+  `dialog/internal/_dialog.scss` en `@material/web@2.0.0`, que es donde esta
+  el SCSS que la pagina de material-web.dev ya no publica.
+
+      md-divider { display: none; position: absolute; }
+      .has-headline.show-top-divider .headline md-divider { display: flex; }
+      .has-actions.show-bottom-divider .actions md-divider { display: flex; }
+      .headline md-divider { bottom: 0; }
+      .actions  md-divider { top: 0; }
+
+  O sea que las dos clases existen de verdad, y el divisor va pegado al borde
+  de su ranura y NO OCUPA SITIO. Aqui se reproduce tal cual, y el motivo se
+  ve midiendo: en flujo el `<hr>` se come los huecos de la ranura y sale
+  asimetrico.
+
+      ranura del titular    16px ARRIBA   16px ABAJO
+      ranura de acciones    24px ARRIBA    8px ABAJO
+
+  Ese 8px de abajo es el hueco ENTRE BOTONES, que un divisor no es. Con
+  `absolute` el dialog mide lo mismo con el y sin el: 180px en los dos casos.
+
+  Del componente divider no se toca ni el grosor ni el color. Lo unico que
+  hace el dialog es decidir DONDE va la linea.
+
+  LOS DOS DIVISORES SON INDEPENDIENTES
+  ------------------------------------
+  El par trae los dos porque es lo que mejor enseña que son dos ranuras y
+  no una variante con dos posiciones. Se pueden poner los dos, uno o ninguno.
+
+  Y aqui conviene no liarse con las fuentes: la anatomia de Android describe
+  UN divider opcional, entre el texto de apoyo y los botones, y la tabla de
+  specs de M3 no tiene ninguna linea de divisor. Lo que dice "dos" es el
+  SCSS de M3 web, que es el unico sitio donde aparecen las dos clases.
+
+  LOS TOKENS DEL DIVISOR ESTAN DEPRECATED
+  --------------------------------------
+  M3 publicaba UN solo token, `md.comp.dialog.with-divider.divider.height`, y
+  sus dos lineas --altura y color-- salen con `@deprecated` a favor de
+  `md.comp.divider.thickness` y `md.comp.divider.color`. O sea que el divisor
+  del dialog ya no tiene token propio: se usa el del componente, que es
+  exactamente lo que hace `.md-divider`.
+
+  De ahi sale una diferencia que parece un fallo y no lo es: el token viejo
+  del dialog era `outline` y el del componente divider es `outline-variant`.
+  Aqui sale `outline-variant` porque es el que M3 manda usar ya.
 
   EL TITULAR LLEVA md-type-headline-small, Y NO SOBRA
   --------------------------------------------------
@@ -382,6 +431,43 @@
   &lt;div class="md-dialog-actions"&gt;
     &lt;button class="md-button md-button-text" type="button" data-close-dialog&gt;Cancelar&lt;/button&gt;
     &lt;button class="md-button md-button-filled" type="button" data-close-dialog&gt;Eliminar&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/dialog&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+    <!-- PAREJA: divisor (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Divisor</h2>
+      <p class="md-type-body-medium">Un separador opcional en cada ranura. Las dos son independientes: puedes ponerlas, poner una o no poner ninguna. El sitio lo decide dónde pongas el <code>&lt;hr&gt;</code>, no una clase.</p>
+      <div class="sr-specimen">
+<dialog class="md-dialog" open aria-labelledby="dialog-divisor-titulo">
+  <div class="md-dialog-headline">
+    <h3 class="md-type-headline-small" id="dialog-divisor-titulo">Headline</h3>
+    <hr class="md-divider">
+  </div>
+  <div class="md-dialog-content">
+    <p class="md-type-body-medium">Supporting text</p>
+  </div>
+  <div class="md-dialog-actions">
+    <hr class="md-divider">
+    <button class="md-button md-button-text" type="button">Cancelar</button>
+    <button class="md-button md-button-text" type="button">Aceptar</button>
+  </div>
+</dialog>
+      </div>
+      <pre class="sr-code"><code>&lt;dialog class="md-dialog" open aria-labelledby="dialog-divisor-titulo"&gt;
+  &lt;div class="md-dialog-headline"&gt;
+    &lt;h3 class="md-type-headline-small" id="dialog-divisor-titulo"&gt;Headline&lt;/h3&gt;
+    &lt;hr class="md-divider"&gt;
+  &lt;/div&gt;
+  &lt;div class="md-dialog-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Supporting text&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-dialog-actions"&gt;
+    &lt;hr class="md-divider"&gt;
+    &lt;button class="md-button md-button-text" type="button"&gt;Cancelar&lt;/button&gt;
+    &lt;button class="md-button md-button-text" type="button"&gt;Aceptar&lt;/button&gt;
   &lt;/div&gt;
 &lt;/dialog&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>

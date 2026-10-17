@@ -99,14 +99,45 @@
    izquierda y otro centrado. Describen lo mismo que la tabla: el con-icono ya
    va centrado, asi que no hay una variante mas que decidir.
 
-   LOS DIVISORES SON `md-divider`, NO UN BORDE NUESTRO
+   LOS DIVISORES SON `md-divider`, Y EL DIALOG LOS ANCLA
    ---------------------------------------------------
    M3 los mete dentro de sus propias ranuras con `<md-divider>`, el mismo
    componente que ya tenemos en la capa 3. Asi que aqui tambien: quien quiera
    el separador escribe `<hr class="md-divider">` dentro de la ranura que
-   corresponda, y el dialog no deforma un componente ajeno. Es el componente
-   documentando otro, que es justo lo que el showroom hace con el divider en
-   el resto de las vistas.
+   corresponda.
+
+   Y AQUI NO SE DEFORMA AL COMPONENTE, SE LE ANCLA
+   ----------------------------------------------
+   Del divisor no se toca ni el grosor ni el color: sigue siendo 1px y sigue
+   siendo `outline-variant`, los valores de `divider.css`. Lo unico que hace
+   el dialog es colocarlo en el perimetro de su ranura, con `position:
+   absolute`, que es lo que hace M3:
+
+       md-divider { position: absolute; }
+       .headline md-divider { bottom: 0; }
+       .actions  md-divider { top: 0; }
+
+   Y es `absolute` por una razon que se mide, no por gusto. En flujo, el `<hr>`
+   es un hijo mas y se come los huecos de la ranura:
+
+       ranura del titular    16px ARRIBA  (su `gap`)   16px ABAJO
+       ranura de acciones    24px ARRIBA  (su margen)   8px ABAJO
+
+   Ese 8px de abajo es `--md-sys-measurement-dialog-gap-buttons`, que es el
+   hueco ENTRE BOTONES: un divisor no es un boton, asi que ese token no
+   describe lo que pasa. Y las dos lineas salen asimetricas.
+
+   Con `absolute` el divisor mide 0 de alto y el dialog queda igual de alto
+   con el y sin el:
+
+       sin divisor   180px
+       con divisor   180px      diferencia 0px
+
+   O sea que ponerlo no empuja nada, que es justo para lo que sirve una
+   separacion. En M3 ademas hace falta porque sus divisores son un interruptor
+   --`.show-top-divider`-- y un interruptor que mueve el contenido al
+   encenderlo daria un salto; aqui el autor pone el `<hr>` o no lo pone, asi
+   que ese motivo no se traslada, pero el resultado es el mismo.
 
    DENTRO DE CUAL VA CADA DIVISOR
    ------------------------------
@@ -115,6 +146,31 @@
    `.show-bottom-divider`. El sitio lo elige el autor poniendo el `<hr>` en
    el sitio que quiere, en vez de con un modificador, porque con dos ranuras
    solo hay dos sitios posibles y el marcado ya dice cual es.
+
+   LAS DOS RANURAS SON OPCIONALES E INDEPENDIENTES
+   ----------------------------------------------
+   Se pueden poner las dos, una o ninguna: son dos ranuras distintas y cada
+   una acepta su `<hr>` o no. M3 lo permite porque son dos clases
+   separadas, y su anatomia de Android solo describe la de abajo --"Divider
+   (optional)", entre el texto de apoyo y los botones--, que es el caso
+   habitual. El par Divisor de la vista trae las dos, que es lo que mejor
+   enseña que son independientes.
+
+   LO QUE M3 YA NO PUBLICA
+   ----------------------
+   Su token es UNO solo, `md.comp.dialog.with-divider.divider.height`, y las
+   dos lineas que tiene --altura y color-- salen marcadas `@deprecated` a
+   favor de `md.comp.divider.thickness` y `md.comp.divider.color`. O sea que
+   el divisor del dialog ya no tiene token propio: se usa el del componente
+   divider, que es lo que hace `divider.css`.
+
+   Un efecto de esa deprecacion que conviene no leer como un fallo: el token
+   viejo del dialog era `outline` y el del componente divider es
+   `outline-variant`. Aqui sale `outline-variant` porque es el del componente,
+   que es el que M3 manda usar.
+
+   Y la tabla de specs de M3 no tiene ninguna linea de divisor: su medida no
+   esta ahi. Lo unico que dice de el es que son 1px, y sale del SCSS.
 
    POSICION, Y POR QUE NO ES `fixed`
    ---------------------------------
@@ -363,6 +419,13 @@
   gap: var(--md-sys-measurement-dialog-gap);
   font: var(--md-sys-typescale-headline-small);
   color: var(--md-sys-color-on-surface);
+
+  /* Contexto de posicionamiento SOLO para el divisor. Ver la nota de los
+     divisores: sin esto el `absolute` se ancla a `.md-dialog`, que es el
+     padre, y el separador se dibujaria en el borde del dialog entero en vez
+     de en el de su ranura. M3 hace lo mismo con `.headline { position:
+     relative }`. */
+  position: relative;
 }
 
 /* El titular se estira a lo ancho de la cabecera para que su texto tenga
@@ -440,6 +503,36 @@
   justify-content: flex-end;
   gap: var(--md-sys-measurement-dialog-gap-buttons);
   margin-block-start: var(--md-sys-measurement-dialog-gap-actions);
+
+  /* Contexto de posicionamiento SOLO para el divisor. Ver la nota de los
+     divisores y el comentario de `.md-dialog-headline`. */
+  position: relative;
+}
+
+/* ---------------------------------------------------------------------------
+   EL DIVISOR, ANCLADO AL PERIMETRO DE SU RANURA
+   ---------------------------------------------------------------------------
+   Ver la nota larga de los divisores, arriba. En resumen: el `<hr>` va en
+   `absolute` para que no ocupe sitio y no se coma los huecos de la ranura,
+   y de paso para no heredar el `gap` de 8px que es el hueco entre botones.
+
+   No se declara ni grosor ni color: los pone `divider.css` y aqui no se
+   tocan. El dialog solo decide DONDE va la linea.
+
+   El selector es descendant y no `>`, como en M3, para que el `<hr>` siga
+   funcionando aunque el autor lo envuelva en algo. */
+.md-dialog-headline .md-divider,
+.md-dialog-actions .md-divider {
+  position: absolute;
+  inset-inline: 0;
+}
+
+.md-dialog-headline .md-divider {
+  bottom: 0;
+}
+
+.md-dialog-actions .md-divider {
+  top: 0;
 }
 
 /* ---------------------------------------------------------------------------
