@@ -633,6 +633,66 @@ html:has(dialog.md-dialog:modal) {
   top: 0;
 }
 
+/* Y EL AIRE DE CADA LADO, QUE NO SALIA SOLO
+   ---------------------------------------------------------------------------
+   Con el `absolute` puesto, el divisor llegaba pegado al texto. Medido con las
+   cajas REALES de los glifos, que no son las de línea y por eso cuentan de otra
+   manera:
+
+       glifo Headline -> divisor superior        0px   <- parecía un subrayado
+       divisor superior -> glifo Supporting     17px
+       glifo Supporting -> divisor inferior     25px
+       divisor inferior -> glifo Cancelar       10px   <- 25 contra 10
+
+   Arriba 0 y abajo 25 contra 10: las dos asimetricas, y la de arriba
+   estrangulaba. La causa es que `bottom: 0` y `top: 0` ponen la linea en el
+   BORDE de la ranura, y en este sistema las ranuras no tienen padding: el aire
+   dan los margenes de los hermanos.
+
+   La solucion es airear la ranura por el lado del divisor, y con la MISMA
+   medida que ya separa las partes --16px, `--md-sys-measurement-dialog-gap`--.
+   Asi:
+
+       glifo Headline -> divisor superior       16px
+       divisor superior -> glifo Supporting    17px
+       glifo Supporting -> divisor inferior    26px
+       divisor inferior -> glifo Cancelar      26px
+
+   Que es 16 contra 17 y 26 contra 26. Los 26 no son un numero elegido: son
+   los 24 del `margin-block-start` de las acciones mas los 2 de la caja de
+   linea del boton, que ya venian ahi.
+
+   CON `:has()`, Y POR QUE
+   ----------------------
+   Porque el aire solo debe existir si hay divisor. Sin la condicion, TODO
+   dialog sin separador --los otros cinco pares de la vista-- creceria 32px de
+   golpe. Medido: el dialog sin divisores se queda en 180px, igual que antes,
+   y el que los tiene pasa a 212px.
+
+   Que un dialog con separador sea mas alto que uno sin separador es lo
+   normal: el separador ocupa sitio ademas de separar. Lo que NO puede ser es
+   que un dialog sin separador crezca por tener la regla puesta.
+
+   Y LO QUE NO HACE FALTA: PADDING EN EL CONTENIDO
+   ---------------------------------------------
+   Se probo anadiendole `padding-block` al contenido y queda peor. El
+   `margin-block-start: 16px` que ya tiene `.md-dialog-content` ES la distancia
+   que hay que dejar bajo el divisor; meterle 16px de padding encima no reparte
+   el aire, lo duplica:
+
+       con los tres cambios   divisor sup 16 / 33     dialog 244px
+       con estos dos          divisor sup 16 / 17     dialog 212px
+
+   Por eso el aire va en las dos ranuras del DIVISOR y no en la de en medio.
+   ------------------------------------------------------------------------ */
+.md-dialog-headline:has(.md-divider) {
+  padding-block-end: var(--md-sys-measurement-dialog-gap);
+}
+
+.md-dialog-actions:has(.md-divider) {
+  padding-block-start: var(--md-sys-measurement-dialog-gap);
+}
+
 /* ---------------------------------------------------------------------------
    LOS HUECOS QUE DEPENDEN DE QUE HAYA CABECERA
    ---------------------------------------------------------------------------

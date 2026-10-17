@@ -135,10 +135,21 @@
       ranura de acciones    24px ARRIBA    8px ABAJO
 
   Ese 8px de abajo es el hueco ENTRE BOTONES, que un divisor no es. Con
-  `absolute` el dialog mide lo mismo con el y sin el: 180px en los dos casos.
+  `absolute` el divisor mide 0 de alto, pero la caja no se queda igual: falta
+  airearle por su lado, y eso se mide con las cajas REALES de los glifos.
+
+      con absolute pelado    divisor sup   0px del glifo  <- parecia un subrayado
+                             divisor inf  25px / 10px     <- asimetrico
+      con el aire de :has()  divisor sup  16px / 17px
+                             divisor inf  26px / 26px
+
+  Y el aire va en las dos ranuras del DIVISOR, con `:has()`, por dos motivos:
+  porque sin el el margen de 16px del contenido ya hace ese papel y duplicarlo
+  lo estropea, y porque sin la condicion todo dialog SIN separador crecia
+  32px de golpe.
 
   Del componente divider no se toca ni el grosor ni el color. Lo unico que
-  hace el dialog es decidir DONDE va la linea.
+  hace el dialog es decidir DONDE va la linea y CUANTO aire lleva al lado.
 
   LOS DOS DIVISORES SON INDEPENDIENTES
   ------------------------------------
@@ -485,7 +496,7 @@
     <!-- PAREJA: divisor (h2 + specimen + pre + boton). -->
     <section class="sr-section">
       <h2 class="md-type-title-large">Divisor</h2>
-      <p class="md-type-body-medium">Un separador opcional en cada ranura. Las dos son independientes: puedes ponerlas, poner una o no poner ninguna. El sitio lo decide dónde pongas el <code>&lt;hr&gt;</code>, no una clase.</p>
+      <p class="md-type-body-medium">Un separador opcional en cada ranura. Las dos son independientes: puedes ponerlas, poner una o no poner ninguna. El sitio lo decide dónde pongas el <code>&lt;hr&gt;</code>, no una clase. Cada uno lleva 16px de aire por su lado, así que este dialog es más alto que uno sin separador.</p>
       <div class="sr-specimen">
 <dialog class="md-dialog" open aria-labelledby="dialog-divisor-titulo">
   <div class="md-dialog-headline">
