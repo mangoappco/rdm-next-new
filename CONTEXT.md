@@ -147,10 +147,8 @@ Decidido para la vista: el par de **Color** no se hace hasta que las variantes t
 
 Nada de esto se ha tocado. Está anotado para que no se dé por verdad:
 
-- `README.md` §11 documenta 3 componentes (Divider, Button, Icon Button) y hay 7: no menciona button-group, fab, fab-extended ni card.
 - `src/css/main.css:54` dice `comp Componentes: button, card, dialog.` — card ya existe, dialog no.
-- El README §11 usa como marcador unas líneas comentadas de `card.css` y `dialog.css` en `3-components/index.css` que ya no existen, y su justificación —«cerraría las dos vistas que declaran chip y card como pendiente»— no se verifica: ninguna vista lo declara.
-- **Ninguna de las 15 vistas lleva `<meta name="description">`**, que la skill exige. `card.template.html` sí lo lleva, y es el único.
+- **Solo `card.html` lleva `<meta name="description">`**, que la skill exige; las otras quince vistas no.
 - `showroom.css:223` mete `padding: 16px` en todo `div` directo de `.sr-specimen`. Un specimen escrito como `<div class="md-card">` lo ganaría en silencio y REGLA 11 no lo detectaría. La card usa `<article>` por eso.
 - Tres vistas quedaron sobre el techo de prosa al recortarla: `button-group` (199 de media), `icon-button` (287 máx.) y `motion` (211 máx.).
 - El split button existe en M3 (`-split-button-{xs…xl}` + 3 `menu-button`), depende de un `menu` que no existe y no puede abrirse sin JavaScript. Queda registrado en `button.css`, en el bloque «LO QUE NO ESTA, Y POR QUE». Sus medidas ya están en `container-height.css:40`.

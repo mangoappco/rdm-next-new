@@ -150,23 +150,28 @@ Clases distintas en TODO el repositorio:  10
   .md-icon               1   experimento en labs/gb/, no parte del sistema de estilos
   .md-stories-bg-override 1  del sitio de documentación (catalog/)
 
-Clases de este proyecto:  205
+Clases de este proyecto:  233
   4-utilities   178   color 93 · typography 32 · shape 16 · elevation 12
                  icon 9 · motion 8 · state 6 · measurement 2
-  3-components   27   button 12 · icon-button 11 · divider 4
+  3-components   55   button 15 · icon-button 15 · card 11 · fab 7
+                 divider 4 · button-group 2 · fab-extended 1
 ```
+
+El recuento es sobre el CSS declarado, con los bloques `/* … */` fuera: la prosa de
+cabecera cita clases de ejemplo —`.md-btn` en `state.css`— que no son declaraciones.
 
 Las 6 de `state` son `.md-state-layer` más sus cuatro modificadores
 (`-hover`, `-focus`, `-pressed`, `-dragged`) y `.md-disabled`, que aplica `opacity` al
 contenido inactivo —no es un *state layer*: no hay capa encima, el propio contenido se
 atenúa—. Los cuatro modificadores usan un guion, según el criterio de la sección anterior.
 
-Las 27 de `3-components` no son utilidades: son la API de cada componente, con sus variantes.
+Las 55 de `3-components` no son utilidades: son la API de cada componente, con sus variantes.
 `button.css` declara además los selectores de `.md-state-layer` y `.md-disabled` que ya
 existen en `4-utilities`, porque los compone para colocar la capa; no son clases suyas, y por eso
 no se cuentan dos veces.
 
-**Material Web publica 8 clases de utilidad. Publicamos 205.** Compartemos una sola
+**Material Web declara 10 clases en todo su repositorio, y de ellas 8 son de utilidad.
+Publicamos 233.** Compartemos una sola
 familia: la tipográfica.
 
 La prueba más directa está en el `package.json` de la librería:
@@ -781,12 +786,16 @@ rdm-next-new/
 │                                    que obliga a inspeccionar, proponer las
 │                                    secciones y esperar la confirmación
 ├── README.md                 Este documento: contrato de arquitectura
+├── docs/
+│   └── showroom-philosophy.md Filosofía de las fichas del showroom
 ├── src/
 │   └── css/                  La librería. Nada más del proyecto la importa.
 │       ├── main.css           Orquestador: @layer + @import
 │       ├── reset.css          Capa 0: anula al navegador
 │       ├── 1-reference-tokens/             Valores crudos (única capa que los permite)
-│       │   ├── index.css        Índice: reexporta las 12 primitivas
+│       │   ├── index.css        Índice: reexporta las 13 primitivas
+│       │   ├── aspect.css     --md-ref-aspect-*
+│       │   ├── container-height.css --md-ref-container-*
 │       │   ├── palette.css    --md-ref-palette-*
 │       │   ├── typeface.css   --md-ref-typeface-*
 │       │   ├── iconfont.css   --md-ref-icon-* (+ carga la fuente)
@@ -811,10 +820,14 @@ rdm-next-new/
 │       │       ├── theme.light.css  --md-sys-color-* (tema claro)
 │       │       └── theme.dark.css   --md-sys-color-* (tema oscuro)
 │       ├── 3-components/            Un componente por archivo (se llena por pasos)
-│       │   ├── index.css      Índice: un @import por componente
+│       │   ├── index.css      Índice: un @import por componente, en orden de dependencia
 │       │   ├── divider.css    --md-comp-divider-*
+│       │   ├── icon-button.css--md-comp-icon-button-*
 │       │   ├── button.css     --md-comp-button-*
-│       │   └── icon-button.css--md-comp-icon-button-*
+│       │   ├── button-group.css --md-comp-button-group-*
+│       │   ├── fab.css        --md-comp-fab-*
+│       │   ├── fab-extended.css --md-comp-fab-* (va DESPUÉS de fab.css)
+│       │   └── card.css       --md-comp-card-* (va al final)
 │       └── 4-utilities/             Clases atómicas (solo var(), sin tokens)
 │           ├── index.css      Índice: una familia por archivo
 │           ├── color.css      .md-bg-* / .md-text-* / .md-border-*
@@ -829,17 +842,28 @@ rdm-next-new/
 │   ├── index.html            Portada: título, tagline, enlaces a las vistas
 │   ├── assets/
 │   │   ├── showroom.css      Estilos mínimos del showroom (capa showroom)
-│   │   └── showroom.js       Toggle de tema, sin build
-│   ├── components/           Una vista por componente o por familia de capa 2
-│   │   ├── divider.html      Divider · 19 secciones
-│   │   ├── button.html       Button · 20 secciones
-│   │   ├── icon-button.html  Icon Button · 20 secciones
-│   │   ├── color.html        Color · 16 secciones
-│   │   ├── typography.html   Typography · 21 secciones
-│   │   ├── icon.html         Iconos · 20 secciones
-│   │   └── elevation.html    Elevation · 13 secciones
+│   │   ├── showroom.js       Resaltado de snippets + botón «Copiar», sin build
+│   │   └── card-media.svg    El único asset de imagen del repo
+│   ├── components/           Una vista por componente o por familia de capa 1 y 2
+│   │   ├── button-group.html Button group · 6 secciones
+│   │   ├── button.html       Button · 13 secciones
+│   │   ├── card.html         Card · 9 secciones
+│   │   ├── color.html        Color · 18 secciones
+│   │   ├── divider.html      Divider · 6 secciones
+│   │   ├── elevation.html    Elevation · 6 secciones
+│   │   ├── fab-extended.html FAB extended · 6 secciones
+│   │   ├── fab.html          FAB · 7 secciones
+│   │   ├── icon-button.html  Icon Button · 10 secciones
+│   │   ├── icon.html         Iconos · 9 secciones
+│   │   ├── measurement.html  Measurement · 6 secciones
+│   │   ├── motion.html       Motion · 20 secciones
+│   │   ├── shapes.html       Shapes · 11 secciones
+│   │   ├── spacing.html      Spacing · 1 sección
+│   │   ├── state.html        State · 2 secciones
+│   │   └── typography.html   Typography · 15 secciones
 │   └── templates/
-│       └── component.template.html   Plantilla de una vista nueva
+│       ├── component.template.html   Plantilla base, la que usó typography.html
+│       └── <nombre>.template.html    Molde propio de cada vista (15 más)
 └── tools/
     └── verify-tokens.ps1     Candado automático de la regla de hardcoding
 ```
@@ -865,7 +889,7 @@ entrada y **no** contiene secciones de componentes.
 showroom/
 ├── index.html                          portada: título, tagline, enlaces
 ├── components/<vista>.html             una vista por componente o por familia
-└── templates/component.template.html   plantilla de una vista nueva
+└── templates/                          un molde por vista + component.template.html
 ```
 
 **Reglas:**
@@ -873,11 +897,17 @@ showroom/
 - `index.html` nunca contiene secciones de componentes. Solo el título, la tagline y
   los enlaces.
 - Cada componente tiene su propia vista en `showroom/components/`: `divider.html`,
-  `button.html`, `icon-button.html`.
-- **Y también las familias de capa 2 que son documentación por sí mismas**, aunque no
-  sean componentes: `color.html`, `typography.html`, `icon.html`, `elevation.html`. La
-  vista de `elevation` documenta `2-system-tokens/elevation.css`, que no está en `3-components/`.
-- Toda vista se copia de `showroom/templates/component.template.html`.
+  `icon-button.html`, `button.html`, `button-group.html`, `fab.html`,
+  `fab-extended.html`, `card.html`.
+- **Y también las familias de `1-reference-tokens/` y `2-system-tokens/` que son
+  documentación por sí mismas**, aunque no sean componentes: `color.html`,
+  `typography.html`, `icon.html`, `elevation.html`, `measurement.html`, `motion.html`,
+  `shapes.html`, `spacing.html`, `state.html`. Ninguna está en `3-components/`. La
+  vista de `elevation` documenta `2-system-tokens/elevation.css`; la de `spacing`,
+  `1-reference-tokens/spacing.css`.
+- Cada vista tiene su molde en `showroom/templates/<nombre>.template.html`.
+  `component.template.html` es la plantilla de la que salen y hoy solo la usa
+  `typography.html`.
 - Toda vista carga el sistema completo (`src/css/main.css`), la fuente y los estilos del
   showroom, en ese orden. Las rutas son relativas a la profundidad del archivo: la portada
   usa `../src/css/main.css` y una vista en `components/` usa `../../src/css/main.css`.
@@ -905,10 +935,11 @@ ningún atajo que empareje un fondo con su texto, para que el contraste sea audi
 marcado. El texto de apoyo usa `md-text-on-surface-variant`, el rol de menor énfasis de M3:
 no existe un `on-background-variant`.
 
-- El enlace de vuelta en una vista de componente apunta a `../index.html` y dice `RDM Next`.
-- El `<title>` de una vista de componente es `<Componente> — ManGo! App`. El del índice
-  es `ManGo! App — RDM Next`.
-- Toda vista lleva `<meta name="description">`.
+- El enlace de vuelta en una vista apunta a `../index.html` y dice `RDM ManGo! App`.
+- El `<title>` de una vista es `<Vista> - RDM ManGo! App`. El del índice es
+  `RDM ManGo! App`.
+- Toda vista lleva `<meta name="description">`. **Hoy solo lo cumple `card.html`**: las
+  otras quince se quedaron sin él y es deuda conocida.
 
 Cuando se construye un componente nuevo, su vista se añade a `index.html` como enlace y
 se crea el archivo en `showroom/components/`. La portada nunca crece más allá de título +
@@ -923,19 +954,27 @@ de dónde sale cada cosa, y el precio es que cada vista tiene que acordarse de e
 
 ## 11. Componentes
 
-El catálogo de M3 tiene decenas de componentes y aquí hay **tres**. Se construyen uno a
+El catálogo de M3 tiene decenas de componentes y aquí hay **siete**. Se construyen uno a
 uno, y ninguno se da por bueno sin medirlo en el navegador: `tools/verify-tokens.ps1`
 comprueba la arquitectura, no que el componente se vea bien.
 
-| Componente | Archivo | Clases | Tokens | Vista del showroom |
-| ---------- | ------- | ------ | ------ | ------------------ |
-| Divider | `3-components/divider.css` | 4 | 2 | `divider.html`, 19 secciones |
-| Button | `3-components/button.css` | 12 | 29 | `button.html`, 20 secciones |
-| Icon Button | `3-components/icon-button.css` | 11 | 16 | `icon-button.html`, 20 secciones |
+El orden es el de `3-components/index.css`, que es el de carga y el de dependencia:
+
+| Componente | Archivo | Clases | Tokens propios | Vista del showroom |
+| ---------- | ------- | ------ | -------------- | ------------------ |
+| Divider | `3-components/divider.css` | 4 | 2 | `divider.html`, 6 secciones |
+| Icon Button | `3-components/icon-button.css` | 15 | 17 | `icon-button.html`, 10 secciones |
+| Button | `3-components/button.css` | 15 | 18 | `button.html`, 13 secciones |
+| Button group | `3-components/button-group.css` | 2 | 1 | `button-group.html`, 6 secciones |
+| FAB | `3-components/fab.css` | 7 | 14 | `fab.html`, 7 secciones |
+| FAB extended | `3-components/fab-extended.css` | 1 | 3 | `fab-extended.html`, 6 secciones |
+| Card | `3-components/card.css` | 11 | 12 | `card.html`, 9 secciones |
 
 Las "clases" son las que expone el componente, sin contar las de `2-system-tokens` que compone para
 colocar la capa de estado: `button.css` nombra `.md-state-layer` y `.md-disabled` en sus
-selectores, pero no son clases suyas.
+selectores, pero no son clases suyas. Los "tokens propios" son los `--md-comp-*` que el
+componente declara; en los dos casos se cuenta el CSS declarado, con la prosa de cabecera
+fuera.
 
 ### Divider — el primero
 
@@ -1012,7 +1051,7 @@ No se puede resolver componiendo con una utilidad de `2-system-tokens` como `.md
 empate por orden de capa y el color no cambiaría. Un modificador del componente, en su
 propia capa, sí funciona.
 
-**Showroom:** `showroom/components/divider.html` es la vista del componente, con 19
+**Showroom:** `showroom/components/divider.html` es la vista del componente, con 6
 secciones. Estructura confirmada con el usuario según la skill `rdm-component-showroom`.
 
 Su sección de accesibilidad lleva la tabla de contrastes que faltaba: el rol por defecto
@@ -1027,7 +1066,7 @@ que leerse: `.md-divider-primary` no baja de 4.97:1 en claro ni de 7.20:1 en osc
 `src/css/3-components/button.css`. Es el componente con más superficie del catálogo, porque es el
 primero completo: el que obliga a resolver casi todo lo que el sistema tenía abierto.
 
-**Cinco variantes**, y **tres tamaños**:
+**Cinco variantes**, y **cinco tamaños**:
 
 | Variante | Relleno | Etiqueta | Elevación reposo | Elevación hover |
 | -------- | ------- | -------- | --------------- | --------------- |
@@ -1040,13 +1079,17 @@ primero completo: el que obliga a resolver casi todo lo que el sistema tenía ab
 | Tamaño | Alto | Padding lateral | Etiqueta |
 | ------ | ---- | --------------- | -------- |
 | `xsmall` | 32dp | 12dp | `label-large` |
-| `small` | 40dp | 16dp | `label-large` |
+| `small` (la base) | 40dp | 16dp | `label-large` |
 | `medium` | 56dp | 24dp | `title-medium` |
+| `large` | 96dp | 48dp | `headline-small` |
+| `xlarge` | 136dp | 64dp | `headline-large` |
 
-M3 publica cinco tamaños de botón y aquí hay tres. Los dos que faltan, `large` y `xlarge`,
-exigen alturas de 96dp y 136dp que no tienen sitio en `1-reference-tokens/spacing.css`, y la decisión
-—no abrir la familia en la capa 1 hasta que haya dos consumidores— está desarrollada en la
-vista del Icon Button, que es donde M3 las declara.
+M3 publica cinco tamaños y aquí hay los cinco. Antes faltaban `large` y `xlarge`: las
+alturas de 96dp y 136dp no tenían dónde vivir, porque la escala de espaciado se acaba en
+72. Se resolvió abriendo una primitiva propia, `1-reference-tokens/container-height.css`,
+con la familia entera de alturas de contenedor (32 · 40 · 56 · 96 · 136). El mismo criterio
+que el resto del proyecto: no se repetía el valor crudo en la capa 3, se declaraba una vez
+en la capa 1.
 
 **Estados:** `:hover`, `:focus-visible`, `:active` y `[disabled]`. Los tres primeros mueven
 la capa de estado, que es un `::after` con `background-color: currentColor`, `opacity: 0` y
@@ -1067,8 +1110,24 @@ reconoce la capa de estado como la alternativa para contextos sin JS.
 
 ### Icon Button
 
-`src/css/3-components/icon-button.css`. Cuatro variantes —`standard`, `filled`, `filled-tonal` y
-`outlined`—, tres tamaños y una forma extra, `square`, aparte del redondeo por defecto.
+`src/css/3-components/icon-button.css`. Cuatro variantes —`standard`, `filled`, `tonal` y
+`outlined`—, cinco tamaños, tres anchos y una forma extra, `square`, aparte del
+redondeo por defecto.
+
+Es el componente que más clases expone del catálogo, y el motivo es que combina cuatro
+ejes independientes: variante × tamaño × ancho × forma. Los tres anchos —`narrow`,
+`uniform` (la base, sin clase) y `wide`— solo cambian la dimensión horizontal:
+
+| Tamaño | Alto | `narrow` | `wide` |
+| ------ | ---- | -------- | ------ |
+| `xsmall` | 32dp | 28dp | 40dp |
+| `small` | 40dp | 32dp | 52dp |
+| `medium` | 56dp | 48dp | 72dp |
+| `large` | 96dp | 64dp | 128dp |
+| `xlarge` | 136dp | 104dp | 184dp |
+
+La altura, el glifo y el área táctil de 48dp se quedan en los tres: es lo que M3
+garantiza, el objetivo táctil nunca baja de 48 aunque el contenedor sea más estrecho.
 
 La diferencia con el Button que más se nota es que **no tiene etiqueta**, y eso simplifica
 el archivo: no hay `overflow: hidden` en ningún sitio, porque no hay texto que recortar. A
@@ -1085,31 +1144,147 @@ en los dos ejes y el de texto solo en uno.
 
 **Su elevación es `level0` en las cuatro variantes y no hay token de hover.** No es una
 decisión conservadora: M3 no declara ningún token de elevación para ningún botón de icono,
-ni `standard`, ni `filled`, ni `filled-tonal`, ni `outlined`, en ninguna de sus tres
+ni `standard`, ni `filled`, ni `tonal`, ni `outlined`, en ninguna de sus tres
 generaciones de tokens.
 
-**Dos de los cinco tamaños de M3 no están:** `large` (96dp) y `xlarge` (136dp). Es la
-decisión más larga de todo el repositorio, y está desarrollada en la vista del componente.
+**Los cinco tamaños de M3 están.** Durante un tiempo faltaban `large` (96dp) y `xlarge`
+(136dp), y era la decisión más larga del repositorio: no había dónde declarar esas
+alturas. Se resolvió con `1-reference-tokens/container-height.css`, la misma primitiva
+que habilita los dos tamaños grandes del Button, y ambos componentes leen la misma
+escalera. La historia está desarrollada en la vista del componente.
+
+### Button group
+
+`src/css/3-components/button-group.css`. Los botones de acción puestos en fila, con su
+separación fijada. Dos clases: `.md-button-group` y `.md-button-group-standard`.
+
+**No trae nada nuevo, y trae una sola cosa.** Ni color, ni medida, ni forma: trae el
+conocimiento de que a su lado hay otro botón. `.md-button` no sabe si tiene hermanos;
+`.md-button-group` sí, y esa información es todo lo que aporta.
+
+Se entrega una variante, `standard`: la fila suelta, con aire entre botones y cada botón
+con su propia forma. El tamaño **no se escribe, se infiere de los hijos** con `:has()`,
+igual que en M3, así que el snippet es solo los botones y no hay una clase que acordarse
+de escribir. De los cinco `between-space` que publica M3 (18 / 12 / 8 / 8 / 8), cuatro
+caen en nuestra escala; el de xsmall va con 16px, y el desvío está anotado en
+`2-system-tokens/measurement.css`.
+
+**Lo que no está:** la variante `connected`, que cospe los botones quitando las esquinas
+interiores, y el crecimiento del botón pulsado. Los dos están unidos: en M3 el pulsado se
+ensancha un 15% y los demás se cierran, con una transición de ancho con resorte —eso es un
+**morph de pulsado**, prohibido en este sistema—, y `connected` depende de ese
+crecimiento para que el grupo se lea al pulsar. Connected entra sin eso, o no entra.
+Tampoco sirve para `.md-icon-button`: M3 lo define para `.btn`, y el icono-button tiene su
+propia lógica de zona táctil que el grupo no conoce.
+
+### FAB
+
+`src/css/3-components/fab.css`. El botón de acción principal, y **no un icono-button
+disfrazado**: M3 lo publica como componente separado, con familias de token propias. La
+receta que había antes en la vista del icono-button dibujaba algo parecido pero hacía tres
+cosas mal en silencio: daba `primary`/`on-primary` donde M3 pide `primary-container`/
+`on-primary-container`, heredaba los cinco tamaños del icono-button (un FAB de 32px y otro
+de 136px no existen en M3) y ninguna clase del snippet decía «fab».
+
+**Cuatro tamaños, ni xsmall ni xlarge.** Small 40, base 56 (sin clase), medium 80, large
+96. Que no haya seis es el propósito: un `md-fab-xlarge` no llega a pintarse, mientras que
+en el icono-button esa clase existe y daría 136px.
+
+**Ancho y alto son siempre iguales:** el FAB es un cuadrado perfecto en M3, así que no hay
+eje de anchos como en el botón de icono. Se declara la altura una vez y el ancho se le
+reapunta, porque dos valores que puedan desincronizarse es una puerta abierta.
+
+**Ojo con los dos «medium».** El nuestro de 56px no lleva nombre de tamaño porque en M3 es
+el base: `medium` en M3 *es* el de 80px. Son dos vocabularios para la misma escalera, y aquí
+manda el del FAB, porque así lo nombran sus ficheros de token. El 80 no estaba en ninguna
+de nuestras escalas —la de espaciado se acaba en 72 y la de alturas salta de 56 a 96—, así
+que la capa 1 se descongeló para declararlo: `--md-ref-container-height-fab-medium`.
+
+**Sin FAB menu.** M3 lo publica y es JavaScript: abrir un panel desde el botón no se puede
+expresar aquí. Tiene 1 de las 8 familias de color de M3, decisión escrita en `fab.css`.
+
+### FAB extended
+
+`src/css/3-components/fab-extended.css`. El FAB al que se le añade texto: icono + etiqueta,
+o solo etiqueta. **M3 no tiene componente aparte para ello** —en `fab/fab.ts` el `label` es
+un atributo del mismo `<md-fab>`—, así que aquí se copia esa forma: una clase sobre la base
+`.md-fab`, y la dependencia siempre va en el mismo sentido, el extendido exige la base y la
+base no sabe que existe el extendido. Va en fichero propio porque la vista y la
+documentación también son propias.
+
+```html
+<button class="md-fab md-fab-extended" type="button">
+  <span class="md-icon" aria-hidden="true">navigation</span>
+  Navegar
+</button>
+```
+
+**Tres tamaños con medida propia** (los de M3 Expressive): small 56, medium 80 y large 96.
+El small es el por defecto, el único sin clase.
+
+Se descartó primero con un «nuestro `md-button` ya es un botón con etiqueta y solo falta
+ponerle el icono». Era falso en tres sitios al mirar los ficheros de token: M3 tiene ocho
+ficheros de color propios para el extended, la forma es `corner-large` y no la pilota del
+botón, y tiene juego de medida propio. El padding de cierre también se escribió a ojo: se
+propuso 24px y el baseline dice 20, verificado en `fab/internal/_shared.scss:64-65`.
+
+### Card
+
+`src/css/3-components/card.css`. Una superficie contenedora con elevación, forma y color.
+M3 la publica como **un componente con tres fichas de color**, no como tres componentes, y
+aquí se sigue esa forma: la base es la `elevated` y las otras dos solo reapuntan tokens,
+sin escribir ninguna propiedad.
+
+Cuatro ranuras —`.md-card-media`, `-header`, `-content` y `-actions`—, de las que solo el
+contenedor es obligatorio. El padding es 16px, fijo y sin clase modificadora, porque M3 no
+publica ninguno.
+
+**Lo que más se nota:**
+
+- **El borde de `outlined` cuesta 2px, y no es un descuido.** Una card es de altura
+  automática, así que `box-sizing: border-box` no lo arregla. M3 hace lo mismo: tiene
+  `border` en la raíz de su receta.
+- **Una card con acciones no puede ser `<a>`.** El modelo de contenido de `a` no admite
+  contenido interactivo dentro y el parser no lo repara, así que el HTML inválido pasa
+  inadvertido. Para esa combinación está el `<button class="md-card">`, que sí admite
+  botones dentro porque no es un enlace.
+- **El hover se acota a que la card sea un control.** M3 lo acota al hijo pulsable; aquí se
+  acota igual al `:hover` y al `:active`, porque el `:active` se propaga a los ancestros y
+  una card de solo lectura se oscurecía al pulsar un botón que tuviera dentro.
+- **No tiene ancho mínimo**, comprobado por dos vías en los ficheros de M3. Lo que hace una
+  card ancha es el layout: en móvil se estira al ancho de pantalla, en grande van columnas.
+
+**Lo que no está:** `dragged`, que M3 publica para las tres fichas pero que es un gesto que
+aquí no se puede expresar sin JavaScript; `selected`, que los tres ficheros de token no
+publican; y el icono, que M3 sí tiene tokens pero es el icono que el autor pone *dentro* de
+la card, no algo que la card posea.
 
 ### Las vistas que no son componentes
 
-Cuatro vistas del showroom documentan familias de `1-reference-tokens/` y `2-system-tokens/` que son
-documentación por sí mismas. Ninguna está en `3-components/`, y ninguna es un componente: no
-tienen anatomía, ni slots, ni estados, ni interacción.
+Nueve vistas del showroom documentan familias de `1-reference-tokens/` y
+`2-system-tokens/` que son documentación por sí mismas. Ninguna está en
+`3-components/`, y ninguna es un componente: no tienen anatomía, ni slots, ni estados, ni
+interacción.
 
 | Vista | Documenta | Secciones |
 | ----- | --------- | --------- |
-| `color.html` | `1-reference-tokens/palette.css` y `4-utilities/color.css` con los dos temas | 16 |
-| `typography.html` | `2-system-tokens/typography.css`, `1-reference-tokens/typeface.css`, `1-reference-tokens/typescale.css` | 21 |
-| `icon.html` | `2-system-tokens/icon.css` e `1-reference-tokens/iconfont.css` | 20 |
-| `elevation.html` | `2-system-tokens/elevation.css` e `1-reference-tokens/shadow.css` | 13 |
+| `color.html` | `1-reference-tokens/palette.css` y `4-utilities/color.css` con los dos temas | 18 |
+| `typography.html` | `2-system-tokens/typography.css`, `1-reference-tokens/typeface.css`, `1-reference-tokens/typescale.css` | 15 |
+| `icon.html` | `2-system-tokens/icon.css` e `1-reference-tokens/iconfont.css` | 9 |
+| `elevation.html` | `2-system-tokens/elevation.css` e `1-reference-tokens/shadow.css` | 6 |
+| `measurement.html` | `2-system-tokens/measurement.css`: touch, alturas, button, iconos, icon button e inset | 6 |
+| `motion.html` | `2-system-tokens/motion.css`, `1-reference-tokens/time.css` y `easing.css`: 16 duraciones y 4 curvas | 20 |
+| `shapes.html` | `2-system-tokens/shape.css`, `1-reference-tokens/corner.css` y `stroke.css`: 10 formas y los grosores | 11 |
+| `spacing.html` | `1-reference-tokens/spacing.css`, los 18 pasos de la escala | 1 |
+| `state.html` | `2-system-tokens/state.css` y `4-utilities/state.css`: estados y disabled | 2 |
 
 ### Los siguientes
 
-`3-components/index.css` deja comentadas las líneas de importación de `card.css` y
-`dialog.css`, que es la forma que tiene este proyecto de decir "aquí va lo
-siguiente" sin escribir un archivo vacío. `card` es el que además cerraría las dos vistas
-que hoy declaran la composición con `chip` y `card` como pendiente.
+**`dialog` es el único componente del catálogo que queda por hacer.** Su nombre sigue
+apareciendo en `src/css/main.css`, en la línea que enumera la capa `comp` como
+«button, card, dialog», y esa línea es hoy más un recordatorio que una descripción: `card`
+ya existe y `dialog` no. Cuando entre, entra con las mismas reglas que los otros siete y
+su vista se añade a `index.html` como cualquier otra.
 
 ---
 
@@ -1281,8 +1456,8 @@ su contenedor cambie el suyo.
 
 ### Showroom
 
-**Sí hay vista de iconos:** `showroom/components/icon.html`, con las 22 secciones de la
-skill confirmadas una por una con el usuario. Documenta `2-system-tokens/icon.css` e
+**Sí hay vista de iconos:** `showroom/components/icon.html`, con sus 9 secciones
+confirmadas una por una con el usuario. Documenta `2-system-tokens/icon.css` e
 `1-reference-tokens/iconfont.css`, no un componente de `3-components/`: los iconos son una capacidad de
 sistema y no existe `3-components/icon.css`. El precedente es `typography.html`, que documenta
 una escala del `2-system-tokens` de la misma manera.
