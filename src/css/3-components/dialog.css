@@ -402,6 +402,22 @@
    no lo hace el dialog, porque sin JavaScript no hay quien lo escuche. Se
    documenta el contrato visual, no el de abrir y cerrar.
    ------------------------------------------------------------------------ */
+/* El BACKDROP NATIVO DEL NAVEGADOR, QUE SE SUMA AL NUESTRO
+   ------------------------------------------------------
+   Cuando la app llama a `showModal()`, el navegador pinta su propio
+   `dialog::backdrop`, y no es transparente: medido en Chrome, es
+   `rgba(0, 0, 0, 0.1)`.
+
+   O sea que sin esto el velo real seria nuestro 32% MAS ese 10%, y el
+   dialog se veria mas apagado de lo que dice la tabla de specs -- 0.42 en
+   vez de 0.32. M3 lo anula igual, con `::backdrop { background: none }` en
+   `dialog/internal/_dialog.scss`, y por la misma razon: el scrim es suyo.
+
+   Medido antes de esto: el fondo se veia al 42%. */
+.md-dialog::backdrop {
+  background: none;
+}
+
 .md-dialog-scrim {
   position: fixed;
   inset: 0;
@@ -411,6 +427,31 @@
   opacity: var(--md-sys-scrim-opacity);
 
   pointer-events: none;
+
+  /* Oculto por defecto. Aparece solo con un dialog MODAL abierto, que es lo
+     que se resuelve con el `:has()` de abajo. */
+  display: none;
+}
+
+/* EL SCRIM APARECE CON UN DIALOG MODAL ABIERTO, Y SOLO CON ESE
+   -----------------------------------------------------------
+   El scrim es hermano del dialog, no hijo, asi que el dialog no puede
+   estilarlo. Pero la pagina si puede preguntar, que es lo que hace este
+   `:has()`.
+
+   Y se pregunta por `:modal`, no por `[open]`, que es la distincion que
+   importa: con `<dialog open>` a secas el elemento NO es modal --fluye en su
+   sitio, que es como se muestran los specimens-- y el scrim se queda
+   apagado. Ese es justo el motivo por el que las vistas del showroom pueden
+   enseñar el dialog sin apagar la pagina entera.
+
+   Medido: `none` antes de abrir, `flex` con `showModal()`, `none` al cerrar.
+   Sin una linea de JavaScript.
+
+   Y con esto el scrim NO necesita JavaScript para aparecer ni desaparecer,
+   que era lo que quedaba del trigger de showroom.js. */
+:has(dialog:modal) .md-dialog-scrim {
+  display: flex;
 }
 
 /* ---------------------------------------------------------------------------

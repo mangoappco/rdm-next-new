@@ -168,9 +168,67 @@
     });
   }
 
+  /* ------------------------------------------------------------------
+     ABRIR Y CERRAR UN DIALOG, POR ATRIBUTO
+     ------------------------------------------------------------------
+     Un boton con `data-open-dialog` abre el `<dialog>` que tenga ese id, y
+     cualquier boton DENTRO del dialogo lo cierra. No hay que escribir JS en
+     las vistas: se marca el boton y ya.
+
+         <button data-open-dialog="mi-dialog">Abrir</button>
+         <dialog class="md-dialog" id="mi-dialog"> ...
+           <button data-close-dialog>Cerrar</button>
+         </dialog>
+
+     QUE ESTO NO ES PARTE DEL COMPONENTE
+     ------------------------------------
+     `src/` no lleva ni un script: el dialog es HTML5 y CSS nativo, y abrirlo
+     es `showModal()`, que es del navegador. Lo que hay aqui es el cableado
+     del showroom, que es documentacion, no la libreria.
+
+     Y POR QUE EL SCRIM NO SE MUESTRA EN LAS VISTAS
+     -----------------------------------------------
+     El scrim es `position: fixed` con `inset: 0`: ocuparia el viewport
+     entero y apagaria la pagina mientras se leen los demas pares. En las
+     vistas el dialog va con `<dialog open>`, que se queda en su seccion, y
+     el scrim se prueba en `lab.html`, que si lleva JavaScript.
+
+     Y EL SCRIM NO NECESITA ESTE ARCHIVO
+     -----------------------------------
+     Aqui solo se abre y se cierra. El scrim aparece y desaparece con un
+     `:has()` de `dialog.css`, sin JavaScript: `:has(dialog:modal)`. Y el
+     `display` no se toca desde aqui porque tocarlo seria lo unico que
+     impediria que el velo salga al 32% y no al 42% que se mediria con el
+     backdrop del navegador encima.
+
+     Un detalle de `showModal()` que se nota solo: el elemento entra en el
+     top layer y el fondo queda `inert`, asi que el scroll de debajo se
+     bloquea sin hacer nada. */
+  function wireDialogTriggers() {
+    var triggers = document.querySelectorAll('[data-open-dialog]');
+
+    Array.prototype.forEach.call(triggers, function (trigger) {
+      trigger.addEventListener('click', function () {
+        var dialog = document.getElementById(trigger.getAttribute('data-open-dialog'));
+        if (!dialog || typeof dialog.showModal !== 'function') return;
+        dialog.showModal();
+      });
+    });
+
+    var closers = document.querySelectorAll('[data-close-dialog]');
+
+    Array.prototype.forEach.call(closers, function (closer) {
+      closer.addEventListener('click', function () {
+        var dialog = closer.closest('dialog');
+        if (dialog) dialog.close();
+      });
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     wireCodeBlocks();
     wireCopyButtons();
     wireThemeToggle();
+    wireDialogTriggers();
   });
 })();
