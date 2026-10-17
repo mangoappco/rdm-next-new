@@ -15,9 +15,9 @@
 </head>
 
 <!--
-  Esta vista tiene cinco pares: Clase base, Sin titular, Modal, Lista y
-  Divisor. Se construyen par a par, mirando cada uno antes de escribir el
-  siguiente.
+  Esta vista tiene seis pares: Clase base, Sin titular, Modal, Lista, Divisor
+  y Contenido largo. Se construyen par a par, mirando cada uno antes de
+  escribir el siguiente.
 
   LO QUE SELEE DE M3, Y DE DONDE
   -------------------------------
@@ -161,6 +161,52 @@
   De ahi sale una diferencia que parece un fallo y no lo es: el token viejo
   del dialog era `outline` y el del componente divider es `outline-variant`.
   Aqui sale `outline-variant` porque es el que M3 manda usar ya.
+
+  LOS LIMITES DE ALTO, Y QUE SIN ELLOS NO HAY SCROLL
+  ---------------------------------------------------
+  La tabla de specs dice "Container height: Dynamic" y no da ni un maximo ni un
+  minimo. Los dos salen del SCSS de M3:
+
+      max-height: min(560px, calc(100% - 48px));
+      min-height: 140px;
+
+  Se adoptan por una razon que no es faithfulness: SIN ELLOS LAS REGLAS DE SCROLL
+  NO EXISTEN. La ranura de contenido declara `min-height: 0` y `overflow-y:
+  auto`, y sin un tope en la caja madre no hay nada que la obligue a encogerse.
+  Medido antes de arreglarto, con 40 parrafos:
+
+      dialog          1584px     ventana 700px
+      por debajo      884px      el boton de cerrar, inalcanzable
+      scroll dentro   NO
+
+  El texto no hacia scroll: empujaba la caja. Ahora, modal:
+
+      dialog          560px      el tope
+      contenido       656px dentro de 400px visibles
+      scroll dentro   SI, y el boton sigue a la vista al llegar al final
+
+  Y EL 560 DEL ALTO VIENE DEL TOKEN DEL ANCHO
+  -----------------------------------------
+  M3 escribe el 560 como literal en los dos ejes, asi que aqui el alto sale de
+  `--md-ref-container-width-dialog-max` en vez de repetir el numero. Se hizo con
+  la cabeza sabida y queda escrito en `measurement.css`: **eso ata los dos
+  limites**, y cambiar el ancho maximo del dialog cambia tambien su alto
+  maximo.
+
+  El 140 va con primitiva propia en `container-height.css` porque no es un
+  `spacing` ni un valor de la escala --que acaba en 72px--, y la REGLA 1 no
+  deja un px suelto en la capa 2. Y es un MINIMO, para que un dialog con poco
+  texto no quede aplastado: el par "Sin titular" paso de 132px a 140px al
+  declararlo.
+
+  Y SOLO SCROLLEA SIENDO MODAL
+  ---------------------------
+  Este par lleva boton y `showModal` a proposito. Un `<dialog open>` sin modal
+  es `position: relative` y su `max-height` en porcentaje se mide contra una
+  altura que en la pagina todavia no existe, asi que no resuelve: medido, el
+  dialog llega a 1584px y el specimen se estira con el. Es la misma limitacion
+  que tiene M3, cuyo `max-height` va sobre un host `position: fixed` que siempre
+  tiene la altura del viewport como referencia.
 
   EL TITULAR LLEVA md-type-headline-small, Y NO SOBRA
   --------------------------------------------------
@@ -468,6 +514,65 @@
     &lt;hr class="md-divider"&gt;
     &lt;button class="md-button md-button-text" type="button"&gt;Cancelar&lt;/button&gt;
     &lt;button class="md-button md-button-text" type="button"&gt;Aceptar&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/dialog&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+    <!-- PAREJA: contenido largo (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Contenido largo</h2>
+      <p class="md-type-body-medium">El texto hace scroll dentro del dialog en vez de empujarlo fuera de la pantalla. El límite de 560px viene del componente y es lo que lo hace posible; los botones de abajo nunca se salen y se siguen viendo. Solo scrollea siendo modal: sin <code>showModal</code> el dialog crece hasta 1584px, porque su <code>max-height</code> se mide contra una altura que en la página todavía no existe.</p>
+      <div class="sr-specimen">
+<button class="md-button md-button-filled" type="button" data-open-dialog="dialogo-largo">Abrir dialog largo</button>
+
+<dialog class="md-dialog" id="dialogo-largo" aria-labelledby="dialogo-largo-titulo">
+  <div class="md-dialog-headline">
+    <h3 class="md-type-headline-small" id="dialogo-largo-titulo">Headline</h3>
+  </div>
+  <div class="md-dialog-content">
+    <p class="md-type-body-medium">Al eliminar un producto se retiran también sus existencias en los tres almacenes donde está dado de alta.</p>
+    <p class="md-type-body-medium">Los lotes que estén en promoción se cancelan en la misma operación y los descuentos no se recuperan.</p>
+    <p class="md-type-body-medium">El histórico de ventas del producto se conserva 90 días por auditoría y después se borra sin copia.</p>
+    <p class="md-type-body-medium">Si el producto forma parte de un pedido abierto, el pedido se cancela y el cliente recibe un aviso.</p>
+    <p class="md-type-body-medium">Las facturas que ya se emitieron no se modifican: muestran el producto aunque ya no exista en el catálogo.</p>
+    <p class="md-type-body-medium">El conteo físico que se hizo en el último inventario no se corrige: quedará una diferencia de stock.</p>
+    <p class="md-type-body-medium">Los códigos de barras y las referencias del fabricante dejan de resolver en el lector del punto de venta.</p>
+    <p class="md-type-body-medium">Esta acción no se puede deshacer. No hay ningún paso atrás y el soporte no puede revertirla.</p>
+    <p class="md-type-body-medium">Si solo quieres dejar de venderlo y conservarlo, usa la baja lógica en lugar de eliminarlo.</p>
+    <p class="md-type-body-medium">Los usuarios con permiso de administrador verán el cambio en cuanto se refresque el catálogo.</p>
+    <p class="md-type-body-medium">El cambio queda registrado en el bitácora con tu usuario, la fecha y la terminal desde la que se hizo.</p>
+    <p class="md-type-body-medium">Si estás en el cierre de caja, espera a terminar antes de continuar: el corte se bloqueará.</p>
+  </div>
+  <div class="md-dialog-actions">
+    <button class="md-button md-button-text" type="button" data-close-dialog>Cancelar</button>
+    <button class="md-button md-button-filled" type="button" data-close-dialog>Eliminar</button>
+  </div>
+</dialog>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-button md-button-filled" type="button" data-open-dialog="dialogo-largo"&gt;Abrir dialog largo&lt;/button&gt;
+
+&lt;dialog class="md-dialog" id="dialogo-largo" aria-labelledby="dialogo-largo-titulo"&gt;
+  &lt;div class="md-dialog-headline"&gt;
+    &lt;h3 class="md-type-headline-small" id="dialogo-largo-titulo"&gt;Headline&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div class="md-dialog-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Al eliminar un producto se retiran también sus existencias en los tres almacenes donde está dado de alta.&lt;/p&gt;
+    &lt;p class="md-type-body-medium"&gt;Los lotes que estén en promoción se cancelan en la misma operación y los descuentos no se recuperan.&lt;/p&gt;
+    &lt;p class="md-type-body-medium"&gt;El histórico de ventas del producto se conserva 90 días por auditoría y después se borra sin copia.&lt;/p&gt;
+    &lt;p class="md-type-body-medium"&gt;Si el producto forma parte de un pedido abierto, el pedido se cancela y el cliente recibe un aviso.&lt;/p&gt;
+    &lt;p class="md-type-body-medium"&gt;Las facturas que ya se emitieron no se modifican: muestran el producto aunque ya no exista en el catálogo.&lt;/p&gt;
+    &lt;p class="md-type-body-medium"&gt;El conteo físico que se hizo en el último inventario no se corrige: quedará una diferencia de stock.&lt;/p&gt;
+    &lt;p class="md-type-body-medium"&gt;Los códigos de barras y las referencias del fabricante dejan de resolver en el lector del punto de venta.&lt;/p&gt;
+    &lt;p class="md-type-body-medium"&gt;Esta acción no se puede deshacer. No hay ningún paso atrás y el soporte no puede revertirla.&lt;/p&gt;
+    &lt;p class="md-type-body-medium"&gt;Si solo quieres dejar de venderlo y conservarlo, usa la baja lógica en lugar de eliminarlo.&lt;/p&gt;
+    &lt;p class="md-type-body-medium"&gt;Los usuarios con permiso de administrador verán el cambio en cuanto se refresque el catálogo.&lt;/p&gt;
+    &lt;p class="md-type-body-medium"&gt;El cambio queda registrado en el bitácora con tu usuario, la fecha y la terminal desde la que se hizo.&lt;/p&gt;
+    &lt;p class="md-type-body-medium"&gt;Si estás en el cierre de caja, espera a terminar antes de continuar: el corte se bloqueará.&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-dialog-actions"&gt;
+    &lt;button class="md-button md-button-text" type="button" data-close-dialog&gt;Cancelar&lt;/button&gt;
+    &lt;button class="md-button md-button-filled" type="button" data-close-dialog&gt;Eliminar&lt;/button&gt;
   &lt;/div&gt;
 &lt;/dialog&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>

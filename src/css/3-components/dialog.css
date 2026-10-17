@@ -64,13 +64,28 @@
    Los dos limites de ancho NO estan en la escala de espaciado --que acaba en
    72px-- y por eso tienen primitiva propia en `container-height.css`.
 
-   Y EL `min-height: 140px` DE M3 NO ESTA EN SU TABLA
-   ---------------------------------------------------
-   `dialog/internal/_dialog.scss` declara `min-height: 140px`, pero la tabla
-   de specs dice "Container height: Dynamic" y no da ninguna cota de altura.
-   Es un detalle de la implementacion web, no de la especificacion, asi que
-   aqui NO se declara. Si manana hace falta una altura minima, sale de la
-   tabla o no sale.
+   LOS LIMITES DE ALTO, Y DE DONDE SALEN SI NO ESTAN EN LA TABLA
+   -------------------------------------------------------------
+   La tabla de specs dice "Container height: Dynamic" y no da ninguna cota de
+   altura: ni un maximo ni un minimo. Los dos salen del SCSS de M3:
+
+       max-height: min(560px, calc(100% - 48px));
+       min-height: 140px;
+
+   Se adoptan los dos aun asi, y no por faithfulness, sino porque SIN ELLOS
+   LAS REGLAS DE SCROLL NO EXISTEN. La ranura de contenido declara
+   `min-height: 0` y `overflow-y: auto`, y sin un tope en la caja madre no hay
+   nada que obligue a encogerse: medido, un dialog con 40 parrafos llegaba a
+   1584px en una ventana de 700, con 884px por debajo del borde y el boton de
+   cerrar inalcanzable. El texto no hacia scroll, empujaba la caja.
+
+   El 560 es el mismo literal que en el ancho, y por eso el alto sale del
+   token del ancho en vez de repetir el numero. Eso ata los dos limites: si
+   cambia el ancho maximo, cambia el alto maximo. Se acepta a sabiendas, y
+   esta nota esta aqui para que quien lo encuentre sepa que es intentional.
+
+   El 140 es un minimo, para que un dialog con muy poco texto no quede
+   aplastado contra su propio padding.
 
    ALINEACION, Y NO ES UNA VARIANTE
    -------------------------------
@@ -240,6 +255,18 @@
   min-inline-size: var(--md-sys-measurement-dialog-width-min);
   max-inline-size: min(
     var(--md-sys-measurement-dialog-width-max),
+    calc(100% - var(--md-sys-measurement-dialog-padding) * 2)
+  );
+
+  /* Los mismos dos limites en el otro eje, con la misma formula de margen:
+     los 48px de `padding * 2` son los que M3 escribe a mano en el ancho y en
+     el alto. El `max-block-size` es lo que hace que el texto largo scrollee
+     DENTRO en vez de empujar la caja fuera de la pantalla, asi que va con
+     el `min-height: 0` y el `overflow-y: auto` de la ranura de contenido: si
+     se quita este, esos dos quedan sin efecto y no se nota. */
+  min-block-size: var(--md-sys-measurement-dialog-min-height);
+  max-block-size: min(
+    var(--md-sys-measurement-dialog-max-height),
     calc(100% - var(--md-sys-measurement-dialog-padding) * 2)
   );
 

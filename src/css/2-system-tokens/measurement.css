@@ -791,6 +791,49 @@
      Son 8 y 24, y por eso hacen falta dos roles: el de arriba solo cubre el
      aire de arriba de las acciones. */
   --md-sys-measurement-dialog-gap-buttons: var(--md-ref-spacing-100);
+
+  /* ==========================================================================
+     LOS LIMITES DE ALTO DEL DIALOG
+     --------------------------------------------------------------------------
+     Son los que hacen que el texto largo haga scroll DENTRO del dialog en vez
+     de empujar la caja fuera de la pantalla. Sin ellos, las reglas de la ranura
+     de contenido --`min-height: 0` y `overflow-y: auto`-- no se llegan a
+     disparar nunca, porque no hay nada que las obligue a encogerse.
+
+     Del SCSS de M3, `dialog/internal/_dialog.scss`:
+
+         max-height: min(560px, calc(100% - 48px));
+         min-height: 140px;
+
+     LOS 48 SON LOS MISMOS DEL ANCHO, Y NO ES CASUALIDAD
+     ----------------------------------------------------
+     En la fuente de M3 el ancho y el alto llevan el MISMO `calc(100% - 48px)`,
+     porque los 48 son los 24dp de padding a cada lado. Aqui el ancho ya se
+     componia con el padding del dialogo, asi que el alto se componia igual y
+     no hace falta un rol mas para el margen.
+
+     EL 560 SE REUSA DEL ANCHO, Y ESO ATAN LOS DOS LIMITES
+     ------------------------------------------------------
+     M3 escribe el 560 como literal en las dos ejes, asi que el alto toma el
+     token del ancho en vez de repetir el numero. Se hace con la cabeza
+     sabida: es un token de ANCHO rigiendo la ALTURA, asi que cambiar el ancho
+     maximo del dialog cambia tambien su alto maximo. No es algo que se haya
+     medido, es consecuencia de compartir la fuente.
+
+     Ojo tambien a que la escala de spacing acaba en 72px, asi que 560 no
+     puede salir de ahi en ningun caso: es una cota de contenedor, como los
+     280 y 560 del ancho.
+
+     EL 140 NO ESTA EN LA TABLA DE SPECS
+     ------------------------------------
+     Sale solo del SCSS, igual que el `max-height`. No es un `spacing` ni un
+     valor de la escala --que acaba en 72px--, asi que su primitiva vive en
+     `container-height.css`, junto a los limites de ancho del mismo dialogo.
+     No es un tope: es un MINIMO, para que un dialog con muy poco texto no
+     quede aplastado contra su padding.
+     ====================================================================== */
+  --md-sys-measurement-dialog-max-height: var(--md-ref-container-width-dialog-max);
+  --md-sys-measurement-dialog-min-height: var(--md-ref-container-height-dialog-min);
 }
 
 /* Las clases utilitarias de esta familia se mudaron a 4-utilities/ en la auditoria M3:

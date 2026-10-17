@@ -196,6 +196,29 @@
   --md-ref-container-width-dialog-max: 560px;
 
   /* ------------------------------------------------------------------------
+     EL MINIMO DE ALTO DEL DIALOG
+     ------------------------------------------------------------------------
+     No es un limite de ancho, asi que tiene su propio nombre, pero va aqui y
+     no en un fichero nuevo por lo mismo que los de al lado: son del mismo
+     componente y de la misma tabla de specs que no los publica.
+
+     El 140 sale solo del SCSS de `dialog/internal/_dialog.scss`:
+
+         min-height: 140px;
+
+     Su tabla de specs dice "Container height: Dynamic" y no da ninguna cota de
+     altura, ni este minimo ni el maximo. Asim que es un detalle de la
+     implementacion web de M3, y se toma como tal.
+
+     Y no puede salir de la escala de spacing --que acaba en 72px-- ni de
+     ningun otro sitio: 140 no es un múltiplo de los pasos de la escala. Por
+     eso es un literal, y por eso la REGLA 1 --que prohibe un px suelto fuera de
+     esta capa-- obliga a que el sitio de un literal asi sea aqui y no en el
+     rol de la capa 2 que lo consume.
+     ------------------------------------------------------------------------ */
+  --md-ref-container-height-dialog-min: 140px;
+
+  /* ------------------------------------------------------------------------
      LA ALTURA DEL FAB MEDIUM (M3 Expressive)
      ------------------------------------------------------------------------
      Nuestra escalera de alturas fue medida por el BOTON y por eso se llama
