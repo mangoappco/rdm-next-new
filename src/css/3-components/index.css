@@ -31,6 +31,6 @@
 
    card.css no depende de ningun componente anterior, y dialog.css va DESPUES
    de el. Los dos importan en la misma capa `comp`, donde a igualdad de
-   especificidad gana el ultimo: `.md-dialog` y `.md-dialog-scrim` no chocan
-   con ninguna clase de la card, pero mantener el orden de construccion
-   evita tener que comprobarlo cada vez que entren componentes nuevos. */
+   especificidad gana el ultimo: `.md-dialog` no choca con ninguna clase de la
+   card, pero mantener el orden de construccion evita tener que comprobarlo
+   cada vez que entren componentes nuevos. */

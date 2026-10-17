@@ -168,15 +168,15 @@
 
   /* SIN z-index, Y NO ES OLVIDO. Cuando la app llama a `showModal()`, el
      navegador mete el dialog en el TOP LAYER, que se pinta por encima de
-     cualquier `z-index` de la pagina, scrim incluido. Declarar aqui un
-     `z-index` seria un numero que no hace nada.
+     cualquier `z-index` de la pagina y por encima tambien del `::backdrop`.
+     Declarar aqui un `z-index` seria un numero que no hace nada.
 
-     En el specimen --donde no hay `showModal()`, solo el atributo `open`-- el
-     dialog va en flujo y el scrim es `position: fixed`, asi que si se
-     muestran juntos el scrim tapa el dialog. Eso es justo lo que tiene que
-     pasar: el specimen de la clase base NO lleva scrim, porque un scrim fijo
-     en medio de una pagina que scrollea te pinta la vista entera de negro.
-     El scrim se documenta en la prosa y se prueba en `lab.html`. */
+     Medido con el dialog abierto: computa `z-index: auto` y aun asi queda
+     por encima del velo.
+
+     Y en el specimen, donde no hay `showModal()` sino el atributo `open`, el
+     dialog va en su seccion y no hay velo: el `::backdrop` solo se pinta
+     para un dialog modal. */
 
   /* Ver la nota de POSICION en la cabecera: sin esto el specimen se va al
      centro de la pantalla y la app no lo nota. */
@@ -417,72 +417,51 @@
 }
 
 /* ---------------------------------------------------------------------------
-   EL SCRIM
+   EL VELO, CON EL BACKDROP NATIVO DEL NAVEGADOR
    ---------------------------------------------------------------------------
    El velo que oscurece el fondo detras del dialog. 32%, que es el `Dim amount`
-   de la tabla de specs y el `opacity: 32%` del SCSS de M3.
+   de la tabla de specs, el `opacity: 32%` del SCSS de M3 y el
+   `android:backgroundDimAmount` de su prosa: tres fuentes con el mismo numero.
 
-   El scrim NO es hijo del dialog: es una capa fija por debajo, que va del
-   borde de la pantalla al centro. Por eso vive como clase propia y no como
-   ranura, y por eso el autor lo escribe una vez, junto al dialog, y no dentro
-   de el. En el specimen del showroom se puede ver sin `showModal()`, que es
-   lo que hace falta para documentarlo.
+   Se pinta con `::backdrop`, que es el pseudo-elemento que el navegador crea
+   solo cuando el dialog entra en el top layer con `showModal()`, y que
+   borra solo cuando sale. Medido en Chrome: `background-color` computa
+   `rgb(0,0,0)` y `opacity` computa `0.32`, que es el velo de la tabla.
 
-   El `pointer-events` lo deja el navegador: el scrim no debe recibir clics,
-   pero tampoco debe impedir que se cierre pulsando fuera... y eso ultimo ya
-   no lo hace el dialog, porque sin JavaScript no hay quien lo escuche. Se
-   documenta el contrato visual, no el de abrir y cerrar.
+   Y con un `<dialog open>` a secas --como los specimens del showroom-- el
+   `::backdrop` NO se pinta. Medido tambien con una captura: la pagina sale
+   clara con dos specimens a la vista. Es la distincion entre `[open]` y
+   `:modal`, y es lo que permite enseñar el dialog en la vista sin apagar el
+   showroom entero.
+
+   POR QUE ESTO Y NO UN <div> DE SCRIM, Y POR QUE SE APARTA DE M3
+   -----------------------------------------------------------------
+   Hubo un `<div class="md-dialog-scrim">` inyectado por JavaScript. Se quita
+   por tres razones, y la tercera es la que mas weighs:
+
+     1. El navegador lo crea y lo destruye en las tres vias de cierre --boton,
+        Escape y `form method="dialog"`-- sin que haya ningun estado guardado
+        que se pueda desincronizar.
+     2. Sin nodo inyectado, el chrome del showroom no lo puede alcanzar. Las
+        dos reglas estructurales de `showroom.css` --`.sr-specimen > div` a
+        `position: relative` y el `padding: 16px`-- le caian encima y lo
+        dejaban en el flujo, midiendo 32x32 en vez de tapar la pantalla.
+     3. El autor no tiene que acordarse de escribirlo ni de que exista.
+
+   M3 hace lo contrario, y conviene decir por que: en
+   `dialog/internal/_dialog.scss` pone `::backdrop { background: none }` y
+   usa su propio `<div class="scrim">`. Su scrim forma parte de su DOM y de su
+   animacion --`dialog/internal/animations.ts`-- porque su host es un web
+   component.
+
+   Aqui el elemento es un `<dialog>` nativo y no hay animacion, asi que el
+   backdrop nativo es el mecanismo que corresponde. Es una desviacion
+   deliberada de M3, y por eso queda escrita: para que no se lea como un error
+   ni se "corrija" copiando el `background: none` de M3.
    ------------------------------------------------------------------------ */
-/* El BACKDROP NATIVO DEL NAVEGADOR, QUE SE SUMA AL NUESTRO
-   ------------------------------------------------------
-   Cuando la app llama a `showModal()`, el navegador pinta su propio
-   `dialog::backdrop`, y no es transparente: medido en Chrome, es
-   `rgba(0, 0, 0, 0.1)`.
-
-   O sea que sin esto el velo real seria nuestro 32% MAS ese 10%, y el
-   dialog se veria mas apagado de lo que dice la tabla de specs -- 0.42 en
-   vez de 0.32. M3 lo anula igual, con `::backdrop { background: none }` en
-   `dialog/internal/_dialog.scss`, y por la misma razon: el scrim es suyo.
-
-   Medido antes de esto: el fondo se veia al 42%. */
 .md-dialog::backdrop {
-  background: none;
-}
-
-.md-dialog-scrim {
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-
   background-color: var(--md-sys-color-scrim);
   opacity: var(--md-sys-scrim-opacity);
-
-  pointer-events: none;
-
-  /* Oculto por defecto. Aparece solo con un dialog MODAL abierto, que es lo
-     que se resuelve con el `:has()` de abajo. */
-  display: none;
-}
-
-/* EL SCRIM APARECE CON UN DIALOG MODAL ABIERTO, Y SOLO CON ESE
-   -----------------------------------------------------------
-   El scrim es hermano del dialog, no hijo, asi que el dialog no puede
-   estilarlo. Pero la pagina si puede preguntar, que es lo que hace este
-   `:has()`.
-
-   Y se pregunta por `:modal`, no por `[open]`, que es la distincion que
-   importa: con `<dialog open>` a secas el elemento NO es modal --fluye en su
-   sitio, que es como se muestran los specimens-- y el scrim se queda
-   apagado. Ese es justo el motivo por el que las vistas del showroom pueden
-   enseñar el dialog sin apagar la pagina entera.
-
-   Medido: `none` antes de abrir, `flex` con `showModal()`, `none` al cerrar.
-   Sin una linea de JavaScript.
-
-   Y con esto el scrim NO necesita JavaScript para aparecer ni desaparecer,
-   que era lo que quedaba del trigger de showroom.js. */
-:has(dialog:modal) .md-dialog-scrim {
-  display: flex;
 }
 
 /* ---------------------------------------------------------------------------
