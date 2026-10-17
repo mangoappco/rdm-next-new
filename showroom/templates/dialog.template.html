@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Dialog de RDM Next: superficie modal con icono, titular, contenido y acciones.">
+  <title>Dialog — RDM ManGo! App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+  <link rel="stylesheet" href="../../src/css/main.css">
+  <link rel="stylesheet" href="../assets/showroom.css">
+  <script src="../assets/showroom.js"></script>
+</head>
+
+<!--
+  ESTA VISTA TIENE UN PAR: Clase base. Se construye par a par, mirando cada
+  uno antes de escribir el siguiente.
+
+  LO QUE SELEE DE M3, Y DE DONDE
+  -------------------------------
+  `m3.material.io/components/dialogs/specs` NO SE LEE: son 57 KB de shell de
+  Angular y sale solo el titulo. Igual con Googlebot y Bingbot, y el snapshot
+  de Wayback del 2026-10-11 solo guarda la shell.
+
+  Las dos fuentes que SI se han leido, y todo lo de aqui sale de ellas:
+
+    - la tabla de specs, pegada a mano. Ahi estan las medidas y el vocabulario.
+    - `Dialog.md` de Android, en `docs/components/` -- el mismo sitio que
+      `Card.md`. Es la prosa: 14 KB con anatomia, propiedades y variantes.
+
+  De los tokens se lee el codigo: `tokens/versions/latest/sass/_md-comp-dialog.scss`
+  y `dialog/internal/_dialog.scss` y `dialog/internal/dialog.ts`.
+
+  EL ELEMENTO ES UN <dialog> NATIVO, Y POR QUE
+  --------------------------------------------
+  M3 monta el dialog con un web component, y por eso su host lleva
+  `position: fixed` y `margin: auto`: un elemento propio no tiene el
+  comportamiento de centrado que el navegador da al `<dialog>`.
+
+  Aqui el elemento es un `<dialog>` de verdad, asi que el navegador pone la
+  caja en el centro de la pantalla cuando la app llama a `showModal()`. Y el
+  componente declara solo `position: relative`.
+
+  Medido en Chrome, que es lo que importa:
+
+      <dialog open>   sin showModal   position: relative  -> fluye en su sitio
+      showModal()     en la app       position: absolute  -> centro del viewport
+
+  O sea que el specimen de esta vista se queda en su seccion, y la app
+  recibe el centrado y el top layer sin que escribamos una linea de overlay.
+
+  Y SIN z-index, y no es olvido
+  ----------------------------
+  Con `showModal()` el dialog entra en el TOP LAYER, que se pinta por encima
+  de cualquier `z-index` de la pagina. Declarar uno seria un numero que no
+  hace nada. Por eso el componente no lo tiene.
+
+  LOS BOTONES SON DE TEXTO, Y LOS PONE EL AUTOR
+  ---------------------------------------------
+  `Dialog.md` los describe como `Widget.Material3.Button.TextButton.Dialog` y
+  habla de neutral, negativo y positivo. El dialog no los viste mas que para
+  separarlos: quien los pone decide cual es cual, con las clases de siempre.
+
+  Los dos botones de la clase base dicen `Cancelar` y `Aceptar`, que son
+  nuestros: M3 no nombra las acciones de un dialogo, solo las llama botones.
+  Es el mismo criterio que en la card, donde los botones del specimen son
+  `Action` y `Primary` y el titular si lleva el vocabulario de M3
+  (`Headline`, `Subhead`, `Supporting text`).
+
+  EL TITULAR LLEVA md-type-headline-small, Y NO SOBRA
+  --------------------------------------------------
+  El `<h3>` del navegador tiene tamano propio -- como los `h1..h6`, que
+  `reset.css` conserva a proposito -- asi que la ranura da el `font` y el
+  tamano lo pone la utilidad. Es el mismo caso que el titular de la card,
+  que lleva `md-type-title-large`.
+
+  EL ICONO VA DENTRO DE LA CABECERA
+  ---------------------------------
+  No suelta. M3 envuelve las dos ranuras --icon y titular-- en una sola
+  cabecera con `flex-direction: column`, y se ve en `dialog/internal/dialog.ts`.
+  Por eso el icono va encima del titular, no al lado, y por eso
+  `.md-dialog-icon` es hijo de `.md-dialog-headline`.
+
+  ACCESIBILIDAD: `aria-labelledby`, Y SOLO ESO
+  -------------------------------------------
+  M3 declara tres cosas en su `<dialog>`, y solo se copia una:
+
+      aria-label=${ariaLabel || nothing}
+      aria-labelledby=${this.hasHeadline ? 'headline' : nothing}
+      role=${this.type === 'alert' ? 'alertdialog' : nothing}
+
+  Se escribe `aria-labelledby` apuntando al id del titular, que es el caso
+  normal de un dialog con cabecera.
+
+  NO se escribe `aria-describedby`. No aparece en M3: su componente se apoya
+  en `aria-labelledby` y el contenido se lee en orden, asi que el texto de
+  apoyo ya se anuncia sin atributo. Ponerlo seria inventar una capa de
+  nombres que el componente no tiene.
+
+  NO se escribe `role="alertdialog"` porque no es de esta clase base: M3 lo
+  expone como un token aparte para el dialog urgente, y aqui no hay modo de
+  cambiarlo desde el marcado.
+
+  Y CON H2 QUE EL ATRIBUTO SE VA
+  -------------------------------
+  El `aria-labelledby` de M3 es condicional --`this.hasHeadline ? ... : nothing`--
+  porque sin titular no hay a que apuntar, y un atributo que apunta a un id
+  inexistente es peor que no ponerlo. En un par sin titular hay que quitarlo,
+  y eso se anota en la prosa de ese par.
+
+  Y EL SCRIM NO ENTRA EN NINGUN SPECIMEN
+  ---------------------------------------
+  Es `position: fixed` con `inset: 0`, o sea que ocupa la pantalla entera. En
+  medio de una pagina que scrollea te pinta el showroom de negro y no se ve
+  nada mas.
+
+  Se documenta en su par y se prueba de verdad en `lab.html`, que es el banco
+  de pruebas y el unico sitio del repo con JavaScript.
+
+  LO QUE NO SE HACE, Y POR QUE
+  ----------------------------
+  - El full-screen dialog. Tiene fichero de token y hasta tabla de medidas, y
+    sin embargo el `Dialog.md` de Android dice literal que no tiene
+    implementacion de Material. Es el mismo caso que `max-height` en la card.
+  - Variantes de color. M3 publica UNA sola ficha para el dialog, a diferencia
+    de la card que tiene tres.
+  - Los tokens `subhead-*` de M3 estan muertos: nueve tokens, 19 menciones en
+    su fichero y CERO en la implementacion. No hay ranura de subtitulo.
+-->
+
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <main class="sr-page">
+
+    <!-- HEADER: inicio (barra + titulo + descripcion) -->
+    <header class="sr-header">
+      <div class="sr-bar">
+        <p class="md-type-body-medium"><a href="../index.html">RDM ManGo! App</a></p>
+        <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
+      </div>
+      <h1 class="md-type-display-large">Dialog</h1>
+      <p class="md-type-body-large">Los dialogs interrumpen para dar una información crítica o pedir una decisión.</p>
+    </header>
+    <!-- HEADER: fin -->
+
+    <hr class="md-divider">
+
+    <!-- PAREJA: la clase base (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Clase base</h2>
+      <p class="md-type-body-medium">Icono, titular, contenido y acciones. El ancho crece con el texto entre 280 y 560.</p>
+      <div class="sr-specimen">
+<dialog class="md-dialog" open aria-labelledby="dialog-title">
+  <div class="md-dialog-headline">
+    <div class="md-dialog-icon"><span class="md-icon">info</span></div>
+    <h3 class="md-type-headline-small" id="dialog-title">Headline</h3>
+  </div>
+  <div class="md-dialog-content">
+    <p class="md-type-body-medium">Supporting text</p>
+  </div>
+  <div class="md-dialog-actions">
+    <button class="md-button md-button-text" type="button">Cancelar</button>
+    <button class="md-button md-button-text" type="button">Aceptar</button>
+  </div>
+</dialog>
+      </div>
+      <pre class="sr-code"><code>&lt;dialog class="md-dialog" open aria-labelledby="dialog-title"&gt;
+  &lt;div class="md-dialog-headline"&gt;
+    &lt;div class="md-dialog-icon"&gt;&lt;span class="md-icon"&gt;info&lt;/span&gt;&lt;/div&gt;
+    &lt;h3 class="md-type-headline-small" id="dialog-title"&gt;Headline&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div class="md-dialog-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Supporting text&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-dialog-actions"&gt;
+    &lt;button class="md-button md-button-text" type="button"&gt;Cancelar&lt;/button&gt;
+    &lt;button class="md-button md-button-text" type="button"&gt;Aceptar&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/dialog&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+  </main>
+  <!-- MAIN: fin -->
+</body>
+</html>

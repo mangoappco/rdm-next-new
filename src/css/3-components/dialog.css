@@ -270,21 +270,59 @@
    aparte porque se puede preguntar al DOM, que es lo que hace el `:has()` de
    abajo: el mismo camino que la card con su cabecera.
 
-   M3 lo resuelve con una clase `.has-icon` que su componente se poner a si
+   M3 lo resuelve con una clase `.has-icon` que su componente se pone a si
    mismo al detectar el icono; aqui el autor no pone ninguna clase y lo
    detecta el selector. Menos cosa que recordar y el mismo resultado.
+
+   QUE LO QUE SIEMPRE VA CENTRADO ES EL ICONO, Y LO QUE CAMBIA ES EL TEXTO
+   ------------------------------------------------------------------------
+   Esto esta en el bloque de M3 y es mas sutil que lo que parece la tabla:
+
+       .headline { align-items: center; ... }     <- SIN CONDICION
+
+   El icono va SIEMPRE al centro de la cabecera, haya icono o no. Lo que
+   depende del icono es el TEXTO del titular: sin icono arranca a la
+   izquierda, y con icono se centra.
+
+   O sea que sin icono el titular queda a la izquierda, y con icono los dos
+   --icono y titular-- van centrados. Por eso aqui van DOS reglas y no una.
+
+   Y sale de leer el SCSS, no la tabla: la tabla sola invita a pensar que lo
+   que se centra es el icono, y es justo al reves. La primera version que se
+   escribio de esta hoja centraba la cabecera entera solo con icono, y
+   dejaba el titular a la izquierda incluso cuando si lo habia.
+
+   LO QUE M3 BAJA DE 24 A 16 Y AQUI NO SE REPRODUCE
+   -----------------------------------------------
+   Su regla `.has-icon` ademas baja el padding de arriba de la cabecera de
+   24px a 16px. Funciona porque en M3 el padding lo lleva cada ranura y no la
+   caja: su cabecera declara `padding: 24px 24px 0` y con icono `padding-top:
+   16px`.
+
+   Aqui el padding vive en `.md-dialog`, que es donde debe vivir para que las
+   cuatro ranuras compartan el mismo. Bajar el de arriba solo con icono
+   pediria un margen negativo, y eso es peor que los 8px que se dejan de
+   ganar. Queda dicho en vez de maquetado.
    ------------------------------------------------------------------------ */
 .md-dialog-headline {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: var(--md-sys-measurement-dialog-gap);
   font: var(--md-sys-typescale-headline-small);
   color: var(--md-sys-color-on-surface);
 }
 
-.md-dialog:has(.md-dialog-icon) .md-dialog-headline {
-  align-items: center;
+/* El titular se estira a lo ancho de la cabecera para que su texto tenga
+   algo que alinear. Sin esto se ajusta a su contenido y el `text-align`
+   de abajo no tendria efecto. */
+.md-dialog-headline > :not(.md-dialog-icon) {
+  align-self: stretch;
+  text-align: start;
+}
+
+.md-dialog:has(.md-dialog-icon) .md-dialog-headline > :not(.md-dialog-icon) {
+  text-align: center;
 }
 
 /* ---------------------------------------------------------------------------
