@@ -15,8 +15,8 @@
 </head>
 
 <!--
-  ESTA VISTA TIENE UN PAR: Clase base. Se construye par a par, mirando cada
-  uno antes de escribir el siguiente.
+  Esta vista tiene cuatro pares: Clase base, Sin titular, Modal y Lista. Se
+  construyen par a par, mirando cada uno antes de escribir el siguiente.
 
   LO QUE SELEE DE M3, Y DE DONDE
   -------------------------------
@@ -69,6 +69,50 @@
   `Action` y `Primary` y el titular si lleva el vocabulario de M3
   (`Headline`, `Subhead`, `Supporting text`).
 
+  LA JERARQUIA LA PONE EL AUTOR, Y EN EL PAR LISTA NO ES LA DE M3
+  ---------------------------------------------------------------
+  Aqui hay una decision nuestra que conviene que no se pierda. M3 pone los
+  botones de un dialog en texto, y por eso los tres primeros pares llevan
+  `Cancelar` y `Aceptar` los dos en `md-button-text`.
+
+  El par Lista no lo hace. Alli `Eliminar` va en `md-button-filled` y
+  `Cancelar` en `md-button-text`, y el motivo es la jerarquia que ya tiene el
+  componente button: `filled` es la variante PRINCIPAL --es la base, y las
+  demas la desvisten-- y `text` la secundaria. Ver la tabla de `button.css`.
+
+  Se prefirio la jerarquia del sistema a la receta de M3 porque `filled` ya
+  significa en todo el sistema "la accion que quieres que se pulse", y porque
+  en una confirmacion de borrado que la accion destructiva sea la mas
+  destacada es justo lo que evita el borrado accidental. Con los dos en texto
+  la principal solo se distingue por el orden de lectura.
+
+  Y si una aplicacion prefiere el criterio de M3, no hay nada que impedirlo:
+  el dialog no impone ninguna variante. Es el autor quien elige, y por eso el
+  componente no dice nada de esto en su CSS.
+
+  CADA DIALOG NECESITA UN ID PROPIO, Y NO ES DIALOGOSO LO QUE LO DICE
+  ------------------------------------------------------------------
+  Con varios dialogs en la misma pagina --una tabla de productos con un boton
+  de eliminar por fila-- el atributo `data-open-dialog` es lo UNICO que dice
+  que boton abre que dialog. Y el valor es un id, no una referencia al boton.
+
+  Medido con tres filas: abrir el segundo solo abre el segundo, y su boton de
+  cerrar --que se busca con `closest('dialog')`-- cierra el suyo aunque haya
+  otro abierto. Cerrar por fuera tambien: el cierre va al dialog que recibio
+  el clic. Y dos clics rapidos en el mismo boton no abren dos, porque
+  `abrir()` tiene la guarda `if (dialog.open) return`.
+
+  El fallo es el id repetido, y es el que hace un bucle de PHP mal hecho:
+
+      <button data-open-dialog="dialogo-prod">Eliminar A</button>
+      <button data-open-dialog="dialogo-prod">Eliminar B</button>
+      <dialog id="dialogo-prod">...</dialog>
+
+  Los dos botones abren el MISMO dialog, porque `getElementById` devuelve el
+  primero con ese id. No hay error, no hay aviso y no se ve: simplemente se
+  borra el producto equivocado, que es el peor modo de fallo que hay en un
+  POS. Por eso el par de abajo lleva los tres dialogs con id distinto.
+
   EL TITULAR LLEVA md-type-headline-small, Y NO SOBRA
   --------------------------------------------------
   El `<h3>` del navegador tiene tamano propio -- como los `h1..h6`, que
@@ -114,10 +158,11 @@
   ---------------------------------------
   Es `position: fixed` con `inset: 0`, o sea que ocupa la pantalla entera. En
   medio de una pagina que scrollea te pinta el showroom de negro y no se ve
-  nada mas.
+  nada mas. Solo aparece con `showModal()`, en el par Modal.
 
-  Se documenta en su par y se prueba de verdad en `lab.html`, que es el banco
-  de pruebas y el unico sitio del repo con JavaScript.
+  Se prueba de verdad en `lab.html`, que es el banco de pruebas: ahi se midio
+  que abrir uno y cerrar otro no se pisan, y que dos clics rapidos en el mismo
+  boton no lanzan `InvalidStateError`.
 
   LO QUE NO SE HACE, Y POR QUE
   ----------------------------
@@ -211,7 +256,7 @@
     <!-- PAREJA: el dialog modal (h2 + specimen + pre + boton). -->
     <section class="sr-section">
       <h2 class="md-type-title-large">Modal</h2>
-      <p class="md-type-body-medium">Con showModal el dialog sale centrado, tapa el fondo y el scroll de debajo se bloquea. El scrim lo pone el JS.</p>
+      <p class="md-type-body-medium">Con showModal el dialog sale centrado, tapa el fondo y el scroll de debajo se bloquea. El velo es el ::backdrop nativo: no hay que escribirlo.</p>
       <div class="sr-specimen sr-specimen-gap">
 <button class="md-button md-button-filled" type="button" data-open-dialog="dialogo-modal">Abrir dialog</button>
 
@@ -240,6 +285,103 @@
   &lt;div class="md-dialog-actions"&gt;
     &lt;button class="md-button md-button-text" type="button" data-close-dialog&gt;Cancelar&lt;/button&gt;
     &lt;button class="md-button md-button-text" type="button" data-close-dialog&gt;Aceptar&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/dialog&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+    <!-- PAREJA: lista (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Lista</h2>
+      <p class="md-type-body-medium">Un trigger y un dialog por fila, cada uno con su id. Abrir uno no toca los otros dos, y cada botón de cerrar cierra el suyo. <code>data-open-dialog</code> es lo único que dice qué botón abre qué dialog, así que el id tiene que ser único por fila.</p>
+      <div class="sr-specimen sr-specimen-gap">
+<button class="md-button md-button-filled" type="button" data-open-dialog="dialogo-lista-1">Eliminar Alfa</button>
+
+<dialog class="md-dialog" id="dialogo-lista-1" aria-labelledby="dialogo-lista-1-titulo">
+  <div class="md-dialog-headline">
+    <h3 class="md-type-headline-small" id="dialogo-lista-1-titulo">¿Eliminar Alfa?</h3>
+  </div>
+  <div class="md-dialog-content">
+    <p class="md-type-body-medium">Se borrará de los 3 almacenes. No se puede deshacer.</p>
+  </div>
+  <div class="md-dialog-actions">
+    <button class="md-button md-button-text" type="button" data-close-dialog>Cancelar</button>
+    <button class="md-button md-button-filled" type="button" data-close-dialog>Eliminar</button>
+  </div>
+</dialog>
+
+<button class="md-button md-button-filled" type="button" data-open-dialog="dialogo-lista-2">Eliminar Beta</button>
+
+<dialog class="md-dialog" id="dialogo-lista-2" aria-labelledby="dialogo-lista-2-titulo">
+  <div class="md-dialog-headline">
+    <h3 class="md-type-headline-small" id="dialogo-lista-2-titulo">¿Eliminar Beta?</h3>
+  </div>
+  <div class="md-dialog-content">
+    <p class="md-type-body-medium">Tiene 12 lotes en promoción. Se cancelarán también.</p>
+  </div>
+  <div class="md-dialog-actions">
+    <button class="md-button md-button-text" type="button" data-close-dialog>Cancelar</button>
+    <button class="md-button md-button-filled" type="button" data-close-dialog>Eliminar</button>
+  </div>
+</dialog>
+
+<button class="md-button md-button-filled" type="button" data-open-dialog="dialogo-lista-3">Eliminar Gamma</button>
+
+<dialog class="md-dialog" id="dialogo-lista-3" aria-labelledby="dialogo-lista-3-titulo">
+  <div class="md-dialog-headline">
+    <h3 class="md-type-headline-small" id="dialogo-lista-3-titulo">¿Eliminar Gamma?</h3>
+  </div>
+  <div class="md-dialog-content">
+    <p class="md-type-body-medium">Es el único con ventas este mes. Quedará sin histórico.</p>
+  </div>
+  <div class="md-dialog-actions">
+    <button class="md-button md-button-text" type="button" data-close-dialog>Cancelar</button>
+    <button class="md-button md-button-filled" type="button" data-close-dialog>Eliminar</button>
+  </div>
+</dialog>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-button md-button-filled" type="button" data-open-dialog="dialogo-lista-1"&gt;Eliminar Alfa&lt;/button&gt;
+
+&lt;dialog class="md-dialog" id="dialogo-lista-1" aria-labelledby="dialogo-lista-1-titulo"&gt;
+  &lt;div class="md-dialog-headline"&gt;
+    &lt;h3 class="md-type-headline-small" id="dialogo-lista-1-titulo"&gt;¿Eliminar Alfa?&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div class="md-dialog-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Se borrará de los 3 almacenes. No se puede deshacer.&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-dialog-actions"&gt;
+    &lt;button class="md-button md-button-text" type="button" data-close-dialog&gt;Cancelar&lt;/button&gt;
+    &lt;button class="md-button md-button-filled" type="button" data-close-dialog&gt;Eliminar&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/dialog&gt;
+
+&lt;button class="md-button md-button-filled" type="button" data-open-dialog="dialogo-lista-2"&gt;Eliminar Beta&lt;/button&gt;
+
+&lt;dialog class="md-dialog" id="dialogo-lista-2" aria-labelledby="dialogo-lista-2-titulo"&gt;
+  &lt;div class="md-dialog-headline"&gt;
+    &lt;h3 class="md-type-headline-small" id="dialogo-lista-2-titulo"&gt;¿Eliminar Beta?&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div class="md-dialog-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Tiene 12 lotes en promoción. Se cancelarán también.&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-dialog-actions"&gt;
+    &lt;button class="md-button md-button-text" type="button" data-close-dialog&gt;Cancelar&lt;/button&gt;
+    &lt;button class="md-button md-button-filled" type="button" data-close-dialog&gt;Eliminar&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/dialog&gt;
+
+&lt;button class="md-button md-button-filled" type="button" data-open-dialog="dialogo-lista-3"&gt;Eliminar Gamma&lt;/button&gt;
+
+&lt;dialog class="md-dialog" id="dialogo-lista-3" aria-labelledby="dialogo-lista-3-titulo"&gt;
+  &lt;div class="md-dialog-headline"&gt;
+    &lt;h3 class="md-type-headline-small" id="dialogo-lista-3-titulo"&gt;¿Eliminar Gamma?&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div class="md-dialog-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Es el único con ventas este mes. Quedará sin histórico.&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-dialog-actions"&gt;
+    &lt;button class="md-button md-button-text" type="button" data-close-dialog&gt;Cancelar&lt;/button&gt;
+    &lt;button class="md-button md-button-filled" type="button" data-close-dialog&gt;Eliminar&lt;/button&gt;
   &lt;/div&gt;
 &lt;/dialog&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>

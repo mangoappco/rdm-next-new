@@ -413,6 +413,26 @@
 
    M3 escribe `flex-end` en el overflow menu de sus dialogs, y el de aqui
    tambien: los botones van al final del renglon.
+
+   Y CUAL DE LOS DOS ES EL PRINCIPAL, LO DICE EL AUTOR
+   ---------------------------------------------------
+   M3 pone los botones de un dialog en TEXTO, todos: los llama
+   `Widget.Material3.Button.TextButton.Dialog`, y "neutral, negativo y
+   positivo" son solo nombres de su prosa. Por eso aqui no hay ninguna regla
+   que distinga una variante de otra: el dialog los separa y nada mas.
+
+   Que uno sea filled o text lo elige quien escribe, y el par Lista de la
+   vista aplica la jerarquia que ya tiene el componente button --`filled` es
+   la principal porque es la base, y las demas la desvisten-- en vez de la
+   receta de M3. Alli `Eliminar` va en filled y `Cancelar` en text, al reves
+   de lo que haria M3, a proposito: en una confirmacion de borrado que la
+   accion destructiva sea la mas destacada es lo que evita el borrado
+   accidental, y `filled` ya significa en todo el sistema "la accion que
+   quieres que se pulse".
+
+   Se deja constancia porque es una desviacion. Si una aplicacion prefiere el
+   criterio de M3, los dos botones en `md-button-text` funcionan igual: aqui
+   no hay nada que iexcepcionar.
    ------------------------------------------------------------------------ */
 .md-dialog-actions {
   display: flex;

@@ -44,6 +44,24 @@
    animacion; aqui el elemento es un `<dialog>` nativo y no hay animacion.
    Ver la nota larga de `dialog.css`.
 
+   VARIOS DIALOGS EN LA MISMA PAGINA, Y SI SE AISLAN
+   --------------------------------------------------
+   Es el caso de una lista: un boton de eliminar por fila, cada uno con su
+   dialog. Medido con tres filas, y se aislan sin que este archivo tenga nada
+   especial:
+
+       abrir el 2               solo se abre el 2
+       su boton de cancelar     cierra el 2  -- se busca con `closest('dialog')`,
+                                                  o sea el ancestro del propio
+                                                  boton, no un id suelto
+       cerrar por fuera         cierra el que recibio el clic
+       dos clics rapidos        uno solo, por la guarda de `abrir()`
+       dos ids iguales          los dos botones abren el primero
+
+   Lo que las apila es la plataforma: abrir dos sin cerrar el primero deja los
+   dos modales, y cerrar va por orden inverso. Es el nested modal de
+   `<dialog>`, no un comportamiento de aqui.
+
    LO QUE ESTE ARCHIVO NO HACE
    ---------------------------
    - No bloquea el scroll del fondo: eso lo hace el navegador al entrar en el
@@ -76,7 +94,19 @@ function abrir(dialog) {
 
 export function registrar() {
   document.addEventListener('click', (evento) => {
-    /* ABRIR. El valor del atributo es el id del dialog que ese boton abre. */
+    /* ABRIR. El valor del atributo es el id del dialog que ese boton abre.
+
+       Y POR ESO EL ID TIENE QUE SER UNICO EN LA PAGINA
+       --------------------------------------------------
+       En una lista --una tabla de productos con un boton de eliminar por
+       fila-- esto es lo UNICO que dice que boton abre que dialog. Y es un
+       `id`, no una referencia al boton, asi que un id repetido no da error:
+       `getElementById` devuelve el PRIMERO con ese id y los dos botones
+       abren el mismo dialog. Medido en el par Lista de la vista.
+
+       No se avisa por consola a proposito: es un fallo de autoria, se ve
+       leyendo el marcado, y este sistema no lleva avisos de desarrollo. Lo
+       unico que hace falta es que cada fila ponga su id. */
     const botonAbrir = evento.target.closest('[data-open-dialog]');
     if (botonAbrir) {
       const dialog = document.getElementById(botonAbrir.getAttribute('data-open-dialog'));
