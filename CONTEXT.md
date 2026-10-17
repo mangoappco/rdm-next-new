@@ -18,7 +18,7 @@ Solo prohibiciones verbales. Las reglas de showroom, de capas y de ciclo no se c
 
 ## Componentes creados
 
-Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **7 componentes y 16 vistas** (7 de componente + 9 de tokens), las 16 enlazadas en `showroom/index.html`. El orden es el de `index.css`:
+Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **8 componentes y 17 vistas** (8 de componente + 9 de tokens), las 17 enlazadas en `showroom/index.html`. El orden es el de `index.css`:
 
 | Componente | Hoja | Vista |
 | --- | --- | --- |
@@ -29,10 +29,11 @@ Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **7 compon
 | FAB | `fab.css` | `fab.html` |
 | FAB extended | `fab-extended.css` | `fab-extended.html` |
 | Card | `card.css` | `card.html` |
+| Dialog | `dialog.css` | `dialog.html` |
 
 Cada componente tiene además su molde en `showroom/templates/<nombre>.template.html`.
 
-**Solo 4 de 14 las tienen byte-idénticas a su vista** — `fab`, `fab-extended`, `icon-button` y `card`, las cuatro más recientes. Las otras 10 vistas llevan un puntero de dos líneas al molde y el molde se quedó atrás: esa es la convención mayoritaria, pero la cambió el rumbo del 2026-10-13, no al revés. `typography.html` no tiene molde propio y apunta a `component.template.html`.
+**Solo 5 de 15 las tienen byte-idénticas a su vista** — `fab`, `fab-extended`, `icon-button`, `card` y `dialog`, las cinco más recientes. Las otras 10 vistas llevan un puntero de dos líneas al molde y el molde se quedó atrás: esa es la convención mayoritaria, pero la cambió el rumbo del 2026-10-13, no al revés. `typography.html` no tiene molde propio y apunta a `component.template.html`.
 
 ## Card — publicada
 
@@ -134,11 +135,49 @@ La hoja está hecha y verificada, y la vista **tiene ocho pares y está publicad
 
 Decidido para la vista: el par de **Color** no se hace hasta que las variantes tengan algo que distinguir más allá de las fichas; el del título lleva pareja propia.
 
+## Dialog — publicada
+
+La hoja está hecha y verificada, y la vista **tiene seis pares y está publicada y enlazada**: Clase base, Sin titular, Modal, Lista, Divisor y Contenido largo. `dialog.html` es copia byte-idéntica de su molde.
+
+**Es el primer componente del catálogo que lleva JavaScript**, y por eso rompe una regla que era de hecho: «un componente es CSS, y solo se escribe JS cuando el CSS no puede». Aquí el CSS no puede —abrir y cerrar un `<dialog>` son llamadas— así que existe `src/js/dialog.js`, que solo hace dos cosas: `showModal()` y `close()`. El resto sigue siendo CSS. La vista se conecta con `<script type="module" src="../../src/js/main.js">` y nada más; ningún HTML del repo lleva `<script>` con código dentro.
+
+- **El elemento es un `<dialog>` nativo, y `position: relative` a secas.** M3 monta su dialog con un web component, así que su host necesita `position: fixed` y `margin: auto`: un elemento propio no tiene el centrado que da el navegador. Aquí el navegador pone la caja en el centro al hacer `showModal()`, y medido: `<dialog open>` fluye en su sitio, `showModal()` sale en el centro del viewport. Sin `z-index`, porque con `showModal()` el dialog entra en el **top layer** y cualquier `z-index` de la página no llega a competir.
+
+- **El velo es el `::backdrop` nativo, y es desviación deliberada de M3.** M3 pone `background: none` en su `::backdrop` y usa un `<div class="scrim">` propio, porque el suyo es parte de su DOM y de su animación. Aquí no hay animación, así que el `::backdrop` hace falta y el scrim propio sobra: el navegador lo crea y lo destruye solo, y no queda ningún nodo que pueda quedarse huérfano. M3 tampoco corta el scroll del fondo, y aquí tampoco: por eso existe `html:has(dialog.md-dialog:modal) { overflow: hidden }`, que se ha comprobado en el Chrome de Danny, no en el arnés.
+
+- **`display` va en `.md-dialog[open]`, y el fallo es invisible.** El navegador esconde un `<dialog>` sin `open` con `dialog:not([open]) { display: none }`, que es una regla **del navegador**, y la capa 3 declaraba `display: flex` en la base, que es una regla **de autor**. La de autor gana: medido, un `<dialog class="md-dialog">` sin `open` computaba `display: flex` y ocupaba 180px. Cualquier dialog cerrado se habría visto en la página. M3 no tiene el problema porque lo condiciona. Está en `[open]` y no solo en `:modal` porque `showModal()` pone el atributo `open` además de meter el elemento en el top layer.
+
+- **Los límites de alto no salen de la tabla de specs y son lo que hace que el scroll exista.** La tabla dice «Container height: Dynamic» y no da ni un máximo ni un mínimo. Los dos vienen del SCSS de M3 —`max-height: min(560px, calc(100% - 48px))` y `min-height: 140px`— y se adoptaron **no por faithfulness, sino porque sin ellos las reglas de la ranura de contenido son código muerto**: `min-height: 0` y `overflow-y: auto` no se disparan nunca si no hay un tope que obligue a encogerse. Medido antes del arreglo, con 40 párrafos: el dialog llegaba a 1584px en una ventana de 700, con 884px por debajo del borde y el botón de cerrar inalcanzable.
+
+- **El 560 del alto se apoya en el token del ancho, y eso ata los dos ejes.** M3 escribe el 560 como literal en los dos, así que `--md-sys-measurement-dialog-max-height` reapunta a `--md-ref-container-width-dialog-max` en vez de repetir la cifra. **Cambiar el ancho máximo del dialog cambia también su alto máximo.** Es decisión y queda escrito en `measurement.css` para que no se lea como un error de nombre. El 140 sí tiene primitiva propia (`--md-ref-container-height-dialog-min`, en `container-height.css`) porque la REGLA 1 no deja un px suelto en la capa 2, y porque no es un `spacing`: la escala acaba en 72px.
+
+- **Solo scrollea siendo modal, y es la misma limitación que tiene M3.** El `max-height` en porcentaje se mide contra una altura que en la página todavía no existe si el dialog es `position: relative`: medido, un `<dialog open>` con 40 párrafos llega a 1584px y el specimen se estira con él. M3 no sufre esto porque su `max-height` va sobre un host `position: fixed` que siempre tiene el viewport como referencia. Por eso el par de scroll lleva botón y `showModal()`.
+
+- **Cada dialog necesita un id único, y el fallo no da error.** `data-open-dialog` es lo único que dice qué botón abre qué dialog, y su valor es un id. Medido con tres filas —una tabla de productos con un botón de eliminar por fila—: abrir el segundo solo abre el segundo, su botón de cerrar cierra el suyo aunque haya otro abierto, cerrar por fuera cierra el que recibió el clic, y dos clics rápidos no abren dos. Aislamiento que no costó código: abrir va por `getElementById` y cerrar por `closest('dialog')`, que sube al ancestro del botón que se pulsó. **Un id repetido, que es lo que sale de un bucle de PHP mal hecho, abre el primero sin error ni aviso** y ejecuta sobre el producto equivocado. Está escrito en el par, en `dialog.js` y en el listener que resuelve el id.
+
+- **El divisor va en `absolute`, y eso solo funciona si se le da aire con `:has()`.** M3 lo hace y sus clases son reales —`.show-top-divider` y `.show-bottom-divider`—, pero su `bottom: 0` funciona porque **su padding vive en cada ranura** (`padding: 24px 24px 0`). Aquí el padding vive en `.md-dialog`, así que `bottom: 0` clavaba la línea contra la tipografía: medido con las cajas reales de los glifos, a **0px** del titular, y por debajo 25 contra 10. Se corrige aireando la ranura por el lado del divisor con la misma medida que ya separa las partes, y **con `:has()`, porque sin la condición los cinco pares sin separador crecerían 32px de golpe**. El aire va en las dos ranuras del divisor y **no** en el contenido: su `margin-block-start` de 16px ya es la distancia bajo la línea, y añadirle padding la duplica (16/33 en vez de 16/17).
+
+- **La jerarquía de las acciones la pone el autor, y en el par Lista no es la de M3.** M3 pone los botones de un dialog en texto —`Button.TextButton.Dialog`— y por eso los tres primeros pares llevan `Cancelar` y `Aceptar` los dos en `md-button-text`. En Lista, `Eliminar` va en `md-button-filled` y `Cancelar` en `md-button-text`, aplicando la jerarquía que ya tiene el componente button: `filled` es la principal porque es la base y las demás la desvisten. En una confirmación de borrado que la acción destructiva sea la más destacada es lo que evita el borrado accidental. Está escrito como desviación, y el componente no impone nada.
+
+### Lo que se descartó, y por qué, para que no vuelva a proponerse
+
+- **Full-screen dialog**: tiene fichero de token y hasta tabla de medidas, y sin embargo el `Dialog.md` de Android dice literal que no tiene implementación de Material.
+- **Variantes de color**: M3 publica **una sola** ficha para el dialog, a diferencia de la card que tiene tres.
+- **Los tokens `subhead-*`**: nueve tokens, 19 menciones en su fichero y **cero** en la implementación. No hay ranura de subtítulo.
+- **`aria-describedby`**: no aparece en M3. Su componente se apoya en `aria-labelledby` y el contenido se lee en orden, así que el texto de apoyo ya se anuncia sin atributo.
+- **`role="alertdialog"`**: M3 lo expone como token aparte para el dialog urgente, y aquí no hay modo de cambiarlo desde el marcado.
+- **Los paddings que M3 recoloca al hacer scroll**: su SCSS baja el padding de la cabecera a 16 y sube el del contenido a 8 cuando es scrollable. Descartado a propósito: los paddings viven en `.md-dialog` y se comparten entre las cuatro ranuras, y moverlos por estado es justo lo que hace que el padding deje de ser del componente.
+
 ## Siguiente tarea
 
-**Card está cerrada.** Con la publicación, el único componente que queda por hacer es `dialog` —ya aparece en `main.css:54` como declarado y no existe—, y el trabajo pendiente es la **deuda conocida** de más abajo, no un par nuevo.
+**El catálogo está cerrado.** Los ocho componentes del README §11 están hechos, publicados y enlazados, y las diecisiete vistas también. `dialog`, el último, se acaba de publicar: `main.css:54` ya no lo nombra como declarado y inexistente.
 
-**Lo que se descartó al cerrarla, y por qué, para que no vuelva a proponerse:**
+Lo que queda por delante no es un componente nuevo sino la **deuda conocida** de más abajo, que es lo que de verdad está pendiente:
+
+- **Los diez moldes desfasados** siguen desfasados, y ahora hay uno más que no lo está (`dialog.template.html`), así que conviene no usar los viejos como molde.
+- **`scrollbar-gutter` sin decidir**: el bloqueo de scroll del fondo funciona, pero en un Chrome con barra clásica desaparece la barra al abrir el modal y el contenido ensancha unos 15px. Está anotado en `dialog.css` y no se ha añadido porque cambia el layout de todas las vistas.
+
+**Lo que se descartó al cerrar Card, y por qué, para que no vuelva a proponerse:**
 
 - **Padding**: los tres ficheros de token de M3 no dan **ni una** coincidencia de `padding`, `spacing` ni `margin`. El nuestro es un valor único, `--md-sys-measurement-card-padding` = 16px, que declaran las tres ranuras de texto; el medio va sin padding a propósito y la base pone `padding: 0` para neutralizar el `<button>`. Encima **el autor no puede cambiarlo**: no hay clase modificadora y `4-utilities` no publica utilidad de espaciado. Mostrar «el padding son 16px» no es un par. Lo único con contenido era el ritmo de 16px al quitar ranuras —la regla `:has()`, ya medida en `card.css`—.
 - **Anatomía**: la cumple la receta **Slots completa**, que ya lleva las seis partes de M3 en su marcado.
@@ -153,9 +192,11 @@ Nada de esto se ha tocado. Está anotado para que no se dé por verdad:
 - El split button existe en M3 (`-split-button-{xs…xl}` + 3 `menu-button`) y depende de un `menu` que no existe. Queda registrado en `button.css`, en el bloque «LO QUE NO ESTA, Y POR QUE». Sus medidas ya están en `container-height.css:40`. **La razón cambió:** estaba refutado por «no puede abrirse sin JavaScript», y con `src/js/` eso ya no lo bloquea. Sigue sin hacerse porque nadie ha escrito el `menu`, no porque sea imposible. El FAB menu está en el mismo caso.
 - FAB y extended FAB tienen 1 de las 8 familias de color de M3. Decidido y escrito en `fab.css:448-451`.
 - `4-utilities` no publica ninguna utilidad de espaciado, así que las ranuras de la card no pueden delegar su hueco al autor: lo declara el componente.
-- **`dialog` sigue nombrado en `src/css/main.css` sin existir, y es a propósito.** La línea enumera la capa `comp` como «button, card, dialog» y `3-components/index.css` avisa igual de los siguientes. **No es un descuido**: el README §11 lo dice —«esa línea es hoy más un recordatorio que una descripción: `card` ya existe y `dialog` no»— y aquí estaba anotado como deuda, que es lo que no cuadraba. No se toca hasta que `dialog` entre.
-- **10 de 15 moldes están desfasados** respecto a su vista publicada: `button-group`, `button`, `color`, `divider`, `elevation`, `icon`, `measurement`, `motion`, `spacing` y `state`. Llevan el bloque largo `COMO USAR ESTE TEMPLATE` donde la vista lleva el puntero de dos líneas, y se quedaron atrás en `5422fb2` (recorte de prosa), que tocó las vistas y no los moldes. Usar cualquiera de esos diez como molde arrastraría prosa ya recortada; los buenos son `fab`, `fab-extended`, `icon-button` y `card`. `typography.html` y `spacing.html` no siguen la vía de molde: la primera no tiene propio y apunta a `component.template.html`.
-- **`navigator.clipboard` solo existe en contexto seguro**, así que abierto por la IP de la red el botón «Copiar» no tenía copia ni alternativa y quedaba muerto en las quince vistas de entonces; ahora son dieciséis y todas tienen el respaldo. Corregido con un respaldo de `document.execCommand` y con texto honesto en los dos sentidos. Probado en las dos rutas: por `localhost` y por `http://10.226.28.43/`.
+- **`dialog` ya no es una deuda de `main.css`.** La línea de la capa `comp` lo enunciaba como «button, card, dialog» cuando no existía, y el README §11 avisaba de ello —«esa línea es hoy más un recordatorio que una descripción: `card` ya existe y `dialog` no»—. Con la publicación esa línea describe lo que hay, así que la nota queda cerrada. **El recordatorio sigue sirviendo para los siguientes**: `3-components/index.css` avisa de los que vendrán.
+- **10 de 16 moldes están desfasados** respecto a su vista publicada: `button-group`, `button`, `color`, `divider`, `elevation`, `icon`, `measurement`, `motion`, `spacing` y `state`. Llevan el bloque largo `COMO USAR ESTE TEMPLATE` donde la vista lleva el puntero de dos líneas, y se quedaron atrás en `5422fb2` (recorte de prosa), que tocó las vistas y no los moldes. Usar cualquiera de esos diez como molde arrastraría prosa ya recortada; los buenos son `fab`, `fab-extended`, `icon-button`, `card` y `dialog`. `typography.html` y `spacing.html` no siguen la vía de molde: la primera no tiene propio y apunta a `component.template.html`.
+- **`navigator.clipboard` solo existe en contexto seguro**, así que abierto por la IP de la red el botón «Copiar» no tenía copia ni alternativa y quedaba muerto en las quince vistas de entonces; ahora son diecisiete y todas tienen el respaldo. Corregido con un respaldo de `document.execCommand` y con texto honesto en los dos sentidos. Probado en las dos rutas: por `localhost` y por `http://10.226.28.43/`.
+- **Las diecisiete vistas llevan `<meta name="description">`.** El README §5 decía que solo `card.html` lo cumplía y que las otras quince eran deuda conocida; al publicar `dialog.html` se comprobó una por una y las diecisiete lo tienen. La deuda estaba ya cerrada y no se había anotado.
+- **El Chrome del arnés no sirve para medir scroll ni rueda, y ya se ha perdido tiempo por ello.** La herramienta de rueda da resultados contradictorios —movió la página con un modal abierto y no la movió sin él— y **sus lecturas van un paso atrasadas**, así que hay que leer cuatro veces seguidas para que cuadre. No se fía de ella para nada que sea scroll. El bloqueo del fondo con modal está comprobado en el Chrome de Danny. Y en este entorno no hay barra de desplazamiento clásica (`innerWidth - clientWidth` da 0), así que **el salto de la barra al abrir un modal no se puede ver aquí**: es el único punto de `dialog` que queda sin comprobar, y la solución si molesta es `scrollbar-gutter: stable` en el `html`, que no se ha añadido porque cambia el layout de todas las vistas.
 
 ## El verificador en macOS
 
@@ -176,6 +217,7 @@ No hay copia local. Se leen por GitHub, en `https://github.com/material-componen
 | Repositorio | Qué es | Para qué |
 | --- | --- | --- |
 | `material-web` | Material Design Web Components, activo | **valores de token y recetas**: `tokens/versions/latest/sass/_md-comp-*.scss` |
+| `@material/web` en npm | el mismo material-web, empaquetado | **el SCSS del dialog**. Ya no está en el repo de GitHub, pero sí en el paquete |
 | `material-components-android` | la implementación de referencia de M3 | **prosa**: `docs/components/<Nombre>.md`, uno por componente |
 | `material-components-web` | MDC Web, la librería *anterior* a M3 | **nada**. El nombre parece autoritativo y no es M3 |
 | `material-components-ios`, `-flutter`, `material-components` | mantenimiento o parados | nada |
@@ -186,9 +228,20 @@ Sin checkout:
 https://api.github.com/repos/material-components/material-web/git/trees/main?recursive=1
 https://raw.githubusercontent.com/material-components/material-web/main/<ruta>
 https://raw.githubusercontent.com/material-components/material-components-android/master/<ruta>
+https://unpkg.com/@material/web@<version>/<ruta>
 ```
 
 La rama por defecto de Android es `master`, no `main`.
+
+### El dialog solo se lee en npm
+
+`material-web/components/dialog/` **devuelve 404** en GitHub, tanto en `master` como en `main`, y también `dialog/internal/_dialog.scss` y `dialog/dialog.ts`. Los tokens sí siguen ahí. El SCSS del dialog —que es de donde salen `position: fixed`, `margin: auto`, `min-height: 140px`, `max-height` y las dos clases de divisor— se lee del paquete:
+
+```
+https://unpkg.com/@material/web@2.0.0/dialog/internal/_dialog.scss
+```
+
+Es el mismo fichero, y es la razón de que el dialog sea el único componente cuya implementación se documentó sin tener el repo delante. La prosa sale de `material-components-android/master/docs/components/Dialog.md` (14 KB), que se sigue leyendo sin problema.
 
 ### Lo que NO se lee, para no perder tiempo
 
@@ -198,6 +251,9 @@ La rama por defecto de Android es `master`, no `main`.
 | `api.github.com/search/code` | pide autenticación, vacío sin ella |
 | `material-web/card/` | 404. El card está en `labs/card/` |
 | `material-web/tokens/versions/latest/` | 404. Los ficheros van en `…/latest/sass/` |
+| `material-web/components/dialog/` | 404, en `master` y en `main`. Va en npm: `unpkg.com/@material/web@2.0.0/` |
+| `api.github.com/repos/…/contents/` | 404 en todo `material-web`. El árbol tampoco responde |
+| `archive.org/wayback` para material-web | sin snapshots de esos ficheros |
 
 Para prosa de M3 hay que pegarla a mano. No se afirma lo que diga la web sin haberlo leído.
 

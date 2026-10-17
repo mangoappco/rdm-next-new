@@ -849,6 +849,7 @@ rdm-next-new/
 │   │   ├── button.html       Button · 13 secciones
 │   │   ├── card.html         Card · 9 secciones
 │   │   ├── color.html        Color · 18 secciones
+│   │   ├── dialog.html       Dialog · 6 secciones
 │   │   ├── divider.html      Divider · 6 secciones
 │   │   ├── elevation.html    Elevation · 6 secciones
 │   │   ├── fab-extended.html FAB extended · 6 secciones
@@ -909,7 +910,7 @@ showroom/
   los enlaces.
 - Cada componente tiene su propia vista en `showroom/components/`: `divider.html`,
   `icon-button.html`, `button.html`, `button-group.html`, `fab.html`,
-  `fab-extended.html`, `card.html`.
+  `fab-extended.html`, `card.html`, `dialog.html`.
 - **Y también las familias de `1-reference-tokens/` y `2-system-tokens/` que son
   documentación por sí mismas**, aunque no sean componentes: `color.html`,
   `typography.html`, `icon.html`, `elevation.html`, `measurement.html`, `motion.html`,
@@ -949,8 +950,7 @@ no existe un `on-background-variant`.
 - El enlace de vuelta en una vista apunta a `../index.html` y dice `RDM ManGo! App`.
 - El `<title>` de una vista es `<Vista> - RDM ManGo! App`. El del índice es
   `RDM ManGo! App`.
-- Toda vista lleva `<meta name="description">`. **Hoy solo lo cumple `card.html`**: las
-  otras quince se quedaron sin él y es deuda conocida.
+- Toda vista lleva `<meta name="description">`. Las diecisiete lo cumplen.
 
 Cuando se construye un componente nuevo, su vista se añade a `index.html` como enlace y
 se crea el archivo en `showroom/components/`. La portada nunca crece más allá de título +
@@ -965,7 +965,7 @@ de dónde sale cada cosa, y el precio es que cada vista tiene que acordarse de e
 
 ## 11. Componentes
 
-El catálogo de M3 tiene decenas de componentes y aquí hay **siete**. Se construyen uno a
+El catálogo de M3 tiene decenas de componentes y aquí hay **ocho**. Se construyen uno a
 uno, y ninguno se da por bueno sin medirlo en el navegador: `tools/verify-tokens.ps1`
 comprueba la arquitectura, no que el componente se vea bien.
 
@@ -980,6 +980,7 @@ El orden es el de `3-components/index.css`, que es el de carga y el de dependenc
 | FAB | `3-components/fab.css` | 7 | 14 | `fab.html`, 7 secciones |
 | FAB extended | `3-components/fab-extended.css` | 1 | 3 | `fab-extended.html`, 6 secciones |
 | Card | `3-components/card.css` | 11 | 12 | `card.html`, 9 secciones |
+| Dialog | `3-components/dialog.css` | 5 | 3 | `dialog.html`, 6 secciones |
 
 Las "clases" son las que expone el componente, sin contar las de `2-system-tokens` que compone para
 colocar la capa de estado: `button.css` nombra `.md-state-layer` y `.md-disabled` en sus
@@ -1288,13 +1289,29 @@ interacción.
 | `spacing.html` | `1-reference-tokens/spacing.css`, los 18 pasos de la escala | 1 |
 | `state.html` | `2-system-tokens/state.css` y `4-utilities/state.css`: estados y disabled | 2 |
 
-### Los siguientes
+### Dialog — el primero con JavaScript
 
-**`dialog` es el único componente del catálogo que queda por hacer.** Su nombre sigue
-apareciendo en `src/css/main.css`, en la línea que enumera la capa `comp` como
-«button, card, dialog», y esa línea es hoy más un recordatorio que una descripción: `card`
-ya existe y `dialog` no. Cuando entre, entra con las mismas reglas que los otros siete y
-su vista se añade a `index.html` como cualquier otra.
+`dialog.css` es el primer componente del catálogo que necesita `src/js/`. La regla del
+sistema es que un componente es CSS y solo se escribe JS cuando el CSS no puede: abrir y
+cerrar un `<dialog>` son llamadas, así que existen. Pero son dos —`showModal()` y
+`close()`— y todo lo demás sigue siendo CSS. La vista se conecta con
+`<script type="module" src="../../src/js/main.js">`; ningún HTML del repo lleva `<script>`
+con código dentro.
+
+El elemento es un `<dialog>` nativo, y por eso su base declara solo `position: relative`:
+el navegador pone la caja en el centro cuando la app llama a `showModal()`. M3 necesita
+`position: fixed` y `margin: auto` porque su host es un web component.
+
+Tres cosas que se saltaban por estar solo en la hoja y conviene tener a mano:
+
+- **`display` va en `.md-dialog[open]`, nunca en la base.** El navegador esconde un
+  `<dialog>` sin `open` con una regla suya, y la capa 3 la pisaba con un `display: flex`
+  de autor. Un dialog cerrado se veía en la página.
+- **Los límites de alto no están en la tabla de specs** —dice «Container height:
+  Dynamic»— y son los que hacen que el scroll interno funcione. Sin ellos, `min-height: 0`
+  y `overflow-y: auto` son código muerto.
+- **El id de cada dialog tiene que ser único.** `data-open-dialog` es lo único que dice
+  qué botón abre qué dialog, y con un id repetido los dos abren el primero, sin error.
 
 ---
 

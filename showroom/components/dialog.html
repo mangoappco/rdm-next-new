@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Dialog de RDM Next: superficie modal con icono, titular, contenido y acciones.">
+  <title>Dialog — RDM ManGo! App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+  <link rel="stylesheet" href="../../src/css/main.css">
+  <link rel="stylesheet" href="../assets/showroom.css">
+    <script type="module" src="../../src/js/main.js"></script>
+<script src="../assets/showroom.js"></script>
+</head>
+
+<!--
+  Esta vista tiene seis pares: Clase base, Sin titular, Modal, Lista, Divisor
+  y Contenido largo. Se construyen par a par, mirando cada uno antes de
+  escribir el siguiente.
+
+  LO QUE SELEE DE M3, Y DE DONDE
+  -------------------------------
+  `m3.material.io/components/dialogs/specs` NO SE LEE: son 57 KB de shell de
+  Angular y sale solo el titulo. Igual con Googlebot y Bingbot, y el snapshot
+  de Wayback del 2026-10-11 solo guarda la shell.
+
+  Las dos fuentes que SI se han leido, y todo lo de aqui sale de ellas:
+
+    - la tabla de specs, pegada a mano. Ahi estan las medidas y el vocabulario.
+    - `Dialog.md` de Android, en `docs/components/` -- el mismo sitio que
+      `Card.md`. Es la prosa: 14 KB con anatomia, propiedades y variantes.
+
+  De los tokens se lee el codigo: `tokens/versions/latest/sass/_md-comp-dialog.scss`
+  y `dialog/internal/_dialog.scss` y `dialog/internal/dialog.ts`.
+
+  EL ELEMENTO ES UN <dialog> NATIVO, Y POR QUE
+  --------------------------------------------
+  M3 monta el dialog con un web component, y por eso su host lleva
+  `position: fixed` y `margin: auto`: un elemento propio no tiene el
+  comportamiento de centrado que el navegador da al `<dialog>`.
+
+  Aqui el elemento es un `<dialog>` de verdad, asi que el navegador pone la
+  caja en el centro de la pantalla cuando la app llama a `showModal()`. Y el
+  componente declara solo `position: relative`.
+
+  Medido en Chrome, que es lo que importa:
+
+      <dialog open>   sin showModal   position: relative  -> fluye en su sitio
+      showModal()     en la app       position: absolute  -> centro del viewport
+
+  O sea que el specimen de esta vista se queda en su seccion, y la app
+  recibe el centrado y el top layer sin que escribamos una linea de overlay.
+
+  Y SIN z-index, y no es olvido
+  ----------------------------
+  Con `showModal()` el dialog entra en el TOP LAYER, que se pinta por encima
+  de cualquier `z-index` de la pagina. Declarar uno seria un numero que no
+  hace nada. Por eso el componente no lo tiene.
+
+  LOS BOTONES SON DE TEXTO, Y LOS PONE EL AUTOR
+  ---------------------------------------------
+  `Dialog.md` los describe como `Widget.Material3.Button.TextButton.Dialog` y
+  habla de neutral, negativo y positivo. El dialog no los viste mas que para
+  separarlos: quien los pone decide cual es cual, con las clases de siempre.
+
+  Los dos botones de la clase base dicen `Cancelar` y `Aceptar`, que son
+  nuestros: M3 no nombra las acciones de un dialogo, solo las llama botones.
+  Es el mismo criterio que en la card, donde los botones del specimen son
+  `Action` y `Primary` y el titular si lleva el vocabulario de M3
+  (`Headline`, `Subhead`, `Supporting text`).
+
+  LA JERARQUIA LA PONE EL AUTOR, Y EN EL PAR LISTA NO ES LA DE M3
+  ---------------------------------------------------------------
+  Aqui hay una decision nuestra que conviene que no se pierda. M3 pone los
+  botones de un dialog en texto, y por eso los tres primeros pares llevan
+  `Cancelar` y `Aceptar` los dos en `md-button-text`.
+
+  El par Lista no lo hace. Alli `Eliminar` va en `md-button-filled` y
+  `Cancelar` en `md-button-text`, y el motivo es la jerarquia que ya tiene el
+  componente button: `filled` es la variante PRINCIPAL --es la base, y las
+  demas la desvisten-- y `text` la secundaria. Ver la tabla de `button.css`.
+
+  Se prefirio la jerarquia del sistema a la receta de M3 porque `filled` ya
+  significa en todo el sistema "la accion que quieres que se pulse", y porque
+  en una confirmacion de borrado que la accion destructiva sea la mas
+  destacada es justo lo que evita el borrado accidental. Con los dos en texto
+  la principal solo se distingue por el orden de lectura.
+
+  Y si una aplicacion prefiere el criterio de M3, no hay nada que impedirlo:
+  el dialog no impone ninguna variante. Es el autor quien elige, y por eso el
+  componente no dice nada de esto en su CSS.
+
+  CADA DIALOG NECESITA UN ID PROPIO, Y NO ES DIALOGOSO LO QUE LO DICE
+  ------------------------------------------------------------------
+  Con varios dialogs en la misma pagina --una tabla de productos con un boton
+  de eliminar por fila-- el atributo `data-open-dialog` es lo UNICO que dice
+  que boton abre que dialog. Y el valor es un id, no una referencia al boton.
+
+  Medido con tres filas: abrir el segundo solo abre el segundo, y su boton de
+  cerrar --que se busca con `closest('dialog')`-- cierra el suyo aunque haya
+  otro abierto. Cerrar por fuera tambien: el cierre va al dialog que recibio
+  el clic. Y dos clics rapidos en el mismo boton no abren dos, porque
+  `abrir()` tiene la guarda `if (dialog.open) return`.
+
+  El fallo es el id repetido, y es el que hace un bucle de PHP mal hecho:
+
+      <button data-open-dialog="dialogo-prod">Eliminar A</button>
+      <button data-open-dialog="dialogo-prod">Eliminar B</button>
+      <dialog id="dialogo-prod">...</dialog>
+
+  Los dos botones abren el MISMO dialog, porque `getElementById` devuelve el
+  primero con ese id. No hay error, no hay aviso y no se ve: simplemente se
+  borra el producto equivocado, que es el peor modo de fallo que hay en un
+  POS. Por eso el par de abajo lleva los tres dialogs con id distinto.
+
+  EL DIVISOR, Y POR QUE VA EN `absolute`
+  -------------------------------------
+  El par es casi entero una decision de M3, y se leyo de su fuente:
+  `dialog/internal/_dialog.scss` en `@material/web@2.0.0`, que es donde esta
+  el SCSS que la pagina de material-web.dev ya no publica.
+
+      md-divider { display: none; position: absolute; }
+      .has-headline.show-top-divider .headline md-divider { display: flex; }
+      .has-actions.show-bottom-divider .actions md-divider { display: flex; }
+      .headline md-divider { bottom: 0; }
+      .actions  md-divider { top: 0; }
+
+  O sea que las dos clases existen de verdad, y el divisor va pegado al borde
+  de su ranura y NO OCUPA SITIO. Aqui se reproduce tal cual, y el motivo se
+  ve midiendo: en flujo el `<hr>` se come los huecos de la ranura y sale
+  asimetrico.
+
+      ranura del titular    16px ARRIBA   16px ABAJO
+      ranura de acciones    24px ARRIBA    8px ABAJO
+
+  Ese 8px de abajo es el hueco ENTRE BOTONES, que un divisor no es. Con
+  `absolute` el divisor mide 0 de alto, pero la caja no se queda igual: falta
+  airearle por su lado, y eso se mide con las cajas REALES de los glifos.
+
+      con absolute pelado    divisor sup   0px del glifo  <- parecia un subrayado
+                             divisor inf  25px / 10px     <- asimetrico
+      con el aire de :has()  divisor sup  16px / 17px
+                             divisor inf  26px / 26px
+
+  Y el aire va en las dos ranuras del DIVISOR, con `:has()`, por dos motivos:
+  porque sin el el margen de 16px del contenido ya hace ese papel y duplicarlo
+  lo estropea, y porque sin la condicion todo dialog SIN separador crecia
+  32px de golpe.
+
+  Del componente divider no se toca ni el grosor ni el color. Lo unico que
+  hace el dialog es decidir DONDE va la linea y CUANTO aire lleva al lado.
+
+  LOS DOS DIVISORES SON INDEPENDIENTES
+  ------------------------------------
+  El par trae los dos porque es lo que mejor enseña que son dos ranuras y
+  no una variante con dos posiciones. Se pueden poner los dos, uno o ninguno.
+
+  Y aqui conviene no liarse con las fuentes: la anatomia de Android describe
+  UN divider opcional, entre el texto de apoyo y los botones, y la tabla de
+  specs de M3 no tiene ninguna linea de divisor. Lo que dice "dos" es el
+  SCSS de M3 web, que es el unico sitio donde aparecen las dos clases.
+
+  LOS TOKENS DEL DIVISOR ESTAN DEPRECATED
+  --------------------------------------
+  M3 publicaba UN solo token, `md.comp.dialog.with-divider.divider.height`, y
+  sus dos lineas --altura y color-- salen con `@deprecated` a favor de
+  `md.comp.divider.thickness` y `md.comp.divider.color`. O sea que el divisor
+  del dialog ya no tiene token propio: se usa el del componente, que es
+  exactamente lo que hace `.md-divider`.
+
+  De ahi sale una diferencia que parece un fallo y no lo es: el token viejo
+  del dialog era `outline` y el del componente divider es `outline-variant`.
+  Aqui sale `outline-variant` porque es el que M3 manda usar ya.
+
+  LOS LIMITES DE ALTO, Y QUE SIN ELLOS NO HAY SCROLL
+  ---------------------------------------------------
+  La tabla de specs dice "Container height: Dynamic" y no da ni un maximo ni un
+  minimo. Los dos salen del SCSS de M3:
+
+      max-height: min(560px, calc(100% - 48px));
+      min-height: 140px;
+
+  Se adoptan por una razon que no es faithfulness: SIN ELLOS LAS REGLAS DE SCROLL
+  NO EXISTEN. La ranura de contenido declara `min-height: 0` y `overflow-y:
+  auto`, y sin un tope en la caja madre no hay nada que la obligue a encogerse.
+  Medido antes de arreglarto, con 40 parrafos:
+
+      dialog          1584px     ventana 700px
+      por debajo      884px      el boton de cerrar, inalcanzable
+      scroll dentro   NO
+
+  El texto no hacia scroll: empujaba la caja. Ahora, modal:
+
+      dialog          560px      el tope
+      contenido       656px dentro de 400px visibles
+      scroll dentro   SI, y el boton sigue a la vista al llegar al final
+
+  Y EL 560 DEL ALTO VIENE DEL TOKEN DEL ANCHO
+  -----------------------------------------
+  M3 escribe el 560 como literal en los dos ejes, asi que aqui el alto sale de
+  `--md-ref-container-width-dialog-max` en vez de repetir el numero. Se hizo con
+  la cabeza sabida y queda escrito en `measurement.css`: **eso ata los dos
+  limites**, y cambiar el ancho maximo del dialog cambia tambien su alto
+  maximo.
+
+  El 140 va con primitiva propia en `container-height.css` porque no es un
+  `spacing` ni un valor de la escala --que acaba en 72px--, y la REGLA 1 no
+  deja un px suelto en la capa 2. Y es un MINIMO, para que un dialog con poco
+  texto no quede aplastado: el par "Sin titular" paso de 132px a 140px al
+  declararlo.
+
+  Y SOLO SCROLLEA SIENDO MODAL
+  ---------------------------
+  Este par lleva boton y `showModal` a proposito. Un `<dialog open>` sin modal
+  es `position: relative` y su `max-height` en porcentaje se mide contra una
+  altura que en la pagina todavia no existe, asi que no resuelve: medido, el
+  dialog llega a 1584px y el specimen se estira con el. Es la misma limitacion
+  que tiene M3, cuyo `max-height` va sobre un host `position: fixed` que siempre
+  tiene la altura del viewport como referencia.
+
+  EL TITULAR LLEVA md-type-headline-small, Y NO SOBRA
+  --------------------------------------------------
+  El `<h3>` del navegador tiene tamano propio -- como los `h1..h6`, que
+  `reset.css` conserva a proposito -- asi que la ranura da el `font` y el
+  tamano lo pone la utilidad. Es el mismo caso que el titular de la card,
+  que lleva `md-type-title-large`.
+
+  EL ICONO VA DENTRO DE LA CABECERA
+  ---------------------------------
+  No suelta. M3 envuelve las dos ranuras --icon y titular-- en una sola
+  cabecera con `flex-direction: column`, y se ve en `dialog/internal/dialog.ts`.
+  Por eso el icono va encima del titular, no al lado, y por eso
+  `.md-dialog-icon` es hijo de `.md-dialog-headline`.
+
+  ACCESIBILIDAD: `aria-labelledby`, Y SOLO ESO
+  -------------------------------------------
+  M3 declara tres cosas en su `<dialog>`, y solo se copia una:
+
+      aria-label=${ariaLabel || nothing}
+      aria-labelledby=${this.hasHeadline ? 'headline' : nothing}
+      role=${this.type === 'alert' ? 'alertdialog' : nothing}
+
+  Se escribe `aria-labelledby` apuntando al id del titular, que es el caso
+  normal de un dialog con cabecera.
+
+  NO se escribe `aria-describedby`. No aparece en M3: su componente se apoya
+  en `aria-labelledby` y el contenido se lee en orden, asi que el texto de
+  apoyo ya se anuncia sin atributo. Ponerlo seria inventar una capa de
+  nombres que el componente no tiene.
+
+  NO se escribe `role="alertdialog"` porque no es de esta clase base: M3 lo
+  expone como un token aparte para el dialog urgente, y aqui no hay modo de
+  cambiarlo desde el marcado.
+
+  Y CON H2 QUE EL ATRIBUTO SE VA
+  -------------------------------
+  El `aria-labelledby` de M3 es condicional --`this.hasHeadline ? ... : nothing`--
+  porque sin titular no hay a que apuntar, y un atributo que apunta a un id
+  inexistente es peor que no ponerlo. En un par sin titular hay que quitarlo,
+  y eso se anota en la prosa de ese par.
+
+  Y EL SCRIM NO ENTRA EN NINGUN SPECIMEN
+  ---------------------------------------
+  Es `position: fixed` con `inset: 0`, o sea que ocupa la pantalla entera. En
+  medio de una pagina que scrollea te pinta el showroom de negro y no se ve
+  nada mas. Solo aparece con `showModal()`, en el par Modal.
+
+  Se prueba de verdad en `lab.html`, que es el banco de pruebas: ahi se midio
+  que abrir uno y cerrar otro no se pisan, y que dos clics rapidos en el mismo
+  boton no lanzan `InvalidStateError`.
+
+  LO QUE NO SE HACE, Y POR QUE
+  ----------------------------
+  - El full-screen dialog. Tiene fichero de token y hasta tabla de medidas, y
+    sin embargo el `Dialog.md` de Android dice literal que no tiene
+    implementacion de Material. Es el mismo caso que `max-height` en la card.
+  - Variantes de color. M3 publica UNA sola ficha para el dialog, a diferencia
+    de la card que tiene tres.
+  - Los tokens `subhead-*` de M3 estan muertos: nueve tokens, 19 menciones en
+    su fichero y CERO en la implementacion. No hay ranura de subtitulo.
+-->
+
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <main class="sr-page">
+
+    <!-- HEADER: inicio (barra + titulo + descripcion) -->
+    <header class="sr-header">
+      <div class="sr-bar">
+        <p class="md-type-body-medium"><a href="../index.html">RDM ManGo! App</a></p>
+        <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
+      </div>
+      <h1 class="md-type-display-large">Dialog</h1>
+      <p class="md-type-body-large">Los dialogs interrumpen para dar una información crítica o pedir una decisión.</p>
+    </header>
+    <!-- HEADER: fin -->
+
+    <hr class="md-divider">
+
+    <!-- PAREJA: la clase base (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Clase base</h2>
+      <p class="md-type-body-medium">Icono, titular, contenido y acciones. El ancho crece con el texto entre 280 y 560.</p>
+      <div class="sr-specimen">
+<dialog class="md-dialog" open aria-labelledby="dialog-title">
+  <div class="md-dialog-headline">
+    <div class="md-dialog-icon"><span class="md-icon">info</span></div>
+    <h3 class="md-type-headline-small" id="dialog-title">Headline</h3>
+  </div>
+  <div class="md-dialog-content">
+    <p class="md-type-body-medium">Supporting text</p>
+  </div>
+  <div class="md-dialog-actions">
+    <button class="md-button md-button-text" type="button">Cancelar</button>
+    <button class="md-button md-button-text" type="button">Aceptar</button>
+  </div>
+</dialog>
+      </div>
+      <pre class="sr-code"><code>&lt;dialog class="md-dialog" open aria-labelledby="dialog-title"&gt;
+  &lt;div class="md-dialog-headline"&gt;
+    &lt;div class="md-dialog-icon"&gt;&lt;span class="md-icon"&gt;info&lt;/span&gt;&lt;/div&gt;
+    &lt;h3 class="md-type-headline-small" id="dialog-title"&gt;Headline&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div class="md-dialog-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Supporting text&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-dialog-actions"&gt;
+    &lt;button class="md-button md-button-text" type="button"&gt;Cancelar&lt;/button&gt;
+    &lt;button class="md-button md-button-text" type="button"&gt;Aceptar&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/dialog&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+    <!-- PAREJA: sin titular (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Sin titular</h2>
+      <p class="md-type-body-medium">Sin titular ni icono, el texto de apoyo sube al borde. El aria-labelledby también se va: no hay id al que apuntar.</p>
+      <div class="sr-specimen">
+<dialog class="md-dialog" open>
+  <div class="md-dialog-content">
+    <p class="md-type-body-medium">Supporting text</p>
+  </div>
+  <div class="md-dialog-actions">
+    <button class="md-button md-button-text" type="button">Cancelar</button>
+    <button class="md-button md-button-text" type="button">Aceptar</button>
+  </div>
+</dialog>
+      </div>
+      <pre class="sr-code"><code>&lt;dialog class="md-dialog" open&gt;
+  &lt;div class="md-dialog-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Supporting text&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-dialog-actions"&gt;
+    &lt;button class="md-button md-button-text" type="button"&gt;Cancelar&lt;/button&gt;
+    &lt;button class="md-button md-button-text" type="button"&gt;Aceptar&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/dialog&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+    <!-- PAREJA: el dialog modal (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Modal</h2>
+      <p class="md-type-body-medium">Con showModal el dialog sale centrado, tapa el fondo y el scroll de debajo se bloquea. El velo es el ::backdrop nativo: no hay que escribirlo.</p>
+      <div class="sr-specimen sr-specimen-gap">
+<button class="md-button md-button-filled" type="button" data-open-dialog="dialogo-modal">Abrir dialog</button>
+
+<dialog class="md-dialog" id="dialogo-modal" aria-labelledby="dialogo-modal-titulo">
+  <div class="md-dialog-headline">
+    <h3 class="md-type-headline-small" id="dialogo-modal-titulo">Headline</h3>
+  </div>
+  <div class="md-dialog-content">
+    <p class="md-type-body-medium">Supporting text</p>
+  </div>
+  <div class="md-dialog-actions">
+    <button class="md-button md-button-text" type="button" data-close-dialog>Cancelar</button>
+    <button class="md-button md-button-text" type="button" data-close-dialog>Aceptar</button>
+  </div>
+</dialog>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-button md-button-filled" type="button" data-open-dialog="dialogo-modal"&gt;Abrir dialog&lt;/button&gt;
+
+&lt;dialog class="md-dialog" id="dialogo-modal" aria-labelledby="dialogo-modal-titulo"&gt;
+  &lt;div class="md-dialog-headline"&gt;
+    &lt;h3 class="md-type-headline-small" id="dialogo-modal-titulo"&gt;Headline&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div class="md-dialog-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Supporting text&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-dialog-actions"&gt;
+    &lt;button class="md-button md-button-text" type="button" data-close-dialog&gt;Cancelar&lt;/button&gt;
+    &lt;button class="md-button md-button-text" type="button" data-close-dialog&gt;Aceptar&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/dialog&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+    <!-- PAREJA: lista (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Lista</h2>
+      <p class="md-type-body-medium">Un trigger y un dialog por fila, cada uno con su id. Abrir uno no toca los otros dos, y cada botón de cerrar cierra el suyo. <code>data-open-dialog</code> es lo único que dice qué botón abre qué dialog, así que el id tiene que ser único por fila.</p>
+      <div class="sr-specimen sr-specimen-gap">
+<button class="md-button md-button-filled" type="button" data-open-dialog="dialogo-lista-1">Eliminar Alfa</button>
+
+<dialog class="md-dialog" id="dialogo-lista-1" aria-labelledby="dialogo-lista-1-titulo">
+  <div class="md-dialog-headline">
+    <h3 class="md-type-headline-small" id="dialogo-lista-1-titulo">¿Eliminar Alfa?</h3>
+  </div>
+  <div class="md-dialog-content">
+    <p class="md-type-body-medium">Se borrará de los 3 almacenes. No se puede deshacer.</p>
+  </div>
+  <div class="md-dialog-actions">
+    <button class="md-button md-button-text" type="button" data-close-dialog>Cancelar</button>
+    <button class="md-button md-button-filled" type="button" data-close-dialog>Eliminar</button>
+  </div>
+</dialog>
+
+<button class="md-button md-button-filled" type="button" data-open-dialog="dialogo-lista-2">Eliminar Beta</button>
+
+<dialog class="md-dialog" id="dialogo-lista-2" aria-labelledby="dialogo-lista-2-titulo">
+  <div class="md-dialog-headline">
+    <h3 class="md-type-headline-small" id="dialogo-lista-2-titulo">¿Eliminar Beta?</h3>
+  </div>
+  <div class="md-dialog-content">
+    <p class="md-type-body-medium">Tiene 12 lotes en promoción. Se cancelarán también.</p>
+  </div>
+  <div class="md-dialog-actions">
+    <button class="md-button md-button-text" type="button" data-close-dialog>Cancelar</button>
+    <button class="md-button md-button-filled" type="button" data-close-dialog>Eliminar</button>
+  </div>
+</dialog>
+
+<button class="md-button md-button-filled" type="button" data-open-dialog="dialogo-lista-3">Eliminar Gamma</button>
+
+<dialog class="md-dialog" id="dialogo-lista-3" aria-labelledby="dialogo-lista-3-titulo">
+  <div class="md-dialog-headline">
+    <h3 class="md-type-headline-small" id="dialogo-lista-3-titulo">¿Eliminar Gamma?</h3>
+  </div>
+  <div class="md-dialog-content">
+    <p class="md-type-body-medium">Es el único con ventas este mes. Quedará sin histórico.</p>
+  </div>
+  <div class="md-dialog-actions">
+    <button class="md-button md-button-text" type="button" data-close-dialog>Cancelar</button>
+    <button class="md-button md-button-filled" type="button" data-close-dialog>Eliminar</button>
+  </div>
+</dialog>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-button md-button-filled" type="button" data-open-dialog="dialogo-lista-1"&gt;Eliminar Alfa&lt;/button&gt;
+
+&lt;dialog class="md-dialog" id="dialogo-lista-1" aria-labelledby="dialogo-lista-1-titulo"&gt;
+  &lt;div class="md-dialog-headline"&gt;
+    &lt;h3 class="md-type-headline-small" id="dialogo-lista-1-titulo"&gt;¿Eliminar Alfa?&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div class="md-dialog-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Se borrará de los 3 almacenes. No se puede deshacer.&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-dialog-actions"&gt;
+    &lt;button class="md-button md-button-text" type="button" data-close-dialog&gt;Cancelar&lt;/button&gt;
+    &lt;button class="md-button md-button-filled" type="button" data-close-dialog&gt;Eliminar&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/dialog&gt;
+
+&lt;button class="md-button md-button-filled" type="button" data-open-dialog="dialogo-lista-2"&gt;Eliminar Beta&lt;/button&gt;
+
+&lt;dialog class="md-dialog" id="dialogo-lista-2" aria-labelledby="dialogo-lista-2-titulo"&gt;
+  &lt;div class="md-dialog-headline"&gt;
+    &lt;h3 class="md-type-headline-small" id="dialogo-lista-2-titulo"&gt;¿Eliminar Beta?&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div class="md-dialog-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Tiene 12 lotes en promoción. Se cancelarán también.&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-dialog-actions"&gt;
+    &lt;button class="md-button md-button-text" type="button" data-close-dialog&gt;Cancelar&lt;/button&gt;
+    &lt;button class="md-button md-button-filled" type="button" data-close-dialog&gt;Eliminar&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/dialog&gt;
+
+&lt;button class="md-button md-button-filled" type="button" data-open-dialog="dialogo-lista-3"&gt;Eliminar Gamma&lt;/button&gt;
+
+&lt;dialog class="md-dialog" id="dialogo-lista-3" aria-labelledby="dialogo-lista-3-titulo"&gt;
+  &lt;div class="md-dialog-headline"&gt;
+    &lt;h3 class="md-type-headline-small" id="dialogo-lista-3-titulo"&gt;¿Eliminar Gamma?&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div class="md-dialog-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Es el único con ventas este mes. Quedará sin histórico.&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-dialog-actions"&gt;
+    &lt;button class="md-button md-button-text" type="button" data-close-dialog&gt;Cancelar&lt;/button&gt;
+    &lt;button class="md-button md-button-filled" type="button" data-close-dialog&gt;Eliminar&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/dialog&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+    <!-- PAREJA: divisor (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Divisor</h2>
+      <p class="md-type-body-medium">Un separador opcional en cada ranura. Las dos son independientes: puedes ponerlas, poner una o no poner ninguna. El sitio lo decide dónde pongas el <code>&lt;hr&gt;</code>, no una clase. Cada uno lleva 16px de aire por su lado, así que este dialog es más alto que uno sin separador.</p>
+      <div class="sr-specimen">
+<dialog class="md-dialog" open aria-labelledby="dialog-divisor-titulo">
+  <div class="md-dialog-headline">
+    <h3 class="md-type-headline-small" id="dialog-divisor-titulo">Headline</h3>
+    <hr class="md-divider">
+  </div>
+  <div class="md-dialog-content">
+    <p class="md-type-body-medium">Supporting text</p>
+  </div>
+  <div class="md-dialog-actions">
+    <hr class="md-divider">
+    <button class="md-button md-button-text" type="button">Cancelar</button>
+    <button class="md-button md-button-text" type="button">Aceptar</button>
+  </div>
+</dialog>
+      </div>
+      <pre class="sr-code"><code>&lt;dialog class="md-dialog" open aria-labelledby="dialog-divisor-titulo"&gt;
+  &lt;div class="md-dialog-headline"&gt;
+    &lt;h3 class="md-type-headline-small" id="dialog-divisor-titulo"&gt;Headline&lt;/h3&gt;
+    &lt;hr class="md-divider"&gt;
+  &lt;/div&gt;
+  &lt;div class="md-dialog-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Supporting text&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-dialog-actions"&gt;
+    &lt;hr class="md-divider"&gt;
+    &lt;button class="md-button md-button-text" type="button"&gt;Cancelar&lt;/button&gt;
+    &lt;button class="md-button md-button-text" type="button"&gt;Aceptar&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/dialog&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+    <!-- PAREJA: contenido largo (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Contenido largo</h2>
+      <p class="md-type-body-medium">El texto hace scroll dentro del dialog en vez de empujarlo fuera de la pantalla. El límite de 560px viene del componente y es lo que lo hace posible; los botones de abajo nunca se salen y se siguen viendo. Solo scrollea siendo modal: sin <code>showModal</code> el dialog crece hasta 1584px, porque su <code>max-height</code> se mide contra una altura que en la página todavía no existe.</p>
+      <div class="sr-specimen">
+<button class="md-button md-button-filled" type="button" data-open-dialog="dialogo-largo">Abrir dialog largo</button>
+
+<dialog class="md-dialog" id="dialogo-largo" aria-labelledby="dialogo-largo-titulo">
+  <div class="md-dialog-headline">
+    <h3 class="md-type-headline-small" id="dialogo-largo-titulo">Headline</h3>
+  </div>
+  <div class="md-dialog-content">
+    <p class="md-type-body-medium">Al eliminar un producto se retiran también sus existencias en los tres almacenes donde está dado de alta.</p>
+    <p class="md-type-body-medium">Los lotes que estén en promoción se cancelan en la misma operación y los descuentos no se recuperan.</p>
+    <p class="md-type-body-medium">El histórico de ventas del producto se conserva 90 días por auditoría y después se borra sin copia.</p>
+    <p class="md-type-body-medium">Si el producto forma parte de un pedido abierto, el pedido se cancela y el cliente recibe un aviso.</p>
+    <p class="md-type-body-medium">Las facturas que ya se emitieron no se modifican: muestran el producto aunque ya no exista en el catálogo.</p>
+    <p class="md-type-body-medium">El conteo físico que se hizo en el último inventario no se corrige: quedará una diferencia de stock.</p>
+    <p class="md-type-body-medium">Los códigos de barras y las referencias del fabricante dejan de resolver en el lector del punto de venta.</p>
+    <p class="md-type-body-medium">Esta acción no se puede deshacer. No hay ningún paso atrás y el soporte no puede revertirla.</p>
+    <p class="md-type-body-medium">Si solo quieres dejar de venderlo y conservarlo, usa la baja lógica en lugar de eliminarlo.</p>
+    <p class="md-type-body-medium">Los usuarios con permiso de administrador verán el cambio en cuanto se refresque el catálogo.</p>
+    <p class="md-type-body-medium">El cambio queda registrado en el bitácora con tu usuario, la fecha y la terminal desde la que se hizo.</p>
+    <p class="md-type-body-medium">Si estás en el cierre de caja, espera a terminar antes de continuar: el corte se bloqueará.</p>
+  </div>
+  <div class="md-dialog-actions">
+    <button class="md-button md-button-text" type="button" data-close-dialog>Cancelar</button>
+    <button class="md-button md-button-filled" type="button" data-close-dialog>Eliminar</button>
+  </div>
+</dialog>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-button md-button-filled" type="button" data-open-dialog="dialogo-largo"&gt;Abrir dialog largo&lt;/button&gt;
+
+&lt;dialog class="md-dialog" id="dialogo-largo" aria-labelledby="dialogo-largo-titulo"&gt;
+  &lt;div class="md-dialog-headline"&gt;
+    &lt;h3 class="md-type-headline-small" id="dialogo-largo-titulo"&gt;Headline&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div class="md-dialog-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Al eliminar un producto se retiran también sus existencias en los tres almacenes donde está dado de alta.&lt;/p&gt;
+    &lt;p class="md-type-body-medium"&gt;Los lotes que estén en promoción se cancelan en la misma operación y los descuentos no se recuperan.&lt;/p&gt;
+    &lt;p class="md-type-body-medium"&gt;El histórico de ventas del producto se conserva 90 días por auditoría y después se borra sin copia.&lt;/p&gt;
+    &lt;p class="md-type-body-medium"&gt;Si el producto forma parte de un pedido abierto, el pedido se cancela y el cliente recibe un aviso.&lt;/p&gt;
+    &lt;p class="md-type-body-medium"&gt;Las facturas que ya se emitieron no se modifican: muestran el producto aunque ya no exista en el catálogo.&lt;/p&gt;
+    &lt;p class="md-type-body-medium"&gt;El conteo físico que se hizo en el último inventario no se corrige: quedará una diferencia de stock.&lt;/p&gt;
+    &lt;p class="md-type-body-medium"&gt;Los códigos de barras y las referencias del fabricante dejan de resolver en el lector del punto de venta.&lt;/p&gt;
+    &lt;p class="md-type-body-medium"&gt;Esta acción no se puede deshacer. No hay ningún paso atrás y el soporte no puede revertirla.&lt;/p&gt;
+    &lt;p class="md-type-body-medium"&gt;Si solo quieres dejar de venderlo y conservarlo, usa la baja lógica en lugar de eliminarlo.&lt;/p&gt;
+    &lt;p class="md-type-body-medium"&gt;Los usuarios con permiso de administrador verán el cambio en cuanto se refresque el catálogo.&lt;/p&gt;
+    &lt;p class="md-type-body-medium"&gt;El cambio queda registrado en el bitácora con tu usuario, la fecha y la terminal desde la que se hizo.&lt;/p&gt;
+    &lt;p class="md-type-body-medium"&gt;Si estás en el cierre de caja, espera a terminar antes de continuar: el corte se bloqueará.&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-dialog-actions"&gt;
+    &lt;button class="md-button md-button-text" type="button" data-close-dialog&gt;Cancelar&lt;/button&gt;
+    &lt;button class="md-button md-button-filled" type="button" data-close-dialog&gt;Eliminar&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/dialog&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+  </main>
+  <!-- MAIN: fin -->
+</body>
+</html>
