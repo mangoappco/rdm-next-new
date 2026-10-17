@@ -1,0 +1,390 @@
+/* ==========================================================================
+   3-components/dialog.css — DIALOG (Capa 3)
+   ==========================================================================
+
+   QUE ES ESTE COMPONENTE
+   ----------------------
+   Una superficie modal que interrumpe para dar una informacion critica o
+   pedir una decision. M3 lo publica como UN componente, con una sola variante
+   basica, a diferencia de la card que tiene tres fichas de color.
+
+   M3 TAMBIEN PUBLICA UN FULL-SCREEN DIALOG, Y AQUI NO ESTA
+   ------------------------------------------------------
+   Hay un fichero de token para el (`_md-comp-full-screen-dialog.scss`) y hasta
+   una tabla de medidas en su pagina de specs. Pero no tiene implementacion:
+   el `Dialog.md` de Android --la unica fuente de prosa legible-- lo dice
+   literal: "There is no specific Material implementation of a full-screen
+   dialog", y pasa a explicar como hacerlo con un DialogFragment por tu cuenta.
+
+   Es el mismo caso que `max-height` en el medio de la card y que
+   `.md-card-horizontal`: existen en la especificacion y no se pueden copiar
+   tal cual. Se documenta aqui para que no se proponga otra vez.
+
+   RECETA M3, TRANSCRITA (tokens/versions/latest/sass/, v34.0.21)
+   ------------------------------------------------------------
+      container-color        surface-container-high
+      container-elevation    level3
+      container-shape        corner-extra-large        (28dp)
+      headline-color         on-surface
+      headline               headline-small
+      subhead-color          on-surface                <-- token SIN USAR
+      subhead                headline-small            <-- token SIN USAR
+      supporting-text-color  on-surface-variant
+      supporting-text        body-medium
+      action                 label-large en primary
+      with-icon              24px en secondary
+      with-divider           1px en outline
+
+   Y LOS TOKENS `subhead-*` ESTAN MUERTOS, Y NO ES UNA LECTURA
+   -----------------------------------------------------------
+   Aqui hay algo que solo aparece al contarlos: `_md-comp-dialog.scss` declara
+   nueve tokens `subhead-*` --color, font, size, line-height, tracking y
+   weight-- y la implementacion NO LOS USA NI UNA VEZ. `grep -c subhead` da 19
+   en el fichero de tokens y **0** en `dialog/internal/_dialog.scss`.
+
+   Se deja escrito porque es facil tropezar con ellos: la ranura de texto se
+   llama `content` y usa los tokens `supporting-text-*`. No hay ranura de
+   subtitulo en el dialog. Si alguien los busca para maquetar un subtitulo, no
+   es que esten escondidos: es que M3 los publico y no los conecto.
+
+   MEDIDAS, y DE DONDE SALE CADA UNA
+   ---------------------------------
+   M3 NO publica medidas del dialog como tokens: las da en una tabla en su
+   pagina de specs. De ahi salen, y todas menos dos caen en la escala:
+
+      contenedor, padding  24dp    spacing-300
+      entre titular y cuerpo 16dp spacing-200
+      entre icono y titular 16dp   spacing-200
+      entre botones         8dp    spacing-100
+      entre cuerpo y acciones 24dp spacing-300
+      ancho minimo         280dp   primitiva propia
+      ancho maximo         560dp   primitiva propia
+      scrim                32%     --md-sys-scrim-opacity
+
+   Los dos limites de ancho NO estan en la escala de espaciado --que acaba en
+   72px-- y por eso tienen primitiva propia en `container-height.css`.
+
+   Y EL `min-height: 140px` DE M3 NO ESTA EN SU TABLA
+   ---------------------------------------------------
+   `dialog/internal/_dialog.scss` declara `min-height: 140px`, pero la tabla
+   de specs dice "Container height: Dynamic" y no da ninguna cota de altura.
+   Es un detalle de la implementacion web, no de la especificacion, asi que
+   aqui NO se declara. Si manana hace falta una altura minima, sale de la
+   tabla o no sale.
+
+   ALINEACION, Y NO ES UNA VARIANTE
+   -------------------------------
+   Dice la tabla: "Alignment with icon: Center-aligned" y "Alignment without
+   icon: Start-aligned". Es decir: el centrado no lo elige el autor, depende
+   de si hay icono.
+
+   M3 lo resuelve con una clase `.has-icon` que su web component se pone a si
+   mismo al notar que el slot del icono tiene algo. Aqui no hay componente
+   que lo note, asi que lo pregunta el selector:
+
+       .md-dialog:has(.md-dialog-icon) .md-dialog-headline
+
+   Menos cosa que recordar para el autor y el mismo resultado medido. Es el
+   mismo camino que la card con `.md-card:has(> .md-card-header)`.
+
+   Y ADEMAS LA CABECERA ES UNA COLUMNA, no una fila
+   -----------------------------------------------
+   El icono va ENCIMA del titular, no al lado. Se ve en
+   `dialog/internal/dialog.ts`, que envuelve las dos ranuras --icon y
+   headline-- en una sola cabecera con `flex-direction: column`. Por eso
+   `.md-dialog-icon` va DENTRO de `.md-dialog-headline` y no suelta: es una
+   parte de la cabecera, y quien escribe el marcado los pone juntos.
+
+   Android ademas expone dos "theme overlay", uno con icono y titular a la
+   izquierda y otro centrado. Describen lo mismo que la tabla: el con-icono ya
+   va centrado, asi que no hay una variante mas que decidir.
+
+   LOS DIVISORES SON `md-divider`, NO UN BORDE NUESTRO
+   ---------------------------------------------------
+   M3 los mete dentro de sus propias ranuras con `<md-divider>`, el mismo
+   componente que ya tenemos en la capa 3. Asi que aqui tambien: quien quiera
+   el separador escribe `<hr class="md-divider">` dentro de la ranura que
+   corresponda, y el dialog no deforma un componente ajeno. Es el componente
+   documentando otro, que es justo lo que el showroom hace con el divider en
+   el resto de las vistas.
+
+   DENTRO DE CUAL VA CADA DIVISOR
+   ------------------------------
+   El de arriba va en la ranura del titular y el de abajo en la de acciones.
+   Es lo que hacen las clases de M3: `.show-top-divider` y
+   `.show-bottom-divider`. El sitio lo elige el autor poniendo el `<hr>` en
+   el sitio que quiere, en vez de con un modificador, porque con dos ranuras
+   solo hay dos sitios posibles y el marcado ya dice cual es.
+
+   POSICION, Y POR QUE NO ES `fixed`
+   ---------------------------------
+   M3 pone `position: fixed` con `margin: auto` en el host, y lo necesita
+   porque su host es un web component. Aqui el elemento es un `<dialog>`
+   NATIVO, y el navegador ya pone la caja en el centro de la pantalla cuando
+   la app llama a `showModal()`.
+
+   Medido en Chrome, que es lo que importa:
+
+      <dialog open>   sin showModal   position: relative  -> fluye en su sitio
+      showModal()     en la app       position: absolute  -> centro del viewport
+
+   O sea que basta con declarar `position: relative` y el specimen del
+   showroom se queda en su seccion, mientras que la app recibe el centrado y
+   el top layer del navegador sin que escribamos ni una linea de overlay. Si
+   declarasemos `fixed`, el specimen se iria al centro de la pantalla cada vez
+   que se abriera.
+
+   LOS BOTONES SON DE TEXTO Y TIENEN TRES ROLES
+   -------------------------------------------
+   `Dialog.md` los describe como `Widget.Material3.Button.TextButton.Dialog` y
+   habla de neutral, negativo y positivo. Eso no lo implementa el dialog: los
+   botones se componen desde fuera con las clases que ya existen, y quien los
+   pone decide cual es cual.
+
+   TOKENS DEL COMPONENTE: capa 3, leen UNICAMENTE 2-system-tokens
+   (REGLA 2). Ninguna regla de este archivo escribe un numero.
+   ========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   LA CAJA
+   ---------------------------------------------------------------------------
+   Superficie, forma, elevacion y el ancho acotado. Los cuatro limites vienen
+   de la tabla de specs, no de un token de M3, asi que estan como rol en
+   2-system-tokens/measurement.css con la primitiva al otro lado.
+
+   `min(560px, calc(100% - 48px))` es el ancho maximo tal cual lo escribe M3,
+   pero aqui el 48 sale de un token -- el padding por lado -- y no de un
+   literal: el borde disponible es el padding por dos, asi que sale de
+   `padding-inline`, que es el mismo numero y no un segundo sitio donde
+   escribirlo.
+   ------------------------------------------------------------------------ */
+.md-dialog {
+  --md-comp-dialog-container-color: var(--md-sys-color-surface-container-high);
+  --md-comp-dialog-elevation: var(--md-sys-elevation-level3);
+  --md-comp-dialog-shape: var(--md-sys-shape-corner-extra-large);
+
+  box-sizing: border-box;
+  position: relative;
+
+  /* SIN z-index, Y NO ES OLVIDO. Cuando la app llama a `showModal()`, el
+     navegador mete el dialog en el TOP LAYER, que se pinta por encima de
+     cualquier `z-index` de la pagina, scrim incluido. Declarar aqui un
+     `z-index` seria un numero que no hace nada.
+
+     En el specimen --donde no hay `showModal()`, solo el atributo `open`-- el
+     dialog va en flujo y el scrim es `position: fixed`, asi que si se
+     muestran juntos el scrim tapa el dialog. Eso es justo lo que tiene que
+     pasar: el specimen de la clase base NO lleva scrim, porque un scrim fijo
+     en medio de una pagina que scrollea te pinta la vista entera de negro.
+     El scrim se documenta en la prosa y se prueba en `lab.html`. */
+
+  /* Ver la nota de POSICION en la cabecera: sin esto el specimen se va al
+     centro de la pantalla y la app no lo nota. */
+  display: flex;
+  flex-direction: column;
+
+  inline-size: fit-content;
+  min-inline-size: var(--md-sys-measurement-dialog-width-min);
+  max-inline-size: min(
+    var(--md-sys-measurement-dialog-width-max),
+    calc(100% - var(--md-sys-measurement-dialog-padding) * 2)
+  );
+
+  padding: var(--md-sys-measurement-dialog-padding);
+  border-radius: var(--md-comp-dialog-shape);
+  background-color: var(--md-comp-dialog-container-color);
+  box-shadow: var(--md-comp-dialog-elevation);
+
+  /* El `<dialog>` nativo trae sus own estilos: sin `padding: 0` y sin
+     `border` pondria su borde y su fondo por delante de los nuestros, y el
+     `background: transparent` que le pone M3 a su host tambien hace falta
+     aqui, porque el fondo lo pinta la caja con su propio token. */
+  border: 0;
+  color: var(--md-sys-color-on-surface);
+
+  /* El navegador centra el dialog modal con `margin: auto`. En el specimen
+     con `open` sin `showModal()` no hay centrado que hacer y las piezas se
+     quedan pegadas a la izquierda del `sr-specimen`. */
+  margin-inline: auto;
+}
+
+/* ---------------------------------------------------------------------------
+   RANURA: ICONO (opcional)
+   ---------------------------------------------------------------------------
+   24px en `secondary`, segun `with-icon-icon-size` y `with-icon-icon-color`.
+   El icono lo pone el autor con `.md-icon`, como en cualquier sitio del
+   sistema; esta ranura solo le reserva sitio y le da color.
+
+   DEL TAMANO NO SE ENCARGA AQUI, Y A PROPOSITO
+   --------------------------------------------
+   M3 pone `width` y `height` a 24px en su ranura de icono. Aqui no: en este
+   sistema el tamano lo lleva `.md-icon`, que ya declara
+   `font-size: var(--md-sys-measurement-icon-size)`, y el glifo escala con
+   el. Poner un ancho aqui seria la segunda vez que se dice lo mismo, y
+   ademas taparia al autor que quiera un icono mayor con su utilidad de
+   tamano.
+
+   El `min-inline-size` no es lo contrario: reserva al menos el ancho del
+   icono para que la cabecera no se encoja, sin impedir que uno mas grande
+   la ensanche.
+
+   Va dentro de la cabecera, no suelta: ver la nota de la cabecera.
+   ------------------------------------------------------------------------ */
+.md-dialog-icon {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  color: var(--md-sys-color-secondary);
+  min-inline-size: var(--md-sys-measurement-icon-size);
+}
+
+/* ---------------------------------------------------------------------------
+   RANURA: CABECERA -- icono y titular
+   ---------------------------------------------------------------------------
+   M3 mete el icono y el titular en UNA cabecera que es una COLUMNA: el icono
+   va ENCIMA del titular, no al lado. Se ve en `dialog/internal/dialog.ts`,
+   donde la envoltura de la cabecera contiene las dos ranuras:
+
+       <div class="headline">
+         <div class="icon"><slot name="icon"></slot></div>
+         <h2><slot name="headline"></slot></h2>
+       </div>
+
+   Por eso el icono va DENTRO de la cabecera y no suelta: es una parte de ella,
+   y quien escribe el marcado pone icono y titular juntos.
+
+   `headline-small` en `on-surface`. El `h2` del navegador tiene tamano
+   propio --como los `h1..h6`, que el reset conserva a proposito--, asi que
+   el titular real necesita `md-type-headline-small` en el marcado. Es el
+   mismo caso que el titular de la card, alli con `title-large`.
+
+   Y AQUI ESTA LA ALINEACION, QUE NO ES UNA VARIANTE
+   --------------------------------------------------
+   La tabla de specs lo dice en dos lineas:
+
+       Alignment with icon     Center-aligned
+       Alignment without icon  Start-aligned
+
+   O sea que el autor no elige: de si hay icono depende. Y no es una clase
+   aparte porque se puede preguntar al DOM, que es lo que hace el `:has()` de
+   abajo: el mismo camino que la card con su cabecera.
+
+   M3 lo resuelve con una clase `.has-icon` que su componente se poner a si
+   mismo al detectar el icono; aqui el autor no pone ninguna clase y lo
+   detecta el selector. Menos cosa que recordar y el mismo resultado.
+   ------------------------------------------------------------------------ */
+.md-dialog-headline {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--md-sys-measurement-dialog-gap);
+  font: var(--md-sys-typescale-headline-small);
+  color: var(--md-sys-color-on-surface);
+}
+
+.md-dialog:has(.md-dialog-icon) .md-dialog-headline {
+  align-items: center;
+}
+
+/* ---------------------------------------------------------------------------
+   RANURA: CONTENIDO
+   ---------------------------------------------------------------------------
+   El texto de apoyo. `body-medium` en `on-surface-variant`, que es
+   `supporting-text-*` en M3 --la ranura se llama `content` alli, no
+   `supporting-text`, y no hay ranura de subtitulo--.
+
+   El `overflow-y: auto` con el `min-height: 0` es lo que hace que el texto
+   largo haga scroll dentro del dialog en vez de empujar la caja mas alla del
+   alto de la pantalla. El `min-height: 0` va con el: un hijo flexible con
+   `overflow` necesita poder encogerse por debajo de su contenido, y sin eso
+   el scroll no llega a activarse. Es el unico sitio de esta hoja donde los
+   dos van juntos, asi que si se quita uno hay que quitar el otro.
+   ------------------------------------------------------------------------ */
+.md-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--md-sys-measurement-dialog-gap);
+  margin-block-start: var(--md-sys-measurement-dialog-gap);
+
+  font: var(--md-sys-typescale-body-medium);
+  color: var(--md-sys-color-on-surface-variant);
+
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* ---------------------------------------------------------------------------
+   RANURA: ACCIONES
+   ---------------------------------------------------------------------------
+   Fila alineada al final, con el hueco de 8dp que da la tabla de specs
+   ("padding between buttons / 8dp"). Los botones los pone el autor con
+   `.md-button`, y el dialog no los viste mas que para separarlos.
+
+   M3 escribe `flex-end` en el overflow menu de sus dialogs, y el de aqui
+   tambien: los botones van al final del renglon.
+   ------------------------------------------------------------------------ */
+.md-dialog-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--md-sys-measurement-dialog-gap-buttons);
+  margin-block-start: var(--md-sys-measurement-dialog-gap-actions);
+}
+
+/* ---------------------------------------------------------------------------
+   LOS HUECOS QUE DEPENDEN DE QUE HAYA CABECERA
+   ---------------------------------------------------------------------------
+   Si no hay titular, el texto de apoyo no debe quedarse con el hueco de 16dp
+   del titular debajo del borde. Si no hay icono, el hueco entre icono y
+   titular tampoco se aplica, porque no hay icono.
+
+   El segundo caso no hace falta aqui: el `gap` esta en la ranura del titular,
+   y un titular sin icono es un solo hijo, asi que el gap no se ve. Se
+   resuelve solo.
+   ------------------------------------------------------------------------ */
+.md-dialog:not(:has(.md-dialog-headline)) .md-dialog-content {
+  margin-block-start: 0;
+}
+
+/* ---------------------------------------------------------------------------
+   EL SCRIM
+   ---------------------------------------------------------------------------
+   El velo que oscurece el fondo detras del dialog. 32%, que es el `Dim amount`
+   de la tabla de specs y el `opacity: 32%` del SCSS de M3.
+
+   El scrim NO es hijo del dialog: es una capa fija por debajo, que va del
+   borde de la pantalla al centro. Por eso vive como clase propia y no como
+   ranura, y por eso el autor lo escribe una vez, junto al dialog, y no dentro
+   de el. En el specimen del showroom se puede ver sin `showModal()`, que es
+   lo que hace falta para documentarlo.
+
+   El `pointer-events` lo deja el navegador: el scrim no debe recibir clics,
+   pero tampoco debe impedir que se cierre pulsando fuera... y eso ultimo ya
+   no lo hace el dialog, porque sin JavaScript no hay quien lo escuche. Se
+   documenta el contrato visual, no el de abrir y cerrar.
+   ------------------------------------------------------------------------ */
+.md-dialog-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+
+  background-color: var(--md-sys-color-scrim);
+  opacity: var(--md-sys-scrim-opacity);
+
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------------------------
+   FORCED COLORS
+   ---------------------------------------------------------------------------
+   En alto contraste el scrim y el fondo seiran igual: `Canvas` y el color de
+   superficie podrian coincidir, y la sombra no dibuja. El borde va con grosor
+   `thin`, no solo con color, por el mismo motivo que en la card y en el resto
+   de componentes con capa.
+   ------------------------------------------------------------------------ */
+@media (forced-colors: active) {
+  .md-dialog {
+    border: var(--md-sys-shape-stroke-thin) solid CanvasText;
+  }
+}

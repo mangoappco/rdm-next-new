@@ -146,4 +146,23 @@
        disabled     -> el CONTENIDO del elemento, atenuado
      --------------------------------------------------------------------- */
   --md-ref-opacity-38: 0.38;
+
+  /* ------------------------------------------------------------------------
+     OPACIDAD DEL SCRIM
+     ---------------------------------------------------------------------
+     32%. M3 lo aplica al velo que oscurece el fondo detras de un dialogo
+     o un menu. Lo confirman DOS fuentes independientes:
+
+       - su tabla de specs: "Scrim ... Dim amount 32%"
+       - `dialog/internal/_dialog.scss`: `.scrim { opacity: 32% }`
+
+     Y el `Dialog.md` de Android lo dice como `android:backgroundDimAmount`
+     con el mismo 32%, o sea que no es un detalle de una plataforma.
+
+     No es un state layer --no tiñe el elemento, tapa lo que hay DETRAS--
+     ni contenido deshabilitado. Es la unica opacidad del sistema que
+     pertenece a una capa superpuesta, y por eso se documenta aqui: es
+     una opacidad cruda distinta de las de arriba.
+     --------------------------------------------------------------------- */
+  --md-ref-opacity-32: 0.32;
 }

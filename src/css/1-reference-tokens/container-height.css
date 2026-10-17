@@ -170,6 +170,32 @@
   --md-ref-container-width-button-min: 64px;
 
   /* ------------------------------------------------------------------------
+     LOS LIMITES DE ANCHO DEL DIALOG
+     ------------------------------------------------------------------------
+     M3 los publica como MEDIDAS en su tabla de specs, no como tokens:
+
+         Container width   Min 280dp; Max 560dp
+
+     La tabla oficial los lista dos veces, con el mismo valor y sin
+     contradecirse: "Container width / Min 280dp; Max 560dp" y, en las
+     filas sueltas, "Minimum width 280dp" y "Maximum width 560dp". En el
+     SCSS de `dialog/internal/_dialog.scss` son literales:
+
+         max-width: min(560px, calc(100% - 48px));
+         min-width: 280px;
+
+     Los 48px del `calc` SI son espaciado y salen de la escala
+     (`--md-ref-spacing-600`); los dos limites no, porque la escala acaba
+     en 72px.
+
+     Son cotas, no un ancho concreto, asi que se nombran aparte: un
+     `container-width` que valiera 560 por si mismo seria el ancho del
+     dialogo, y no lo es --el dialogo crece con el texto entre 280 y 560.
+     ------------------------------------------------------------------------ */
+  --md-ref-container-width-dialog-min: 280px;
+  --md-ref-container-width-dialog-max: 560px;
+
+  /* ------------------------------------------------------------------------
      LA ALTURA DEL FAB MEDIUM (M3 Expressive)
      ------------------------------------------------------------------------
      Nuestra escalera de alturas fue medida por el BOTON y por eso se llama

@@ -740,6 +740,57 @@
      dos nuevos, para que el componente no tenga ni un solo `--md-ref-*`. */
   --md-sys-measurement-card-media-aspect-square: var(--md-ref-aspect-square);
   --md-sys-measurement-card-media-aspect-portrait: var(--md-ref-aspect-portrait);
+
+  /* ==========================================================================
+     MEDIDAS DEL DIALOG
+     --------------------------------------------------------------------------
+     Los dos limites de ancho y los huecos internos. M3 los publica como
+     medidas en su tabla de specs, no como tokens, asi que aqui son roles
+     nuestros con la primitiva al otro lado -- REGLA 2 prohibe que
+     3-components lea 1-reference-tokens.
+
+     LOS LIMITES. 280dp minimo y 560dp maximo, en su tabla de specs como
+     "Container width / Min 280dp; Max 560dp" y literales en
+     `dialog/internal/_dialog.scss`. Son cotas, no un ancho: el dialogo
+     crece con su texto entre las dos.
+
+     Lo que M3 NO da y hay que resolver aqui: el `min(560px, calc(100% - 48px))`
+     del SCSS usa 48px, que SI es espaciado (spacing-600), pero el ancho
+     disponible NO es un token. Se compone en el componente con el 48 del
+     padding por lado, en vez de declarar aqui un token mas: el 48 ya existe
+     como rol de espaciado y el ancho se decide en el componente, que es
+     quien sabe de que borde medir.
+     ====================================================================== */
+  --md-sys-measurement-dialog-width-min: var(--md-ref-container-width-dialog-min);
+  --md-sys-measurement-dialog-width-max: var(--md-ref-container-width-dialog-max);
+
+  /* Padding del contenedor: 24dp en los cuatro lados. La tabla de specs lo
+     da como "Top/left/right/bottom padding / 24dp". */
+  --md-sys-measurement-dialog-padding: var(--md-ref-spacing-300);
+
+  /* Huecos entre las partes, que M3 publica uno por uno:
+
+       padding between title and body     16dp   spacing-200
+       padding between icon and title     16dp   spacing-200
+       padding between buttons             8dp   spacing-100
+       padding between body and actions   24dp   spacing-300
+
+     El de 16 entre icono y titular va por el mismo valor que el del
+     titular con el cuerpo: los dos son el aire que separa la CABECERA de
+     lo que viene debajo. El de 24 entre cuerpo y acciones es el mismo
+     24 del padding, y M3 lo publica aparte porque va al pie y no al borde. */
+  --md-sys-measurement-dialog-gap: var(--md-ref-spacing-200);
+  --md-sys-measurement-dialog-gap-actions: var(--md-ref-spacing-300);
+
+  /* El hueco ENTRE los botones, que no es el mismo que el que hay entre el
+     cuerpo y las acciones. La tabla los da por separado:
+
+       padding between buttons             8dp   spacing-100
+       padding between body and actions   24dp   spacing-300
+
+     Son 8 y 24, y por eso hacen falta dos roles: el de arriba solo cubre el
+     aire de arriba de las acciones. */
+  --md-sys-measurement-dialog-gap-buttons: var(--md-ref-spacing-100);
 }
 
 /* Las clases utilitarias de esta familia se mudaron a 4-utilities/ en la auditoria M3:

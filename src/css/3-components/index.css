@@ -20,6 +20,7 @@
 @import url("fab.css");
 @import url("fab-extended.css");
 @import url("card.css");
+@import url("dialog.css");
 
 /* fab-extended.css va DESPUES de fab.css, y no por orden alfabetico.
    Los dos importan en la misma capa `comp`, donde la especificidad se
@@ -28,5 +29,8 @@
    sobre padding y tipografia perderian contra las de la base en cualquier
    empate.
 
-   card.css va al final: no depende de ningun componente anterior, y los
-   siguientes (dialog, etc.) no dependeran de el. */
+   card.css no depende de ningun componente anterior, y dialog.css va DESPUES
+   de el. Los dos importan en la misma capa `comp`, donde a igualdad de
+   especificidad gana el ultimo: `.md-dialog` y `.md-dialog-scrim` no chocan
+   con ninguna clase de la card, pero mantener el orden de construccion
+   evita tener que comprobarlo cada vez que entren componentes nuevos. */

@@ -130,6 +130,30 @@
 
      La primitiva la declara la card; el outlined es el que la va a leer. */
   --md-sys-state-disabled-outline-opacity: var(--md-ref-opacity-12);
+
+  /* 32% — el SCRIM. Y este rol es el unico de este archivo que NO es un estado.
+
+     Es el velo que oscurece el fondo detras de un dialogo o un menu. Lo
+     confirman tres fuentes: la tabla de specs ("Dim amount 32%"), el
+     `Dialog.md` de Android (`android:backgroundDimAmount`, 32%) y
+     `dialog/internal/_dialog.scss` (`.scrim { opacity: 32% }`).
+
+     POR QUE VIVE AQUI Y NO EN SU PROPIA FAMILIA
+     -------------------------------------------
+     Este archivo es el que traduce primitivas de opacidad en roles, y no hay
+     otro. Los otros de la capa 2 son `elevation`, `icon`, `measurement`,
+     `motion`, `shape` y `typography`: ninguno cubre "cuanto se atenua una
+     capa superpuesta". Abrir una familia nueva por un solo rol seria mas
+     peso que el problema.
+
+     Y por eso el rol NO lleva el prefijo `state`, que es lo que hacen los
+     cinco de arriba: un scrim no es hover, ni focus, ni pressed, ni
+     disabled. Se llama `--md-sys-scrim-opacity` a proposito, para que no se
+     lea como un estado mas.
+
+     El color del scrim ya existe y vive en los temas, como todos los colores
+     (`--md-sys-color-scrim`). Aqui solo va el cuanto. */
+  --md-sys-scrim-opacity: var(--md-ref-opacity-32);
 }
 
 /* Las clases utilitarias de esta familia se mudaron a 4-utilities/ en la auditoria M3:
