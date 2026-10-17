@@ -422,20 +422,24 @@
       precisamente por eso. Un modal es una decision de componente, y su sitio
       es el componente.
 
-   LO QUE NO SE HA PODIDO MEDIR AQUI
-   ----------------------------------
-   Que la rueda NO desplace el fondo con la regla puesta. En este entorno no
-   se puede comprobar: la herramienta de rueda da resultados contradictorios
-   -- mueve la pagina con el modal abierto y no la mueve sin el, que no es
-   creible -- y ademas aqui no hay barra de desplazamiento clasica
-   (`innerWidth - clientWidth` da 0), asi que el salto que se produciria al
-   desaparecer la barra tampoco se puede ver.
+   COMPROBADO EN UN CHROME DE VERDAD, Y DONDE NO SE PUEDE
+   -----------------------------------------------------
+   El bloqueo de la rueda esta comprobado en el Chrome de Danny, que es el unico
+   sitio fiable para esto. En el arnes no se puede: la herramienta de rueda da
+   resultados contradictorios --mueve la pagina con el modal abierto y no la
+   mueve sin el-- y ademas sus lecturas van un paso atrasadas, asi que hay que
+   leer cuatro veces para que cuadre.
 
-   Ese segundo es el coste conocido de la tecnica y conviene mirarlo en un
-   Chrome de verdad: al abrir el modal la barra se va y el contenido ensancha
-   unos 15px, que es un salto visible. Si molesta, la solucion es
-   `scrollbar-gutter: stable` en el `html`, que reserva el hueco siempre. Queda
-   apuntado aqui para que no se pierda.
+   LO QUE SIGUE SIN COMPROBAR
+   -------------------------
+   El salto de la barra de desplazamiento. Aqui no hay barra clasica
+   (`innerWidth - clientWidth` da 0), asi que el entorno no lo puede mostrar.
+
+   Es el coste conocido de la tecnica: al abrir el modal la barra se va y el
+   contenido ensancha unos 15px. Si llega a verse, la solucion es
+   `scrollbar-gutter: stable` en el `html`, que reserva el hueco siempre. No se
+   anade de antemano porque cambia el layout de TODAS las vistas, tambien las
+   que no tienen modal, y eso no se decide sin haberlo visto.
    ------------------------------------------------------------------------ */
 html:has(dialog.md-dialog:modal) {
   overflow: hidden;
