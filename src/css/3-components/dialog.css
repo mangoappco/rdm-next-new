@@ -178,10 +178,7 @@
      dialog va en su seccion y no hay velo: el `::backdrop` solo se pinta
      para un dialog modal. */
 
-  /* Ver la nota de POSICION en la cabecera: sin esto el specimen se va al
-     centro de la pantalla y la app no lo nota. */
-  display: flex;
-  flex-direction: column;
+  /* `display` NO va aqui. Ver la regla de ABAJO. */
 
   inline-size: fit-content;
   min-inline-size: var(--md-sys-measurement-dialog-width-min);
@@ -237,6 +234,30 @@
   justify-content: center;
   color: var(--md-sys-color-secondary);
   min-inline-size: var(--md-sys-measurement-icon-size);
+}
+
+/* ---------------------------------------------------------------------------
+   EL DISPLAY, Y POR QUE NO ESTA EN LA BASE
+   ---------------------------------------------------------------------------
+   Un `<dialog>` sin el atributo `open` se esconde solo: el navegador trae
+   `dialog:not([open]) { display: none }`. Y eso se rompe en cuanto la capa 3
+   declara `display` en la base, porque una regla de autor le gana a la del
+   navegador. Medido: un `<dialog class="md-dialog">` sin `open` computaba
+   `display: flex` y ocupaba 180px, o sea que un dialog cerrado se veia.
+
+   Ocurre en el par Modal del showroom, donde el dialog NO lleva `open` a
+   proposito --en reposo solo se ve el boton-- y se veia tambien el dialog.
+
+   Por eso el display va condicionado a `[open]`, y no en la base. M3 lo hace
+   igual, con `dialog[open] { display: flex }` en `dialog/internal/_dialog.scss`.
+
+   Y `[open]` basta para los dos casos: los specimens llevan `open` sin ser
+   modales, y `showModal()` pone el atributo `open` ademas de meter el
+   elemento en el top layer. Un dialog sin ninguno de los dos se queda en el
+   `display: none` del navegador. */
+.md-dialog[open] {
+  display: flex;
+  flex-direction: column;
 }
 
 /* ---------------------------------------------------------------------------
