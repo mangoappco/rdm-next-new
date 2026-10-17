@@ -375,6 +375,73 @@
 }
 
 /* ---------------------------------------------------------------------------
+   EL FONDO NO SCROLLEA MIENTRAS HAY UN MODAL
+   ---------------------------------------------------------------------------
+   M3 lo dice en la especificacion: "Dialogs don't scroll with elements outside
+   of the dialog, such as the background".
+
+   Y `showModal()` NO lo cumple por si solo. Medido con un modal abierto sobre
+   una pagina de 4040px en una ventana de 746:
+
+       window.scrollTo(0, 500)   ->   scrollY 500
+
+   O sea que el documento sigue siendo desplazable: la plataforma bloquea los
+   clics y pone el fondo `inert`, pero no bloquea el scroll del documento. No
+   es una limitacion de nuestra capa de comportamiento, que solo llama a
+   `showModal()`: es que el "close request" y el bloqueo de modal de la
+   especificacion HTML no incluyen el scroll.
+
+   POR QUE ES UNA REGLA Y NO UNA LLAMADA
+   --------------------------------------
+   Porque se declara entera con `:has()`, sin una linea de JavaScript: cuando
+   hay un modal, el `html` deja de desplazarse, y en cuanto se cierra el
+   selector deja de coincidir y el fondo vuelve a su sitio. Es el
+   `data-*` de este problema:
+
+       html:has(dialog.md-dialog:modal) { overflow: hidden; }
+
+   OJO CON LO QUE `hidden` HACE Y LO QUE NO
+   ----------------------------------------
+   `overflow: hidden` deja de ser desplazable para la PERSONA --no hay barra ni
+   rueda-- pero el elemento sigue siendo un contenedor de scroll, asi que
+   `window.scrollTo` sigue moviendo el documento. Medido: con la regla puesta
+   y el modal abierto, `scrollTo(0, 500)` sigue llegando a 500. Eso es lo que
+   dice la especificacion de overflow y es lo que se quiere: bloquea la rueda,
+   no el script de la propia pagina.
+
+   VA EN EL COMPONENTE, Y NO EN EL RESET
+   -------------------------------------
+   Por tres razones, y la ultima es la que de verdad lo decide:
+
+   1. La regla nombra a `.md-dialog`, asi que solo se activa con NUESTROS
+      dialogs. Un `<dialog>` de terceros en la misma pagina no se ve afectado.
+   2. Va en la capa `comp`, que va despues de `reset`, asi que gana sin
+      necesitar `!important` ni mas especificidad.
+   3. `reset.css` tiene escrito que no guarda decisiones que no sean anular al
+      navegador: sus propias notas explican que se quitaron del body
+      precisamente por eso. Un modal es una decision de componente, y su sitio
+      es el componente.
+
+   LO QUE NO SE HA PODIDO MEDIR AQUI
+   ----------------------------------
+   Que la rueda NO desplace el fondo con la regla puesta. En este entorno no
+   se puede comprobar: la herramienta de rueda da resultados contradictorios
+   -- mueve la pagina con el modal abierto y no la mueve sin el, que no es
+   creible -- y ademas aqui no hay barra de desplazamiento clasica
+   (`innerWidth - clientWidth` da 0), asi que el salto que se produciria al
+   desaparecer la barra tampoco se puede ver.
+
+   Ese segundo es el coste conocido de la tecnica y conviene mirarlo en un
+   Chrome de verdad: al abrir el modal la barra se va y el contenido ensancha
+   unos 15px, que es un salto visible. Si molesta, la solucion es
+   `scrollbar-gutter: stable` en el `html`, que reserva el hueco siempre. Queda
+   apuntado aqui para que no se pierda.
+   ------------------------------------------------------------------------ */
+html:has(dialog.md-dialog:modal) {
+  overflow: hidden;
+}
+
+/* ---------------------------------------------------------------------------
    RANURA: CABECERA -- icono y titular
    ---------------------------------------------------------------------------
    M3 mete el icono y el titular en UNA cabecera que es una COLUMNA: el icono
