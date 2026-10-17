@@ -4,13 +4,14 @@ Contexto rápido para retomar la sesión en frío. No sustituye a `README.md` ni
 
 ## Qué estamos construyendo
 
-La librería de componentes de **RDM ManGo! App**: sistema de diseño estático, HTML + CSS, sin build, sin framework y sin JavaScript. Basado conceptualmente en Material Design 3, con arquitectura de tokens, nomenclatura y decisiones propias. Cuatro capas — `1-reference-tokens` → `2-system-tokens` → `3-components` → `4-utilities` — y un showroom que lo documenta con dogfooding: cada vista usa las clases reales del sistema.
+La librería de componentes de **RDM ManGo! App**: sistema de diseño estático, HTML + CSS y una capa fina de JavaScript, sin build y sin framework. Basado conceptualmente en Material Design 3, con arquitectura de tokens, nomenclatura y decisiones propias. Cuatro capas — `1-reference-tokens` → `2-system-tokens` → `3-components` → `4-utilities` — y un showroom que lo documenta con dogfooding: cada vista usa las clases reales del sistema. Un componente lleva JS solo si el CSS no alcanza: hoy, el `dialog`.
 
 ## Candados
 
 Solo prohibiciones verbales. Las reglas de showroom, de capas y de ciclo no se copian aquí: viven en la skill y en el README, apuntadas más abajo.
 
-- **Sin JavaScript** en el sistema. `showroom/lab.html` es la única excepción: el banco de pruebas, sin enlace en `index.html`.
+- **Sin `<script>` con código dentro de un HTML, en ningún sitio.** El JavaScript vive en `src/js/`, en un archivo por componente, y el HTML solo lo referencia con `<script type="module" src="...">`. No es una excepción para el showroom: es en los dos lados. `src/js/main.js` es el punto de entrada y quien usa la librería importa `main.css` y `main.js`.
+- **Un componente solo lleva JS si el CSS no alcanza.** Abrir y cerrar, o guardar estado. Hoy es uno: el dialog, con `data-open-dialog` y `data-close-dialog`. No se crean archivos vacíos por simetría.
 - **Sin toggles** en ManGo! App.
 - **Sin morph de pulsado** en ningún componente.
 - **Sin elevación transicionada.**
@@ -149,7 +150,7 @@ Nada de esto se ha tocado. Está anotado para que no se dé por verdad:
 
 - `showroom.css:223` mete `padding: 16px` en todo `div` directo de `.sr-specimen`. Un specimen escrito como `<div class="md-card">` lo ganaría en silencio y REGLA 11 no lo detectaría. La card usa `<article>` por eso.
 - Tres vistas quedaron sobre el techo de prosa al recortarla: `button-group` (199 de media), `icon-button` (287 máx.) y `motion` (211 máx.).
-- El split button existe en M3 (`-split-button-{xs…xl}` + 3 `menu-button`), depende de un `menu` que no existe y no puede abrirse sin JavaScript. Queda registrado en `button.css`, en el bloque «LO QUE NO ESTA, Y POR QUE». Sus medidas ya están en `container-height.css:40`.
+- El split button existe en M3 (`-split-button-{xs…xl}` + 3 `menu-button`) y depende de un `menu` que no existe. Queda registrado en `button.css`, en el bloque «LO QUE NO ESTA, Y POR QUE». Sus medidas ya están en `container-height.css:40`. **La razón cambió:** estaba refutado por «no puede abrirse sin JavaScript», y con `src/js/` eso ya no lo bloquea. Sigue sin hacerse porque nadie ha escrito el `menu`, no porque sea imposible. El FAB menu está en el mismo caso.
 - FAB y extended FAB tienen 1 de las 8 familias de color de M3. Decidido y escrito en `fab.css:448-451`.
 - `4-utilities` no publica ninguna utilidad de espaciado, así que las ranuras de la card no pueden delegar su hueco al autor: lo declara el componente.
 - **`dialog` sigue nombrado en `src/css/main.css` sin existir, y es a propósito.** La línea enumera la capa `comp` como «button, card, dialog» y `3-components/index.css` avisa igual de los siguientes. **No es un descuido**: el README §11 lo dice —«esa línea es hoy más un recordatorio que una descripción: `card` ya existe y `dialog` no»— y aquí estaba anotado como deuda, que es lo que no cuadraba. No se toca hasta que `dialog` entre.

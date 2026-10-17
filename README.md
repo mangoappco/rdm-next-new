@@ -870,13 +870,24 @@ rdm-next-new/
 
 Dos carpetas y una regla:
 
-- **`src/css/` es la librería.** Es lo único que se distribuye. Se importa
-  desde `main.css` y nunca por partes.
+- **`src/` es la librería.** Es lo único que se distribuye: `src/css/`, que se
+  importa desde `main.css` y nunca por partes, y `src/js/`, que se importa
+  desde `main.js` y solo si un componente necesita algo que el CSS no expresa.
+  Quien use RDM Next importa **los dos** y nada más:
+
+  ```html
+  <link rel="stylesheet" href="src/css/main.css">
+  <script type="module" src="src/js/main.js"></script>
+  ```
+
 - **`showroom/` es documentación.** Se sirve, pero no se distribuye: nadie
   importa `showroom.css` en un producto.
 - **Los dos no se mezclan.** `showroom/assets/showroom.css` vive en una capa
   `@layer showroom` propia, declarada después de las cinco del sistema, y
-  ningún selector suyo toca una clase `.md-*`.
+  ningún selector suyo toca una clase `.md-*`. Lo mismo con el JavaScript:
+  `src/js/` es comportamiento de componentes y `showroom/assets/showroom.js`
+  es el chrome del showroom —resaltar snippets, «Copiar», tema—, y ninguno de
+  los dos sabe del otro.
 
 ---
 
@@ -1254,8 +1265,7 @@ publica ninguno.
 - **No tiene ancho mínimo**, comprobado por dos vías en los ficheros de M3. Lo que hace una
   card ancha es el layout: en móvil se estira al ancho de pantalla, en grande van columnas.
 
-**Lo que no está:** `dragged`, que M3 publica para las tres fichas pero que es un gesto que
-aquí no se puede expresar sin JavaScript; `selected`, que los tres ficheros de token no
+**Lo que no está:** `dragged`, que M3 publica para las tres fichas pero que no está implementado —con `src/js/` disponible ya no es imposible, es que nadie lo ha escrito—; `selected`, que los tres ficheros de token no
 publican; y el icono, que M3 sí tiene tokens pero es el icono que el autor pone *dentro* de
 la card, no algo que la card posea.
 

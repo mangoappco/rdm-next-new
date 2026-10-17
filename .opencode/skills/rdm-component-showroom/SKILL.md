@@ -9,7 +9,7 @@ description: Create and maintain the RDM Next component showroom. Use this skill
 
 This skill defines the mandatory workflow for creating and maintaining the component showroom of the RDM Next design system, built for the ManGo! App.
 
-RDM Next is conceptually based on Material Design 3 (M3), but it has its own implementation, token architecture, naming conventions, and architectural decisions. It is a static HTML + CSS system: no build step, no framework, no JavaScript, no PHP.
+RDM Next is conceptually based on Material Design 3 (M3), but it has its own implementation, token architecture, naming conventions, and architectural decisions. It is a static HTML + CSS system with a small, optional JavaScript layer: no build step, no framework, no PHP. A component ships JavaScript only when CSS cannot express what it does — today that is `dialog`, and nothing else.
 
 The showroom is both:
 
@@ -243,7 +243,7 @@ Determine, when applicable:
 - tokens it consumes.
 
 **How to read a component in this project.** RDM Next components are plain CSS classes.
-There is no JavaScript and no web component, so the "API" is:
+There are no web components and no class-based JavaScript API, so the "API" is:
 
 | Concept | What it means here |
 | ------- | ------------------ |
@@ -252,6 +252,11 @@ There is no JavaScript and no web component, so the "API" is:
 | Attributes | HTML attributes the selectors respond to (`disabled`, `aria-*`, `data-*`) |
 | Slots | which child elements the selector structure expects |
 | Behavior | what the CSS does on `:hover`, `:focus-visible`, `:active`, `[disabled]` |
+| Script | only if the component needs something CSS cannot express: a file in `src/js/<name>.js` that wires `data-*` attributes. Today, `dialog` is the only one |
+
+A component that ships JavaScript still documents itself mostly the same way. Read
+`src/js/<name>.js` as well as `3-components/<name>.css`: the class names are still
+what the author writes, and the `data-*` attributes are a second, smaller layer on top.
 
 Read the whole file, including its header comment: the reason a value exists is usually
 documented there, and that reason belongs in the showroom's documentation.
@@ -894,8 +899,10 @@ This describes the component's content model, not its styling.
 
 Documents how users interact with the component.
 
-RDM Next has no JavaScript, so interaction is implemented with **CSS pseudo-classes and
-attributes**. That is real interaction, not an absent feature.
+Interaction is implemented with **CSS pseudo-classes and attributes** first. That is
+real interaction, not an absent feature. Only what CSS genuinely cannot do goes in
+`src/js/`, and then the showroom documents it as a second layer: `dialog` is the
+case to look at, where `showModal()` is what makes the element modal at all.
 
 Document what the CSS actually responds to:
 
@@ -924,7 +931,7 @@ Do not confuse this with visual states: "how the user gets there" is Interacció
 
 Documents what the component does in response to interaction or conditions.
 
-With no JavaScript, behavior is whatever the CSS does when state changes: transitions,
+Behavior is whatever the CSS does when state changes: transitions,
 opacity, transforms, visibility, pointer-events.
 
 Example:

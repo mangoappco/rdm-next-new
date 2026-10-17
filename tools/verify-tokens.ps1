@@ -100,7 +100,7 @@
                 Falla si una vista de color referencia paleta cruda o #HEX:
                 lo pintado con primitivas no se mueve con el Theme Builder.
 
-      REGLA 13 El snippet es autonomo: rinde con solo main.css
+      REGLA 13 El snippet es autonomo: rinde con main.css y main.js
                  Cada bloque pre.sr-code se desescapa y se lee como si se
                  pegara en una pagina que solo importe main.css: ninguna
                  clase que no sea del sistema, ningun estilo en linea y
@@ -1204,12 +1204,13 @@ foreach ($html in $htmlFiles) {
 }
 
 # ============================================================================
-# REGLA 13 - El snippet es autonomo: rinde con solo main.css
+# REGLA 13 - El snippet es autonomo: rinde con main.css y main.js
 # ---------------------------------------------------------------------------
 # El contrato del showroom es que lo que se copia funciona en cualquier
-# pagina que importe main.css. Eso se puede comprobar sin navegador: si el
-# snippet solo lleva clases que existen en src/css/, y nada mas, entonces
-# main.css es todo lo que necesita.
+# pagina que importe los dos archivos de entrada del sistema. Eso se puede
+# comprobar sin navegador: si el snippet solo lleva clases que existen en
+# src/css/, atributos data-* que src/js/ cablea de verdad, y nada mas,
+# entonces main.css + main.js es todo lo que necesita.
 #
 # QUE SE COMPRUEBA Y POR QUE CADA COSA
 # -------------------------------------
@@ -1224,8 +1225,15 @@ foreach ($html in $htmlFiles) {
 #      que un style= colado en lo copiable pasaria inadvertido.
 #
 #   c) Ningun <style>, <link> ni <script>. Un snippet que traiga cualquiera
-#      de ellos ya no se sostiene con main.css: necesita su propia hoja o su
-#      propio codigo.
+#      de ellos ya no se sostiene con los archivos del sistema: necesita su
+#      propia hoja o su propio codigo.
+#
+#   d) Cada data-* que el snippet cablea existe de verdad. Esto es nuevo, y
+#      es el paralelo de REGLA 10 para los atributos. Sin el, un
+#      `data-open-diálogo` con tilde, o un `data-cerrar-dialog` inventado,
+#      documentarian un comportamiento que la libreria no tiene: el boton no
+#      haria nada y no habria ni error ni aviso. Una clase md-* equivocada se
+#      caza en REGLA 10; un data-* equivocado se cazaba en ninguna parte.
 #
 # POR QUE SE ESCANEA CADA pre Y NO CADA PAREJA
 # --------------------------------------------
@@ -1238,11 +1246,24 @@ foreach ($html in $htmlFiles) {
 # LIMITE HONESTO
 # --------------
 # Es una comprobacion ESTATICA: garantiza que al snippet no le falta nada de
-# main.css. No puede garantizar como se ve pegado en un contexto que no sea
-# el del showroom (por ejemplo, que un contenedor padre no lo aplaste), y eso
-# no es comprobable sin renderizar. Lo que si queda fijo es la parte que
-# antes se perdia en silencio: la dependencia del chrome.
+# los archivos del sistema. No puede garantizar como se ve pegado en un
+# contexto que no sea el del showroom, ni que showModal exista en el
+# navegador de destino -- eso ya se documenta en src/js/dialog.js. Lo que si
+# queda fijo es la parte que antes se perdia en silencio: la dependencia del
+# chrome y la de un atributo que no existe.
 # ============================================================================
+
+# Los data-* que src/js/ cablea de verdad. Se leen de los propios archivos
+# con [data-open-dialog] y [data-close-dialog], para que la lista no pueda
+# quedar vieja sin que el verificador se entere.
+$jsBehaviour = Get-ChildItem -Path (Join-Path $ProjectRoot 'src/js') -Filter '*.js' -ErrorAction SilentlyContinue
+$dataWired = @{}
+foreach ($js in $jsBehaviour) {
+    $src = [IO.File]::ReadAllText($js.FullName)
+    foreach ($dm in [regex]::Matches($src, "\[data-([a-z0-9-]+)")) {
+        $dataWired[$dm.Groups[1].Value] = $true
+    }
+}
 
 foreach ($html in $htmlFiles) {
     $raw = [IO.File]::ReadAllText($html.FullName)
@@ -1273,8 +1294,21 @@ foreach ($html in $htmlFiles) {
 
         foreach ($tm in [regex]::Matches($code, '<(style|link|script)[\s>]')) {
             Add-Issue -Rule 'REGLA 13' -File $rel -Line 0 `
-                      -Message "el snippet trae un <$($tm.Groups[1].Value)> propio: el copiable tiene que sostenerse con main.css y nada mas" `
+                      -Message "el snippet trae un <$($tm.Groups[1].Value)> propio: el copiable tiene que sostenerse con main.css y main.js y nada mas" `
                       -Snippet $tm.Value
+        }
+
+        foreach ($am in [regex]::Matches($code, 'data-([^\s=>"]+)')) {
+            $attr = $am.Groups[1].Value
+            if ($dataWired.ContainsKey($attr)) { continue }
+            # La lista es PERMISIVA a proposito: captura cualquier cosa que
+            # empiece por data- y la compara con la que src/js/ cablea. Con
+            # un patron restringido a [a-z0-9-] un atributo mal escrito --con
+            # tilde, o con un guion de mas-- no se capturaba y pasaba en
+            # silencio, que es justo lo que este chequeo viene a cerrar.
+            Add-Issue -Rule 'REGLA 13' -File $rel -Line 0 `
+                      -Message "el snippet cablea 'data-$attr', que src/js/ no conecta: el boton no hara nada y no habra error ni aviso. O es un typo, o el atributo no existe todavia" `
+                      -Snippet "data-$attr"
         }
     }
 }
@@ -1292,7 +1326,7 @@ Write-Host '    REGLA 9  los iconos se piden con .md-icon, no con la clase de Go
 Write-Host '    REGLA 10 toda clase md-* que usa el showroom existe en src/css'
 Write-Host '    REGLA 11 el snippet copiable es identico a su specimen'
 Write-Host '    REGLA 12 la vista de color muestra roles, nunca paleta'
-Write-Host '    REGLA 13 el snippet es autonomo: rinde con solo main.css'
+Write-Host '    REGLA 13 el snippet es autonomo: rinde con main.css y main.js'
 Write-Host ''
 
 if ($script:Issues.Count -eq 0) {

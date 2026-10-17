@@ -10,7 +10,8 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
   <link rel="stylesheet" href="../../src/css/main.css">
   <link rel="stylesheet" href="../assets/showroom.css">
-  <script src="../assets/showroom.js"></script>
+    <script type="module" src="../../src/js/main.js"></script>
+<script src="../assets/showroom.js"></script>
 </head>
 
 <!--
@@ -202,6 +203,43 @@
   &lt;div class="md-dialog-actions"&gt;
     &lt;button class="md-button md-button-text" type="button"&gt;Cancelar&lt;/button&gt;
     &lt;button class="md-button md-button-text" type="button"&gt;Aceptar&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/dialog&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+    <!-- PAREJA: el dialog modal (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Modal</h2>
+      <p class="md-type-body-medium">Con showModal el dialog sale centrado, tapa el fondo y el scroll de debajo se bloquea. El scrim lo pone el JS.</p>
+      <div class="sr-specimen sr-specimen-gap">
+<button class="md-button md-button-filled" type="button" data-open-dialog="dialogo-modal">Abrir dialog</button>
+
+<dialog class="md-dialog" id="dialogo-modal" aria-labelledby="dialogo-modal-titulo">
+  <div class="md-dialog-headline">
+    <h3 class="md-type-headline-small" id="dialogo-modal-titulo">Headline</h3>
+  </div>
+  <div class="md-dialog-content">
+    <p class="md-type-body-medium">Supporting text</p>
+  </div>
+  <div class="md-dialog-actions">
+    <button class="md-button md-button-text" type="button" data-close-dialog>Cancelar</button>
+    <button class="md-button md-button-text" type="button" data-close-dialog>Aceptar</button>
+  </div>
+</dialog>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-button md-button-filled" type="button" data-open-dialog="dialogo-modal"&gt;Abrir dialog&lt;/button&gt;
+
+&lt;dialog class="md-dialog" id="dialogo-modal" aria-labelledby="dialogo-modal-titulo"&gt;
+  &lt;div class="md-dialog-headline"&gt;
+    &lt;h3 class="md-type-headline-small" id="dialogo-modal-titulo"&gt;Headline&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div class="md-dialog-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Supporting text&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-dialog-actions"&gt;
+    &lt;button class="md-button md-button-text" type="button" data-close-dialog&gt;Cancelar&lt;/button&gt;
+    &lt;button class="md-button md-button-text" type="button" data-close-dialog&gt;Aceptar&lt;/button&gt;
   &lt;/div&gt;
 &lt;/dialog&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
