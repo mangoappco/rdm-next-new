@@ -78,9 +78,27 @@ function ponerVelo(dialog) {
   const velo = document.createElement('div');
   velo.className = 'md-dialog-scrim';
 
-  /* hermano del dialog, y no hijo: el scrim tapa la pantalla y el dialog
-     vive en el top layer del navegador. */
-  dialog.parentNode.insertBefore(velo, dialog);
+  /* Va a <body>, y NO junto al dialog. Medido: puesto al lado del dialog,
+     el velo nace dentro del `.sr-specimen` del showroom y el chrome le
+     pisa dos reglas estructurales:
+
+         .sr-specimen > div                                          -> position: relative
+         .sr-specimen:not(.sr-meter) > div:not(...)                 -> padding: 16px
+
+     La primera le deshacia el `position: fixed` y la segunda lo inflaba,
+     con lo que el velo se quedaba en el flujo midiendo 32x32 en medio del
+     documento en vez de tapar la pantalla. Es la misma trampa que ya
+     documenta CONTEXT.md con `.md-card` escrito como `<div>`, y la razon
+     de que el componente sea inmune por construccion y no por estar en
+     una lista de excepciones: asi el chrome no puede alcanzarlo nunca.
+
+     Que no se rompa el CSS al moverlo: la regla que lo muestra es
+
+         :has(dialog:modal) .md-dialog-scrim { display: flex }
+
+     que es un descendente. <html> y <body> siguen cumpliendo `:has()` por
+     contener el dialog modal, asi que el velo en <body> se activa igual. */
+  document.body.appendChild(velo);
   velos.set(dialog, velo);
 }
 
@@ -97,11 +115,37 @@ function abrir(dialog) {
   if (dialog.open) return;
 
   ponerVelo(dialog);
+
+  /* Sin guardar ni restituir el scroll. Se probo y no hace falta: con
+     `.md-dialog:modal { position: fixed }` el dialog se coloca contra el
+     VIEWPORT, y por eso la pagina no se mueve. Guardar el scroll aqui
+     tapaba el sintoma pero dejaba el dialog fuera de la vista --medido:
+     `top: -1082` en una ventana de 700--, porque con `absolute` se centra
+     en el initial containing block, que va anclado al principio del
+     documento y no al sitio por el que se esta mirando.
+
+     Lo que se sabe es que el salto de scroll del navegador se produce al
+     abrir y no al cerrar, y que en el navegador de las pruebas --un Chrome
+     headless que ya se sabe que no es del todo fiel aqui-- no aparece de
+     forma constante. Con `position: fixed` el dialog no depende del
+     documento, y con eso el salto deja de importar. */
   dialog.showModal();
 }
 
 function cerrar(dialog) {
-  if (dialog.open) dialog.close();
+  if (!dialog.open) return;
+  dialog.close();
+
+  /* El velo se quita aqui y no solo en el evento `close`. El evento llega
+     por la via de Escape, que este archivo no controla, y entonces es la
+     unica que queda. En el camino del boton los dos caminos se ejecutan y
+     `quitarVelo` es idempotente: el segundo no encuentra el velo y sale.
+
+     Depender solo del evento es fragile: si no llegara --y no se puede
+     comprobar aqui, porque en el Chrome headless de las pruebas ni un
+     `<dialog>` pelado lo dispara-- el velo se quedaria en la pagina para
+     siempre. Quitarlo en los dos sitios hace que el fallo sea imposible. */
+  quitarVelo(dialog);
 }
 
 export function registrar() {

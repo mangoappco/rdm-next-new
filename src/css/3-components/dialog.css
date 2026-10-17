@@ -240,6 +240,37 @@
 }
 
 /* ---------------------------------------------------------------------------
+   CUANDO ES MODAL, SE COLOCA CONTRA EL VIEWPORT
+   ---------------------------------------------------------------------------
+   Este es el detalle que hace que un dialog modal se vea donde debe, y es la
+   razon por la que el salto de scroll no hay que tapar con JavaScript.
+
+   Con `position: relative` --lo que necesita el specimen, para que el dialog
+   fluye en su seccion-- el navegador lo deja en `absolute` al meterlo en el
+   top layer. Y un `absolute` con `inset: 0` y `margin: auto` se centra en el
+   INITIAL CONTAINING BLOCK: una caja del tamano del viewport anclada al
+   PRINCIPIO DEL DOCUMENTO, no al sitio por el que se esta mirando.
+
+   Medido en la vista del showroom, con el par Modal a la vista y la pagina
+   desplazada a 1342 en una ventana de 700:
+
+       sin esta regla    position absolute   top: -1082   <- no se ve
+       con esta regla    position fixed      top:  260   <- centrado
+
+   Con `fixed` el containing block es el viewport, con lo que el dialog sale
+   centrado sin depender de donde este la pagina --y la pagina no se mueve--.
+
+   El `inset: 0` va aqui y no en la base a proposito: `inset` tambien desplaza
+   a un elemento `relative`, asi que declararlo en `.md-dialog` movería de sitio
+   los specimens de `<dialog open>`, que es justo lo que no queremos.
+
+   Y el `margin: auto` que centra viene de la base, mas abajo. */
+.md-dialog:modal {
+  position: fixed;
+  inset: 0;
+}
+
+/* ---------------------------------------------------------------------------
    RANURA: CABECERA -- icono y titular
    ---------------------------------------------------------------------------
    M3 mete el icono y el titular en UNA cabecera que es una COLUMNA: el icono
