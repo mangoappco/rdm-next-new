@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Card de RDM Next: superficie contenedora con las cuatro ranuras semanticas de la capa 3.">
+  <title>Card — RDM ManGo! App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+  <link rel="stylesheet" href="../../src/css/main.css">
+  <link rel="stylesheet" href="../assets/showroom.css">
+  <script src="../assets/showroom.js"></script>
+</head>
+
+<!--
+  ESTA VISTA TIENE OCHO PARES: Clase base, Variantes, Ratio, Link, States
+  y cuatro recetas de Slots que cierran como playground para copiar. Se
+  construyo par a par, mirando cada uno antes de escribir el siguiente.
+
+  ANATOMIA NO TIENE PAR PROPIO, Y LA RECETA COMPLETA LA CUMPLE
+  ----------------------------------------------------------
+  Las seis partes de M3 --Container, Image, Headline, Subhead, Supporting
+  text y Buttons-- salen todas en el marcado de "Slots completa", que ya
+  esta: el contenedor es el article, la imagen el `img` del medio, el
+  titular y el subtitulo los dos hijos del header, el texto de apoyo el
+  `p` del content y los botones los del actions. Esa receta ES el par de
+  anatomia.
+
+  Que no se Haga otro es la misma unificacion que ya hizo `button.html`,
+  donde el par "Anatomy sizes" es a la vez el de anatomia y el de modelo de
+  contenido: su prosa nombra las piezas del marcado y aclara que el
+  relleno y la capa de estado no son elementos sino el `::before` y el
+  `::after` del contenedor. Aqui lo unico que la anatomia anadiria sobre
+  las recetas --que el header son DOS piezas y no una, y que el `h3`
+  necesita `md-type-title-large`-- ya esta escrito en la nota de
+  `MEDIDO, Y POR QUE EL TITULO LLEVA md-type-*` de `card.css` y mas abajo.
+  Un par mas seria el mismo specimen con otro h2.
+
+  LO QUE YA ESTA Y LO QUE NO
+  --------------------------
+  M3 publica TRES fichas de card --elevated, filled y outlined-- y estan las
+  tres, en el par de Variantes. La base es la elevated, y `.md-card-elevated`
+  existe ademas de ella para que el nombre que alguien escribe primero exista
+  al copiar. Es el mismo motivo por el que `.md-button-filled` existe sobre
+  `.md-button`. Por eso toda card de la vista lleva su ficha escrita, tambien
+  cuando es la elevated.
+
+  LAS CLASES VAN EN INGLES, y los slots tambien: md-card-media, md-card-header,
+  md-card-content, md-card-actions. No md-card-encabezado. Convencion del
+  sistema para toda clase; la prosa de las vistas sigue en espanol.
+
+  POR QUE LA SPECIMEN ES UN <article> Y NO UN <div>
+  ------------------------------------------------------
+  No es estetica. `showroom.css` aplica padding de 16px a todo div DIRECTO de
+  `.sr-specimen` (la regla que ya obliga a excluir a `.md-button-group`, y
+  que se explica en el propio archivo). Una card escrita como
+  `<div class="md-card">` ganaria 16px que su snippet no trae, y REGLA 11
+  --que compara el specimen con lo copiable-- no lo detectaria: los dos
+  marcadores serian identicos y la diferencia estaria en una regla del
+  showroom. `<article>` es ademas lo que corresponde a una composicion
+  autocontenida, y esquiva la regla.
+
+  LO QUE ESTA VISTA NO DICE, Y POR QUE
+  ------------------------------------
+  PADDING NO TIENE PAR. No es una API: los tres ficheros de token de M3 no
+  dan ni una coincidencia de `padding`, `spacing` ni `margin`, y el nuestro
+  es un valor unico de 16px que declaran las tres ranuras de texto. El
+  medio va sin padding a proposito, la base pone `padding: 0` para el
+  `<button>`, y encima el autor no puede cambiarlo: no hay clase
+  modificadora y `4-utilities` no publica ninguna utilidad de espaciado.
+  Mostrar "el padding son 16px" no es un par.
+
+  EL TITULO LLEVA md-type-title-large, Y NO SOBRA. Medido en el navegador:
+  dentro de `.md-card-header`, que computa 22px, un `<h3>` computes 25.74px
+  --22 x 1.17, el valor que el navegador da a los h3--. No lo gana la
+  ranura porque `reset.css:245-247` CONSERVA A PROPOSITO los tamanos de
+  h1..h6 y deja que el sistema los sobreescriba con las clases `.md-type-*`.
+  No es un fallo de la card: es la regla del proyecto.
+
+  HAY UN <meta name="description">, Y LAS OTRAS QUINCE VISTAS NO. La skill lo
+  pide y ninguna lo tiene. Se pone aqui porque es lo correcto, y queda
+  dicho para que la diferencia con el resto no parezca un olvido.
+
+  LAS CLASES EXPLICITAS, Y POR QUE
+  -------------------------------
+  El boton de la derecha pone `md-button md-button-filled` y no solo
+  `md-button`. La base YA es filled, asi que las dos se ven igual: medido, el
+  relleno lo pinta el `::before` del boton y sale identico.
+
+  Se escribe la variante igual que el medio pone su proporcion. La clase
+  `.md-button-filled` existe justo para eso, y el motivo esta escrito en
+  `button.css:650-654`: "una clase que no existe no falla, se queda sin
+  efecto en silencio, y `.md-button-filled` es justo el nombre que alguien
+  va a escribir primero".
+
+  En un ejemplo que se copia, no saber que variante es cada boton es peor
+  que escribirla de mas. Y es el mismo criterio que la proporcion del medio:
+  el snippet declara la intention explicita aunque la base ya la traiga.
+
+  LO QUE NO LLEVA, Y POR QUE
+  -------------------------
+  `md-text-on-surface-variant` en el subtitulo. No hace falta: lo pone el
+  componente. Medido, el `<p>` del header computa `rgb(73, 69, 79)`, que es
+  `#49454f`, el valor del rol, sin ninguna utilidad. La regla es
+  `.md-card-header > :not(:first-child)`. Anadir la clase seria lo mismo dos
+  veces, y el snippet se llenaria de ruido que no aporta.
+
+  `md-button-group` en las acciones. Medido, componerlo no cambia NADA: alto,
+  `flex-wrap`, `gap` y `justify-content` salen identicos a las acciones
+  sueltas. Es porque la variante `standard` del grupo ES la fila suelta, con
+  aire entre botones, y `.md-card-actions` ya usa el mismo rol de separacion.
+  Ademas el grupo impone a sus hijos `min-inline-size: max-content` y
+  `flex-shrink: 0`, que compiten con el `flex-wrap` de la ranura cuando la
+  card se estrecha. Una clase que no aporta nada no se pone.
+
+  `.md-card-elevated` SI se pone, y en las nueve cards de la vista. La base ya
+  es elevated y la clase no mueve un pixel, pero quien copia el snippet
+  necesita ver de un vistazo que parte se juega: sin ella hay que abrir el
+  CSS para descubrir que existe una variante. Mismo argumento que
+  `.md-button-filled`, y medido en el commit `4d02ccb`.
+
+  LA IMAGEN, Y POR QUE EL SRC DEL SNIPPET ES DEL SHOWROOM
+  ------------------------------------------------------
+  `../assets/card-media.svg` no es copiable tal cual: en ManGo! App la
+  imagen del producto vive en otro sitio. No es descuido, es REGLA 11: el
+  `innerHTML` del specimen y el texto del `<pre>` tienen que ser IDENTICOS,
+  y como el specimen tiene que renderizar, su ruta tiene que ser real. Si el
+  specimen dijera `imagen.jpg`, no se veria nada.
+
+  EL TEXTO ES EL NOMBRE DEL ROL, Y EL SVG NO DIBUJA NADA
+  ------------------------------------------------------
+  El specimen dice `Headline`, `Subhead` y `Supporting text`. Son las palabras
+  de M3, no las nuestras: la anatomía de la card en m3.material.io lista
+  Container, Image, Button, Supporting text, Subhead y Headline. Se empezó con
+  `Title`, `Subhead` y `Body`, y `Title` no es una palabra de M3: es
+  `Headline`. Un ejemplo que se copia tiene que enseñar los nombres con los
+  que viene la especificacion.
+
+  Y los botones dicen `Action` y `Primary`, que sí son nuestros y sí están
+  inventados: M3 no nombra las acciones de una card, solo las llama botones.
+
+  El SVG, por su parte, no dibuja nada concreto.
+
+  Y el asset se llama `card-media.svg` y dibuja un rectangulo gris con un
+  bloque gris en el centro. La primera version dibujaba una ficha de producto
+  con su caja y su referencia, lo que convertia un placeholder en una
+  mentira: quien copiara el snippet se llevaba tambien el "Caja de Carthago".
+  La ranura `.md-card-media` no lee el contenido de la imagen, solo la
+  recorta, asi que no hay nada que ganar inventando una.
+
+  LO QUE EL ASSET GENERICO ENSENA
+  --------------------------------
+  Las tres ranuras sirven `card-media.svg`, una imagen 16:9. En la cuadrada
+  el `contain` deja bandas de 70px arriba y abajo, y en la vertical de 124px.
+  Se ve que la caja la reserva la RANURA y no la imagen, y que el fondo de
+  `surface-container-high` aparece justo en lo que sobra. Eso es lo que
+  demuestra el par de Ratio, y por eso no hay un asset por proporcion: con
+  el `viewBox` igualado a cada ranura las bandas serian 0 y esa demostracion
+  no apareceria en ningun specimen. El fondo sigue declarado en
+  `.md-card-media` y escrito en su nota de `card.css`.
+
+  Por eso la prosa del par dice que el `src` es el de tu app. Es lo unico
+  de la vista que hay que cambiar al copiar, y conviene que lo diga en voz
+  alta en vez de que se descubra al pegarlo.
+
+  LO QUE SE DIJO DE REGLA 13 Y ERA FALSO
+  -------------------------------------
+  Este bloque afirmaba que el `src` "atraviesa un hueco" de REGLA 13. No lo
+  atraviesa: la comprueba bien. Su contrato es que el snippet "rinde con
+  solo main.css", y lo que mira es que no necesite CSS ni JS ajenos --clases
+  no del sistema, `style=`, `<style>`, `<link>`, `<script>`. Una imagen
+  necesita un fichero de imagen, no una hoja de estilos: el snippet sigue
+  rindiendo con solo main.css.
+
+  El problema real nunca fue la regla. Era que una imagen rota sin
+  dimensiones colapsaba la ranura, y eso no lo comprueba ninguna regla
+  porque es cosa del navegador. Ver la nota de `.md-card-media`.
+
+  LO QUE SE MIDIO ANTES DE PONERLA, Y LO QUE NO HIZO FALTA
+  ------------------------------------------------------
+  Se buscaba un hueco de linea base bajo la imagen, que es lo que pasa con
+  un `<img>` en linea dentro de un contenedor. No lo hay: `reset.css:311`
+  ya declara `display: block` en `img, video, canvas, svg`, con el unico
+  reset del proyecto que se aplica a un elemento con contenido real.
+
+  Medido: la ranura y la imagen miden las dos 180px. Cero hueco.
+
+  Y el redondeo de las esquinas superiores SI recorta, que es lo unico que
+  justifica que `card.css` declare el radio en vez de heredarlo.
+
+  SI LA IMAGEN NO CARGA, LA CAJA ESTA
+  ----------------------------------
+  La ranura lleva `aspect-ratio`, asi que reserva su caja antes de que la
+  imagen exista: medido, 169px con la imagen cargada y 169px con el `src`
+  roto. Antes, sin proporcion, caia a 20px y el `alt` se pintaba en una
+  franja ilegible. Ese es el cambio que hace util el par de Slots.
+
+  El `img` NO lleva `width` ni `height`. Antes si, porque sin ellos la caja
+  no se reservaba; ahora la reserva el `aspect-ratio` de la ranura, asi que
+  solo quedarian para mentir: dirian el tamano de la foto de ejemplo, y en la
+  app puede ser otro.
+
+  Y lleva un fondo en `surface-container-high`, un escalon por debajo del
+  tono de la card. Con la imagen puesta no se ve; rota o cargandose, es lo que
+  hace visible que ahi iba una.
+
+  M3 no publica nada de esto: ni proporcion, ni token de fondo para el medio,
+  ni selector de `img`. Sus tres ficheros de card y la guia
+  `labs/gb/components/card/card.scss` no lo mencionan. Todo es decision
+  nuestra. El precio del fondo es que una imagen con transparencia lo deja
+  pasar, y no hay forma de evitarlo en CSS porque no existe selector para
+  "la imagen ha fallado".
+
+  LO QUE SI VIENE DE M3: EL RECORTE EN LA RAIZ
+  -------------------------------------------
+  M3 pone el `overflow: hidden` en la card, no en la ranura de media. Antes
+  lo teniamos al reves, con el radio en las esquinas superiores de la ranura,
+  y con el media ABAJO las esquinas inferiores se salian de la card. Medido.
+  En la raiz no hay posiciones que olvidar.
+-->
+
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <main class="sr-page">
+
+    <!-- HEADER: inicio (barra + titulo + descripcion) -->
+    <header class="sr-header">
+      <div class="sr-bar">
+        <p class="md-type-body-medium"><a href="../index.html">RDM ManGo! App</a></p>
+        <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
+      </div>
+      <h1 class="md-type-display-large">Card</h1>
+      <p class="md-type-body-large">Las tarjetas muestran contenido y acciones sobre un solo tema.</p>
+    </header>
+    <!-- HEADER: fin -->
+
+    <hr class="md-divider">
+
+    <!-- PAREJA: la clase base (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Clase base</h2>
+      <p class="md-type-body-medium">La clase base con sus cuatro ranuras, con el medio a 16:9 explícito. El <code>src</code> es el de tu app.</p>
+      <div class="sr-specimen">
+        <article class="md-card md-card-elevated">
+          <div class="md-card-media md-card-media-landscape">
+            <img src="../assets/card-media.svg" alt="Media">
+          </div>
+          <div class="md-card-header">
+            <h3 class="md-type-title-large">Headline</h3>
+            <p class="md-type-body-medium">Subhead</p>
+          </div>
+          <div class="md-card-content">
+            <p class="md-type-body-medium">Supporting text</p>
+          </div>
+          <div class="md-card-actions">
+            <button class="md-button md-button-text" type="button">Action</button>
+            <button class="md-button md-button-filled" type="button">Primary</button>
+          </div>
+        </article>
+      </div>
+      <pre class="sr-code"><code>&lt;article class="md-card md-card-elevated"&gt;
+  &lt;div class="md-card-media md-card-media-landscape"&gt;
+    &lt;img src="../assets/card-media.svg" alt="Media"&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-header"&gt;
+    &lt;h3 class="md-type-title-large"&gt;Headline&lt;/h3&gt;
+    &lt;p class="md-type-body-medium"&gt;Subhead&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Supporting text&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-actions"&gt;
+    &lt;button class="md-button md-button-text" type="button"&gt;Action&lt;/button&gt;
+    &lt;button class="md-button md-button-filled" type="button"&gt;Primary&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/article&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+    <!-- PAREJA: las tres fichas de color (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Variantes</h2>
+      <p class="md-type-body-medium">Las tres fichas de M3. Solo cambian el tono, la elevacion y el contorno, y la que ya trae la base es la elevated.</p>
+      <div class="sr-specimen sr-specimen-gap">
+<article class="md-card md-card-elevated">
+  <div class="md-card-header">
+    <h3 class="md-type-title-large">Elevated</h3>
+    <p class="md-type-body-medium">Subhead</p>
+  </div>
+  <div class="md-card-content">
+    <p class="md-type-body-medium">Supporting text</p>
+  </div>
+</article>
+<article class="md-card md-card-filled">
+  <div class="md-card-header">
+    <h3 class="md-type-title-large">Filled</h3>
+    <p class="md-type-body-medium">Subhead</p>
+  </div>
+  <div class="md-card-content">
+    <p class="md-type-body-medium">Supporting text</p>
+  </div>
+</article>
+<article class="md-card md-card-outlined">
+  <div class="md-card-header">
+    <h3 class="md-type-title-large">Outlined</h3>
+    <p class="md-type-body-medium">Subhead</p>
+  </div>
+  <div class="md-card-content">
+    <p class="md-type-body-medium">Supporting text</p>
+  </div>
+</article>
+      </div>
+      <pre class="sr-code"><code>&lt;article class="md-card md-card-elevated"&gt;
+  &lt;div class="md-card-header"&gt;
+    &lt;h3 class="md-type-title-large"&gt;Elevated&lt;/h3&gt;
+    &lt;p class="md-type-body-medium"&gt;Subhead&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Supporting text&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/article&gt;
+&lt;article class="md-card md-card-filled"&gt;
+  &lt;div class="md-card-header"&gt;
+    &lt;h3 class="md-type-title-large"&gt;Filled&lt;/h3&gt;
+    &lt;p class="md-type-body-medium"&gt;Subhead&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Supporting text&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/article&gt;
+&lt;article class="md-card md-card-outlined"&gt;
+  &lt;div class="md-card-header"&gt;
+    &lt;h3 class="md-type-title-large"&gt;Outlined&lt;/h3&gt;
+    &lt;p class="md-type-body-medium"&gt;Subhead&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Supporting text&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/article&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+    <!-- PAREJA: las tres proporciones del medio (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Ratio</h2>
+      <p class="md-type-body-medium">Las tres proporciones, por clase. El medio crece con el ancho, asi que una card ancha hace la imagen mas alta.</p>
+      <div class="sr-specimen sr-specimen-gap">
+<article class="md-card md-card-elevated">
+  <div class="md-card-media md-card-media-landscape">
+    <img src="../assets/card-media.svg" alt="Media">
+  </div>
+  <div class="md-card-content">
+    <p class="md-type-body-medium">Landscape, 16:9</p>
+  </div>
+</article>
+<article class="md-card md-card-elevated">
+  <div class="md-card-media md-card-media-square">
+    <img src="../assets/card-media.svg" alt="Media">
+  </div>
+  <div class="md-card-content">
+    <p class="md-type-body-medium">Square, 1:1</p>
+  </div>
+</article>
+<article class="md-card md-card-elevated">
+  <div class="md-card-media md-card-media-portrait">
+    <img src="../assets/card-media.svg" alt="Media">
+  </div>
+  <div class="md-card-content">
+    <p class="md-type-body-medium">Portrait, 3:4</p>
+  </div>
+</article>
+      </div>
+      <pre class="sr-code"><code>&lt;article class="md-card md-card-elevated"&gt;
+  &lt;div class="md-card-media md-card-media-landscape"&gt;
+    &lt;img src="../assets/card-media.svg" alt="Media"&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Landscape, 16:9&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/article&gt;
+&lt;article class="md-card md-card-elevated"&gt;
+  &lt;div class="md-card-media md-card-media-square"&gt;
+    &lt;img src="../assets/card-media.svg" alt="Media"&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Square, 1:1&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/article&gt;
+&lt;article class="md-card md-card-elevated"&gt;
+  &lt;div class="md-card-media md-card-media-portrait"&gt;
+    &lt;img src="../assets/card-media.svg" alt="Media"&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Portrait, 3:4&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/article&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+    <!-- PAREJA: la card que es el control (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Link</h2>
+      <p class="md-type-body-medium">La card es el control: el enlace navega, el boton actúa y tabindex la hace pulsable. Con acciones dentro ya no puede ser enlace.</p>
+      <div class="sr-specimen sr-specimen-gap">
+<a class="md-card md-card-elevated" href="#">
+  <div class="md-card-header">
+    <h3 class="md-type-title-large">Enlace</h3>
+    <p class="md-type-body-medium">Subhead</p>
+  </div>
+  <div class="md-card-content">
+    <p class="md-type-body-medium">Supporting text</p>
+  </div>
+</a>
+<button class="md-card md-card-elevated" type="button">
+  <div class="md-card-header">
+    <h3 class="md-type-title-large">Botón</h3>
+    <p class="md-type-body-medium">Subhead</p>
+  </div>
+  <div class="md-card-content">
+    <p class="md-type-body-medium">Supporting text</p>
+  </div>
+</button>
+<article class="md-card md-card-elevated" tabindex="0">
+  <div class="md-card-header">
+    <h3 class="md-type-title-large">Con tabindex</h3>
+    <p class="md-type-body-medium">Subhead</p>
+  </div>
+  <div class="md-card-content">
+    <p class="md-type-body-medium">Supporting text</p>
+  </div>
+</article>
+      </div>
+      <pre class="sr-code"><code>&lt;a class="md-card md-card-elevated" href="#"&gt;
+  &lt;div class="md-card-header"&gt;
+    &lt;h3 class="md-type-title-large"&gt;Enlace&lt;/h3&gt;
+    &lt;p class="md-type-body-medium"&gt;Subhead&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Supporting text&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/a&gt;
+&lt;button class="md-card md-card-elevated" type="button"&gt;
+  &lt;div class="md-card-header"&gt;
+    &lt;h3 class="md-type-title-large"&gt;Botón&lt;/h3&gt;
+    &lt;p class="md-type-body-medium"&gt;Subhead&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Supporting text&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/button&gt;
+&lt;article class="md-card md-card-elevated" tabindex="0"&gt;
+  &lt;div class="md-card-header"&gt;
+    &lt;h3 class="md-type-title-large"&gt;Con tabindex&lt;/h3&gt;
+    &lt;p class="md-type-body-medium"&gt;Subhead&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Supporting text&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/article&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+    <!-- PAREJA: estados (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">States</h2>
+      <p class="md-type-body-medium">Enabled y disabled en elevated, por las dos vías. En outlined también se lava el contenido, contra M3 y a propósito; hover, focus y pressed se ven interactuando.</p>
+      <div class="sr-specimen sr-specimen-gap">
+<article class="md-card md-card-elevated">
+  <div class="md-card-header">
+    <h3 class="md-type-title-large">Enabled</h3>
+    <p class="md-type-body-medium">Subhead</p>
+  </div>
+  <div class="md-card-content">
+    <p class="md-type-body-medium">Supporting text</p>
+  </div>
+</article>
+<button class="md-card md-card-elevated" type="button" disabled>
+  <div class="md-card-header">
+    <h3 class="md-type-title-large">Disabled</h3>
+    <p class="md-type-body-medium">Subhead</p>
+  </div>
+  <div class="md-card-content">
+    <p class="md-type-body-medium">Supporting text</p>
+  </div>
+</button>
+<article class="md-card md-card-elevated md-disabled">
+  <div class="md-card-header">
+    <h3 class="md-type-title-large">Con md-disabled</h3>
+    <p class="md-type-body-medium">Subhead</p>
+  </div>
+  <div class="md-card-content">
+    <p class="md-type-body-medium">Supporting text</p>
+  </div>
+</article>
+      </div>
+      <pre class="sr-code"><code>&lt;article class="md-card md-card-elevated"&gt;
+  &lt;div class="md-card-header"&gt;
+    &lt;h3 class="md-type-title-large"&gt;Enabled&lt;/h3&gt;
+    &lt;p class="md-type-body-medium"&gt;Subhead&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Supporting text&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/article&gt;
+&lt;button class="md-card md-card-elevated" type="button" disabled&gt;
+  &lt;div class="md-card-header"&gt;
+    &lt;h3 class="md-type-title-large"&gt;Disabled&lt;/h3&gt;
+    &lt;p class="md-type-body-medium"&gt;Subhead&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Supporting text&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/button&gt;
+&lt;article class="md-card md-card-elevated md-disabled"&gt;
+  &lt;div class="md-card-header"&gt;
+    &lt;h3 class="md-type-title-large"&gt;Con md-disabled&lt;/h3&gt;
+    &lt;p class="md-type-body-medium"&gt;Subhead&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Supporting text&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/article&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+    <!-- PAREJA: receta completa (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Slots completa</h2>
+      <p class="md-type-body-medium">Solo el contenedor es obligatorio. La completa, con las cuatro ranuras, se copia tal cual.</p>
+      <div class="sr-specimen">
+<article class="md-card md-card-elevated">
+  <div class="md-card-media md-card-media-landscape">
+    <img src="../assets/card-media.svg" alt="Media">
+  </div>
+  <div class="md-card-header">
+    <h3 class="md-type-title-large">Headline</h3>
+    <p class="md-type-body-medium">Subhead</p>
+  </div>
+  <div class="md-card-content">
+    <p class="md-type-body-medium">Supporting text que iguala todos los anchos</p>
+  </div>
+  <div class="md-card-actions">
+    <button class="md-button md-button-filled" type="button">Primary</button>
+  </div>
+</article>
+      </div>
+      <pre class="sr-code"><code>&lt;article class="md-card md-card-elevated"&gt;
+  &lt;div class="md-card-media md-card-media-landscape"&gt;
+    &lt;img src="../assets/card-media.svg" alt="Media"&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-header"&gt;
+    &lt;h3 class="md-type-title-large"&gt;Headline&lt;/h3&gt;
+    &lt;p class="md-type-body-medium"&gt;Subhead&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Supporting text que iguala todos los anchos&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-actions"&gt;
+    &lt;button class="md-button md-button-filled" type="button"&gt;Primary&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/article&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+    <!-- PAREJA: receta sin medio (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Slots sin medio</h2>
+      <p class="md-type-body-medium">Sin medio: cabecera, contenido y acciones. Quitarlo deja el resto en su sitio.</p>
+      <div class="sr-specimen">
+<article class="md-card md-card-elevated">
+  <div class="md-card-header">
+    <h3 class="md-type-title-large">Headline</h3>
+    <p class="md-type-body-medium">Subhead</p>
+  </div>
+  <div class="md-card-content">
+    <p class="md-type-body-medium">Supporting text que iguala todos los anchos</p>
+  </div>
+  <div class="md-card-actions">
+    <button class="md-button md-button-filled" type="button">Primary</button>
+  </div>
+</article>
+      </div>
+      <pre class="sr-code"><code>&lt;article class="md-card md-card-elevated"&gt;
+  &lt;div class="md-card-header"&gt;
+    &lt;h3 class="md-type-title-large"&gt;Headline&lt;/h3&gt;
+    &lt;p class="md-type-body-medium"&gt;Subhead&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Supporting text que iguala todos los anchos&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-actions"&gt;
+    &lt;button class="md-button md-button-filled" type="button"&gt;Primary&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/article&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+    <!-- PAREJA: receta medio y cabecera (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Slots medio y cabecera</h2>
+      <p class="md-type-body-medium">Medio, cabecera y contenido, sin acciones. Cierra con el mismo padding.</p>
+      <div class="sr-specimen">
+<article class="md-card md-card-elevated">
+  <div class="md-card-media md-card-media-landscape">
+    <img src="../assets/card-media.svg" alt="Media">
+  </div>
+  <div class="md-card-header">
+    <h3 class="md-type-title-large">Headline</h3>
+    <p class="md-type-body-medium">Subhead</p>
+  </div>
+  <div class="md-card-content">
+    <p class="md-type-body-medium">Supporting text que iguala todos los anchos</p>
+  </div>
+</article>
+      </div>
+      <pre class="sr-code"><code>&lt;article class="md-card md-card-elevated"&gt;
+  &lt;div class="md-card-media md-card-media-landscape"&gt;
+    &lt;img src="../assets/card-media.svg" alt="Media"&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-header"&gt;
+    &lt;h3 class="md-type-title-large"&gt;Headline&lt;/h3&gt;
+    &lt;p class="md-type-body-medium"&gt;Subhead&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Supporting text que iguala todos los anchos&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/article&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+    <!-- PAREJA: receta sin acciones (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Slots sin acciones</h2>
+      <p class="md-type-body-medium">Cabecera y contenido, sin medio ni acciones. El contenido cierra con el mismo padding.</p>
+      <div class="sr-specimen">
+<article class="md-card md-card-elevated">
+  <div class="md-card-header">
+    <h3 class="md-type-title-large">Headline</h3>
+    <p class="md-type-body-medium">Subhead</p>
+  </div>
+  <div class="md-card-content">
+    <p class="md-type-body-medium">Supporting text que iguala todos los anchos</p>
+  </div>
+</article>
+      </div>
+      <pre class="sr-code"><code>&lt;article class="md-card md-card-elevated"&gt;
+  &lt;div class="md-card-header"&gt;
+    &lt;h3 class="md-type-title-large"&gt;Headline&lt;/h3&gt;
+    &lt;p class="md-type-body-medium"&gt;Subhead&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Supporting text que iguala todos los anchos&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/article&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+
+  </main>
+  <!-- MAIN: fin -->
+</body>
+</html>

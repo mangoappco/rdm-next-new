@@ -17,7 +17,7 @@ Solo prohibiciones verbales. Las reglas de showroom, de capas y de ciclo no se c
 
 ## Componentes creados
 
-Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **7 componentes y 15 vistas** (6 de componente + 9 de tokens), las 15 enlazadas en `showroom/index.html`. El orden es el de `index.css`:
+Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **7 componentes y 16 vistas** (7 de componente + 9 de tokens), las 16 enlazadas en `showroom/index.html`. El orden es el de `index.css`:
 
 | Componente | Hoja | Vista |
 | --- | --- | --- |
@@ -27,15 +27,19 @@ Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **7 compon
 | Button group | `button-group.css` | `button-group.html` |
 | FAB | `fab.css` | `fab.html` |
 | FAB extended | `fab-extended.css` | `fab-extended.html` |
-| Card | `card.css` | **en curso**, sin publicar |
+| Card | `card.css` | `card.html` |
 
 Cada componente tiene además su molde en `showroom/templates/<nombre>.template.html`.
 
-**Solo 3 de 13 las tienen byte-idénticas a su vista** — `fab`, `fab-extended` e `icon-button`, las tres más recientes — y `card` sigue esa vía: al publicarse, `card.html` será una copia exacta de `card.template.html`, con el bloque de razonamiento dentro. Las otras 10 vistas llevan un puntero de dos líneas al molde y el molde se quedó atrás: esa es la convención mayoritaria, pero la cambió el rumbo del 2026-10-13, no al revés. `typography.html` no tiene molde propio y apunta a `component.template.html`.
+**Solo 4 de 14 las tienen byte-idénticas a su vista** — `fab`, `fab-extended`, `icon-button` y `card`, las cuatro más recientes. Las otras 10 vistas llevan un puntero de dos líneas al molde y el molde se quedó atrás: esa es la convención mayoritaria, pero la cambió el rumbo del 2026-10-13, no al revés. `typography.html` no tiene molde propio y apunta a `component.template.html`.
 
-## Card — a medias
+## Card — publicada
 
-La hoja está hecha y verificada; **la vista tiene ocho pares**: Clase base, Variantes, Ratio, Link, States y cuatro recetas de Slots que cierran como playground para copiar. No está publicada ni enlazada, y no debe estarlo hasta que tenga los pares que se decidieron. El siguiente es **Padding**.
+La hoja está hecha y verificada, y la vista **tiene ocho pares y está publicada y enlazada**: Clase base, Variantes, Ratio, Link, States y cuatro recetas de Slots que cierran como playground para copiar. `card.html` es copia byte-idéntica de su molde, con el bloque de razonamiento dentro.
+
+**Padding y Anatomía no tienen par, y está decidido por qué.** Padding no es una API: M3 no publica ni un token de padding para card, el nuestro es un valor único de 16px que el autor no puede cambiar —no hay clase modificadora y `4-utilities` no publica utilidad de espaciado—, así que mostrar «son 16px» no sería un par. Anatomía la cumple la receta **Slots completa**, que ya lleva las seis partes de M3 en su marcado; es la misma unificación que hizo `button.html`, donde "Anatomy sizes" es a la vez anatomía y modelo de contenido.
+
+**Lo que queda de la vista:** solo **States** estaba pendiente y ya entró con el bug que destapó. Los pares que no se harán, además de esos dos: **Color** —descartado hasta que las variantes tengan algo que distinguir más allá de las fichas— y **Sizes** y **Shapes**, que no aplican.
 
 - **Base = elevated.** Las tres fichas están implementadas: `.md-card-elevated`, `.md-card-filled` y `.md-card-outlined`.
 - **LA FICHA SE ESCRIBE SIEMPRE, INCLUIDA LA QUE TRAE LA BASE.** Todo contenedor de card lleva la suya, aunque sea la elevated, y no solo `md-card`. Decidido el 2026-10-16 al auditar la vista: **7 de los 10 contenedores** del template iban sin ella, en tres de los cuatro pares. Solo el par de Variantes la llevaba, que es el que existe para nombrarlas.
@@ -127,11 +131,17 @@ La hoja está hecha y verificada; **la vista tiene ocho pares**: Clase base, Var
 - **La anatomía de M3 son seis partes**: Container, Headline, Subhead, Supporting text, Image, Buttons. Es el vocabulario que lleva el specimen de card, y coincide con el `Card.md` de Android y con las guidelines pegadas a mano.
 - **El título necesita `md-type-title-large`.** Medido: dentro de `.md-card-header` un `<h3>` computa 25.74px, no 22px, porque `reset.css:245-247` conserva a propósito los tamaños de `h1..h6`.
 
-Decidido para la vista y aún no escrito: el par de Color **no se hace** hasta que existan las otras dos variantes; el del título lleva pareja propia; el de disabled se hace con el autor en el momento.
+Decidido para la vista: el par de **Color** no se hace hasta que las variantes tengan algo que distinguir más allá de las fichas; el del título lleva pareja propia.
 
 ## Siguiente tarea
 
-**Terminar la vista de `card`**, par a par, en `showroom/templates/card.template.html`. Sin contenido real: **Sizes** no aplica (M3 no publica tamaños de card) y **Shapes** tampoco (la forma es `corner-medium` fija, sin clase, igual que en el FAB, commit `f3a0da0`). Los que sí lo tienen: **Slots**, **Padding**, **States**, **Anatomía** y **Link**, que es el que trae la interactividad que la base no tiene.
+**Card está cerrada.** Con la publicación, el único componente que queda por hacer es `dialog` —ya aparece en `main.css:54` como declarado y no existe—, y el trabajo pendiente es la **deuda conocida** de más abajo, no un par nuevo.
+
+**Lo que se descartó al cerrarla, y por qué, para que no vuelva a proponerse:**
+
+- **Padding**: los tres ficheros de token de M3 no dan **ni una** coincidencia de `padding`, `spacing` ni `margin`. El nuestro es un valor único, `--md-sys-measurement-card-padding` = 16px, que declaran las tres ranuras de texto; el medio va sin padding a propósito y la base pone `padding: 0` para neutralizar el `<button>`. Encima **el autor no puede cambiarlo**: no hay clase modificadora y `4-utilities` no publica utilidad de espaciado. Mostrar «el padding son 16px» no es un par. Lo único con contenido era el ritmo de 16px al quitar ranuras —la regla `:has()`, ya medida en `card.css`—.
+- **Anatomía**: la cumple la receta **Slots completa**, que ya lleva las seis partes de M3 en su marcado.
+- **Sizes** no aplica (M3 no publica tamaños de card) y **Shapes** tampoco (la forma es `corner-medium` fija, sin clase, igual que en el FAB, commit `f3a0da0`).
 
 ## Deuda conocida
 

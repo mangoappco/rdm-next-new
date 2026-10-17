@@ -14,19 +14,37 @@
 </head>
 
 <!--
-  ESTA VISTA ESTA A MEDIAS. Tiene ocho pares: Clase base, Variantes, Ratio,
-  Link, States y cuatro recetas de Slots que cierran como playground para
-  copiar. Se construye par a par, mirando cada uno antes de escribir el
-  siguiente.
+  ESTA VISTA TIENE OCHO PARES: Clase base, Variantes, Ratio, Link, States
+  y cuatro recetas de Slots que cierran como playground para copiar. Se
+  construyo par a par, mirando cada uno antes de escribir el siguiente.
+
+  ANATOMIA NO TIENE PAR PROPIO, Y LA RECETA COMPLETA LA CUMPLE
+  ----------------------------------------------------------
+  Las seis partes de M3 --Container, Image, Headline, Subhead, Supporting
+  text y Buttons-- salen todas en el marcado de "Slots completa", que ya
+  esta: el contenedor es el article, la imagen el `img` del medio, el
+  titular y el subtitulo los dos hijos del header, el texto de apoyo el
+  `p` del content y los botones los del actions. Esa receta ES el par de
+  anatomia.
+
+  Que no se Haga otro es la misma unificacion que ya hizo `button.html`,
+  donde el par "Anatomy sizes" es a la vez el de anatomia y el de modelo de
+  contenido: su prosa nombra las piezas del marcado y aclara que el
+  relleno y la capa de estado no son elementos sino el `::before` y el
+  `::after` del contenedor. Aqui lo unico que la anatomia anadiria sobre
+  las recetas --que el header son DOS piezas y no una, y que el `h3`
+  necesita `md-type-title-large`-- ya esta escrito en la nota de
+  `MEDIDO, Y POR QUE EL TITULO LLEVA md-type-*` de `card.css` y mas abajo.
+  Un par mas seria el mismo specimen con otro h2.
 
   LO QUE YA ESTA Y LO QUE NO
   --------------------------
-  M3 publica TRES fichas de card: elevated, filled y outlined. Aqui solo
-  esta la elevated, que es la base. Las otras dos entran despues, y cuando
-  entren aparecera tambien `.md-card-elevated`, la clase que ya trae la
-  base y que existe solo para que el nombre que alguien escribe primero
-  exista. Es el mismo motivo por el que `.md-button-filled` existe sobre
-  `.md-button`.
+  M3 publica TRES fichas de card --elevated, filled y outlined-- y estan las
+  tres, en el par de Variantes. La base es la elevated, y `.md-card-elevated`
+  existe ademas de ella para que el nombre que alguien escribe primero exista
+  al copiar. Es el mismo motivo por el que `.md-button-filled` existe sobre
+  `.md-button`. Por eso toda card de la vista lleva su ficha escrita, tambien
+  cuando es la elevated.
 
   LAS CLASES VAN EN INGLES, y los slots tambien: md-card-media, md-card-header,
   md-card-content, md-card-actions. No md-card-encabezado. Convencion del
@@ -45,6 +63,14 @@
 
   LO QUE ESTA VISTA NO DICE, Y POR QUE
   ------------------------------------
+  PADDING NO TIENE PAR. No es una API: los tres ficheros de token de M3 no
+  dan ni una coincidencia de `padding`, `spacing` ni `margin`, y el nuestro
+  es un valor unico de 16px que declaran las tres ranuras de texto. El
+  medio va sin padding a proposito, la base pone `padding: 0` para el
+  `<button>`, y encima el autor no puede cambiarlo: no hay clase
+  modificadora y `4-utilities` no publica ninguna utilidad de espaciado.
+  Mostrar "el padding son 16px" no es un par.
+
   EL TITULO LLEVA md-type-title-large, Y NO SOBRA. Medido en el navegador:
   dentro de `.md-card-header`, que computa 22px, un `<h3>` computes 25.74px
   --22 x 1.17, el valor que el navegador da a los h3--. No lo gana la
@@ -88,9 +114,11 @@
   `flex-shrink: 0`, que compiten con el `flex-wrap` de la ranura cuando la
   card se estrecha. Una clase que no aporta nada no se pone.
 
-  `.md-card-elevated` tampoco, y porque la clase no existe todavia: la base
-  YA es elevated. Aparece cuando entren filled y outlined, por el mismo caso
-  de `.md-button-filled`.
+  `.md-card-elevated` SI se pone, y en las nueve cards de la vista. La base ya
+  es elevated y la clase no mueve un pixel, pero quien copia el snippet
+  necesita ver de un vistazo que parte se juega: sin ella hay que abrir el
+  CSS para descubrir que existe una variante. Mismo argumento que
+  `.md-button-filled`, y medido en el commit `4d02ccb`.
 
   LA IMAGEN, Y POR QUE EL SRC DEL SNIPPET ES DEL SHOWROOM
   ------------------------------------------------------
