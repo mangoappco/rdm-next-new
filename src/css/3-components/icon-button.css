@@ -739,6 +739,28 @@
    tres lineas de golpe y devolveria el cambio de forma a instantaneo en los
    dos sentidos, sin que se notara el error.
 
+   EL COLOR VIENE CON LA FORMA. Antes de esto el tinte no se transicionaba:
+   el icono-botton conmutaba de golpe mientras la forma tardaba 500ms, y se
+   leia como dos cosas sueltas. Medido: el color salta en el PRIMER frame
+   (0ms) y el radio tarda 314ms en asentarse. No era una transicion corta,
+   era la ausencia de transicion.
+
+   Ahora las cuatro propiedades van juntas, con la MISMA duracion --long2,
+   500ms-- para que el tinte y la forma lleguen a la vez. La curva NO es la
+   misma, y es deliberado: la forma lleva spatial y el color lleva standard.
+   M3 no le pone rebote al color (una transicion de color con overshoot
+   parpadea, porque el valor no tiene donde pasarse), pero si lo coordina con
+   la escala del resto.
+
+   Una sola declaracion de duracion para las cuatro, porque CSS repite la
+   lista mas corta hasta igualarla con la de `transition-property`. Las tres
+   curvas si van una a una, que es lo que las hace distintas.
+
+   Aqui el relleno lo pinta el propio elemento --a diferencia del boton, que
+   lo pinta en su `::before`-- asi que esta regla le alcanza. Lo que NO le
+   alcanza es la capa de estado, que es otro elemento: esa tiene la suya,
+   de opacidad, mas arriba.
+
    REVERSION FORMAL del grill de "sin morphs de forma" (2026-10-18). Sigue
    sin morph de pulsado --el oficial de M3 es :active a corner-small, y no
    entra--, y el radio de reposo sigue siendo corner-half, no el corner-full
@@ -746,9 +768,13 @@
    ------------------------------------------------------------------------ */
 
 .md-icon-button {
-  transition-property: border-radius;
+  transition-property: border-radius, background-color, color, border-color;
   transition-duration: var(--md-sys-motion-duration-long2);
-  transition-timing-function: var(--md-sys-motion-easing-spatial-default);
+  transition-timing-function:
+    var(--md-sys-motion-easing-spatial-default),
+    var(--md-sys-motion-easing-standard),
+    var(--md-sys-motion-easing-standard),
+    var(--md-sys-motion-easing-standard);
 }
 
 /* ---------------------------------------------------------------------------
@@ -758,9 +784,9 @@
    componente, no solo su color. La regla de motion.css ("los componentes
    de movimiento fuerte deben consultar prefers-reduced-motion y caer a
    una duracion muchisima corta") se cumple aqui por primera vez en el
-   sistema: con reduce, las dos transiciones del componente --la del
-   border-radius y la de la capa de estado-- se apagan y el estado cambia
-   de golpe, que es lo que pide la sensibilidad vestibular.
+   sistema: con reduce, el estado cambia de golpe, y el color CON la forma,
+   que es lo que se pide cuando el movimiento es lo que molesta. Las dos
+   van en la misma regla, asi que con reduce saltan a la vez.
 
    `transition: none` y no `transition-duration: 0s`: el sistema no tiene
    un token de duracion cero (el mas corto es short1, 50ms, que no es
@@ -768,10 +794,9 @@
    fuera de 1-reference-tokens. Inventar un token de duracion cero para
    esto seria mas caro que la regla que evita.
 
-   Se apagan las DOS, y por eso el selector del ::after va explicitamente:
-   la capa de estado tiene su propia transicion, en otro elemento, y no
-   la hereda de la base. Sin esta segunda regla el morph saltaria y el
-   tinde seguiria fundiendose, que es la mitad de lo que se pide. */
+   Dos reglas, y por el mismo motivo: la capa de estado tiene su propia
+   transicion, en otro elemento, y no la hereda de la base. Sin esta
+   segunda el morph saltaria y el tinde de hover seguiria fundiendose. */
    ------------------------------------------------------------------------ */
 
 @media (prefers-reduced-motion: reduce) {

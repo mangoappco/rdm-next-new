@@ -849,6 +849,34 @@
    en el shorthand, por lo mismo: un shorthand reventaria las tres lineas de
    golpe y devolveria el cambio de forma a instantaneo en los dos sentidos.
 
+   EL COLOR VIENE CON LA FORMA. Antes de esto el tinte no se transicionaba: el
+   boton conmutaba de golpe mientras la forma tardaba 500ms, y se leia como
+   dos cosas sueltas. Medido: el texto salta en el PRIMER frame, 0ms, y el
+   radio tarda 314ms en asentarse. No era una transicion corta --no habia
+   ninguna--.
+
+   Ahora van juntas, con la MISMA duracion --long2, 500ms-- para que el tinte
+   y la forma lleguen a la vez. La curva NO es la misma, y es deliberado: la
+   forma lleva spatial y el color standard. M3 no le pone rebote al color,
+   porque un valor de color no tiene donde pasarse y el rebote se lee como un
+   parpadeo, pero si lo coordina con la escala del resto del movimiento.
+
+   Una sola declaracion de duracion para las tres, porque CSS repite la lista
+   mas corta hasta igualarla con la de `transition-property`. Las tres curvas
+   si van una a una, que es lo que las hace distintas.
+
+   El hover y el focus NO entran: los tres estados de la capa cambian la
+   opacidad de su `::after` y nada mas, asi que subir el color a 500ms no
+   retarda nada de la interaccion. Y el borde del outlined tampoco cambia al
+   seleccionar --el outline-variant se queda--, asi que su `border-color`
+   esta aqui por simetria y no por efecto.
+
+   DOS REGLAS, NO UNA, Y POR QUE. El relleno del boton NO lo pinta el
+   elemento: lo pinta su `::before`, con `z-index: -1` e `isolation: isolate`,
+   porque el disabled necesita el relleno al 10% y el texto al 38% y un
+   unico `opacity` no puede dar las dos. Las transiciones no se heredan, asi
+   que la de `background-color` tiene que declararse ahi.
+
    Y esto NO es el morph de pulsado. El de pulsar sigue fuera, con su
    desviacion documentada mas arriba; lo unico que se recupera aqui es la
    transicion de border-radius, que era una de las tres piezas que le
@@ -857,30 +885,50 @@
    ------------------------------------------------------------------------ */
 
 .md-button {
-  transition-property: border-radius;
+  transition-property: border-radius, color, border-color;
   transition-duration: var(--md-sys-motion-duration-long2);
-  transition-timing-function: var(--md-sys-motion-easing-spatial-default);
+  transition-timing-function:
+    var(--md-sys-motion-easing-spatial-default),
+    var(--md-sys-motion-easing-standard),
+    var(--md-sys-motion-easing-standard);
+}
+
+/* El relleno, que es otro elemento y por eso otra transicion. */
+.md-button::before {
+  transition-property: background-color;
+  transition-duration: var(--md-sys-motion-duration-long2);
+  transition-timing-function: var(--md-sys-motion-easing-standard);
 }
 
 /* ---------------------------------------------------------------------------
    PREFERES-REDUCED-MOTION
    ---------------------------------------------------------------------------
-   La misma regla que cumple el icono-button, y por el mismo motivo: cambiar
-   la geometria del control es movimiento fuerte, y con reduce el estado tiene
-   que cambiar de golpe.
+   Un morph de forma es movimiento FUERTE: cambia la geometria del
+   control, no solo su color. La regla de motion.css ("los componentes de
+   movimiento fuerte deben consultar prefers-reduced-motion y caer a una
+   duracion muchisima corta") se cumple aqui, y con ella el tinte: con
+   reduce, el color y la forma cambian de golpe a la vez, que es justo lo
+   que se pide cuando el movimiento es lo que molesta.
 
    `transition: none` y no `transition-duration: 0s`: el sistema no tiene un
    token de duracion cero, y escribir 0s es un valor crudo, que REGLA 1
    prohibe fuera de 1-reference-tokens. Lo probo el verificador en el morph
    del icono-button, con el mismo `0s` escrito a mano.
 
-   Aqui no hace falta la segunda regla para la capa de estado que si hace
-   falta en el icono-button: la de ahi tiene su propia transicion de opacidad
-   y esta no la tiene todavia.
+   DOS reglas y no una, y por el mismo motivo que las transiciones: el
+   relleno lo pinta el `::before`, que es otro elemento y no hereda la
+   transicion del host. Si solo se apagara el host, el `background-color`
+   seguiria fundiendose 500ms mientras la forma saltaba. No hace falta una
+   tercera para la capa de estado, que en el boton todavia no tiene
+   transicion de opacidad -- en el icono-button si, y ahi si hace falta.
    ------------------------------------------------------------------------ */
 
 @media (prefers-reduced-motion: reduce) {
   .md-button {
+    transition: none;
+  }
+
+  .md-button::before {
     transition: none;
   }
 }
