@@ -131,14 +131,86 @@ export function registrar() {
 
     /* CERRAR AL CLICAR FUERA, que es lo que hace M3
        -----------------------------------------------
-       Con `::backdrop` el area de fuera la cubre el propio `<dialog>`: el
-       clic cae en el elemento, no en un velo aparte. Por eso la comprobacion
-       es `event.target === dialog` y no hace falta medir rectangulos.
+       La regla de abajo tiene DOS condiciones, y cada una arregla una cosa
+       distinta. Hasta aqui era una sola, y la premisa con la que se escribio
+       --"con `::backdrop` el clic cae en el elemento, no en un velo aparte"--
+       solo vale si el dialog es MODAL.
 
-       Lo que hay dentro no cierra: los hijos del dialog tienen otro objetivo,
-       asi que solo sale cuando el clic cae en el dialog mismo. */
-    if (evento.target instanceof HTMLDialogElement && evento.target.open) {
-      evento.target.close();
+       `<dialog open>` A SECAS NO TIENE VELO, Y ESE ES EL CASO QUE ROMPIA
+       ---------------------------------------------------------------
+       Un dialog abierto sin `showModal()` no cubre el viewport: fluye en su
+       sitio, y lo que hay fuera es la pagina, no un velo. Asi que "el clic ha
+       caido en el dialog" quiere decir lo contrario de lo que decia la nota:
+       significa que se ha tocado la tarjeta.
+
+       Y la tarjeta esta llena de sitio que cae en el propio elemento.
+       Medido en el par Clase base, con una rejilla de 12x9 sobre la caja:
+
+           D = el propio <dialog>   H = cabecera   A = acciones
+
+               DDDDDDDDDDDD
+               DHHHHHHHHHHD
+               DHHHHHHHHHHD
+               DHHHHHHHHHHD
+               DDDDDDDDDDDD
+               DDDDDDDDDDDD
+               DAAAAAAAAAAD
+               DAAAAAAAAAAD
+               DDDDDDDDDDDD
+
+       Los `D` son 58 de 108 puntos, el 54% de la caja. Son los 24px de padding
+       de los cuatro lados, los dos huecos entre piezas y el hueco que deja
+       `justify-content: flex-end` a la izquierda de los botones. Cada uno de
+       esos clics cerraba el dialog, y el navegador lo escondia solo con
+       `dialog:not([open]) { display: none }`.
+
+       Y LOS SPECIMENS DEL SHOWROOM SON ESE CASO
+       -----------------------------------------
+       Son `<dialog open>` a secas, a proposito: en la vista solo hay velo en el
+       par Modal, que es el que lo ensenia. Asi que cada clic en un specimen lo
+       hacia desaparecer, que es justo lo que no debe pasar con documentacion.
+
+       `:modal`, Y POR QUE NO BASTA `open`
+       ------------------------------------
+       `open` responde a "el dialog esta abierto", que es lo que hace falta saber
+       para cerrarlo, pero coincide tambien en el caso que NO debe cerrar.
+       `:modal` es la condicion que separa "hay velo que se puede clicar" de "no
+       hay velo". Sin un dialog modal nunca se cierra al clicar, ni siquiera por
+       fuera: fuera del dialog esta la pagina, y en la pagina mandan sus reglas.
+
+       LA SEGUNDA CONDICION, Y QUE YA NO SE EVITA MEDIR
+       ------------------------------------------------
+       Siendo modal, `target === dialog` mezcla dos cosas que no son lo mismo:
+       el velo y la propia tarjeta. La caja del elemento ES la tarjeta --medido,
+       280x180 en una ventana de 888x746, no cubre el viewport-- asi que tocar el
+       padding de 24px de la tarjeta tambien cerraba el dialog. En M3 no le
+       pasa: su scrim es un nodo aparte y el clic sobre la superficie es otro
+       target.
+
+       Por eso la comprobacion es geometrica, comparando el clic con el
+       `getBoundingClientRect()` del elemento. Se pierde la ventaja de
+       `::backdrop` --"no hace falta medir rectangulos"-- porque el `::backdrop`
+       no distingue velo de tarjeta: los dos caen en el elemento, y hace falta
+       saber donde acaba la tarjeta.
+
+       Se descarto `event.offsetX/offsetY`, que tambien separa las dos cosas sin
+       forzar layout --en un clic al velo computan negativos, fuera de
+       `clientWidth/clientHeight`-- pero no se ha podido verificar con un clic
+       real: la herramienta de click del arnes solo acepta refs, y el `::backdrop`
+       no es un elemento al que apuntar. Con `clientX/clientY` y el rect no hay
+       nada que suponer.
+
+       QUE SIGUE SIN TOCARSE
+       --------------------
+       El Escape. El navegador cierra un `<dialog open>` a secas con Escape, y
+       eso no pasa por este archivo. */
+    if (evento.target instanceof HTMLDialogElement && evento.target.matches(':modal')) {
+      const dialog = evento.target;
+      const caja = dialog.getBoundingClientRect();
+      const enElVelo =
+        evento.clientX < caja.left || evento.clientX > caja.right ||
+        evento.clientY < caja.top || evento.clientY > caja.bottom;
+      if (enElVelo) dialog.close();
     }
   });
 }
