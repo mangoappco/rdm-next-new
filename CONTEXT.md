@@ -4,15 +4,15 @@ Contexto rápido para retomar la sesión en frío. No sustituye a `README.md` ni
 
 ## Qué estamos construyendo
 
-La librería de componentes de **RDM ManGo! App**: sistema de diseño estático, HTML + CSS y una capa fina de JavaScript, sin build y sin framework. Basado conceptualmente en Material Design 3, con arquitectura de tokens, nomenclatura y decisiones propias. Cuatro capas — `1-reference-tokens` → `2-system-tokens` → `3-components` → `4-utilities` — y un showroom que lo documenta con dogfooding: cada vista usa las clases reales del sistema. Un componente lleva JS solo si el CSS no alcanza: hoy, el `dialog`.
+La librería de componentes de **RDM ManGo! App**: sistema de diseño estático, HTML + CSS y una capa fina de JavaScript, sin build y sin framework. Basado conceptualmente en Material Design 3, con arquitectura de tokens, nomenclatura y decisiones propias. Cuatro capas — `1-reference-tokens` → `2-system-tokens` → `3-components` → `4-utilities` — y un showroom que lo documenta con dogfooding: cada vista usa las clases reales del sistema. Un componente lleva JS solo si el CSS no alcanza: hoy son dos, el `dialog` y el `toggle`.
 
 ## Candados
 
 Solo prohibiciones verbales. Las reglas de showroom, de capas y de ciclo no se copian aquí: viven en la skill y en el README, apuntadas más abajo.
 
 - **Sin `<script>` con código dentro de un HTML, en ningún sitio.** El JavaScript vive en `src/js/`, en un archivo por componente, y el HTML solo lo referencia con `<script type="module" src="...">`. No es una excepción para el showroom: es en los dos lados. `src/js/main.js` es el punto de entrada y quien usa la librería importa `main.css` y `main.js`.
-- **Un componente solo lleva JS si el CSS no alcanza.** Abrir y cerrar, o guardar estado. Hoy es uno: el dialog, con `data-open-dialog` y `data-close-dialog`. No se crean archivos vacíos por simetría.
-- **Sin toggles** en ManGo! App.
+- **Un componente solo lleva JS si el CSS no alcanza.** Abrir y cerrar, o conmutar estado. Hoy son dos: el dialog (con `data-open-dialog` y `data-close-dialog`) y el toggle, que es UN archivo — `src/js/toggle.js` — para DOS componentes (button e icon-button comparten el mismo gancho `data-toggle`). La frontera son los atributos, no los componentes. No se crean archivos vacíos por simetría.
+- **El toggle existe (2026-10-18)** y sustituye la prohibición anterior «sin toggles»: button e icon-button conmutan con `data-toggle` + `aria-pressed`, servicio de `src/js/toggle.js`. Grupos exclusivos con `data-toggle-group` (clic en el activo nunca desmarca); múltiples con `data-toggle-group="multi"` o `aria-multiselectable="true"`. Outliers decididos: la variante text no es conmutable, el eje FILL no conmuta con el estado y el disabled gana (uniforme por variante). **Y la inversión de forma del icon-button morfa** con el par spatial + long2 (reversión formal del «sin morphs de forma» del grill), respetando `prefers-reduced-motion`; el morph de pulsado sigue fuera. El showroom lo cubre en ambos sentidos con el par `Toggle square`: sin él, la dirección square → round no se veía en ninguna parte.
 - **Sin morph de pulsado** en ningún componente.
 - **Sin elevación transicionada.**
 
@@ -234,14 +234,16 @@ Nada de esto se ha tocado. Está anotado para que no se dé por verdad:
 ## El verificador en macOS
 
 ```
-~/.local/powershell/pwsh -NoProfile -File ./tools/verify-tokens.ps1
+node tools/verify-tokens.mjs
 ```
 
-PowerShell 7.6.7 instalado en `~/.local/powershell/`, sin sudo y sin instalador: se descomprimió del tarball oficial. No está en el PATH; si se quiere, se añade con un enlace o una línea en `~/.zshrc`, y entonces el comando es `pwsh -File ./tools/verify-tokens.ps1`.
+**La implementación está en Node desde el 2026-10-18** (`tools/verify-tokens.mjs`), no en PowerShell. Corre igual en macOS, Windows y Linux sin instalar nada. `tools/verify-tokens.ps1` sigue ahí y sigue funcionando, pero son tres líneas que llaman al `.mjs` y devuelven su código de salida: una sola implementación, que es lo que evita que dos verificadores se separen en silencio.
 
-En macOS **no** va `-ExecutionPolicy Bypass`: es un concepto de Windows y ahí el bloqueo de scripts no existe. El script tampoco necesitó cambios: `Get-RelPath` normaliza cualquier separador a `\` antes de comparar, que es justo lo que hace portable.
+El motivo del port no fue que el `.ps1` no corriera en macOS —**sí corría**, y está medido: da los mismos 43 hojas y 664 tokens que el `.mjs`—, sino depender de PowerShell para verificar un sistema de CSS en un equipo donde Node ya está. Lo que sí encontró el port es un bug de REGLA 11 que llevaba tiempo: su patrón exigía que `class` fuese el último atributo del `<div class="sr-specimen">`, así que los dos pares con `<div class="sr-specimen sr-specimen-gap" data-toggle-group>` —los únicos del sistema que necesitan un atributo funcional en el contenedor— no se comparaban con su snippet, y el tempered greedy se comía dos parejas de un tirón. Ahora el patrón acepta atributos después de `class`, y REGLA 11 acepta que el snippet envuelva el contenido en el `div` funcional, porque `sr-*` no se puede copiar (REGLA 13) y `data-toggle-group` sí.
 
-Desde que corre aquí, el sustituto de bash que se usó mientras tanto ya no hace falta y no está en el repo.
+Sigue en pie lo de PowerShell, por si se usa: `~/.local/powershell/pwsh -NoProfile -File ./tools/verify-tokens.ps1`. PowerShell 7.6.7 en `~/.local/powershell/`, sin sudo y sin instalador: se descomprimió del tarball oficial. No está en el PATH; si se quiere, se añade con un enlace o una línea en `~/.zshrc`. En macOS **no** va `-ExecutionPolicy Bypass`: es un concepto de Windows y ahí el bloqueo de scripts no existe.
+
+El sustituto de bash que se usó mientras tanto ya no hace falta y no está en el repo.
 
 ## Fuentes de M3
 
