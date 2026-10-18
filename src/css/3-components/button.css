@@ -67,16 +67,19 @@
       de forma, no un color. Queda fuera porque se aprueba por separado.
 
    3. EL ESTADO `selected`, ENTRANTE MEDIO A MEDIO POR LA PUERTA DEL
-      TOGGLE. La mitad de COLOR ya entro: la seccion EL ESTADO
-      SELECCIONADO, al final del archivo, pinta el selected de cada
+      TOGGLE. La mitad de COLOR entro con la seccion EL ESTADO
+      SELECCIONADO, al final del archivo, que pinta el selected de cada
       variante con `data-toggle` + `aria-pressed`, y su par unselected
       para el filled. Los tokens son los publicados, verificados uno a
-      uno (`_md-comp-button-*.scss`, 34.0.21). La mitad de FORMA no: el
-      token `selected-container-shape-round` --un cuadrado seleccionado
-      vuelve a redondo, el mismo par bidireccional del icon-button--
-      sigue fuera porque la clase `square` no tiene un uso real que lo
-      pida; cuando lo tenga, entra por la misma puerta que el
-      icon-button.
+      uno (`_md-comp-button-*.scss`, 34.0.21). La mitad de FORMA entro el
+      mismo dia: `selected-container-shape-round` y
+      `selected-container-shape-square` estan en LA FORMA SELECCIONADO, con
+      el mismo par bidireccional del icon-button, y la transicion que la hace
+      visible en LA TRANSICION DE LA FORMA.
+
+      Lo que exigia esa transicion era cambiar el reposo de `corner-full`
+      (9999px) a `corner-half-{tamano}`, y esa es la parte de este bloque que
+      se aparta de M3. Pinta igual y esta medido; ver FORMA.
 
 4. TODO EL MOVIMIENTO, y no solo el resorte. El componente se construye
      paso a paso, y el motion todavia no es su turno: ni la transicion de
@@ -123,11 +126,11 @@
      5 tamanos   xsmall (32) small (40) medium (56) large (96) xlarge (136)
      3 iconos    ninguno / lider / posterior
      4 estados   hover, focus-visible, active, disabled
-     1 forma     round (corner-full)
-     toggle      estado selected con data-toggle + aria-pressed
-                 (solo color: la forma sigue excluida, ver arriba)
+     2 formas    round (corner-half-{tamano}) y square, por clase
+     toggle      estado selected con data-toggle + aria-pressed: color Y
+                 forma, la forma se invierte en los dos sentidos
      ademas      forced-colors, etiqueta como <a>, area tactil
-     sin motion  sin transicion de capa de estado y sin morph de forma
+     sin motion  sin transicion de capa de estado y sin morph de pulsado
 
    ========================================================================== */
 
@@ -203,15 +206,29 @@
   /* ------------------------------------------------------------------------
      FORMA
      ------------------------------------------------------------------------
-     En reposo, `corner-full`, en los CINCO tamanos. Verificado en los tokens
-     publicados: `container-shape-round` vale `md-sys-shape.$corner-full` en
-     `_md-comp-button-{xsmall,small,medium,large,xlarge}.scss`, sin una sola
-     excepcion.
+     En reposo, `corner-half-{tamano}`, en los CINCO tamanos. M3 publica
+     `container-shape-round: corner-full` en los cinco ficheros, y se sigue
+     leyendo asi en su cabecera: corner-full son 9999px, que el navegador
+     recorta a la mitad de la caja al pintar.
 
-     Ojo con el borrador: `labs/gb` usa `calc(var(--container-height) / 2)`
-     en lugar de corner-full. Es un laboratorio, no la publicacion, asi que
-     aqui va corner-full. Se deja anotado porque es la clase de detalle que
-     hace que "media altura" suene a respuesta obvia y no lo es.
+     Aqui va corner-half porque 9999px no se puede animar, y eso se midio. Con
+     corner-full en el extremo, el morph de seleccion se rompe en las dos
+     direcciones y de forma distinta:
+
+       9999 -> 12px   el radio PINTADO se queda clavado 334ms de los 500, y
+                      el morph entero ocurre en los ultimos 149ms
+        12 -> 9999px  llega al tope de recorte en 9ms y no vuelve a moverse:
+                      termina antes de empezar, y se lee como instantaneo
+
+     El precio de cambiarlo es cero, y tambien esta medido: painted de
+     corner-full es min(9999, alto/2) y painted de corner-half-{tamano} es
+     alto/2, o sea el mismo numero en los cinco tamanos -- 20, 16, 28, 48 y
+     68 --. Y los botones no crecen: con etiqueta larga el alto medido sigue
+     siendo el declarado, que es lo unico que podria separar los dos radios.
+
+     El icon-button llego aqui antes, por el mismo motivo y con el mismo
+     desatino: `corner-half` no es "media altura" dicho a ojo, es lo que hay
+     que poner para que la forma pueda moverse.
 
      EL MORPH DE PULSADO NO ESTA, Y NO VUELVE. M3 si lo declara, y por tamano
      (xsmall y small a corner-small, medium a corner-medium, large y xlarge a
@@ -219,10 +236,11 @@
      forma en cada clic, en una app donde se hace clic cien veces, distrae mas
      de lo que informa. Es una desviacion consciente de M3, no un olvido.
 
-     Hay dos formas, y solo dos: la de reposo, que es `corner-full` en los
-     cinco tamanos, y la `square`, que `.md-button-square` activa y que escala
-     con el tamano. */
-  --md-comp-button-shape: var(--md-sys-shape-corner-full);
+     Hay dos formas, y solo dos: la de reposo, que es `corner-half-{tamano}`
+     en los cinco tamanos, y la `square`, que `.md-button-square` activa y que
+     escala con el tamano. La de reposo no es corner-full y el motivo esta
+     medido en el bloque de arriba. */
+  --md-comp-button-shape: var(--md-sys-shape-corner-half-small);
 
   /* ------------------------------------------------------------------------
      COLOR: LA VARIANTE FILLED
@@ -361,16 +379,10 @@
   background-color: transparent;
   box-shadow: var(--md-comp-button-elevation);
 
-  /* SIN transition de border-radius, y no por falta de tiempo: el morph de
-     forma no se va a implementar (ver la nota del token de forma, mas arriba).
-     La forma es fija durante toda la vida del boton.
-
-     Lo que habria que mirar si algún dia se decide lo contrario, porque es el
-     mismo problema que se resolvio en el icon-button: el reposo es
-     corner-full (9999px) y el destino un radio FINITO (corner-small, 8px).
-     El navegador recorta el radio al pintar, pero el valor calculado se queda
-     en 9999 durante toda la transicion, asi que el 99% del recorrido dibuja
-     el mismo pixel y lo unico que se ve es un salto final. */
+  /* LA FORMA, Y SU TRANSICION. La transicion no vive aqui: esta en su propia
+     regla al final del archivo, en longhands y DESPUES de las ocho que
+     reapuntan el token de forma. Ver LA TRANSICION DE LA FORMA, al final, y
+     el motivo de colocarla ahi. */
 
   font: var(--md-comp-button-label-text);
   letter-spacing: var(--md-comp-button-label-text-tracking);
@@ -619,6 +631,7 @@
 
 .md-button-xsmall {
   --md-comp-button-height: var(--md-sys-measurement-button-height-xsmall);
+  --md-comp-button-shape: var(--md-sys-shape-corner-half-xsmall);
   --md-comp-button-icon-size: var(--md-sys-measurement-button-icon-size-xsmall);
   --md-comp-button-padding-x: var(--md-sys-measurement-button-padding-xsmall);
   --md-comp-button-label-text: var(--md-sys-typescale-label-large);
@@ -633,6 +646,7 @@
 
 .md-button-medium {
   --md-comp-button-height: var(--md-sys-measurement-button-height-medium);
+  --md-comp-button-shape: var(--md-sys-shape-corner-half-medium);
   --md-comp-button-icon-size: var(--md-sys-measurement-button-icon-size-medium);
   --md-comp-button-padding-x: var(--md-sys-measurement-button-padding-medium);
   --md-comp-button-label-text: var(--md-sys-typescale-title-medium);
@@ -641,6 +655,7 @@
 
 .md-button-large {
   --md-comp-button-height: var(--md-sys-measurement-button-height-large);
+  --md-comp-button-shape: var(--md-sys-shape-corner-half-large);
   --md-comp-button-icon-size: var(--md-sys-measurement-button-icon-size-large);
   --md-comp-button-padding-x: var(--md-sys-measurement-button-padding-large);
   --md-comp-button-label-space: var(--md-sys-measurement-button-label-space-large);
@@ -650,6 +665,7 @@
 
 .md-button-xlarge {
   --md-comp-button-height: var(--md-sys-measurement-button-height-xlarge);
+  --md-comp-button-shape: var(--md-sys-shape-corner-half-xlarge);
   --md-comp-button-icon-size: var(--md-sys-measurement-button-icon-size-xlarge);
   --md-comp-button-padding-x: var(--md-sys-measurement-button-padding-xlarge);
   --md-comp-button-label-space: var(--md-sys-measurement-button-label-space-xlarge);
@@ -737,8 +753,9 @@
 
    Verificado en `container-shape-square` de
    tokens/versions/latest/sass/_md-comp-button-{xsmall,small,medium,large,
-   xlarge}.scss. El `round` de los cinco es corner-full, que es lo que trae la
-   base.
+   xlarge}.scss. El `round` de los cinco es corner-full en M3, y aqui es
+   corner-half-{tamano}: pintado es el mismo numero, pero 9999px no se puede
+   animar. Ver FORMA, mas arriba.
 
    Mismo patron que en el icono-button: una clase que cambia la forma, y las
    reapuntadas por tamano en selectores compuestos cuando el valor depende de
@@ -754,6 +771,118 @@
 .md-button-large.md-button-square,
 .md-button-xlarge.md-button-square {
   --md-comp-button-shape: var(--md-sys-shape-corner-extra-large);
+}
+
+/* ---------------------------------------------------------------------------
+   LA FORMA SELECCIONADA
+   ---------------------------------------------------------------------------
+   La misma inversion bidireccional que el icono-button, y con los mismos
+   valores publicados: el round seleccionado toma la square de su tamano, y el
+   square seleccionado vuelve al round de su tamano.
+
+       selected-container-shape-round   corner-medium      xsmall y small
+                                        corner-large       medium
+                                        corner-extra-large large y xlarge
+       selected-container-shape-square  corner-half-{tamano}, los cinco
+
+   Verificado en los cinco ficheros publicados:
+   `_md-comp-button-{xsmall,small,medium,large,xlarge}.scss` los declara todos.
+
+   Lo de `corner-full` que declara M3 para el square seleccionado no se puede
+   usar, y por lo mismo que la base: son 9999px y no se animan. painted de
+   corner-half-small es 20 y painted de corner-full tambien, asi que el boton
+   se ve EXACTAMENTE igual que con el token de M3. La diferencia esta en el
+   valor calculado, y es la que hace que la forma pueda moverse.
+
+   El square seleccionado es el unico caso del sistema que necesita cinco
+   reglas y no tres, porque sus cinco `corner-half` son valores distintos: el
+   round seleccionado reparte tres Escalones entre los cinco tamanos, y este
+   reparte cinco.
+
+   Todas con `:not(:disabled)`, igual que las de color: un toggle
+   deshabilitado no insinua que se le pueda dar a la forma. */
+.md-button[data-toggle][aria-pressed="true"]:not(.md-button-square):not(:disabled) {
+  --md-comp-button-shape: var(--md-sys-shape-corner-medium);
+}
+
+.md-button-medium[data-toggle][aria-pressed="true"]:not(.md-button-square):not(:disabled) {
+  --md-comp-button-shape: var(--md-sys-shape-corner-large);
+}
+
+.md-button-large[data-toggle][aria-pressed="true"]:not(.md-button-square):not(:disabled),
+.md-button-xlarge[data-toggle][aria-pressed="true"]:not(.md-button-square):not(:disabled) {
+  --md-comp-button-shape: var(--md-sys-shape-corner-extra-large);
+}
+
+.md-button-square[data-toggle][aria-pressed="true"]:not(:disabled) {
+  --md-comp-button-shape: var(--md-sys-shape-corner-half-small);
+}
+
+.md-button-xsmall.md-button-square[data-toggle][aria-pressed="true"]:not(:disabled) {
+  --md-comp-button-shape: var(--md-sys-shape-corner-half-xsmall);
+}
+
+.md-button-medium.md-button-square[data-toggle][aria-pressed="true"]:not(:disabled) {
+  --md-comp-button-shape: var(--md-sys-shape-corner-half-medium);
+}
+
+.md-button-large.md-button-square[data-toggle][aria-pressed="true"]:not(:disabled) {
+  --md-comp-button-shape: var(--md-sys-shape-corner-half-large);
+}
+
+.md-button-xlarge.md-button-square[data-toggle][aria-pressed="true"]:not(:disabled) {
+  --md-comp-button-shape: var(--md-sys-shape-corner-half-xlarge);
+}
+
+/* ---------------------------------------------------------------------------
+   LA TRANSICION DE LA FORMA
+   ---------------------------------------------------------------------------
+   El morph de la inversion de seleccion: spatial (tamano, posicion y forma)
+   + long2 = 500ms, el par de la cabecera RESORTE Y CURVAS. El mismo que el
+   del icono-button, y por el mismo motivo: es lo que hace que el cambio se
+   vea en vez de saltar.
+
+   Va aqui, y no en la regla base, por blindaje. Esta regla esta DESPUES de
+   las ocho que reapuntan el token y ANTES del bloque de reduce, que tiene que
+   ganar: cualquier `transition:` que se anada a este selector mas adelante
+   queda debajo y no puede reventar el morph en silencio. Y en longhands y no
+   en el shorthand, por lo mismo: un shorthand reventaria las tres lineas de
+   golpe y devolveria el cambio de forma a instantaneo en los dos sentidos.
+
+   Y esto NO es el morph de pulsado. El de pulsar sigue fuera, con su
+   desviacion documentada mas arriba; lo unico que se recupera aqui es la
+   transicion de border-radius, que era una de las tres piezas que le
+   faltaban. Faltan dos: el token --md-comp-button-pressed-shape y su
+   reapuntada por tamano.
+   ------------------------------------------------------------------------ */
+
+.md-button {
+  transition-property: border-radius;
+  transition-duration: var(--md-sys-motion-duration-long2);
+  transition-timing-function: var(--md-sys-motion-easing-spatial-default);
+}
+
+/* ---------------------------------------------------------------------------
+   PREFERES-REDUCED-MOTION
+   ---------------------------------------------------------------------------
+   La misma regla que cumple el icono-button, y por el mismo motivo: cambiar
+   la geometria del control es movimiento fuerte, y con reduce el estado tiene
+   que cambiar de golpe.
+
+   `transition: none` y no `transition-duration: 0s`: el sistema no tiene un
+   token de duracion cero, y escribir 0s es un valor crudo, que REGLA 1
+   prohibe fuera de 1-reference-tokens. Lo probo el verificador en el morph
+   del icono-button, con el mismo `0s` escrito a mano.
+
+   Aqui no hace falta la segunda regla para la capa de estado que si hace
+   falta en el icono-button: la de ahi tiene su propia transicion de opacidad
+   y esta no la tiene todavia.
+   ------------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .md-button {
+    transition: none;
+  }
 }
 
 .md-button-filled {
