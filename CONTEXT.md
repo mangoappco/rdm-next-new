@@ -37,7 +37,9 @@ Cada componente tiene además su molde en `showroom/templates/<nombre>.template.
 
 ## Card — publicada
 
-La hoja está hecha y verificada, y la vista **tiene ocho pares y está publicada y enlazada**: Clase base, Variantes, Ratio, Link, States y cuatro recetas de Slots que cierran como playground para copiar. `card.html` es copia byte-idéntica de su molde, con el bloque de razonamiento dentro.
+La hoja está hecha y verificada, y la vista **tiene nueve pares y está publicada y enlazada**: Clase base, Variantes, Ratio, Link, States y cuatro recetas de Slots que cierran como playground para copiar. `card.html` es copia byte-idéntica de su molde, con el bloque de razonamiento dentro.
+
+> **Corrigido el 2026-10-17.** Esta línea decía «ocho pares» y eran nueve: el índice afirmaba ocho, esta línea repetía el error, y la vista tenía nueve secciones desde antes. Salió al auditar que la descripción del índice y el encabezado de la vista sean el mismo texto —los dos contaban mal y en el mismo sentido—. El recuento de pares de los ocho componentes **se cuenta ahora desde el fichero**, no se escribe a mano.
 
 **Padding y Anatomía no tienen par, y está decidido por qué.** Padding no es una API: M3 no publica ni un token de padding para card, el nuestro es un valor único de 16px que el autor no puede cambiar —no hay clase modificadora y `4-utilities` no publica utilidad de espaciado—, así que mostrar «son 16px» no sería un par. Anatomía la cumple la receta **Slots completa**, que ya lleva las seis partes de M3 en su marcado; es la misma unificación que hizo `button.html`, donde "Anatomy sizes" es a la vez anatomía y modelo de contenido.
 

@@ -911,6 +911,10 @@ showroom/
 - Cada componente tiene su propia vista en `showroom/components/`: `divider.html`,
   `icon-button.html`, `button.html`, `button-group.html`, `fab.html`,
   `fab-extended.html`, `card.html`, `dialog.html`.
+- **Y la descripción de un componente en `index.html` es el mismo texto que el encabezado
+  de su vista**, byte a byte. La fuente es el encabezado: si cambia, el índice cambia con
+  él. El recuento de pares va al final del encabezado, como `· *Trece pares*`, para que el
+  índice no pierda ese dato al dejar de llevar su propia redacción.
 - **Y también las familias de `1-reference-tokens/` y `2-system-tokens/` que son
   documentación por sí mismas**, aunque no sean componentes: `color.html`,
   `typography.html`, `icon.html`, `elevation.html`, `measurement.html`, `motion.html`,
