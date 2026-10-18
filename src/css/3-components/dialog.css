@@ -874,14 +874,164 @@ html:has(dialog.md-dialog:modal) {
    animacion --`dialog/internal/animations.ts`-- porque su host es un web
    component.
 
-   Aqui el elemento es un `<dialog>` nativo y no hay animacion, asi que el
-   backdrop nativo es el mecanismo que corresponde. Es una desviacion
-   deliberada de M3, y por eso queda escrita: para que no se lea como un error
-   ni se "corrija" copiando el `background: none` de M3.
+   Aqui el elemento es un `<dialog>` nativo, y el backdrop nativo tambien se
+   puede animar: con `allow-discrete` el navegador lo mantiene mientras se
+   funde, sin JS. Se comprobo midiendo, no suponiendo: el velo va de 0 a 0.32
+   en 500ms al abrir y baja a 0 en 150ms al cerrar (ver LA ENTRADA Y LA
+   SALIDA). Sigue siendo una desviacion deliberada de M3, y por eso queda
+   escrita: para que no se lea como un error ni se "corrija" copiando el
+   `background: none` de M3.
    ------------------------------------------------------------------------ */
 .md-dialog::backdrop {
   background-color: var(--md-sys-color-scrim);
+}
+
+/* ---------------------------------------------------------------------------
+   LA ENTRADA Y LA SALIDA
+   ---------------------------------------------------------------------------
+   El unico movimiento del componente, y es el que M3 declara en
+   `dialog/internal/animations.ts` (v34.0.21). NO esta en los tokens publicados:
+   `_md-comp-dialog.scss` no hace ni `@use 'md-sys-motion'`, asi que el
+   movimiento del dialogo esta en codigo y no en la fuente de tokens. Se lee
+   de ahi, y se contrasta con lo que el sistema ya tenia:
+
+       dialog   translateY(-50px) -> 0    500ms   EMPHASIZED
+       scrim    opacity 0 -> 0.32          500ms   linear
+       salida   translateY(0) -> -50px      150ms   EMPHASIZED_ACCELERATE
+       scrim    opacity 0.32 -> 0          150ms   linear
+
+   Los seis valores caen 1 a 1 en tokens que ya existen --long2 y short3 para
+   las duraciones, emphasized, emphasized-accelerate y linear para las curvas--.
+   No hay ni un numero ni una curva inventados, que es justo lo que impedia
+   hacer el morph de pulsado.
+
+   LO QUE NO ENTRA, Y POR QUE. M3 hace ademas dos cosas mas: el contenedor
+   CRECE de 35% a 100% de alto sobre su `::before`, y el titular, el contenido
+   y las acciones se escalonan con retardos (offset 0.2 y 0.5). Las dos son
+   Web Animations API con `fill: 'forwards'`; la primera ademas necesita la
+   superficie en `::before`, que es justo la arquitectura que este componente
+   rechazo a proposito al usar el `::backdrop` nativo (ver EL VELO). Se
+   asume como version parcial y queda dicho aqui para que no se lea como que
+   esta completo.
+
+   LO QUE HACE QUE FUNCIONE, Y QUE NO ES OBVIO: las transiciones van en el
+   estado que las dispara, no en la base. Una transicion se arranca con los
+   valores del estado de DESTINO, asi que la de entrada vive en `:modal` y la
+   de salida en el estado cerrado. Medido: con las transiciones declaradas en
+   `:modal`, `close()` dejaba el elemento en opacidad 0 en el primer frame --
+   la salida no existia--, porque al dejar de casar el selector se iba la
+   transicion con el. Y sin `overlay` y `display` en la lista, el elemento
+   salia del top layer antes de terminar el recorrido.
+
+   `allow-discrete` es lo que hace que esto no necesite JavaScript: el
+   navegador mantiene el elemento en el top layer mientras la transicion de
+   `display` corre. Por eso `dialog.js` no se toca: sigue con sus dos
+   llamadas, `showModal()` y `close()`.
+
+   El estado cerrado es `:not([open])` y NO la base a proposito: los specimens
+   del showroom usan `<dialog open>` sin `showModal()`, y con la base en
+   opacidad 0 todos esos specimens desaparecerian. El atributo `open` es lo
+   que separa "cerrado" de "puesto en el documento".
+   ------------------------------------------------------------------------ */
+
+.md-dialog:not([open]) {
+  opacity: 0;
+  transform: translateY(-50px);
+
+  transition-property: opacity, transform, overlay, display;
+  transition-duration:
+    var(--md-sys-motion-duration-short3),
+    var(--md-sys-motion-duration-short3),
+    var(--md-sys-motion-duration-short3),
+    var(--md-sys-motion-duration-short3);
+  transition-timing-function:
+    var(--md-sys-motion-easing-emphasized-accelerate),
+    var(--md-sys-motion-easing-emphasized-accelerate),
+    var(--md-sys-motion-easing-emphasized-accelerate),
+    var(--md-sys-motion-easing-emphasized-accelerate);
+  transition-behavior: allow-discrete;
+}
+
+.md-dialog:modal {
+  opacity: 1;
+  transform: translateY(0);
+
+  transition-property: opacity, transform, overlay, display;
+  transition-duration:
+    var(--md-sys-motion-duration-long2),
+    var(--md-sys-motion-duration-long2),
+    var(--md-sys-motion-duration-long2),
+    var(--md-sys-motion-duration-long2);
+  transition-timing-function:
+    var(--md-sys-motion-easing-emphasized),
+    var(--md-sys-motion-easing-emphasized),
+    var(--md-sys-motion-easing-emphasized),
+    var(--md-sys-motion-easing-emphasized);
+  transition-behavior: allow-discrete;
+}
+
+/* El estado de partida. Sin esto la entrada no tendria de donde animarse: el
+   dialog aparece ya en su valor final y `@starting-style` es lo que le da el
+   punto de partida antes del primer render. */
+@starting-style {
+  .md-dialog:modal {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+}
+
+/* El velo, con la misma asimetria que el dialogo. M3 lo funde en 500ms al
+   abrir y en 150ms al cerrar, y no es arbitrario: el `display` del dialogo se
+   va a los 150ms, asi que un velo de 500ms al cerrarse cortaria a media
+   opacidad y dejaria un fogonazo. Con los dos a 150ms salen juntos.
+
+   Y necesita su propio `@starting-style` por el mismo motivo: sin el, el
+   velo aparece ya opaco en el primer frame y el fundido de entrada no se
+   ve. Medido, y no es teoria. */
+.md-dialog::backdrop {
+  opacity: 0;
+
+  transition-property: opacity;
+  transition-duration: var(--md-sys-motion-duration-short3);
+  transition-timing-function: var(--md-sys-motion-easing-linear);
+}
+
+.md-dialog:modal::backdrop {
   opacity: var(--md-sys-scrim-opacity);
+
+  transition-duration: var(--md-sys-motion-duration-long2);
+}
+
+@starting-style {
+  .md-dialog:modal::backdrop {
+    opacity: 0;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   PREFERES-REDUCED-MOTION
+   ---------------------------------------------------------------------------
+   Un modal que se desliza 50px es movimiento fuerte, y con reduce tiene que
+   aparecer y desaparecer de golpe. Se apagan las tres transiciones --dialogo,
+   overlay y velo-- y el desplazamiento se anula, no solo la duracion: con el
+   `transform` puesto, un dialogo con reduce se abriria desplazado 50px y sin
+   animacion, que es peor que no animarlo.
+
+   `transition: none` y no `transition-duration: 0s`: el sistema no tiene token
+   de duracion cero y un 0 escrito a mano es valor crudo, que REGLA 1 prohibe.
+   ------------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .md-dialog:not([open]),
+  .md-dialog:modal {
+    transition: none;
+    transform: none;
+  }
+
+  .md-dialog::backdrop,
+  .md-dialog:modal::backdrop {
+    transition: none;
+  }
 }
 
 /* ---------------------------------------------------------------------------
