@@ -734,7 +734,7 @@ node tools/verify-tokens.mjs
 > las reglas, escritas contra rutas a mano con barra invertida, funcionaban
 > igual en los dos sistemas.
 
-El verificador escanea las **43 hojas** del sistema, indexa los **664 tokens**
+El verificador escanea las **43 hojas** del sistema, indexa los **666 tokens**
 definidos y aplica **13 reglas**:
 
 | Regla | Qué detecta                                                                 | Alcance            |

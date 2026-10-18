@@ -130,7 +130,7 @@
      toggle      estado selected con data-toggle + aria-pressed: color Y
                  forma, la forma se invierte en los dos sentidos
      ademas      forced-colors, etiqueta como <a>, area tactil
-     sin motion  sin transicion de capa de estado y sin morph de pulsado
+     sin motion  sin morph de pulsado
 
    ========================================================================== */
 
@@ -274,6 +274,19 @@
      En reposo el valor es 1, o sea transparente: el relleno se ve igual, pero
      por el camino correcto y con el token listo para el disabled. */
   --md-comp-button-container-opacity: 1;
+
+  /* El par de la capa de estado, declarado aqui para que el `::after` lo lea y
+     no lo escriba en su propia regla. Es el MISMO que lleva el icon-button:
+     effects (color y opacidad) con short4 = 200ms. Los dos componentes tienen
+     la misma capa de estado con la misma forma y el mismo origen, asi que la
+     misma respuesta; medido que sin esto el boton la ponia de golpe y el
+     icono-button la fundia.
+
+     Y NO es el par de spatial, el del morph de forma, que va en su propia
+     regla al final del archivo. Uno mueve geometria y el otro paint: con
+     spatial el tinde de hover tendria un rebote que no le corresponde. */
+  --md-comp-button-state-duration: var(--md-sys-motion-duration-short4);
+  --md-comp-button-state-easing: var(--md-sys-motion-easing-effects-default);
 
   /* El grosor del borde es `none` y no `thin` en esta entrega. Con thin, un
      borde de 1px recortaria 2px al area de contenido (box-sizing: border-box)
@@ -481,12 +494,14 @@
   border-radius: inherit;
   pointer-events: none;
 
-  /* Sin `transition` de opacity TODAVIA. Los tres estados de abajo cambian la
-     opacidad de golpe. Cuando entre, es UN par, el de effects (color y
-     opacidad) con short4 = 200ms: es lo que ya lleva el icon-button.
-
-     El par de spatial, el del morph, no hace falta aqui porque el morph no
-     va a existir. Es la diferencia entre los dos componentes. */
+  /* El par de la capa de estado, NO el de spatial. El de spatial va con el
+     morph de forma, que mueve geometria; este paint, y un tinde de hover
+     con rebote se leeria como un parpadeo que el usuario no pidio. Con
+     reduce se apagan los dos por separado, porque son dos elementos: ver
+     PREFERS-REDUCED-MOTION, al final. */
+  transition: opacity
+    var(--md-comp-button-state-duration)
+    var(--md-comp-button-state-easing);
 }
 
 /* :active despues de :hover y :focus-visible: mantener pulsado un control ya
@@ -915,12 +930,12 @@
    prohibe fuera de 1-reference-tokens. Lo probo el verificador en el morph
    del icono-button, con el mismo `0s` escrito a mano.
 
-   DOS reglas y no una, y por el mismo motivo que las transiciones: el
-   relleno lo pinta el `::before`, que es otro elemento y no hereda la
-   transicion del host. Si solo se apagara el host, el `background-color`
-   seguiria fundiendose 500ms mientras la forma saltaba. No hace falta una
-   tercera para la capa de estado, que en el boton todavia no tiene
-   transicion de opacidad -- en el icono-button si, y ahi si hace falta.
+   TRES reglas y no una, y cada una por un elemento distinto. El host lleva la
+   forma y el color. Su `::before` lleva el relleno. Su `::after` lleva la capa
+   de estado. Las transiciones no se heredan, asi que apagar solo el host
+   dejaria el relleno fundiendose 500ms y el tinde de hover 200ms mientras la
+   forma saltase: exactamente la desconexion que este commit cierra, en el otro
+   sentido.
    ------------------------------------------------------------------------ */
 
 @media (prefers-reduced-motion: reduce) {
@@ -929,6 +944,10 @@
   }
 
   .md-button::before {
+    transition: none;
+  }
+
+  .md-button::after {
     transition: none;
   }
 }
