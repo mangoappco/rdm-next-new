@@ -702,6 +702,23 @@ El verificador es Node, y Node corre en los dos sistemas:
 node tools/verify-tokens.mjs
 ```
 
+> **Es OBLIGATORIO, y su salida es el requisito.** Antes de cada commit hay que
+> ejecutarlo y ver `OK - La arquitectura se respeta en las 13 reglas` con código
+> de salida 0. No basta con que el código parezca correcto ni con dar por
+> supuesto que el commit anterior ya pasó: cada commit se verifica con lo que
+> ese commit contiene.
+>
+> No es una formalidad. El 2026-10-18 se commiteó la coordinación del color y
+> la forma, el `tail -2` de la salida mostraba `Corregir antes de hacer commit`, y
+> el commit entró igual porque el comando estaba encadenado y la salida no se
+> miró. Cinco ejecuciones posteriores dieron verde con el mismo árbol, así que
+> aquel fallo no se ha podido reproducir — lo que solo demuestra que correr el
+> verificador y mirarlo son dos pasos, y que el segundo se puede saltar.
+>
+> Y el orden importa: el verificador va **antes** del `git add`, no después del
+> `git commit`. Ejecutado después, su salida llega tarde y es el commit el que
+> ya está hecho.
+
 > **`tools/verify-tokens.ps1` sigue existiendo y sigue funcionando**: son tres
 > líneas que llaman al `.mjs` y devuelven su código de salida, para quien lo
 > lanzaba por ahí. `pwsh -File ./tools/verify-tokens.ps1` en macOS y

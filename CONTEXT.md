@@ -319,5 +319,5 @@ Para prosa de M3 hay que pegarla a mano. No se afirma lo que diga la web sin hab
 | Reglas del showroom, ciclo de publicación, orden de secciones, deuda de prosa | `.opencode/skills/rdm-component-showroom/SKILL.md` |
 | Cómo correr el verificador en macOS | este archivo, abajo |
 | Arquitectura de capas, nomenclatura, temas, iconos y fuentes | `README.md` |
-| Las 13 reglas automáticas y cómo se ejecutan | `tools/verify-tokens.ps1` |
+| Las 13 reglas automáticas y cómo se ejecutan | `tools/verify-tokens.mjs` |
 | Filosofía de las fichas del showroom | `docs/showroom-philosophy.md` |
