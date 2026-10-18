@@ -208,7 +208,7 @@ La hoja está hecha y verificada, y la vista **tiene seis pares y está publicad
 Lo que queda por delante no es un componente nuevo sino la **deuda conocida** de más abajo, que es lo que de verdad está pendiente:
 
 - **Los diez moldes desfasados** siguen desfasados, y ahora hay uno más que no lo está (`dialog.template.html`), así que conviene no usar los viejos como molde.
-- **`scrollbar-gutter` sin decidir**: el bloqueo de scroll del fondo funciona, pero en un Chrome con barra clásica desaparece la barra al abrir el modal y el contenido ensancha unos 15px. Está anotado en `dialog.css` y no se ha añadido porque cambia el layout de todas las vistas.
+- **`scrollbar-gutter` decidido, y el arreglo que se venía dando no funciona.** El bloqueo de scroll del fondo funciona, pero al abrir el modal desaparece la barra y el contenido ensancha unos 15px. Está **medido**, y el arreglo que hasta ahora recomendaba `dialog.css` —`scrollbar-gutter: stable` en el `html`— **no quita el salto**: cinco variantes probadas, las cinco a 15px. El fallo es del elemento raíz, no de la propiedad: su `overflow` se propaga al viewport y ahí se descarta el hueco reservado, mientras que en un `div` normal el mismo arreglo sí conserva los 15px. La variante que sí lo quita —`stable` en el `html` más `overflow: hidden` en el `body`— mantiene el bloqueo del fondo y baja el salto a 0px, pero paga **15px fijos en todas las páginas**, también las que nunca scrollean y las que nunca abren un modal, así que no se ha aplicado. Y en macOS con barras overlay es todo un no-op: el salto solo existe en Windows, Linux y macOS con las barras siempre visibles.
 
 **Lo que se descartó al cerrar Card, y por qué, para que no vuelva a proponerse:**
 

@@ -430,16 +430,68 @@
    mueve sin el-- y ademas sus lecturas van un paso atrasadas, asi que hay que
    leer cuatro veces para que cuadre.
 
-   LO QUE SIGUE SIN COMPROBAR
-   -------------------------
-   El salto de la barra de desplazamiento. Aqui no hay barra clasica
-   (`innerWidth - clientWidth` da 0), asi que el entorno no lo puede mostrar.
+   EL SALTO DE LA BARRA, QUE SE MIDIO Y SE DEJO
+   --------------------------------------------
+   Al abrir el modal, `html` pasa a `overflow: hidden` y la barra de
+   desplazamiento se va. Con barra clasica eso ensancha el contenido unos 15px
+   y el dialogo, centrado en el viewport, se desplaza con el. Es el coste
+   conocido de la tecnica.
 
-   Es el coste conocido de la tecnica: al abrir el modal la barra se va y el
-   contenido ensancha unos 15px. Si llega a verse, la solucion es
-   `scrollbar-gutter: stable` en el `html`, que reserva el hueco siempre. No se
-   anade de antemano porque cambia el layout de TODAS las vistas, tambien las
-   que no tienen modal, y eso no se decide sin haberlo visto.
+   AQUI NO SE PUEDE VER, Y AQUI SE MIDIO
+   -------------------------------------
+   En este entorno no hay barra clasica --medido, `innerWidth - clientWidth`
+   da 0--, y eso es lo que se escribio aqui antes. Pero eso no dice que el
+   fallo no exista, solo que hace falta forzarlo. Anadiendo una barra clasica a
+   la fuerza --`html::-webkit-scrollbar { width: 15px }`-- el hueco aparece,
+   y con el ya se mide.
+
+   LO QUE SE MIDIO: NINGUN ARREGLO LO QUITA
+   ----------------------------------------
+   Con la barra forzada, en la vista del dialog:
+
+       variante                                                  sin modal con modal   salto
+       A. nada (lo que hay hoy)                                        873       888    15px
+       B. `scrollbar-gutter: stable` en el `html`                      873       888    15px
+       C. `scrollbar-gutter: stable` en el `body`                      873       888    15px
+       D. `stable both-edges` en el `html`                             873       888    15px
+       F. gutter solo mientras hay modal                               873       888    15px
+
+   `B` es literalmente la solucion que esta nota proponia hasta ahora, y el
+   salto sigue siendo de 15px. **Asi que la recomendacion anterior no servia
+   de nada**, y se deja dicho para que nadie la vuelva a aplicar.
+
+   POR QUE NO SIRVE, Y NO ES COSA DEL MECANISMO
+   --------------------------------------------
+   En un `div` normal, `overflow: hidden` con `stable` SI conserva el hueco:
+   medido, 15px reservados. El fallo es del elemento raiz, no de la propiedad:
+   el `overflow` del `html` se propaga al viewport, y en el viewport el hueco
+   reservado se descarta. Quien lo prueba en un `div` --que es lo que escribe
+   cualquier articulo-- da por bueno un arreglo que en la raiz no hace nada.
+
+   LA VARIANTE QUE SI FUNCIONA, Y POR QUE NO SE HA PUESTO
+   ------------------------------------------------------
+   `scrollbar-gutter: stable` en el `html`, y el `overflow: hidden` en el
+   `body`. Salto a 0px. Y el bloqueo del fondo sigue funcionando: `overflow`
+   tambien se propaga desde `body` cuando el `html` es `visible`, y medido el
+   viewport deja de ser desplazable igual que ahora.
+
+   Pero paga 15px fijos en TODAS las paginas, incluidas las que nunca
+   scrollean y las que nunca abren un modal. Medido:
+
+                                          sin gutter  con gutter
+      contenido corto (la pagina no scrollea)       0px        15px
+      contenido largo (la pagina scrollea)        15px        15px
+      both-edges                                              30px
+
+   Es una decision de layout de las diecisiete vistas, no de este componente,
+   y no se ha tomado.
+
+   EN QUE PLATAFORMAS IMPORTA
+   --------------------------
+   En macOS con barras overlay esto es un no-op: medido, `innerWidth -
+   clientWidth` da 0, y `stable` no reserva nada porque no hay barra que
+   reservar. El salto solo existe donde la barra es clasica: Windows, Linux y
+   macOS con las barras siempre visibles.
    ------------------------------------------------------------------------ */
 html:has(dialog.md-dialog:modal) {
   overflow: hidden;
