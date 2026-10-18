@@ -271,7 +271,7 @@ En `2-system-tokens/` y `3-components/` **toda** declaración debe ser un `var()
 los valores crudos en una sola capa, un cambio de marca se resuelve editando cuatro
 archivos y nada más.
 
-Esta regla es verificable de forma automática con `tools/verify-tokens.ps1`.
+Esta regla es verificable de forma automática con `tools/verify-tokens.mjs`.
 
 ---
 
@@ -696,29 +696,28 @@ motor, no en una convención.
 
 ## 7. Verificación
 
-El script es PowerShell, y PowerShell corre en los dos sistemas:
+El verificador es Node, y Node corre en los dos sistemas:
 
-```powershell
-# macOS y Linux (el binario se llama pwsh, y ahí no hay ExecutionPolicy)
-pwsh -File ./tools/verify-tokens.ps1
-
-# Windows
-powershell -ExecutionPolicy Bypass -File .\tools\verify-tokens.ps1
+```bash
+node tools/verify-tokens.mjs
 ```
 
-> **Por qué cambia la invocación:** `-ExecutionPolicy` es un concepto de Windows,
-> y en macOS no existe: el bloqueo de scripts no está. Por eso el mismo comando
-> con el flag falla, y la forma correcta es `pwsh -File`. El flag de Windows
-> sigue haciendo falta allí porque su política deshabilita los `.ps1` por
-> defecto.
+> **`tools/verify-tokens.ps1` sigue existiendo y sigue funcionando**: son tres
+> líneas que llaman al `.mjs` y devuelven su código de salida, para quien lo
+> lanzaba por ahí. `pwsh -File ./tools/verify-tokens.ps1` en macOS y
+> `powershell -ExecutionPolicy Bypass -File .\tools\verify-tokens.ps1` en
+> Windows siguen dando el mismo resultado, porque ejecutan el mismo código.
+> Una sola implementación es justamente lo que evita que dos verificadores se
+> separen en silencio.
+>
+> El port a Node (2026-10-18) no fue porque PowerShell no funcionara en macOS:
+> funcionaba, y está medido. Fue no depender de PowerShell para verificar un
+> sistema de CSS en un equipo donde Node ya está. La primera versión era
+> PowerShell con `Get-RelPath` normalizando cualquier separador a `\`, y por eso
+> las reglas, escritas contra rutas a mano con barra invertida, funcionaban
+> igual en los dos sistemas.
 
-> **El script es portable, y no por casualidad.** `Get-RelPath` normaliza
-> cualquier separador a `\` antes de comparar, así que las reglas, escritas
-> contra rutas a mano con barra invertida, funcionan igual en los dos sistemas.
-> La única línea que mira rutas en crudo es el filtro de `.git`, y en mac es
-> inocuo porque `Get-ChildItem` sin `-Force` ya salta los directorios ocultos.
-
-El script escanea las **42 hojas** del sistema, indexa los **640 tokens**
+El verificador escanea las **43 hojas** del sistema, indexa los **664 tokens**
 definidos y aplica **13 reglas**:
 
 | Regla | Qué detecta                                                                 | Alcance            |
@@ -866,7 +865,8 @@ rdm-next-new/
 │       ├── component.template.html   Plantilla base, la que usó typography.html
 │       └── <nombre>.template.html    Molde propio de cada vista (15 más)
 └── tools/
-    └── verify-tokens.ps1     Candado automático de la regla de hardcoding
+    ├── verify-tokens.mjs     Candado automático: 13 reglas de arquitectura
+    └── verify-tokens.ps1     Envoltura de tres líneas para quien lo lanzaba por aquí
 ```
 
 Dos carpetas y una regla:
@@ -977,7 +977,7 @@ de dónde sale cada cosa, y el precio es que cada vista tiene que acordarse de e
 ## 11. Componentes
 
 El catálogo de M3 tiene decenas de componentes y aquí hay **ocho**. Se construyen uno a
-uno, y ninguno se da por bueno sin medirlo en el navegador: `tools/verify-tokens.ps1`
+uno, y ninguno se da por bueno sin medirlo en el navegador: `tools/verify-tokens.mjs`
 comprueba la arquitectura, no que el componente se vea bien.
 
 El orden es el de `3-components/index.css`, que es el de carga y el de dependencia:

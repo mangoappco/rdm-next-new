@@ -1359,13 +1359,18 @@ Declared in `src/css/main.css`, in this order. The order **is** the precedence t
 | `4-utilities/` | 178 clases atomicas: color, tipografia, forma, elevacion, icono, estado, medida, movimiento | `--md-sys-*` y `--md-ref-*` |
 | `utilities` | la ultima capa: la opinion final del autor gana al componente | ver `4-utilities/` |
 
-## The 10 rules, enforced by `tools/verify-tokens.ps1`
+## The 13 rules, enforced by `tools/verify-tokens.mjs`
 
 Run it before committing, always:
 
-```powershell
-powershell -ExecutionPolicy Bypass -File .\tools\verify-tokens.ps1
+```bash
+node tools/verify-tokens.mjs
 ```
+
+`tools/verify-tokens.ps1` still exists and still works, but it is a three-line
+wrapper that calls the `.mjs`. One implementation, run from either platform:
+the original `.ps1` was Windows-canonical, so on macOS it found no files at all
+and reported a false OK.
 
 | Rule | Enforces |
 | ---- | -------- |
@@ -1379,6 +1384,9 @@ powershell -ExecutionPolicy Bypass -File .\tools\verify-tokens.ps1
 | REGLA 8 | Token tables in the showroom paint their value and meet contrast |
 | REGLA 9 | Icons are requested with `.md-icon`, never with Google's class |
 | REGLA 10 | Every `md-*` class the showroom uses is actually declared in `src/css/` |
+| REGLA 11 | The copyable snippet is identical to its specimen |
+| REGLA 12 | The colour view shows roles, never the raw palette |
+| REGLA 13 | The snippet stands alone: it renders with `main.css` and `main.js` |
 
 ## What a showroom may and may not do
 
@@ -1547,11 +1555,11 @@ After implementation, verify:
 
 This project has its own verifier. It is not optional, and it is not covered by items 1-22.
 
-```powershell
-powershell -ExecutionPolicy Bypass -File .\tools\verify-tokens.ps1
+```bash
+node tools/verify-tokens.mjs
 ```
 
-It must print `OK - La arquitectura se respeta en las 10 reglas` and exit 0. This is what
+It must print `OK - La arquitectura se respeta en las 13 reglas` and exit 0. This is what
 proves REGLA 6 in particular: that no `style=` attribute and no `<style>` block crept into
 the new HTML.
 
