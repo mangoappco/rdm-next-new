@@ -66,11 +66,17 @@
       corner-medium, corner-large, corner-extra-large...) y es un segundo eje
       de forma, no un color. Queda fuera porque se aprueba por separado.
 
-   3. EL ESTADO `selected`. Los tokens publicados lo tienen para filled
-      (`selected-container-color`, `selected-container-shape-round`). Es una
-      VARIACION DE COMPORTAMIENTO, no un color: cambia relleno y forma. Queda
-      fuera por lo mismo que el toggle con checkmark del icon-button: sin un
-      caso real en la app, no se implementa.
+   3. EL ESTADO `selected`, ENTRANTE MEDIO A MEDIO POR LA PUERTA DEL
+      TOGGLE. La mitad de COLOR ya entro: la seccion EL ESTADO
+      SELECCIONADO, al final del archivo, pinta el selected de cada
+      variante con `data-toggle` + `aria-pressed`, y su par unselected
+      para el filled. Los tokens son los publicados, verificados uno a
+      uno (`_md-comp-button-*.scss`, 34.0.21). La mitad de FORMA no: el
+      token `selected-container-shape-round` --un cuadrado seleccionado
+      vuelve a redondo, el mismo par bidireccional del icon-button--
+      sigue fuera porque la clase `square` no tiene un uso real que lo
+      pida; cuando lo tenga, entra por la misma puerta que el
+      icon-button.
 
 4. TODO EL MOVIMIENTO, y no solo el resorte. El componente se construye
      paso a paso, y el motion todavia no es su turno: ni la transicion de
@@ -118,6 +124,8 @@
      3 iconos    ninguno / lider / posterior
      4 estados   hover, focus-visible, active, disabled
      1 forma     round (corner-full)
+     toggle      estado selected con data-toggle + aria-pressed
+                 (solo color: la forma sigue excluida, ver arriba)
      ademas      forced-colors, etiqueta como <a>, area tactil
      sin motion  sin transicion de capa de estado y sin morph de forma
 
@@ -714,9 +722,14 @@
    La segunda de las dos formas del boton, y se aplica ENCIMA de cualquier
    variante de color, como el resto de los modificadores.
 
-   Se usaba solo como destino del estado seleccionado del toggle, y al quitarse
-   el toggle se quedo sin uso. Se conserva porque M3 la declara por tamano en
-   los tokens publicados, y son tres valores que el sistema ya tiene:
+   Sobre el toggle: el estado seleccionado volvio POR COLOR (EL ESTADO
+   SELECCIONADO, al final del archivo) y la forma sigue sin pareja en la
+   mitad de color. El token `selected-container-shape-round` de M3
+   --ese mismo par bidireccional: square en reposo, round seleccionado--
+   no entra mientras la clase no tenga un uso real; cuando lo tenga,
+   entra por la misma puerta que el icon-button. Se conserva porque M3
+   la declara por tamano en los tokens publicados, y son tres valores
+   que el sistema ya tiene:
 
        xsmall, small   corner-medium      12px
        medium          corner-large       16px
@@ -753,7 +766,8 @@
   --md-comp-button-label-color: var(--md-sys-color-on-secondary-container);
 
   /* Al seleccionar pasa de secondary-container a `secondary`: el mismo tono,
-     un paso mas fuerte. */
+     un paso mas fuerte. La regla que lo pinta esta en EL ESTADO
+     SELECCIONADO, al final del archivo. */
 }
 
 .md-button-elevated {
@@ -762,7 +776,8 @@
   --md-comp-button-elevation: var(--md-sys-elevation-level1);
 
   /* De superficie neutra a primary. La sombra se queda: es la variante
-     elevated y el nivel 1 es suyo, no del estado. */
+     elevated y el nivel 1 es suyo, no del estado. La regla del selected
+     esta en EL ESTADO SELECCIONADO. */
 }
 
 .md-button-outlined {
@@ -808,11 +823,123 @@
    esta variante y "no declarar" quiere decir que se queda como esta, no que
    hereda los de otra. Sin esto, el token del base (que es filled: primary)
    se le colaba y un toggle de texto aparecia con relleno al seleccionarse.
-   Medido: rgb(103,80,164) donde deberia ser transparente. */
+   Medido: rgb(103,80,164) donde deberia ser transparente.
+
+   La puerta del toggle no la abre, RATIFICADO: la variante text no es
+   conmutable. El selector del filled unselected (EL ESTADO SELECCIONADO)
+   la excluye por nombre y ninguna de las reglas selected la alcanza, asi
+   que un data-toggle sobre ella es inerte por diseño. */
 .md-button-text {
   --md-comp-button-container-color: transparent;
   --md-comp-button-label-color: var(--md-sys-color-primary);
 
+}
+
+/* ---------------------------------------------------------------------------
+   EL ESTADO SELECCIONADO: data-toggle + aria-pressed (TOGGLE)
+   ---------------------------------------------------------------------------
+   El estado que estuvo fuera del componente y vuelve. La puerta es la misma
+   que en el icon-button (su memoria, con los tokens verificados, esta en
+   `icon-button.css`, seccion SELECCIONADO):
+
+       `data-toggle`   el atributo de AUTORIA. Dice "este boton conmuta"; es
+                       lo que escucha `src/js/toggle.js`, que conmuta
+                       `aria-pressed` con la misma delegacion de dialog.js.
+       `aria-pressed`  el atributo de ESTADO. Lo anuncia el lector de
+                       pantalla, lo lee el CSS de abajo y no hay ninguna
+                       clase de estado que conmutar.
+
+   COLORES, LEIDOS UNO A UNO DE LOS TOKENS PUBLICADOS DE M3
+   --------------------------------------------------------
+   Cada hoja de variante publica un marco selected y un marco unselected
+   (container + etiqueta). Las cuatro variantes que tocan a este archivo,
+   verificadas en tokens/versions/latest/sass/_md-comp-button-*.scss,
+   Version 34.0.21, la misma que lleva el sistema:
+
+                        unselected                    selected
+       filled           surface-container +           primary +
+                        on-surface-variant             on-primary
+       tonal            secondary-container +          secondary +
+                        on-secondary-container         on-secondary
+       outlined         transparent +                  inverse-surface +
+                        on-surface-variant             inverse-on-surface
+       elevated         surface-container-low +        primary +
+                        primary                        on-primary
+
+   TRES HECHOS que el marcado aprovecha:
+
+   1. EL FILLED ES LA BASE Y SU BASE ES EL SELECCIONADO (primary /
+      on-primary). Por eso la UNICA regla del filled es la del
+      unselected: surface-container + on-surface-variant mientras el
+      toggle este sin activar. Y esa regla SOLO alcanza al boton que
+      lleva `data-toggle`: un filled sin toggle, que es la mayoria
+      aplastante de los botones del sistema, no cambia ni un token.
+
+   2. EL FILLED EXCLUYE A LAS DEMAS VARIANTES en su unselected, porque
+      cada una trae su par (regla abajo); y excluye a la variante
+      `text` por nombre, RATIFICADO que text no es un toggle. Ellas
+      si conmutan: su regla selected no distingue, el autor que pone
+      data-toggle sobre ellas la activa.
+
+   3. EL OUTLINED ES LA INVERSION DEL LIENZO, no un tono de primario:
+      inverse-surface / inverse-on-surface. Y los tokens selected de la
+      variante no declaran outline color, lo que en M3 quiere decir que
+      el borde outline-variant SE QUEDA: no declarar es quedarse como
+      esta, no heredar otra cosa. Es el mismo hecho del icon-button.
+
+   Y la ELEVACION del elevated en seleccionado: los tokens no traen un
+   `selected-container-elevation` para esta variante; la sombra se queda
+   en Level1, que es la de la variante y no del estado. La nota de
+   `.md-button-elevated` ya lo dice y aqui se cumple.
+
+   LA CAPA DE ESTADO NO LLEVA UNA SOLA REGLA NUEVA. Usa `currentColor`,
+   y el color es justo el token que cada regla de abajo reapunta: el
+   teñido del hover y del focus sale solo, y coincide con los
+   `selected-hovered/focused-state-layer-color` que declara M3 para
+   cada variante (el color de la etiqueta de ese marco).
+
+   DISABLED GANA. En M3 el disabled seleccionado se resuelve como
+   disabled normal (el outlined declara hasta
+   `selected-disabled-container-color: on-surface`), y aqui la puerta
+   es la misma: la regla del estado disabled reapunta los dos tokens de
+   arriba con (0,2,0) y las reglas del toggle le han de dejar paso.
+   TODAS llevan `:not(:disabled)` en vez de contender por especificidad,
+   el disabled no presenta el chrome del toggle muestre el estado que
+   muestre por debajo: un deshabilitado de una variante se ve igual
+   tenga aria-pressed true, false o nada.
+
+   Y NINGUN CAMBIO DE FORMA. El estado seleccionado no toca
+   `--md-comp-button-shape`; el token `selected-container-shape-round`
+   de M3 sigue fuera con la clase square (ver LA FORMA SQUARE).
+   ------------------------------------------------------------------------ */
+
+/* Filled unselected: la unica regla del filled. Excluye a las demas
+   variantes (cada una trae su par) y a text (no es toggle, decidido),
+   y a los disabled (DISABLED GANA). */
+.md-button[data-toggle]:not([aria-pressed="true"]):not(:disabled):not(.md-button-tonal):not(.md-button-outlined):not(.md-button-elevated):not(.md-button-text) {
+  --md-comp-button-container-color: var(--md-sys-color-surface-container);
+  --md-comp-button-label-color: var(--md-sys-color-on-surface-variant);
+}
+
+/* El filled seleccionado NO lleva regla: es su base (primary/on-primary),
+   la misma de siempre. Conmutar hacia el selected no repinta nada. */
+
+/* Tonal: secondary-container -> secondary. */
+.md-button-tonal[data-toggle][aria-pressed="true"]:not(:disabled) {
+  --md-comp-button-container-color: var(--md-sys-color-secondary);
+  --md-comp-button-label-color: var(--md-sys-color-on-secondary);
+}
+
+/* Outlined: inversion del lienzo; el borde outline-variant se queda. */
+.md-button-outlined[data-toggle][aria-pressed="true"]:not(:disabled) {
+  --md-comp-button-container-color: var(--md-sys-color-inverse-surface);
+  --md-comp-button-label-color: var(--md-sys-color-inverse-on-surface);
+}
+
+/* Elevated: a primary y con su Level1 intacto. */
+.md-button-elevated[data-toggle][aria-pressed="true"]:not(:disabled) {
+  --md-comp-button-container-color: var(--md-sys-color-primary);
+  --md-comp-button-label-color: var(--md-sys-color-on-primary);
 }
 
 /* ---------------------------------------------------------------------------

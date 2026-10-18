@@ -19,8 +19,13 @@
 
      Se regenera desde el molde. La version anterior, de cuando el componente solo
      tenia filled, tenia dos pares que ya no existen: "Morph de forma" y "Lo que no
-     hace". Los dos describian el morph de pulsado y el estado seleccionado, que se
-     quitaron al decidir que ManGo! App no usa botones conmutables. -->
+     hace". El morph de pulsado y el selected de FORMA siguen sin existir; la mitad
+     de COLOR del seleccionado ahora existe (ver UPDATE).
+
+     UPDATE 2026-10-18: el estado toggle entro como serie --cuatro pares
+     "Toggle <variante>" mas el par "Toggle group". El gancho es data-toggle +
+     aria-pressed; el conmutador vive en src/js/toggle.js. La variante text no
+     es conmutable, decidido. -->
 
 <body class="md-bg-background md-text-on-background md-type-body-medium">
   <main class="sr-page">
@@ -32,7 +37,7 @@
         <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
       </div>
       <h1 class="md-type-display-large">Button</h1>
-      <p class="md-type-body-large">Componente que ayuda a las personas a iniciar acciones como enviar un correo, compartir un documento o dar like a una publicación. · <em>Trece pares</em></p>
+      <p class="md-type-body-large">Componente que ayuda a las personas a iniciar acciones como enviar un correo, compartir un documento o dar like a una publicación. · <em>Dieciocho pares</em></p>
     </header>
     <!-- HEADER: fin -->
 
@@ -118,6 +123,20 @@
     </section>
     <!-- PAREJA: hasta aqui -->
 
+    <!-- PAREJA: toggle filled (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Toggle filled</h2>
+      <p class="md-type-body-medium">Del toggle sin marcar al marcado: surface-container en reposo, y el marcado es el filled de siempre, porque su base es su estado seleccionado. data-toggle y aria-pressed son los atributos del autor.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-button md-button-filled md-button-small" type="button" data-toggle aria-pressed="false"><span class="md-button-label">Guardar</span></button>
+        <button class="md-button md-button-filled md-button-small" type="button" data-toggle aria-pressed="true"><span class="md-button-label">Guardar</span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-button md-button-filled md-button-small" type="button" data-toggle aria-pressed="false"&gt;&lt;span class="md-button-label"&gt;Guardar&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-filled md-button-small" type="button" data-toggle aria-pressed="true"&gt;&lt;span class="md-button-label"&gt;Guardar&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
     <!-- PAREJA: estados tonal (h2 + specimen + pre + boton). -->
     <section class="sr-section">
       <h2 class="md-type-title-large">States tonal</h2>
@@ -128,6 +147,20 @@
       </div>
       <pre class="sr-code"><code>&lt;button class="md-button md-button-tonal md-button-small" type="button"&gt;&lt;span class="md-button-label"&gt;Tonal&lt;/span&gt;&lt;/button&gt;
 &lt;button class="md-button md-button-tonal md-button-small" type="button" disabled&gt;&lt;span class="md-button-label"&gt;Tonal&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: toggle tonal (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Toggle tonal</h2>
+      <p class="md-type-body-medium">Del toggle sin marcar al marcado: de secondary-container a secondary, el mismo tono un paso más fuerte. Los estados de clic y de foco se tiñen solos por currentColor.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-button md-button-tonal md-button-small" type="button" data-toggle aria-pressed="false"><span class="md-button-label">Guardar</span></button>
+        <button class="md-button md-button-tonal md-button-small" type="button" data-toggle aria-pressed="true"><span class="md-button-label">Guardar</span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-button md-button-tonal md-button-small" type="button" data-toggle aria-pressed="false"&gt;&lt;span class="md-button-label"&gt;Guardar&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-tonal md-button-small" type="button" data-toggle aria-pressed="true"&gt;&lt;span class="md-button-label"&gt;Guardar&lt;/span&gt;&lt;/button&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
     <!-- PAREJA: hasta aqui -->
@@ -146,6 +179,20 @@
     </section>
     <!-- PAREJA: hasta aqui -->
 
+    <!-- PAREJA: toggle elevated (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Toggle elevated</h2>
+      <p class="md-type-body-medium">Del toggle sin marcar al marcado: de surface-container-low a primary, con la sombra Level1 intacta, que es de la variante y no del estado. El glifo va con la etiqueta.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-button md-button-elevated md-button-small" type="button" data-toggle aria-pressed="false"><span class="md-button-label">Guardar</span></button>
+        <button class="md-button md-button-elevated md-button-small" type="button" data-toggle aria-pressed="true"><span class="md-button-label">Guardar</span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-button md-button-elevated md-button-small" type="button" data-toggle aria-pressed="false"&gt;&lt;span class="md-button-label"&gt;Guardar&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-elevated md-button-small" type="button" data-toggle aria-pressed="true"&gt;&lt;span class="md-button-label"&gt;Guardar&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
     <!-- PAREJA: estados outlined (h2 + specimen + pre + boton). -->
     <section class="sr-section">
       <h2 class="md-type-title-large">States outlined</h2>
@@ -160,16 +207,48 @@
     </section>
     <!-- PAREJA: hasta aqui -->
 
+    <!-- PAREJA: toggle outlined (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Toggle outlined</h2>
+      <p class="md-type-body-medium">Del toggle sin marcar al marcado: la inversión del lienzo, inverse-surface con inverse-on-surface, y el borde outline que no cambia. No es un tono de primario.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-button md-button-outlined md-button-small" type="button" data-toggle aria-pressed="false"><span class="md-button-label">Guardar</span></button>
+        <button class="md-button md-button-outlined md-button-small" type="button" data-toggle aria-pressed="true"><span class="md-button-label">Guardar</span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-button md-button-outlined md-button-small" type="button" data-toggle aria-pressed="false"&gt;&lt;span class="md-button-label"&gt;Guardar&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-button md-button-outlined md-button-small" type="button" data-toggle aria-pressed="true"&gt;&lt;span class="md-button-label"&gt;Guardar&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
     <!-- PAREJA: estados text (h2 + specimen + pre + boton). -->
     <section class="sr-section">
       <h2 class="md-type-title-large">States text</h2>
-      <p class="md-type-body-medium">Enabled y disabled en text small: hover, focus y pressed se ven interactuando.</p>
+      <p class="md-type-body-medium">Enabled y disabled en text small: hover, focus y pressed se ven interactuando. La variante text no es conmutable: con data-toggle no pinta nada.</p>
       <div class="sr-specimen sr-specimen-gap">
         <button class="md-button md-button-text md-button-small" type="button"><span class="md-button-label">Text</span></button>
         <button class="md-button md-button-text md-button-small" type="button" disabled><span class="md-button-label">Text</span></button>
       </div>
       <pre class="sr-code"><code>&lt;button class="md-button md-button-text md-button-small" type="button"&gt;&lt;span class="md-button-label"&gt;Text&lt;/span&gt;&lt;/button&gt;
 &lt;button class="md-button md-button-text md-button-small" type="button" disabled&gt;&lt;span class="md-button-label"&gt;Text&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: toggle group (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Toggle group</h2>
+      <p class="md-type-body-medium">Selección exclusiva con data-toggle-group en el contenedor: clic en el activo no lo desmarca nunca. El estado inicial lo escribe el autor en el marcado.</p>
+      <div class="sr-specimen sr-specimen-gap" data-toggle-group>
+        <button class="md-button md-button-filled md-button-small" type="button" data-toggle aria-pressed="true"><span class="md-button-label">Activas</span></button>
+        <button class="md-button md-button-filled md-button-small" type="button" data-toggle aria-pressed="false"><span class="md-button-label">Cerradas</span></button>
+        <button class="md-button md-button-filled md-button-small" type="button" data-toggle aria-pressed="false"><span class="md-button-label">Programadas</span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;div data-toggle-group&gt;
+  &lt;button class="md-button md-button-filled md-button-small" type="button" data-toggle aria-pressed="true"&gt;&lt;span class="md-button-label"&gt;Activas&lt;/span&gt;&lt;/button&gt;
+  &lt;button class="md-button md-button-filled md-button-small" type="button" data-toggle aria-pressed="false"&gt;&lt;span class="md-button-label"&gt;Cerradas&lt;/span&gt;&lt;/button&gt;
+  &lt;button class="md-button md-button-filled md-button-small" type="button" data-toggle aria-pressed="false"&gt;&lt;span class="md-button-label"&gt;Programadas&lt;/span&gt;&lt;/button&gt;
+&lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
     <!-- PAREJA: hasta aqui -->

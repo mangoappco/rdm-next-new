@@ -38,15 +38,40 @@
                                            large/xlarge corner-large
       al seleccionar   se INVIERTE la de reposo (round -> corner-medium)
 
+   TOGGLE: FORMA (verificado en la spec de M3, Guidelines > "Toggle")
+      La inversion es SIMETRICA y bidireccional: "A selected button should
+      change shape from round to square, or square to round."
+         round (corner-full)    -> selected: corner-medium
+         square (corner-medium) -> selected: corner-full
+      CON transicion animada desde el 2026-10-18: la inversion morfa con
+      el par spatial + long2 (ver LA INVERSION DE FORMA, al final). Revierte
+      la decision del grill de "sin morphs de forma", formalmente.
+
    COLORES (tokens/versions/v0_192)
       icono               on-surface-variant
       seleccionado        primary (solo en standard)
       deshabilitado       on-surface al 38%
       capa de estado      inset 0 (toma el tamano del contenedor), corner-full
 
-   LO QUE NO IMPLEMENTA: morph con resorte, toggle con checkmark (y con texto),
-   y el tooltip que M3 pide en web (no existe todavia en el sistema). Ver las
-   notas al pie de cada bloque.
+   TOGGLE: COLORES SELECCIONADO VS UNSELECCIONADO (tokens/versions/latest,
+   Version 34.0.21, marco de contexto selected/unselected de cada variante)
+                            unselected            selected
+      standard              on-surface-variant    primary; container transparent
+      filled                on-surface-variant    on-primary sobre primary
+                            sobre surface-container
+      tonal                 on-secondary-container on-secondary sobre secondary
+                            sobre secondary-container
+      outlined              on-surface-variant    inverse-on-surface sobre
+                            sobre outline-variant  inverse-surface
+
+   LO QUE NO IMPLEMENTA: el toggle con checkmark (y con texto), y el
+   tooltip que M3 pide en web (no existe todavia en el sistema). El morph
+   de forma SI es de este componente desde el 2026-10-18 (ver LA
+   INVERSION DE FORMA, al final).
+   EL TOGGLE A SECAS --estado seleccionado por color y forma-- SI ES DE ESTE
+   COMPONENTE: entra por `data-toggle` + `aria-pressed`, obra de
+   `src/js/toggle.js` (la misma delegacion que dialog.js) y se documenta
+   en la seccion SELECCIONADO, junto a las variantes.
 
    RESORTE Y CURVAS: LO QUE SE ADOPTO Y POR QUE
    -------------------------------------------
@@ -137,20 +162,25 @@
      los tokens personalizados heredan, .md-icon lo lee del glifo, y ahi ya
      vale lo que decidio el boton. Sin pelea de capas.
 
-     El glifo es relleno siempre. M3 distingue tres estados (default relleno,
-     toggle off contorneado, toggle on relleno) y por eso el token, pero al
-     quitarse el toggle solo queda el default, que es relleno. */
+     El glifo es relleno siempre, tambien con el toggle activo. La
+     decision: la seleccion se comunica con COLOR y con FORMA, no con el
+     contorno del glifo; M3 clasico conmutaba el eje FILL (off
+     contorneado, on relleno) y aqui se queda fijo en relleno. Es una
+     desviacion consciente del clasico, ratificada al devolver el toggle. */
   --md-sys-icon-fill: var(--md-sys-icon-fill-full);
 
-  /* Forma. Un solo token, porque el componente ya no tiene estado seleccionado:
-   el toggle se quito (ManGo! App no usa botones conmutables) y con el se fue
-   tambien el morph de pulsado, por la misma razon que en el boton: un control
-   que cambia de forma en cada clic, en una app donde se hace clic cien veces,
-   distrae mas de lo que informa. Es una desviacion consciente de M3.
+  /* Forma. El reposo es round, la media altura del tamano ("exact
+   half-height radii"), que es como lo define M3 Expressive y no
+   corner-full.
 
-   El round es la media altura del tamano, que es como lo define M3 Expressive
-   ("exact half-height radii"), y no corner-full. Ver la nota de la transicion,
-   mas abajo. */
+   El estado seleccionado SI cambia la forma, y es el mismo token: el
+   selected invierte la del reposo (round pasa a la forma square de su
+   tamano, y square vuelve a round). Es bidireccional y esta en la
+   seccion SELECCIONADO, no aqui: aqui solo vive el reposo. Lo que si
+   se ratifico en su momento y se mantiene: sin morph de PULSADO, un
+   control que cambia de forma en cada clic distrae mas de lo que
+   informa; ese es otro cambio de forma, y el del seleccionado no lo
+   es. */
   --md-comp-icon-button-shape: var(--md-sys-shape-corner-half-small);
 
   /* Color. Standard: icono sobre la superficie, sin relleno. */
@@ -165,15 +195,17 @@
 
   /* Estado. La capa toma currentColor: sin token propio de color.
 
-     UN SOLO PAR, y es el de effects (color y opacidad) + short4 = 200ms.
+  /* DOS PARES, cada uno con su familia, como manda la cabecera:
 
-     Antes habia dos, porque ademas estaba el morph de forma, que es de la
-     familia spatial (long2, 500ms). Se fue con el morph: sin destino al que
-     moverse, un par de spatial no tendria nada que animar.
+     effects + short4 (200ms)  la capa de estado, que es color y opacidad
+     spatial  + long2 (500ms)  el border-radius, que es forma
 
-     Y el par de effects sigue siendo el suyo y no uno compartido, que era el
-     error que se corrigio aqui: el tinte tardaba 300ms porque usaba el par del
-     morph, y M3 reserva medium2 para "medium area of the screen". */
+     El segundo par volvio el 2026-10-18 con la inversion de seleccion
+     (reversion formal del grill de "sin morphs de forma"): antes habia dos,
+     se quedo uno cuando el morph se fue, y ahora son dos otra vez. Cada par
+     con su familia y no al reves: compartirlos era el error que se corrigio
+     aqui --el tinte tardaba 300ms porque usaba el par del morph-- y la
+     cabecera de motion.css ya describe el icon-button con los dos. */
   --md-comp-icon-button-state-duration: var(--md-sys-motion-duration-short4);
   --md-comp-icon-button-state-easing: var(--md-sys-motion-easing-effects-default);
 
@@ -226,16 +258,10 @@
   background-color: var(--md-comp-icon-button-container-color);
   box-shadow: var(--md-comp-icon-button-elevation);
 
-  /* SIN transition de border-radius. El radio es fijo durante toda la vida del
-     componente: hay una sola forma y no hay ningun estado que la cambie.
-
-     Este bloque estuvo aqui durante mucho tiempo con el morph de pulsado, y la
-     nota explicaba por que el recorrido tardaba 9999px en verse (el navegador
-     recorta al pintar pero el valor calculado se queda en 9999). Sin destino al
-     que moverse, la nota y la transicion sobran las dos.
-
-     Cuando vuelva a haber un cambio de forma, la nota vuelve con ella: el
-     destino tiene que ser un numero, no 9999, o el morph no se ve. */
+  /* LA FORMA. El radio sale del token --md-comp-icon-button-shape, y la
+     transicion que lo anima NO esta aqui: vive en su propia regla al final
+     del archivo, en longhands y DESPUES de las reglas de forma. Ver LA
+     TRANSICION DE LA FORMA, al final, y el motivo de colocarla ahi. */
 
   color: var(--md-comp-icon-button-icon-color);
   cursor: pointer;
@@ -444,10 +470,16 @@
 /* ---------------------------------------------------------------------------
    LA FORMA, Y POR QUE SE INVIERTE AL SELECCIONARSE
    ---------------------------------------------------------------------------
-   Sin forma nueva para el seleccionado: toma la del otro. El estado ya se
-   distingue por color (primary) y relleno; cambiar tambien la forma lo
-   comunicaria dos veces.
-   ------------------------------------------------------------------------ */
+   La forma del seleccionado no es una forma nueva: es la del otro estado. El
+   round tomara la de la clase square de su tamano, y el square vuelve al
+   redondo ("exact half-height radii") de su tamano. Bidireccional, como la
+   declara la especificacion de M3.
+
+   Anotada aqui desde que el toggle salio, y de nuevo viva desde que el toggle
+   volvio. Las REGLAS que la aplican no van en esta seccion sino en
+   SELECCIONADO: dependen de aria-pressed, no de la clase square, y asi las
+   seis formas (reposo y seleccion de cada par) quedan juntas en un solo
+   sitio del archivo. */
 
 .md-icon-button-square {
   --md-comp-icon-button-shape: var(--md-sys-shape-corner-medium);
@@ -522,6 +554,234 @@
 .md-icon-button-filled .md-icon-button-icon,
 .md-icon-button-tonal .md-icon-button-icon {
   color: var(--md-comp-icon-button-icon-color);
+}
+
+/* ---------------------------------------------------------------------------
+   EL SELECCIONADO: data-toggle + aria-pressed (TOGGLE)
+   ---------------------------------------------------------------------------
+   El estado que estuvo fuera del componente y vuelve. La puerta es doble:
+
+       `data-toggle`   el atributo de AUTORIA. Dice "este boton conmuta", es
+                       lo que escucha `src/js/toggle.js` y entra en el marcado.
+       `aria-pressed`  el atributo de ESTADO. Es lo que el lector de pantalla
+                       anuncia, lo que el CSS de abajo lee y lo unico que el
+                       controlador conmuta.
+
+   El autor escribe los dos, con el estado inicial puesto a mano (ej:
+   `aria-pressed="false"`); el controlador no inicializa nada. Sin
+   `data-toggle` no hay estado que leer y las reglas de abajo no existen.
+
+   COLORES, LEIDOS UNO A UNO DE LOS TOKENS PUBLICADOS DE M3 Y RATIFICADOS
+   ----------------------------------------------------------------------
+    El token es CONTEXTUAL: cada variante publica un marco selected y un
+    marco unselected, con su container y su icono:
+
+       tokens/versions/latest/sass/_md-comp-icon-button-*.scss
+       Version 34.0.21 (la misma que lleva el sistema)
+
+       unselected            selected
+       standard    transparent + on-surface-variant    transparent + primary
+       filled      surface-container + on-surface-variant   primary + on-primary
+       tonal       secondary-container + on-secondary-container    secondary + on-secondary
+       outlined    transparent + outline-variant    inverse-surface + inverse-on-surface
+
+   TRES HECHOS que el marcado aprovecha y que conviene no perder:
+
+   1. EL STANDARD SOLO CONMUTA EL GLIFO. No existe
+      `selected-container-color` en su hoja: el contenedor se queda
+      transparente. Un fondo primary solido lo convertia en un filled y
+      rompia la jerarquia de enfasis. Se ratifico seguir el token contra
+      un borrador anterior que pintaba el contenedor.
+
+   2. EL FILLED AL REVES: su base (primary/on-primary) ES el estado
+      seleccionado. Por eso para el filled es la regla del UNSELECTED la
+      que se anade: surface-container + on-surface-variant cuando el
+      toggle esta desactivado, y la base queda como selected.
+
+   3. EL OUTLINED ES LA INVERSION DEL LIENZO, no un tono de primario:
+      inverse-surface/inverse-on-surface. Y los tokens de selected no
+      declaran outline color, lo que quiere decir que el borde
+      outline-variant SE QUEDA: no declarar es quedarse como esta, no
+      heredar otra cosa.
+
+   Y LA CAPA DE ESTADO NO NECESITA UNA SOLA REGLA NUEVA. Usa
+   `currentColor`, y color es justo el token que cada regla de abajo
+   reapunta: el teñido del seleccionado sale solo, y coincide con el
+   color que M3 declara para cada estado
+   (`selected-hovered/focused/pressed-state-layer-color` = el color del
+   glifo de esa variante). Es el "sale solo" que ya tenia el componente
+   con sus estados de interaccion.
+
+   DISABLED GANA. Un toggle seleccionado y disabled se ve igual que un
+   disabled normal (glifo on-surface al 38%, sin capa de estado), y el
+   que no lo esta TAMBIEN: el disabled no presenta el chrome del toggle
+   muestre el estado que muestre por debajo. Por eso TODAS las reglas de
+   abajo --color y forma-- llevan `:not(:disabled)`: un disabled se
+   queda con el chrome de su variante en reposo, atenuado, sin importar
+   el aria-pressed. Es la misma apuesta del token: medido en los tokens,
+   el marco selected de outlined declara
+   `selected-disabled-container-opacity: 0.1`, o sea que M3 mismo
+   resuelve el disabled selected como un disabled normal.
+
+   En este componente la regla disabled pinta `color` directo en el
+   glifo ((0,3,0) contra el (0,2,0) de las variantes con relleno) y
+   atenua el elemento entero con opacity; NO reapunta tokens. Sin el
+   `:not(:disabled)`, el container de un filled unselected disabled
+   cogeria el surface-container de la regla unselected y el disabled
+   quedaria dependiente del estado. Medido en el navegador, con el
+   `:not(:disabled)` el disabled esta siempre uniforme por variante.
+   ------------------------------------------------------------------------ */
+
+/* Standard: solo el glifo. La regla excluye a las tres variantes con
+   relleno porque cada una trae su par, y a los disabled: ver DISABLED
+   GANA arriba. */
+.md-icon-button[data-toggle][aria-pressed="true"]:not(:disabled):not(.md-icon-button-filled):not(.md-icon-button-tonal):not(.md-icon-button-outlined) {
+  --md-comp-icon-button-icon-color: var(--md-sys-color-primary);
+}
+
+/* Filled: el toggle SIN seleccionar. Y tambien sin disabled: un filled
+   deshabilitado se queda con el filled en reposo (primary), que es lo
+   que ya muestra el disabled normal. */
+.md-icon-button-filled[data-toggle]:not([aria-pressed="true"]):not(:disabled) {
+  --md-comp-icon-button-container-color: var(--md-sys-color-surface-container);
+  --md-comp-icon-button-icon-color: var(--md-sys-color-on-surface-variant);
+}
+
+.md-icon-button-tonal[data-toggle][aria-pressed="true"]:not(:disabled) {
+  --md-comp-icon-button-container-color: var(--md-sys-color-secondary);
+  --md-comp-icon-button-icon-color: var(--md-sys-color-on-secondary);
+}
+
+.md-icon-button-outlined[data-toggle][aria-pressed="true"]:not(:disabled) {
+  --md-comp-icon-button-container-color: var(--md-sys-color-inverse-surface);
+  --md-comp-icon-button-icon-color: var(--md-sys-color-inverse-on-surface);
+}
+
+/* ---------------------------------------------------------------------------
+   LA INVERSION DE FORMA AL SELECCIONARSE
+   ---------------------------------------------------------------------------
+   Simetrica y bidireccional, y son SIEMPRE las formas de la seccion LA
+   FORMA, solo que en el sentido del estado:
+
+       un round seleccionado toma la forma square DE SU TAMANO
+       un square seleccionado vuelve al redondo DE SU TAMANO
+
+   El redondo de destino es corner-half-{tamano} y NO corner-full: es la
+   misma decidida de la base ("exact half-height radii") y mantiene el
+   sistema en una sola definicion de round.
+
+   CON transicion de border-radius desde el 2026-10-18, con el par spatial
+   + long2 de la cabecera RESORTE Y CURVAS. Reversion formal de la decision
+   del grill ("sin morphs de forma"), aprobada por el usuario: la inversion
+   de seleccion morfa en ambas direcciones. NO con el morph de pulsado
+   oficial de M3 (:active a corner-small): ese sigue fuera, y el candado de
+   "sin morph de pulsado" de CONTEXT.md queda intacto.
+
+   Sin rebote artificial: la curva spatial ya trae el suyo (1.0006 de pico,
+   0.01px aqui) y no se le añade nada. */
+/* ------------------------------------------------------------------------ */
+
+/* Un round seleccionado toma la forma square de su tamano. Cuatro tamanos
+   que escalan la pendiente, y el base (small) que se queda con la de la
+   clase square mas abajo... el mismo valor: 12px. */
+.md-icon-button[data-toggle][aria-pressed="true"]:not(.md-icon-button-square):not(:disabled) {
+  --md-comp-icon-button-shape: var(--md-sys-shape-corner-medium);
+}
+
+.md-icon-button-medium[data-toggle][aria-pressed="true"]:not(.md-icon-button-square):not(:disabled) {
+  --md-comp-icon-button-shape: var(--md-sys-shape-corner-large);
+}
+
+.md-icon-button-large[data-toggle][aria-pressed="true"]:not(.md-icon-button-square):not(:disabled),
+.md-icon-button-xlarge[data-toggle][aria-pressed="true"]:not(.md-icon-button-square):not(:disabled) {
+  --md-comp-icon-button-shape: var(--md-sys-shape-corner-extra-large);
+}
+
+/* Un square seleccionado vuelve al redondo de su tamano. La generica cubre
+   small; xsmall, medium, large y xlarge llevan la suya por compuesto. */
+.md-icon-button-square[data-toggle][aria-pressed="true"]:not(:disabled) {
+  --md-comp-icon-button-shape: var(--md-sys-shape-corner-half-small);
+}
+
+.md-icon-button-xsmall.md-icon-button-square[data-toggle][aria-pressed="true"]:not(:disabled) {
+  --md-comp-icon-button-shape: var(--md-sys-shape-corner-half-xsmall);
+}
+
+.md-icon-button-medium.md-icon-button-square[data-toggle][aria-pressed="true"]:not(:disabled) {
+  --md-comp-icon-button-shape: var(--md-sys-shape-corner-half-medium);
+}
+
+.md-icon-button-large.md-icon-button-square[data-toggle][aria-pressed="true"]:not(:disabled) {
+  --md-comp-icon-button-shape: var(--md-sys-shape-corner-half-large);
+}
+
+.md-icon-button-xlarge.md-icon-button-square[data-toggle][aria-pressed="true"]:not(:disabled) {
+  --md-comp-icon-button-shape: var(--md-sys-shape-corner-half-xlarge);
+}
+
+/* ---------------------------------------------------------------------------
+   LA TRANSICION DE LA FORMA
+   ---------------------------------------------------------------------------
+   El morph de la inversion de seleccion: spatial (tamano, posicion y forma)
+   + long2 = 500ms, el par de la cabecera RESORTE Y CURVAS.
+
+   Bidireccional sin codigo: los selectores de LA INVERSION DE FORMA reapuntan
+   --md-comp-icon-button-shape y una transicion de border-radius no distingue
+   el sentido, asi que la ida y la vuelta se animan por igual. Medido en los
+   cuatro tamanos y en los dos sentidos: 12<->20px en small, con 32 pasos
+   intermedios de radio en cada recorrido.
+
+   Va aqui, y no en la regla base, por blindaje. Esta regla esta DESPUES de
+   las nueve que reapuntan el token y ANTES del bloque de reduce, que tiene
+   que ganar: cualquier `transition:` que se anada a este selector mas
+   adelante queda debajo y no puede reventar el morph en silencio. Y en
+   longhands y no en el shorthand, por lo mismo: un shorthand reventaria las
+   tres lineas de golpe y devolveria el cambio de forma a instantaneo en los
+   dos sentidos, sin que se notara el error.
+
+   REVERSION FORMAL del grill de "sin morphs de forma" (2026-10-18). Sigue
+   sin morph de pulsado --el oficial de M3 es :active a corner-small, y no
+   entra--, y el radio de reposo sigue siendo corner-half, no el corner-full
+   de 9999px: el recorrido real es 20->12px en small.
+   ------------------------------------------------------------------------ */
+
+.md-icon-button {
+  transition-property: border-radius;
+  transition-duration: var(--md-sys-motion-duration-long2);
+  transition-timing-function: var(--md-sys-motion-easing-spatial-default);
+}
+
+/* ---------------------------------------------------------------------------
+   PREFERS-REDUCED-MOTION
+   ---------------------------------------------------------------------------
+   Un morph de forma es movimiento FUERTE: cambia la geometria del
+   componente, no solo su color. La regla de motion.css ("los componentes
+   de movimiento fuerte deben consultar prefers-reduced-motion y caer a
+   una duracion muchisima corta") se cumple aqui por primera vez en el
+   sistema: con reduce, las dos transiciones del componente --la del
+   border-radius y la de la capa de estado-- se apagan y el estado cambia
+   de golpe, que es lo que pide la sensibilidad vestibular.
+
+   `transition: none` y no `transition-duration: 0s`: el sistema no tiene
+   un token de duracion cero (el mas corto es short1, 50ms, que no es
+   cero), y escribir 0s a mano es un valor crudo -- REGLA 1 lo prohibe
+   fuera de 1-reference-tokens. Inventar un token de duracion cero para
+   esto seria mas caro que la regla que evita.
+
+   Se apagan las DOS, y por eso el selector del ::after va explicitamente:
+   la capa de estado tiene su propia transicion, en otro elemento, y no
+   la hereda de la base. Sin esta segunda regla el morph saltaria y el
+   tinde seguiria fundiendose, que es la mitad de lo que se pide. */
+   ------------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .md-icon-button {
+    transition: none;
+  }
+
+  .md-icon-button::after {
+    transition: none;
+  }
 }
 
 /* ---------------------------------------------------------------------------
