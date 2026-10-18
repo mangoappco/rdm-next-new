@@ -831,6 +831,21 @@
      `container-height.css`, junto a los limites de ancho del mismo dialogo.
      No es un tope: es un MINIMO, para que un dialog con muy poco texto no
      quede aplastado contra su padding.
+
+     Y EL SOBRANTE LO SE LLEVA LA RANURA DE CONTENIDO
+     -------------------------------------------------
+     Un minimo de 140px solo se ve cuando el dialogo naturalmente mide menos, y
+     entonces los pixeles que falten tienen que caer en algun sitio. Caen
+     DENTRO de la ranura de contenido, porque es lo unico que crece: la regla
+     que lo hace es `flex-grow: 1` en `.md-dialog-content`, y esta en
+     `3-components/dialog.css`.
+
+     Se deja escrito aqui, y no solo alli, porque este es el sitio donde se
+     decide que el 140 es un minimo y no un alto. Si alguien quita el
+     `flex-grow` creyendo que sobra, el dialogo no cambia de tamano --sigue
+     midiendo 140px-- pero el sobrante se va debajo de los botones y se lee
+     como padding de mas. Medido, con una linea de supporting text y sin
+     titular: 32px de aire abajo en vez de los 24 que da la tabla de specs.
      ====================================================================== */
   --md-sys-measurement-dialog-max-height: var(--md-ref-container-width-dialog-max);
   --md-sys-measurement-dialog-min-height: var(--md-ref-container-height-dialog-min);

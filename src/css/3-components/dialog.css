@@ -549,8 +549,9 @@ html:has(dialog.md-dialog:modal) {
    largo haga scroll dentro del dialog en vez de empujar la caja mas alla del
    alto de la pantalla. El `min-height: 0` va con el: un hijo flexible con
    `overflow` necesita poder encogerse por debajo de su contenido, y sin eso
-   el scroll no llega a activarse. Es el unico sitio de esta hoja donde los
-   dos van juntos, asi que si se quita uno hay que quitar el otro.
+   el scroll no llega a activarse. Van los dos atados, y si se quita uno hay
+   que quitar el otro. El `flex-grow` de la misma regla va por otro motivo y
+   esta explicado debajo.
    ------------------------------------------------------------------------ */
 .md-dialog-content {
   display: flex;
@@ -561,9 +562,84 @@ html:has(dialog.md-dialog:modal) {
   font: var(--md-sys-typescale-body-medium);
   color: var(--md-sys-color-on-surface-variant);
 
+  /* Los tres van juntos: el `min-height` y el `overflow` por el scroll, y el
+     `flex-grow` porque es la mitad que le falta al minimo de la caja. Ver las
+     dos notas de arriba y de abajo. */
+  flex-grow: 1;
   min-height: 0;
   overflow-y: auto;
 }
+
+/* ---------------------------------------------------------------------------
+   EL `flex-grow`, QUE ES LA OTRA MITAD DEL `min-height` DE LA CAJA
+   ---------------------------------------------------------------------------
+   Este es el `min-height: 140px` de M3 del que habla la nota de la caja, y sin
+   esta regla se nota como padding. No porque el minimo este mal, sino porque
+   el SOBRANTE tiene que caer en algun sitio y no caia donde debe.
+
+   DONDE LO PONE M3
+   ----------------
+   Su `<dialog>` es una columna con `min-height: 140px`, y el sobrante lo
+   reparte haciendo que CREZCA la ranura de contenido. La cadena entera, en
+   `dialog/internal/_dialog.scss`:
+
+       .container { flex-grow: 1 }
+       .scroller  { flex: 1 }
+       .content   { flex: 1 }
+
+   Es decir: el sobrante cae por DENTRO del texto, no debajo de los botones.
+   Aqui se adopto la parte de declarar el minimo y no la de hacer que algo
+   crezca, y el hueco se escapo.
+
+   POR QUE SE ESCAPABA
+   -------------------
+   Porque una columna con el `justify-content` por defecto --flex-start-- deja
+   el espacio libre AL FINAL. Ahi el espacio libre es el padding de abajo, y a
+   8px de un boton eso no se lee como "el dialog es mas alto", se lee como
+   "el dialog tiene mas padding abajo".
+
+   MEDIDO, EN EL PAR SIN TITULAR, QUE ES EL UNICO QUE LLEGA AL MINIMO
+   ------------------------------------------------------------------
+   Con las cajas reales de los glifos, que no son las de linea:
+
+       antes        24 arriba   36.5 texto-boton   32 abajo   <- 24 + 8 de sobra
+       con esto     24 arriba   44.5 texto-boton   24 abajo
+
+   Los 8px de mas abajo se han ido al hueco del texto, que es donde los pone
+   M3. Y de paso los cuatro lados se quedan en los 24px que da la tabla de
+   specs, que antes no era cierto: el de abajo solo lo parecia.
+
+   SOLO CUANDO EL DIALOG ES MAS BAJO QUE EL MINIMO
+   -----------------------------------------------
+   Con dos lineas el dialog ya mide 168 y con tres 204, y ahi no queda espacio
+   libre que repartir. Medido 168 y 204 con esta regla y sin ella: lo mismo.
+   Y con titular, ni una sola linea llega al minimo --196px naturales--, asi
+   que esto solo se ve en un dialog sin titular y con el supporting text en una
+   linea. Que es justo el par que lo ensefia.
+
+   LO QUE QUEDA DEBAJO Y NO ES DE AQUI
+   -----------------------------------
+   Sigue habiendo una asimetria de 10.5px --35.5 abajo contra 25 arriba--, pero
+   esta en los CUATRO pares de la vista y no es del dialog: es la caja de 40px
+   del boton de texto, que con el glifo centrado deja unos 11.5px de caja
+   vacia bajo la letra. M3 tiene la misma. Si alguien la "arregla" recortando
+   el padding del dialog, lo que rompe son los cuatro lados a la vez.
+
+   EL CASO QUE ESTA FUERA
+   ----------------------
+   Un dialog SIN ranura de contenido seguiria acumulando el sobrante abajo,
+   porque no hay nada que crezca. Medido, y no es un caso teorico --las tres
+   ranuras son independientes--:
+
+       solo acciones             140px   52px de aire abajo
+       solo cabecera             140px   84px de aire abajo
+       cabecera y acciones       144px   24px, ya no llega al minimo
+
+   O sea que el agujero es un dialog sin texto de apoyo, no uno sin titular:
+   con cabecera y acciones ya se pasa de 140 sin este `flex-grow`. No hay
+   ningun par asi en la vista, asi que no se ha montado nada para taparlo;
+   queda escrito para que no se lea como que esto cubre todos los dialogs.
+   ------------------------------------------------------------------------ */
 
 /* ---------------------------------------------------------------------------
    RANURA: ACCIONES
