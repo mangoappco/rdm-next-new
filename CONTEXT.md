@@ -35,6 +35,33 @@ Cada componente tiene además su molde en `showroom/templates/<nombre>.template.
 
 **Solo 5 de 15 las tienen byte-idénticas a su vista** — `fab`, `fab-extended`, `icon-button`, `card` y `dialog`, las cinco más recientes. Las otras 10 vistas llevan un puntero de dos líneas al molde y el molde se quedó atrás: esa es la convención mayoritaria, pero la cambió el rumbo del 2026-10-13, no al revés. `typography.html` no tiene molde propio y apunta a `component.template.html`.
 
+## FAB — la base NO es el `md-fab-medium`
+
+Medido en el par Sizes de `fab.html`, en alto real:
+
+| variante | alto |
+| --- | --- |
+| `md-fab-small` | 40px |
+| **la base, sin clase de tamaño** | **56px** |
+| `md-fab-medium` | **80px** |
+| `md-fab-large` | 96px |
+
+No son el mismo tamaño, y **el choque es de vocabulario, no de componente**. M3 tiene un FAB base de 56dp que no lleva clase —porque es el estado por defecto—, y además un token llamado `medium` que vale **80**. Los dos existen en M3 y son cosas distintas: nuestra base es el base de M3, y nuestra `md-fab-medium` es el `medium` de M3.
+
+| | nuestra base | `md-fab-medium` |
+| --- | --- | --- |
+| alto | 56px | 80px |
+| glifo | 24px | 28px |
+| radio | `corner-large` | `corner-large-increased` |
+
+**Por qué importa:** quien escriba `<div class="md-fab md-fab-medium">` pensando que repite la base **no la repite** — sale 80px en vez de 56, con glifo y radio distintos. Y quien aplique el `medium` de M3 esperando 56 se lleva 80.
+
+Que el 80 no estaba en ninguna escala nuestra está escrito en `container-height.css:245-252`: la capa 1 se descongeló para declarar `--md-ref-container-height-fab-medium`, porque el espacio se acaba en 72 y las alturas saltan de 56 a 96. Y el aviso de los dos *medium* está en `fab.css:38-43`.
+
+Está medido y no se ha tocado el componente: es una decisión de diseño, no un descuido, y cambiar un tamaño es otra conversación.
+
+Anotado aquí el 2026-10-17. Este dato vivía solo en el encabezado de `fab.html`, y al sustituir ese encabezado por la definición canónica de M3 —que habla de la acción principal y no de tamaños— se habría perdido del showroom. Vive aquí porque es donde se busca.
+
 ## Card — publicada
 
 La hoja está hecha y verificada, y la vista **tiene nueve pares y está publicada y enlazada**: Clase base, Variantes, Ratio, Link, States y cuatro recetas de Slots que cierran como playground para copiar. `card.html` es copia byte-idéntica de su molde, con el bloque de razonamiento dentro.
@@ -249,13 +276,29 @@ Es el mismo fichero, y es la razón de que el dialog sea el único componente cu
 
 | Fuente | Resultado |
 | --- | --- |
-| `m3.material.io` | app de Angular. 57 KB de HTML con cero contenido, igual con Googlebot y Bingbot, y el snapshot de Wayback solo guarda la shell |
+| `m3.material.io` por `webfetch` | **CUIDADO: sí se lee, pero no así.** Un `fetch` directo devuelve la shell de Angular —solo el título—, y el buscador sí devuelve el texto. La nota antigua decía «cero contenido, para no perder tiempo» y **estaba equivocada en la conclusión**: hay que abrirlo en un **navegador**, que ejecuta la app y renderiza las 14 KB del glosario |
 | `api.github.com/search/code` | pide autenticación, vacío sin ella |
 | `material-web/card/` | 404. El card está en `labs/card/` |
 | `material-web/tokens/versions/latest/` | 404. Los ficheros van en `…/latest/sass/` |
 | `material-web/components/dialog/` | 404, en `master` y en `main`. Va en npm: `unpkg.com/@material/web@2.0.0/` |
 | `api.github.com/repos/…/contents/` | 404 en todo `material-web`. El árbol tampoco responde |
-| `archive.org/wayback` para material-web | sin snapshots de esos ficheros |
+| `archive.org/wayback` para material-web y para m3.material.io | sin snapshots de esos ficheros |
+
+### El glosario oficial, y lo que sí y lo que no tiene
+
+**`https://m3.material.io/foundations/glossary`** define cada término en una frase. Renderizado en un navegador son **14.075 caracteres**. Es la fuente de las definiciones canónicas, y **corrige la idea de que M3 no tiene prosa oficial**: sí la tiene, y es la mejor del sistema.
+
+**Y no cubre 17 cosas, sino menos.** Comprobado una a una:
+
+| | entrada en el glosario |
+| --- | --- |
+| Button, Card, Dialog, Divider, FAB, Extended FAB | **sí**, con su frase |
+| Icon button, Button group | **no**. Hay definiciones en sus páginas de componente y en el índice de componentes |
+| Typography, Elevation | **no**. Están en `styles/`, y sí tienen frase propia |
+| **Color, Shapes, Spacing, Icon, State, Motion** | **no hay definición de una frase**. Las páginas de `styles/` abren con listas de guía, no con una definición |
+| **Measurement** | **no existe en M3**. Es un concepto nuestro de capa 2 |
+
+Eso condiciona lo que se puede llamar «canónico» y lo que no. Ver la nota de las definiciones del índice.
 
 Para prosa de M3 hay que pegarla a mano. No se afirma lo que diga la web sin haberlo leído.
 

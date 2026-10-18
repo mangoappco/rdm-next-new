@@ -915,6 +915,13 @@ showroom/
   de su vista**, byte a byte. La fuente es el encabezado: si cambia, el índice cambia con
   él. El recuento de pares va al final del encabezado, como `· *Trece pares*`, para que el
   índice no pierda ese dato al dejar de llevar su propia redacción.
+- **Doce de esas descripciones son la definición oficial de M3, traducida.** La fuente es
+  `m3.material.io/foundations/glossary` para seis componentes —button, card, dialog, divider,
+  FAB y extended FAB—, las páginas de componente para icon button y button group, y las
+  páginas de *styles* para typography, elevation, spacing y shapes. **Las otras cinco
+  primitivas no tienen definición de una frase en M3** —color, icon, state, motion y
+  measurement—, y en ese caso el texto es nuestro. Se comprueba una a una antes de llamar
+  canónica a una frase; `CONTEXT.md` tiene la tabla de qué hay y qué no en el glosario.
 - **Y también las familias de `1-reference-tokens/` y `2-system-tokens/` que son
   documentación por sí mismas**, aunque no sean componentes: `color.html`,
   `typography.html`, `icon.html`, `elevation.html`, `measurement.html`, `motion.html`,
