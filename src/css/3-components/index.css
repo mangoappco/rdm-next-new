@@ -21,8 +21,13 @@
 @import url("fab-extended.css");
 @import url("card.css");
 @import url("dialog.css");
+@import url("list.css");
 
-/* fab-extended.css va DESPUES de fab.css, y no por orden alfabetico.
+/* list.css va al final, y no por orden alfabetico: no compone con ningun
+   componente anterior, asi que su sitio es el final de la lista de construccion.
+   Mismo criterio que los tres bloques siguientes.
+
+   fab-extended.css va DESPUES de fab.css, y no por orden alfabetico.
    Los dos importan en la misma capa `comp`, donde la especificidad se
    resuelve por orden de escritura. La clase .md-fab-extended solo funciona
    sobre una base .md-fab que ya exista: si se pusiera antes, sus declaraciones

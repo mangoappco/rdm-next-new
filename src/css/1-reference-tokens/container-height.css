@@ -3,7 +3,15 @@
    ==========================================================================
    QUE ES ESTE ARCHIVO
    -------------------
-   CAPA 1 del sistema. Cinco medidas crudas, en px, que NO son espaciado.
+   CAPA 1 del sistema. Medidas crudas de ALTURA y de ANCHO de contenedor, en
+   px, que NO son espaciado.
+
+   Decir "cinco" aqui era verdad cuando solo estaban las cinco alturas del boton
+   y del icon-button. Siguieron entrando las de mas componentes --el dialogo, el
+   FAB y ahora las dos filas de lista-- y el numero se quedo atras. Un contador
+   en la cabecera es un numero que hay que mantener a mano, y esta capa no es un
+   inventario: es el sitio donde vive un valor crudo que no pertenece a ninguna
+   otra.
 
    POR QUE UN ARCHIVO PROPIO Y NO spacing.css
    -------------------------------------------
@@ -250,4 +258,45 @@
      escalera entera del extended, y sin este numero no hay tamano medio.
      ------------------------------------------------------------------------ */
   --md-ref-container-height-fab-medium: 80px;
+
+  /* ------------------------------------------------------------------------
+     LAS ALTURAS DE LAS FILAS DE LISTA (M3 Expressive)
+     ------------------------------------------------------------------------
+     M3 publica tres, y las tres son medidas de contenedor, no espaciado:
+
+        una linea     56px     equals `container-height-medium`, ya declarado
+        dos lineas    72px     Space 900, el tope de la escala de espacio
+        tres lineas   88px     no esta en ninguna de las dos
+
+     LA DE UNA LINEA NO SE DECLARA, y es lo importante de esta nota. 56 ya
+     existe como `container-height-medium`, y duplicarlo aqui pondria el mismo
+     numero en dos sitios, que es justo lo que esta capa existe para evitar.
+     Se le pide al token que ya lo tiene.
+
+     LAS OTRAS DOS SI SE DECLARAN, aunque 72 este en la escala de espacio, y
+     por el mismo motivo que ya esta escrito en POR QUE UN ARCHIVO PROPIO: leer
+     72 de `spacing-900` daria a entender que el alto de una fila de lista es
+     un paso de reticula, y no lo es. Es el alto de un texto de dos lineas con
+     su relleno, que es lo que M3 dice con `$container-height`. Y 88 no esta en
+     la escala --que acaba en 72--, asi que de todos modos no tendria de donde
+     leerse.
+
+     Verificado en `tokens/versions/latest/sass/_md-comp-list.scss` (v34.0.21),
+     que publica los tres con estos valores:
+
+         $list-item-one-line-container-height:   56px
+         $list-item-two-line-container-height:   72px
+         $list-item-three-line-container-height: 88px
+
+     Y el propio fichero marca los tres como obsoletos, con esta nota: "Removing
+     single height value in favor of distinct height values for 1, 2, or 3 line
+     list items". El componente los usa como MINIMOS, no como alturas fijas; ver
+     LAS TRES ALTURAS en 3-components/list.css.
+
+     El nombre lleva `list` delante por lo mismo que separo `container-width` de
+     `container-height` arriba, y por lo mismo que el `fab` del final: son alturas
+     de un componente concreto y no un escalon de una escalera general.
+     ------------------------------------------------------------------------ */
+  --md-ref-container-height-list-two-line: 72px;
+  --md-ref-container-height-list-three-line: 88px;
 }

@@ -189,8 +189,83 @@
      en 1-reference-tokens/container-height.css. */
   --md-sys-measurement-button-height: var(--md-ref-container-height-small);
 
-  /* Alto de una fila de lista estandar. */
-  --md-sys-measurement-list-item-height: var(--md-ref-spacing-600);
+  /* ------------------------------------------------------------------------
+     LAS MEDIDAS DE UNA FILA DE LISTA
+     ------------------------------------------------------------------------
+     Este rol existia antes de que hubiera lista, apuntando a
+     `--md-ref-spacing-600` --48px--, y no lo consumia nadie. Dos cosas se
+     corrigen aqui.
+
+     La primera, el valor: M3 publica 56px para la fila de una linea, y 48 no es
+     ese numero. 48 es el area tactil, que ya tiene su propio rol, dos lineas mas
+     arriba. Un rol que se llama `list-item-height` y vale el area tactil
+     profetiza una lista con otro alto, y esa profecia se cumple en cuanto
+     alguien la lee.
+
+     La segunda, la fuente: se lee de `container-height.css` y no de
+     `spacing.css`, por el mismo motivo que esta escrito justo encima, en el rol
+     del boton. Una altura de contenedor no es un espaciado, y aunque el numero
+     coincida --56 esta en la escala como Space 700--, leerlo de ahi daria a
+     entender que el alto de una fila es un paso de reticula.
+
+     Las otras dos alturas las declara M3 tambien, y salen de las primitivas
+     propias del capitulo de la lista. Los espacios si salen de la escala, que
+     para espacio es lo que tiene que pasar.
+     ------------------------------------------------------------------------ */
+  --md-sys-measurement-list-item-height: var(--md-ref-container-height-medium);
+  --md-sys-measurement-list-item-height-two-line: var(--md-ref-container-height-list-two-line);
+  --md-sys-measurement-list-item-height-three-line: var(--md-ref-container-height-list-three-line);
+
+  /* Los cuatro espacios de la fila. Este archivo declara el puente de ref a sys
+     para ellos porque son medidas del componente, igual que hace con el padding
+     y el hueco de la card y del dialogo.
+
+     EL HUECO ENTRE RANURAS: EL 12 DEL TOKEN, Y DOS LISTAS QUE NO COINCIDEN
+     ------------------------------------------------------------------------
+     `_md-comp-list.scss` publica `$list-item-between-space: 12px`, y las dos
+     listas web oficiales de M3 dan numeros distintos:
+
+       - `labs/gb/components/list/list.scss`, la MAS NUEVA, declara
+         `--between-space: 12px` en sus tokens y hace `gap: var(--between-space)`.
+         Usa el token.
+       - `list/internal/listitem/_list-item.scss`, la estable, pone `gap: 16px`
+         escrito a mano en el host y reparte ese 16 por herencia. El token no
+         aparece por ningun lado del archivo.
+
+     Se usa el 12: es el numero publicado, es el de la implementacion mas nueva, y
+     esa es justamente la que tiene los mismos tokens que este proyecto cita en la
+     hoja del componente. El 16 de la estable queda escrito aqui para que no se
+     pierda: si algun dia manda la version antigua, este rol se repunta a
+     `--md-ref-spacing-200` y no hay nada que buscar.
+
+     Y no hay una tercera cifra. La tabla de medidas de la pagina de specs no se
+     puede leer --es una aplicacion de Angular que no entrega contenido--, asi que
+     las dos recetas son todo lo que hay.
+
+     10px es el unico de los cuatro que no es multiplo de 8: sale de
+     `--md-ref-spacing-125`, que ya existe en nuestra escala. No se estiro la
+     escala para dar cabida a un numero de un componente. */
+  --md-sys-measurement-list-item-leading-space: var(--md-ref-spacing-200);
+  --md-sys-measurement-list-item-trailing-space: var(--md-ref-spacing-200);
+  --md-sys-measurement-list-item-between-space: var(--md-ref-spacing-150);
+  --md-sys-measurement-list-item-vertical-space: var(--md-ref-spacing-125);
+
+  /* El icono de delante y el de detras miden 20, y no el 24 del icono del sistema.
+     Es una diferencia de expresion, no un descuido: el diagrama de medidas de
+     m3.material.io etiqueta los dos iconos de la fila con 20, y el token file
+     publica las DOS medidas --`leading-icon.size: 24px` para la clasica y
+     `leading-icon.expressive.size: 20px` para la Expressive--, que es la que
+     implementa `labs/gb/components/list/list.scss`.
+
+     Como el componente adopta la familia de formas Expressive, el icono va con
+     ella. Un icono de 24 en una fila de formas de 4 seria mezclar dos epochs de
+     la misma especificacion en una sola fila.
+
+     20 sale de `--md-ref-spacing-250`, que ya existe en la escala. Y no se pide el
+     rol de icono del sistema --`--md-sys-measurement-icon-size`, 24px-- porque ese
+     es el icono del sistema, no el de la lista. */
+  --md-sys-measurement-list-item-icon-size: var(--md-ref-spacing-250);
+
 
   /* Alto de una barra de navegacion superior. */
   --md-sys-measurement-top-bar-height: var(--md-ref-spacing-600);

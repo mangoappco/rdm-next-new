@@ -1,0 +1,782 @@
+/* ==========================================================================
+   3-components/list.css — LIST (Capa 3)
+   ==========================================================================
+
+   QUE ES ESTE COMPONENTE
+   ----------------------
+   Una superficie con filas, y la fila con su receta. M3 publica DOS
+   componentes, no uno con variantes: `list` es la superficie y `list-item` es
+   la fila, y el segundo tiene sus propios tokens de estado.
+
+   Se implementan los dos como una sola clase base y sus ranuras, porque en
+   CSS una fila sin la superficie no tiene a quien pedirle el fondo, y una
+   superficie sin filas no tiene forma propia: `md-list` pinta el color y el
+   radio grande, `md-list-item` pinta el suyo.
+
+   RECETA M3, TRANSCRITA (_md-comp-list.scss, v34.0.21)
+   ----------------------------------------------------
+      container.shape                        corner-large
+      list-item.container.color              surface
+      list-item.container.elevation          level0
+      list-item.container.shape              corner-none
+      list-item.container.expressive.shape   corner-extra-small
+      label-text                             body-large   / on-surface
+      supporting-text                        body-medium  / on-surface-variant
+      overline                               label-small  / on-surface-variant
+      leading-icon.size                      24px
+      leading/trailing icon                  on-surface-variant
+      hover.state-layer                      on-surface   @ 8%
+      focus.state-layer                      on-surface   @ 10%
+      pressed.state-layer                    on-surface   @ 10%
+      disabled.label-text/icon/overline/...  @ 38%
+      disabled.state-layer                   @ 10%
+      selected.container.color               secondary-container
+      selected.label-text/supporting/icon    on-secondary-container
+      selected.container.shape               corner-large
+
+   Y las medidas, que salen de los roles de 2-system-tokens/measurement.css:
+
+      una linea    56px      leading-space    16px
+      dos lineas   72px      trailing-space   16px
+      tres lineas  88px      between-space    12px
+                             top/bottom-space 10px
+
+   EL HUECO ENTRE RANURAS ES EL 12 DEL TOKEN
+   ------------------------------------------
+   Hay dos listas web oficiales y no coinciden: `labs/gb`, la mas nueva, usa el
+   token con 12; `list/internal`, la estable, escribe `gap: 16px` a mano y su token
+   no aparece en el archivo. Mandan el 12: es el publicado y el de la version
+   nueva, que es la que tiene los mismos tokens que este proyecto cita. El
+   razonamiento entero, con el 16 de la estable escrito al lado, esta en el rol de
+   `measurement.css`.
+
+   LA FORMA POR POSICION ES ESTATICA, Y NO ES UN MORPH
+   ---------------------------------------------------
+   Android define cuatro formas segun la posicion --primera, intermedia, ultima y
+   unica-- con `updateAppearance(position, itemCount)`. Y la web mas nueva tambien
+   lo hace: en `labs/gb/components/list/list.scss` la primera y la ultima fila
+   HEREDAN los radios de la superficie, con las esquinas de fuera redondeadas y las
+   de dentro rectas.
+
+   No lo sortea el candado del morph, porque no es un morph: es la misma forma en
+   reposo para una fila dada su puesto. El candado prohibe mover la forma al pasar
+   el raton y al pulsar, no que una fila de los extremos se dibuje cosida con la
+   superficie. Se implementa.
+
+   LA APLICACION SE ESCRIBE ASI
+   ---------------------------
+   `inherit` y no un 16 escrito, y el motivo es el mismo de arriba: `inherit` toma
+   el radio del padre, que es el de la superficie, asi que la regla sigue siendo
+   cierta si manana la superficie cambia de radio. Escribir el 16 seria copiar el
+   numero en lugar de heredar la intencion.
+
+   Y la regla es `> :first-child`, no `:first-of-type`: en una lista puede haber un
+   `<li>` de agrupacion antes del primer item --un encabezado de seccion--, y lo
+   que se cose con la superficie es el primer ELEMENTO hijo, que es lo que hace
+   `labs/gb`.
+
+   LAS TRES ALTURAS SON MINIMOS, Y NO ALTURAS FIJAS
+   -------------------------------------------------
+   El propio fichero de M3 marca sus tres tokens de altura como obsoletos, con
+   esta nota: "Removing single height value in favor of distinct height values
+   for 1, 2, or 3 line list items", y en el token de altura unica: "Removing
+   fixed height token due to conflicts with text fields variants requiring
+   dynamic height (multi-line, text area). Use height of internal elements and
+   paddings to control component height".
+
+   O sea que M3 dice dos cosas que aqui se cumplen las dos: las tres alturas se
+   declaran POR LINEAS, y ninguna es fija. Es un `min-block-size`, el contenido
+   va centrado con `align-items: center`, y el relleno vertical de 10px es lo
+   que empieza a mandar cuando el texto del autor crece y el minimo deja de
+   alcanzar. Con el contenido de M3 el minimo manda siempre, y por eso los tres
+   items miden exactamente 56, 72 y 88.
+
+   LO QUE NO SE PINTA: EL FONDO DEL ITEM
+   --------------------------------------
+   M3 publica `list-item.container.color: surface`. No se pinta, y se explica
+   aqui para que no se lea como un olvido.
+
+   Es el MISMO surface que pinta la superficie de la lista, asi que ponerlo en
+   cada fila seria invisible en el caso normal y dañino en el resto: una fila
+   fuera de `.md-list`, dentro de una card por ejemplo, se traeria una banda de
+   color propia encima de la de la card.
+
+   Y hay un segundo motivo, mas fuerte: M3 publica para el item deshabilitado un
+   `disabled.container.color: on-surface` SIN ninguna opacidad al lado, para el
+   item normal deshabilitado. Pintado tal cual seria una banda solida de color
+   de texto encima de la superficie. No hay forma de saber si el token esta
+   incompleto o si M3 lo combina con algo que no publica; lo que no hay es una
+   lectura que produzca una banda negra. El item deshabilitado se queda con el
+   fondo que tenia --transparente-- y su contenido baja al 38%.
+
+   LA FORMA, Y POR QUE SOLO SE MUEVE UNA
+   -------------------------------------
+   M3 publica dos familias de forma para el item y elige una u otra segun la
+   variante: la clasica, `corner-none` en reposo, y la Expressive, que es la que
+   se implementa aqui.
+
+      reposo           corner-extra-small    (4px)
+      hover            corner-medium
+      pulsado          corner-large
+      seleccionado     corner-large
+
+   La Expressive esta, pero SOLO la primera y la ultima. Hover y pulsado NO
+   mueven la forma, y es el mismo candado que ya esta escrito para el boton y el
+   icono-boton: en una lista de decenas de filas, mutar esquinas en cada hover y
+   en cada pulsacion satura la pantalla y arruina la usabilidad de una app de
+   trabajo. El hover y el pulsado pintan la capa de estado y nada mas.
+
+   La unica inversion permitida es la de la seleccion, que es un estado
+   PERSISTENTE y no una micro-interaccion: `corner-extra-small` -> `corner-large`,
+   con el par del morph ya ratificado --spatial y long2, 500ms-- y el color
+   entrando en la misma transicion, con standard.
+
+   LO QUE SE ESCOGE: LA CAPA DE ESTADO SOLO EN CONTROLES DE VERDAD
+   -------------------------------------------------------------
+   La receta base declara la capa, pero la capa se enciende en `:hover`,
+   `:focus-visible` y `:active` SOLO cuando el item es de verdad un control:
+   `a[href]`, `button` o `role="button"`.
+
+   Un `<li>` estatico --una lista que describe, no que se pulsa-- no se ilumina
+   al pasar el raton por encima, y no enseña el cursor de puntero. Un tinte de
+   hover sobre algo que no hace nada es un rechazo de accesibilidad, del grupo de
+   los que no dependen solo del color, y ademas es una promesa que el item no
+   cumple. El `cursor: pointer` va con la misma condicion.
+
+   LO QUE NO ENTRA, Y POR QUE
+   --------------------------
+   - Avatar, imagen y video como ranura de delante. M3 publica sus medidas
+     (40, 56 y 100x56) y sus formas, y quedan para el siguiente bloque: son
+     cuatro tokens de medida y ninguna decision de estructura.
+   - `list-reorder`, `list-reveal` y `list-expand`. Son ficheros de token
+     aparte, para arrastrar, para revelar y para expandir. Los tres necesitan
+     algo que arrastrar o algo que expandir, y un gesto en JavaScript. El list
+     no lleva JavaScript.
+   - El estado `dragged`. M3 lo publica con elevacion level4 y su capa al 16%,
+     y el sistema tiene `--md-sys-state-dragged-state-layer-opacity`. No hay
+     ningun selector de CSS que exprese "lo estan arrastrando", y por el mismo
+     motivo que el `dragged` de la card, que esta escrito en su cabecera: sin
+     JavaScript no hay nada que arrastrar.
+   - Ripple. El sistema no lo tiene en ningun componente; la capa de estado es
+     un tinte plano con su transicion, aqui igual que en los otros siete.
+   - El hover de M3 en la elevacion, que lo declara para las dragged. No hay
+     elevacion en reposo mas alla del level0, asi que no hay nada que subir.
+
+   ANATOMIA DEL MARCADO
+   --------------------
+   `.md-list` es la superficie y `.md-list-item` la fila. Las cuatro ranuras son
+   HIJOS ESPERADOS, no obligatorios: sin ellas la fila sigue siendo una fila y
+   lo que se pierde es la composicion.
+
+     <ul class="md-list">
+       <li class="md-list-item">
+         <span class="md-list-item-leading">
+           <span class="md-icon" aria-hidden="true">home</span>
+         </span>
+         <div class="md-list-item-content">
+           <span class="md-list-item-overline">SISTEMA</span>
+           <span class="md-list-item-headline">Facturacion</span>
+           <span class="md-list-item-supporting-text">Cobros y facturas</span>
+         </div>
+         <span class="md-list-item-trailing">
+           <span class="md-icon" aria-hidden="true">chevron_right</span>
+         </span>
+       </li>
+     </ul>
+
+   Y el item puede ser el control, en vez de solo su contenedor:
+
+     <li><button class="md-list-item">…</button></li>
+     <li><a class="md-list-item" href="…">…</a></li>
+
+   LAS TRES RANURAS DE TEXTO SON `<span>`, Y NO `<p>`
+   --------------------------------------------------
+   Porque el item puede ser un `<button>` o un `<a>`, y los dos aceptan SOLO
+   contenido fraseado. Un `<p>` es contenido de flujo: dentro de un `<button>` el
+   HTML es invalido, y el parser no lo repara --el caso equivalente ya medido en
+   este proyecto es el de la card con sus `<button>` dentro de un `<a>`, que se
+   quedan en el DOM y renderizan igual, con el HTML invalido pasando
+   inadvertido--.
+
+   Un `<span>` vale en los tres casos: `li`, `a` y `button`. Y no se pierde nada
+   de presentacion: las tres ranuras reciben su caja del componente --`display:
+   flex` en el contenedor de texto y la tipografia en cada ranura--, y ningun
+   `<span>` de estos tres trae margen de por si, asi que tampoco hay que anularlo.
+
+   Y el glifo lleva `aria-hidden="true"`: su texto es el nombre de la ligadura
+   --`home`, `chevron_right`--, y sin eso el lector de pantalla lo verbaliza
+   como una palabra mas de la fila.
+
+   LA FICHA SE ESCRIBE SIEMPRE, INCLUIDA LA QUE TRAE LA BASE
+   -------------------------------------------------------
+   Abajo aparece `md-list-item-selected` y no solo el atributo, por el mismo
+   motivo que `md-card-elevated` se escribe aunque la base ya sea elevated: sin
+   la clase escrita no hay forma de saber que existe sin abrir el CSS.
+
+   ========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   LA SUPERFICIE
+   ---------------------------------------------------------------------------
+   Pinta el color, la elevacion y el radio grande. No lleva `overflow: hidden`:
+   las filas ya son redondeadas por su propio token --corner-extra-small en
+   reposo, corner-large la seleccionada--, asi que no hay ninguna esquina que
+   recorte, y clipping el contenedor se comeria el anillo de foco de la primera
+   y de la ultima fila.
+   ------------------------------------------------------------------------ */
+
+.md-list {
+  --md-comp-list-container-color: var(--md-sys-color-surface);
+  --md-comp-list-elevation: var(--md-sys-elevation-level0);
+  --md-comp-list-shape: var(--md-sys-shape-corner-large);
+
+  background-color: var(--md-comp-list-container-color);
+  box-shadow: var(--md-comp-list-elevation);
+  border-radius: var(--md-comp-list-shape);
+}
+
+/* ---------------------------------------------------------------------------
+   LA FILA
+   ---------------------------------------------------------------------------
+   El relleno lateral va en `padding-inline` con los dos espacios separados,
+   porque son dos tokens distintos --16 y 16 hoy-- y no uno solo escrito dos
+   veces. Cuando el autor quiera el mismo, las utilidades de `4-utilities/`
+   mandan sobre esta capa y es su decision.
+
+   El `min-block-size` en vez de `block-size`, con la razon escrita en la
+   cabecera: LAS TRES ALTURAS SON MINIMOS.
+   ------------------------------------------------------------------------ */
+
+.md-list-item {
+  --md-comp-list-item-container-color: transparent;
+  --md-comp-list-item-shape: var(--md-sys-shape-corner-extra-small);
+  --md-comp-list-item-label-color: var(--md-sys-color-on-surface);
+  --md-comp-list-item-supporting-color: var(--md-sys-color-on-surface-variant);
+  --md-comp-list-item-overline-color: var(--md-sys-color-on-surface-variant);
+  --md-comp-list-item-icon-color: var(--md-sys-color-on-surface-variant);
+  --md-comp-list-item-icon-size: var(--md-sys-measurement-list-item-icon-size);
+
+  /* EL PUENTE AL GLIFO, Y POR QUE HACE FALTA. `.md-icon` declara su `font-size`
+     en utilities --la capa mas fuerte--, asi que una regla de aqui que lo fije
+     pierde siempre, mida lo que mida el selector. Medido: con la ranura a 20px y
+     el glifo a 24, se salia de su caja.
+
+     Lo que funciona es reapuntar el rol que `.md-icon` LEE, y que el glifo
+     herede. Es el patron de `button.css`, `icon-button.css` y `fab.css`, y por
+     eso la caja de la ranura y la del glifo salen siempre iguales, tanto si el
+     autor pone las dos clases en el mismo elemento como si anida uno en otro. */
+  --md-sys-measurement-icon-size: var(--md-comp-list-item-icon-size);
+
+  --md-comp-list-item-state-duration: var(--md-sys-motion-duration-short4);
+  --md-comp-list-item-state-easing: var(--md-sys-motion-easing-effects-default);
+
+  --md-comp-list-item-focus-color: var(--md-sys-color-secondary);
+  --md-comp-list-item-focus-width: var(--md-sys-shape-stroke-extra-thick);
+  --md-comp-list-item-focus-offset: var(--md-sys-shape-stroke-thick);
+
+  --md-comp-list-item-min-height: var(--md-sys-measurement-list-item-height);
+  --md-comp-list-item-leading-space: var(--md-sys-measurement-list-item-leading-space);
+  --md-comp-list-item-trailing-space: var(--md-sys-measurement-list-item-trailing-space);
+  --md-comp-list-item-between-space: var(--md-sys-measurement-list-item-between-space);
+  --md-comp-list-item-vertical-space: var(--md-sys-measurement-list-item-vertical-space);
+
+  box-sizing: border-box;
+  position: relative;
+  isolation: isolate;
+
+  display: flex;
+  align-items: center;
+  gap: var(--md-comp-list-item-between-space);
+
+  min-block-size: var(--md-comp-list-item-min-height);
+  padding-inline: var(--md-comp-list-item-leading-space)
+    var(--md-comp-list-item-trailing-space);
+  padding-block: var(--md-comp-list-item-vertical-space);
+
+  background-color: var(--md-comp-list-item-container-color);
+  border-radius: var(--md-comp-list-item-shape);
+  color: var(--md-comp-list-item-label-color);
+
+  /* El subrayado se quita aqui y no en el reset por el mismo motivo que en el
+     boton: un item que es un `<a>` lleva texto que se subrayaria, y el reset no
+     debe tomar partido sobre los enlaces de texto, que si lo necesitan. Lo que
+     lo anula es ESTE componente. */
+  text-decoration: none;
+}
+
+/* ---------------------------------------------------------------------------
+   LAS DOS ALTURAS RESTANTES
+   ---------------------------------------------------------------------------
+   Solo reapuntan el token del minimo. No escriben `min-block-size`: si lo
+   escribieran aqui, la altura pasaria a ser un propiedad de la clase de
+   densidad y no del token, que es lo que permite que el autor la reescriba con
+   una utilidad sin pelearse con el componente.
+   ------------------------------------------------------------------------ */
+
+.md-list-item-two-line {
+  --md-comp-list-item-min-height: var(--md-sys-measurement-list-item-height-two-line);
+}
+
+.md-list-item-three-line {
+  --md-comp-list-item-min-height: var(--md-sys-measurement-list-item-height-three-line);
+}
+
+/* ---------------------------------------------------------------------------
+   LAS RANURAS
+   ---------------------------------------------------------------------------
+   Cuatro, mas el contenedor de texto. Las tres de texto van en una columna sin
+   hueco entre ellas: M3 no publica ningun `space` entre overline, titular y
+   texto de apoyo, y el ritmo lo dan los tres interlineados de sus tipos.
+
+   El `min-inline-size: 0` del contenedor de texto no es cosmetico: sin el, un
+   texto largo en una flexbox no baja de su ancho minimo y empuja la ranura de
+   detras fuera de la fila en vez de partirse.
+
+   Ni una regla pone `margin: 0` en las tres: el reset ya lo hace a `p` y a
+   `h1`-`h6`, y los otros elementos que caben en estas ranuras --`span`, `div`--
+   no traen margen. Anularlo aqui seria hacer el trabajo del reset dos veces.
+
+   
+   EL ICONO DE LA LISTA MIDE 20, Y NO EL 24 DEL SISTEMA
+   ---------------------------------------------------
+   El diagrama de medidas de m3.material.io etiqueta los dos iconos de la fila
+   con 20, y `_md-comp-list.scss` publica las dos medidas: 24 para la variante
+   clasica y 20 para la Expressive. Como aqui esta adoptada la familia de formas
+   Expressive --`corner-extra-small` en reposo, `corner-large` seleccionada--, el
+   icono va con ella. Dejar 24 seria mezclar dos epochs de la misma
+   especificacion en una sola fila.
+   
+   No se usa `--md-sys-measurement-icon-size`, que es 24: ese es el icono del
+   sistema, y el de la lista es otra medida. El rol propio esta en `measurement.css`
+   con el motivo escrito.
+   ------------------------------------------------------------------------ */
+
+.md-list-item-leading,
+.md-list-item-trailing {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--md-comp-list-item-icon-size);
+  block-size: var(--md-comp-list-item-icon-size);
+  font-size: var(--md-comp-list-item-icon-size);
+  line-height: 1;
+  color: var(--md-comp-list-item-icon-color);
+}
+
+.md-list-item-content {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* El overline es el UNICO de los tres textos que no es `body-large`: M3 lo
+   declara en `label-small`, que es el rol de las mayusculas cortas. Un overline
+   en body-large seria un titular mas, y el titular ya esta. */
+.md-list-item-overline {
+  font: var(--md-sys-typescale-label-small);
+  letter-spacing: var(--md-sys-typescale-label-small-tracking);
+  color: var(--md-comp-list-item-overline-color);
+}
+
+.md-list-item-headline {
+  font: var(--md-sys-typescale-body-large);
+  letter-spacing: var(--md-sys-typescale-body-large-tracking);
+  color: var(--md-comp-list-item-label-color);
+}
+
+.md-list-item-supporting-text {
+  font: var(--md-sys-typescale-body-medium);
+  letter-spacing: var(--md-sys-typescale-body-medium-tracking);
+  color: var(--md-comp-list-item-supporting-color);
+}
+
+/* EL RECORTE, Y SOLO EL DE DOS LINEAS. Ver EL TEXTO CORRIDO, que explica por que
+   las otras dos densidades no lo llevan y por que el 1 no necesita token.
+
+   `display: -webkit-box` es lo que hace que el recorte funcione: sin el,
+   `line-clamp` no tiene nada que recortar. Y el `-webkit-line-clamp` de al lado
+   lleva el mismo numero para los motores que todavia no tienen la forma estandar. */
+.md-list-item-two-line .md-list-item-supporting-text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  overflow: hidden;
+}
+
+/* ---------------------------------------------------------------------------
+   LA CAPA DE ESTADO
+   ---------------------------------------------------------------------------
+   `::after`, con `currentColor` y opacidad 0 en reposo, y la transicion de
+   opacidad con el par de effects --short4, 200ms--, igual que en el boton y el
+   icono-boton. Se acota por geometria: inset 0 y radio heredado, sin overflow
+   que recortar.
+
+   Y el `currentColor` funciona sin token propio porque el color del host ES el
+   color de la capa en los dos estados que hay: en reposo el host es `on-surface`
+   y la capa tambien; seleccionada la fila es `on-secondary-container` y la capa
+   tambien. Las ranuras de texto llevan su propio color, y al ser hijos no tocan
+   el del host.
+
+   LA OPACIDAD DE REPOSO ES CERO Y ESTA ESCRITA, no leida de un token. Es el
+   mismo arrangements que el boton, y por el mismo motivo: el valor de reposo no
+   es una decision de autor, es la ausencia de capa. Medido: con un token local
+   declarado en 1 --que es como estaba la primera vez-- la fila pinta su color
+   de texto encima de si misma en reposo, `rgb(29, 27, 32)` al 100%, y el texto
+   encima de su propio fondo. Es invisible en elHTML y evidente en el
+   navegador: `getComputedStyle(item, '::after').opacity` devolvia 1.
+
+   Las tres reglas de estado llevan la MISMA condicion de control real, y por
+   que esta en el `:hover`, en el `:focus-visible` y en el `:active` y no en la
+   base: ver LA CAPA DE ESTADO SOLO EN CONTROLES DE VERDAD, en la cabecera. Por
+   el mismo motivo el cursor, y con el `:not(:disabled)` que hace falta para que
+   el estado deshabilitado no lo recupere: sin el, la regla del puntero --
+   `(0,2,1)` por el `:is()`-- le gana a la del deshabilitado --`(0,2,0)`-- y una
+   fila deshabilitada seguia enseñando el cursor de puntero. Medido.
+   ------------------------------------------------------------------------ */
+
+.md-list-item::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: currentColor;
+  opacity: 0;
+  border-radius: inherit;
+  pointer-events: none;
+
+  transition: opacity
+    var(--md-comp-list-item-state-duration)
+    var(--md-comp-list-item-state-easing);
+}
+
+.md-list-item:not(:disabled):is(a[href], button, [role='button']) {
+  cursor: pointer;
+}
+
+.md-list-item:is(a[href], button, [role='button']):hover::after {
+  opacity: var(--md-sys-state-hover-state-layer-opacity);
+}
+
+.md-list-item:is(a[href], button, [role='button']):focus-visible::after {
+  opacity: var(--md-sys-state-focus-state-layer-opacity);
+}
+
+/* `:active` despues de `:hover` y `:focus-visible`: mantener pulsado un control
+   ya iluminado tiene que mostrar la intensidad correcta, no la suma de las dos.
+   Es la misma regla y el mismo comentario que en el boton. */
+.md-list-item:is(a[href], button, [role='button']):active::after {
+  opacity: var(--md-sys-state-pressed-state-layer-opacity);
+}
+
+/* ---------------------------------------------------------------------------
+   EL ANILLO DE FOCO
+   ---------------------------------------------------------------------------
+   No se anula el `outline` nativo: se sustituye declarando los valores. Los tres
+   numeros son los mismos que los del boton, el icono-boton, el fab y la card, y
+   salen de los mismos roles: grosor `extra-thick` (3px), color `secondary` y
+   `outline-offset` de 2px, que dibuja el anillo DENTRO de la fila. Por eso el
+   anillo no necesita que la superficie recorte.
+   ------------------------------------------------------------------------ */
+
+.md-list-item:focus-visible {
+  outline: var(--md-comp-list-item-focus-width) solid
+    var(--md-comp-list-item-focus-color);
+  outline-offset: var(--md-comp-list-item-focus-offset);
+}
+
+/* ---------------------------------------------------------------------------
+   DISABLED
+   ---------------------------------------------------------------------------
+   El 38% va en el contenido, no en el host, y por la misma razon que en el
+   boton: si bajara el `opacity` de la fila, bajarian con el la capa de estado y
+   el fondo, y el resultado seria un 38% de un 38%.
+
+   Y la capa de estado baja al 10% que publica M3
+   (`disabled.state-layer.opacity: 0.1`), que es el mismo rol que usa el boton
+   para el relleno deshabilitado. Se declara aunque en la practica no se vea: una
+   fila deshabilitada no tiene hover ni active porque no tiene `pointer`, asi que
+   la capa no llega a pintarse. El token queda escrito en un sitio y no en dos.
+
+   Y va en una regla propia, con el pseudo, y no reapuntando un token de la base:
+   la opacidad de reposo de la capa es 0 y esta ESCRITA, no leida --ver LA CAPA
+   DE ESTADO--, y una regla de token no puede bajarla sin declarar ese 0 tambien
+   en la base.
+
+   `pointer-events: none` para que no responda aunque se vea.
+   ------------------------------------------------------------------------ */
+
+.md-list-item:disabled {
+  cursor: default;
+  pointer-events: none;
+}
+
+.md-list-item:disabled::after {
+  opacity: var(--md-sys-state-disabled-container-opacity);
+}
+
+.md-list-item:disabled :is(
+    .md-list-item-headline,
+    .md-list-item-supporting-text,
+    .md-list-item-overline,
+    .md-list-item-leading,
+    .md-list-item-trailing
+  ) {
+  opacity: var(--md-sys-state-disabled-state-layer-opacity);
+}
+
+/* ---------------------------------------------------------------------------
+   EL ESTADO SELECCIONADO
+   ---------------------------------------------------------------------------
+   Estatico y sin JavaScript, con dos puertas: la clase y el atributo. El
+   atributo se acota a `.md-list-item` a proposito --un `[aria-selected="true"]`
+   suelto tambien casaria con un `role="tab"` de otra cosa de la pagina--.
+
+   Los seis tokens son los seis de M3, y son el cambio de color COMPLETO: el
+   fondo a `secondary-container` y las cinco ordenes de texto e icono a
+   `on-secondary-container`. Por eso el hover de la fila seleccionada se ve
+   sobre el color nuevo y no sobre el viejo.
+
+   Y aqui esta la unica regla del archivo que reapunta la FORMA, que es la
+   pieza ratificada del capitulo: `corner-extra-small` en reposo contra
+   `corner-large` seleccionada. Las formas de hover y de pulsado que M3
+   tambien publica NO se implementan, y el motivo esta en la cabecera.
+   ------------------------------------------------------------------------ */
+
+.md-list-item-selected,
+.md-list-item[aria-selected='true'] {
+  --md-comp-list-item-container-color: var(--md-sys-color-secondary-container);
+  --md-comp-list-item-label-color: var(--md-sys-color-on-secondary-container);
+  --md-comp-list-item-supporting-color: var(--md-sys-color-on-secondary-container);
+  --md-comp-list-item-overline-color: var(--md-sys-color-on-secondary-container);
+  --md-comp-list-item-icon-color: var(--md-sys-color-on-secondary-container);
+  --md-comp-list-item-shape: var(--md-sys-shape-corner-large);
+}
+
+/* ---------------------------------------------------------------------------
+   LA FORMA POR POSICION: LA SUPERFICIE COSE SUS EXTREMOS
+   ---------------------------------------------------------------------------
+   La primera y la ultima fila heredan los radios de la superficie: las esquinas de
+   fuera quedan a 16 como las de la lista, y las de dentro se quedan en 4, que es su
+   forma propia de fila intermedia. Sin esto, una lista de filas de 4px dentro de
+   una superficie de 16px se ve como pastillas sueltas pegadas, y no como una lista.
+
+   Es la misma regla que escribe `labs/gb/components/list/list.scss`:
+   `> :first-child` y `> :last-child` con `border-start-*-radius: inherit` y
+   `border-end-*-radius: inherit`.
+
+   Propiedades LOGICAS y no fisicas, como las de M3: en un texto de derecha a
+   izquierda "la primera esquina" cambia de lado, y con las fisicas el cosido
+   saldria en el sitio equivocado.
+
+   Y `inherit` en vez de un 16 escrito, por el motivo que ya esta en la cabecera: el
+   valor sale del padre, que es la superficie, y asi la regla sigue siendo cierta
+   si el radio de la superficie cambia.
+
+   Solo funciona con la fila como hija DIRECTA de la superficie, que es la
+   anatomia documentada. Si la fila va envuelta --`<li><button class="md-list-item">`--
+   el selector no la alcanza y se queda con su forma propia. Es la misma limitacion
+   que tiene `labs/gb`, que resuelve el caso del hueco con `::slotted()` y aqui no
+   hay shadow DOM donde apoyarse.
+
+   Va DESPUES de la regla base y ANTES de la de la transicion, por el mismo
+   blindaje del boton: cualquier `border-radius` reventado mas adelante devuelve el
+   cosido a instantaneo sin avisar.
+   ------------------------------------------------------------------------ */
+
+.md-list > :first-child {
+  border-start-start-radius: inherit;
+  border-start-end-radius: inherit;
+}
+
+.md-list > :last-child {
+  border-end-start-radius: inherit;
+  border-end-end-radius: inherit;
+}
+
+/* ---------------------------------------------------------------------------
+   EL TEXTO CORRIDO, Y LA VARIANTE DE CONTENIDO EXTENSO
+   ---------------------------------------------------------------------------
+   El texto se ve ENTERO, con una sola excepcion: la fila de DOS LINEAS, que
+   recorta el texto de apoyo en un renglon con puntos suspensivos. Es lo que hace
+   M3 --el diagrama de medidas de m3.material.io enseña la fila de dos lineas con
+   el apoyo cortado-- y es la unica de las tres donde el texto no cabe: 44px de
+   contenido en un presupuesto de 52.
+
+   En las otras dos no se recorta nada. La de tres lineas tiene sitio de sobra --el
+   mismo diagrama muestra un texto de apoyo de dos renglones completo--, y la
+   variante `.md-list-item-multiline` es justo la que existe para el texto
+   extenso, donde recortar seria decidir por el autor que su segunda linea no
+   existe. Y en un catalogo lo que no se ve es un alergeno.
+
+   El 1 del recorte cabe en el componente sin token, y no por descuido: REGLA 1
+   perdona el 0 y el 1 porque son valores de identidad, y un unico renglon es el
+   minimo de la regla, no una medida del tema. Si algun dia hiciera falta un
+   segundo numero --dos renglones, tres--, ese si tendria que nacer como primitiva
+   en la capa 1, porque ahi es donde puede estar un numero.
+
+   Y el texto se apoya en `min-block-size`, no en una altura fija: la fila crece
+   hacia abajo segun lo que haya escrito, con el relleno vertical de 10px
+   respetado. Medido, una fila con un texto de apoyo de cinco renglones mide 144px
+   --24 del titular, 100 de apoyo, 20 de relleno-- y ni una regla de este archivo
+   se opone.
+
+   LO QUE HACE LA VARIANTE `.md-list-item-multiline`, Y POR QUE EXISTE
+   ------------------------------------------------------------------
+   Es para contenido extenso: la carta de un menu, la ficha de un catalogo, el
+   resumen de un producto.
+
+   Con el texto largo, la fila centrada por `align-items: center` deja el icono
+   flotando en medio del vacio. Medido con un texto de apoyo de cuatro renglones:
+   el icono cae 40px POR DEBAJO del titular, con dos renglones de texto encima y
+   dos debajo. Es el unico caso en que centrar se ve mal, y por eso no se cambia
+   para todos sino para quien lo pide.
+
+   UNA SOLA DECLARACION, Y POR QUE NO UNA
+   --------------------------------------
+   Anclar solo el leading con `align-self` deja el bloque de texto centrado en
+   el alto de la fila, y entonces el icono se alinea con el BORDE del hueco y no
+   con el titular. Medido: 0.00 sin combinar, y -12px al combinarla con
+   `md-list-item-three-line`, porque la fila de 88px centra sus 44px de texto y
+   deja 12 por encima.
+
+   Anclar la FILLA entera --`align-items: flex-start`-- pone el icono y el bloque
+   de texto en el mismo punto de partida, y con eso el desfase es 0.00 en las tres
+   combinaciones. Ademas el texto deja de depender del minimo para colocarse: crece
+   desde arriba, que es como se lee una ficha.
+
+   EL PRECIO, Y ES EL CHEVRON. Con la fila anclada arriba, la ranura de detras
+   tambien sube. Es lo correcto para una ficha de catalogo, donde el dato de al
+   lado --un precio, una disponibilidad-- es el primero que se lee y no el
+   ultimo. En las variantes de una y dos lineas, donde el texto no crece, la
+   variante no se aplica y el chevron sigue centrado como en el resto del
+   catalogo.
+
+   Y LA VARIANTE NO DECLARA ALTURA. Su minimo es el de la base --una linea, 56-- y
+   de ahi crece. Un piso de 88 seria inventar un cuarto tamano que M3 no publica:
+   `_md-comp-list.scss` tiene tres alturas y ninguna es esta.
+   ------------------------------------------------------------------------ */
+
+.md-list-item-multiline {
+  align-items: flex-start;
+}
+
+/* ---------------------------------------------------------------------------
+   LA TRANSICION DE LA SELECCION
+   ---------------------------------------------------------------------------
+   El mismo par que el morph del boton y del icono-boton: `long2`, 500ms, con
+   spatial para la forma y standard para el color. La forma se mueve sola, y el
+   color entra con ella para que no se lean como dos cosas sueltas.
+
+   Va aqui, y no en la regla base, por blindaje: esta regla esta DESPUES de la
+   que reapunta el token de forma y ANTES del bloque de reduce, que tiene que
+   ganar. Y en longhands, no en el shorthand, porque un `transition:` reventaria
+   las tres lineas de golpe y devolveria el cambio a instantaneo en los dos
+   sentidos.
+
+   TRES ELEMENTOS, TRES TRANSICIONES. Las transiciones no se heredan. El host
+   lleva la forma y su color; la capa de estado NO entra aqui --lleva su
+   par corto de effects y no tiene nada que ver con la seleccion--; y las
+   cuatro ranuras de texto e icono llevan su propio color, que es un elemento
+   distinto y sin esta transicion cambiaria de golpe mientras la forma tarda
+   500ms. Es la misma trampa que cerro el commit del boton, en la que el texto
+   saltaba en el primer frame y el radio tardaba 314ms en asentarse.
+
+   El hover y el focus no entran: las tres reglas de estado solo cambian la
+   opacidad de su `::after` y nada mas, asi que subir su duracion a 500ms no
+   retardaria nada de la interaccion.
+   ------------------------------------------------------------------------ */
+
+.md-list-item {
+  transition-property: border-radius, background-color, color;
+  transition-duration: var(--md-sys-motion-duration-long2);
+  transition-timing-function:
+    var(--md-sys-motion-easing-spatial-default),
+    var(--md-sys-motion-easing-standard),
+    var(--md-sys-motion-easing-standard);
+}
+
+.md-list-item :is(
+    .md-list-item-headline,
+    .md-list-item-supporting-text,
+    .md-list-item-overline,
+    .md-list-item-leading,
+    .md-list-item-trailing
+  ) {
+  transition-property: color;
+  transition-duration: var(--md-sys-motion-duration-long2);
+  transition-timing-function: var(--md-sys-motion-easing-standard);
+}
+
+/* ---------------------------------------------------------------------------
+   PREFERES-REDUCED-MOTION
+   ---------------------------------------------------------------------------
+   Un morph de forma es movimiento FUERTE: cambia la geometria de la fila, no
+   solo su color. Con reduce el color y la forma cambian de golpe a la vez, que
+   es justo lo que se pide cuando el movimiento es lo que molesta.
+
+   `transition: none` y no `transition-duration: 0s`: el sistema no tiene un
+   token de duracion cero, y escribir 0s es un valor crudo, que REGLA 1 prohibe
+   fuera de 1-reference-tokens.
+
+   TRES grupos de selectores, y cada uno por un elemento distinto: la fila lleva
+   la forma y su color, sus cuatro ranuras llevan su color, y su `::after` lleva
+   la capa de estado. Apagar solo la fila dejaria el texto cambiando de color
+   500ms mientras la forma saltase.
+   ------------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .md-list-item,
+  .md-list-item :is(
+      .md-list-item-headline,
+      .md-list-item-supporting-text,
+      .md-list-item-overline,
+      .md-list-item-leading,
+      .md-list-item-trailing
+    ) {
+    transition: none;
+  }
+
+  .md-list-item::after {
+    transition: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   FORCED COLORS
+   ---------------------------------------------------------------------------
+   La fila no pinta fondo en reposo, asi que en alto contraste no hay nada que
+   sustituir: sus colores de texto los toma ya el modo, y la capa de estado se
+   dibuja con `currentColor` como en cualquier otro caso.
+
+   Lo que SI hay que arreglar es el deshabilitado, y por lo mismo que en el boton:
+   baja el contenido con `opacity`, y la opacidad no comunica nada en este modo --
+   el navegador la ignora en buena parte del sistema, y donde no la ignora el
+   gris se mezcla con el fondo sin distinguirse de un texto normal--. Por eso el
+   38% se cambia por el gris de sistema del texto deshabilitado, que es lo que
+   hacen los otros siete componentes y lo que hace la receta de M3, en
+   `list/internal/listitem/_list-item.scss`: `.disabled { color: GrayText;
+   opacity: 1 }`.
+
+   Y la capa de estado del deshabilitado tambien se apaga: alli el 10% de un
+   color de sistema ya no es un 10% reconocible.
+   ------------------------------------------------------------------------ */
+
+@media (forced-colors: active) {
+  .md-list-item:disabled::after {
+    opacity: 0;
+  }
+
+  .md-list-item:disabled :is(
+      .md-list-item-headline,
+      .md-list-item-supporting-text,
+      .md-list-item-overline,
+      .md-list-item-leading,
+      .md-list-item-trailing
+    ) {
+    color: GrayText;
+    opacity: 1;
+  }
+}

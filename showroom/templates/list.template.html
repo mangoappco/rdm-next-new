@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="List de RDM Next: las filas en vertical, con su superficie, sus tres alturas y su estado de selección.">
+  <title>List — RDM ManGo! App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+  <link rel="stylesheet" href="../../src/css/main.css">
+  <link rel="stylesheet" href="../assets/showroom.css">
+    <script type="module" src="../../src/js/main.js"></script>
+<script src="../assets/showroom.js"></script>
+</head>
+
+<!--
+  ESTA VISTA TIENE SIETE PARES PREVISTOS: Clase base, Densidades, Seleccion,
+  Ranuras, Como control, Deshabilitado y Divisor. Se construye par a par,
+  mirando cada uno antes de escribir el siguiente.
+
+  ESTA VISTA NO ESTA PUBLICADA. El fichero vive aqui, en `templates/`, y solo
+  cuando este completo y aprobado se copia a `showroom/components/list.html` y
+  se enlaza desde `showroom/index.html`, con su fila en la tabla de componentes
+  de `CONTEXT.md`. Las tres cosas van en el mismo commit.
+
+  LO QUE SE LEE DE M3, Y DE DONDE
+  -------------------------------
+  Los tokens salen de `tokens/versions/latest/sass/_md-comp-list.scss`
+  (v34.0.21), leido en linea. No hay prosa de M3 para la lista: en
+  `docs/components/` de material-web no esta, igual que no esta la de la card.
+  Al lado hay tres ficheros mas --`_md-comp-list-reorder`, `_md-comp-list-reveal`
+  y `_md-comp-list-expand`-- que no entran: arrastrar, revelar y expandir.
+
+  LAS TRES DECISIONES QUE NO SON DE M3
+  ------------------------------------
+  1. La forma solo se mueve al seleccionar. M3 Expressive publica tambien las
+     formas de hover y de pulsado --corner-medium y corner-large-- y no se
+     implementan: es el candado que ya esta escrito para el boton y el
+     icono-boton. En una lista de decenas de filas, mutar esquinas en cada
+     hover satura la pantalla.
+
+  2. La capa de estado solo se enciende en controles de verdad --un `a` con
+     href, un `button` o un `role="button"`--. Un `<li>` estatico no se ilumina
+     al pasar el raton ni enseña el cursor de puntero, porque un tinte de hover
+     sobre algo que no hace nada es un rechazo de accesibilidad.
+
+  3. La seleccion es estatica. Se marca con `.md-list-item-selected` o con
+     `aria-selected="true"` y no hay JavaScript: la lista no decide quien esta
+     seleccionado, lo dice quien escribe el marcado.
+
+  LA FICHA DE SELECCION SE ESCRIBE IGUAL QUE LA DENSIDAD
+  ------------------------------------------------------
+  `.md-list-item-selected` aparece en el par de seleccion aunque el atributo
+  baste. Es el mismo motivo por el que `.md-button-filled` existe sobre
+  `.md-button` y `.md-card-elevated` sobre la base elevated: sin la clase
+  escrita, quien copia el snippet tiene que abrir el CSS para descubrir que
+  existe.
+
+  LO QUE ESTA VISTA NO DICE, Y POR QUE
+  ------------------------------------
+  TOKENES Y MEDIDAS NO TIENEN PAR. Las alturas, el relleno y los colores estan
+  en la cabecera de `src/css/3-components/list.css`, con el token de M3 al que
+  corresponde cada uno. Un par que dijera "la fila mide 56" seria el mismo
+  specimen con otro h2.
+
+  HAY UN <meta name="description">, Y LAS OTRAS QUINCE VISTAS NO. La skill lo
+  pide y ninguna lo tiene. Se pone aqui porque es lo correcto, y queda dicho
+  para que la diferencia con el resto no parezca un olvido.
+
+  LO QUE NO ENTRA Y ESTA DICHO EN LA HOJA DEL COMPONENTE
+  -------------------------------------------------------
+  Avatar, imagen y video como ranura de delante; el estado `dragged`; el ripple;
+  y el `dragged` con elevacion level4. Los tres primeros necesitan una medida y
+  una decision de estructura, y el ultimo necesita un gesto en JavaScript. La
+  lista no lleva JavaScript.
+-->
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <main class="sr-page">
+
+    <!-- HEADER: inicio (barra + titulo + descripcion) -->
+    <header class="sr-header">
+      <div class="sr-bar">
+        <p class="md-type-body-medium"><a href="../index.html">RDM ManGo! App</a></p>
+        <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
+      </div>
+      <h1 class="md-type-display-large">List</h1>
+      <p class="md-type-body-large">Una superficie con filas en vertical. Cada fila tiene su altura, su forma y su color, y puede estar seleccionada. · <em>Un par</em></p>
+    </header>
+    <!-- HEADER: fin -->
+
+    <hr class="md-divider">
+
+    <!-- PAREJA: la clase base (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Clase base</h2>
+      <p class="md-type-body-medium">La superficie con una fila de una línea: icono delante, titular y chevron detrás. Los 56px son un mínimo, no una altura fija.</p>
+      <div class="sr-specimen">
+        <ul class="md-list">
+          <li class="md-list-item">
+            <span class="md-list-item-leading">
+              <span class="md-icon" aria-hidden="true">receipt_long</span>
+            </span>
+            <div class="md-list-item-content">
+              <span class="md-list-item-headline">Facturación</span>
+            </div>
+            <span class="md-list-item-trailing">
+              <span class="md-icon" aria-hidden="true">chevron_right</span>
+            </span>
+          </li>
+        </ul>
+      </div>
+      <pre class="sr-code"><code>&lt;ul class="md-list"&gt;
+  &lt;li class="md-list-item"&gt;
+    &lt;span class="md-list-item-leading"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;receipt_long&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;div class="md-list-item-content"&gt;
+      &lt;span class="md-list-item-headline"&gt;Facturación&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;span class="md-list-item-trailing"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;chevron_right&lt;/span&gt;
+    &lt;/span&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: las tres densidades (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Densidades</h2>
+      <p class="md-type-body-medium">La clase de densidad sube el mínimo y el contenido va centrado dentro; con el contenido de M3 el mínimo manda siempre.</p>
+      <div class="sr-specimen">
+        <ul class="md-list">
+          <li class="md-list-item">
+            <span class="md-list-item-leading">
+              <span class="md-icon" aria-hidden="true">receipt_long</span>
+            </span>
+            <div class="md-list-item-content">
+              <span class="md-list-item-headline">Facturación</span>
+            </div>
+            <span class="md-list-item-trailing">
+              <span class="md-icon" aria-hidden="true">chevron_right</span>
+            </span>
+          </li>
+          <li class="md-list-item md-list-item-two-line">
+            <span class="md-list-item-leading">
+              <span class="md-icon" aria-hidden="true">receipt_long</span>
+            </span>
+            <div class="md-list-item-content">
+              <span class="md-list-item-headline">Facturación</span>
+              <span class="md-list-item-supporting-text">Cobros y facturas</span>
+            </div>
+            <span class="md-list-item-trailing">
+              <span class="md-icon" aria-hidden="true">chevron_right</span>
+            </span>
+          </li>
+          <li class="md-list-item md-list-item-three-line">
+            <span class="md-list-item-leading">
+              <span class="md-icon" aria-hidden="true">receipt_long</span>
+            </span>
+            <div class="md-list-item-content">
+              <span class="md-list-item-overline">SISTEMA</span>
+              <span class="md-list-item-headline">Facturación</span>
+              <span class="md-list-item-supporting-text">Cobros y facturas</span>
+            </div>
+            <span class="md-list-item-trailing">
+              <span class="md-icon" aria-hidden="true">chevron_right</span>
+            </span>
+          </li>
+        </ul>
+      </div>
+      <pre class="sr-code"><code>&lt;ul class="md-list"&gt;
+  &lt;li class="md-list-item"&gt;
+    &lt;span class="md-list-item-leading"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;receipt_long&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;div class="md-list-item-content"&gt;
+      &lt;span class="md-list-item-headline"&gt;Facturación&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;span class="md-list-item-trailing"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;chevron_right&lt;/span&gt;
+    &lt;/span&gt;
+  &lt;/li&gt;
+  &lt;li class="md-list-item md-list-item-two-line"&gt;
+    &lt;span class="md-list-item-leading"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;receipt_long&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;div class="md-list-item-content"&gt;
+      &lt;span class="md-list-item-headline"&gt;Facturación&lt;/span&gt;
+      &lt;span class="md-list-item-supporting-text"&gt;Cobros y facturas&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;span class="md-list-item-trailing"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;chevron_right&lt;/span&gt;
+    &lt;/span&gt;
+  &lt;/li&gt;
+  &lt;li class="md-list-item md-list-item-three-line"&gt;
+    &lt;span class="md-list-item-leading"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;receipt_long&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;div class="md-list-item-content"&gt;
+      &lt;span class="md-list-item-overline"&gt;SISTEMA&lt;/span&gt;
+      &lt;span class="md-list-item-headline"&gt;Facturación&lt;/span&gt;
+      &lt;span class="md-list-item-supporting-text"&gt;Cobros y facturas&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;span class="md-list-item-trailing"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;chevron_right&lt;/span&gt;
+    &lt;/span&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+  </main>
+  <!-- MAIN: fin -->
+</body>
+</html>
