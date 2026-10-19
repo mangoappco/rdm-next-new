@@ -150,11 +150,11 @@ Clases distintas en TODO el repositorio:  10
   .md-icon               1   experimento en labs/gb/, no parte del sistema de estilos
   .md-stories-bg-override 1  del sitio de documentación (catalog/)
 
-Clases de este proyecto:  233
+Clases de este proyecto:  238
   4-utilities   178   color 93 · typography 32 · shape 16 · elevation 12
                  icon 9 · motion 8 · state 6 · measurement 2
-  3-components   55   button 15 · icon-button 15 · card 11 · fab 7
-                 divider 4 · button-group 2 · fab-extended 1
+  3-components   60   button 15 · icon-button 15 · card 11 · fab 7
+                 divider 4 · dialog 5 · button-group 2 · fab-extended 1
 ```
 
 El recuento es sobre el CSS declarado, con los bloques `/* … */` fuera: la prosa de
@@ -165,13 +165,13 @@ Las 6 de `state` son `.md-state-layer` más sus cuatro modificadores
 contenido inactivo —no es un *state layer*: no hay capa encima, el propio contenido se
 atenúa—. Los cuatro modificadores usan un guion, según el criterio de la sección anterior.
 
-Las 55 de `3-components` no son utilidades: son la API de cada componente, con sus variantes.
+Las 60 de `3-components` no son utilidades: son la API de cada componente, con sus variantes.
 `button.css` declara además los selectores de `.md-state-layer` y `.md-disabled` que ya
 existen en `4-utilities`, porque los compone para colocar la capa; no son clases suyas, y por eso
 no se cuentan dos veces.
 
 **Material Web declara 10 clases en todo su repositorio, y de ellas 8 son de utilidad.
-Publicamos 233.** Compartemos una sola
+Publicamos 238.** Compartemos una sola
 familia: la tipográfica.
 
 La prueba más directa está en el `package.json` de la librería:
@@ -804,56 +804,60 @@ rdm-next-new/
 ├── README.md                 Este documento: contrato de arquitectura
 ├── docs/
 │   └── showroom-philosophy.md Filosofía de las fichas del showroom
-├── src/
-│   └── css/                  La librería. Nada más del proyecto la importa.
-│       ├── main.css           Orquestador: @layer + @import
-│       ├── reset.css          Capa 0: anula al navegador
-│       ├── 1-reference-tokens/             Valores crudos (única capa que los permite)
-│       │   ├── index.css        Índice: reexporta las 13 primitivas
-│       │   ├── aspect.css     --md-ref-aspect-*
-│       │   ├── container-height.css --md-ref-container-*
-│       │   ├── palette.css    --md-ref-palette-*
-│       │   ├── typeface.css   --md-ref-typeface-*
-│       │   ├── iconfont.css   --md-ref-icon-* (+ carga la fuente)
-│       │   ├── corner.css     --md-ref-corner-*
-│       │   ├── opacity.css    --md-ref-opacity-*
-│       │   ├── easing.css     --md-ref-easing-*
-│       │   ├── shadow.css     --md-ref-shadow-*
-│       │   ├── spacing.css    --md-ref-spacing-*
-│       │   ├── stroke.css     --md-ref-stroke-*
-│       │   ├── typescale.css  --md-ref-typescale-*
-│       │   └── time.css       --md-ref-time-*
-│       ├── 2-system-tokens/             Tokens semánticos (solo var(), sin clases)
-│       │   ├── index.css      Índice: claro primero, oscuro último
-│       │   ├── typography.css --md-sys-typescale-*
-│       │   ├── icon.css       --md-sys-icon-* (las clases .md-icon-* viven en 4-utilities/)
-│       │   ├── measurement.css--md-sys-measurement-*
-│       │   ├── motion.css     --md-sys-motion-*
-│       │   ├── shape.css      --md-sys-shape-*
-│       │   ├── elevation.css  --md-sys-elevation-*
-│       │   ├── state.css      --md-sys-state-*
-│       │   └── theme/
-│       │       ├── theme.light.css  --md-sys-color-* (tema claro)
-│       │       └── theme.dark.css   --md-sys-color-* (tema oscuro)
-│       ├── 3-components/            Un componente por archivo (se llena por pasos)
-│       │   ├── index.css      Índice: un @import por componente, en orden de dependencia
-│       │   ├── divider.css    --md-comp-divider-*
-│       │   ├── icon-button.css--md-comp-icon-button-*
-│       │   ├── button.css     --md-comp-button-*
-│       │   ├── button-group.css --md-comp-button-group-*
-│       │   ├── fab.css        --md-comp-fab-*
-│       │   ├── fab-extended.css --md-comp-fab-* (va DESPUÉS de fab.css)
-│       │   └── card.css       --md-comp-card-* (va al final)
-│       └── 4-utilities/             Clases atómicas (solo var(), sin tokens)
-│           ├── index.css      Índice: una familia por archivo
-│           ├── color.css      .md-bg-* / .md-text-* / .md-border-*
-│           ├── typography.css .md-type-* (32)
-│           ├── icon.css       .md-icon / .md-icon-* / .md-measure-icon-*
-│           ├── measurement.css.md-measure-touch-target / .md-measure-icon
-│           ├── motion.css     .md-motion-*
-│           ├── shape.css      .md-shape-*
-│           ├── elevation.css  .md-elevation-*
-│           └── state.css      .md-state-layer-* / .md-disabled
+├── src/                    La librería. Nada más del proyecto la importa.
+│   ├── css/
+│   │   ├── main.css           Orquestador: @layer + @import
+│   │   ├── reset.css          Capa 0: anula al navegador
+│   │   ├── 1-reference-tokens/             Valores crudos (única capa que los permite)
+│   │   │   ├── index.css        Índice: reexporta las 13 primitivas
+│   │   │   ├── aspect.css     --md-ref-aspect-*
+│   │   │   ├── container-height.css --md-ref-container-*
+│   │   │   ├── palette.css    --md-ref-palette-*
+│   │   │   ├── typeface.css   --md-ref-typeface-*
+│   │   │   ├── iconfont.css   --md-ref-icon-* (+ carga la fuente)
+│   │   │   ├── corner.css     --md-ref-corner-*
+│   │   │   ├── opacity.css    --md-ref-opacity-*
+│   │   │   ├── easing.css     --md-ref-easing-*
+│   │   │   ├── shadow.css     --md-ref-shadow-*
+│   │   │   ├── spacing.css    --md-ref-spacing-*
+│   │   │   ├── stroke.css     --md-ref-stroke-*
+│   │   │   ├── typescale.css  --md-ref-typescale-*
+│   │   │   └── time.css       --md-ref-time-*
+│   │   ├── 2-system-tokens/             Tokens semánticos (solo var(), sin clases)
+│   │   │   ├── index.css      Índice: claro primero, oscuro último
+│   │   │   ├── typography.css --md-sys-typescale-*
+│   │   │   ├── icon.css       --md-sys-icon-* (las clases .md-icon-* viven en 4-utilities/)
+│   │   │   ├── measurement.css--md-sys-measurement-*
+│   │   │   ├── motion.css     --md-sys-motion-*
+│   │   │   ├── shape.css      --md-sys-shape-*
+│   │   │   ├── elevation.css  --md-sys-elevation-*
+│   │   │   ├── state.css      --md-sys-state-*
+│   │   │   └── theme/
+│   │   │       ├── theme.light.css  --md-sys-color-* (tema claro)
+│   │   │       └── theme.dark.css   --md-sys-color-* (tema oscuro)
+│   │   ├── 3-components/            Un componente por archivo (se llena por pasos)
+│   │   │   ├── index.css      Índice: un @import por componente, en orden de dependencia
+│   │   │   ├── divider.css    --md-comp-divider-*
+│   │   │   ├── icon-button.css--md-comp-icon-button-*
+│   │   │   ├── button.css     --md-comp-button-*
+│   │   │   ├── button-group.css --md-comp-button-group-*
+│   │   │   ├── fab.css        --md-comp-fab-*
+│   │   │   ├── fab-extended.css --md-comp-fab-* (va DESPUÉS de fab.css)
+│   │   │   ├── card.css       --md-comp-card-*
+│   │   │   └── dialog.css     --md-comp-dialog-* (va el último)
+│   │   └── 4-utilities/             Clases atómicas (solo var(), sin tokens)
+│   │       ├── index.css      Índice: una familia por archivo
+│   │       ├── color.css      .md-bg-* / .md-text-* / .md-border-*
+│   │       ├── typography.css .md-type-* (32)
+│   │       ├── icon.css       .md-icon / .md-icon-* / .md-measure-icon-*
+│   │       ├── measurement.css.md-measure-touch-target / .md-measure-icon
+│   │       ├── motion.css     .md-motion-*
+│   │       ├── shape.css      .md-shape-*
+│   │       ├── elevation.css  .md-elevation-*
+│   │       └── state.css      .md-state-layer-* / .md-disabled
+│   └── js/                   Comportamiento de componentes, uno por componente
+│       ├── main.js            Punto de entrada: carga los que tienen JS
+│       └── dialog.js          Abre y cierra el <dialog>: showModal() y close()
 ├── showroom/                 Documentación. No la importa nadie más.
 │   ├── index.html            Portada: título, tagline, enlaces a las vistas
 │   ├── assets/
