@@ -63,7 +63,10 @@
    -------------------------------------
    `outlined` baja el BORDE a `outline` con
    `--md-sys-state-disabled-outline-opacity` al estar deshabilitada, y lo sube
-   a `on-surface` al enfocarse --M3 usa `:focus-within`, no `:focus`--. Eso es
+   a `on-surface` al enfocarse. M3 usa `:focus-within` para eso, y aqui se usa
+   `:focus-visible` --con `:has()` para los hijos--: se aparta de M3 a proposito,
+   para que el clic del raton no oscurezca el borde en el mostrador. Ver EL
+   BORDE AL ENFOCAR. Eso es
    estado deshabilitado, no interactividad, asi que entra con el par de
    **States** y no con el de **Link**.
 
@@ -733,7 +736,7 @@
    color. Es lo mismo que ya esta escrito en la cabecera de este fichero, y lo
    que se habia retirado de `1-reference-tokens/stroke.css`.
 
-   Y usa `:focus-within`, NO `:focus`. No son lo mismo y aqui se nota:
+   Y M3 USA `:focus-within`, NO `:focus`. No son lo mismo y aqui se nota:
 
      - una card que ES el control (`<a>`, `<button>`) recibe el foco ella
        misma, asi que los dos coinciden;
@@ -741,13 +744,39 @@
        el boton hijo--, asi que `:focus` no se dispararia nunca y el borde no
        responderia. `:focus-within` si.
 
+   AQUI SE USA `:focus-visible`, Y ES UNA DESVIACION CONSCIENTE. Se aparta de
+   M3 en una sola cosa, y es la que molesta en el mostrador: con
+   `:focus-within` el borde se oscurece tambien con el RATON, porque
+   `:focus-within` casa con cualquier foco y no solo con el del teclado. En un
+   POS, donde se toca con el dedo o con el raton, eso es un parpadeo del borde
+   en cada clic.
+
+   Y POR QUE SON DOS SELECTORES. `:has(:focus-visible)` alcanza el foco de los
+   HIJOS, pero no el de la propia card: `:has()` no incluye al propio
+   elemento, que no es su propio descendiente. Medido: con la card outlined
+   siendo ella misma el control --`<a class="md-card md-card-outlined">`--, el
+   borde se quedaba en su color de reposo con el teclado, y el anillo de foco
+   era lo unico que avisaba. La segunda regla, la de `:focus-visible` a secas,
+   cubre ese caso.
+
+   Con las dos, el alcance es el de M3 --la card `<article>` con botones dentro
+   responde, y la card que ES el control tambien-- y lo unico que cambia es que
+   el raton ya no lo enciende. Medido:
+
+     reposo                      #CAC4D0  (outline-variant)
+     clic de raton, boton hijo   #CAC4D0  no se mueve
+     clic de raton, la card      #CAC4D0  no se mueve
+     teclado, boton hijo         #1D1B20  (on-surface)
+     teclado, la card            #1D1B20  (on-surface)
+
    Es la unica regla de esta hoja que no pasa por el `:is()` de los controles,
    y no es una excepcion sin motivo: el acotado existia para que una card
    estatica no se de por pulsable, y aqui no se declara ninguna interactividad,
    solo se recolorea un borde.
    ------------------------------------------------------------------------ */
 
-.md-card-outlined:focus-within {
+.md-card-outlined:has(:focus-visible),
+.md-card-outlined:focus-visible {
   --md-comp-card-outline-color: var(--md-sys-color-on-surface);
 }
 
