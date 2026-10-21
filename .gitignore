@@ -39,9 +39,9 @@ build/
 # Herramienta local de trabajo
 # ---------------------------------------------------------------------------
 # showroom/lab.html es el banco de pruebas: se pega ahi el snippet que se
-# esta mirando y se comprueba que rinde con SOLO main.css. Es un cuaderno
-# personal, no documentacion del design system, asi que su contenido cambia
-# con cada componente. Por eso tampoco hay enlace en showroom/index.html:
+# esta mirando y se comprueba que rinde con SOLO main.css y main.js. Es un
+# cuaderno personal, no documentacion del design system, asi que su contenido
+# cambia con cada componente. Por eso tampoco hay enlace en showroom/index.html:
 # un enlace a un archivo que no existe en un clon seria un 404 en la portada
 # del catalogo.
 #
@@ -49,7 +49,12 @@ build/
 # maquina via push/pull. Descomentado el 2026-10-16, al volver a una sola
 # maquina. Sigue en la historia --commit ea9759e-- asi que el cuaderno no se
 # pierde: deja de recibir cambios.
-# Ojo: aunque este ignorado, tools/verify-tokens.ps1 lo escanea igualmente,
-# porque recorre todo *.html del proyecto. Un `style=` aqui tumba el
-# verificador igual que en cualquier otra vista.
+# Ojo: aunque estos esten ignorados, tools/verify-tokens.ps1 los escanea
+# igualmente, porque recorre todo *.html del proyecto. Un `style=` aqui tumba
+# el verificador igual que en cualquier otra vista.
+#
+# `showroom/lab.css` es su papel: el lienzo de 600px donde se mide el
+# snippet. Tambien personal, y tambien fuera del control de versiones: el
+# lienzo no es del sistema, asi que no tiene por que viajar con la libreria.
 showroom/lab.html
+showroom/lab.css
