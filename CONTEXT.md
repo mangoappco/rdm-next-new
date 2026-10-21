@@ -207,6 +207,8 @@ La hoja está hecha y verificada, y la vista **tiene seis pares y está publicad
 
 Trece pares, en la ruta de menos a más: Clase base mínima, Densidades de texto, Slots, Contenido extenso, Composición y contenedor, Interactividad y estados, Avatar y miniatura, Metadatos y acciones, Lista de personas, Platos del catálogo, Metadatos de comanda, Acciones de gestión y Casos de uso. `list.html` es copia byte-idéntica de su molde, y los tokens salen del fichero de M3 v34.0.21 leído en línea —no hay prosa de la lista en `docs/components/`—.
 
+**Y van en dos bloques**, con la division que ya fija el estandar del showroom: los ocho primeros son la especificacion tecnica y la anatomia (el laboratorio normativo) y los cinco ultimos los casos de uso de ManGo! App.
+
 **Los cuatro pares "puros" se añadieron el 2026-10-21**: Lista de personas (avatares de 40 con iniciales), Platos del catálogo (miniaturas de 56 con precios en COP), Metadatos de comanda (el dato detrás, con precios y horas) y Acciones de gestión (el `md-icon-button` de 40 en la última ranura). El par de Casos de uso los junta y enseña **las tres anatomías de fila**: enlace, estática y botón.
 
 Los hechos que **no** se leen en el código:
@@ -223,6 +225,17 @@ Los hechos que **no** se leen en el código:
 - **GUÍA RÁPIDA DE MARCADO PARA ManGo! App.** Los platos: miniatura de 56, titular, descripción y precio detrás, **con la variante multiline** para que el precio caiga a la altura del nombre. Las comandas: lo mismo sin miniatura, con el dato detrás —el precio o la hora—, también en multiline. Los turnos: avatar de 40 con las iniciales. Y una regla que no es de estilo sino de HTML: **una fila con un control de acción no puede ser ella misma control** —un `<button>` dentro de un `<button>` es contenido interactivo anidado—, así que esas filas son `<li>` estáticas y el control es la acción.
 - **El vídeo no entra.** M3 publica su medida —100x56, y 114x64 para la grande— y es un 16:9, no el cuadrado de la miniatura. Y el checkbox y el radio de la ranura tampoco, porque el catálogo no tiene esos componentes: la ranura de acción se documenta con el `md-icon-button` que sí hay.
 - **`showroom/assets/list-thumb.svg` es el segundo asset de imagen del repo**, y es un bloque neutro como el de la card: la miniatura de la fila enseña el hueco donde iría la foto, no un plato inventado. Sus comentarios llevan rayas de puntos y no guiones, por el mismo motivo que el primero.
+
+## Las dos mitades de una vista del showroom
+
+A partir del `list` (2026-10-21), cada vista del showroom se estructura en dos bloques, y el corte se marca con un divisor:
+
+1. **Especificación técnica y anatomía** — el laboratorio normativo. Pares minimalistas que aíslan una sola cosa: la clase base, las densidades, las ranuras, la variante multilínea, el cosido de esquinas, el anclaje de los divisores y los estados interactivos. Enfoque: verificación estricta de REGLA 11 y consistencia tokenizada.
+2. **Casos de uso de ManGo! App** — la aplicación en producción. Composiciones reales listas para el POS: platos de catálogo con miniatura, multilínea y precio en COP; comandas de mesa con acciones secundarias; turnos de personal con avatar.
+
+**El bloque 1 es el que se mide y el que se copia; el 2 es el que se lee.** Y el bloque 2 **hereda la anatomía del 1 sin repetirla**: si una variación ya se enseñó arriba, aquí solo se combina. Por eso el par de Casos de uso enseña las tres anatomías de fila —enlace, `<li>` estática y botón— sin volver a explicar ninguna.
+
+En el marcado, el corte es un `<hr class="md-divider">` —el mismo mecanismo con el que la vista de typography separa sus familias de tipos—, el título de cada bloque es un `<h2>` y los pares van en `<h3>` debajo: el h1 es el nombre del componente, y el esquema queda h1 > h2 (bloque) > h3 (par). La apariencia de los pares no cambia, porque el tipo lo pone la clase y no la etiqueta; y el aire entre pares lo sigue poniendo el gap de `.sr-section`.
 
 ## Siguiente tarea
 

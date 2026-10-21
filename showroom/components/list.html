@@ -15,12 +15,22 @@
 </head>
 
 <!--
-  ESTA VISTA TIENE TRECE PARES, Y VAN DE MENOS A MÁS: Clase base mínima,
-  Densidades de texto, Slots, Contenido extenso, Composición y contenedor,
-  Interactividad y estados, Avatar y miniatura, Metadatos y acciones, Lista de
-  personas, Platos del catálogo, Metadatos de comanda, Acciones de gestión y
-  Casos de uso. Primero la fila desnuda y al final la que se comporta. Se
-  construye par a par, mirando cada uno antes de escribir el siguiente.
+  ESTA VISTA TIENE TRECE PARES, EN DOS BLOQUES. El primero es el laboratorio
+  normativo --Especificacion tecnica y anatomia--: pares minimalistas que
+  aisan una sola cosa, con verificacion estricta de REGLA 11 y todo tokenizado.
+  El segundo son los casos de uso reales de ManGo! App, que combinan lo de
+  arriba en composiciones de produccion, sin repetir la anatomia.
+
+  Los pares, en orden: Clase base minima, Densidades de texto, Slots,
+  Contenido extenso, Composicion y contenedor, Interactividad y estados,
+  Avatar y miniatura y Metadatos y acciones [BLOQUE 1] · Lista de personas,
+  Platos del catalogo, Metadatos de comanda, Acciones de gestion y Casos de
+  uso [BLOQUE 2].
+
+  El corte se marca con un divisor, el titulo de cada bloque es un h2 y los
+  pares van en h3 debajo: el h1 es el nombre del componente, y el esquema
+  queda h1 > h2 (bloque) > h3 (par). La aparicion no cambia, porque el tipo
+  lo pone la clase y no la etiqueta.
 
   LO QUE SE LEE DE M3, Y DE DONDE
   -------------------------------
@@ -104,9 +114,13 @@
 
     <hr class="md-divider">
 
+    <!-- BLOQUE 1: la especificacion tecnica y la anatomia. El laboratorio
+         normativo: pares minimalistas que aislan una sola cosa. -->
+    <h2 class="md-type-headline-medium">Especificación técnica y anatomía</h2>
+
     <!-- PAREJA: la clase base (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Clase base</h2>
+      <h3 class="md-type-title-large">Clase base</h3>
       <p class="md-type-body-medium">La fila con lo mínimo: el contenedor y el titular. Los 56px son un mínimo, y el icono delante y el chevron detrás son opcionales.</p>
       <div class="sr-specimen">
         <ul class="md-list">
@@ -130,7 +144,7 @@
 
     <!-- PAREJA: las tres densidades (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Densidades</h2>
+      <h3 class="md-type-title-large">Densidades</h3>
       <p class="md-type-body-medium">Una línea, dos o tres. Los 56, 72 y 88px son mínimos, y el overline solo va en la de tres: la fila crece con su contenido.</p>
       <div class="sr-specimen">
         <ul class="md-list">
@@ -180,7 +194,7 @@
 
     <!-- PAREJA: los slots (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Slots</h2>
+      <h3 class="md-type-title-large">Slots</h3>
       <p class="md-type-body-medium">Los dos slots: icono delante y chevron detrás, en las tres densidades. El hueco es de 12px, y los dos son opcionales.</p>
       <div class="sr-specimen">
         <ul class="md-list">
@@ -266,7 +280,7 @@
 
     <!-- PAREJA: el contenido extenso (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Contenido extenso</h2>
+      <h3 class="md-type-title-large">Contenido extenso</h3>
       <p class="md-type-body-medium">La fila crece con el texto sin recortarlo, y el icono y el chevron quedan centrados con las dos primeras líneas.</p>
       <div class="sr-specimen">
         <ul class="md-list">
@@ -304,7 +318,7 @@
 
     <!-- PAREJA: la composicion y el contenedor (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Composición y contenedor</h2>
+      <h3 class="md-type-title-large">Composición y contenedor</h3>
       <p class="md-type-body-medium">El divisor va al pie de la fila que precede a la siguiente, y el último elemento no lo lleva. Con icono delante, la línea arranca bajo el icono.</p>
       <div class="sr-specimen">
         <ul class="md-list">
@@ -378,7 +392,7 @@
 
     <!-- PAREJA: la interactividad y los estados (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Interactividad y estados</h2>
+      <h3 class="md-type-title-large">Interactividad y estados</h3>
       <p class="md-type-body-medium">La fila es un botón: por eso tiene hover y anillo de foco. La segunda está seleccionada, y la tercera deshabilitada.</p>
       <div class="sr-specimen">
         <ul class="md-list">
@@ -472,7 +486,7 @@
 
     <!-- PAREJA: el avatar y la miniatura (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Avatar y miniatura</h2>
+      <h3 class="md-type-title-large">Avatar y miniatura</h3>
       <p class="md-type-body-medium">El slot de delante admite tres cosas: el icono de 20px, el avatar de 40 y la miniatura de 56.</p>
       <div class="sr-specimen">
         <ul class="md-list">
@@ -514,7 +528,7 @@
 
     <!-- PAREJA: los metadatos y las acciones (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Metadatos y acciones</h2>
+      <h3 class="md-type-title-large">Metadatos y acciones</h3>
       <p class="md-type-body-medium">El slot de detrás admite el chevron, un texto de metadatos y una acción de 40px.</p>
       <div class="sr-specimen">
         <ul class="md-list">
@@ -554,9 +568,15 @@
     </section>
     <!-- PAREJA: hasta aqui -->
 
+    <hr class="md-divider">
+
+    <!-- BLOQUE 2: los casos de uso de ManGo! App. La aplicacion en produccion:
+         composiciones reales, que combinan lo de arriba sin repetirlo. -->
+    <h2 class="md-type-headline-medium">Casos de uso de ManGo! App</h2>
+
     <!-- PAREJA: la lista de personas (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Lista de personas</h2>
+      <h3 class="md-type-title-large">Lista de personas</h3>
       <p class="md-type-body-medium">Una lista de personas: cada fila con su avatar de 40, el nombre y el turno.</p>
       <div class="sr-specimen">
         <ul class="md-list">
@@ -642,7 +662,7 @@
 
     <!-- PAREJA: los platos del catalogo (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Platos del catálogo</h2>
+      <h3 class="md-type-title-large">Platos del catálogo</h3>
       <p class="md-type-body-medium">Los platos del catálogo: la miniatura de 56 y el precio a la altura del nombre.</p>
       <div class="sr-specimen">
         <ul class="md-list">
@@ -728,7 +748,7 @@
 
     <!-- PAREJA: los metadatos de comanda (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Metadatos de comanda</h2>
+      <h3 class="md-type-title-large">Metadatos de comanda</h3>
       <p class="md-type-body-medium">Los metadatos de la comanda a la altura del nombre: el precio en pesos y la hora de la entrega.</p>
       <div class="sr-specimen">
         <ul class="md-list">
@@ -796,7 +816,7 @@
 
     <!-- PAREJA: las acciones de gestion (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Acciones de gestión</h2>
+      <h3 class="md-type-title-large">Acciones de gestión</h3>
       <p class="md-type-body-medium">La acción de gestión va en la última ranura, y es un control del catálogo: el botón de 40.</p>
       <div class="sr-specimen">
         <ul class="md-list">
@@ -882,7 +902,7 @@
 
     <!-- PAREJA: los casos de uso (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Casos de uso</h2>
+      <h3 class="md-type-title-large">Casos de uso</h3>
       <p class="md-type-body-medium">Composición real para ManGo!: plato, mesa y cajero, con las tres anatomías de fila.</p>
       <div class="sr-specimen">
         <ul class="md-list">
