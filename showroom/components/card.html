@@ -15,12 +15,13 @@
 </head>
 
 <!--
-  ESTA VISTA TIENE DOCE PARES, EN DOS BLOQUES. El primero es el laboratorio
+  ESTA VISTA TIENE TRECE PARES, EN DOS BLOQUES. El primero es el laboratorio
   normativo --Especificacion tecnica y anatomia--: Clase base, Variantes,
   Ratio, Link, States y cuatro recetas de Slots que cierran como playground
   para copiar. El segundo son los casos de uso de ManGo! App, con las tres
-  fichas de M3 sobre material real: el salon, la cocina y el arqueo de caja.
-  Se construye par a par, mirando cada uno antes de escribir el siguiente.
+  fichas de M3 sobre material real --el salon, la cocina y el arqueo de caja--
+  y la ficha con medio, la de producto. Se construye par a par, mirando cada
+  uno antes de escribir el siguiente.
 
   El corte se marca con un divisor, el titulo de cada bloque es un h2 y los
   pares van en h3 debajo: el h1 es el nombre del componente, y el esquema
@@ -788,6 +789,48 @@
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
     <!-- CASO 3: hasta aqui -->
+
+    <!-- CASO 4: la ficha con medio, la de producto. -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Con medio · Ficha de producto</h3>
+      <p class="md-type-body-medium">La ficha de detalle de un plato: su medio, la descripción, el precio y las dos acciones.</p>
+      <div class="sr-specimen">
+        <article class="md-card md-card-elevated">
+          <div class="md-card-media md-card-media-landscape">
+            <img src="../assets/card-media.svg" alt="Media">
+          </div>
+          <div class="md-card-header">
+            <h3 class="md-type-title-large">Hamburguesa Angus Especial (300g)</h3>
+            <p class="md-type-body-medium">$ 38.900</p>
+          </div>
+          <div class="md-card-content">
+            <p class="md-type-body-medium">Carne de res angus certificada, queso cheddar madurado, cebolla caramelizada, tocineta ahumada y pan brioche artesanal. Acompañado de papas rústicas.</p>
+          </div>
+          <div class="md-card-actions">
+            <button class="md-button md-button-outlined" type="button">Editar receta</button>
+            <button class="md-button md-button-filled" type="button">Añadir a comanda</button>
+          </div>
+        </article>
+      </div>
+      <pre class="sr-code"><code>&lt;article class="md-card md-card-elevated"&gt;
+  &lt;div class="md-card-media md-card-media-landscape"&gt;
+    &lt;img src="../assets/card-media.svg" alt="Media"&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-header"&gt;
+    &lt;h3 class="md-type-title-large"&gt;Hamburguesa Angus Especial (300g)&lt;/h3&gt;
+    &lt;p class="md-type-body-medium"&gt;$ 38.900&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Carne de res angus certificada, queso cheddar madurado, cebolla caramelizada, tocineta ahumada y pan brioche artesanal. Acompañado de papas rústicas.&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-actions"&gt;
+    &lt;button class="md-button md-button-outlined" type="button"&gt;Editar receta&lt;/button&gt;
+    &lt;button class="md-button md-button-filled" type="button"&gt;Añadir a comanda&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/article&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- CASO 4: hasta aqui -->
 
   </main>
   <!-- MAIN: fin -->
