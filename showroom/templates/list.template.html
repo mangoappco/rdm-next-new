@@ -15,7 +15,7 @@
 </head>
 
 <!--
-  ESTA VISTA TIENE TRECE PARES, EN DOS BLOQUES. El primero es el laboratorio
+  ESTA VISTA TIENE QUINCE PARES, EN DOS BLOQUES. El primero es el laboratorio
   normativo --Especificacion tecnica y anatomia--: pares minimalistas que
   aisan una sola cosa, con verificacion estricta de REGLA 11 y todo tokenizado.
   El segundo son los casos de uso reales de ManGo! App, que combinan lo de
@@ -24,8 +24,8 @@
   Los pares, en orden: Clase base minima, Densidades de texto, Slots,
   Contenido extenso, Composicion y contenedor, Interactividad y estados,
   Avatar y miniatura y Metadatos y acciones [BLOQUE 1] · Lista de personas,
-  Platos del catalogo, Metadatos de comanda, Acciones de gestion y Casos de
-  uso [BLOQUE 2].
+  Platos del catalogo, Metadatos de comanda, Acciones de gestion, Casos de
+  uso, Metodos de pago y Comanda de cocina [BLOQUE 2].
 
   El corte se marca con un divisor, el titulo de cada bloque es un h2 y los
   pares van en h3 debajo: el h1 es el nombre del componente, y el esquema
@@ -978,6 +978,138 @@
       &lt;/div&gt;
       &lt;span class="md-list-item-trailing-text"&gt;14:00&lt;/span&gt;
     &lt;/button&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: los metodos de pago (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Métodos de pago</h3>
+      <p class="md-type-body-medium">Los métodos del checkout, con la fila elegida marcada y su importe detrás.</p>
+      <div class="sr-specimen">
+        <ul class="md-list">
+          <li>
+            <button type="button" class="md-list-item md-list-item-selected" aria-selected="true">
+              <span class="md-list-item-leading">
+                <span class="md-icon" aria-hidden="true">payments</span>
+              </span>
+              <div class="md-list-item-content">
+                <span class="md-list-item-headline">Efectivo</span>
+              </div>
+              <span class="md-list-item-trailing-text">$ 200.000</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="md-list-item">
+              <span class="md-list-item-leading">
+                <span class="md-icon" aria-hidden="true">credit_card</span>
+              </span>
+              <div class="md-list-item-content">
+                <span class="md-list-item-headline">Datáfono / Tarjeta</span>
+              </div>
+              <span class="md-list-item-trailing-text">Sin recargo</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="md-list-item">
+              <span class="md-list-item-leading">
+                <span class="md-icon" aria-hidden="true">qr_code_2</span>
+              </span>
+              <div class="md-list-item-content">
+                <span class="md-list-item-headline">Transferencia QR (Nequi / Bancolombia)</span>
+              </div>
+            </button>
+          </li>
+        </ul>
+      </div>
+      <pre class="sr-code"><code>&lt;ul class="md-list"&gt;
+  &lt;li&gt;
+    &lt;button type="button" class="md-list-item md-list-item-selected" aria-selected="true"&gt;
+      &lt;span class="md-list-item-leading"&gt;
+        &lt;span class="md-icon" aria-hidden="true"&gt;payments&lt;/span&gt;
+      &lt;/span&gt;
+      &lt;div class="md-list-item-content"&gt;
+        &lt;span class="md-list-item-headline"&gt;Efectivo&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;span class="md-list-item-trailing-text"&gt;$ 200.000&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;button type="button" class="md-list-item"&gt;
+      &lt;span class="md-list-item-leading"&gt;
+        &lt;span class="md-icon" aria-hidden="true"&gt;credit_card&lt;/span&gt;
+      &lt;/span&gt;
+      &lt;div class="md-list-item-content"&gt;
+        &lt;span class="md-list-item-headline"&gt;Datáfono / Tarjeta&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;span class="md-list-item-trailing-text"&gt;Sin recargo&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;button type="button" class="md-list-item"&gt;
+      &lt;span class="md-list-item-leading"&gt;
+        &lt;span class="md-icon" aria-hidden="true"&gt;qr_code_2&lt;/span&gt;
+      &lt;/span&gt;
+      &lt;div class="md-list-item-content"&gt;
+        &lt;span class="md-list-item-headline"&gt;Transferencia QR (Nequi / Bancolombia)&lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/button&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: la comanda de cocina (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Comanda de cocina</h3>
+      <p class="md-type-body-medium">La comanda con sus cantidades, las notas de cocina y el precio de cada plato.</p>
+      <div class="sr-specimen">
+        <ul class="md-list">
+          <li class="md-list-item md-list-item-multiline">
+            <span class="md-list-item-leading">
+              <span class="md-type-body-medium">2x</span>
+            </span>
+            <div class="md-list-item-content">
+              <span class="md-list-item-headline">Pizza Cuatro Quesos</span>
+              <span class="md-list-item-supporting-text">Sin champiñones · Extra borde de queso</span>
+            </div>
+            <span class="md-list-item-trailing-text">$ 64.000</span>
+          </li>
+          <li class="md-list-item md-list-item-multiline">
+            <span class="md-list-item-leading">
+              <span class="md-type-body-medium">1x</span>
+            </span>
+            <div class="md-list-item-content">
+              <span class="md-list-item-headline">Limonada de Coco</span>
+              <span class="md-list-item-supporting-text">Baja en azúcar</span>
+            </div>
+            <span class="md-list-item-trailing-text">$ 12.500</span>
+          </li>
+        </ul>
+      </div>
+      <pre class="sr-code"><code>&lt;ul class="md-list"&gt;
+  &lt;li class="md-list-item md-list-item-multiline"&gt;
+    &lt;span class="md-list-item-leading"&gt;
+      &lt;span class="md-type-body-medium"&gt;2x&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;div class="md-list-item-content"&gt;
+      &lt;span class="md-list-item-headline"&gt;Pizza Cuatro Quesos&lt;/span&gt;
+      &lt;span class="md-list-item-supporting-text"&gt;Sin champiñones · Extra borde de queso&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;span class="md-list-item-trailing-text"&gt;$ 64.000&lt;/span&gt;
+  &lt;/li&gt;
+  &lt;li class="md-list-item md-list-item-multiline"&gt;
+    &lt;span class="md-list-item-leading"&gt;
+      &lt;span class="md-type-body-medium"&gt;1x&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;div class="md-list-item-content"&gt;
+      &lt;span class="md-list-item-headline"&gt;Limonada de Coco&lt;/span&gt;
+      &lt;span class="md-list-item-supporting-text"&gt;Baja en azúcar&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;span class="md-list-item-trailing-text"&gt;$ 12.500&lt;/span&gt;
   &lt;/li&gt;
 &lt;/ul&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>

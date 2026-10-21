@@ -65,9 +65,9 @@ Anotado aquí el 2026-10-17. Este dato vivía solo en el encabezado de `fab.html
 
 ## Card — publicada
 
-La hoja está hecha y verificada, y la vista **tiene catorce pares y está publicada y enlazada**: los nueve del laboratorio —Clase base, Variantes, Ratio, Link, States y cuatro recetas de Slots que cierran como playground para copiar— y los cinco **casos de uso de ManGo! App** que se añadieron el 2026-10-21: la ficha elevated con una mesa activa del salón, la filled con una comanda de cocina, la outlined con el arqueo de caja, la ficha con medio y la de producto, y la ficha de auditoría, que lleva una `md-list` con sus cinco atributos dentro. `card.html` es copia byte-idéntica a su molde, con el bloque de razonamiento dentro.
+La hoja está hecha y verificada, y la vista **tiene dieciséis pares y está publicada y enlazada**: los nueve del laboratorio —Clase base, Variantes, Ratio, Link, States y cuatro recetas de Slots que cierran como playground para copiar— y los siete **casos de uso de ManGo! App** que se añadieron el 2026-10-21: la ficha elevated con una mesa activa del salón, la filled con una comanda de cocina, la outlined con el arqueo de caja, la ficha con medio y la de producto, la ficha de auditoría, que lleva una `md-list` con sus cinco atributos dentro, la ficha de aviso de stock y el resumen de cuenta con su desglose. `card.html` es copia byte-idéntica a su molde, con el bloque de razonamiento dentro.
 
-**Y va en las dos mitades**, con la división que ya fija el estándar del showroom: los nueve atómicos en la especificación técnica y los cinco de negocio en los casos de uso.
+**Y va en las dos mitades**, con la división que ya fija el estándar del showroom: los nueve atómicos en la especificación técnica y los siete de negocio en los casos de uso.
 
 - **Una lista dentro de una card va a borde de borde.** El padding lateral del content (16) se sumaba al de la fila (16) y dejaba los atributos a 33px del borde de la ficha, con los divisores en otra columna (a 17): la lista y los divisores no caían en la misma línea. M3 mete la lista a borde de borde —el aire de 16px lo pone la propia fila— y aquí lo hace un margen negativo en `.md-card-content > .md-list`, con el token del padding del content. Medido: el icono pasa de 33 a 17 desde el borde exterior (16 exactos desde el interior), en la misma columna que el titular de la cabecera y que los extremos de los divisores. **Y la regla es de la card, no de la lista**: el padding que hay que cancelar es de la card, y al revés la lista necesitaría un `:has()` para saber que está dentro de una.
 
@@ -209,9 +209,9 @@ La hoja está hecha y verificada, y la vista **tiene seis pares y está publicad
 
 ## List — publicada
 
-Trece pares, en la ruta de menos a más: Clase base mínima, Densidades de texto, Slots, Contenido extenso, Composición y contenedor, Interactividad y estados, Avatar y miniatura, Metadatos y acciones, Lista de personas, Platos del catálogo, Metadatos de comanda, Acciones de gestión y Casos de uso. `list.html` es copia byte-idéntica de su molde, y los tokens salen del fichero de M3 v34.0.21 leído en línea —no hay prosa de la lista en `docs/components/`—.
+Quince pares, en la ruta de menos a más: Clase base mínima, Densidades de texto, Slots, Contenido extenso, Composición y contenedor, Interactividad y estados, Avatar y miniatura, Metadatos y acciones, Lista de personas, Platos del catálogo, Metadatos de comanda, Acciones de gestión, Casos de uso, Métodos de pago y Comanda de cocina. `list.html` es copia byte-idéntica a su molde, y los tokens salen del fichero de M3 v34.0.21 leído en línea —no hay prosa de la lista en `docs/components/`—.
 
-**Y van en dos bloques**, con la division que ya fija el estandar del showroom: los ocho primeros son la especificacion tecnica y la anatomia (el laboratorio normativo) y los cinco ultimos los casos de uso de ManGo! App.
+**Y van en dos bloques**, con la división que ya fija el estándar del showroom: los ocho primeros son la especificación técnica y la anatomía (el laboratorio normativo) y los siete últimos los casos de uso de ManGo! App.
 
 **Los cuatro pares "puros" se añadieron el 2026-10-21**: Lista de personas (avatares de 40 con iniciales), Platos del catálogo (miniaturas de 56 con precios en COP), Metadatos de comanda (el dato detrás, con precios y horas) y Acciones de gestión (el `md-icon-button` de 40 en la última ranura). El par de Casos de uso los junta y enseña **las tres anatomías de fila**: enlace, estática y botón.
 

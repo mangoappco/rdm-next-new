@@ -15,14 +15,15 @@
 </head>
 
 <!--
-  ESTA VISTA TIENE CATORCE PARES, EN DOS BLOQUES. El primero es el laboratorio
+  ESTA VISTA TIENE DIECISEIS PARES, EN DOS BLOQUES. El primero es el laboratorio
   normativo --Especificacion tecnica y anatomia--: Clase base, Variantes,
   Ratio, Link, States y cuatro recetas de Slots que cierran como playground
   para copiar. El segundo son los casos de uso de ManGo! App: las tres fichas
   de M3 sobre material real --el salon, la cocina y el arqueo de caja--, la
-  ficha con medio, la de producto, y la ficha que lleva una lista de
-  atributos dentro. Se construye par a par, mirando cada uno antes de
-  escribir el siguiente.
+  ficha con medio, la de producto, la que lleva una lista de atributos
+  dentro, la ficha de aviso de stock y el resumen de cuenta con su
+  desglose. Se construye par a par, mirando cada uno antes de escribir el
+  siguiente.
 
   El corte se marca con un divisor, el titulo de cada bloque es un h2 y los
   pares van en h3 debajo: el h1 es el nombre del componente, y el esquema
@@ -973,6 +974,120 @@
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
     <!-- CASO 5: hasta aqui -->
+
+    <!-- CASO 6: la ficha de aviso, con el icono del tono. -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Filled · Alerta de stock</h3>
+      <p class="md-type-body-medium">La ficha de aviso de cocina: el icono del tono, lo que queda y las dos acciones.</p>
+      <div class="sr-specimen">
+        <article class="md-card md-card-filled">
+          <div class="md-card-header">
+            <span class="md-icon" aria-hidden="true">warning</span>
+            <h3 class="md-type-title-large">Stock Crítico: Carne Angus</h3>
+          </div>
+          <div class="md-card-content">
+            <p class="md-type-body-medium">Quedan únicamente 3 porciones disponibles en cocina. El sistema bloqueará el plato automáticamente al llegar a 0.</p>
+          </div>
+          <div class="md-card-actions">
+            <button class="md-button md-button-text" type="button">Ignorar</button>
+            <button class="md-button md-button-filled" type="button">Ajustar inventario</button>
+          </div>
+        </article>
+      </div>
+      <pre class="sr-code"><code>&lt;article class="md-card md-card-filled"&gt;
+  &lt;div class="md-card-header"&gt;
+    &lt;span class="md-icon" aria-hidden="true"&gt;warning&lt;/span&gt;
+    &lt;h3 class="md-type-title-large"&gt;Stock Crítico: Carne Angus&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Quedan únicamente 3 porciones disponibles en cocina. El sistema bloqueará el plato automáticamente al llegar a 0.&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-actions"&gt;
+    &lt;button class="md-button md-button-text" type="button"&gt;Ignorar&lt;/button&gt;
+    &lt;button class="md-button md-button-filled" type="button"&gt;Ajustar inventario&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/article&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- CASO 6: hasta aqui -->
+
+    <!-- CASO 7: la factura con su desglose. -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Elevated · Resumen de cuenta</h3>
+      <p class="md-type-body-medium">La factura con su desglose: los tres conceptos y el total destacado, con las dos acciones del cobro.</p>
+      <div class="sr-specimen">
+        <article class="md-card md-card-elevated">
+          <div class="md-card-header">
+            <span class="md-icon" aria-hidden="true">receipt_long</span>
+            <h3 class="md-type-title-large">Factura Electrónica #1084</h3>
+            <p class="md-type-body-medium">Consumidor Final</p>
+          </div>
+          <div class="md-card-content">
+            <ul class="md-list">
+              <li class="md-list-item">
+                <div class="md-list-item-content">
+                  <span class="md-list-item-headline">Subtotal</span>
+                </div>
+                <span class="md-list-item-trailing-text">$ 156.000</span>
+              </li>
+              <li class="md-list-item">
+                <div class="md-list-item-content">
+                  <span class="md-list-item-headline">Impoconsumo (8%)</span>
+                </div>
+                <span class="md-list-item-trailing-text">$ 12.500</span>
+              </li>
+              <li class="md-list-item">
+                <div class="md-list-item-content">
+                  <span class="md-list-item-headline">Propina sugerida (10%)</span>
+                </div>
+                <span class="md-list-item-trailing-text">$ 16.000</span>
+              </li>
+            </ul>
+            <p class="md-type-title-large">$ 184.500</p>
+          </div>
+          <div class="md-card-actions">
+            <button class="md-button md-button-outlined" type="button">Dividir cuenta</button>
+            <button class="md-button md-button-filled" type="button">Cobrar $ 184.500</button>
+          </div>
+        </article>
+      </div>
+      <pre class="sr-code"><code>&lt;article class="md-card md-card-elevated"&gt;
+  &lt;div class="md-card-header"&gt;
+    &lt;span class="md-icon" aria-hidden="true"&gt;receipt_long&lt;/span&gt;
+    &lt;h3 class="md-type-title-large"&gt;Factura Electrónica #1084&lt;/h3&gt;
+    &lt;p class="md-type-body-medium"&gt;Consumidor Final&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-content"&gt;
+    &lt;ul class="md-list"&gt;
+      &lt;li class="md-list-item"&gt;
+        &lt;div class="md-list-item-content"&gt;
+          &lt;span class="md-list-item-headline"&gt;Subtotal&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;span class="md-list-item-trailing-text"&gt;$ 156.000&lt;/span&gt;
+      &lt;/li&gt;
+      &lt;li class="md-list-item"&gt;
+        &lt;div class="md-list-item-content"&gt;
+          &lt;span class="md-list-item-headline"&gt;Impoconsumo (8%)&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;span class="md-list-item-trailing-text"&gt;$ 12.500&lt;/span&gt;
+      &lt;/li&gt;
+      &lt;li class="md-list-item"&gt;
+        &lt;div class="md-list-item-content"&gt;
+          &lt;span class="md-list-item-headline"&gt;Propina sugerida (10%)&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;span class="md-list-item-trailing-text"&gt;$ 16.000&lt;/span&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;p class="md-type-title-large"&gt;$ 184.500&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-actions"&gt;
+    &lt;button class="md-button md-button-outlined" type="button"&gt;Dividir cuenta&lt;/button&gt;
+    &lt;button class="md-button md-button-filled" type="button"&gt;Cobrar $ 184.500&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/article&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- CASO 7: hasta aqui -->
 
   </main>
   <!-- MAIN: fin -->
