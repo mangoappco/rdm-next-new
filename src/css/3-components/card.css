@@ -1008,6 +1008,36 @@
 }
 
 /* ---------------------------------------------------------------------------
+   UNA LISTA DENTRO DE LA CARD, A BORDE DE BORDE
+   ---------------------------------------------------------------------------
+   Cuando la card lleva una lista, el aire lateral se suma: el padding del
+   content (16) y el de la fila (16) dejaban los atributos a 33px del borde de
+   la ficha, y los divisores --que viven en el content-- a 17. La lista y los
+   divisores acababan en columnas distintas.
+
+   M3 mete la lista a borde de borde: el aire de 16px lo pone la propia fila, y
+   no el contenedor. Asi que la lista sale del padding del content con un
+   margen negativo, y los divisores se quedan donde estan: a 17, que es la
+   columna de los iconos y la del titular de la cabecera.
+
+   Medido, desde el borde de la ficha:
+
+     antes   icono 33   texto 65   divisores 17   titular 17
+     ahora   icono 17   texto 49   divisores 17   titular 17
+
+   El `calc` lleva el token del padding del content, y no un 16 escrito: si el
+   padding de la card cambia, el sangrado le sigue.
+
+   Y LA REGLA ES DE LA CARD, NO DE LA LISTA. El padding que hay que cancelar es
+   de la card, y la lista solo aparece dentro de una; al reves, la lista
+   necesitaria un `:has()` para saber que esta en una card, que es mas fragil.
+   ------------------------------------------------------------------------ */
+
+.md-card-content > .md-list {
+  margin-inline: calc(-1 * var(--md-sys-measurement-card-padding));
+}
+
+/* ---------------------------------------------------------------------------
    RANURA: ACTIONS
    ---------------------------------------------------------------------------
    Fila alineada al final. M3 alinea las acciones a la derecha en LTR y a la

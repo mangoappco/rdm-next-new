@@ -69,9 +69,7 @@ La hoja está hecha y verificada, y la vista **tiene catorce pares y está publi
 
 **Y va en las dos mitades**, con la división que ya fija el estándar del showroom: los nueve atómicos en la especificación técnica y los cinco de negocio en los casos de uso.
 
-**Y va en las dos mitades**, con la división que ya fija el estándar del showroom: los nueve atómicos en la especificación técnica y los cuatro de negocio en los casos de uso.
-
-**Y va en las dos mitades**, con la división que ya fija el estándar del showroom: los nueve atómicos en la especificación técnica y los tres de negocio en los casos de uso.
+- **Una lista dentro de una card va a borde de borde.** El padding lateral del content (16) se sumaba al de la fila (16) y dejaba los atributos a 33px del borde de la ficha, con los divisores en otra columna (a 17): la lista y los divisores no caían en la misma línea. M3 mete la lista a borde de borde —el aire de 16px lo pone la propia fila— y aquí lo hace un margen negativo en `.md-card-content > .md-list`, con el token del padding del content. Medido: el icono pasa de 33 a 17 desde el borde exterior (16 exactos desde el interior), en la misma columna que el titular de la cabecera y que los extremos de los divisores. **Y la regla es de la card, no de la lista**: el padding que hay que cancelar es de la card, y al revés la lista necesitaría un `:has()` para saber que está dentro de una.
 
 > **Corrigido el 2026-10-17.** Esta línea decía «ocho pares» y eran nueve: el índice afirmaba ocho, esta línea repetía el error, y la vista tenía nueve secciones desde antes. Salió al auditar que la descripción del índice y el encabezado de la vista sean el mismo texto —los dos contaban mal y en el mismo sentido—. El recuento de pares de los ocho componentes **se cuenta ahora desde el fichero**, no se escribe a mano.
 
