@@ -1014,7 +1014,7 @@ El orden es el de `3-components/index.css`, que es el de carga y el de dependenc
 | Button group | `3-components/button-group.css` | 2 | 1 | `button-group.html`, 6 secciones |
 | FAB | `3-components/fab.css` | 7 | 14 | `fab.html`, 7 secciones |
 | FAB extended | `3-components/fab-extended.css` | 1 | 3 | `fab-extended.html`, 6 secciones |
-| Card | `3-components/card.css` | 11 | 12 | `card.html`, 9 secciones |
+| Card | `3-components/card.css` | 11 | 12 | `card.html`, 12 secciones |
 | Dialog | `3-components/dialog.css` | 5 | 3 | `dialog.html`, 6 secciones |
 | List | `3-components/list.css` | 16 | 25 | `list.html`, 13 secciones |
 

@@ -65,7 +65,9 @@ Anotado aquí el 2026-10-17. Este dato vivía solo en el encabezado de `fab.html
 
 ## Card — publicada
 
-La hoja está hecha y verificada, y la vista **tiene nueve pares y está publicada y enlazada**: Clase base, Variantes, Ratio, Link, States y cuatro recetas de Slots que cierran como playground para copiar. `card.html` es copia byte-idéntica de su molde, con el bloque de razonamiento dentro.
+La hoja está hecha y verificada, y la vista **tiene doce pares y está publicada y enlazada**: los nueve del laboratorio —Clase base, Variantes, Ratio, Link, States y cuatro recetas de Slots que cierran como playground para copiar— y los tres **casos de uso de ManGo! App** que se añadieron el 2026-10-21: la ficha elevated con una mesa activa del salón, la filled con una comanda de cocina y la outlined con el arqueo de caja. `card.html` es copia byte-idéntica a su molde, con el bloque de razonamiento dentro.
+
+**Y va en las dos mitades**, con la división que ya fija el estándar del showroom: los nueve atómicos en la especificación técnica y los tres de negocio en los casos de uso.
 
 > **Corrigido el 2026-10-17.** Esta línea decía «ocho pares» y eran nueve: el índice afirmaba ocho, esta línea repetía el error, y la vista tenía nueve secciones desde antes. Salió al auditar que la descripción del índice y el encabezado de la vista sean el mismo texto —los dos contaban mal y en el mismo sentido—. El recuento de pares de los ocho componentes **se cuenta ahora desde el fichero**, no se escribe a mano.
 

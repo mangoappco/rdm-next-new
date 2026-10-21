@@ -15,9 +15,22 @@
 </head>
 
 <!--
-  ESTA VISTA TIENE OCHO PARES: Clase base, Variantes, Ratio, Link, States
-  y cuatro recetas de Slots que cierran como playground para copiar. Se
-  construyo par a par, mirando cada uno antes de escribir el siguiente.
+  ESTA VISTA TIENE DOCE PARES, EN DOS BLOQUES. El primero es el laboratorio
+  normativo --Especificacion tecnica y anatomia--: Clase base, Variantes,
+  Ratio, Link, States y cuatro recetas de Slots que cierran como playground
+  para copiar. El segundo son los casos de uso de ManGo! App, con las tres
+  fichas de M3 sobre material real: el salon, la cocina y el arqueo de caja.
+  Se construye par a par, mirando cada uno antes de escribir el siguiente.
+
+  El corte se marca con un divisor, el titulo de cada bloque es un h2 y los
+  pares van en h3 debajo: el h1 es el nombre del componente, y el esquema
+  queda h1 > h2 (bloque) > h3 (par). La aparicion no cambia, porque el tipo lo
+  pone la clase y no la etiqueta.
+
+  Y EL TITULAR DE LA CARD SIGUE SIENDO UN `<h3>`, que es lo que mide la hoja
+  del componente: el h3 del navegador computa 25.74px y la utilidad lo gana.
+  Aqui eso deja el h3 de la ficha dentro del h3 del par, y es el precio de no
+  contradecir el contrato del componente desde el showroom.
 
   ANATOMIA NO TIENE PAR PROPIO, Y LA RECETA COMPLETA LA CUMPLE
   ----------------------------------------------------------
@@ -237,9 +250,13 @@
 
     <hr class="md-divider">
 
+    <!-- BLOQUE 1: la especificacion tecnica y la anatomia. El laboratorio
+         normativo: pares minimalistas que aislan una sola cosa. -->
+    <h2 class="md-type-headline-medium">Especificación técnica y anatomía</h2>
+
     <!-- PAREJA: la clase base (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Clase base</h2>
+      <h3 class="md-type-title-large">Clase base</h3>
       <p class="md-type-body-medium">La clase base con sus cuatro ranuras, con el medio a 16:9 explícito. El <code>src</code> es el de tu app.</p>
       <div class="sr-specimen">
         <article class="md-card md-card-elevated">
@@ -280,7 +297,7 @@
     <!-- PAREJA: hasta aqui -->
     <!-- PAREJA: las tres fichas de color (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Variantes</h2>
+      <h3 class="md-type-title-large">Variantes</h3>
       <p class="md-type-body-medium">Las tres fichas de M3. Solo cambian el tono, la elevacion y el contorno, y la que ya trae la base es la elevated.</p>
       <div class="sr-specimen sr-specimen-gap">
 <article class="md-card md-card-elevated">
@@ -343,7 +360,7 @@
     <!-- PAREJA: hasta aqui -->
     <!-- PAREJA: las tres proporciones del medio (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Ratio</h2>
+      <h3 class="md-type-title-large">Ratio</h3>
       <p class="md-type-body-medium">Las tres proporciones, por clase. El medio crece con el ancho, asi que una card ancha hace la imagen mas alta.</p>
       <div class="sr-specimen sr-specimen-gap">
 <article class="md-card md-card-elevated">
@@ -400,7 +417,7 @@
     <!-- PAREJA: hasta aqui -->
     <!-- PAREJA: la card que es el control (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Link</h2>
+      <h3 class="md-type-title-large">Link</h3>
       <p class="md-type-body-medium">La card es el control: el enlace navega, el boton actúa y tabindex la hace pulsable. Con acciones dentro ya no puede ser enlace.</p>
       <div class="sr-specimen sr-specimen-gap">
 <a class="md-card md-card-elevated" href="#">
@@ -463,7 +480,7 @@
     <!-- PAREJA: hasta aqui -->
     <!-- PAREJA: estados (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">States</h2>
+      <h3 class="md-type-title-large">States</h3>
       <p class="md-type-body-medium">Enabled y disabled en elevated, por las dos vías. En outlined también se lava el contenido, contra M3 y a propósito; hover, focus y pressed se ven interactuando.</p>
       <div class="sr-specimen sr-specimen-gap">
 <article class="md-card md-card-elevated">
@@ -526,7 +543,7 @@
     <!-- PAREJA: hasta aqui -->
     <!-- PAREJA: receta completa (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Slots completa</h2>
+      <h3 class="md-type-title-large">Slots completa</h3>
       <p class="md-type-body-medium">Solo el contenedor es obligatorio. La completa, con las cuatro ranuras, se copia tal cual.</p>
       <div class="sr-specimen">
 <article class="md-card md-card-elevated">
@@ -565,7 +582,7 @@
     <!-- PAREJA: hasta aqui -->
     <!-- PAREJA: receta sin medio (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Slots sin medio</h2>
+      <h3 class="md-type-title-large">Slots sin medio</h3>
       <p class="md-type-body-medium">Sin medio: cabecera, contenido y acciones. Quitarlo deja el resto en su sitio.</p>
       <div class="sr-specimen">
 <article class="md-card md-card-elevated">
@@ -598,7 +615,7 @@
     <!-- PAREJA: hasta aqui -->
     <!-- PAREJA: receta medio y cabecera (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Slots medio y cabecera</h2>
+      <h3 class="md-type-title-large">Slots medio y cabecera</h3>
       <p class="md-type-body-medium">Medio, cabecera y contenido, sin acciones. Cierra con el mismo padding.</p>
       <div class="sr-specimen">
 <article class="md-card md-card-elevated">
@@ -631,7 +648,7 @@
     <!-- PAREJA: hasta aqui -->
     <!-- PAREJA: receta sin acciones (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Slots sin acciones</h2>
+      <h3 class="md-type-title-large">Slots sin acciones</h3>
       <p class="md-type-body-medium">Cabecera y contenido, sin medio ni acciones. El contenido cierra con el mismo padding.</p>
       <div class="sr-specimen">
 <article class="md-card md-card-elevated">
@@ -657,6 +674,120 @@
     </section>
     <!-- PAREJA: hasta aqui -->
 
+    <hr class="md-divider">
+
+    <!-- BLOQUE 2: los casos de uso de ManGo! App. La aplicacion en produccion:
+         las tres fichas de M3 con el material real del salon, la cocina y el
+         arqueo de caja. -->
+    <h2 class="md-type-headline-medium">Casos de uso de ManGo! App</h2>
+
+    <!-- CASO 1: la ficha elevated, en el salon. -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Elevated · Mesa activa</h3>
+      <p class="md-type-body-medium">La ficha del salón: una comanda abierta, su total y las dos acciones.</p>
+      <div class="sr-specimen">
+        <article class="md-card md-card-elevated">
+          <div class="md-card-header">
+            <h3 class="md-type-title-large">Mesa 5 · Terraza</h3>
+            <p class="md-type-body-medium">Comanda #1042</p>
+          </div>
+          <div class="md-card-content">
+            <p class="md-type-body-medium">Total $ 142.000</p>
+          </div>
+          <div class="md-card-actions">
+            <button class="md-button md-button-text" type="button">Ver detalle</button>
+            <button class="md-button md-button-filled" type="button">Cobrar</button>
+          </div>
+        </article>
+      </div>
+      <pre class="sr-code"><code>&lt;article class="md-card md-card-elevated"&gt;
+  &lt;div class="md-card-header"&gt;
+    &lt;h3 class="md-type-title-large"&gt;Mesa 5 · Terraza&lt;/h3&gt;
+    &lt;p class="md-type-body-medium"&gt;Comanda #1042&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Total $ 142.000&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-actions"&gt;
+    &lt;button class="md-button md-button-text" type="button"&gt;Ver detalle&lt;/button&gt;
+    &lt;button class="md-button md-button-filled" type="button"&gt;Cobrar&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/article&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- CASO 1: hasta aqui -->
+
+    <!-- CASO 2: la ficha filled, en la cocina. -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Filled · Comanda de cocina</h3>
+      <p class="md-type-body-medium">La ficha del KDS: un pedido, sus notas de cocina y la acción que lo cierra.</p>
+      <div class="sr-specimen">
+        <article class="md-card md-card-filled">
+          <div class="md-card-header">
+            <h3 class="md-type-title-large">Pedido #204</h3>
+            <p class="md-type-body-medium">Hace 8 min</p>
+          </div>
+          <div class="md-card-content">
+            <p class="md-type-body-medium">Hamburguesa Doble</p>
+            <p class="md-type-body-medium">Sin cebolla, término 3/4</p>
+          </div>
+          <div class="md-card-actions">
+            <button class="md-button md-button-filled" type="button">Marcar listo</button>
+          </div>
+        </article>
+      </div>
+      <pre class="sr-code"><code>&lt;article class="md-card md-card-filled"&gt;
+  &lt;div class="md-card-header"&gt;
+    &lt;h3 class="md-type-title-large"&gt;Pedido #204&lt;/h3&gt;
+    &lt;p class="md-type-body-medium"&gt;Hace 8 min&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;Hamburguesa Doble&lt;/p&gt;
+    &lt;p class="md-type-body-medium"&gt;Sin cebolla, término 3/4&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-actions"&gt;
+    &lt;button class="md-button md-button-filled" type="button"&gt;Marcar listo&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/article&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- CASO 2: hasta aqui -->
+
+    <!-- CASO 3: la ficha outlined, en el dashboard. -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Outlined · Arqueo de caja</h3>
+      <p class="md-type-body-medium">La ficha del arqueo: el total del turno, sus transacciones y la acción que abre el detalle.</p>
+      <div class="sr-specimen">
+        <article class="md-card md-card-outlined">
+          <div class="md-card-header">
+            <span class="md-icon" aria-hidden="true">point_of_sale</span>
+            <h3 class="md-type-title-large">Arqueo del turno</h3>
+            <p class="md-type-body-medium">42 transacciones</p>
+          </div>
+          <div class="md-card-content">
+            <p class="md-type-body-medium">$ 2.450.000</p>
+          </div>
+          <div class="md-card-actions">
+            <button class="md-button md-button-text" type="button">Ver arqueo</button>
+          </div>
+        </article>
+      </div>
+      <pre class="sr-code"><code>&lt;article class="md-card md-card-outlined"&gt;
+  &lt;div class="md-card-header"&gt;
+    &lt;span class="md-icon" aria-hidden="true"&gt;point_of_sale&lt;/span&gt;
+    &lt;h3 class="md-type-title-large"&gt;Arqueo del turno&lt;/h3&gt;
+    &lt;p class="md-type-body-medium"&gt;42 transacciones&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;$ 2.450.000&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-actions"&gt;
+    &lt;button class="md-button md-button-text" type="button"&gt;Ver arqueo&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/article&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- CASO 3: hasta aqui -->
 
   </main>
   <!-- MAIN: fin -->
