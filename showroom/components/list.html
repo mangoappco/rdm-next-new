@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="List de RDM Next: las filas en vertical, con su superficie, sus tres alturas y su estado de selección.">
+  <title>List — RDM ManGo! App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+  <link rel="stylesheet" href="../../src/css/main.css">
+  <link rel="stylesheet" href="../assets/showroom.css">
+    <script type="module" src="../../src/js/main.js"></script>
+<script src="../assets/showroom.js"></script>
+</head>
+
+<!--
+  ESTA VISTA TIENE NUEVE PARES, Y VAN DE MENOS A MÁS: Clase base mínima,
+  Densidades de texto, Slots, Contenido extenso, Composición y contenedor,
+  Interactividad y estados, Avatar y miniatura, Metadatos y acciones, y Casos
+  de uso. Primero la fila desnuda y al final la que se comporta. Se construye
+  par a par, mirando cada uno antes de escribir el siguiente.
+
+  LO QUE SE LEE DE M3, Y DE DONDE
+  -------------------------------
+  Los tokens salen de `tokens/versions/latest/sass/_md-comp-list.scss`
+  (v34.0.21), leido en linea. No hay prosa de M3 para la lista: en
+  `docs/components/` de material-web no esta, igual que no esta la de la card.
+  Al lado hay tres ficheros mas --`_md-comp-list-reorder`, `_md-comp-list-reveal`
+  y `_md-comp-list-expand`-- que no entran: arrastrar, revelar y expandir.
+
+  LAS TRES DECISIONES QUE NO SON DE M3
+  ------------------------------------
+  1. La forma solo se mueve al seleccionar. M3 Expressive publica tambien las
+     formas de hover y de pulsado --corner-medium y corner-large-- y no se
+     implementan: es el candado que ya esta escrito para el boton y el
+     icono-boton. En una lista de decenas de filas, mutar esquinas en cada
+     hover satura la pantalla.
+
+  2. La capa de estado solo se enciende en controles de verdad --un `a` con
+     href, un `button` o un `role="button"`--. Un `<li>` estatico no se ilumina
+     al pasar el raton ni enseña el cursor de puntero, porque un tinte de hover
+     sobre algo que no hace nada es un rechazo de accesibilidad.
+
+  3. La seleccion es estatica. Se marca con `.md-list-item-selected` o con
+     `aria-selected="true"` y no hay JavaScript: la lista no decide quien esta
+     seleccionado, lo dice quien escribe el marcado.
+
+  LA ANATOMIA MÍNIMA, Y DÓNDE VIVEN LAS RANURAS
+  -----------------------------------------------
+  El primer par es la fila con lo mínimo: el contenedor y el titular, sin
+  icono delante ni chevron detrás. Es la regla anatómica de M3 --"Container
+  and label text are required"-- y la más pequeña que se puede escribir: sin
+  ranuras, la fila sigue siendo una fila. Las ranuras de delante y de detrás
+  son opcionales, así que van en el par de slots y no en este. Aquí se ve
+  justo eso: que la fila funciona sin ellas.
+
+  Y EL OVERLINE VIVE EN EL PAR DE DENSIDADES, Y POR QUÉ. M3 lo declara
+  opcional, y aquí también: es la tercera ranura de texto, y la fila de tres
+  líneas es la que lleva las tres --overline, titular y texto de apoyo--.
+  Ahí se ven juntas, y solo aparece en la de tres: medido, la fila da los
+  mismos 88px con overline que sin él.
+
+  LA FICHA DE SELECCION SE ESCRIBE IGUAL QUE LA DENSIDAD
+  ------------------------------------------------------
+  `.md-list-item-selected` aparece en el par de seleccion aunque el atributo
+  baste. Es el mismo motivo por el que `.md-button-filled` existe sobre
+  `.md-button` y `.md-card-elevated` sobre la base elevated: sin la clase
+  escrita, quien copia el snippet tiene que abrir el CSS para descubrir que
+  existe.
+
+  LO QUE ESTA VISTA NO DICE, Y POR QUE
+  ------------------------------------
+  TOKENES Y MEDIDAS NO TIENEN PAR. Las alturas, el relleno y los colores estan
+  en la cabecera de `src/css/3-components/list.css`, con el token de M3 al que
+  corresponde cada uno. Un par que dijera "la fila mide 56" seria el mismo
+  specimen con otro h2.
+
+  HAY UN <meta name="description">, Y LAS OTRAS QUINCE VISTAS NO. La skill lo
+  pide y ninguna lo tiene. Se pone aqui porque es lo correcto, y queda dicho
+  para que la diferencia con el resto no parezca un olvido.
+
+  LO QUE NO ENTRA Y ESTA DICHO EN LA HOJA DEL COMPONENTE
+  -------------------------------------------------------
+  Avatar, imagen y video como ranura de delante; el estado `dragged`; el ripple;
+  y el `dragged` con elevacion level4. Los tres primeros necesitan una medida y
+  una decision de estructura, y el ultimo necesita un gesto en JavaScript. La
+  lista no lleva JavaScript.
+-->
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <main class="sr-page">
+
+    <!-- HEADER: inicio (barra + titulo + descripcion) -->
+    <header class="sr-header">
+      <div class="sr-bar">
+        <p class="md-type-body-medium"><a href="../index.html">RDM ManGo! App</a></p>
+        <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
+      </div>
+      <h1 class="md-type-display-large">List</h1>
+      <p class="md-type-body-large">Una superficie con filas en vertical. Cada fila tiene su altura, su forma y su color, y puede estar seleccionada. · <em>Un par</em></p>
+    </header>
+    <!-- HEADER: fin -->
+
+    <hr class="md-divider">
+
+    <!-- PAREJA: la clase base (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Clase base</h2>
+      <p class="md-type-body-medium">La fila con lo mínimo: el contenedor y el titular. Los 56px son un mínimo, y el icono delante y el chevron detrás son opcionales.</p>
+      <div class="sr-specimen">
+        <ul class="md-list">
+          <li class="md-list-item">
+            <div class="md-list-item-content">
+              <span class="md-list-item-headline">Opción simple</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <pre class="sr-code"><code>&lt;ul class="md-list"&gt;
+  &lt;li class="md-list-item"&gt;
+    &lt;div class="md-list-item-content"&gt;
+      &lt;span class="md-list-item-headline"&gt;Opción simple&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: las tres densidades (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Densidades</h2>
+      <p class="md-type-body-medium">Una línea, dos o tres. Los 56, 72 y 88px son mínimos, y el overline solo va en la de tres: la fila crece con su contenido.</p>
+      <div class="sr-specimen">
+        <ul class="md-list">
+          <li class="md-list-item">
+            <div class="md-list-item-content">
+              <span class="md-list-item-headline">Facturación</span>
+            </div>
+          </li>
+          <li class="md-list-item md-list-item-two-line">
+            <div class="md-list-item-content">
+              <span class="md-list-item-headline">Facturación</span>
+              <span class="md-list-item-supporting-text">Cobros y facturas</span>
+            </div>
+          </li>
+          <li class="md-list-item md-list-item-three-line">
+            <div class="md-list-item-content">
+              <span class="md-list-item-overline">SISTEMA</span>
+              <span class="md-list-item-headline">Facturación</span>
+              <span class="md-list-item-supporting-text">Cobros y facturas</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <pre class="sr-code"><code>&lt;ul class="md-list"&gt;
+  &lt;li class="md-list-item"&gt;
+    &lt;div class="md-list-item-content"&gt;
+      &lt;span class="md-list-item-headline"&gt;Facturación&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li class="md-list-item md-list-item-two-line"&gt;
+    &lt;div class="md-list-item-content"&gt;
+      &lt;span class="md-list-item-headline"&gt;Facturación&lt;/span&gt;
+      &lt;span class="md-list-item-supporting-text"&gt;Cobros y facturas&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li class="md-list-item md-list-item-three-line"&gt;
+    &lt;div class="md-list-item-content"&gt;
+      &lt;span class="md-list-item-overline"&gt;SISTEMA&lt;/span&gt;
+      &lt;span class="md-list-item-headline"&gt;Facturación&lt;/span&gt;
+      &lt;span class="md-list-item-supporting-text"&gt;Cobros y facturas&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: los slots (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Slots</h2>
+      <p class="md-type-body-medium">Los dos slots: icono delante y chevron detrás, en las tres densidades. El hueco es de 12px, y los dos son opcionales.</p>
+      <div class="sr-specimen">
+        <ul class="md-list">
+          <li class="md-list-item">
+            <span class="md-list-item-leading">
+              <span class="md-icon" aria-hidden="true">receipt_long</span>
+            </span>
+            <div class="md-list-item-content">
+              <span class="md-list-item-headline">Facturación</span>
+            </div>
+            <span class="md-list-item-trailing">
+              <span class="md-icon" aria-hidden="true">chevron_right</span>
+            </span>
+          </li>
+          <li class="md-list-item md-list-item-two-line">
+            <span class="md-list-item-leading">
+              <span class="md-icon" aria-hidden="true">receipt_long</span>
+            </span>
+            <div class="md-list-item-content">
+              <span class="md-list-item-headline">Facturación</span>
+              <span class="md-list-item-supporting-text">Cobros y facturas</span>
+            </div>
+            <span class="md-list-item-trailing">
+              <span class="md-icon" aria-hidden="true">chevron_right</span>
+            </span>
+          </li>
+          <li class="md-list-item md-list-item-three-line">
+            <span class="md-list-item-leading">
+              <span class="md-icon" aria-hidden="true">receipt_long</span>
+            </span>
+            <div class="md-list-item-content">
+              <span class="md-list-item-overline">SISTEMA</span>
+              <span class="md-list-item-headline">Facturación</span>
+              <span class="md-list-item-supporting-text">Cobros y facturas</span>
+            </div>
+            <span class="md-list-item-trailing">
+              <span class="md-icon" aria-hidden="true">chevron_right</span>
+            </span>
+          </li>
+        </ul>
+      </div>
+      <pre class="sr-code"><code>&lt;ul class="md-list"&gt;
+  &lt;li class="md-list-item"&gt;
+    &lt;span class="md-list-item-leading"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;receipt_long&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;div class="md-list-item-content"&gt;
+      &lt;span class="md-list-item-headline"&gt;Facturación&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;span class="md-list-item-trailing"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;chevron_right&lt;/span&gt;
+    &lt;/span&gt;
+  &lt;/li&gt;
+  &lt;li class="md-list-item md-list-item-two-line"&gt;
+    &lt;span class="md-list-item-leading"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;receipt_long&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;div class="md-list-item-content"&gt;
+      &lt;span class="md-list-item-headline"&gt;Facturación&lt;/span&gt;
+      &lt;span class="md-list-item-supporting-text"&gt;Cobros y facturas&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;span class="md-list-item-trailing"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;chevron_right&lt;/span&gt;
+    &lt;/span&gt;
+  &lt;/li&gt;
+  &lt;li class="md-list-item md-list-item-three-line"&gt;
+    &lt;span class="md-list-item-leading"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;receipt_long&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;div class="md-list-item-content"&gt;
+      &lt;span class="md-list-item-overline"&gt;SISTEMA&lt;/span&gt;
+      &lt;span class="md-list-item-headline"&gt;Facturación&lt;/span&gt;
+      &lt;span class="md-list-item-supporting-text"&gt;Cobros y facturas&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;span class="md-list-item-trailing"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;chevron_right&lt;/span&gt;
+    &lt;/span&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: el contenido extenso (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Contenido extenso</h2>
+      <p class="md-type-body-medium">La fila crece con el texto sin recortarlo, y el icono y el chevron quedan centrados con las dos primeras líneas.</p>
+      <div class="sr-specimen">
+        <ul class="md-list">
+          <li class="md-list-item md-list-item-multiline">
+            <span class="md-list-item-leading">
+              <span class="md-icon" aria-hidden="true">receipt_long</span>
+            </span>
+            <div class="md-list-item-content">
+              <span class="md-list-item-headline">Facturación de los tres proveedores</span>
+              <span class="md-list-item-supporting-text">Cobros, facturas, notas de crédito y recibos de los tres proveedores que facturan en euros y en dólares, con el desglose de cada concepto, su importe y la fecha de cada cobro.</span>
+            </div>
+            <span class="md-list-item-trailing">
+              <span class="md-icon" aria-hidden="true">chevron_right</span>
+            </span>
+          </li>
+        </ul>
+      </div>
+      <pre class="sr-code"><code>&lt;ul class="md-list"&gt;
+  &lt;li class="md-list-item md-list-item-multiline"&gt;
+    &lt;span class="md-list-item-leading"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;receipt_long&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;div class="md-list-item-content"&gt;
+      &lt;span class="md-list-item-headline"&gt;Facturación de los tres proveedores&lt;/span&gt;
+      &lt;span class="md-list-item-supporting-text"&gt;Cobros, facturas, notas de crédito y recibos de los tres proveedores que facturan en euros y en dólares, con el desglose de cada concepto, su importe y la fecha de cada cobro.&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;span class="md-list-item-trailing"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;chevron_right&lt;/span&gt;
+    &lt;/span&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: la composicion y el contenedor (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Composición y contenedor</h2>
+      <p class="md-type-body-medium">El divisor va al pie de la fila que precede a la siguiente, y el último elemento no lo lleva. Con icono delante, la línea arranca bajo el icono.</p>
+      <div class="sr-specimen">
+        <ul class="md-list">
+          <li class="md-list-item">
+            <div class="md-list-item-content">
+              <span class="md-list-item-headline">Facturación</span>
+            </div>
+            <hr class="md-divider md-divider-middle-inset">
+          </li>
+          <li class="md-list-item md-list-item-two-line">
+            <span class="md-list-item-leading">
+              <span class="md-icon" aria-hidden="true">receipt_long</span>
+            </span>
+            <div class="md-list-item-content">
+              <span class="md-list-item-headline">Pagos</span>
+              <span class="md-list-item-supporting-text">Cobros y facturas</span>
+            </div>
+            <span class="md-list-item-trailing">
+              <span class="md-icon" aria-hidden="true">chevron_right</span>
+            </span>
+            <hr class="md-divider md-divider-middle-inset">
+          </li>
+          <li class="md-list-item">
+            <span class="md-list-item-leading">
+              <span class="md-icon" aria-hidden="true">receipt_long</span>
+            </span>
+            <div class="md-list-item-content">
+              <span class="md-list-item-headline">Clientes</span>
+            </div>
+            <span class="md-list-item-trailing">
+              <span class="md-icon" aria-hidden="true">chevron_right</span>
+            </span>
+          </li>
+        </ul>
+      </div>
+      <pre class="sr-code"><code>&lt;ul class="md-list"&gt;
+  &lt;li class="md-list-item"&gt;
+    &lt;div class="md-list-item-content"&gt;
+      &lt;span class="md-list-item-headline"&gt;Facturación&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;hr class="md-divider md-divider-middle-inset"&gt;
+  &lt;/li&gt;
+  &lt;li class="md-list-item md-list-item-two-line"&gt;
+    &lt;span class="md-list-item-leading"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;receipt_long&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;div class="md-list-item-content"&gt;
+      &lt;span class="md-list-item-headline"&gt;Pagos&lt;/span&gt;
+      &lt;span class="md-list-item-supporting-text"&gt;Cobros y facturas&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;span class="md-list-item-trailing"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;chevron_right&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;hr class="md-divider md-divider-middle-inset"&gt;
+  &lt;/li&gt;
+  &lt;li class="md-list-item"&gt;
+    &lt;span class="md-list-item-leading"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;receipt_long&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;div class="md-list-item-content"&gt;
+      &lt;span class="md-list-item-headline"&gt;Clientes&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;span class="md-list-item-trailing"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;chevron_right&lt;/span&gt;
+    &lt;/span&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: la interactividad y los estados (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Interactividad y estados</h2>
+      <p class="md-type-body-medium">La fila es un botón: por eso tiene hover y anillo de foco. La segunda está seleccionada, y la tercera deshabilitada.</p>
+      <div class="sr-specimen">
+        <ul class="md-list">
+          <li>
+            <button type="button" class="md-list-item">
+              <span class="md-list-item-leading">
+                <span class="md-icon" aria-hidden="true">receipt_long</span>
+              </span>
+              <div class="md-list-item-content">
+                <span class="md-list-item-headline">Facturación</span>
+              </div>
+              <span class="md-list-item-trailing">
+                <span class="md-icon" aria-hidden="true">chevron_right</span>
+              </span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="md-list-item md-list-item-selected" aria-selected="true">
+              <span class="md-list-item-leading">
+                <span class="md-icon" aria-hidden="true">receipt_long</span>
+              </span>
+              <div class="md-list-item-content">
+                <span class="md-list-item-headline">Pagos</span>
+                <span class="md-list-item-supporting-text">Cobros y facturas</span>
+              </div>
+              <span class="md-list-item-trailing">
+                <span class="md-icon" aria-hidden="true">chevron_right</span>
+              </span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="md-list-item" disabled>
+              <span class="md-list-item-leading">
+                <span class="md-icon" aria-hidden="true">receipt_long</span>
+              </span>
+              <div class="md-list-item-content">
+                <span class="md-list-item-headline">Clientes</span>
+              </div>
+              <span class="md-list-item-trailing">
+                <span class="md-icon" aria-hidden="true">chevron_right</span>
+              </span>
+            </button>
+          </li>
+        </ul>
+      </div>
+      <pre class="sr-code"><code>&lt;ul class="md-list"&gt;
+  &lt;li&gt;
+    &lt;button type="button" class="md-list-item"&gt;
+      &lt;span class="md-list-item-leading"&gt;
+        &lt;span class="md-icon" aria-hidden="true"&gt;receipt_long&lt;/span&gt;
+      &lt;/span&gt;
+      &lt;div class="md-list-item-content"&gt;
+        &lt;span class="md-list-item-headline"&gt;Facturación&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;span class="md-list-item-trailing"&gt;
+        &lt;span class="md-icon" aria-hidden="true"&gt;chevron_right&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;button type="button" class="md-list-item md-list-item-selected" aria-selected="true"&gt;
+      &lt;span class="md-list-item-leading"&gt;
+        &lt;span class="md-icon" aria-hidden="true"&gt;receipt_long&lt;/span&gt;
+      &lt;/span&gt;
+      &lt;div class="md-list-item-content"&gt;
+        &lt;span class="md-list-item-headline"&gt;Pagos&lt;/span&gt;
+        &lt;span class="md-list-item-supporting-text"&gt;Cobros y facturas&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;span class="md-list-item-trailing"&gt;
+        &lt;span class="md-icon" aria-hidden="true"&gt;chevron_right&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;button type="button" class="md-list-item" disabled&gt;
+      &lt;span class="md-list-item-leading"&gt;
+        &lt;span class="md-icon" aria-hidden="true"&gt;receipt_long&lt;/span&gt;
+      &lt;/span&gt;
+      &lt;div class="md-list-item-content"&gt;
+        &lt;span class="md-list-item-headline"&gt;Clientes&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;span class="md-list-item-trailing"&gt;
+        &lt;span class="md-icon" aria-hidden="true"&gt;chevron_right&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: el avatar y la miniatura (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Avatar y miniatura</h2>
+      <p class="md-type-body-medium">El slot de delante admite tres cosas: el icono de 20px, el avatar de 40 y la miniatura de 56.</p>
+      <div class="sr-specimen">
+        <ul class="md-list">
+          <li class="md-list-item">
+            <span class="md-list-item-avatar" aria-hidden="true">AM</span>
+            <div class="md-list-item-content">
+              <span class="md-list-item-headline">Ana Morales</span>
+            </div>
+          </li>
+          <li class="md-list-item">
+            <span class="md-list-item-thumbnail">
+              <img src="../assets/list-thumb.svg" alt="">
+            </span>
+            <div class="md-list-item-content">
+              <span class="md-list-item-headline">Mesa 4</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <pre class="sr-code"><code>&lt;ul class="md-list"&gt;
+  &lt;li class="md-list-item"&gt;
+    &lt;span class="md-list-item-avatar" aria-hidden="true"&gt;AM&lt;/span&gt;
+    &lt;div class="md-list-item-content"&gt;
+      &lt;span class="md-list-item-headline"&gt;Ana Morales&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li class="md-list-item"&gt;
+    &lt;span class="md-list-item-thumbnail"&gt;
+      &lt;img src="../assets/list-thumb.svg" alt=""&gt;
+    &lt;/span&gt;
+    &lt;div class="md-list-item-content"&gt;
+      &lt;span class="md-list-item-headline"&gt;Mesa 4&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: los metadatos y las acciones (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Metadatos y acciones</h2>
+      <p class="md-type-body-medium">El slot de detrás admite el chevron, un texto de metadatos y una acción de 40px.</p>
+      <div class="sr-specimen">
+        <ul class="md-list">
+          <li class="md-list-item">
+            <div class="md-list-item-content">
+              <span class="md-list-item-headline">Mesa 4</span>
+            </div>
+            <span class="md-list-item-trailing-text">12,50 €</span>
+          </li>
+          <li class="md-list-item">
+            <div class="md-list-item-content">
+              <span class="md-list-item-headline">Ana Morales</span>
+            </div>
+            <span class="md-list-item-action">
+              <button type="button" class="md-icon-button" aria-label="Editar"><span class="md-icon-button-icon md-icon" aria-hidden="true">edit</span><span class="md-icon-button-touch"></span></button>
+            </span>
+          </li>
+        </ul>
+      </div>
+      <pre class="sr-code"><code>&lt;ul class="md-list"&gt;
+  &lt;li class="md-list-item"&gt;
+    &lt;div class="md-list-item-content"&gt;
+      &lt;span class="md-list-item-headline"&gt;Mesa 4&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;span class="md-list-item-trailing-text"&gt;12,50 €&lt;/span&gt;
+  &lt;/li&gt;
+  &lt;li class="md-list-item"&gt;
+    &lt;div class="md-list-item-content"&gt;
+      &lt;span class="md-list-item-headline"&gt;Ana Morales&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;span class="md-list-item-action"&gt;
+      &lt;button type="button" class="md-icon-button" aria-label="Editar"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+    &lt;/span&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: los casos de uso (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Casos de uso</h2>
+      <p class="md-type-body-medium">Composición real para ManGo!: plato de catálogo con foto y precio en COP, gestión de mesa con acción y turno de personal.</p>
+      <div class="sr-specimen">
+        <ul class="md-list">
+          <li class="md-list-item md-list-item-multiline">
+            <span class="md-list-item-thumbnail">
+              <img src="../assets/list-thumb.svg" alt="">
+            </span>
+            <div class="md-list-item-content">
+              <span class="md-list-item-headline">Hamburguesa Especial</span>
+              <span class="md-list-item-supporting-text">Carne de res 180g, queso cheddar fundido, tocineta crocante y vegetales frescos.</span>
+            </div>
+            <span class="md-list-item-trailing-text">$ 34.900</span>
+          </li>
+          <li class="md-list-item md-list-item-two-line">
+            <span class="md-list-item-leading">
+              <span class="md-icon" aria-hidden="true">table_restaurant</span>
+            </span>
+            <div class="md-list-item-content">
+              <span class="md-list-item-headline">Mesa 4 · Terraza</span>
+              <span class="md-list-item-supporting-text">Comanda #104 · 3 comensales</span>
+            </div>
+            <span class="md-list-item-trailing-text">$ 115.000</span>
+            <span class="md-list-item-action">
+              <button class="md-icon-button" type="button" aria-label="Editar comanda"><span class="md-icon-button-icon md-icon" aria-hidden="true">edit</span><span class="md-icon-button-touch"></span></button>
+            </span>
+          </li>
+          <li class="md-list-item md-list-item-two-line">
+            <span class="md-list-item-avatar" aria-hidden="true">CP</span>
+            <div class="md-list-item-content">
+              <span class="md-list-item-headline">Carlos Pérez</span>
+              <span class="md-list-item-supporting-text">Cajero principal · Turno mañana</span>
+            </div>
+            <span class="md-list-item-trailing-text">14:00</span>
+          </li>
+        </ul>
+      </div>
+      <pre class="sr-code"><code>&lt;ul class="md-list"&gt;
+  &lt;li class="md-list-item md-list-item-multiline"&gt;
+    &lt;span class="md-list-item-thumbnail"&gt;
+      &lt;img src="../assets/list-thumb.svg" alt=""&gt;
+    &lt;/span&gt;
+    &lt;div class="md-list-item-content"&gt;
+      &lt;span class="md-list-item-headline"&gt;Hamburguesa Especial&lt;/span&gt;
+      &lt;span class="md-list-item-supporting-text"&gt;Carne de res 180g, queso cheddar fundido, tocineta crocante y vegetales frescos.&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;span class="md-list-item-trailing-text"&gt;$ 34.900&lt;/span&gt;
+  &lt;/li&gt;
+  &lt;li class="md-list-item md-list-item-two-line"&gt;
+    &lt;span class="md-list-item-leading"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;table_restaurant&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;div class="md-list-item-content"&gt;
+      &lt;span class="md-list-item-headline"&gt;Mesa 4 · Terraza&lt;/span&gt;
+      &lt;span class="md-list-item-supporting-text"&gt;Comanda #104 · 3 comensales&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;span class="md-list-item-trailing-text"&gt;$ 115.000&lt;/span&gt;
+    &lt;span class="md-list-item-action"&gt;
+      &lt;button class="md-icon-button" type="button" aria-label="Editar comanda"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+    &lt;/span&gt;
+  &lt;/li&gt;
+  &lt;li class="md-list-item md-list-item-two-line"&gt;
+    &lt;span class="md-list-item-avatar" aria-hidden="true"&gt;CP&lt;/span&gt;
+    &lt;div class="md-list-item-content"&gt;
+      &lt;span class="md-list-item-headline"&gt;Carlos Pérez&lt;/span&gt;
+      &lt;span class="md-list-item-supporting-text"&gt;Cajero principal · Turno mañana&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;span class="md-list-item-trailing-text"&gt;14:00&lt;/span&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+  </main>
+  <!-- MAIN: fin -->
+</body>
+</html>

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56 56" width="56" height="56"
+     role="img" aria-label="Imagen de ejemplo">
+  <!--
+    Asset de imagen del showroom: la miniatura de delante de la fila.
+
+    Mismo criterio que el asset de la card, y por el mismo motivo: lo que
+    dibuja es un bloque NEUTRO, sin producto, sin marca y sin texto. La ranura
+    .md-list-item-thumbnail no lee el contenido de la imagen, solo la recorta,
+    asi que inventar un plato o una foto convertiria el placeholder en una
+    mentira: cualquiera que copiara el snippet se llevaria tambien el dibujo.
+
+    Las rayas de este comentario son puntos y guiones simples, y NUNCA dos
+    guiones seguidos: un comentario XML no los admite. Todo prefijo de token del
+    sistema empieza por dos guiones, asi que escribir uno aqui dentro deja el
+    fichero invalido y el navegador lo tira entero sin avisar.
+
+    SIN FONDO, Y CON OPACIDAD, POR EL TEMA OSCURO
+    Un elemento img no puede leer las variables CSS de la pagina, asi que un
+    color de tema dentro del SVG no es posible. Lo que si funciona es dejar el
+    fondo TRANSPARENTE y que lo ponga la ranura, que si lee un rol de color de
+    la capa 2, y ese si cambia con el tema.
+
+    Y la figura lleva NEGRO CON OPACIDAD, no un gris: con negro al 14% se ve
+    mas oscuro sobre fondo claro y mas claro sobre fondo oscuro. El mismo
+    valor sirve en los dos temas.
+  -->
+  <rect x="0" y="0" width="56" height="56" fill="#000" fill-opacity="0.14"/>
+</svg>

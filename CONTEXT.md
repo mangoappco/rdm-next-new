@@ -18,7 +18,7 @@ Solo prohibiciones verbales. Las reglas de showroom, de capas y de ciclo no se c
 
 ## Componentes creados
 
-Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **8 componentes y 17 vistas** (8 de componente + 9 de tokens), las 17 enlazadas en `showroom/index.html`. El orden es el de `index.css`:
+Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **9 componentes y 18 vistas** (9 de componente + 9 de tokens), las 18 enlazadas en `showroom/index.html`. El orden es el de `index.css`:
 
 | Componente | Hoja | Vista |
 | --- | --- | --- |
@@ -30,10 +30,11 @@ Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **8 compon
 | FAB extended | `fab-extended.css` | `fab-extended.html` |
 | Card | `card.css` | `card.html` |
 | Dialog | `dialog.css` | `dialog.html` |
+| List | `list.css` | `list.html` |
 
 Cada componente tiene además su molde en `showroom/templates/<nombre>.template.html`.
 
-**Solo 5 de 15 las tienen byte-idénticas a su vista** — `fab`, `fab-extended`, `icon-button`, `card` y `dialog`, las cinco más recientes. Las otras 10 vistas llevan un puntero de dos líneas al molde y el molde se quedó atrás: esa es la convención mayoritaria, pero la cambió el rumbo del 2026-10-13, no al revés. `typography.html` no tiene molde propio y apunta a `component.template.html`.
+**Solo 6 de 16 las tienen byte-idénticas a su vista** — `fab`, `fab-extended`, `icon-button`, `card`, `dialog` y `list`, las seis más recientes. Las otras 10 vistas llevan un puntero de dos líneas al molde y el molde se quedó atrás: esa es la convención mayoritaria, pero la cambió el rumbo del 2026-10-13, no al revés. `typography.html` no tiene molde propio y apunta a `component.template.html`.
 
 ## FAB — la base NO es el `md-fab-medium`
 
@@ -202,9 +203,26 @@ La hoja está hecha y verificada, y la vista **tiene seis pares y está publicad
 - **Los paddings que M3 recoloca al hacer scroll**: su SCSS baja el padding de la cabecera a 16 y sube el del contenido a 8 cuando es scrollable. Descartado a propósito: los paddings viven en `.md-dialog` y se comparten entre las cuatro ranuras, y moverlos por estado es justo lo que hace que el padding deje de ser del componente.
 - **El diálogo tiene entrada y salida animadas desde el 2026-10-18, y no cuestan una línea de JS.** Deslizamiento de 50px y fundido del velo, con `@starting-style` y `transition-behavior: allow-discrete`; `dialog.js` sigue con sus dos llamadas. Tres cosas que no son evidentes y que costaron una sonda: **las transiciones van en el estado que las dispara** (entrada en `:modal`, salida en `:not([open])`), porque si se declaran en un solo sitio la salida desaparece al dejar de casar el selector; el estado cerrado es `:not([open])` y **no la base**, porque los specimens del showroom usan `<dialog open>` sin `showModal()` y con la base en opacidad 0 desaparecerían; y el velo necesita su propio `@starting-style` o aparece opaco en el primer frame. Los seis valores de M3 caen 1 a 1 en tokens existentes. **No entra** el crecimiento del contenedor de 35% a 100% ni el escalonado de hijos: son Web Animations API, y el primero necesita la superficie en `::before` que el componente rechazó al usar el `::backdrop` nativo.
 
+## List — publicada
+
+Nueve pares, en la ruta de menos a más: Clase base mínima, Densidades de texto, Slots, Contenido extenso, Composición y contenedor, Interactividad y estados, Avatar y miniatura, Metadatos y acciones y Casos de uso. `list.html` es copia byte-idéntica de su molde, y los tokens salen del fichero de M3 v34.0.21 leído en línea —no hay prosa de la lista en `docs/components/`—.
+
+Los hechos que **no** se leen en el código:
+
+- **El anillo de foco va por FUERA, y es decisión propia.** M3 publica el focus indicator de la fila con offset **-3dp**, o sea dentro y pegado al borde; aquí va con **+2px**, como los otros siete componentes. Medido: `outline-offset: 2px` y el anillo se ve por fuera. Por eso la superficie NO recorta.
+- **La capa de estado de la fila seleccionada se hereda del texto de la fila**, no es on-surface como publica M3. La diferencia no se ve: medido, en claro la capa es `#1D192B` contra los `#1D1B20` de M3, y en oscuro `#E8DEF8` contra `#E6E0E9`.
+- **El texto se recorta, y no solo el de apoyo.** El titular y el overline son de una línea con puntos suspensivos. El motivo es el slot de detrás: con el texto repartido en dos líneas su tinta se derramaba encima del chevron. Medido: con una palabra que no se puede partir y una fila de 150px, la fila se desbordaba 9px y el chevron quedaba dibujado sobre las letras.
+- **El offset óptico de la variante multiline es de 12px y tiene su propio rol** (`--md-sys-measurement-list-item-optical-offset`), desligado del hueco entre ranuras, que es horizontal. Con él, el icono y el chevron caen donde los pone el ítem de dos líneas: medido, 12px de desfase contra el titular y el centro al pixel.
+- **El cosido de las esquinas llega a la fila aunque vaya envuelta en un `<li>`.** La regla vieja solo alcanzaba al hijo directo de la superficie, y las filas interactivas —`<li><button class="md-list-item">`— se quedaban con su radio de 4px: su capa de estado se salía de la esquina de 16px de la superficie. El selector tiene que ser de descendencia, `.md-list > :first-child .md-list-item`. **Ojo: `.md-list-item:first-child` NO vale**, porque casa con todas las filas envueltas y las deja rectas.
+- **El divisor va dentro de la fila, y con 16px de sangría.** Un `<hr>` no puede ser hijo directo de un `<ul>`, así que lo ancla la lista al borde de bloque de abajo de la fila. La sangría la mete el propio divisor, con su variante `md-divider-middle-inset`: los 16dp que publica M3. Con icono delante la línea **no** sigue al texto —arranca bajo el icono, 32px a la izquierda— y es una desviación consciente: M3 estricto daría 48px y ese inset no existe en el catálogo.
+- **La fila deshabilitada no tiene capa de estado en reposo.** M3 publica el state layer del disabled al 10%, pero la fila deshabilitada no tiene hover ni active, así que la capa solo se pintaba en reposo, como una banda gris sobre la superficie. Se apaga por el contenido, al 38%.
+- **Las cuatro ranuras nuevas.** El avatar (40, `corner-full`, `title-medium` sobre `on-primary-container`) y la miniatura (56, `corner-small`) **sustituyen** la ranura del icono, no van dentro: la del icono mide 20. El texto de detrás (`label-small`, `on-surface-variant`) y la acción van en su propia ranura, con el hueco de 12px de la fila entre ellos, y no dentro de la ranura del icono como hace la web de M3 —que ahí usa un hueco de 8px que no está publicado en ningún token.
+- **El vídeo no entra.** M3 publica su medida —100x56, y 114x64 para la grande— y es un 16:9, no el cuadrado de la miniatura. Y el checkbox y el radio de la ranura tampoco, porque el catálogo no tiene esos componentes: la ranura de acción se documenta con el `md-icon-button` que sí hay.
+- **`showroom/assets/list-thumb.svg` es el segundo asset de imagen del repo**, y es un bloque neutro como el de la card: la miniatura de la fila enseña el hueco donde iría la foto, no un plato inventado. Sus comentarios llevan rayas de puntos y no guiones, por el mismo motivo que el primero.
+
 ## Siguiente tarea
 
-**El catálogo está cerrado.** Los ocho componentes del README §11 están hechos, publicados y enlazados, y las diecisiete vistas también. `dialog`, el último, se acaba de publicar: `main.css:54` ya no lo nombra como declarado y inexistente.
+**El catálogo está cerrado.** Los nueve componentes del README §11 están hechos, publicados y enlazados, y las dieciocho vistas también. `list`, el último, se acaba de publicar: es el primero con nueve pares, y el primero que trae ranuras de avatar, miniatura, metadatos y acción.
 
 Lo que queda por delante no es un componente nuevo sino la **deuda conocida** de más abajo, que es lo que de verdad está pendiente:
 
@@ -228,8 +246,8 @@ Nada de esto se ha tocado. Está anotado para que no se dé por verdad:
 - `4-utilities` no publica ninguna utilidad de espaciado, así que las ranuras de la card no pueden delegar su hueco al autor: lo declara el componente.
 - **`dialog` ya no es una deuda de `main.css`.** La línea de la capa `comp` lo enunciaba como «button, card, dialog» cuando no existía, y el README §11 avisaba de ello —«esa línea es hoy más un recordatorio que una descripción: `card` ya existe y `dialog` no»—. Con la publicación esa línea describe lo que hay, así que la nota queda cerrada. **El recordatorio sigue sirviendo para los siguientes**: `3-components/index.css` avisa de los que vendrán.
 - **10 de 16 moldes están desfasados** respecto a su vista publicada: `button-group`, `button`, `color`, `divider`, `elevation`, `icon`, `measurement`, `motion`, `spacing` y `state`. Llevan el bloque largo `COMO USAR ESTE TEMPLATE` donde la vista lleva el puntero de dos líneas, y se quedaron atrás en `5422fb2` (recorte de prosa), que tocó las vistas y no los moldes. Usar cualquiera de esos diez como molde arrastraría prosa ya recortada; los buenos son `fab`, `fab-extended`, `icon-button`, `card` y `dialog`. `typography.html` y `spacing.html` no siguen la vía de molde: la primera no tiene propio y apunta a `component.template.html`.
-- **`navigator.clipboard` solo existe en contexto seguro**, así que abierto por la IP de la red el botón «Copiar» no tenía copia ni alternativa y quedaba muerto en las quince vistas de entonces; ahora son diecisiete y todas tienen el respaldo. Corregido con un respaldo de `document.execCommand` y con texto honesto en los dos sentidos. Probado en las dos rutas: por `localhost` y por `http://10.226.28.43/`.
-- **Las diecisiete vistas llevan `<meta name="description">`.** El README §5 decía que solo `card.html` lo cumplía y que las otras quince eran deuda conocida; al publicar `dialog.html` se comprobó una por una y las diecisiete lo tienen. La deuda estaba ya cerrada y no se había anotado.
+- **`navigator.clipboard` solo existe en contexto seguro**, así que abierto por la IP de la red el botón «Copiar» no tenía copia ni alternativa y quedaba muerto en las quince vistas de entonces; ahora son dieciocho y todas tienen el respaldo. Corregido con un respaldo de `document.execCommand` y con texto honesto en los dos sentidos. Probado en las dos rutas: por `localhost` y por `http://10.226.28.43/`.
+- **Las dieciocho vistas llevan `<meta name="description">`.** El README §5 decía que solo `card.html` lo cumplía y que las otras quince eran deuda conocida; al publicar `dialog.html` se comprobó una por una y las diecisiete lo tienen. La deuda estaba ya cerrada y no se había anotado. Con `list.html` son dieciocho.
 - **El Chrome del arnés no sirve para medir scroll ni rueda, y ya se ha perdido tiempo por ello.** La herramienta de rueda da resultados contradictorios —movió la página con un modal abierto y no la movió sin él— y **sus lecturas van un paso atrasadas**, así que hay que leer cuatro veces seguidas para que cuadre. No se fía de ella para nada que sea scroll. El bloqueo del fondo con modal está comprobado en el Chrome de Danny. Y en este entorno no hay barra de desplazamiento clásica (`innerWidth - clientWidth` da 0), así que **el salto de la barra al abrir un modal no se puede ver aquí**: es el único punto de `dialog` que queda sin comprobar, y la solución si molesta es `scrollbar-gutter: stable` en el `html`, que no se ha añadido porque cambia el layout de todas las vistas.
 
 ## El verificador en macOS

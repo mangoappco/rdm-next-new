@@ -266,6 +266,51 @@
      es el icono del sistema, no el de la lista. */
   --md-sys-measurement-list-item-icon-size: var(--md-ref-spacing-250);
 
+  /* EL OFFSET OPTICO DE LOS SLOTS, Y POR QUE NO ES EL HUECO ENTRE RANURAS
+     ---------------------------------------------------------------------
+     La variante de contenido extenso --`.md-list-item-multiline`-- ancla la fila
+     arriba, y con eso el icono de delante y el chevron de detras se quedan
+     pegados al techo de la primera linea del titular. Medido: el desfase
+     contra el titular era de 0.00px, y el centro del icono caia 12px por
+     encima del centro del bloque de cabecera --titular mas primera linea de
+     apoyo--.
+
+     Con este offset los dos slots bajan 12px y el centro de ambos cae en el
+     centro del bloque de cabecera, que es donde los pone el item de dos
+     lineas: medido, alli el desfase contra el titular es de 12px tambien y el
+     centro coincide al pixel.
+
+     Y el numero es 12, no 10: el bloque de cabecera mide 44px --24 del titular
+     mas 20 de la primera linea de apoyo--, y la mitad de 44 son 12.
+
+     ES UN ROL PROPIO, Y NO EL `between-space`, A PROPOSITO. El hueco entre
+     ranuras es una medida horizontal --los 12px del `gap`-- y este es un
+     desplazamiento vertical. Que hoy valgan lo mismo no es una casualidad que
+     convenga: si alguno de los dos cambia, el otro tiene que poder seguir su
+     camino sin romperse. La semantica de layout vertical queda desligada de
+     la horizontal.
+
+     12 sale de `--md-ref-spacing-150`, que ya existe en la escala. */
+  --md-sys-measurement-list-item-optical-offset: var(--md-ref-spacing-150);
+
+  /* LAS MEDIDAS DE LOS MEDIOS DE DELANTE
+     --------------------------------------
+     El avatar y la miniatura son los dos elementos que pueden ir en la ranura
+     de delante, aparte del icono. Sus medidas salen del fichero de tokens de
+     M3 --`tokens/versions/latest/sass/_md-comp-list.scss`--:
+
+       - `list-item.leading-avatar.size`: 40px.
+       - `list-item.leading-image.width` y `.height`: 56px.
+
+     Los dos numeros salen de la escala: 40 es `--md-ref-spacing-500` y 56 es
+     `--md-ref-spacing-700`. No hay que estirar la escala para ninguno de los
+     dos.
+
+     Y el avatar es un cuadrado de 40, no un 40 por 40 escrito: lo hace su
+     `aspect-ratio`, que sale de la misma primitiva. */
+  --md-sys-measurement-list-item-avatar-size: var(--md-ref-spacing-500);
+  --md-sys-measurement-list-item-thumbnail-size: var(--md-ref-spacing-700);
+
 
   /* Alto de una barra de navegacion superior. */
   --md-sys-measurement-top-bar-height: var(--md-ref-spacing-600);

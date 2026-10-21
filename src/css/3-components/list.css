@@ -145,9 +145,9 @@
 
    LO QUE NO ENTRA, Y POR QUE
    --------------------------
-   - Avatar, imagen y video como ranura de delante. M3 publica sus medidas
-     (40, 56 y 100x56) y sus formas, y quedan para el siguiente bloque: son
-     cuatro tokens de medida y ninguna decision de estructura.
+   - El video como ranura de delante. M3 publica su medida --100x56, y 114x64
+     para la grande-- y su forma, y es OTRA caja: es un 16:9, no el cuadrado de
+     la miniatura. Entra con su propio bloque, y no ahora.
    - `list-reorder`, `list-reveal` y `list-expand`. Son ficheros de token
      aparte, para arrastrar, para revelar y para expandir. Los tres necesitan
      algo que arrastrar o algo que expandir, y un gesto en JavaScript. El list
@@ -161,6 +161,10 @@
      un tinte plano con su transicion, aqui igual que en los otros siete.
    - El hover de M3 en la elevacion, que lo declara para las dragged. No hay
      elevacion en reposo mas alla del level0, asi que no hay nada que subir.
+   - El checkbox y el radio de la ranura de detras. M3 los pone --la web de M3
+     tiene sus reglas para ellos--, pero el catalogo no tiene ni checkbox ni
+     switch, y aqui no se adelanta un componente que no existe: la ranura de
+     accion se documenta con el `md-icon-button` que si hay.
 
    ANATOMIA DEL MARCADO
    --------------------
@@ -188,6 +192,21 @@
 
      <li><button class="md-list-item">…</button></li>
      <li><a class="md-list-item" href="…">…</a></li>
+
+   Y ENCIMA DE ESAS, CUATRO RANURAS MAS, QUE SON ALTERNATIVAS:
+
+     <span class="md-list-item-avatar">AM</span>          el avatar, de 40
+     <span class="md-list-item-thumbnail">…</span>        la miniatura, de 56
+     <span class="md-list-item-trailing-text">12,50 €</span>   el dato
+     <span class="md-list-item-action">…</span>          un control
+
+   El avatar y la miniatura van EN LUGAR de la ranura del icono, no dentro de
+   ella: la del icono tiene el tamano del icono, y por dentro no cabe un
+   avatar de 40. El texto y la accion van DETRAS del contenido, y el dato
+   antes que la accion.
+
+   Y EL ORDEN DE LA FILA ES EL DEL DOM. La fila es un flex, asi que los huecos
+   de 12px van entre lo que el autor pone, en el orden en que lo pone.
 
    LAS TRES RANURAS DE TEXTO SON `<span>`, Y NO `<p>`
    --------------------------------------------------
@@ -254,6 +273,7 @@
   --md-comp-list-item-supporting-color: var(--md-sys-color-on-surface-variant);
   --md-comp-list-item-overline-color: var(--md-sys-color-on-surface-variant);
   --md-comp-list-item-icon-color: var(--md-sys-color-on-surface-variant);
+  --md-comp-list-item-trailing-text-color: var(--md-sys-color-on-surface-variant);
   --md-comp-list-item-icon-size: var(--md-sys-measurement-list-item-icon-size);
 
   /* EL PUENTE AL GLIFO, Y POR QUE HACE FALTA. `.md-icon` declara su `font-size`
@@ -302,6 +322,30 @@
      debe tomar partido sobre los enlaces de texto, que si lo necesitan. Lo que
      lo anula es ESTE componente. */
   text-decoration: none;
+
+  /* Y LO MISMO CON LOS ESTILOS DEL BOTON NATIVO, CUANDO LA FILA ES EL CONTROL.
+     La anatomia documentada admite `<li><button class="md-list-item">`, y ahi el
+     navegador trae tres cosas que no queremos. Medido, con la fila como
+     `<button>`:
+
+       - `border: 2px outset`: el borde del boton, sin neutralizar.
+       - `text-align: center`: su texto centrado. En una lista ancha el titular
+         saldria centrado en vez de a la izquierda.
+       - el ancho INTRINSECO: el boton medía 191px dentro de una lista de 600px,
+         porque Chrome mantiene su ancho propio aunque se le ponga
+         `display: flex`. La fila se quedaba corta en vez de llenar la lista.
+
+     El reset no neutraliza nada de eso a proposito --su cabecera dice que un
+     componente de formulario de 3-components/ debe definirlo con sus propios
+     tokens--, y el componente `button` lo hace con los suyos. Aqui se hace lo
+     mismo, con lo que la fila necesita y no con lo que el boton necesita: el
+     texto de una fila va alineado al inicio, no centrado.
+
+     `font` NO se toca: la tipografia la llevan las tres ranuras de texto, cada
+     una con su rol, y el glifo con el suyo. Lo que herede el boton no se ve. */
+  border: 0;
+  text-align: start;
+  inline-size: 100%;
 }
 
 /* ---------------------------------------------------------------------------
@@ -373,23 +417,169 @@
 
 /* El overline es el UNICO de los tres textos que no es `body-large`: M3 lo
    declara en `label-small`, que es el rol de las mayusculas cortas. Un overline
-   en body-large seria un titular mas, y el titular ya esta. */
+   en body-large seria un titular mas, y el titular ya esta.
+
+   Y EL OVERLINE TAMBIEN ES DE UNA LINEA, Y TAMBIEN SE RECORTA. Es una etiqueta
+   corta en mayusculas --"SISTEMA", "CUENTA"-- y se protege igual que el
+   titular, por el mismo motivo: el slot de detras no se tapa. Medido: en una
+   fila estrecha, una etiqueta larga se derramaba encima del chevron, igual que
+   hacia el titular. */
 .md-list-item-overline {
   font: var(--md-sys-typescale-label-small);
   letter-spacing: var(--md-sys-typescale-label-small-tracking);
   color: var(--md-comp-list-item-overline-color);
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
+/* EL TITULAR ES DE UNA LINEA, Y SE RECORTA. M3 publica el titular de la fila
+   como un texto de una linea, y aqui no se parte: se recorta con puntos
+   suspensivos.
+
+   El motivo es el slot de detras. El contenido de la fila puede encogerse
+   --`min-inline-size: 0`, ver EL TEXTO CORRIDO--, y con el titular repartido
+   en dos lineas en una fila estrecha, su tinta se derramaba encima del chevron
+   y lo tapaba. Medido: con una palabra que no se puede partir y una fila de
+   150px, la fila se desbordaba 9px y el chevron quedaba dibujado sobre las
+   letras. Con el recorte, la fila deja de desbordar y el chevron se queda en
+   su sitio, medido hasta 100px de ancho.
+
+   Y el texto de apoyo ya lo hacia: la fila de dos lineas recorta su apoyo a un
+   renglon con puntos. El titular hace lo mismo, y por el mismo motivo. */
 .md-list-item-headline {
   font: var(--md-sys-typescale-body-large);
   letter-spacing: var(--md-sys-typescale-body-large-tracking);
   color: var(--md-comp-list-item-label-color);
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
+/* EL TEXTO DE APOYO SE PARTE, INCLUSO CUANDO NO PUEDE. El texto de apoyo se
+   reparte en varias lineas --en la fila de tres lineas y en la variante
+   multiline--, pero una palabra que no tiene por donde partirse se sale de la
+   columna y puede llegar al slot de detras. Con `overflow-wrap: break-word` la
+   palabra se parte donde toque y la columna se respeta.
+
+   No cambia nada del texto normal: solo toca a una palabra mas ancha que su
+   columna, que antes se salia por encima del chevron. */
 .md-list-item-supporting-text {
   font: var(--md-sys-typescale-body-medium);
   letter-spacing: var(--md-sys-typescale-body-medium-tracking);
   color: var(--md-comp-list-item-supporting-color);
+
+  overflow-wrap: break-word;
+}
+
+/* ---------------------------------------------------------------------------
+   LOS MEDIOS DE DELANTE: EL AVATAR Y LA MINIATURA
+   ---------------------------------------------------------------------------
+   La ranura de delante no solo admite el icono: M3 publica tambien el avatar y
+   la imagen, y son los que usa una app de trabajo --el plato, el cliente, la
+   foto del producto--. Los dos salen del fichero de tokens de M3, y las
+   primitivas que los miden estan en `2-system-tokens/measurement.css`.
+
+   EL AVATAR. Un circulo con las iniciales: 40px, forma `corner-full`, fondo
+   `primary-container` y las iniciales en `title-medium` sobre
+   `on-primary-container`. La receta es la de M3 --`labs/gb`--, con su
+   `display: grid` y su `place-items: center` para centrar las iniciales.
+
+   La caja sale cuadrada por `aspect-ratio: 1` y el ancho, no por un alto
+   escrito: el ancho es el token, y la altura sale de el. Asi el circulo es
+   circular de verdad y no una aproximacion.
+
+   LA MINIATURA. La imagen de delante: 56x56. M3 publica dos formas para ella,
+   `corner-none` en la clasica y `corner-small` en la Expressive, y aqui va la
+   Expressive --como los iconos de la fila--, asi que lleva `corner-small`.
+
+   La caja recorta lo que no cabe, con `overflow: hidden`, y la imagen la
+   rellena. El `object-fit: cover` es lo que hace que una foto que no es
+   cuadrada no se deforme.
+
+   Y LAS DOS SON ALTERNATIVAS DE LA RANURA DEL ICONO, no ranuras dentro de ella:
+   el autor escribe `<span class="md-list-item-avatar">` en lugar de
+   `<span class="md-list-item-leading">`. La ranura del icono tiene el tamano
+   del icono --20px-- y por dentro no cabe un avatar de 40.
+   ------------------------------------------------------------------------ */
+
+.md-list-item-avatar {
+  --md-comp-list-item-avatar-size: var(--md-sys-measurement-list-item-avatar-size);
+  --md-comp-list-item-avatar-color: var(--md-sys-color-primary-container);
+  --md-comp-list-item-avatar-label-color: var(--md-sys-color-on-primary-container);
+
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+
+  inline-size: var(--md-comp-list-item-avatar-size);
+  aspect-ratio: 1;
+  border-radius: var(--md-sys-shape-corner-full);
+  background-color: var(--md-comp-list-item-avatar-color);
+  color: var(--md-comp-list-item-avatar-label-color);
+  font: var(--md-sys-typescale-title-medium);
+  letter-spacing: var(--md-sys-typescale-title-medium-tracking);
+}
+
+.md-list-item-thumbnail {
+  --md-comp-list-item-thumbnail-size: var(--md-sys-measurement-list-item-thumbnail-size);
+
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  inline-size: var(--md-comp-list-item-thumbnail-size);
+  block-size: var(--md-comp-list-item-thumbnail-size);
+  overflow: hidden;
+  border-radius: var(--md-sys-shape-corner-small);
+}
+
+.md-list-item-thumbnail > :is(img, video) {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+/* ---------------------------------------------------------------------------
+   LO QUE VA DETRAS: EL TEXTO Y LA ACCION
+   ---------------------------------------------------------------------------
+   La fila puede llevar dos cosas mas detras del texto: el DATO --un precio,
+   una fecha, una cantidad-- y la ACCION.
+
+   EL TEXTO DE DETRAS. M3 lo publica como trailing supporting text: la
+   tipografia es `label-small` y el color, `on-surface-variant`; en la fila
+   seleccionada pasa a `on-secondary-container`. Aqui va en su PROPIA ranura,
+   separada por el hueco de la fila --los 12px del `between-space`--.
+
+   Y es propia, y no dentro de la ranura del icono, por una razon que esta
+   escrita: la web de M3 mete el texto dentro de la ranura de detras, con un
+   hueco de 8px entre el texto y el icono, y ese 8 NO esta publicado en el
+   fichero de tokens --`labs/gb` lo escribe a mano--. Aqui no se inventa una
+   medida que M3 no publica: se usa el hueco que si lo esta, el de la fila.
+
+   LA ACCION. La ultima ranura puede llevar un control del catalogo --hoy un
+   `md-icon-button`--, que es lo que M3 llama trailing action. No lleva
+   tamano fijo, a diferencia de la del icono: un control mide 40px y la caja
+   tiene que dejarlo pasar.
+
+   Y no hay checkbox ni switch, porque el catalogo no tiene esos componentes:
+   lo que se documenta es lo que existe.
+   ------------------------------------------------------------------------ */
+
+.md-list-item-trailing-text {
+  flex: 0 0 auto;
+  font: var(--md-sys-typescale-label-small);
+  letter-spacing: var(--md-sys-typescale-label-small-tracking);
+  color: var(--md-comp-list-item-trailing-text-color);
+}
+
+.md-list-item-action {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
 }
 
 /* EL RECORTE, Y SOLO EL DE DOS LINEAS. Ver EL TEXTO CORRIDO, que explica por que
@@ -420,12 +610,20 @@
    tambien. Las ranuras de texto llevan su propio color, y al ser hijos no tocan
    el del host.
 
-   LA OPACIDAD DE REPOSO ES CERO Y ESTA ESCRITA, no leida de un token. Es el
-   mismo arrangements que el boton, y por el mismo motivo: el valor de reposo no
+   M3 PONE LA CAPA DE LA FILA SELECCIONADA EN `on-surface`, y aqui no. La ficha
+   de M3 publica el state layer de la fila seleccionada en `#1D1B20`, no en el
+   `on-secondary-container` del texto de la fila. aqui la capa se hereda del
+   texto de la fila, y la diferencia no se ve: medido, en claro la capa de la
+   fila seleccionada es `#1D192B` contra los `#1D1B20` de M3, y en oscuro
+   `#E8DEF8` contra `#E6E0E9`. Dos valores casi iguales, y el mecanismo sigue
+   siendo el del color de la fila: sin token propio y sin una regla mas.
+
+   LA OPACIDAD DE REPOSO ES CERO Y ESTA ESCRITA, no leida de un token. Es la
+   misma estructura que el boton, y por el mismo motivo: el valor de reposo no
    es una decision de autor, es la ausencia de capa. Medido: con un token local
    declarado en 1 --que es como estaba la primera vez-- la fila pinta su color
    de texto encima de si misma en reposo, `rgb(29, 27, 32)` al 100%, y el texto
-   encima de su propio fondo. Es invisible en elHTML y evidente en el
+   encima de su propio fondo. Es invisible en el HTML y evidente en el
    navegador: `getComputedStyle(item, '::after').opacity` devolvia 1.
 
    Las tres reglas de estado llevan la MISMA condicion de control real, y por
@@ -477,8 +675,19 @@
    No se anula el `outline` nativo: se sustituye declarando los valores. Los tres
    numeros son los mismos que los del boton, el icono-boton, el fab y la card, y
    salen de los mismos roles: grosor `extra-thick` (3px), color `secondary` y
-   `outline-offset` de 2px, que dibuja el anillo DENTRO de la fila. Por eso el
-   anillo no necesita que la superficie recorte.
+   `outline-offset` de 2px.
+
+   EL ANILLO VA POR FUERA, Y POR QUE. Un `outline-offset` positivo aparta el
+   anillo de la caja: el de 2px dibuja el anillo 2px POR FUERA de la fila, con su
+   hueco respecto a ella, y no dentro.
+
+   Y por eso la superficie NO recorta: el anillo de la primera y de la ultima
+   fila sobresale de la lista, y un `overflow: hidden` se lo comeria. Ver LA
+   SUPERFICIE.
+
+   M3 publica el focus indicator de la fila con offset -3dp, o sea DENTRO y
+   pegado al borde. aqui no se sigue, y es decision propia: el anillo por
+   fuera es el de los otros siete componentes, con la misma separacion de 2px.
    ------------------------------------------------------------------------ */
 
 .md-list-item:focus-visible {
@@ -494,16 +703,18 @@
    boton: si bajara el `opacity` de la fila, bajarian con el la capa de estado y
    el fondo, y el resultado seria un 38% de un 38%.
 
-   Y la capa de estado baja al 10% que publica M3
+   Y LA CAPA DE ESTADO NO SE PINTA EN REPOSO, Y POR QUE. M3 publica
    (`disabled.state-layer.opacity: 0.1`), que es el mismo rol que usa el boton
-   para el relleno deshabilitado. Se declara aunque en la practica no se vea: una
-   fila deshabilitada no tiene hover ni active porque no tiene `pointer`, asi que
-   la capa no llega a pintarse. El token queda escrito en un sitio y no en dos.
+   para el relleno deshabilitado, pero una fila deshabilitada no tiene hover ni
+   active porque no tiene `pointer`: la capa no llega a encenderse. Dejarla
+   declarada en reposo la pintaba de todos modos, y con ella una banda del 10%
+   sobre la superficie de una fila que no hace nada. Medido: el `::after` de una
+   fila deshabilitada daba `opacity: 0.1` en reposo, y se veía.
 
-   Y va en una regla propia, con el pseudo, y no reapuntando un token de la base:
-   la opacidad de reposo de la capa es 0 y esta ESCRITA, no leida --ver LA CAPA
-   DE ESTADO--, y una regla de token no puede bajarla sin declarar ese 0 tambien
-   en la base.
+   Asi que la fila deshabilitada se apaga por donde tiene que apagarse --el
+   contenido, al 38%-- y la capa se queda en su cero de reposo, el de la base.
+   La unica vez que se declara el 0 de la capa es en el bloque de alto
+   contraste, donde la opacidad no comunica nada.
 
    `pointer-events: none` para que no responda aunque se vea.
    ------------------------------------------------------------------------ */
@@ -513,16 +724,13 @@
   pointer-events: none;
 }
 
-.md-list-item:disabled::after {
-  opacity: var(--md-sys-state-disabled-container-opacity);
-}
-
 .md-list-item:disabled :is(
     .md-list-item-headline,
     .md-list-item-supporting-text,
     .md-list-item-overline,
     .md-list-item-leading,
-    .md-list-item-trailing
+    .md-list-item-trailing,
+    .md-list-item-trailing-text
   ) {
   opacity: var(--md-sys-state-disabled-state-layer-opacity);
 }
@@ -539,6 +747,10 @@
    `on-secondary-container`. Por eso el hover de la fila seleccionada se ve
    sobre el color nuevo y no sobre el viejo.
 
+   Y el texto de detras tambien cambia, que es el septimo: M3 publica el
+   trailing supporting text seleccionado en `on-secondary-container`, y sin
+   esto se quedaria en `on-surface-variant` sobre un fondo `secondary-container`.
+
    Y aqui esta la unica regla del archivo que reapunta la FORMA, que es la
    pieza ratificada del capitulo: `corner-extra-small` en reposo contra
    `corner-large` seleccionada. Las formas de hover y de pulsado que M3
@@ -552,6 +764,7 @@
   --md-comp-list-item-supporting-color: var(--md-sys-color-on-secondary-container);
   --md-comp-list-item-overline-color: var(--md-sys-color-on-secondary-container);
   --md-comp-list-item-icon-color: var(--md-sys-color-on-secondary-container);
+  --md-comp-list-item-trailing-text-color: var(--md-sys-color-on-secondary-container);
   --md-comp-list-item-shape: var(--md-sys-shape-corner-large);
 }
 
@@ -575,11 +788,26 @@
    valor sale del padre, que es la superficie, y asi la regla sigue siendo cierta
    si el radio de la superficie cambia.
 
-   Solo funciona con la fila como hija DIRECTA de la superficie, que es la
-   anatomia documentada. Si la fila va envuelta --`<li><button class="md-list-item">`--
-   el selector no la alcanza y se queda con su forma propia. Es la misma limitacion
-   que tiene `labs/gb`, que resuelve el caso del hueco con `::slotted()` y aqui no
-   hay shadow DOM donde apoyarse.
+   Y CUANDO LA FILA VA ENVUELTA, LA ALCANZA IGUAL. La fila interactiva va
+   dentro de un `<li>` --`<li><button class="md-list-item">`--, porque un `<ul>`
+   no admite otros hijos. Con la regla de arriba, que apunta al `<li>`, la fila
+   se quedaba con su forma propia, y su capa de estado --que hereda el radio de
+   la fila-- se salia de la esquina de la superficie. Medido: la primera fila
+   tenia 4px de radio contra los 16 de la superficie, y el tinte del hover
+   desbordaba por la esquina.
+
+   Por eso hay una segunda regla, que baja a la fila por dentro. La cadena de
+   `inherit` sola hace el resto: el `<li>` ya heredo el radio de la superficie, y
+   la fila hereda el de su `<li>`.
+
+   Y NO HACE FALTA UNA REGLA PARA LA CAPA. El `::after` lleva
+   `border-radius: inherit`, asi que sigue a la fila solo. Medido: con la fila
+   en 16px 16px 4px 4px, la capa de estado computa lo mismo.
+
+   OJO CON EL SELECTOR: `.md-list-item:first-child` NO VALE, porque casa con
+   todas las filas envueltas --cada boton es el primer hijo de su propio
+   `<li>`-- y las deja rectas. Medido: la fila intermedia se quedaba a 0px de
+   radio, y la primera perdiaba sus esquinas de abajo.
 
    Va DESPUES de la regla base y ANTES de la de la transicion, por el mismo
    blindaje del boton: cualquier `border-radius` reventado mas adelante devuelve el
@@ -596,20 +824,84 @@
   border-end-end-radius: inherit;
 }
 
+.md-list > :first-child .md-list-item {
+  border-start-start-radius: inherit;
+  border-start-end-radius: inherit;
+}
+
+.md-list > :last-child .md-list-item {
+  border-end-start-radius: inherit;
+  border-end-end-radius: inherit;
+}
+
+/* ---------------------------------------------------------------------------
+   EL DIVISOR DENTRO DE LA FILA, Y LO ANCLA LA LISTA
+   ---------------------------------------------------------------------------
+   El separador es el componente `md-divider` de la capa 3, con su variante
+   `md-divider-middle-inset`: esa variante mete el `padding-inline` de 16px que
+   publica M3 para el divisor de la lista --"divider leading space" y "trailing
+   space", 16dp--. La sangria no la mide la lista: la mide el divisor.
+
+   LO QUE ANCLA LA LISTA ES LA POSICION, Y POR QUE. El divisor no lleva
+   margenes --su cabecera dice que "los decide el padre"--, y el padre aqui es
+   la fila. Por eso va anclado al borde de bloque de abajo de la fila, que es
+   donde un separador entre filas tiene que estar.
+
+   Y EL `<hr>` NO PUEDE SER HIJO DIRECTO DE UN `<ul>`. El HTML no admite hijos
+   que no sean `<li>`, ni de `<script>` y `<template>`. Por eso el separador va
+   DENTRO de la fila y no entre filas: no hay otra forma valida de escribirlo.
+
+   Con `position: absolute` sale del flujo del flex, asi que la fila no crece
+   por el separador y su hueco de 12px no lo ve. Y la fila es `position:
+   relative` desde el principio, asi que el anclaje es suyo y no del documento.
+
+   Es lo mismo que hace el dialog con los separadores de sus ranuras, y por el
+   mismo motivo: quien compone es quien coloca.
+
+   Y EL ULTIMO ELEMENTO NO LLEVA DIVISOR. En M3 el divisor separa elementos
+   adyacentes, y el ultimo de la lista no lo lleva: la superficie se cierra con
+   su propio radio, y una linea al pie seria una linea que no separa nada. Que
+   el divisor lleve o no linea es decision del autor --es opcional--, y lo
+   natural es ponerlo en la fila que divide y no en la que cierra.
+
+   Y CON ICONO DELANTE, LA LINEA NO ACOMPAÑA AL TEXTO. M3 estricto lleva la
+   sangria al inicio de la columna de texto --16 del relleno, 20 del icono y 12
+   del hueco: 48px--, y aqui se queda en 16, que es lo que publica el divisor.
+   Medido: con icono delante la linea arranca bajo el icono, 32px a la izquierda
+   del texto, y con la fila sin icono arranca bajo el texto.
+
+   Es una desviacion consciente: `divider.css` no publica un inset de 48 y no se
+   inventa uno aqui. La sangria del divisor es suya, y la lista no la cambia.
+   ------------------------------------------------------------------------ */
+
+.md-list-item .md-divider {
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline: 0;
+}
+
 /* ---------------------------------------------------------------------------
    EL TEXTO CORRIDO, Y LA VARIANTE DE CONTENIDO EXTENSO
    ---------------------------------------------------------------------------
-   El texto se ve ENTERO, con una sola excepcion: la fila de DOS LINEAS, que
-   recorta el texto de apoyo en un renglon con puntos suspensivos. Es lo que hace
-   M3 --el diagrama de medidas de m3.material.io enseña la fila de dos lineas con
-   el apoyo cortado-- y es la unica de las tres donde el texto no cabe: 44px de
-   contenido en un presupuesto de 52.
+   El texto se ve ENTERO, con dos excepciones: el TITULAR, que se recorta con
+   puntos suspensivos cuando no cabe --una sola linea, como en M3--, y la fila de
+   DOS LINEAS, que recorta el texto de apoyo en un renglon con puntos suspensivos.
+   Es lo que hace M3 --el diagrama de medidas de m3.material.io enseña la fila de
+   dos lineas con el apoyo cortado-- y es la unica de las tres donde el texto no
+   cabe: 44px de contenido en un presupuesto de 52.
 
-   En las otras dos no se recorta nada. La de tres lineas tiene sitio de sobra --el
-   mismo diagrama muestra un texto de apoyo de dos renglones completo--, y la
-   variante `.md-list-item-multiline` es justo la que existe para el texto
-   extenso, donde recortar seria decidir por el autor que su segunda linea no
-   existe. Y en un catalogo lo que no se ve es un alergeno.
+   Y EL RECORTE DEL TITULAR ES LA GARANTIA DE QUE EL SLOT DE DETRAS SE QUEDA
+   LIMPIO. Medido: con una palabra que no se puede partir --"Facturacion" son
+   91px de min-content-- y una fila de 150px, la tinta del titular se derramaba
+   encima del chevron y lo tapaba. Con el recorte, la fila deja de desbordar y
+   el chevron se queda en su sitio, medido hasta 100px de ancho. Ver EL
+   TITULAR, en las ranuras.
+
+   En las otras dos el texto de apoyo no se recorta. La de tres lineas tiene
+   sitio de sobra --el mismo diagrama muestra un texto de apoyo de dos renglones
+   completo--, y la variante `.md-list-item-multiline` es justo la que existe
+   para el texto extenso, donde recortar seria decidir por el autor que su
+   segunda linea no existe. Y en un catalogo lo que no se ve es un alergeno.
 
    El 1 del recorte cabe en el componente sin token, y no por descuido: REGLA 1
    perdona el 0 y el 1 porque son valores de identidad, y un unico renglon es el
@@ -642,17 +934,33 @@
    `md-list-item-three-line`, porque la fila de 88px centra sus 44px de texto y
    deja 12 por encima.
 
-   Anclar la FILLA entera --`align-items: flex-start`-- pone el icono y el bloque
-   de texto en el mismo punto de partida, y con eso el desfase es 0.00 en las tres
-   combinaciones. Ademas el texto deja de depender del minimo para colocarse: crece
-   desde arriba, que es como se lee una ficha.
+   Anclar la FILLA entera --`align-items: flex-start`-- hace que el bloque de
+   texto crezca desde arriba, que es como se lee una ficha, y deja de depender
+   del minimo para colocarse. Los slots no quedan pegados al techo, y por eso
+   llevan su offset optico: ver EL OFFSET OPTICO DE LOS SLOTS, abajo.
+
+   EL OFFSET OPTICO DE LOS SLOTS
+   -----------------------------
+   Anclar la fila arriba deja el icono de delante y el chevron de detras clavados
+   en el techo de la primera linea, y eso se ve mal: el titular y el apoyo
+   forman un bloque de cabecera, y los slots se quedan fuera de el. Medido antes
+   del ajuste: el desfase contra el titular era de 0.00px, y el centro del icono
+   caia 12px por encima del centro del bloque de cabecera --titular mas primera
+   linea de apoyo, 44px--.
+
+   Con el offset, los dos slots bajan 12px y su centro cae en el centro de ese
+   bloque, que es exactamente donde los pone el item de dos lineas: medido, alli
+   el desfase contra el titular es de 12px y el centro coincide al pixel. El
+   numero sale de `--md-sys-measurement-list-item-optical-offset`, y el motivo de
+   que sea un rol propio y no el hueco entre ranuras esta en `measurement.css`.
 
    EL PRECIO, Y ES EL CHEVRON. Con la fila anclada arriba, la ranura de detras
-   tambien sube. Es lo correcto para una ficha de catalogo, donde el dato de al
-   lado --un precio, una disponibilidad-- es el primero que se lee y no el
-   ultimo. En las variantes de una y dos lineas, donde el texto no crece, la
-   variante no se aplica y el chevron sigue centrado como en el resto del
-   catalogo.
+   tambien sube, y con el offset optico queda donde el icono de delante: los dos
+   acompanan el bloque de cabecera y no el techo de la fila. Es lo correcto para
+   una ficha de catalogo, donde el dato de al lado --un precio, una
+   disponibilidad-- es el primero que se lee y no el ultimo. En las variantes de
+   una y dos lineas, donde el texto no crece, la variante no se aplica y el
+   chevron sigue centrado como en el resto del catalogo.
 
    Y LA VARIANTE NO DECLARA ALTURA. Su minimo es el de la base --una linea, 56-- y
    de ahi crece. Un piso de 88 seria inventar un cuarto tamano que M3 no publica:
@@ -661,6 +969,46 @@
 
 .md-list-item-multiline {
   align-items: flex-start;
+}
+
+/* Y LOS SLOTS BAJAN LO MISMO QUE EN EL ITEM DE DOS LINEAS. La fila esta
+   anclada arriba, y con eso los dos slots quedarian pegados al techo de la
+   primera linea. El offset los baja hasta el centro del bloque de cabecera
+   --titular mas primera linea de apoyo--, que es donde los pone el item de
+   dos lineas. Medido: 12px de desfase contra el titular en los dos casos, y el
+   centro de los slots coincide con el del bloque en los dos casos.
+
+   UNA SOLA DECLARACION, Y POR QUE NO UNA. No hace falta `align-self`: la
+   variante ya ancla la fila arriba con `align-items: flex-start`, y repetirlo
+   en los slots seria decir dos veces lo mismo. Lo unico que los mueve de sitio
+   es el margen.
+
+   La propiedad es LOGICA, `margin-block-start`, como las demas del archivo: en
+   un texto de derecha a izquierda "la primera linea" no cambia de lado, y con
+   las fisicas el ajuste caeria en el sitio equivocado. */
+.md-list-item-multiline .md-list-item-leading,
+.md-list-item-multiline .md-list-item-trailing {
+  margin-block-start: var(--md-sys-measurement-list-item-optical-offset);
+}
+
+/* Y EL TITULAR VUELVE A FLUIR. La variante es la de la ficha larga, y ahi el
+   titular no se recorta: si es largo, se parte en dos lineas y la fila crece
+   con el. Medido: con el recorte de EL TITULAR, el titular de la variante
+   multiline salia con puntos suspensivos, y en una ficha de catalogo eso
+   esconde justo la palabra que identifica la fila.
+
+   Y CUANDO LA PALABRA NO SE PUEDE PARTIR, SE PARTE. Un titular de una sola
+   palabra larga --un nombre de proveedor sin espacios-- no tiene por donde
+   partirse, y se salia de la columna con la fila estrecha. Con
+   `overflow-wrap: break-word` se parte donde toque, y la columna se respeta.
+
+   Ojo: el texto de apoyo sigue siendo el que se parte --esa es la variante--,
+   y el chevron sigue subiendo con la fila, que es lo que se cuenta arriba. */
+.md-list-item-multiline .md-list-item-headline {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  overflow-wrap: break-word;
 }
 
 /* ---------------------------------------------------------------------------

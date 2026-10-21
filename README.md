@@ -150,10 +150,10 @@ Clases distintas en TODO el repositorio:  10
   .md-icon               1   experimento en labs/gb/, no parte del sistema de estilos
   .md-stories-bg-override 1  del sitio de documentación (catalog/)
 
-Clases de este proyecto:  238
+Clases de este proyecto:  254
   4-utilities   178   color 93 · typography 32 · shape 16 · elevation 12
                  icon 9 · motion 8 · state 6 · measurement 2
-  3-components   60   button 15 · icon-button 15 · card 11 · fab 7
+  3-components   76   list 16 · button 15 · icon-button 15 · card 11 · fab 7
                  divider 4 · dialog 5 · button-group 2 · fab-extended 1
 ```
 
@@ -844,7 +844,8 @@ rdm-next-new/
 │   │   │   ├── fab.css        --md-comp-fab-*
 │   │   │   ├── fab-extended.css --md-comp-fab-* (va DESPUÉS de fab.css)
 │   │   │   ├── card.css       --md-comp-card-*
-│   │   │   └── dialog.css     --md-comp-dialog-* (va el último)
+│   │   │   ├── dialog.css     --md-comp-dialog-*
+│   │   │   └── list.css       --md-comp-list-* (va el último)
 │   │   └── 4-utilities/             Clases atómicas (solo var(), sin tokens)
 │   │       ├── index.css      Índice: una familia por archivo
 │   │       ├── color.css      .md-bg-* / .md-text-* / .md-border-*
@@ -863,7 +864,8 @@ rdm-next-new/
 │   ├── assets/
 │   │   ├── showroom.css      Estilos mínimos del showroom (capa showroom)
 │   │   ├── showroom.js       Resaltado de snippets + botón «Copiar», sin build
-│   │   └── card-media.svg    El único asset de imagen del repo
+│   │   ├── card-media.svg    Assets de imagen del repo (con el de la lista)
+│   │   ├── list-thumb.svg
 │   ├── components/           Una vista por componente o por familia de capa 1 y 2
 │   │   ├── button-group.html Button group · 6 secciones
 │   │   ├── button.html       Button · 13 secciones
@@ -876,6 +878,7 @@ rdm-next-new/
 │   │   ├── fab.html          FAB · 7 secciones
 │   │   ├── icon-button.html  Icon Button · 10 secciones
 │   │   ├── icon.html         Iconos · 9 secciones
+│   │   ├── list.html         List · 9 secciones
 │   │   ├── measurement.html  Measurement · 6 secciones
 │   │   ├── motion.html       Motion · 20 secciones
 │   │   ├── shapes.html       Shapes · 11 secciones
@@ -884,7 +887,7 @@ rdm-next-new/
 │   │   └── typography.html   Typography · 15 secciones
 │   └── templates/
 │       ├── component.template.html   Plantilla base, la que usó typography.html
-│       └── <nombre>.template.html    Molde propio de cada vista (15 más)
+│       └── <nombre>.template.html    Molde propio de cada vista (17 más)
 └── tools/
     ├── verify-tokens.mjs     Candado automático: 13 reglas de arquitectura
     └── verify-tokens.ps1     Envoltura de tres líneas para quien lo lanzaba por aquí
@@ -982,7 +985,7 @@ no existe un `on-background-variant`.
 - El enlace de vuelta en una vista apunta a `../index.html` y dice `RDM ManGo! App`.
 - El `<title>` de una vista es `<Vista> - RDM ManGo! App`. El del índice es
   `RDM ManGo! App`.
-- Toda vista lleva `<meta name="description">`. Las diecisiete lo cumplen.
+- Toda vista lleva `<meta name="description">`. Las dieciocho lo cumplen.
 
 Cuando se construye un componente nuevo, su vista se añade a `index.html` como enlace y
 se crea el archivo en `showroom/components/`. La portada nunca crece más allá de título +
@@ -997,7 +1000,7 @@ de dónde sale cada cosa, y el precio es que cada vista tiene que acordarse de e
 
 ## 11. Componentes
 
-El catálogo de M3 tiene decenas de componentes y aquí hay **ocho**. Se construyen uno a
+El catálogo de M3 tiene decenas de componentes y aquí hay **nueve**. Se construyen uno a
 uno, y ninguno se da por bueno sin medirlo en el navegador: `tools/verify-tokens.mjs`
 comprueba la arquitectura, no que el componente se vea bien.
 
@@ -1013,6 +1016,7 @@ El orden es el de `3-components/index.css`, que es el de carga y el de dependenc
 | FAB extended | `3-components/fab-extended.css` | 1 | 3 | `fab-extended.html`, 6 secciones |
 | Card | `3-components/card.css` | 11 | 12 | `card.html`, 9 secciones |
 | Dialog | `3-components/dialog.css` | 5 | 3 | `dialog.html`, 6 secciones |
+| List | `3-components/list.css` | 16 | 25 | `list.html`, 9 secciones |
 
 Las "clases" son las que expone el componente, sin contar las de `2-system-tokens` que compone para
 colocar la capa de estado: `button.css` nombra `.md-state-layer` y `.md-disabled` en sus
