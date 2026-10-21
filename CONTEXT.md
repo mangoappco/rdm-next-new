@@ -65,7 +65,9 @@ Anotado aquí el 2026-10-17. Este dato vivía solo en el encabezado de `fab.html
 
 ## Card — publicada
 
-La hoja está hecha y verificada, y la vista **tiene trece pares y está publicada y enlazada**: los nueve del laboratorio —Clase base, Variantes, Ratio, Link, States y cuatro recetas de Slots que cierran como playground para copiar— y los cuatro **casos de uso de ManGo! App** que se añadieron el 2026-10-21: la ficha elevated con una mesa activa del salón, la filled con una comanda de cocina, la outlined con el arqueo de caja y la ficha con medio, la de producto. `card.html` es copia byte-idéntica a su molde, con el bloque de razonamiento dentro.
+La hoja está hecha y verificada, y la vista **tiene catorce pares y está publicada y enlazada**: los nueve del laboratorio —Clase base, Variantes, Ratio, Link, States y cuatro recetas de Slots que cierran como playground para copiar— y los cinco **casos de uso de ManGo! App** que se añadieron el 2026-10-21: la ficha elevated con una mesa activa del salón, la filled con una comanda de cocina, la outlined con el arqueo de caja, la ficha con medio y la de producto, y la ficha de auditoría, que lleva una `md-list` con sus cinco atributos dentro. `card.html` es copia byte-idéntica a su molde, con el bloque de razonamiento dentro.
+
+**Y va en las dos mitades**, con la división que ya fija el estándar del showroom: los nueve atómicos en la especificación técnica y los cinco de negocio en los casos de uso.
 
 **Y va en las dos mitades**, con la división que ya fija el estándar del showroom: los nueve atómicos en la especificación técnica y los cuatro de negocio en los casos de uso.
 

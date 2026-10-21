@@ -15,13 +15,14 @@
 </head>
 
 <!--
-  ESTA VISTA TIENE TRECE PARES, EN DOS BLOQUES. El primero es el laboratorio
+  ESTA VISTA TIENE CATORCE PARES, EN DOS BLOQUES. El primero es el laboratorio
   normativo --Especificacion tecnica y anatomia--: Clase base, Variantes,
   Ratio, Link, States y cuatro recetas de Slots que cierran como playground
-  para copiar. El segundo son los casos de uso de ManGo! App, con las tres
-  fichas de M3 sobre material real --el salon, la cocina y el arqueo de caja--
-  y la ficha con medio, la de producto. Se construye par a par, mirando cada
-  uno antes de escribir el siguiente.
+  para copiar. El segundo son los casos de uso de ManGo! App: las tres fichas
+  de M3 sobre material real --el salon, la cocina y el arqueo de caja--, la
+  ficha con medio, la de producto, y la ficha que lleva una lista de
+  atributos dentro. Se construye par a par, mirando cada uno antes de
+  escribir el siguiente.
 
   El corte se marca con un divisor, el titulo de cada bloque es un h2 y los
   pares van en h3 debajo: el h1 es el nombre del componente, y el esquema
@@ -831,6 +832,147 @@
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
     <!-- CASO 4: hasta aqui -->
+
+    <!-- CASO 5: la ficha que lleva una lista dentro. Dogfooding entre
+         componentes: una card con una md-list en su content. -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Con lista · Ficha de auditoría</h3>
+      <p class="md-type-body-medium">La ficha de auditoría del backoffice: la card con la lista de sus cinco atributos dentro, y las dos acciones al pie.</p>
+      <div class="sr-specimen">
+        <article class="md-card md-card-outlined">
+          <div class="md-card-media md-card-media-landscape">
+            <img src="../assets/card-media.svg" alt="Media">
+          </div>
+          <div class="md-card-header">
+            <h3 class="md-type-title-large">Hamburguesa Angus Parrillera</h3>
+            <p class="md-type-body-medium">PRD-0042 · SKU: 770123456</p>
+          </div>
+          <div class="md-card-content">
+            <hr class="md-divider">
+            <ul class="md-list">
+              <li class="md-list-item md-list-item-two-line">
+                <span class="md-list-item-leading">
+                  <span class="md-icon" aria-hidden="true">sell</span>
+                </span>
+                <div class="md-list-item-content">
+                  <span class="md-list-item-headline">Precio de venta</span>
+                  <span class="md-list-item-supporting-text">$ 38.900 COP</span>
+                </div>
+              </li>
+              <li class="md-list-item md-list-item-two-line">
+                <span class="md-list-item-leading">
+                  <span class="md-icon" aria-hidden="true">category</span>
+                </span>
+                <div class="md-list-item-content">
+                  <span class="md-list-item-headline">Categoría de menú</span>
+                  <span class="md-list-item-supporting-text">Platos Fuertes / Parrilla</span>
+                </div>
+              </li>
+              <li class="md-list-item md-list-item-two-line">
+                <span class="md-list-item-leading">
+                  <span class="md-icon" aria-hidden="true">inventory_2</span>
+                </span>
+                <div class="md-list-item-content">
+                  <span class="md-list-item-headline">Control de inventario</span>
+                  <span class="md-list-item-supporting-text">Materia prima (Receta estándar)</span>
+                </div>
+                <span class="md-list-item-trailing-text">42 porciones disp.</span>
+              </li>
+              <li class="md-list-item md-list-item-two-line">
+                <span class="md-list-item-leading">
+                  <span class="md-icon" aria-hidden="true">receipt_long</span>
+                </span>
+                <div class="md-list-item-content">
+                  <span class="md-list-item-headline">Régimen tributario</span>
+                  <span class="md-list-item-supporting-text">Impoconsumo (8% incluido)</span>
+                </div>
+              </li>
+              <li class="md-list-item md-list-item-two-line">
+                <span class="md-list-item-leading">
+                  <span class="md-icon" aria-hidden="true">history</span>
+                </span>
+                <div class="md-list-item-content">
+                  <span class="md-list-item-headline">Última modificación</span>
+                  <span class="md-list-item-supporting-text">Carlos Pérez · Ayer 18:45</span>
+                </div>
+              </li>
+            </ul>
+            <hr class="md-divider">
+          </div>
+          <div class="md-card-actions">
+            <button class="md-button md-button-outlined" type="button">Historial de cambios</button>
+            <button class="md-button md-button-filled" type="button">Editar atributos</button>
+          </div>
+        </article>
+      </div>
+      <pre class="sr-code"><code>&lt;article class="md-card md-card-outlined"&gt;
+  &lt;div class="md-card-media md-card-media-landscape"&gt;
+    &lt;img src="../assets/card-media.svg" alt="Media"&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-header"&gt;
+    &lt;h3 class="md-type-title-large"&gt;Hamburguesa Angus Parrillera&lt;/h3&gt;
+    &lt;p class="md-type-body-medium"&gt;PRD-0042 · SKU: 770123456&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-content"&gt;
+    &lt;hr class="md-divider"&gt;
+    &lt;ul class="md-list"&gt;
+      &lt;li class="md-list-item md-list-item-two-line"&gt;
+        &lt;span class="md-list-item-leading"&gt;
+          &lt;span class="md-icon" aria-hidden="true"&gt;sell&lt;/span&gt;
+        &lt;/span&gt;
+        &lt;div class="md-list-item-content"&gt;
+          &lt;span class="md-list-item-headline"&gt;Precio de venta&lt;/span&gt;
+          &lt;span class="md-list-item-supporting-text"&gt;$ 38.900 COP&lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+      &lt;li class="md-list-item md-list-item-two-line"&gt;
+        &lt;span class="md-list-item-leading"&gt;
+          &lt;span class="md-icon" aria-hidden="true"&gt;category&lt;/span&gt;
+        &lt;/span&gt;
+        &lt;div class="md-list-item-content"&gt;
+          &lt;span class="md-list-item-headline"&gt;Categoría de menú&lt;/span&gt;
+          &lt;span class="md-list-item-supporting-text"&gt;Platos Fuertes / Parrilla&lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+      &lt;li class="md-list-item md-list-item-two-line"&gt;
+        &lt;span class="md-list-item-leading"&gt;
+          &lt;span class="md-icon" aria-hidden="true"&gt;inventory_2&lt;/span&gt;
+        &lt;/span&gt;
+        &lt;div class="md-list-item-content"&gt;
+          &lt;span class="md-list-item-headline"&gt;Control de inventario&lt;/span&gt;
+          &lt;span class="md-list-item-supporting-text"&gt;Materia prima (Receta estándar)&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;span class="md-list-item-trailing-text"&gt;42 porciones disp.&lt;/span&gt;
+      &lt;/li&gt;
+      &lt;li class="md-list-item md-list-item-two-line"&gt;
+        &lt;span class="md-list-item-leading"&gt;
+          &lt;span class="md-icon" aria-hidden="true"&gt;receipt_long&lt;/span&gt;
+        &lt;/span&gt;
+        &lt;div class="md-list-item-content"&gt;
+          &lt;span class="md-list-item-headline"&gt;Régimen tributario&lt;/span&gt;
+          &lt;span class="md-list-item-supporting-text"&gt;Impoconsumo (8% incluido)&lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+      &lt;li class="md-list-item md-list-item-two-line"&gt;
+        &lt;span class="md-list-item-leading"&gt;
+          &lt;span class="md-icon" aria-hidden="true"&gt;history&lt;/span&gt;
+        &lt;/span&gt;
+        &lt;div class="md-list-item-content"&gt;
+          &lt;span class="md-list-item-headline"&gt;Última modificación&lt;/span&gt;
+          &lt;span class="md-list-item-supporting-text"&gt;Carlos Pérez · Ayer 18:45&lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;hr class="md-divider"&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-actions"&gt;
+    &lt;button class="md-button md-button-outlined" type="button"&gt;Historial de cambios&lt;/button&gt;
+    &lt;button class="md-button md-button-filled" type="button"&gt;Editar atributos&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/article&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- CASO 5: hasta aqui -->
 
   </main>
   <!-- MAIN: fin -->
