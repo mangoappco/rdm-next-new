@@ -213,8 +213,12 @@ function GetCssFiles(root, cssRoot) {
     const name = full.slice(full.lastIndexOf('/') + 1) || full;
     const base = name.includes('\\') ? name.slice(name.lastIndexOf('\\') + 1) : name;
 
-    // solo hojas que viven dentro de src/css/
-    if (!full.startsWith(cssRoot + '/')) return false;
+    // Rutas PORTABLES. En Windows `join` deja barras invertidas, y esta
+    // comparacion las necesita hacia delante. Sin la normalizacion no entra
+    // NINGUNA hoja: el verificador escanea cero, y da por inexistentes
+    // todas las clases y todos los tokens del sistema.
+    const posix = full.replace(/\\/g, '/');
+    if (!posix.startsWith(cssRoot.replace(/\\/g, '/') + '/')) return false;
 
     const cssRel = GetRelPath(full, cssRoot);
 
