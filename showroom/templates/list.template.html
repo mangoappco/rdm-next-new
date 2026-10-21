@@ -15,11 +15,12 @@
 </head>
 
 <!--
-  ESTA VISTA TIENE NUEVE PARES, Y VAN DE MENOS A MÁS: Clase base mínima,
+  ESTA VISTA TIENE TRECE PARES, Y VAN DE MENOS A MÁS: Clase base mínima,
   Densidades de texto, Slots, Contenido extenso, Composición y contenedor,
-  Interactividad y estados, Avatar y miniatura, Metadatos y acciones, y Casos
-  de uso. Primero la fila desnuda y al final la que se comporta. Se construye
-  par a par, mirando cada uno antes de escribir el siguiente.
+  Interactividad y estados, Avatar y miniatura, Metadatos y acciones, Lista de
+  personas, Platos del catálogo, Metadatos de comanda, Acciones de gestión y
+  Casos de uso. Primero la fila desnuda y al final la que se comporta. Se
+  construye par a par, mirando cada uno antes de escribir el siguiente.
 
   LO QUE SE LEE DE M3, Y DE DONDE
   -------------------------------
@@ -553,23 +554,351 @@
     </section>
     <!-- PAREJA: hasta aqui -->
 
+    <!-- PAREJA: la lista de personas (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Lista de personas</h2>
+      <p class="md-type-body-medium">Una lista de personas: cada fila con su avatar de 40, el nombre y el turno.</p>
+      <div class="sr-specimen">
+        <ul class="md-list">
+          <li>
+            <a class="md-list-item" href="#">
+              <span class="md-list-item-avatar" aria-hidden="true">AM</span>
+              <div class="md-list-item-content">
+                <span class="md-list-item-headline">Ana Morales</span>
+                <span class="md-list-item-supporting-text">Camarera · Turno de mañana</span>
+              </div>
+              <span class="md-list-item-trailing">
+                <span class="md-icon" aria-hidden="true">chevron_right</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a class="md-list-item" href="#">
+              <span class="md-list-item-avatar" aria-hidden="true">CP</span>
+              <div class="md-list-item-content">
+                <span class="md-list-item-headline">Carlos Pérez</span>
+                <span class="md-list-item-supporting-text">Cajero principal · Turno de mañana</span>
+              </div>
+              <span class="md-list-item-trailing">
+                <span class="md-icon" aria-hidden="true">chevron_right</span>
+              </span>
+            </a>
+          </li>
+          <li>
+            <a class="md-list-item" href="#">
+              <span class="md-list-item-avatar" aria-hidden="true">LR</span>
+              <div class="md-list-item-content">
+                <span class="md-list-item-headline">Lucía Ruiz</span>
+                <span class="md-list-item-supporting-text">Cocinera · Turno de noche</span>
+              </div>
+              <span class="md-list-item-trailing">
+                <span class="md-icon" aria-hidden="true">chevron_right</span>
+              </span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <pre class="sr-code"><code>&lt;ul class="md-list"&gt;
+  &lt;li&gt;
+    &lt;a class="md-list-item" href="#"&gt;
+      &lt;span class="md-list-item-avatar" aria-hidden="true"&gt;AM&lt;/span&gt;
+      &lt;div class="md-list-item-content"&gt;
+        &lt;span class="md-list-item-headline"&gt;Ana Morales&lt;/span&gt;
+        &lt;span class="md-list-item-supporting-text"&gt;Camarera · Turno de mañana&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;span class="md-list-item-trailing"&gt;
+        &lt;span class="md-icon" aria-hidden="true"&gt;chevron_right&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;a class="md-list-item" href="#"&gt;
+      &lt;span class="md-list-item-avatar" aria-hidden="true"&gt;CP&lt;/span&gt;
+      &lt;div class="md-list-item-content"&gt;
+        &lt;span class="md-list-item-headline"&gt;Carlos Pérez&lt;/span&gt;
+        &lt;span class="md-list-item-supporting-text"&gt;Cajero principal · Turno de mañana&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;span class="md-list-item-trailing"&gt;
+        &lt;span class="md-icon" aria-hidden="true"&gt;chevron_right&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;a class="md-list-item" href="#"&gt;
+      &lt;span class="md-list-item-avatar" aria-hidden="true"&gt;LR&lt;/span&gt;
+      &lt;div class="md-list-item-content"&gt;
+        &lt;span class="md-list-item-headline"&gt;Lucía Ruiz&lt;/span&gt;
+        &lt;span class="md-list-item-supporting-text"&gt;Cocinera · Turno de noche&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;span class="md-list-item-trailing"&gt;
+        &lt;span class="md-icon" aria-hidden="true"&gt;chevron_right&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/a&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: los platos del catalogo (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Platos del catálogo</h2>
+      <p class="md-type-body-medium">Los platos del catálogo: la miniatura de 56 y el precio a la altura del nombre.</p>
+      <div class="sr-specimen">
+        <ul class="md-list">
+          <li>
+            <a class="md-list-item md-list-item-multiline" href="#">
+              <span class="md-list-item-thumbnail">
+                <img src="../assets/list-thumb.svg" alt="">
+              </span>
+              <div class="md-list-item-content">
+                <span class="md-list-item-headline">Hamburguesa Especial</span>
+                <span class="md-list-item-supporting-text">Carne de res 180g, queso cheddar fundido y tocineta.</span>
+              </div>
+              <span class="md-list-item-trailing-text">$ 34.900</span>
+            </a>
+          </li>
+          <li>
+            <a class="md-list-item md-list-item-multiline" href="#">
+              <span class="md-list-item-thumbnail">
+                <img src="../assets/list-thumb.svg" alt="">
+              </span>
+              <div class="md-list-item-content">
+                <span class="md-list-item-headline">Milanesa de pollo</span>
+                <span class="md-list-item-supporting-text">Pechuga empanizada con papas y ensalada.</span>
+              </div>
+              <span class="md-list-item-trailing-text">$ 28.500</span>
+            </a>
+          </li>
+          <li>
+            <a class="md-list-item md-list-item-multiline" href="#">
+              <span class="md-list-item-thumbnail">
+                <img src="../assets/list-thumb.svg" alt="">
+              </span>
+              <div class="md-list-item-content">
+                <span class="md-list-item-headline">Combo familiar</span>
+                <span class="md-list-item-supporting-text">Tres hamburguesas, papas y bebidas.</span>
+              </div>
+              <span class="md-list-item-trailing-text">$ 115.000</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <pre class="sr-code"><code>&lt;ul class="md-list"&gt;
+  &lt;li&gt;
+    &lt;a class="md-list-item md-list-item-multiline" href="#"&gt;
+      &lt;span class="md-list-item-thumbnail"&gt;
+        &lt;img src="../assets/list-thumb.svg" alt=""&gt;
+      &lt;/span&gt;
+      &lt;div class="md-list-item-content"&gt;
+        &lt;span class="md-list-item-headline"&gt;Hamburguesa Especial&lt;/span&gt;
+        &lt;span class="md-list-item-supporting-text"&gt;Carne de res 180g, queso cheddar fundido y tocineta.&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;span class="md-list-item-trailing-text"&gt;$ 34.900&lt;/span&gt;
+    &lt;/a&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;a class="md-list-item md-list-item-multiline" href="#"&gt;
+      &lt;span class="md-list-item-thumbnail"&gt;
+        &lt;img src="../assets/list-thumb.svg" alt=""&gt;
+      &lt;/span&gt;
+      &lt;div class="md-list-item-content"&gt;
+        &lt;span class="md-list-item-headline"&gt;Milanesa de pollo&lt;/span&gt;
+        &lt;span class="md-list-item-supporting-text"&gt;Pechuga empanizada con papas y ensalada.&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;span class="md-list-item-trailing-text"&gt;$ 28.500&lt;/span&gt;
+    &lt;/a&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;a class="md-list-item md-list-item-multiline" href="#"&gt;
+      &lt;span class="md-list-item-thumbnail"&gt;
+        &lt;img src="../assets/list-thumb.svg" alt=""&gt;
+      &lt;/span&gt;
+      &lt;div class="md-list-item-content"&gt;
+        &lt;span class="md-list-item-headline"&gt;Combo familiar&lt;/span&gt;
+        &lt;span class="md-list-item-supporting-text"&gt;Tres hamburguesas, papas y bebidas.&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;span class="md-list-item-trailing-text"&gt;$ 115.000&lt;/span&gt;
+    &lt;/a&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: los metadatos de comanda (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Metadatos de comanda</h2>
+      <p class="md-type-body-medium">Los metadatos de la comanda a la altura del nombre: el precio en pesos y la hora de la entrega.</p>
+      <div class="sr-specimen">
+        <ul class="md-list">
+          <li>
+            <button type="button" class="md-list-item md-list-item-multiline">
+              <div class="md-list-item-content">
+                <span class="md-list-item-headline">Comanda #104</span>
+                <span class="md-list-item-supporting-text">Mesa 4 · 3 comensales</span>
+              </div>
+              <span class="md-list-item-trailing-text">$ 115.000</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="md-list-item md-list-item-multiline">
+              <div class="md-list-item-content">
+                <span class="md-list-item-headline">Comanda #105</span>
+                <span class="md-list-item-supporting-text">Mesa 2 · 2 comensales</span>
+              </div>
+              <span class="md-list-item-trailing-text">$ 82.400</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="md-list-item md-list-item-multiline">
+              <div class="md-list-item-content">
+                <span class="md-list-item-headline">Entrega a domicilio #2107</span>
+                <span class="md-list-item-supporting-text">Salió del local</span>
+              </div>
+              <span class="md-list-item-trailing-text">18:00</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+      <pre class="sr-code"><code>&lt;ul class="md-list"&gt;
+  &lt;li&gt;
+    &lt;button type="button" class="md-list-item md-list-item-multiline"&gt;
+      &lt;div class="md-list-item-content"&gt;
+        &lt;span class="md-list-item-headline"&gt;Comanda #104&lt;/span&gt;
+        &lt;span class="md-list-item-supporting-text"&gt;Mesa 4 · 3 comensales&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;span class="md-list-item-trailing-text"&gt;$ 115.000&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;button type="button" class="md-list-item md-list-item-multiline"&gt;
+      &lt;div class="md-list-item-content"&gt;
+        &lt;span class="md-list-item-headline"&gt;Comanda #105&lt;/span&gt;
+        &lt;span class="md-list-item-supporting-text"&gt;Mesa 2 · 2 comensales&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;span class="md-list-item-trailing-text"&gt;$ 82.400&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;button type="button" class="md-list-item md-list-item-multiline"&gt;
+      &lt;div class="md-list-item-content"&gt;
+        &lt;span class="md-list-item-headline"&gt;Entrega a domicilio #2107&lt;/span&gt;
+        &lt;span class="md-list-item-supporting-text"&gt;Salió del local&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;span class="md-list-item-trailing-text"&gt;18:00&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: las acciones de gestion (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h2 class="md-type-title-large">Acciones de gestión</h2>
+      <p class="md-type-body-medium">La acción de gestión va en la última ranura, y es un control del catálogo: el botón de 40.</p>
+      <div class="sr-specimen">
+        <ul class="md-list">
+          <li class="md-list-item">
+            <span class="md-list-item-leading">
+              <span class="md-icon" aria-hidden="true">table_restaurant</span>
+            </span>
+            <div class="md-list-item-content">
+              <span class="md-list-item-headline">Mesa 4 · Terraza</span>
+              <span class="md-list-item-supporting-text">Comanda #104 · 3 comensales</span>
+            </div>
+            <span class="md-list-item-action">
+              <button class="md-icon-button" type="button" aria-label="Editar comanda"><span class="md-icon-button-icon md-icon" aria-hidden="true">edit</span><span class="md-icon-button-touch"></span></button>
+            </span>
+          </li>
+          <li class="md-list-item">
+            <span class="md-list-item-leading">
+              <span class="md-icon" aria-hidden="true">point_of_sale</span>
+            </span>
+            <div class="md-list-item-content">
+              <span class="md-list-item-headline">Cierre de caja</span>
+              <span class="md-list-item-supporting-text">Caja 2 · Turno de noche</span>
+            </div>
+            <span class="md-list-item-action">
+              <button class="md-icon-button" type="button" aria-label="Cerrar caja"><span class="md-icon-button-icon md-icon" aria-hidden="true">check</span><span class="md-icon-button-touch"></span></button>
+            </span>
+          </li>
+          <li class="md-list-item">
+            <span class="md-list-item-leading">
+              <span class="md-icon" aria-hidden="true">local_shipping</span>
+            </span>
+            <div class="md-list-item-content">
+              <span class="md-list-item-headline">Pedido a domicilio #2107</span>
+              <span class="md-list-item-supporting-text">Salió del local</span>
+            </div>
+            <span class="md-list-item-action">
+              <button class="md-icon-button" type="button" aria-label="Más opciones"><span class="md-icon-button-icon md-icon" aria-hidden="true">more_vert</span><span class="md-icon-button-touch"></span></button>
+            </span>
+          </li>
+        </ul>
+      </div>
+      <pre class="sr-code"><code>&lt;ul class="md-list"&gt;
+  &lt;li class="md-list-item"&gt;
+    &lt;span class="md-list-item-leading"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;table_restaurant&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;div class="md-list-item-content"&gt;
+      &lt;span class="md-list-item-headline"&gt;Mesa 4 · Terraza&lt;/span&gt;
+      &lt;span class="md-list-item-supporting-text"&gt;Comanda #104 · 3 comensales&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;span class="md-list-item-action"&gt;
+      &lt;button class="md-icon-button" type="button" aria-label="Editar comanda"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+    &lt;/span&gt;
+  &lt;/li&gt;
+  &lt;li class="md-list-item"&gt;
+    &lt;span class="md-list-item-leading"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;point_of_sale&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;div class="md-list-item-content"&gt;
+      &lt;span class="md-list-item-headline"&gt;Cierre de caja&lt;/span&gt;
+      &lt;span class="md-list-item-supporting-text"&gt;Caja 2 · Turno de noche&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;span class="md-list-item-action"&gt;
+      &lt;button class="md-icon-button" type="button" aria-label="Cerrar caja"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;check&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+    &lt;/span&gt;
+  &lt;/li&gt;
+  &lt;li class="md-list-item"&gt;
+    &lt;span class="md-list-item-leading"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;local_shipping&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;div class="md-list-item-content"&gt;
+      &lt;span class="md-list-item-headline"&gt;Pedido a domicilio #2107&lt;/span&gt;
+      &lt;span class="md-list-item-supporting-text"&gt;Salió del local&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;span class="md-list-item-action"&gt;
+      &lt;button class="md-icon-button" type="button" aria-label="Más opciones"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;more_vert&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+    &lt;/span&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
     <!-- PAREJA: los casos de uso (h2 + specimen + pre + boton). -->
     <section class="sr-section">
       <h2 class="md-type-title-large">Casos de uso</h2>
-      <p class="md-type-body-medium">Composición real para ManGo!: plato de catálogo con foto y precio en COP, gestión de mesa con acción y turno de personal.</p>
+      <p class="md-type-body-medium">Composición real para ManGo!: plato, mesa y cajero, con las tres anatomías de fila.</p>
       <div class="sr-specimen">
         <ul class="md-list">
-          <li class="md-list-item md-list-item-multiline">
-            <span class="md-list-item-thumbnail">
-              <img src="../assets/list-thumb.svg" alt="">
-            </span>
-            <div class="md-list-item-content">
-              <span class="md-list-item-headline">Hamburguesa Especial</span>
-              <span class="md-list-item-supporting-text">Carne de res 180g, queso cheddar fundido, tocineta crocante y vegetales frescos.</span>
-            </div>
-            <span class="md-list-item-trailing-text">$ 34.900</span>
+          <li>
+            <a class="md-list-item md-list-item-multiline" href="#">
+              <span class="md-list-item-thumbnail">
+                <img src="../assets/list-thumb.svg" alt="">
+              </span>
+              <div class="md-list-item-content">
+                <span class="md-list-item-headline">Hamburguesa Especial</span>
+                <span class="md-list-item-supporting-text">Carne de res 180g, queso cheddar fundido, tocineta crocante y vegetales frescos.</span>
+              </div>
+              <span class="md-list-item-trailing-text">$ 34.900</span>
+            </a>
           </li>
-          <li class="md-list-item md-list-item-two-line">
+          <li class="md-list-item">
             <span class="md-list-item-leading">
               <span class="md-icon" aria-hidden="true">table_restaurant</span>
             </span>
@@ -582,28 +911,32 @@
               <button class="md-icon-button" type="button" aria-label="Editar comanda"><span class="md-icon-button-icon md-icon" aria-hidden="true">edit</span><span class="md-icon-button-touch"></span></button>
             </span>
           </li>
-          <li class="md-list-item md-list-item-two-line">
-            <span class="md-list-item-avatar" aria-hidden="true">CP</span>
-            <div class="md-list-item-content">
-              <span class="md-list-item-headline">Carlos Pérez</span>
-              <span class="md-list-item-supporting-text">Cajero principal · Turno mañana</span>
-            </div>
-            <span class="md-list-item-trailing-text">14:00</span>
+          <li>
+            <button type="button" class="md-list-item">
+              <span class="md-list-item-avatar" aria-hidden="true">CP</span>
+              <div class="md-list-item-content">
+                <span class="md-list-item-headline">Carlos Pérez</span>
+                <span class="md-list-item-supporting-text">Cajero principal · Turno mañana</span>
+              </div>
+              <span class="md-list-item-trailing-text">14:00</span>
+            </button>
           </li>
         </ul>
       </div>
       <pre class="sr-code"><code>&lt;ul class="md-list"&gt;
-  &lt;li class="md-list-item md-list-item-multiline"&gt;
-    &lt;span class="md-list-item-thumbnail"&gt;
-      &lt;img src="../assets/list-thumb.svg" alt=""&gt;
-    &lt;/span&gt;
-    &lt;div class="md-list-item-content"&gt;
-      &lt;span class="md-list-item-headline"&gt;Hamburguesa Especial&lt;/span&gt;
-      &lt;span class="md-list-item-supporting-text"&gt;Carne de res 180g, queso cheddar fundido, tocineta crocante y vegetales frescos.&lt;/span&gt;
-    &lt;/div&gt;
-    &lt;span class="md-list-item-trailing-text"&gt;$ 34.900&lt;/span&gt;
+  &lt;li&gt;
+    &lt;a class="md-list-item md-list-item-multiline" href="#"&gt;
+      &lt;span class="md-list-item-thumbnail"&gt;
+        &lt;img src="../assets/list-thumb.svg" alt=""&gt;
+      &lt;/span&gt;
+      &lt;div class="md-list-item-content"&gt;
+        &lt;span class="md-list-item-headline"&gt;Hamburguesa Especial&lt;/span&gt;
+        &lt;span class="md-list-item-supporting-text"&gt;Carne de res 180g, queso cheddar fundido, tocineta crocante y vegetales frescos.&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;span class="md-list-item-trailing-text"&gt;$ 34.900&lt;/span&gt;
+    &lt;/a&gt;
   &lt;/li&gt;
-  &lt;li class="md-list-item md-list-item-two-line"&gt;
+  &lt;li class="md-list-item"&gt;
     &lt;span class="md-list-item-leading"&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;table_restaurant&lt;/span&gt;
     &lt;/span&gt;
@@ -616,13 +949,15 @@
       &lt;button class="md-icon-button" type="button" aria-label="Editar comanda"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
     &lt;/span&gt;
   &lt;/li&gt;
-  &lt;li class="md-list-item md-list-item-two-line"&gt;
-    &lt;span class="md-list-item-avatar" aria-hidden="true"&gt;CP&lt;/span&gt;
-    &lt;div class="md-list-item-content"&gt;
-      &lt;span class="md-list-item-headline"&gt;Carlos Pérez&lt;/span&gt;
-      &lt;span class="md-list-item-supporting-text"&gt;Cajero principal · Turno mañana&lt;/span&gt;
-    &lt;/div&gt;
-    &lt;span class="md-list-item-trailing-text"&gt;14:00&lt;/span&gt;
+  &lt;li&gt;
+    &lt;button type="button" class="md-list-item"&gt;
+      &lt;span class="md-list-item-avatar" aria-hidden="true"&gt;CP&lt;/span&gt;
+      &lt;div class="md-list-item-content"&gt;
+        &lt;span class="md-list-item-headline"&gt;Carlos Pérez&lt;/span&gt;
+        &lt;span class="md-list-item-supporting-text"&gt;Cajero principal · Turno mañana&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;span class="md-list-item-trailing-text"&gt;14:00&lt;/span&gt;
+    &lt;/button&gt;
   &lt;/li&gt;
 &lt;/ul&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
