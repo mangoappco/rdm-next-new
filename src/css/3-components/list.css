@@ -991,6 +991,35 @@
   margin-block-start: var(--md-sys-measurement-list-item-optical-offset);
 }
 
+/* Y LOS OTROS ACCESORIOS, CADA UNO CON SU CENTRO. La fila esta anclada
+   arriba, y con eso el avatar, la miniatura, el texto de detras y la accion
+   se quedaban pegados al techo de la primera linea, en un sitio que no era el
+   de ningun otro: medido, el icono estaba a 12px del texto y los otros a 0.
+
+   EL AVATAR Y LA ACCION, A 2PX. Miden 40, y con eso su centro optico se pone
+   donde lo tiene el icono: 2px, que es (44 del bloque de cabecera - 40) / 2.
+   Los dos comparten centro con el icono, en 32.
+
+   Y LA MINIATURA NO SE MUEVE, Y POR QUE. Mide 56, mas que el bloque de
+   cabecera: bajarla al centro la colgaria 6px por encima de la fila, fuera de
+   la superficie. Se queda anclada al relleno superior, y su caja de 56 cubre
+   sola las dos primeras lineas.
+
+   EL TEXTO DE DETRAS, A 4PX. Es texto, y va con el titular: su centro cae en
+   el del titular, con 4px, que es (24 del titular - 16 del texto) / 2. En un
+   catalogo el precio pertenece al nombre del plato, y si bajara al centro
+   del bloque se descolocaria contra la descripcion. */
+.md-list-item-multiline :is(
+    .md-list-item-avatar,
+    .md-list-item-action
+  ) {
+  margin-block-start: var(--md-sys-measurement-list-item-avatar-offset);
+}
+
+.md-list-item-multiline .md-list-item-trailing-text {
+  margin-block-start: var(--md-sys-measurement-list-item-trailing-text-offset);
+}
+
 /* Y EL TITULAR VUELVE A FLUIR. La variante es la de la ficha larga, y ahi el
    titular no se recorta: si es largo, se parte en dos lineas y la fila crece
    con el. Medido: con el recorte de EL TITULAR, el titular de la variante

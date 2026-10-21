@@ -293,6 +293,25 @@
      12 sale de `--md-ref-spacing-150`, que ya existe en la escala. */
   --md-sys-measurement-list-item-optical-offset: var(--md-ref-spacing-150);
 
+  /* LOS OFFSETS DE LOS ACCESORIOS DE LOS EXTREMES
+     -------------------------------------------------
+     En la variante de contenido extenso la fila esta anclada arriba, y cada
+     accesorio de los extremos necesita su propio desplazamiento para caer en
+     su sitio. Son tres medidas distintas y por eso son tres roles.
+
+       - El offset optico, de 12px, es el del icono: su centro cae en el del
+         bloque de cabecera --titular mas primera linea de apoyo--, que es
+         donde lo pone el item de dos lineas.
+       - El offset del avatar y el de la accion, de 2px, pone su centro --40 de
+         alto-- en el mismo sitio: (44 del bloque - 40) / 2.
+       - El offset del texto de detras, de 4px, lo alinea con el titular:
+         (24 del titular - 16 del texto) / 2. Es texto, y va con el titular.
+
+     Los tres salen de la escala: 12 es `--md-ref-spacing-150`, 2 es
+     `--md-ref-spacing-25` y 4 es `--md-ref-spacing-50`. */
+  --md-sys-measurement-list-item-avatar-offset: var(--md-ref-spacing-25);
+  --md-sys-measurement-list-item-trailing-text-offset: var(--md-ref-spacing-50);
+
   /* LAS MEDIDAS DE LOS MEDIOS DE DELANTE
      --------------------------------------
      El avatar y la miniatura son los dos elementos que pueden ir en la ranura
