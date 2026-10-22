@@ -20,7 +20,7 @@
 
    CONSTRUCCION PAR A PAR
    ----------------------
-   El archivo crece con la vista. Hoy tiene ocho pares: la clase base
+   El archivo crece con la vista. Hoy tiene diez pares: la clase base
    --contenedor de 40dp, los dos o tres segmentos en reposo, la tipografia
    label-large y los bordes--, la seleccion --el tinte secondary-container
    con su on-secondary-container y las dos clases que lo declaran--, el
@@ -33,7 +33,11 @@
    focus-visible y disabled nativo del atributo-- y el playground --la
    seleccion viva, con el motor en src/js/segmented-button.js escribiendo
    LAS DOS caras del estado: la clase que este CSS pinta y el aria que
-   anuncia--. Nada se escribe antes de su par.
+   anuncia--, el desliz del check --el ancho de estado completo: la
+   ranura del check mide en los dos estados, el centrado va por
+   transform y el grupo no se mueve-- y su eco en multi --la misma
+   doctrina sin exclusividad, role="group" con aria-pressed y ranura
+   de check--. Nada se escribe antes de su par.
 
    LO QUE ESTA VERIFICADO Y DONDE
    ------------------------------

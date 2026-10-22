@@ -196,7 +196,7 @@
         <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
       </div>
       <h1 class="md-type-display-large">Segmented Button</h1>
-      <p class="md-type-body-large">El grupo de segmentos ayuda a las personas a seleccionar opciones, cambiar de vista y ordenar datos. Se suele ubicar después de un título de página o de grupo. · <em>Doce pares</em></p>
+      <p class="md-type-body-large">El grupo de segmentos ayuda a las personas a seleccionar opciones, cambiar de vista y ordenar datos. Se suele ubicar después de un título de página o de grupo. · <em>Trece pares</em></p>
     </header>
     <!-- HEADER: fin -->
 
@@ -294,6 +294,39 @@
   &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;&lt;span class="md-segmented-button-item-label"&gt;Desayuno&lt;/span&gt;&lt;/button&gt;
   &lt;button class="md-segmented-button-item md-segmented-button-item-selected" type="button" role="radio" aria-checked="true"&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;&lt;span class="md-segmented-button-item-label"&gt;Comida&lt;/span&gt;&lt;/button&gt;
   &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;&lt;span class="md-segmented-button-item-label"&gt;Cena&lt;/span&gt;&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: el desliz del check en multi (h3 + prosa + 2 specimen + 2 pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">El desliz del check en multi</h3>
+      <p class="md-type-body-medium">La misma doctrina sin exclusividad: el grupo es <code>role="group"</code> con <code>aria-pressed</code>, las marcas conviven y cada una paga su desliz de +13dp fundiendo su propio check —el ancho de estado completo no discrimina quién marca: en cualquier combinación, el grupo se queda en sus 344.41px. Nada va marcado en el primer grupo: pruébalo con el clic.</p>
+      <div class="sr-specimen">
+        <div class="md-segmented-button" role="group" aria-label="Elegir una o más opciones">
+          <button class="md-segmented-button-item" type="button" aria-pressed="false"><span class="md-icon md-segmented-button-item-check" aria-hidden="true">check</span><span class="md-segmented-button-item-label">Desayuno</span></button>
+          <button class="md-segmented-button-item" type="button" aria-pressed="false"><span class="md-icon md-segmented-button-item-check" aria-hidden="true">check</span><span class="md-segmented-button-item-label">Comida</span></button>
+          <button class="md-segmented-button-item" type="button" aria-pressed="false"><span class="md-icon md-segmented-button-item-check" aria-hidden="true">check</span><span class="md-segmented-button-item-label">Cena</span></button>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-segmented-button" role="group" aria-label="Elegir una o más opciones"&gt;
+  &lt;button class="md-segmented-button-item" type="button" aria-pressed="false"&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;&lt;span class="md-segmented-button-item-label"&gt;Desayuno&lt;/span&gt;&lt;/button&gt;
+  &lt;button class="md-segmented-button-item" type="button" aria-pressed="false"&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;&lt;span class="md-segmented-button-item-label"&gt;Comida&lt;/span&gt;&lt;/button&gt;
+  &lt;button class="md-segmented-button-item" type="button" aria-pressed="false"&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;&lt;span class="md-segmented-button-item-label"&gt;Cena&lt;/span&gt;&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+      <div class="sr-specimen">
+        <div class="md-segmented-button" role="group" aria-label="Elegir una o más opciones">
+          <button class="md-segmented-button-item md-segmented-button-item-selected" type="button" aria-pressed="true"><span class="md-icon md-segmented-button-item-check" aria-hidden="true">check</span><span class="md-segmented-button-item-label">Desayuno</span></button>
+          <button class="md-segmented-button-item" type="button" aria-pressed="false"><span class="md-icon md-segmented-button-item-check" aria-hidden="true">check</span><span class="md-segmented-button-item-label">Comida</span></button>
+          <button class="md-segmented-button-item md-segmented-button-item-selected" type="button" aria-pressed="true"><span class="md-icon md-segmented-button-item-check" aria-hidden="true">check</span><span class="md-segmented-button-item-label">Cena</span></button>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-segmented-button" role="group" aria-label="Elegir una o más opciones"&gt;
+  &lt;button class="md-segmented-button-item md-segmented-button-item-selected" type="button" aria-pressed="true"&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;&lt;span class="md-segmented-button-item-label"&gt;Desayuno&lt;/span&gt;&lt;/button&gt;
+  &lt;button class="md-segmented-button-item" type="button" aria-pressed="false"&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;&lt;span class="md-segmented-button-item-label"&gt;Comida&lt;/span&gt;&lt;/button&gt;
+  &lt;button class="md-segmented-button-item md-segmented-button-item-selected" type="button" aria-pressed="true"&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;&lt;span class="md-segmented-button-item-label"&gt;Cena&lt;/span&gt;&lt;/button&gt;
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
