@@ -1,0 +1,51 @@
+/* ==========================================================================
+   4-utilities/row.css — FILAS DE PANTALLA (dogfooding)
+   ==========================================================================
+
+   QUE ES ESTA FAMILIA
+   -------------------
+   La fila horizontal entre piezas reales de ManGo! App: el titulo de la
+   comanda con su boton de cerrar, la barra del KDS con su filtro, la
+   fila de control del catalogo con su alta. M3 no publica un token de
+   fila --no hay nada que se llame "layout row" en su documentacion-- y
+   la casa vivio sin ella hasta el Bloque 2 del Segmented Button, que
+   ensambla pantallas y no componentes a solas.
+
+   POR QUE EN CAPA 4
+   -----------------
+   Es una utilidad de AUTORIA, no un rol de token: el marcado decide
+   cuando una fila existe, como decide cuando un fondo es primary. Vive
+   en la ULTIMA capa para ganar empates contra componentes, la misma
+   doctrina utility-first que color.css y typography.css declaman en el
+   header de index.css.
+
+   EL GAP: EL PASO DE 8DP
+   ----------------------
+   El hueco entre piezas de la fila es el mismo 8dp del sistema: el del
+   icono con su etiqueta del segmented, el del grupo de botones, el de la
+   fila de la lista (`list-item-between-space`). Un solo paso de aire
+   horizontal en toda la casa; una fila con otro paso es una decision
+   de diseño, no una utilidad.
+
+   NOTA DE REGLA 11
+   ----------------
+   Las filas son marcado real de los snippets del Bloque 2 --se copian
+   con el paquete entero--. Showroom.css excluye su aire de escenario
+   para no pintarles padding que el snippet no trae; el detalle esta
+   contado alla.
+   ========================================================================== */
+
+/* La fila: flex en linea, centrada en el eje vertical, con el paso 8dp.
+   Ancho natural: se achica a su contenido dentro del escenario. */
+.md-row {
+  display: flex;
+  align-items: center;
+  gap: var(--md-sys-measurement-list-item-between-space);
+  min-width: 0;
+}
+
+/* Entre extremos: el primero a la izquierda, el ultimo a la derecha.
+   El titulo de la comanda con su cerrar, la barra con su filtro. */
+.md-row-between {
+  justify-content: space-between;
+}

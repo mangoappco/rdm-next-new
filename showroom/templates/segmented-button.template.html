@@ -15,21 +15,21 @@
 </head>
 
 <!--
-  ESTA VISTA TIENE OCHO PARES, EN CONSTRUCCION PAR A PAR. El bloque
-  normativo --Especificacion tecnica y anatomia-- abre con la clase base,
-  sigue con la seleccion, el cambio icono → check, la multi-seleccion,
-  los extremos de dos a cinco, la densidad de la escala vertical y las
-  capas de estado, y cierra con el playground de recetas. Despues viene
-  el bloque de casos de uso de ManGo! App con los tres acordados: el
-  tipo de comanda del POS, el monitor de despacho del KDS y el cambio
-  de vista del catalogo.
+  ESTA VISTA TIENE ONCE PARES Y DOS BLOQUES. El Bloque 1 normativo
+  --Especificacion tecnica y anatomia-- abre con la clase base, sigue con
+  la seleccion, el cambio icono → check, la multi-seleccion, los extremos
+  de dos a cinco, la densidad de la escala vertical y las capas de
+  estado, y cierra con el playground de recetas. El Bloque 2 pasa del
+  control a las pantallas: los tres casos de uso de ManGo! App --la
+  comanda del POS, el filtro del KDS y las dos vistas del catalogo--
+  ensamblados por dogfooding con card, divider, button e icon-button.
 
   El corte se marca con un divisor, el titulo de cada bloque es un h2 y los
   pares van en h3 debajo: el h1 es el nombre del componente, y el esquema
   queda h1 > h2 (bloque) > h3 (par). La aparicion no cambia, porque el tipo
   lo pone la clase y no la etiqueta.
 
-  LOS ONCE ACUERDOS ANTES DE ESCRIBIR NADA
+  LOS DOCE ACUERDOS ANTES DE ESCRIBIR NADA
   -----------------------------------------
   1. Clases: `md-segmented-button` para el grupo y `md-segmented-button-item`
      para el segmento, el precedente de `md-list` / `md-list-item`. M3 web
@@ -110,6 +110,28 @@
       exclusiva no queda nunca vacia. Sin main.js la seleccion queda
       estatica, como en los otros pares: es la autosuficiencia de la
       REGLA 13, que este par convierte en API de produccion.
+  12. DOGFOODING REAL DEL BLOQUE 2: los casos no son el control a solas,
+      cada uno ensambla con componentes vivos del catalogo --card,
+      divider, button e icon-button-- y una pantalla de ManGo! de la
+      buena. Cuatro decisiones alineadas en su escritura:
+      (a) Las clases van como la casa las publica, y no con BEM para
+          consola: `md-card-outlined` y `md-card-elevated` de un trazo,
+          `md-button-filled` y `md-button-tonal`, y el tamano del boton
+          companero del denso es `md-button-xsmall` --de los 32px del
+          propio escalon; `md-button-compact` no existe: los tamanos son
+          escalones de size, no adjetivos--.
+      (b) La fila de pantalla no tenia utilidad en la casa, y los tres
+          casos la necesitan: entran `md-row` y `md-row-between` en
+          4-utilities/row.css, con el paso de 8dp del sistema. La fila
+          del titulo con su accion a la derecha vive en content y no en
+          header --la ranura `md-card-header` es columna por diseño M3,
+          y card.css no se reescribe para un caso--.
+      (c) El filtro del KDS lleva el slot del check en los TRES
+          segmentos --colapsado a 0 en reposo, opacity 1 al marcarse--:
+          la celda existe en los dos estados y la leyenda no se mueve
+          un pixel, el par icono → check aplicado al texto solo. Los
+          icon-only del catalogo van igual (acuerdo 4): marcado, el
+          check sustituye al glifo.
 
   LO QUE ESTA VISTA NO DICE, Y POR QUE
   ------------------------------------
@@ -136,7 +158,7 @@
         <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
       </div>
       <h1 class="md-type-display-large">Segmented Button</h1>
-      <p class="md-type-body-large">El grupo conectado de M3: segmentos de ancho compartido que alternan modo o vista. · <em>Ocho pares</em></p>
+      <p class="md-type-body-large">El grupo conectado de M3: segmentos de ancho compartido que alternan modo o vista. · <em>Once pares</em></p>
     </header>
     <!-- HEADER: fin -->
 
@@ -350,6 +372,170 @@
   &lt;button class="md-segmented-button-item" type="button" aria-pressed="false"&gt;Mié&lt;/button&gt;
   &lt;button class="md-segmented-button-item" type="button" aria-pressed="false"&gt;Jue&lt;/button&gt;
   &lt;button class="md-segmented-button-item" type="button" aria-pressed="false"&gt;Vie&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- BLOQUE 2: los casos de uso de ManGo! App. El componente ensamblado
+         en pantallas reales, por dogfooding con card, divider, button e
+         icon-button (acuerdo 12). -->
+    <hr class="md-divider">
+    <h2 class="md-type-headline-medium">Casos de uso de ManGo! App</h2>
+
+    <!-- PAREJA: la comanda del POS (h3 + prosa + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">La comanda del POS</h3>
+      <p class="md-type-body-medium">El caso de ManGo!: la orden activa del punto de venta lleva su modalidad dentro de la tarjeta, el selector define si el pedido marcha a salón, llevar o domicilio sin salirse de la fila del cobro.</p>
+      <div class="sr-specimen">
+        <article class="md-card md-card-outlined">
+          <div class="md-card-content">
+            <div class="md-row md-row-between">
+              <h3 class="md-type-title-large">Orden #104</h3>
+              <button class="md-icon-button" type="button" aria-label="Cerrar comanda"><span class="md-icon-button-icon md-icon" aria-hidden="true">close</span><span class="md-icon-button-touch"></span></button>
+            </div>
+            <p class="md-type-body-medium">Mesa 12 · 2 platos · 1 bebida</p>
+            <div class="md-segmented-button" role="radiogroup" aria-label="Tipo de comanda">
+              <button class="md-segmented-button-item md-segmented-button-item-selected" type="button" role="radio" aria-checked="true"><span class="md-icon" aria-hidden="true">storefront</span><span class="md-icon md-segmented-button-item-check" aria-hidden="true">check</span>Salón</button>
+              <button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"><span class="md-icon" aria-hidden="true">takeout_dining</span><span class="md-icon md-segmented-button-item-check" aria-hidden="true">check</span>Llevar</button>
+              <button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"><span class="md-icon" aria-hidden="true">delivery_dining</span><span class="md-icon md-segmented-button-item-check" aria-hidden="true">check</span>Domicilio</button>
+            </div>
+            <hr class="md-divider">
+            <p class="md-type-title-medium">Total: $128.50</p>
+          </div>
+          <div class="md-card-actions">
+            <button class="md-button md-button-filled" type="button"><span class="md-button-label">Cobrar</span></button>
+          </div>
+        </article>
+      </div>
+      <pre class="sr-code"><code>&lt;article class="md-card md-card-outlined"&gt;
+  &lt;div class="md-card-content"&gt;
+    &lt;div class="md-row md-row-between"&gt;
+      &lt;h3 class="md-type-title-large"&gt;Orden #104&lt;/h3&gt;
+      &lt;button class="md-icon-button" type="button" aria-label="Cerrar comanda"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;close&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;p class="md-type-body-medium"&gt;Mesa 12 · 2 platos · 1 bebida&lt;/p&gt;
+    &lt;div class="md-segmented-button" role="radiogroup" aria-label="Tipo de comanda"&gt;
+      &lt;button class="md-segmented-button-item md-segmented-button-item-selected" type="button" role="radio" aria-checked="true"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;storefront&lt;/span&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;Salón&lt;/button&gt;
+      &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;takeout_dining&lt;/span&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;Llevar&lt;/button&gt;
+      &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;delivery_dining&lt;/span&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;Domicilio&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;hr class="md-divider"&gt;
+    &lt;p class="md-type-title-medium"&gt;Total: $128.50&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-actions"&gt;
+    &lt;button class="md-button md-button-filled" type="button"&gt;&lt;span class="md-button-label"&gt;Cobrar&lt;/span&gt;&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/article&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: el filtro del KDS (h3 + prosa + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">El filtro del KDS</h3>
+      <p class="md-type-body-medium">El monitor de cocina filtra las comandas por estado sin recargar la pantalla —el espacio del check va reservado antes de la leyenda: al conmutar, la fila no se mueve un pixel.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <div class="md-row md-row-between">
+          <h3 class="md-type-title-large">Cocina</h3>
+          <div class="md-segmented-button" role="radiogroup" aria-label="Filtro de comandas">
+            <button class="md-segmented-button-item md-segmented-button-item-selected" type="button" role="radio" aria-checked="true"><span class="md-icon md-segmented-button-item-check" aria-hidden="true">check</span>Espera</button>
+            <button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"><span class="md-icon md-segmented-button-item-check" aria-hidden="true">check</span>Cocina</button>
+            <button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"><span class="md-icon md-segmented-button-item-check" aria-hidden="true">check</span>Listos</button>
+          </div>
+        </div>
+        <article class="md-card md-card-elevated">
+          <div class="md-card-header">
+            <p class="md-type-title-large">Orden #98</p>
+          </div>
+          <div class="md-card-content">
+            <p class="md-type-body-medium">2 × Pupusa de queso · 1 × Atol de elote — en la fila hace 4 minutos.</p>
+          </div>
+          <div class="md-card-actions">
+            <button class="md-button md-button-tonal" type="button"><span class="md-button-label">Despachar</span></button>
+          </div>
+        </article>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-row md-row-between"&gt;
+  &lt;h3 class="md-type-title-large"&gt;Cocina&lt;/h3&gt;
+  &lt;div class="md-segmented-button" role="radiogroup" aria-label="Filtro de comandas"&gt;
+    &lt;button class="md-segmented-button-item md-segmented-button-item-selected" type="button" role="radio" aria-checked="true"&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;Espera&lt;/button&gt;
+    &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;Cocina&lt;/button&gt;
+    &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;Listos&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;article class="md-card md-card-elevated"&gt;
+  &lt;div class="md-card-header"&gt;
+    &lt;p class="md-type-title-large"&gt;Orden #98&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;2 × Pupusa de queso · 1 × Atol de elote — en la fila hace 4 minutos.&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-actions"&gt;
+    &lt;button class="md-button md-button-tonal" type="button"&gt;&lt;span class="md-button-label"&gt;Despachar&lt;/span&gt;&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/article&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: las dos vistas del catálogo (h3 + prosa + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Las dos vistas del catálogo</h3>
+      <p class="md-type-body-medium">La administración alterna entre cuadrícula y lista, y la fila de control vive en los 32px del paso -2 —el botón del alta camina en el mismo peldaño.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <div class="md-row md-row-between">
+          <div class="md-segmented-button md-segmented-button-dense" role="radiogroup" aria-label="Modo de visualización">
+            <button class="md-segmented-button-item md-segmented-button-item-selected" type="button" role="radio" aria-checked="true" aria-label="Vista cuadrícula"><span class="md-icon" aria-hidden="true">grid_view</span><span class="md-icon md-segmented-button-item-check" aria-hidden="true">check</span></button>
+            <button class="md-segmented-button-item" type="button" role="radio" aria-checked="false" aria-label="Vista lista"><span class="md-icon" aria-hidden="true">view_list</span><span class="md-icon md-segmented-button-item-check" aria-hidden="true">check</span></button>
+          </div>
+          <button class="md-button md-button-filled md-button-xsmall" type="button"><span class="md-button-label">Nuevo</span></button>
+        </div>
+        <hr class="md-divider">
+        <div class="md-row">
+          <article class="md-card md-card-outlined">
+            <div class="md-card-header">
+              <p class="md-type-title-large">Sopa de res</p>
+            </div>
+            <div class="md-card-content">
+              <p class="md-type-body-medium">$8.50 · 12 en inventario — receta de la casa, disponible en almuerzo.</p>
+            </div>
+          </article>
+          <article class="md-card md-card-outlined">
+            <div class="md-card-header">
+              <p class="md-type-title-large">Pollo en crema</p>
+            </div>
+            <div class="md-card-content">
+              <p class="md-type-body-medium">$12.00 · 8 en inventario — con acompañamiento de arroz y tortillas.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-row md-row-between"&gt;
+  &lt;div class="md-segmented-button md-segmented-button-dense" role="radiogroup" aria-label="Modo de visualización"&gt;
+    &lt;button class="md-segmented-button-item md-segmented-button-item-selected" type="button" role="radio" aria-checked="true" aria-label="Vista cuadrícula"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;grid_view&lt;/span&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;&lt;/button&gt;
+    &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false" aria-label="Vista lista"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;view_list&lt;/span&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;button class="md-button md-button-filled md-button-xsmall" type="button"&gt;&lt;span class="md-button-label"&gt;Nuevo&lt;/span&gt;&lt;/button&gt;
+&lt;/div&gt;
+&lt;hr class="md-divider"&gt;
+&lt;div class="md-row"&gt;
+  &lt;article class="md-card md-card-outlined"&gt;
+    &lt;div class="md-card-header"&gt;
+      &lt;p class="md-type-title-large"&gt;Sopa de res&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="md-card-content"&gt;
+      &lt;p class="md-type-body-medium"&gt;$8.50 · 12 en inventario — receta de la casa, disponible en almuerzo.&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/article&gt;
+  &lt;article class="md-card md-card-outlined"&gt;
+    &lt;div class="md-card-header"&gt;
+      &lt;p class="md-type-title-large"&gt;Pollo en crema&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="md-card-content"&gt;
+      &lt;p class="md-type-body-medium"&gt;$12.00 · 8 en inventario — con acompañamiento de arroz y tortillas.&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/article&gt;
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
