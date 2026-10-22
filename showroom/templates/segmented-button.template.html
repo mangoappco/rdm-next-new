@@ -15,11 +15,12 @@
 </head>
 
 <!--
-  ESTA VISTA TIENE DOCE PARES Y DOS BLOQUES. El Bloque 1 normativo
+  ESTA VISTA TIENE TRECE PARES Y DOS BLOQUES. El Bloque 1 normativo
   --Especificacion tecnica y anatomia-- abre con la clase base, sigue con
-  la seleccion, el cambio icono → check y su desliz en solo-texto, la
-  multi-seleccion, los extremos de dos a cinco, la densidad de la escala
-  vertical y las capas de estado, y cierra con el playground de recetas.
+  la seleccion, el cambio icono → check, el check de solo texto en
+  seleccion unica, la multi-seleccion y el mismo check en multi, los
+  extremos de dos a cinco, la densidad de la escala vertical y las capas
+  de estado, y cierra con el playground de recetas.
   El Bloque 2 pasa del
   control a las pantallas: los tres casos de uso de ManGo! App --la
   comanda del POS, el filtro del KDS y las dos vistas del catalogo--
@@ -153,7 +154,7 @@
           es layout: no paga reflow ni toca la reticula. Resultado: la
           pista 1fr no se encoge ni se infla al conmutar y el borde
           exterior del grupo queda firme --344.41 constante en los tres
-          estados del par del desliz, delta 0px, medido en dos
+          estados del par de solo texto, delta 0px, medido en dos
           direcciones--. Es la lectura de la tabla oficial
           (m3.material.io/components/segmented-buttons/specs) que pesa:
           "Container width: Dynamic based on labels" --de sus labels, no
@@ -266,10 +267,10 @@
     </section>
     <!-- PAREJA: hasta aqui -->
 
-    <!-- PAREJA: el desliz del check en solo-texto (h3 + prosa + 2 specimen + 2 pre + 2 boton). -->
+    <!-- PAREJA: el check de solo texto en seleccion unica (h3 + prosa + 2 specimen + 2 pre + 2 boton). -->
     <section class="sr-section">
-      <h3 class="md-type-title-large">El desliz del check</h3>
-      <p class="md-type-body-medium">El canon en solo-texto: la caja del check mide sus 18dp en los dos estados y solo cruza opacidad —el max-content del segmento lleva el par completo desde el reposo, así el grupo no se mueve ni un bit al marcar. El desliz visible lo paga la leyenda: desliza +13dp con un transform hasta la pareja centrada, y se pliega igual al conmutar. Nada va marcado en el primer grupo: pruébalo con el clic.</p>
+      <h3 class="md-type-title-large">Check con solo texto en selección única</h3>
+      <p class="md-type-body-medium">El check aparece al marcar un segmento de solo texto y la leyenda queda centrada; el grupo no cambia de tamaño. Nada va marcado en el primer grupo: pruébalo con el clic.</p>
       <div class="sr-specimen">
         <div class="md-segmented-button" role="radiogroup" aria-label="Elegir un momento">
           <button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"><span class="md-icon md-segmented-button-item-check" aria-hidden="true">check</span><span class="md-segmented-button-item-label">Desayuno</span></button>
@@ -319,10 +320,10 @@
     </section>
     <!-- PAREJA: hasta aqui -->
 
-    <!-- PAREJA: el desliz del check en multi (h3 + prosa + 2 specimen + 2 pre + boton). -->
+    <!-- PAREJA: el check de solo texto en multi (h3 + prosa + 2 specimen + 2 pre + boton). -->
     <section class="sr-section">
-      <h3 class="md-type-title-large">El desliz del check en multi</h3>
-      <p class="md-type-body-medium">La misma doctrina sin exclusividad: el grupo es <code>role="group"</code> con <code>aria-pressed</code>, las marcas conviven y cada una paga su desliz de +13dp fundiendo su propio check —el ancho de estado completo no discrimina quién marca: en cualquier combinación, el grupo se queda en sus 344.41px. Nada va marcado en el primer grupo: pruébalo con el clic.</p>
+      <h3 class="md-type-title-large">Check con solo texto en multi-selección</h3>
+      <p class="md-type-body-medium">El mismo check sin exclusividad —el grupo es <code>role="group"</code> con <code>aria-pressed</code>—: los segmentos pueden quedar marcados a la vez y el grupo tampoco cambia de tamaño. Nada va marcado en el primer grupo: pruébalo con el clic.</p>
       <div class="sr-specimen">
         <div class="md-segmented-button" role="group" aria-label="Elegir una o más opciones">
           <button class="md-segmented-button-item" type="button" aria-pressed="false"><span class="md-icon md-segmented-button-item-check" aria-hidden="true">check</span><span class="md-segmented-button-item-label">Desayuno</span></button>
@@ -538,7 +539,7 @@
     <!-- PAREJA: el filtro del KDS (h3 + prosa + specimen + pre + boton). -->
     <section class="sr-section">
       <h3 class="md-type-title-large">El filtro del KDS</h3>
-      <p class="md-type-body-medium">El monitor de cocina filtra las comandas por estado sin recargar la pantalla —en reposo la leyenda va sola y centrada, y al conmutar el check abre de 0 a 18 con el desliz que le hace sitio.</p>
+      <p class="md-type-body-medium">El monitor de cocina filtra las comandas por estado sin recargar la pantalla -en reposo la leyenda va sola y centrada; al conmutar aparece el check y la leyenda se re-centra sin mover el ancho del grupo.</p>
       <div class="sr-specimen sr-specimen-gap">
         <div class="md-row md-row-between">
           <h3 class="md-type-title-large">Cocina</h3>

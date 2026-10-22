@@ -33,11 +33,11 @@
    focus-visible y disabled nativo del atributo-- y el playground --la
    seleccion viva, con el motor en src/js/segmented-button.js escribiendo
    LAS DOS caras del estado: la clase que este CSS pinta y el aria que
-   anuncia--, el desliz del check --el ancho de estado completo: la
-   ranura del check mide en los dos estados, el centrado va por
-   transform y el grupo no se mueve-- y su eco en multi --la misma
-   doctrina sin exclusividad, role="group" con aria-pressed y ranura
-   de check--. Nada se escribe antes de su par.
+   anuncia--, el check de solo texto en seleccion unica --el ancho de
+   estado completo: la ranura del check mide en los dos estados, el
+   centrado va por transform y el grupo no se mueve-- y el mismo en
+   multi --la misma doctrina sin exclusividad, role="group" con
+   aria-pressed y ranura de check--. Nada se escribe antes de su par.
 
    LO QUE ESTA VERIFICADO Y DONDE
    ------------------------------
@@ -230,7 +230,7 @@
    el transform de la leyenda, que no es layout --ver EL LABEL--.
    Resultado: el max-content no depende de la seleccion, la pista 1fr
    no se encoge ni se infla al conmutar, y el borde exterior del grupo
-   queda firme --delta 0px en los tres estados del par del desliz
+   queda firme --delta 0px en los tres estados del par de solo texto
    (344.41 constante, medido en dos direcciones)--. Es la lectura de la
    tabla que pesa: "Container width: Dynamic based on labels" fija el
    ancho por sus LABELS y no por el estado de seleccion; "Segment
