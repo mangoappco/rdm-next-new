@@ -15,13 +15,14 @@
 </head>
 
 <!--
-  ESTA VISTA TIENE TRES PARES, EN CONSTRUCCION PAR A PAR. El bloque
+  ESTA VISTA TIENE CUATRO PARES, EN CONSTRUCCION PAR A PAR. El bloque
   normativo --Especificacion tecnica y anatomia-- abre con la clase base,
-  sigue con la seleccion y el cambio icono → check, y crece un par cada
-  vez que se verifica en el navegador: de dos a cinco, estados y el
-  playground de recetas. Despues viene el bloque de casos de uso de
-  ManGo! App con los tres acordados: el tipo de comanda del POS, el
-  monitor de despacho del KDS y el cambio de vista del catalogo.
+  sigue con la seleccion, el cambio icono → check y la multi-seleccion,
+  y crece un par cada vez que se verifica en el navegador: de dos a
+  cinco, estados y el playground de recetas. Despues viene el bloque de
+  casos de uso de ManGo! App con los tres acordados: el tipo de comanda
+  del POS, el monitor de despacho del KDS y el cambio de vista del
+  catalogo.
 
   El corte se marca con un divisor, el titulo de cada bloque es un h2 y los
   pares van en h3 debajo: el h1 es el nombre del componente, y el esquema
@@ -100,7 +101,7 @@
         <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
       </div>
       <h1 class="md-type-display-large">Segmented Button</h1>
-      <p class="md-type-body-large">El grupo conectado de M3: segmentos de ancho compartido que alternan modo o vista. · <em>Tres pares</em></p>
+      <p class="md-type-body-large">El grupo conectado de M3: segmentos de ancho compartido que alternan modo o vista. · <em>Cuatro pares</em></p>
     </header>
     <!-- HEADER: fin -->
 
@@ -165,6 +166,26 @@
   &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;star&lt;/span&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;Opción uno&lt;/button&gt;
   &lt;button class="md-segmented-button-item md-segmented-button-item-selected" type="button" role="radio" aria-checked="true"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;star&lt;/span&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;Opción dos&lt;/button&gt;
   &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;star&lt;/span&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;Opción tres&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: la multi-seleccion (h3 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Multi-selección</h3>
+      <p class="md-type-body-medium">Dos segmentos marcados a la vez: la selección no es excluyente. La semántica cambia con el modo: <code>role="group"</code> en el grupo y <code>aria-pressed</code> en cada segmento.</p>
+      <div class="sr-specimen">
+        <div class="md-segmented-button" role="group" aria-label="Elegir una o más opciones">
+          <button class="md-segmented-button-item md-segmented-button-item-selected" type="button" aria-pressed="true">Opción uno</button>
+          <button class="md-segmented-button-item md-segmented-button-item-selected" type="button" aria-pressed="true">Opción dos</button>
+          <button class="md-segmented-button-item" type="button" aria-pressed="false">Opción tres</button>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-segmented-button" role="group" aria-label="Elegir una o más opciones"&gt;
+  &lt;button class="md-segmented-button-item md-segmented-button-item-selected" type="button" aria-pressed="true"&gt;Opción uno&lt;/button&gt;
+  &lt;button class="md-segmented-button-item md-segmented-button-item-selected" type="button" aria-pressed="true"&gt;Opción dos&lt;/button&gt;
+  &lt;button class="md-segmented-button-item" type="button" aria-pressed="false"&gt;Opción tres&lt;/button&gt;
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
