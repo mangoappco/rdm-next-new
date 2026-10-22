@@ -24,8 +24,9 @@
    --contenedor de 40dp, los dos o tres segmentos en reposo, la tipografia
    label-large y los bordes--, la seleccion --el tinte secondary-container
    con su on-secondary-container y las dos clases que lo declaran--, los
-   iconos solos --el mismo swap de la ranura sin leyenda, icono y check
-   compartiendo celda en los dos modos--, el
+   iconos solos --la ranura sin leyenda: el glifo NO se despide al
+   marcarse --un check sin icono al lado pierde la referencia-- y la
+   seleccion la paga el tinte con su on-secondary-container--. El
    cambio icono → check --la ranura compartida, el swap de transparencia y
    el glifo de 18dp con su excepcion en capa 1--, la multi-seleccion --dos
    marcadas conviviendo bajo role="group" y aria-pressed--, la extension
@@ -477,9 +478,19 @@
   opacity: 1;
 }
 
-.md-segmented-button-item-selected > .md-icon:not(.md-segmented-button-item-check) {
+.md-segmented-button-item-selected:has(> .md-segmented-button-item-check) > .md-icon:not(.md-segmented-button-item-check) {
   opacity: 0;
 }
+
+/* LOS ICONOS SOLOS NO LLEVAN CHECK. El segmento que solo trae su glifo
+   se despide de si mismo en el marcado: un check sin icono al lado no
+   dice que eligio --pierde la referencia--, y por eso no llevan el
+   span de check en su marcado. La seleccion la paga el tinte del
+   container con su on-secondary-container --el color hereda al glifo
+   sin regla nueva, como los dos glifos del canje--. De ahi que la
+   regla del fundido de arriba amarre la despedida a la PRESENCIA del
+   check --:has--: solo el icono que tiene check detras se despide; el
+   icono solo pinta siempre. */
 
 /* EL LABEL, LA TERCERA RANURA. El patron es el del md-button-label: la
    leyenda es un span de la casa y no texto anonimo, porque el aire de la
