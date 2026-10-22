@@ -219,17 +219,27 @@
    align-self ni align-items en el grupo, para no condicionar el
    aparato del contenedor que lo habitara.
 
-   Y ASEGURA EL RE-MEDIDO AL MARCAR: el max-content de la pastilla marcada
-   lleva los 26dp del par --check 18 + aire 8--, la pista crece con el
-   marcado y el grupo entero se re-mide --266 a 344px en el grupo de tres
-   del par del desliz, medido--. Es la conducta de la receta del set web y
-   se documenta a proposito: la contencion del item --min-width a cero,
-   width al 100%-- no la evita, porque la contribucion intrinseca del
-   item a su pista es padding + contenido y los porcentajes se tratan como
-   auto en el paso de medicion intrinseca. La via alternativa --reservar
-   el par en el padding--, la manga, se construyo, midio feliz con el
-   grupo constante y se retiro: en M3 el padding es canonicamente 12dp y
-   no existe el concepto de ranura inflada en reposo.
+   EL ANCHO ES DEL ESTADO COMPLETO, Y POR ESO EL GRUPO NO SE MUEVE. El
+   max-content de cada segmento lleva SIEMPRE el par completo
+   [check 18 + aire 8]: el check mide su caja de 18dp en los DOS estados
+   --solo cruza opacidad, crossfade-- y el desliz del centrado lo lleva
+   el transform de la leyenda, que no es layout --ver EL LABEL--.
+   Resultado: el max-content no depende de la seleccion, la pista 1fr
+   no se encoge ni se infla al conmutar, y el borde exterior del grupo
+   queda firme --delta 0px en los tres estados del par del desliz
+   (344.41 constante, medido en dos direcciones)--. Es la lectura de la
+   tabla que pesa: "Container width: Dynamic based on labels" fija el
+   ancho por sus LABELS y no por el estado de seleccion; "Segment
+   width: Container width / total segments" cumple en cada track; y el
+   "Min 12dp" es piso, no techo: el padding NUNCA miente los 12dp
+   declarados, y el aire lateral que el par deja es el del estado
+   completo, 38dp entre borde y leyenda en reposo. La historia de las
+   dos doctrinas que antecedieron queda escrita para que nadie la
+   devolviera: la manga reservo el par en el padding (12 a 25dp por
+   lado, grupo constante) y se retiro por canon inflado; el reflow
+   devolvio el acordeon 266 a 344 al marcar (fiel al componente web de
+   labs, hoy formalmente Unavailable --la tabla y Compose pesan--). El
+   estado completo es el tercer asiento y el que queda.
    -------------------------------------------------------------------------- */
 
 .md-segmented-button {
@@ -314,11 +324,11 @@
 
   /* La caja no discute su pista: el stretch del grid ya estira el item a
      lo suyo, y width al 100% con min-width a cero lo repiten a proposito.
-     No cortan la contribucion intrinseca del item --los porcentajes en el
-     paso de medicion inherente se tratan como auto, medido--, asi que no
-     evitan el re-medido del grupo al marcar: lo que dicen es que, fijada
-     la pista, el ancho animado del check se queda dentro de la celda que
-     la reticula le asigno y no se sale de ella. */
+     Con el ancho de estado completo la contribucion intrinseca del item
+     es CONSTANTE por diseno --lleva el par [check 18 + aire 8] en todos
+     los estados--, pero estas dos propiedades siguen custodiando su
+     celda: fijada la pista, el contenido del check se queda dentro y no
+     se sale. */
   min-width: 0;
   width: 100%;
 
@@ -346,9 +356,9 @@
      marcado que mueva la clase, y tambien por el disabled que apaga
      tinte y leyenda --la regla sola no discrimina quien cambia el
      valor--. La lista lleva SOLO estas dos propiedades: el borde y el
-     anillo de foco no funden, el padding tampoco --el grupo se re-mide
-     al marcar, conducta documentada de la reticula abrazada--, y la
-     capa de estado funde sola en su ::after. */
+     anillo de foco no funden, el padding tampoco --y con el ancho de
+     estado completo ya no hay nada mas que fundir en la caja: el grupo
+     no se mueve--, y la capa de estado funde sola en su ::after. */
   transition:
     background-color
       var(--md-comp-segmented-button-swap-duration)
@@ -408,13 +418,15 @@
      va al par Expressive entero, effects + short4, como el resto del
      sistema.
 
-   - SOLO-TEXTO, el canon tambien: en reposo el check pinta 0 --width 0,
-     opacity 0, overflow hidden-- y la leyenda queda sola, centrada. Al
-     marcarse, el check abre de 0 a 18dp y el label le hace sitio con su
-     margin-inline-start: dos elementos, un evento --el mismo par
-     effects + short4 gobierna las caras del cambio (check, label y el
-     tinte del item)--. El desliz corre frame a frame porque el ancho
-     abre interpolado; un cambio de display no funde y saltaria.
+   - SOLO-TEXTO CON CHECK, el canon tambien: el check lleva su caja de
+     18dp pintada a TODOS los estados y solo cruza opacidad --el mismo
+     crossfade de la ranura con icono--. Es la medida del estado
+     completo: el max-content del segmento cuenta el par [check 18 +
+     aire 8] desde el reposo, al marcar no hay reticula que se mueva y
+     el desliz visible lo paga la leyenda con su transform --ver EL
+     LABEL, que no es layout--. Un cambio de display no funde; aqui ni
+     siquiera hace falta desplegar ancho: la caja ya esta y el glifo
+     entra fundido.
 
    El check se pinta SIEMPRE en el marcado de los segmentos que lo
    ofrecen, como en la receta web --su svg anda en todo segmento aunque
@@ -440,28 +452,22 @@
     var(--md-comp-segmented-button-swap-easing);
 }
 
-/* EL CHECK. Reposo: la caja colapsa a 0 --width 0 y overflow hidden para
-   que el glifo no asome--, opacity 0. Su transicion abre ancho y opacidad
-   con el mismo par: es una cara del swap, nunca dos pares para un
-   boton. El selector lleva la lista doble a proposito, para ganar el
-   empate con la transicion de la regla de arriba y quedarse con su
-   lista de dos propiedades. */
+/* EL CHECK, LA CAJA DEL ESTADO COMPLETO. La caja NO colapsa: mide los
+   18dp del icon-size en los DOS estados, y lo unico que cruza es la
+   opacidad --el mismo crossfade del swap de la ranura, la transicion la
+   lleva la regla de la ranura compartida de arriba--. Es la sentencia
+   del ancho de estado completo: el max-content del segmento cuenta el
+   par [check 18 + aire 8] en reposo tambien, y al marcarse no hay un
+   solo bit de layout que se mueva --delta exterior del grupo 0px,
+   medido--. Esta regla no lleva transicion a proposito: ninguna de sus
+   dos propiedades cambia de valor nunca --el width es fijo y el
+   opacity 0 a 1 ya lo funde la ranura compartida. */
 .md-segmented-button-item > .md-segmented-button-item-check {
-  width: 0;
-  overflow: hidden;
+  width: var(--md-comp-segmented-button-icon-size);
   opacity: 0;
-
-  transition:
-    width
-      var(--md-comp-segmented-button-swap-duration)
-      var(--md-comp-segmented-button-swap-easing),
-    opacity
-      var(--md-comp-segmented-button-swap-duration)
-      var(--md-comp-segmented-button-swap-easing);
 }
 
 .md-segmented-button-item-selected > .md-segmented-button-item-check {
-  width: var(--md-comp-segmented-button-icon-size);
   opacity: 1;
 }
 
@@ -471,33 +477,62 @@
 
 /* EL LABEL, LA TERCERA RANURA. El patron es el del md-button-label: la
    leyenda es un span de la casa y no texto anonimo, porque el aire de la
-   ranura a la leyenda vive en SU margin y no en un column-gap. Con icono
-   en el segmento el margen es constante --la ranura mide 18dp con el
-   icono aunque su opacidad sea 0, y el swap es crossfade: la leyenda no
-   se mueve--. En solo-texto el margen nace en 0 --centrado exacto en
-   reposo, sin fantasma-- y abre al marcarse junto con el check: mismo
-   evento, la otra cara del mismo par. El gancho del icono es la
-   presencia del glifo no-check dentro del segmento --:has--: no hay
-   clase por anatomia, el marcado la declara con lo que lleva dentro. El
-   margen del marcado exige lo mismo: el check tiene que existir en el
-   marcado del segmento, o un selected de texto puro sin canje --los
-   dias del par de extremos y del playground, los meses-- abriria un
-   margen sin ranura y quedaria su leyenda a +4 del fantasma. */
+   ranura a la leyenda vive en SU margin y no en un column-gap. Con
+   ranura en el segmento el margen es CONSTANTE en los dos estados --
+   el ancho de estado completo lo exige: si el margin abriera al marcar,
+   el max-content del item cambiaria de valor en pleno evento y la
+   reticula se re-mediria. Con icono ya era constante --la ranura pinta
+   siempre-- y el swap es crossfade: la leyenda no se mueve. Con check,
+   ahora tambien.
+
+   EL DESLIZ DEL PAR ES UN TRANSFORM, NO LAYOUT. La leyenda del segmento
+   con check lleva translateX( -13px ) en reposo y translateX(0) en el
+   marcado: al cruzar, el glifo desliza +13dp hasta la posicion de
+   pareja centrada. El tamano es la mitad del avance del par
+   --(icon-size + between-space) / 2--, calculado INLINE con los dos
+   roles que el item ya lleva, sin token nuevo. El transform no es
+   layout: no paga reflow, no toca el max-content ni la reticula, y el
+   desliz corre suave a par del swap --el mismo par effects + short4,
+   la unica transicion que esta regla sola necesita--. El centrado
+   queda al pixel en los dos estados: en reposo el glifo cae sobre el
+   eje de la pastilla de estado completo, y en el marcado la pareja
+   abre centrada con su +13. La familia con icono NO desliza --su regla
+   lo declara abajo con transform none: su par es simetrico por la
+   presencia del icono y vive en +13 constante--. Los bare-text --los
+   dias del par de extremos, el playground, la multi, los meses-- no
+   llevan check en su marcado: su regla base queda margin 0 y sin
+   transform, la leyenda sola centrada como siempre, sin fantasma. El
+   gancho es la presencia del glifo --:has--: no hay clase por
+   anatomia, el marcado la declara con lo que lleva dentro. */
 .md-segmented-button-item > .md-segmented-button-item-label {
   margin-inline-start: 0;
 
   transition:
-    margin-inline-start
+    transform
       var(--md-comp-segmented-button-swap-duration)
       var(--md-comp-segmented-button-swap-easing);
 }
 
-.md-segmented-button-item:has(> .md-icon:not(.md-segmented-button-item-check)) > .md-segmented-button-item-label {
+.md-segmented-button-item:has(> .md-segmented-button-item-check) > .md-segmented-button-item-label {
   margin-inline-start: var(--md-comp-segmented-button-between-space);
+  transform: translateX(calc(
+    (var(--md-comp-segmented-button-icon-size)
+      + var(--md-comp-segmented-button-between-space))
+    / 2 * -1));
 }
 
 .md-segmented-button-item-selected:has(> .md-segmented-button-item-check) > .md-segmented-button-item-label {
+  transform: translateX(0);
+}
+
+/* La familia con icono tacha el transform: (0,5,0) vence al (0,4,0) de
+   la anatomia de check y empata con la regla selected de arriba, que
+   gana por orden de fuente --su transform none llega DESPUES a
+   proposito. Sin esta guarda, el translateX de la regla de check
+   desplazaria la leyenda de icono 13dp y la solaparia con su glifo. */
+.md-segmented-button-item:has(> .md-icon:not(.md-segmented-button-item-check)) > .md-segmented-button-item-label {
   margin-inline-start: var(--md-comp-segmented-button-between-space);
+  transform: none;
 }
 
 /* La forma. Los extremos redondeados le tocan al primero y al ultimo: es la

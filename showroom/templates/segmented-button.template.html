@@ -142,20 +142,34 @@
           su selected no abre margen --la regla exige el check en el
           marcado (:has)--. Icon-only (catalogo): ranura constante de
           18, canje crossfade puro (acuerdo 4).
-      (d) EL ANCHO DEL GRUPO SE RE-MIDE AL MARCAR, y es la conducta de la
-          receta, no un descuido. La reticula abrazada mide cada pista por
-          el max-content de la pastilla mas ancha, y ese max-content lleva
-          los 26dp del par cuando el segmento se marca --266 a 344px en el
-          grupo del desliz, medido en dos direcciones--. Es la conducta
-          del set web (grid 1fr + radios) y se documenta a conciencia: la
-          manga --reservar el par en el padding para constantizar el
-          grupo-- se construyo, midio y se retiro, porque en M3 el padding
-          es 12dp canonicamente y una ranura inflada en reposo no existe.
-          La contencion del item --min-width 0, width 100%-- no la evita:
-          la contribucion intrinseca es padding + contenido y los
-          porcentajes se tratan como auto en la medicion. Lo estable son
-          los deltas: la leyenda en reposo queda centrada al pixel y el
-          marcado abre su pareja dentro de la pastilla activa.
+      (d) EL ANCHO ES DEL ESTADO COMPLETO, Y POR ESO EL GRUPO NO SE MUEVE.
+          El max-content de cada segmento lleva SIEMPRE el par completo
+          [check 18 + aire 8]: el check mide su caja de 18dp en los dos
+          estados y solo cruza opacidad --crossfade, como el swap de la
+          ranura con icono--, y el desliz del centrado lo lleva el
+          transform de la leyenda --translateX(-13px) en reposo,
+          translateX(0) marcado, la mitad del avance del par calculada
+          inline con los dos roles, sin token nuevo--. El transform no
+          es layout: no paga reflow ni toca la reticula. Resultado: la
+          pista 1fr no se encoge ni se infla al conmutar y el borde
+          exterior del grupo queda firme --344.41 constante en los tres
+          estados del par del desliz, delta 0px, medido en dos
+          direcciones--. Es la lectura de la tabla oficial
+          (m3.material.io/components/segmented-buttons/specs) que pesa:
+          "Container width: Dynamic based on labels" --de sus labels, no
+          del estado de seleccion--, "Segment width: Container width /
+          total segments", "Label alignment: Center" en reposo exacto y
+          el "Min 12dp" como piso: el padding nunca miente los 12dp, y el
+          aire lateral del par en reposo (38dp) sobra para el piso.
+          La historia de las dos doctrinas que antecedieron queda
+          escrita: la manga reservo el par en el padding (12 a 25dp por
+          lado, grupo constante) y se retiro por canon inflado; el
+          reflow devolvio el acordeon 266 a 344 al marcar --fiel al
+          componente web de labs, hoy formalmente Unavailable, frente a
+          la tabla y a Compose--, y el estado completo es el tercer
+          asiento, el que queda. La familia con icono no desliza y los
+          bare-text --sin check en su marcado-- quedan como siempre:
+          margin 0, sin transform, leyenda sola centrada.
 
   LO QUE ESTA VISTA NO DICE, Y POR QUE
   ------------------------------------
@@ -255,7 +269,7 @@
     <!-- PAREJA: el desliz del check en solo-texto (h3 + prosa + 2 specimen + 2 pre + 2 boton). -->
     <section class="sr-section">
       <h3 class="md-type-title-large">El desliz del check</h3>
-      <p class="md-type-body-medium">El canon en solo-texto: en reposo la leyenda va sola, centrada al píxel; al marcarse el check abre de 0 a 18dp y la pareja vuelve a centrarse —el desliz corre frame a frame con el par del canje, y se pliega igual al conmutar. Nada va marcado en el primer grupo: pruébalo con el clic.</p>
+      <p class="md-type-body-medium">El canon en solo-texto: la caja del check mide sus 18dp en los dos estados y solo cruza opacidad —el max-content del segmento lleva el par completo desde el reposo, así el grupo no se mueve ni un bit al marcar. El desliz visible lo paga la leyenda: desliza +13dp con un transform hasta la pareja centrada, y se pliega igual al conmutar. Nada va marcado en el primer grupo: pruébalo con el clic.</p>
       <div class="sr-specimen">
         <div class="md-segmented-button" role="radiogroup" aria-label="Elegir un momento">
           <button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"><span class="md-icon md-segmented-button-item-check" aria-hidden="true">check</span><span class="md-segmented-button-item-label">Desayuno</span></button>
