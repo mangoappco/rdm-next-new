@@ -20,11 +20,12 @@
 
    CONSTRUCCION PAR A PAR
    ----------------------
-   El archivo crece con la vista. Hoy solo tiene la clase base: contenedor
-   de 40dp, los dos o tres segmentos en reposo, la tipografia label-large
-   y los bordes. Los estados de seleccion, el cambio icono → check, el
-   disabled y las capas de estado llegan con los pares que los demostraran;
-   nada se escribe antes de su par.
+   El archivo crece con la vista. Hoy tiene dos pares: la clase base
+   --contenedor de 40dp, los dos o tres segmentos en reposo, la tipografia
+   label-large y los bordes-- y la seleccion --el tinte secondary-container
+   con su on-secondary-container y las dos clases que lo declaran--. El
+   cambio icono → check, el disabled y las capas de estado llegan con los
+   pares que los demostraran; nada se escribe antes de su par.
 
    LO QUE ESTA VERIFICADO Y DONDE
    ------------------------------
@@ -119,6 +120,13 @@
      la clase base necesita. */
   --md-comp-segmented-button-item-label-text-color: var(--md-sys-color-on-surface);
 
+  /* COLOR DE SELECCION. Tokens selected-container-color y selected-label-
+     text-color: secondary-container con su on-secondary-container, la
+     pareja seleccionada de toda la familia (la misma que viste el boton
+     tonal y la fila de la lista). Llega con su par. */
+  --md-comp-segmented-button-selected-container-color: var(--md-sys-color-secondary-container);
+  --md-comp-segmented-button-selected-label-text-color: var(--md-sys-color-on-secondary-container);
+
   /* FORMA DE LOS EXTREMOS. corner-full: en una caja de 40 el radio calcula
      20 y el extremo sale pastilla. El centro de la pastilla no se redondea:
      los dos extremos redondeados le tocan al primer y ultimo segmento,
@@ -174,6 +182,32 @@
 
   background-color: transparent;
   block-size: var(--md-comp-segmented-button-height);
+}
+
+/* --------------------------------------------------------------------------
+   EL SEGMENTO SELECCIONADO
+   --------------------------------------------------------------------------
+   Token selected-container-color y selected-label-text-color: el tinte
+   secondary-container con su on-secondary-container, la pareja de
+   seleccion de la familia entera (el boton tonal, la fila de la lista).
+   El borde no cambia: la spec del outlined mantiene su 1dp de outline y
+   su color en el segmento marcado --lo unico que se tiñe es el interior,
+   y la pastilla y la costura quedan intactas.
+
+   Modo de empleo: la clase va DETRAS de la base, como la lista--
+
+       md-list-item md-list-item-selected
+
+   --porque la cascada decide: las dos reglas pesan lo mismo y la que
+   pinta es la ultima declarada. La seleccion, como en la lista, es
+   estatica: la clase es el dato y quien escribe el marcado decide.
+   El motor de seleccion --que un click mueva aria-checked-- es JS de
+   app y el componente no lo lleva.
+   -------------------------------------------------------------------------- */
+
+.md-segmented-button-item-selected {
+  background-color: var(--md-comp-segmented-button-selected-container-color);
+  color: var(--md-comp-segmented-button-selected-label-text-color);
 }
 
 /* La forma. Los extremos redondeados le tocan al primero y al ultimo: es la
