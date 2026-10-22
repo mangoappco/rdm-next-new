@@ -18,7 +18,7 @@ Solo prohibiciones verbales. Las reglas de showroom, de capas y de ciclo no se c
 
 ## Componentes creados
 
-Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **9 componentes y 18 vistas** (9 de componente + 9 de tokens), las 18 enlazadas en `showroom/index.html`. El orden es el de `index.css`:
+Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **10 componentes y 19 vistas** (10 de componente + 9 de tokens), las 19 enlazadas en `showroom/index.html`. El orden es el de `index.css`:
 
 | Componente | Hoja | Vista |
 | --- | --- | --- |
@@ -31,10 +31,11 @@ Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **9 compon
 | Card | `card.css` | `card.html` |
 | Dialog | `dialog.css` | `dialog.html` |
 | List | `list.css` | `list.html` |
+| Segmented button | `segmented-button.css` | `segmented-button.html` |
 
 Cada componente tiene además su molde en `showroom/templates/<nombre>.template.html`.
 
-**Solo 6 de 16 las tienen byte-idénticas a su vista** — `fab`, `fab-extended`, `icon-button`, `card`, `dialog` y `list`, las seis más recientes. Las otras 10 vistas llevan un puntero de dos líneas al molde y el molde se quedó atrás: esa es la convención mayoritaria, pero la cambió el rumbo del 2026-10-13, no al revés. `typography.html` no tiene molde propio y apunta a `component.template.html`.
+**Solo 6 de 18 las tienen byte-idénticas a su vista** — `fab`, `fab-extended`, `card`, `dialog`, `list` y `segmented-button`, las más recientes. Las otras 12 vistas son distintas de su molde, por el puntero de dos líneas de la convención antigua o porque el molde se quedó atrás del trabajo publicado: esa es la convención mayoritaria, pero la cambió el rumbo del 2026-10-13, no al revés. `typography.html` no tiene molde propio y apunta a `component.template.html`.
 
 ## FAB — la base NO es el `md-fab-medium`
 
@@ -213,7 +214,7 @@ Quince pares, en la ruta de menos a más: Clase base mínima, Densidades de text
 
 **Y van en dos bloques**, con la división que ya fija el estándar del showroom: los ocho primeros son la especificación técnica y la anatomía (el laboratorio normativo) y los siete últimos los casos de uso de ManGo! App.
 
-**Y la portada come de ella**: las dieciocho filas del índice del showroom son `md-list-item-multiline` con la fila entera hecha enlace —`a.md-list-item`, la anatomía de «Métodos de pago»—, y todas con la misma anatomía: titular y descripción, sin dato detrás. Es dogfooding sin specimen: la portada no documenta el List, lo usa.
+**Y la portada come de ella**: las diecinueve filas del índice del showroom son `md-list-item-multiline` con la fila entera hecha enlace —`a.md-list-item`, la anatomía de «Métodos de pago»—, y todas con la misma anatomía: titular y descripción, sin dato detrás. Es dogfooding sin specimen: la portada no documenta el List, lo usa.
 
 **Los cuatro pares "puros" se añadieron el 2026-10-21**: Lista de personas (avatares de 40 con iniciales), Platos del catálogo (miniaturas de 56 con precios en COP), Metadatos de comanda (el dato detrás, con precios y horas) y Acciones de gestión (el `md-icon-button` de 40 en la última ranura). El par de Casos de uso los junta y enseña **las tres anatomías de fila**: enlace, estática y botón.
 
@@ -232,6 +233,19 @@ Los hechos que **no** se leen en el código:
 - **El vídeo no entra.** M3 publica su medida —100x56, y 114x64 para la grande— y es un 16:9, no el cuadrado de la miniatura. Y el checkbox y el radio de la ranura tampoco, porque el catálogo no tiene esos componentes: la ranura de acción se documenta con el `md-icon-button` que sí hay.
 - **`showroom/assets/list-thumb.svg` es el segundo asset de imagen del repo**, y es un bloque neutro como el de la card: la miniatura de la fila enseña el hueco donde iría la foto, no un plato inventado. Sus comentarios llevan rayas de puntos y no guiones, por el mismo motivo que el primero.
 
+## Segmented button — publicada
+
+Doce pares, en la estructura de dos bloques que fijó la List: la especificación técnica y anatomía —Clase base, Selección, Cambiar icono por check, El desliz del check, Multi-selección, De dos a cinco, Densidad, Estados y Playground de recetas— y los tres casos de uso de ManGo! App —la comanda del POS, el filtro del KDS y las dos vistas del catálogo—, ensamblados por dogfooding con card, divider, button e icon-button. `segmented-button.html` es copia byte-idéntica a su molde.
+
+Los hechos que **no** se leen en el código:
+
+- **El check es 18dp medido, no estimado.** Los tokens web y Android convergen en 18 (`with-icon-icon-size` literal en web, IconSize=18dp en Android), y el primitivo vive en `--md-ref-icon-size-segmented-button` (`1-reference-tokens/iconfont.css`), con su rol comp `--md-comp-segmented-button-icon-size`.
+- **Tres ranuras nominadas, y el aire de 8dp es del margin de la leyenda.** Toda leyenda textual va envuelta en `<span class="md-segmented-button-item-label">` —el precedente `md-button-label`— y el `column-gap` ya no vive en el item: el aire lo custodia el margin del label (`--md-comp-segmented-button-between-space`). Un solo evento mueve dos elementos: el check abre width y opacity, el label abre margin-inline-start, con el mismo par `short4` + `effects-default` del canje.
+- **El canon del check: reposo colapsado, marcado abierto.** En reposo el check está `width: 0; opacity: 0; overflow: hidden` y la leyenda queda centrada al píxel sobre el eje del segmento; al marcarse abre a los 18px y la pareja se re-centra. Los desliz visibles son +13px (el contenido crece 26 y el grupo reparte). El par 9, «El desliz del check», documenta exactamente esto en anatomía solo-texto y reproducible: clic, y la curva corre de 0 a 18.00px en ~175ms, el mismo par del canje.
+- **Los ganchos de anatomía son `:has()`, sin clases nuevas.** El ajuste del label con icono y con check se acota por `:has(> .md-icon)` y `:has(> .md-segmented-button-item-check)`, para que los segmentos de puro texto —que no llevan rastro del check en su marcado— no hereden margen que no les toca.
+- **La fila de la portada come del List, y la frase del índice es la de M3 traducida** («El grupo de segmentos ayuda a las personas a seleccionar opciones, cambiar de vista y ordenar datos. Se suele ubicar después de un título de página o de grupo.»), byte a byte al encabezado de la vista, solo con el añadido del recuento de pares.
+- **La fila `.md-row` nace aquí y vive en `4-utilities/row.css`.** Un solo `<div class="md-row">` reparte un título y una acción en horizontal —el caso de lista+acción de la card—, con exclusión del padding de specimen en `showroom.css`. La medida de densidad −2 = 32dp comparte primitiva con el peldaño `xsmall` del escalon de `container-height`.
+
 ## Las dos mitades de una vista del showroom
 
 A partir del `list` (2026-10-21), cada vista del showroom se estructura en dos bloques, y el corte se marca con un divisor:
@@ -245,7 +259,7 @@ En el marcado, el corte es un `<hr class="md-divider">` —el mismo mecanismo co
 
 ## Siguiente tarea
 
-**El catálogo está cerrado.** Los nueve componentes del README §11 están hechos, publicados y enlazados, y las dieciocho vistas también. `list`, el último, se acaba de publicar: es el primero con nueve pares, y el primero que trae ranuras de avatar, miniatura, metadatos y acción.
+**El catálogo está cerrado.** Los diez componentes del README §11 están hechos, publicados y enlazados, y las diecinueve vistas también. `segmented-button`, el último, se acaba de publicar: es el primero que nace con la estructura de dos bloques —laboratorio normativo + casos de ManGo! App— y a la vez trajo la utilidad `.md-row` a `4-utilities`.
 
 Lo que queda por delante no es un componente nuevo sino la **deuda conocida** de más abajo, que es lo que de verdad está pendiente:
 
@@ -268,9 +282,9 @@ Nada de esto se ha tocado. Está anotado para que no se dé por verdad:
 - FAB y extended FAB tienen 1 de las 8 familias de color de M3. Decidido y escrito en `fab.css:448-451`.
 - `4-utilities` no publica ninguna utilidad de espaciado, así que las ranuras de la card no pueden delegar su hueco al autor: lo declara el componente.
 - **`dialog` ya no es una deuda de `main.css`.** La línea de la capa `comp` lo enunciaba como «button, card, dialog» cuando no existía, y el README §11 avisaba de ello —«esa línea es hoy más un recordatorio que una descripción: `card` ya existe y `dialog` no»—. Con la publicación esa línea describe lo que hay, así que la nota queda cerrada. **El recordatorio sigue sirviendo para los siguientes**: `3-components/index.css` avisa de los que vendrán.
-- **10 de 16 moldes están desfasados** respecto a su vista publicada: `button-group`, `button`, `color`, `divider`, `elevation`, `icon`, `measurement`, `motion`, `spacing` y `state`. Llevan el bloque largo `COMO USAR ESTE TEMPLATE` donde la vista lleva el puntero de dos líneas, y se quedaron atrás en `5422fb2` (recorte de prosa), que tocó las vistas y no los moldes. Usar cualquiera de esos diez como molde arrastraría prosa ya recortada; los buenos son `fab`, `fab-extended`, `icon-button`, `card` y `dialog`. `typography.html` y `spacing.html` no siguen la vía de molde: la primera no tiene propio y apunta a `component.template.html`.
-- **`navigator.clipboard` solo existe en contexto seguro**, así que abierto por la IP de la red el botón «Copiar» no tenía copia ni alternativa y quedaba muerto en las quince vistas de entonces; ahora son dieciocho y todas tienen el respaldo. Corregido con un respaldo de `document.execCommand` y con texto honesto en los dos sentidos. Probado en las dos rutas: por `localhost` y por `http://10.226.28.43/`.
-- **Las dieciocho vistas llevan `<meta name="description">`.** El README §5 decía que solo `card.html` lo cumplía y que las otras quince eran deuda conocida; al publicar `dialog.html` se comprobó una por una y las diecisiete lo tienen. La deuda estaba ya cerrada y no se había anotado. Con `list.html` son dieciocho.
+- **12 de 18 moldes no son copia de su vista** respecto a la vista publicada: `button-group`, `button`, `color`, `divider`, `elevation`, `icon`, `icon-button`, `measurement`, `motion`, `shape`, `spacing` y `state` (a `icon-button.template.html` el trabajo posterior a su publicación lo dejó atrás). Llevan el bloque largo `COMO USAR ESTE TEMPLATE` donde la vista lleva el puntero de dos líneas, y se quedaron atrás en `5422fb2` (recorte de prosa), que tocó las vistas y no los moldes. Usar cualquiera de esos doce como molde arrastraría prosa ya recortada; los buenos son `fab`, `fab-extended`, `card`, `dialog`, `list` y `segmented-button`. `typography.html` y `spacing.html` no siguen la vía de molde: la primera no tiene propio y apunta a `component.template.html`.
+- **`navigator.clipboard` solo existe en contexto seguro**, así que abierto por la IP de la red el botón «Copiar» no tenía copia ni alternativa y quedaba muerto en las quince vistas de entonces; ahora son diecinueve y todas tienen el respaldo. Corregido con un respaldo de `document.execCommand` y con texto honesto en los dos sentidos. Probado en las dos rutas: por `localhost` y por `http://10.226.28.43/`.
+- **Las diecinueve vistas llevan `<meta name="description">`.** El README §5 decía que solo `card.html` lo cumplía y que las otras quince eran deuda conocida; al publicar `dialog.html` se comprobó una por una y las diecisiete lo tienen. La deuda estaba ya cerrada y no se había anotado. Con `list.html` son dieciocho; con `segmented-button.html`, diecinueve.
 - **El Chrome del arnés no sirve para medir scroll ni rueda, y ya se ha perdido tiempo por ello.** La herramienta de rueda da resultados contradictorios —movió la página con un modal abierto y no la movió sin él— y **sus lecturas van un paso atrasadas**, así que hay que leer cuatro veces seguidas para que cuadre. No se fía de ella para nada que sea scroll. El bloqueo del fondo con modal está comprobado en el Chrome de Danny. Y en este entorno no hay barra de desplazamiento clásica (`innerWidth - clientWidth` da 0), así que **el salto de la barra al abrir un modal no se puede ver aquí**: es el único punto de `dialog` que queda sin comprobar, y la solución si molesta es `scrollbar-gutter: stable` en el `html`, que no se ha añadido porque cambia el layout de todas las vistas.
 
 ## El verificador en macOS

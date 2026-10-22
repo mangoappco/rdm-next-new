@@ -934,7 +934,8 @@ showroom/
   los enlaces.
 - Cada componente tiene su propia vista en `showroom/components/`: `divider.html`,
   `icon-button.html`, `button.html`, `button-group.html`, `fab.html`,
-  `fab-extended.html`, `card.html`, `dialog.html`.
+  `fab-extended.html`, `card.html`, `dialog.html`, `list.html`,
+  `segmented-button.html`.
 - **Y la descripción de un componente en `index.html` es el mismo texto que el encabezado
   de su vista**, byte a byte. La fuente es el encabezado: si cambia, el índice cambia con
   él. El recuento de pares vive en el encabezado de cada vista, no en la portada: la fila
@@ -943,11 +944,11 @@ showroom/
   es el enlace (`a.md-list-item`, la anatomía del caso «Métodos de pago»), el nombre es el
   titular y la descripción el texto de apoyo, con la variante multiline para que la prosa
   de M3 no se recorte.
-- **Doce de esas descripciones son la definición oficial de M3, traducida.** La fuente es
+- **Trece de esas descripciones son la definición oficial de M3, traducida.** La fuente es
   `m3.material.io/foundations/glossary` para seis componentes —button, card, dialog, divider,
-  FAB y extended FAB—, las páginas de componente para icon button y button group, y las
-  páginas de *styles* para typography, elevation, spacing y shapes. **Las otras cinco
-  primitivas no tienen definición de una frase en M3** —color, icon, state, motion y
+  FAB y extended FAB—, las páginas de componente para icon button, button group y segmented
+  button, y las páginas de *styles* para typography, elevation, spacing y shapes. **Las otras
+  cinco primitivas no tienen definición de una frase en M3** —color, icon, state, motion y
   measurement—, y en ese caso el texto es nuestro. Se comprueba una a una antes de llamar
   canónica a una frase; `CONTEXT.md` tiene la tabla de qué hay y qué no en el glosario.
 - **Y también las familias de `1-reference-tokens/` y `2-system-tokens/` que son
@@ -989,7 +990,7 @@ no existe un `on-background-variant`.
 - El enlace de vuelta en una vista apunta a `../index.html` y dice `RDM ManGo! App`.
 - El `<title>` de una vista es `<Vista> - RDM ManGo! App`. El del índice es
   `RDM ManGo! App`.
-- Toda vista lleva `<meta name="description">`. Las dieciocho lo cumplen.
+- Toda vista lleva `<meta name="description">`. Las diecinueve lo cumplen.
 
 Cuando se construye un componente nuevo, su vista se añade a `index.html` como enlace y
 se crea el archivo en `showroom/components/`. La portada nunca crece más allá de título +
@@ -1004,7 +1005,7 @@ de dónde sale cada cosa, y el precio es que cada vista tiene que acordarse de e
 
 ## 11. Componentes
 
-El catálogo de M3 tiene decenas de componentes y aquí hay **nueve**. Se construyen uno a
+El catálogo de M3 tiene decenas de componentes y aquí hay **diez**. Se construyen uno a
 uno, y ninguno se da por bueno sin medirlo en el navegador: `tools/verify-tokens.mjs`
 comprueba la arquitectura, no que el componente se vea bien.
 
@@ -1021,6 +1022,7 @@ El orden es el de `3-components/index.css`, que es el de carga y el de dependenc
 | Card | `3-components/card.css` | 11 | 12 | `card.html`, 16 secciones |
 | Dialog | `3-components/dialog.css` | 5 | 3 | `dialog.html`, 6 secciones |
 | List | `3-components/list.css` | 16 | 25 | `list.html`, 15 secciones |
+| Segmented Button | `3-components/segmented-button.css` | 6 | 18 | `segmented-button.html`, 12 secciones |
 
 Las "clases" son las que expone el componente, sin contar las de `2-system-tokens` que compone para
 colocar la capa de estado: `button.css` nombra `.md-state-layer` y `.md-disabled` en sus
