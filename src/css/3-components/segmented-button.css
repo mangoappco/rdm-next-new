@@ -119,9 +119,12 @@
      aire que el boton small. En M3 es simetrico entre sus dos lados. */
   --md-comp-segmented-button-padding-inline: var(--md-sys-measurement-segmented-button-padding-inline);
 
-  /* Hueco entre el icono y la etiqueta: 8dp de la spec, el mismo hueco de
-     la fila de la lista. No pinta en la clase base --no hay iconos todavia--
-     pero vive en el map desde el principio, porque es del componente. */
+  /* Hueco entre la ranura y la etiqueta: 8dp de la spec, el mismo hueco de
+     la fila de la lista. No lo cobra un column-gap: el label lo lleva en
+     su margin-inline-start, de modo que en los segmentos solo-texto
+     colapsar el check colapsa tambien el aire y la leyenda queda sola y
+     centrada. Vive en el map desde el principio, porque es del
+     componente. */
   --md-comp-segmented-button-between-space: var(--md-sys-measurement-segmented-button-between-space);
 
   /* EL BORDE. 1dp de outline, el color es el outline de M3, no un variant:
@@ -262,18 +265,21 @@
   position: relative;
   isolation: isolate;
 
-  /* El contenido va en retícula de columnas y no en flex: el icono y el
-     check ocupan la MISMA celda --la ranura--, la leyenda auto-fluye a la
-     siguiente, y el hueco entre celdas es el between-space. Asi el swap es
-     transparencia entre dos glifos de la misma caja y la leyenda no se
-     mueve un pixel cuando el cambia pasa. La alineacion es la misma que
-     tenia el flex: contenido centrado en los dos ejes. */
+  /* El contenido va en reticula de columnas y no en flex: el icono y el
+     check ocupan la MISMA celda --la ranura--, y la leyenda auto-fluye a
+     la siguiente. No hay column-gap: el aire entre la ranura y la leyenda
+     lo lleva el label con su margin-inline-start, custodia que nacio
+     ahi cuando el texto se hizo ranura nominada --una leyenda anonima no
+     tiene quien pague el aire exacto: colapsado el check en reposo, la
+     pista de cero ancho dejaba un fantasma de 8dp que descentraba la
+     leyenda sola del segmento, y el gap de pista no se anula con
+     margenes porque es espacio entre pistas y no del item. La alineacion
+     es la misma que tenia el flex: contenido centrado en los dos ejes. */
   display: grid;
   grid-auto-flow: column;
   justify-content: center;
   align-content: center;
   align-items: center;
-  column-gap: var(--md-comp-segmented-button-between-space);
 
   /* EL PUENTE AL GLIFO, el patron de list.css: `.md-icon` declara su
      font-size en la capa 4 y la regla de aqui siempre pierde; lo que
@@ -348,17 +354,30 @@
    EL CAMBIO ICONO → CHECK
    --------------------------------------------------------------------------
    La guia lo dice literal: "the icon is replaced by the checkmark when the
-   segment is selected". En los dos glifos comparten celda y el cambio es
-   transparencia cruzada: el icono sale, el check entra, la leyenda queda
-   quieta porque ni ancho ni alto cambian. Los incendios de moverle el
-   ancho a la ranura y animar un trazo (la receta web dibuja el check con
-   keyframes de stroke-dash a 75/150ms) no reproducen un glifo de font:
-   aqui la desviacion es consciente y va al par Expressive entero,
-   effects + short4, como el resto del sistema.
+   segment is selected". Dos anatomias, un mismo token de swap:
 
-   El check se pinta SIEMPRE en el marcado, como en la receta web --su svg
-   anda en todo segmento aunque no se vea-- para que el snippet y el
-   specimen sean el mismo dato y REGLA 11 no viva sobre una excepcion.
+   - CON RANURA DE ICONO, icono y check comparten celda y el cambio es
+     transparencia cruzada: el icono sale, el check entra, la leyenda no
+     se mueve --ni el ancho ni el alto de la celda cambian: el icono
+     mantiene pintada la ranura a 18dp aunque su opacidad sea 0--. Los
+     incendios de moverle el ancho a la ranura y animar un trazo (la
+     receta web dibuja el check con keyframes de stroke-dash a 75/150ms)
+     no reproducen un glifo de font: aqui la desviacion es consciente y
+     va al par Expressive entero, effects + short4, como el resto del
+     sistema.
+
+   - SOLO-TEXTO, el canon tambien: en reposo el check pinta 0 --width 0,
+     opacity 0, overflow hidden-- y la leyenda queda sola, centrada. Al
+     marcarse, el check abre de 0 a 18dp y el label le hace sitio con su
+     margin-inline-start: dos elementos, un evento --el mismo par
+     effects + short4 gobierna las caras del cambio (check, label y el
+     tinte del item)--. El desliz corre frame a frame porque el ancho
+     abre interpolado; un cambio de display no funde y saltaria.
+
+   El check se pinta SIEMPRE en el marcado de los segmentos que lo
+   ofrecen, como en la receta web --su svg anda en todo segmento aunque
+   no se vea-- para que el snippet y el specimen sean el mismo dato y
+   REGLA 11 no viva sobre una excepcion.
 
    COLOR DE LOS DOS GLIFOS. El icono unselected lleva
    unselected-with-icon-icon-color: on-surface, y el check selected
@@ -368,11 +387,10 @@
    estados de hover y focus tiñen la leyenda, tambien los atanen.
    -------------------------------------------------------------------------- */
 
+/* LA RANURA COMPARTIDA. Se declara explicita: sin ella, el check caeria
+   en la celda siguiente del flujo automatico y no cubriria al icono. La
+   leyenda sigue auto-fluyendo a la celda siguiente. */
 .md-segmented-button-item > .md-icon {
-  /* La celda compartida. Se declara explicita: sin ella, el check caeria
-     en la celda siguiente del flujo automatico y no cubriria al icono.
-     La leyenda sigue auto-fluyendo a la celda siguiente y el hueco de
-     8dp la separa. */
   grid-column: 1;
   grid-row: 1;
   transition: opacity
@@ -380,16 +398,64 @@
     var(--md-comp-segmented-button-swap-easing);
 }
 
-.md-segmented-button-item-check {
+/* EL CHECK. Reposo: la caja colapsa a 0 --width 0 y overflow hidden para
+   que el glifo no asome--, opacity 0. Su transicion abre ancho y opacidad
+   con el mismo par: es una cara del swap, nunca dos pares para un
+   boton. El selector lleva la lista doble a proposito, para ganar el
+   empate con la transicion de la regla de arriba y quedarse con su
+   lista de dos propiedades. */
+.md-segmented-button-item > .md-segmented-button-item-check {
+  width: 0;
+  overflow: hidden;
   opacity: 0;
+
+  transition:
+    width
+      var(--md-comp-segmented-button-swap-duration)
+      var(--md-comp-segmented-button-swap-easing),
+    opacity
+      var(--md-comp-segmented-button-swap-duration)
+      var(--md-comp-segmented-button-swap-easing);
 }
 
 .md-segmented-button-item-selected > .md-segmented-button-item-check {
+  width: var(--md-comp-segmented-button-icon-size);
   opacity: 1;
 }
 
 .md-segmented-button-item-selected > .md-icon:not(.md-segmented-button-item-check) {
   opacity: 0;
+}
+
+/* EL LABEL, LA TERCERA RANURA. El patron es el del md-button-label: la
+   leyenda es un span de la casa y no texto anonimo, porque el aire de la
+   ranura a la leyenda vive en SU margin y no en un column-gap. Con icono
+   en el segmento el margen es constante --la ranura mide 18dp con el
+   icono aunque su opacidad sea 0, y el swap es crossfade: la leyenda no
+   se mueve--. En solo-texto el margen nace en 0 --centrado exacto en
+   reposo, sin fantasma-- y abre al marcarse junto con el check: mismo
+   evento, la otra cara del mismo par. El gancho del icono es la
+   presencia del glifo no-check dentro del segmento --:has--: no hay
+   clase por anatomia, el marcado la declara con lo que lleva dentro. El
+   margen del marcado exige lo mismo: el check tiene que existir en el
+   marcado del segmento, o un selected de texto puro sin canje --los
+   dias del par de extremos y del playground, los meses-- abriria un
+   margen sin ranura y quedaria su leyenda a +4 del fantasma. */
+.md-segmented-button-item > .md-segmented-button-item-label {
+  margin-inline-start: 0;
+
+  transition:
+    margin-inline-start
+      var(--md-comp-segmented-button-swap-duration)
+      var(--md-comp-segmented-button-swap-easing);
+}
+
+.md-segmented-button-item:has(> .md-icon:not(.md-segmented-button-item-check)) > .md-segmented-button-item-label {
+  margin-inline-start: var(--md-comp-segmented-button-between-space);
+}
+
+.md-segmented-button-item-selected:has(> .md-segmented-button-item-check) > .md-segmented-button-item-label {
+  margin-inline-start: var(--md-comp-segmented-button-between-space);
 }
 
 /* La forma. Los extremos redondeados le tocan al primero y al ultimo: es la
@@ -561,17 +627,20 @@
    PREFERS-REDUCED-MOTION
    --------------------------------------------------------------------------
    El fundido del segmented button es movimiento SUAVE: no cambia la
-   geometria, solo cruzan colores y opacidades. La regla del catalogo
-   exige la consulta a quien hace movimiento fuerte --cambiar la forma
-   del componente--; no es esta la situacion, y aun asi el bloque anula
-   los tres fundidos: quien pide menos movimiento no ve tampoco el swap
-   de los glifos, que ES el movimiento del componente, y el estado llega
-   de una vez al mismo sitio que el fundido alcanzaba.
+   forma, solo cruzan colores y opacidades -- y con el canon del check,
+   tambien el ancho de la ranura abre y el label desliza, interpolado
+   frame a frame por el mismo evento. La regla del catalogo exige la
+   consulta a quien hace movimiento fuerte --cambiar la forma del
+   componente--; no es esta la situacion, y aun asi el bloque anula los
+   fundidos: quien pide menos movimiento no ve tampoco el swap de los
+   glifos ni el desliz del label, que ES el movimiento del componente, y
+   el estado llega de una vez al mismo sitio que el fundido alcanzaba.
 
-   Tres reglas y no una: las transiciones viven en tres elementos y no
-   se heredan entre ellos --el item lleva tinte y leyenda, los glifos el
-   swap, la capa de estado el suyo en el ::after--. La regla del item
-   sola dejaria el tinte de hover y el swap fundiendo.
+   Cuatro reglas y no una: las transiciones viven en cuatro elementos y
+   no se heredan entre ellos --el item lleva tinte y leyenda, los glifos
+   el swap, el label su margen, la capa de estado el suyo en el
+   ::after--. La regla del item sola dejaria el tinte de hover, el swap y
+   el desliz fundiendo.
 
    `transition: none` y no `transition-duration: 0s`: el sistema no tiene
    un token de duracion cero (el mas corto es short1, 50ms, que no es
@@ -586,6 +655,10 @@
   }
 
   .md-segmented-button-item > .md-icon {
+    transition: none;
+  }
+
+  .md-segmented-button-item > .md-segmented-button-item-label {
     transition: none;
   }
 
