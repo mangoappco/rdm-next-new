@@ -988,6 +988,31 @@
      ====================================================================== */
   --md-sys-measurement-dialog-max-height: var(--md-ref-container-width-dialog-max);
   --md-sys-measurement-dialog-min-height: var(--md-ref-container-height-dialog-min);
+
+  /* ========================================================================
+     MEDIDAS DEL SEGMENTED BUTTON
+     ------------------------------------------------------------------------
+     La familia de los grupos conectados. Su pariente disconnecto ya esta en
+     el archivo: los roles del grupo de botones. El Segmented Button es la
+     mitad CONNECTADA de esa misma familia de M3 --m3.material.io la publica
+     en "Button groups": connected es segmented, disconnected es el grupo
+     simple--, y los tokens web mantienen fichero propio:
+     `tokens/_md-comp-outlined-segmented-button.scss` (v0.192 en disco).
+
+     ?Que se pide desde el componente y por que:
+       - La altura es 40DP, la del boton estandar. La publica el token
+         `container-height: 40px` del componente y la reticula de 1-reference
+         la trae: es la MISMA caja de container-height small que usa el
+         boton. Un segmented y un boton alineados miden lo mismo.
+       - El padding lateral es 12DP. La spec lo publica como minimo
+         ("Left/right padding: Min 12dp"); en la reticula es space-150,
+         el mismo 12 que usa el boton small.
+       - La separacion icono-etiqueta es 8DP ("Padding between elements"):
+         space-100, el mismo hueco de la fila de la lista.
+     ======================================================================== */
+  --md-sys-measurement-segmented-button-height: var(--md-ref-container-height-small);
+  --md-sys-measurement-segmented-button-padding-inline: var(--md-ref-spacing-150);
+  --md-sys-measurement-segmented-button-between-space: var(--md-ref-spacing-100);
 }
 
 /* Las clases utilitarias de esta familia se mudaron a 4-utilities/ en la auditoria M3:

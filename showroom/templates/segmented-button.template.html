@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Segmented Button de RDM Next: el grupo conectado de M3, con sus segmentos de ancho compartido y su estado de selección.">
+  <title>Segmented Button — RDM ManGo! App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+  <link rel="stylesheet" href="../../src/css/main.css">
+  <link rel="stylesheet" href="../assets/showroom.css">
+    <script type="module" src="../../src/js/main.js"></script>
+<script src="../assets/showroom.js"></script>
+</head>
+
+<!--
+  ESTA VISTA TIENE UN PAR, EN CONSTRUCCION PAR A PAR. El bloque normativo
+  --Especificacion tecnica y anatomia-- abre con la clase base, y crece un
+  par cada vez que se verifica en el navegador: seleccion, cambio icono →
+  check, de dos a cinco, estados y el playground de recetas. Despues viene
+  el bloque de casos de uso de ManGo! App con los tres acordados: el tipo
+  de comanda del POS, el monitor de despacho del KDS y el cambio de vista
+  del catalogo.
+
+  El corte se marca con un divisor, el titulo de cada bloque es un h2 y los
+  pares van en h3 debajo: el h1 es el nombre del componente, y el esquema
+  queda h1 > h2 (bloque) > h3 (par). La aparicion no cambia, porque el tipo
+  lo pone la clase y no la etiqueta.
+
+  LOS SIETE ACUERDOS ANTES DE ESCRIBIR NADA
+  -----------------------------------------
+  1. Clases: `md-segmented-button` para el grupo y `md-segmented-button-item`
+     para el segmento, el precedente de `md-list` / `md-list-item`. M3 web
+     llama `set` al grupo; es un detalle de su API de Web Components, no una
+     clase de CSS publicada.
+  2. ICONO EN 18dp: TODAVIA SIN PAR, y con una decision abierta que este
+     archivo no tapa. Los tokens web y Android convergen en 18dp, pero el
+     catalogo ya resolvio esa interseccion con su doctrina: el literal de
+     18px NO esta en la reticula de space (ni en la de M3), y la REGLA 1 no
+     lo deja vivir ni en capa 2 ni en capa 3. Su precedente es el gap xsmall
+     del grupo de botones: M3 publica 18, el componente pide el valor de
+     escala mas proximo --y se documenta el desvio de 2px--. Lo verdadero
+     el dia que entre el icono: si M3 misma diera el 18 exacto, toca abrir
+     1-reference-tokens. El candidato cercano es space-250 (20px), el mismo
+     que eligio la lista por su epoca Expressive.
+  3. ARIA DIFERENCIADA. El single-select lleva `role="radiogroup"` en el
+     grupo y `role="radio"` + `aria-checked` en cada segmento; el multi-
+     select, `role="group"` y `aria-pressed`. La lista y los radio no son
+     lo mismo, y el marcado lo dice. El pais de cursor --esta seleccion
+     pedaleada con tecla-- es JS de app; el componente no lo lleva.
+  4. EL CAMBIO ICONO → CHECK ES COMPORTE, NO VARIANTE: la guia lo dice
+     ("the icon is replaced by the checkmark when the segment is selected")
+     y la receta web lo transcribe: el icono se desvanece, el check entra.
+     El stroke-draw del check web no reproduce un glifo de font; llegara
+     con fundidos de motion.css y su nota de desviacion.
+  5. NO SE MEZCLAN ANATOMIAS: la guia lo prohíbe --segmentos solo-icono con
+     segmentos textuales en el mismo grupo--. Custodian los casos.
+  6. DENSIDAD NO ENTRA: son pasos de -4dp que la spec publica para Android
+     y que los tokens web no traen. Documentada y sin par, igual que "el
+     video no entra" en la lista.
+  7. LA COSTURA DEL BORDE. El ensamblaje web comparte el borde con un
+     outline de `inset: 0 -0.5px` que extiende media pixel a cada lado; un
+     -0.5px es un literal fuera de reticula y la REGLA 1 no lo deja. Se uso
+     la tecnica analogica: el borde lo lleva el segmento, y los siguientes
+     entran pisando con `margin-inline-start: calc(-1 * borde)`. El borde
+     siguiente tapa al anterior y la linea funde en 1px, como pinta el
+     solape, sin literal nuevo y sin pseudo fuera de caja.
+
+  LO QUE ESTA VISTA NO DICE, Y POR QUE
+  ------------------------------------
+  TOKENES Y MEDIDAS NO TIENEN PAR. La altura de 40, el borde de 1, el
+  relleno y los colores estan en la cabecera de
+  `src/css/3-components/segmented-button.css`, con el token de M3 al que
+  corresponde cada uno. Un par que dijera "el segmento mide 40" seria el
+  mismo specimen con otro h2.
+
+  EL LIMITE DE DOS A CINCO ES CONTRATO DE DISENO, no CSS: ninguna medida
+  denuncia un sexto segmento. Lo custodian el par de anatomia que ensaya
+  la familia completa y la prosa.
+-->
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <main class="sr-page">
+
+    <!-- HEADER: inicio (barra + titulo + descripcion) -->
+    <header class="sr-header">
+      <div class="sr-bar">
+        <p class="md-type-body-medium"><a href="../index.html">RDM ManGo! App</a></p>
+        <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
+      </div>
+      <h1 class="md-type-display-large">Segmented Button</h1>
+      <p class="md-type-body-large">El grupo conectado de M3: segmentos de ancho compartido que alternan modo o vista. · <em>Un par</em></p>
+    </header>
+    <!-- HEADER: fin -->
+
+    <hr class="md-divider">
+
+    <!-- BLOQUE 1: la especificacion tecnica y la anatomia. El laboratorio
+         normativo: pares minimalistas que aislan una sola cosa. -->
+    <h2 class="md-type-headline-medium">Especificación técnica y anatomía</h2>
+
+    <!-- PAREJA: la clase base (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Clase base</h3>
+      <p class="md-type-body-medium">El grupo con lo mínimo: contenedor y tres segmentos planos en reposo, sin selección ni iconos. Los tres segmentos miden lo mismo —el más ancho reparte su medida—, y la pastilla la forman solo los dos extremos.</p>
+      <div class="sr-specimen">
+        <div class="md-segmented-button">
+          <button class="md-segmented-button-item" type="button">Opción uno</button>
+          <button class="md-segmented-button-item" type="button">Opción dos</button>
+          <button class="md-segmented-button-item" type="button">Opción tres</button>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-segmented-button"&gt;
+  &lt;button class="md-segmented-button-item" type="button"&gt;Opción uno&lt;/button&gt;
+  &lt;button class="md-segmented-button-item" type="button"&gt;Opción dos&lt;/button&gt;
+  &lt;button class="md-segmented-button-item" type="button"&gt;Opción tres&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+  </main>
+  <!-- MAIN: fin -->
+</body>
+</html>

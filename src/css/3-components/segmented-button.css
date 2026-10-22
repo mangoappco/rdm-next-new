@@ -1,0 +1,199 @@
+/* ==========================================================================
+   3-components/segmented-button.css — SEGMENTED BUTTON (Capa 3)
+   ==========================================================================
+
+   QUE ES ESTE ARCHIVO
+   -------------------
+   Capa 3. La mitad conectada de la familia de grupos de botones de M3: un
+   contenedor continuo, de ancho compartido entre sus segmentos, que
+   alterna modo o vista. Su prima desconectada ya vive a su lado:
+   `button-group.css` es el grupo de botones separados.
+
+   M3 lo publica como una pareja, igual que la lista:
+
+       `list`  es la superficie  +  `list-item` es la fila
+       `segmented-button` (el grupo)  +  su segmento
+
+   y se implementan igual: una sola clase base por pieza, `md-segmented-
+   button` y `md-segmented-button-item`, porque un grupo sin segmentos no
+   pinta nada y un segmento sin grupo no sabe a quien redondear.
+
+   CONSTRUCCION PAR A PAR
+   ----------------------
+   El archivo crece con la vista. Hoy solo tiene la clase base: contenedor
+   de 40dp, los dos o tres segmentos en reposo, la tipografia label-large
+   y los bordes. Los estados de seleccion, el cambio icono → check, el
+   disabled y las capas de estado llegan con los pares que los demostraran;
+   nada se escribe antes de su par.
+
+   LO QUE ESTA VERIFICADO Y DONDE
+   ------------------------------
+   Values de color, altura, forma y grosor de borde, de los tokens
+   publicados:
+
+       C:\xampp\htdocs\proyectos\material-web-main
+       tokens\_md-comp-outlined-segmented-button.scss          (esquema)
+       tokens\versions\v0_192\_md-comp-outlined-segmented-button.scss (valores)
+
+   La receta de ensamblaje, del lado implementado:
+
+       labs\segmentedbuttonset\internal\_shared.scss      (grid 1fr + radios)
+       labs\segmentedbutton\internal\_shared.scss         (el segmento y el
+                                                          cambio icono → check)
+       labs\segmentedbutton\internal\_outlined-segmented-button.scss
+
+   Y la spec que las ata, de m3.material.io/components/segmented-buttons:
+   altura 40dp, borde 1dp, label-center, padding lateral minimo 12dp,
+   padding entre elementos 8dp, target 48dp, segmento = contenedor / total.
+
+   Lo que los tokens NO traen y arriba se completa: el solape del
+   borde compartido --ver LA COSTURA--.
+
+   LAS DOS DECISIONES QUE NO SON DE M3
+   -----------------------------------
+   1. La seleccion es estatica. Llega un par con `.md-segmented-button-
+      item-selected`, y el grupo no decide: lo dice quien escribe el
+      marcado, como en la lista. Para el cambio de verdad --que un click
+      mueva la seleccion-- hace falta JavaScript, y el componente no
+      lo lleva: la clase es el dato, la app pone el motor.
+
+   2. LA COSTURA: el borde compartido, SIN solape. La receta web resuelve
+      el borde continuo con un outline absoluto de cada segmento con
+      `inset: 0 -0.5px`, que extiende cada linea media de pixel fuera de
+      su caja y las funde en una. Un -0.5px es un literal fuera de
+      reticula, y la REGLA 1 no lo deja pasar del 1-reference-tokens. La
+      tecnica analogica: el grupo de bordes se REPARTE. Cada segmento
+      lleva su borde completo, pero el borde derecho de todos es
+      transparente menos el del ultimo: la union entre dos segmentos la
+      pinta UNA vez --el borde izquierdo del siguiente-- y el canto
+      exterior del grupo lo pinta el borde derecho que el ultimo
+      recupera. Misma linea de 1dp que pinta el solape, sin literal
+      nuevo, sin pseudo absoluto y sin mover la geometria: medido, los
+      tres segmentos quedan de ancho identico.
+      Mas tarde los pares de estados veran por que esto tambien deja
+      respirar el anillo de foco y las capas de hover.
+
+   LO QUE NO ESTA TODAVIA, Y POR QUE
+   ---------------------------------
+   DENSIDAD. La spec publica pasos de -4dp sobre la altura (40/36/32/28),
+   pero es un concepto de Android: los tokens web no traen paso alguno, y
+   la reticula de 1-reference-tokens tampoco. Se documenta y no se
+   construye, igual que "el video no entra" en la lista.
+
+   LIMITE DE 5. La spec dice 2 a 5 opciones y es un contrato de diseno que
+   el CSS no puede medir: no hay altura de segmento para denunciar el
+   sexto. Lo custodian el par de anatomia que lo muestra y la prosa.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   LAS VARIABLES LOCALES DEL COMPONENTE
+   --------------------------------------------------------------------------
+   Igual que sus primos: el componente se rige por variables --md-comp-* y
+   estas leen SOLO roles de capa 2 (REGLA 2). Ajustar aqui es cambiar una
+   linea, no buscar en las reglas.
+   -------------------------------------------------------------------------- */
+
+.md-segmented-button,
+.md-segmented-button-item {
+  /* Cajas. La altura es la del boton estandar: 40dp de container-height
+     small, para que un segmented y un boton alineados midan lo mismo. */
+  --md-comp-segmented-button-height: var(--md-sys-measurement-segmented-button-height);
+
+  /* Padding lateral de cada segmento: el minimo 12dp de la spec, el mismo
+     aire que el boton small. En M3 es simetrico entre sus dos lados. */
+  --md-comp-segmented-button-padding-inline: var(--md-sys-measurement-segmented-button-padding-inline);
+
+  /* Hueco entre el icono y la etiqueta: 8dp de la spec, el mismo hueco de
+     la fila de la lista. No pinta en la clase base --no hay iconos todavia--
+     pero vive en el map desde el principio, porque es del componente. */
+  --md-comp-segmented-button-between-space: var(--md-sys-measurement-segmented-button-between-space);
+
+  /* EL BORDE. 1dp de outline, el color es el outline de M3, no un variant:
+     el token del componente lo dice --outline-color: outline--, y las
+     esquinas interiores también lo heredan del mismo color. */
+  --md-comp-segmented-button-outline-width: var(--md-sys-shape-stroke-thin);
+  --md-comp-segmented-button-outline-color: var(--md-sys-color-outline);
+
+  /* COLOR DE REPOSO. Token unselected-label-text-color: on-surface. Las
+     variantes de estado llegan con su par; el reposo es el unico color que
+     la clase base necesita. */
+  --md-comp-segmented-button-item-label-text-color: var(--md-sys-color-on-surface);
+
+  /* FORMA DE LOS EXTREMOS. corner-full: en una caja de 40 el radio calcula
+     20 y el extremo sale pastilla. El centro de la pastilla no se redondea:
+     los dos extremos redondeados le tocan al primer y ultimo segmento,
+     como en la receta del set web. */
+  --md-comp-segmented-button-shape: var(--md-sys-shape-corner-full);
+
+  /* TIPOGRAFIA. label-large, la de todos los botones del sistema. La lleva
+     el compuesto (peso + tamano / line-height + familia) que ya montaron
+     typography.css y button.css: el segmento es un boton y comparte su
+     letra, no la redeclara. */
+  --md-comp-segmented-button-label-text: var(--md-sys-typescale-label-large);
+}
+
+/* --------------------------------------------------------------------------
+   EL GRUPO: superficie con segmentos de ancho compartido
+   --------------------------------------------------------------------------
+   La receta del set web, escrita tal cual: grid de columnas 1fr en flow
+   horizontal, y cada segmento mide lo mismo que el mas ancho (en una
+   reticula sin techo, 1fr reparte el max-content a partes iguales). El
+   contenedor es inline-grid a proposito: la spec de M3 lo dice --no dejar
+   que el grupo ocupe el ancho completo de una pantalla grande--.
+   -------------------------------------------------------------------------- */
+
+.md-segmented-button {
+  display: inline-grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  block-size: var(--md-comp-segmented-button-height);
+}
+
+/* --------------------------------------------------------------------------
+   EL SEGMENTO
+   --------------------------------------------------------------------------
+   Cada segmento es un <button>: es un control de verdad, y con el viene
+   gratis el cursor y el foco. El borde lo lleva el segmento mismo, que es
+   lo que permite que los extremos redondeados doblen la linea pastilla.
+   -------------------------------------------------------------------------- */
+
+.md-segmented-button-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* La costura, en dos vueltas: cada segmento entrega su borde derecho al
+     siguiente --la union la pinta una vez el izquierdo del vecino-- y el
+     ultimo lo recupera, porque el canto exterior del grupo es suyo. */
+  border: var(--md-comp-segmented-button-outline-width) solid var(--md-comp-segmented-button-outline-color);
+  border-inline-end-color: transparent;
+  padding-inline: var(--md-comp-segmented-button-padding-inline);
+
+  color: var(--md-comp-segmented-button-item-label-text-color);
+  font: var(--md-comp-segmented-button-label-text);
+
+  background-color: transparent;
+  block-size: var(--md-comp-segmented-button-height);
+}
+
+/* La forma. Los extremos redondeados le tocan al primero y al ultimo: es la
+   receta del set --border-start-start / border-end-end sobre el hijo--,
+   escrita como regla de descendencia y no como variante por segmento. El
+   centro queda cuadrado, la pastilla se forma sola. Y el ultimo, ademas,
+   recupera su borde derecho: el canto exterior del grupo lo canta el. */
+.md-segmented-button > :first-child {
+  border-start-start-radius: var(--md-comp-segmented-button-shape);
+  border-end-start-radius: var(--md-comp-segmented-button-shape);
+}
+
+.md-segmented-button > :last-child {
+  border-inline-end-color: var(--md-comp-segmented-button-outline-color);
+  border-start-end-radius: var(--md-comp-segmented-button-shape);
+  border-end-end-radius: var(--md-comp-segmented-button-shape);
+}
+
+/* Y cuando hay UNO SOLO, es first y last a la vez: pastilla completa. La
+   receta lo cubre sin regla nueva --el :first-child y el :last-child son el
+   mismo elemento--. Un grupo de un segmento no es un contrato de diseno
+   valido --M3 pide 2 a 5--, pero no hay que defender el marcado: se dibuja
+   bien y ya. */
