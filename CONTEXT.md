@@ -213,7 +213,7 @@ Quince pares, en la ruta de menos a más: Clase base mínima, Densidades de text
 
 **Y van en dos bloques**, con la división que ya fija el estándar del showroom: los ocho primeros son la especificación técnica y la anatomía (el laboratorio normativo) y los siete últimos los casos de uso de ManGo! App.
 
-**Y la portada come de ella**: las dieciocho filas del índice del showroom son `md-list-item-multiline` con la fila entera hecha enlace —`a.md-list-item`, la anatomía de «Métodos de pago»—. Los nueve primitivos van sin dato detrás y los nueve componentes del catálogo llevan su recuento de pares en la ranura de detrás, como el precio en la comanda. Es dogfooding sin specimen: la portada no documenta el List, lo usa.
+**Y la portada come de ella**: las dieciocho filas del índice del showroom son `md-list-item-multiline` con la fila entera hecha enlace —`a.md-list-item`, la anatomía de «Métodos de pago»—, y todas con la misma anatomía: titular y descripción, sin dato detrás. Es dogfooding sin specimen: la portada no documenta el List, lo usa.
 
 **Los cuatro pares "puros" se añadieron el 2026-10-21**: Lista de personas (avatares de 40 con iniciales), Platos del catálogo (miniaturas de 56 con precios en COP), Metadatos de comanda (el dato detrás, con precios y horas) y Acciones de gestión (el `md-icon-button` de 40 en la última ranura). El par de Casos de uso los junta y enseña **las tres anatomías de fila**: enlace, estática y botón.
 

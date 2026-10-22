@@ -937,9 +937,8 @@ showroom/
   `fab-extended.html`, `card.html`, `dialog.html`.
 - **Y la descripción de un componente en `index.html` es el mismo texto que el encabezado
   de su vista**, byte a byte. La fuente es el encabezado: si cambia, el índice cambia con
-  él. El recuento de pares va al final del encabezado como `· *Trece pares*`, y la fila de
-  la portada lo lleva en su ranura de detrás —como el precio en la comanda—, alineado con
-  las demás filas. Los primitivos no cuentan pares, y su fila no lleva ranura de detrás.
+  él. El recuento de pares vive en el encabezado de cada vista, no en la portada: la fila
+  del índice lleva solo el nombre y la descripción.
 - **Los enlaces de la portada viven en filas del propio List.** Dogfooding: la fila entera
   es el enlace (`a.md-list-item`, la anatomía del caso «Métodos de pago»), el nombre es el
   titular y la descripción el texto de apoyo, con la variante multiline para que la prosa
