@@ -168,6 +168,8 @@
     --md-sys-color-on-surface-variant: var(--md-ref-palette-neutral-variant30);
     /* on surface — texto principal sobre superficie clara */
     --md-sys-color-on-surface: var(--md-ref-palette-neutral10);
+    /* on surface rgb - el mismo color en triple, para componer alfa */
+    --md-sys-color-on-surface-rgb: var(--md-ref-palette-neutral10-rgb);
     /* on background — texto principal sobre el fondo de pagina */
     --md-sys-color-on-background: var(--md-ref-palette-neutral10);
 
@@ -313,6 +315,8 @@ html[data-theme="light"] {
   --md-sys-color-on-surface-variant: var(--md-ref-palette-neutral-variant30);
   /* on surface — texto principal sobre superficie clara */
   --md-sys-color-on-surface: var(--md-ref-palette-neutral10);
+  /* on surface rgb - el mismo color en triple, para componer alfa */
+  --md-sys-color-on-surface-rgb: var(--md-ref-palette-neutral10-rgb);
   /* on background — texto principal sobre el fondo de pagina */
   --md-sys-color-on-background: var(--md-ref-palette-neutral10);
 

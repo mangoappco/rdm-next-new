@@ -15,11 +15,12 @@
 </head>
 
 <!--
-  ESTA VISTA TIENE CINCO PARES, EN CONSTRUCCION PAR A PAR. El bloque
+  ESTA VISTA TIENE SEIS PARES, EN CONSTRUCCION PAR A PAR. El bloque
   normativo --Especificacion tecnica y anatomia-- abre con la clase base,
-  sigue con la seleccion, el cambio icono → check, la multi-seleccion y
-  los extremos de dos a cinco, y crece un par cada vez que se verifica en
-  el navegador: estados y el playground de recetas. Despues viene el
+  sigue con la seleccion, el cambio icono → check, la multi-seleccion, los
+  extremos de dos a cinco y las capas de estado, y crece un par cada vez
+  que se verifica en el navegador: falta el playground de recetas. Despues
+  viene el
   bloque de casos de uso de ManGo! App con los tres acordados: el tipo
   de comanda del POS, el monitor de despacho del KDS y el cambio de
   vista del catalogo.
@@ -29,7 +30,7 @@
   queda h1 > h2 (bloque) > h3 (par). La aparicion no cambia, porque el tipo
   lo pone la clase y no la etiqueta.
 
-  LOS SIETE ACUERDOS ANTES DE ESCRIBIR NADA
+  LOS NUEVE ACUERDOS ANTES DE ESCRIBIR NADA
   -----------------------------------------
   1. Clases: `md-segmented-button` para el grupo y `md-segmented-button-item`
      para el segmento, el precedente de `md-list` / `md-list-item`. M3 web
@@ -78,6 +79,13 @@
      hizo con el grupo de botones. Verificado en pixeles reales: 24 y 24
      re-renderizados. La leccion es la de siempre: aire que el snippet no
      trae, es lo que REGLA 11 existe para impedir.
+   9. EL APAGADO ES ATRIBUTO Y COLOR, NO OPACIDAD DE ELEMENTO: nativo con
+      `disabled` en el `<button>`, leyenda al 0.38 compuesta como color con
+      alfa (la leyenda es nodo de texto), trazo al 0.12 sobre el rgb del
+      outline y contenedor deshabilitado al 0.10 on-surface, la linea del
+      boton de la casa. cursor: not-allowed a la vista, sin `pointer-events:
+      none`, que es la anulacion que el atributo ya hace. Las divergencias
+      quedan escritas en `segmented-button.css`.
 
   LO QUE ESTA VISTA NO DICE, Y POR QUE
   ------------------------------------
@@ -101,7 +109,7 @@
         <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
       </div>
       <h1 class="md-type-display-large">Segmented Button</h1>
-      <p class="md-type-body-large">El grupo conectado de M3: segmentos de ancho compartido que alternan modo o vista. · <em>Cinco pares</em></p>
+      <p class="md-type-body-large">El grupo conectado de M3: segmentos de ancho compartido que alternan modo o vista. · <em>Seis pares</em></p>
     </header>
     <!-- HEADER: fin -->
 
@@ -221,6 +229,28 @@
   &lt;button class="md-segmented-button-item md-segmented-button-item-selected" type="button" role="radio" aria-checked="true"&gt;Mié&lt;/button&gt;
   &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;Jue&lt;/button&gt;
   &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;Vie&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: los estados (h3 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Estados</h3>
+      <p class="md-type-body-medium">Las cuatro caras del estado conviviendo: reposo, marcado, deshabilitado y deshabilitado marcado —el tinte de hover y el anillo de foco se prueban con el ratón y con Tab, y el deshabilitado no responde.</p>
+      <div class="sr-specimen">
+        <div class="md-segmented-button" role="group" aria-label="Elegir una o más opciones">
+          <button class="md-segmented-button-item" type="button" aria-pressed="false">Día</button>
+          <button class="md-segmented-button-item md-segmented-button-item-selected" type="button" aria-pressed="true">Semana</button>
+          <button class="md-segmented-button-item" type="button" aria-pressed="false" disabled>Mes</button>
+          <button class="md-segmented-button-item md-segmented-button-item-selected" type="button" aria-pressed="true" disabled>Año</button>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-segmented-button" role="group" aria-label="Elegir una o más opciones"&gt;
+  &lt;button class="md-segmented-button-item" type="button" aria-pressed="false"&gt;Día&lt;/button&gt;
+  &lt;button class="md-segmented-button-item md-segmented-button-item-selected" type="button" aria-pressed="true"&gt;Semana&lt;/button&gt;
+  &lt;button class="md-segmented-button-item" type="button" aria-pressed="false" disabled&gt;Mes&lt;/button&gt;
+  &lt;button class="md-segmented-button-item md-segmented-button-item-selected" type="button" aria-pressed="true" disabled&gt;Año&lt;/button&gt;
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>

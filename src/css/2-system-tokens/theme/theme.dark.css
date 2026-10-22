@@ -183,6 +183,8 @@
     --md-sys-color-on-surface-variant: var(--md-ref-palette-neutral-variant80);
     /* on surface — tono 90 en oscuro: texto claro */
     --md-sys-color-on-surface: var(--md-ref-palette-neutral90);
+    /* on surface rgb - el mismo color en triple, para componer alfa */
+    --md-sys-color-on-surface-rgb: var(--md-ref-palette-neutral90-rgb);
     /* on background — tono 90 en oscuro */
     --md-sys-color-on-background: var(--md-ref-palette-neutral90);
 
@@ -330,6 +332,8 @@ html[data-theme="dark"] {
   --md-sys-color-on-surface-variant: var(--md-ref-palette-neutral-variant80);
   /* on surface — tono 90 en oscuro: texto claro */
   --md-sys-color-on-surface: var(--md-ref-palette-neutral90);
+  /* on surface rgb - el mismo color en triple, para componer alfa */
+  --md-sys-color-on-surface-rgb: var(--md-ref-palette-neutral90-rgb);
   /* on background — tono 90 en oscuro */
   --md-sys-color-on-background: var(--md-ref-palette-neutral90);
 

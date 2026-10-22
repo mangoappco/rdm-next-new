@@ -185,6 +185,18 @@
   --md-ref-palette-neutral-variant50-rgb: 121 116 126;
   --md-ref-palette-neutral-variant60-rgb: 147 143 153;
 
+  /* Los tonos de TEXTO como TRIPLE RGB, con el mismo motivo: componerles
+     una opacidad sin partir de un color ya resuelto. El segmented button
+     apaga su leyenda deshabilitada al 0.38 y su seleccion deshabilitada
+     pasa a on-surface al 0.10 (los roles de 2-system-tokens/state.css),
+     y su leyenda es un nodo de texto que no acepta `opacity` propio: el
+     color con alfa compone el mismo numero. La luz apaga el neutral10,
+     que es el on-surface del tema claro, y la oscuridad el neutral90,
+     que es su equivalente. Puenteados en los temas como
+     --md-sys-color-on-surface-rgb, al lado del on-surface que resuelven. */
+  --md-ref-palette-neutral10-rgb: 29 27 32;
+  --md-ref-palette-neutral90-rgb: 230 224 233;
+
   /* ------------------------------------------------------------------------
      NEUTRAL — superficies y texto principal
      Es la familia MAS extendida: 24 tonos. Sostiene toda la escalera de
