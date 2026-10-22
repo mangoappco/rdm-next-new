@@ -111,12 +111,6 @@
      como una sola cosa. El aire ENTRE entradas lo pone el gap de
      .sr-section, que es aire de bloques y va un paso mas arriba.
      --------------------------------------------------------------------- */
-  .sr-entry {
-    display: flex;
-    flex-direction: column;
-    gap: var(--md-ref-spacing-100);
-  }
-
   /* ------------------------------------------------------------------------
      EL ESCENARIO DEL SPECIMEN
      --------------------------------------------------------------------------
