@@ -235,7 +235,7 @@ Los hechos que **no** se leen en el código:
 
 ## Segmented button — publicada
 
-Trece pares, en la estructura de dos bloques que fijó la List: la especificación técnica y anatomía -Clase base, Selección, Cambiar icono por check, Check con solo texto en selección única, Multi-selección, Check con solo texto en multi-selección, De dos a cinco, Densidad, Estados y Playground de recetas- y los tres casos de uso de ManGo! App —la comanda del POS, el filtro del KDS y las dos vistas del catálogo—, ensamblados por dogfooding con card, divider, button e icon-button. `segmented-button.html` es copia byte-idéntica a su molde.
+Catorce pares, en la estructura de dos bloques que fijó la List: la especificación técnica y anatomía -Clase base, Selección, Iconos solos, Cambiar icono por check, Check con solo texto en selección única, Multi-selección, Check con solo texto en multi-selección, De dos a cinco, Densidad, Estados y Playground de recetas- y los tres casos de uso de ManGo! App —la comanda del POS, el filtro del KDS y las dos vistas del catálogo—, ensamblados por dogfooding con card, divider, button e icon-button. `segmented-button.html` es copia byte-idéntica a su molde.
 
 Los hechos que **no** se leen en el código:
 

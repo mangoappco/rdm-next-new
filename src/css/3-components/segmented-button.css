@@ -20,10 +20,12 @@
 
    CONSTRUCCION PAR A PAR
    ----------------------
-   El archivo crece con la vista. Hoy tiene diez pares: la clase base
+   El archivo crece con la vista. Hoy tiene once pares: la clase base
    --contenedor de 40dp, los dos o tres segmentos en reposo, la tipografia
    label-large y los bordes--, la seleccion --el tinte secondary-container
-   con su on-secondary-container y las dos clases que lo declaran--, el
+   con su on-secondary-container y las dos clases que lo declaran--, los
+   iconos solos --el mismo swap de la ranura sin leyenda, icono y check
+   compartiendo celda en los dos modos--, el
    cambio icono → check --la ranura compartida, el swap de transparencia y
    el glifo de 18dp con su excepcion en capa 1--, la multi-seleccion --dos
    marcadas conviviendo bajo role="group" y aria-pressed--, la extension

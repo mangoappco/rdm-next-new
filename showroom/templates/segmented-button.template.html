@@ -15,12 +15,12 @@
 </head>
 
 <!--
-  ESTA VISTA TIENE TRECE PARES Y DOS BLOQUES. El Bloque 1 normativo
+  ESTA VISTA TIENE CATORCE PARES Y DOS BLOQUES. El Bloque 1 normativo
   --Especificacion tecnica y anatomia-- abre con la clase base, sigue con
-  la seleccion, el cambio icono → check, el check de solo texto en
-  seleccion unica, la multi-seleccion y el mismo check en multi, los
-  extremos de dos a cinco, la densidad de la escala vertical y las capas
-  de estado, y cierra con el playground de recetas.
+  la seleccion, los iconos solos, el cambio icono → check, el check de
+  solo texto en seleccion unica, la multi-seleccion y el mismo check en
+  multi, los extremos de dos a cinco, la densidad de la escala vertical
+  y las capas de estado, y cierra con el playground de recetas.
   El Bloque 2 pasa del
   control a las pantallas: los tres casos de uso de ManGo! App --la
   comanda del POS, el filtro del KDS y las dos vistas del catalogo--
@@ -197,7 +197,7 @@
         <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
       </div>
       <h1 class="md-type-display-large">Segmented Button</h1>
-      <p class="md-type-body-large">El grupo de segmentos ayuda a las personas a seleccionar opciones, cambiar de vista y ordenar datos. Se suele ubicar después de un título de página o de grupo. · <em>Trece pares</em></p>
+      <p class="md-type-body-large">El grupo de segmentos ayuda a las personas a seleccionar opciones, cambiar de vista y ordenar datos. Se suele ubicar después de un título de página o de grupo. · <em>Catorce pares</em></p>
     </header>
     <!-- HEADER: fin -->
 
@@ -242,6 +242,39 @@
   &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;&lt;span class="md-segmented-button-item-label"&gt;Día&lt;/span&gt;&lt;/button&gt;
   &lt;button class="md-segmented-button-item md-segmented-button-item-selected" type="button" role="radio" aria-checked="true"&gt;&lt;span class="md-segmented-button-item-label"&gt;Semana&lt;/span&gt;&lt;/button&gt;
   &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;&lt;span class="md-segmented-button-item-label"&gt;Mes&lt;/span&gt;&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: los iconos solos, el swap en los dos modos (h3 + prosa + 2 specimen + 2 pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Iconos solos</h3>
+      <p class="md-type-body-medium">La misma ranura de 18dp sin leyenda: el icono pinta en reposo y deja paso al check al marcar —el swap es el crossfade de siempre y el grupo no cambia de tamaño. El primer grupo marca una sola vez (<code>role="radiogroup"</code> con <code>aria-checked</code>); el segundo marca sin exclusividad (<code>role="group"</code> con <code>aria-pressed</code>).</p>
+      <div class="sr-specimen">
+        <div class="md-segmented-button" role="radiogroup" aria-label="Elegir una opción">
+          <button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"><span class="md-icon" aria-hidden="true">star</span><span class="md-icon md-segmented-button-item-check" aria-hidden="true">check</span></button>
+          <button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"><span class="md-icon" aria-hidden="true">star</span><span class="md-icon md-segmented-button-item-check" aria-hidden="true">check</span></button>
+          <button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"><span class="md-icon" aria-hidden="true">star</span><span class="md-icon md-segmented-button-item-check" aria-hidden="true">check</span></button>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-segmented-button" role="radiogroup" aria-label="Elegir una opción"&gt;
+  &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;star&lt;/span&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;&lt;/button&gt;
+  &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;star&lt;/span&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;&lt;/button&gt;
+  &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;star&lt;/span&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+      <div class="sr-specimen">
+        <div class="md-segmented-button" role="group" aria-label="Elegir una o más opciones">
+          <button class="md-segmented-button-item" type="button" aria-pressed="false"><span class="md-icon" aria-hidden="true">star</span><span class="md-icon md-segmented-button-item-check" aria-hidden="true">check</span></button>
+          <button class="md-segmented-button-item" type="button" aria-pressed="false"><span class="md-icon" aria-hidden="true">star</span><span class="md-icon md-segmented-button-item-check" aria-hidden="true">check</span></button>
+          <button class="md-segmented-button-item" type="button" aria-pressed="false"><span class="md-icon" aria-hidden="true">star</span><span class="md-icon md-segmented-button-item-check" aria-hidden="true">check</span></button>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-segmented-button" role="group" aria-label="Elegir una o más opciones"&gt;
+  &lt;button class="md-segmented-button-item" type="button" aria-pressed="false"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;star&lt;/span&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;&lt;/button&gt;
+  &lt;button class="md-segmented-button-item" type="button" aria-pressed="false"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;star&lt;/span&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;&lt;/button&gt;
+  &lt;button class="md-segmented-button-item" type="button" aria-pressed="false"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;star&lt;/span&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;&lt;/button&gt;
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
