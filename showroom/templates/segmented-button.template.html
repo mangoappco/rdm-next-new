@@ -142,24 +142,20 @@
           su selected no abre margen --la regla exige el check en el
           marcado (:has)--. Icon-only (catalogo): ranura constante de
           18, canje crossfade puro (acuerdo 4).
-      (d) EL ANCHO DEL GRUPO ES INVARIANTE EN LOS ESTADOS --la manga del
-          par--. Marcada o en reposo, la pastilla solo-texto mide lo
-          mismo: su padding lleva reservado, partida a partes iguales, la
-          mitad del avance del par --[18 + 8] / 2 = 13 a cada lado--, y la
-          regla del selected con check devuelve la manga a los 12
-          nominados para que el par la ocupe exacta. Las tres caras del
-          evento --check width, label margin, item padding-- funden con
-          el mismo par short4 + effects-default en una sola lista de
-          transiciones del item, y la suma cuadro a cuadro queda
-          constante: la conmutacion re-centra el contenido DENTRO de la
-          pastilla activa y no mueve a ninguna vecina ni al grupo --el
-          max-content de la mas ancha es el mismo en los dos estados--.
-          La familia con icono no lleva manga, por lo mismo que su ranura
-          de 18 pinta siempre. Compuesto sin literales: el token
-          `--md-comp-segmented-button-check-sleeve` sale de
-          calc((icon-size + between-space) / 2). El precio, escrito a
-          proposito: en reposo la pastilla solo-texto respira el aire de
-          su estado marcado, 25dp por lado.
+      (d) EL ANCHO DEL GRUPO SE RE-MIDE AL MARCAR, y es la conducta de la
+          receta, no un descuido. La reticula abrazada mide cada pista por
+          el max-content de la pastilla mas ancha, y ese max-content lleva
+          los 26dp del par cuando el segmento se marca --266 a 344px en el
+          grupo del desliz, medido en dos direcciones--. Es la conducta
+          del set web (grid 1fr + radios) y se documenta a conciencia: la
+          manga --reservar el par en el padding para constantizar el
+          grupo-- se construyo, midio y se retiro, porque en M3 el padding
+          es 12dp canonicamente y una ranura inflada en reposo no existe.
+          La contencion del item --min-width 0, width 100%-- no la evita:
+          la contribucion intrinseca es padding + contenido y los
+          porcentajes se tratan como auto en la medicion. Lo estable son
+          los deltas: la leyenda en reposo queda centrada al pixel y el
+          marcado abre su pareja dentro de la pastilla activa.
 
   LO QUE ESTA VISTA NO DICE, Y POR QUE
   ------------------------------------

@@ -115,31 +115,11 @@
      la cuenta el bloque de densidad. */
   --md-comp-segmented-button-height: var(--md-sys-measurement-segmented-button-height);
 
-  /* LA MANGA DEL PAR. La mitad del avance del segmento marcado --el par
-     [check 18dp + aire 8dp] = 26dp, partido a partes iguales--: 13 dp a
-     cada lado. Se compone con los dos roles que este elemento ya lleva,
-     sin literal nuevo. Su trabajo es la invariancia: el grupo abrazado
-     mide el max-content de la pastilla mas ancha, y ese max-content
-     crece 26dp cuando el segmento se marca --el grupo entero se deforma
-     con cada conmutacion--; con la manga reservada la pastilla mide
-     SIEMPRE lo que su estado marcado necesita, y el grupo no se encoge
-     ni se infla al conmutar la seleccion. */
-  --md-comp-segmented-button-check-sleeve: calc(
-    (var(--md-comp-segmented-button-icon-size)
-    + var(--md-comp-segmented-button-between-space)) / 2);
-
   /* Padding lateral de cada segmento: el minimo 12dp de la spec, el mismo
-     aire que el boton small, MAS la manga. En M3 es simetrico entre sus
-     dos lados, y el ancho padding + manga es el aire de reposo --25dp por
-     lado-- con la leyenda sola centrada al pixel. EN EL MARCADO LA MANGA
-     SE ENTREGA: la regla del selected con check devuelve la manga al
-     padding nominado y el par la ocupa; las tres caras del mismo evento
-     --check, margin, padding-- funden con el mismo par y la suma cuadro a
-     cuadro queda constante. La familia con icono no lleva manga: su
-     ranura de 18dp pinta siempre y no tiene quien la habite. */
-  --md-comp-segmented-button-padding-inline: calc(
-    var(--md-sys-measurement-segmented-button-padding-inline)
-    + var(--md-comp-segmented-button-check-sleeve));
+     aire que el boton small. En M3 es simetrico entre sus dos lados, y su
+     valor es el peldano space-150 de la escala de espaciado, a traves de
+     su rol de measurement. */
+  --md-comp-segmented-button-padding-inline: var(--md-sys-measurement-segmented-button-padding-inline);
 
   /* Hueco entre la ranura y la etiqueta: 8dp de la spec, el mismo hueco de
      la fila de la lista. No lo cobra un column-gap: el label lo lleva en
@@ -227,11 +207,17 @@
    contenedor es inline-grid a proposito: la spec de M3 lo dice --no dejar
    que el grupo ocupe el ancho completo de una pantalla grande--.
 
-   EL ANCHO ES INVARIANTE EN LOS ESTADOS: el max-content de la pastilla mas
-   ancha es el mismo marcada o en reposo --la manga del par vive reservada
-   en su padding--, asi que el grupo y cada columna no se encogen ni se
-   inflan al conmutar la seleccion. La conmutacion re-centra el contenido
-   DENTRO de la pastilla activa y no toca a ninguna vecina.
+   Y ASEGURA EL RE-MEDIDO AL MARCAR: el max-content de la pastilla marcada
+   lleva los 26dp del par --check 18 + aire 8--, la pista crece con el
+   marcado y el grupo entero se re-mide --266 a 344px en el grupo de tres
+   del par del desliz, medido--. Es la conducta de la receta del set web y
+   se documenta a proposito: la contencion del item --min-width a cero,
+   width al 100%-- no la evita, porque la contribucion intrinseca del
+   item a su pista es padding + contenido y los porcentajes se tratan como
+   auto en el paso de medicion intrinseca. La via alternativa --reservar
+   el par en el padding--, la manga, se construyo, midio feliz con el
+   grupo constante y se retiro: en M3 el padding es canonicamente 12dp y
+   no existe el concepto de ranura inflada en reposo.
    -------------------------------------------------------------------------- */
 
 .md-segmented-button {
@@ -310,9 +296,12 @@
   align-items: center;
 
   /* La caja no discute su pista: el stretch del grid ya estira el item a
-     lo suyo, y width al 100% con min-width a cero lo declaran a proposito
-     --el ancho animado del check nunca debe escaparse de la celda ni
-     empujar la pista que la reticula le asigno. */
+     lo suyo, y width al 100% con min-width a cero lo repiten a proposito.
+     No cortan la contribucion intrinseca del item --los porcentajes en el
+     paso de medicion inherente se tratan como auto, medido--, asi que no
+     evitan el re-medido del grupo al marcar: lo que dicen es que, fijada
+     la pista, el ancho animado del check se queda dentro de la celda que
+     la reticula le asigno y no se sale de ella. */
   min-width: 0;
   width: 100%;
 
@@ -335,23 +324,19 @@
 
   /* EL FUNDIDO DE LA SELECCION en el item, la cara que este elemento
      posee del evento: tinte y leyenda cruzan con el mismo par que los
-     glifos cruzan su opacidad, y la manga del padding funde con el
-     mismo par --la tercera cara del evento: la aritmetica padL +
-     checkW + gap + padR cuadra a constante cuadro a cuadro y la caja
-     del segmento no se mueve. La transicion vive en la BASE y no en la
+     glifos cruzan su opacidad. La transicion vive en la BASE y no en la
      clase selected a proposito: el valor cambia por el motor o por el
      marcado que mueva la clase, y tambien por el disabled que apaga
      tinte y leyenda --la regla sola no discrimina quien cambia el
-     valor--. El borde y el anillo de foco no funden, y la capa de
-     estado funde sola en su ::after. */
+     valor--. La lista lleva SOLO estas dos propiedades: el borde y el
+     anillo de foco no funden, el padding tampoco --el grupo se re-mide
+     al marcar, conducta documentada de la reticula abrazada--, y la
+     capa de estado funde sola en su ::after. */
   transition:
     background-color
       var(--md-comp-segmented-button-swap-duration)
       var(--md-comp-segmented-button-swap-easing),
     color
-      var(--md-comp-segmented-button-swap-duration)
-      var(--md-comp-segmented-button-swap-easing),
-    padding-inline
       var(--md-comp-segmented-button-swap-duration)
       var(--md-comp-segmented-button-swap-easing);
 
@@ -496,38 +481,6 @@
 
 .md-segmented-button-item-selected:has(> .md-segmented-button-item-check) > .md-segmented-button-item-label {
   margin-inline-start: var(--md-comp-segmented-button-between-space);
-}
-
-/* --------------------------------------------------------------------------
-   LA MANGA, LAS DOS REGLAS DE ENTREGA
-   --------------------------------------------------------------------------
-   La manga se declara en el padding del item (bloque de tokens): padding =
-   12dp + manga en reposo, y estas dos reglas devuelven el padding a los 12
-   nominados, cada una con su cliente.
-
-   1. MARCADO CON CHECK: el par [check 18 + aire 8] consume las mangas
-      exactamente --26dp de contenido en los 26dp liberados--, la pastilla
-      mide lo mismo que en reposo y el trio queda centrado sobre el eje del
-      segmento. El re-declare es de variable, la via de la densidad: la
-      propiedad del item gana a la del elemento y una sola regla (el
-      padding de la receta) consume el rol en los tres estados.
-
-   2. FAMILIA CON ICONO: la ranura de 18dp es de la anatomia --pinta con
-      su opacidad 0 o con el glifo dentro--, su aire de 8dp va aparte y el
-      par no lo habita al marcarse (el swap es crossfade: la leyenda no se
-      mueve). La manga no tiene sentido ahi y el padding queda en los 12.
-
-   Las dos reglas llevan la misma medida, y ninguna anima sola: la
-   transicion del padding vive en la regla base del item con el mismo par
-   del evento.
-   ------------------------------------------------------------------------ */
-
-.md-segmented-button-item-selected:has(> .md-segmented-button-item-check) {
-  --md-comp-segmented-button-padding-inline: var(--md-sys-measurement-segmented-button-padding-inline);
-}
-
-.md-segmented-button-item:has(> .md-icon:not(.md-segmented-button-item-check)) {
-  --md-comp-segmented-button-padding-inline: var(--md-sys-measurement-segmented-button-padding-inline);
 }
 
 /* La forma. Los extremos redondeados le tocan al primero y al ultimo: es la
