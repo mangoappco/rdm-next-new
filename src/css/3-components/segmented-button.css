@@ -203,9 +203,21 @@
    --------------------------------------------------------------------------
    La receta del set web, escrita tal cual: grid de columnas 1fr en flow
    horizontal, y cada segmento mide lo mismo que el mas ancho (en una
-   reticula sin techo, 1fr reparte el max-content a partes iguales). El
-   contenedor es inline-grid a proposito: la spec de M3 lo dice --no dejar
-   que el grupo ocupe el ancho completo de una pantalla grande--.
+   reticula sin techo, 1fr reparte el max-content a partes iguales).
+
+   LAS DOS LINEAS DE LA TABLA DE LA SPEC, las que el grupo sostiene de
+   m3.material.io/components/segmented-buttons/specs:
+   "Container width: Dynamic based on labels" --el grupo mide lo que
+   pide su contenido, y ese max-content se re-escribe en cada estado con
+   el re-medido del marcado--; y "Placement: Don't allow segmented
+   buttons to span the full width of larger screens". La segunda la
+   lleva width: max-content EN DECLARACION, no por suerte de contexto:
+   como inline-level el grupo ya abraza su contenido en flujo normal,
+   pero en un padre grid o flex column el stretch por defecto del hijo
+   lo desparrafiaria a todo lo ancho, y la declaracion lo fija a su
+   max-content en cualquier contexto. El eje cruzado NO se toca: ni
+   align-self ni align-items en el grupo, para no condicionar el
+   aparato del contenedor que lo habitara.
 
    Y ASEGURA EL RE-MEDIDO AL MARCAR: el max-content de la pastilla marcada
    lleva los 26dp del par --check 18 + aire 8--, la pista crece con el
@@ -224,6 +236,11 @@
   display: inline-grid;
   grid-auto-flow: column;
   grid-auto-columns: 1fr;
+
+  /* La guarda de "Don't span full width": el ancho se ata a su max-content
+     en cualquier contexto, y dinamico con los labels --se re-escribe
+     cuando el marcado re-mide las pistas. */
+  width: max-content;
   block-size: var(--md-comp-segmented-button-height);
 }
 
