@@ -20,19 +20,20 @@
 
    CONSTRUCCION PAR A PAR
    ----------------------
-   El archivo crece con la vista. Hoy tiene siete pares: la clase base
+   El archivo crece con la vista. Hoy tiene ocho pares: la clase base
    --contenedor de 40dp, los dos o tres segmentos en reposo, la tipografia
    label-large y los bordes--, la seleccion --el tinte secondary-container
    con su on-secondary-container y las dos clases que lo declaran--, el
    cambio icono → check --la ranura compartida, el swap de transparencia y
    el glifo de 18dp con su excepcion en capa 1--, la multi-seleccion --dos
    marcadas conviviendo bajo role="group" y aria-pressed--, la extension
-   --de dos a cinco segmentos y su contrato de diseno--, las capas de
-   estado --hover y pressed en ::after, anillo de focus-visible y disabled
-   nativo del atributo-- y el playground --la seleccion viva, con el motor
-   en src/js/segmented-button.js escribiendo LAS DOS caras del estado: la
-   clase que este CSS pinta y el aria que anuncia--. Nada se escribe antes
-   de su par.
+   --de dos a cinco segmentos y su contrato de diseno--, la densidad --la
+   escala vertical de M3: el paso -2 cae en 32px y solo la altura
+   cambia--, las capas de estado --hover y pressed en ::after, anillo de
+   focus-visible y disabled nativo del atributo-- y el playground --la
+   seleccion viva, con el motor en src/js/segmented-button.js escribiendo
+   LAS DOS caras del estado: la clase que este CSS pinta y el aria que
+   anuncia--. Nada se escribe antes de su par.
 
    LO QUE ESTA VERIFICADO Y DONDE
    ------------------------------
@@ -106,7 +107,12 @@
 .md-segmented-button,
 .md-segmented-button-item {
   /* Cajas. La altura es la del boton estandar: 40dp de container-height
-     small, para que un segmented y un boton alineados midan lo mismo. */
+     small, para que un segmented y un boton alineados midan lo mismo.
+     La densidad la rebaja sin tocar nada mas: el modificador dense
+     reescribe ESTA variable, y en DOS lugares --el grupo y el item
+     descendiente--: la receta vive en lista doble y la declaracion
+     propia del item gana a la herencia del grupo. La historia del bug
+     la cuenta el bloque de densidad. */
   --md-comp-segmented-button-height: var(--md-sys-measurement-segmented-button-height);
 
   /* Padding lateral de cada segmento: el minimo 12dp de la spec, el mismo
@@ -202,6 +208,41 @@
   grid-auto-flow: column;
   grid-auto-columns: 1fr;
   block-size: var(--md-comp-segmented-button-height);
+}
+
+/* --------------------------------------------------------------------------
+   DENSIDAD, EL PASO -2
+   --------------------------------------------------------------------------
+   La escala vertical de M3: la densidad SOLO toca la altura ("density is
+   only applied to the height") y cada paso resta 4dp --0, -1, -2 y -3
+   publicados, con la base a cero siendo el 40dp del boton estandar--.
+   ManGo! adopta el paso -2 = 32dp para sus vistas de datos --kardex,
+   inventario, reportes--, y el valor es el peldano xsmall del escalon
+   `container-height`: la MISMA primitiva que el boton y el icon-button
+   consumen con su tamano xsmall --un pariente de altura que ya tenia
+   dueno en capa 1--.
+
+   SOLO LA ALTURA CAMBIA. La tipografia label-large, el glifo de 18dp,
+   el borde, la costura de 1px, la pastilla y las capas de estado son
+   las mismas del estandar. Los pasos -1 (36px) y -3 (28px) existen en
+   la escala y no entran: sin cliente que los pida, seria altura muerta
+   en capa 2.
+
+   EL OVERRIDE EN DOS LUGARES, no en uno: la receta del componente
+   declara la variable en lista doble (.md-segmented-button,
+   .md-segmented-button-item) y el item la lleva en su propia regla.
+   Una declaracion del elemento SIEMPRE gana a la herencia del padre,
+   asi que reescribir la variable solo en el grupo daba un grupo de
+   32px con pastillas de 40 desbordandolo --el lab midio el bug y el
+   ojo lo vio antes que la regla del grupo, que si obedecia--. El
+   modificador re-declara con el item descendiente y su especificidad
+   (0,2,0) vence a la de la receta (0,1,0); es el mismo camino de los
+   tamanos del boton.
+   ------------------------------------------------------------------------ */
+
+.md-segmented-button-dense,
+.md-segmented-button-dense .md-segmented-button-item {
+  --md-comp-segmented-button-height: var(--md-sys-measurement-segmented-button-height-xsmall);
 }
 
 /* --------------------------------------------------------------------------

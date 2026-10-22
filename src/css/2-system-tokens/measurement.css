@@ -1004,6 +1004,18 @@
          `container-height: 40px` del componente y la reticula de 1-reference
          la trae: es la MISMA caja de container-height small que usa el
          boton. Un segmented y un boton alineados miden lo mismo.
+       - EL PASO DENSO, el unico de la escala de densidad con cliente:
+         la guia de densidad de M3 la publica como escalera vertical que
+         SOLO toca la altura ("density is only applied to the height"),
+         con -4dp por paso en 0, -1, -2 y -3, y la base a cero ES el 40dp
+         del boton estandar. El sistema adopta el paso -2 = 32dp para las
+         vistas de datos de ManGo! (kardex, inventario, reportes), y el
+         valor cae en el peldano xsmall de container-height: la misma
+         primitiva de 32px que consumen el boton y el icon-button en su
+         tamano xsmall, con puentes de los mismos terminos que los dos de
+         arriba. Los pasos -1 (36px) y -3 (28px) existen en la escala y
+         no llegan a este bloque: sin cliente que los pida seria altura
+         muerta, y la capa 2 no declara roles muertos.
        - El padding lateral es 12DP. La spec lo publica como minimo
          ("Left/right padding: Min 12dp"); en la reticula es space-150,
          el mismo 12 que usa el boton small.
@@ -1021,6 +1033,7 @@
           reticula.
      ======================================================================== */
   --md-sys-measurement-segmented-button-height: var(--md-ref-container-height-small);
+  --md-sys-measurement-segmented-button-height-xsmall: var(--md-ref-container-height-xsmall);
   --md-sys-measurement-segmented-button-padding-inline: var(--md-ref-spacing-150);
   --md-sys-measurement-segmented-button-between-space: var(--md-ref-spacing-100);
   --md-sys-measurement-segmented-button-icon-size: var(--md-ref-icon-size-segmented-button);

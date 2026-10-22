@@ -15,21 +15,21 @@
 </head>
 
 <!--
-  ESTA VISTA TIENE SIETE PARES, EN CONSTRUCCION PAR A PAR. El bloque
+  ESTA VISTA TIENE OCHO PARES, EN CONSTRUCCION PAR A PAR. El bloque
   normativo --Especificacion tecnica y anatomia-- abre con la clase base,
-  sigue con la seleccion, el cambio icono → check, la multi-seleccion, los
-  extremos de dos a cinco y las capas de estado, y cierra con el
-  playground de recetas. Despues viene el
-  bloque de casos de uso de ManGo! App con los tres acordados: el tipo
-  de comanda del POS, el monitor de despacho del KDS y el cambio de
-  vista del catalogo.
+  sigue con la seleccion, el cambio icono → check, la multi-seleccion,
+  los extremos de dos a cinco, la densidad de la escala vertical y las
+  capas de estado, y cierra con el playground de recetas. Despues viene
+  el bloque de casos de uso de ManGo! App con los tres acordados: el
+  tipo de comanda del POS, el monitor de despacho del KDS y el cambio
+  de vista del catalogo.
 
   El corte se marca con un divisor, el titulo de cada bloque es un h2 y los
   pares van en h3 debajo: el h1 es el nombre del componente, y el esquema
   queda h1 > h2 (bloque) > h3 (par). La aparicion no cambia, porque el tipo
   lo pone la clase y no la etiqueta.
 
-  LOS NUEVE ACUERDOS ANTES DE ESCRIBIR NADA
+  LOS ONCE ACUERDOS ANTES DE ESCRIBIR NADA
   -----------------------------------------
   1. Clases: `md-segmented-button` para el grupo y `md-segmented-button-item`
      para el segmento, el precedente de `md-list` / `md-list-item`. M3 web
@@ -58,9 +58,20 @@
      con fundidos de motion.css y su nota de desviacion.
   5. NO SE MEZCLAN ANATOMIAS: la guia lo prohíbe --segmentos solo-icono con
      segmentos textuales en el mismo grupo--. Custodian los casos.
-  6. DENSIDAD NO ENTRA: son pasos de -4dp que la spec publica para Android
-     y que los tokens web no traen. Documentada y sin par, igual que "el
-     video no entra" en la lista.
+  6. DENSIDAD, ENTRA POR EL PASO -2 (resuelto en el Par 6 de densidad).
+     Este acuerdo cerraba la puerta cuando los tokens web no traian la
+     escala. La guia de densidad de M3 la define como SOLO altura
+     ("density is only applied to the height"), escalera de -4dp por
+     paso sobre la base de 40dp: 40, 36, 32 y 28. ManGo! adopta el -2 =
+     32dp para sus vistas de datos --kardex, inventario, reportes--, y
+     el valor coincide con el peldano xsmall del escalon de
+     container-height: la misma primitiva de 32px que el boton y el
+     icon-button consumen en su tamano xsmall, con su rol de
+     measurement.css en el bloque del segmented button. Los pasos -1
+     (36px) y -3 (28px) quedan sin rol: altura sin cliente es altura
+     muerta en capa 2. La clase del modificador es
+     `md-segmented-button-dense`, a secas y sin alias: M3 no publica
+     nombre de clase, y la casa no duplica contratos.
   7. LA COSTURA DEL BORDE. El ensamblaje web comparte el borde con un
      outline de `inset: 0 -0.5px` que extiende media pixel a cada lado; un
      -0.5px es un literal fuera de reticula y la REGLA 1 no lo deja. Se uso
@@ -106,7 +117,10 @@
   relleno y los colores estan en la cabecera de
   `src/css/3-components/segmented-button.css`, con el token de M3 al que
   corresponde cada uno. Un par que dijera "el segmento mide 40" seria el
-  mismo specimen con otro h2.
+  mismo specimen con otro h2. La densidad es la excepcion necesaria y no
+  rompe la regla: su par ensaya la DECISION de escala --que solo la
+  altura baja, que el resto de la anatomia no se entera--, no el valor
+  que la base ya declara.
 
   EL LIMITE DE DOS A CINCO ES CONTRATO DE DISENO, no CSS: ninguna medida
   denuncia un sexto segmento. Lo custodian el par de anatomia que ensaya
@@ -122,7 +136,7 @@
         <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
       </div>
       <h1 class="md-type-display-large">Segmented Button</h1>
-      <p class="md-type-body-large">El grupo conectado de M3: segmentos de ancho compartido que alternan modo o vista. · <em>Siete pares</em></p>
+      <p class="md-type-body-large">El grupo conectado de M3: segmentos de ancho compartido que alternan modo o vista. · <em>Ocho pares</em></p>
     </header>
     <!-- HEADER: fin -->
 
@@ -242,6 +256,40 @@
   &lt;button class="md-segmented-button-item md-segmented-button-item-selected" type="button" role="radio" aria-checked="true"&gt;Mié&lt;/button&gt;
   &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;Jue&lt;/button&gt;
   &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;Vie&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: la densidad (h3 + prosa + 2 specimen + 2 pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Densidad</h3>
+      <p class="md-type-body-medium">La escala vertical de M3 con su base a cero: la pastilla de 40px del botón estándar, la misma caja que alinea un segmented con un botón.</p>
+      <div class="sr-specimen">
+        <div class="md-segmented-button">
+          <button class="md-segmented-button-item" type="button">Día</button>
+          <button class="md-segmented-button-item" type="button">Semana</button>
+          <button class="md-segmented-button-item" type="button">Mes</button>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-segmented-button"&gt;
+  &lt;button class="md-segmented-button-item" type="button"&gt;Día&lt;/button&gt;
+  &lt;button class="md-segmented-button-item" type="button"&gt;Semana&lt;/button&gt;
+  &lt;button class="md-segmented-button-item" type="button"&gt;Mes&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+      <p class="md-type-body-medium">Y el paso -2 de la densidad: la clase dense baja la pastilla a 32px y solo la altura cambia —la tipografía, el glifo, el borde y la costura no se enteran—.</p>
+      <div class="sr-specimen">
+        <div class="md-segmented-button md-segmented-button-dense">
+          <button class="md-segmented-button-item" type="button">Día</button>
+          <button class="md-segmented-button-item" type="button">Semana</button>
+          <button class="md-segmented-button-item" type="button">Mes</button>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-segmented-button md-segmented-button-dense"&gt;
+  &lt;button class="md-segmented-button-item" type="button"&gt;Día&lt;/button&gt;
+  &lt;button class="md-segmented-button-item" type="button"&gt;Semana&lt;/button&gt;
+  &lt;button class="md-segmented-button-item" type="button"&gt;Mes&lt;/button&gt;
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
