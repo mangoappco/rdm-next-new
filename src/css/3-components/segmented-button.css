@@ -155,12 +155,19 @@
      seleccion dejo abierta: 20px de reticula o el 18 exacto de M3. */
   --md-comp-segmented-button-icon-size: var(--md-sys-measurement-segmented-button-icon-size);
 
-  /* EL FUNDIDO DEL CAMBIO ICONO → CHECK. Del catalogo de motion: "algo
-     cambia de color y de opacidad" describiendo el par Expressive entero,
-     effects + short4 (200ms), el mismo par que usan el icon-button y la
-     fila de la lista para sus capas de opacidad. La receta web hace el
-     cambio con un stroke-draw de 150ms y ese trazo no reproduce un glifo
-     de font: la desviacion esta escrita en el template. */
+  /* EL FUNDIDO DE LA SELECCION. Del catalogo de motion: "algo cambia de
+     color y de opacidad" describiendo el par Expressive entero, effects +
+     short4 (200ms), el mismo par que usan el icon-button y la fila de la
+     lista para sus capas de opacidad. La receta web hace el cambio con un
+     stroke-draw de 150ms y ese trazo no reproduce un glifo de font: la
+     desviacion esta escrita en el template.
+
+     EL PAR ES UNO porque el evento es uno: cuando la seleccion cambia,
+     cambian a la vez tres caras del marcado --el tinte de la pastilla y el
+     color de su leyenda en el item, y el swap de opacidad de los dos
+     glifos en la ranura--. Las dos propiedades del item y los dos glifos
+     consumen estos mismos tokens; inventar un par por cara seria tres
+     pares para un clic. */
   --md-comp-segmented-button-swap-duration: var(--md-sys-motion-duration-short4);
   --md-comp-segmented-button-swap-easing: var(--md-sys-motion-easing-effects-default);
 
@@ -243,6 +250,23 @@
 
   color: var(--md-comp-segmented-button-item-label-text-color);
   font: var(--md-comp-segmented-button-label-text);
+
+  /* EL FUNDIDO DE LA SELECCION en el item, la cara que este elemento
+     posee del evento: tinte y leyenda cruzan con el mismo par que los
+     glifos cruzan su opacidad. La transicion vive en la BASE y no en la
+     clase selected a proposito: el valor cambia por el motor o por el
+     marcado que mueva la clase, y tambien por el disabled que apaga
+     tinte y leyenda --la regla sola no discrimina quien cambia el
+     valor--. La lista lleva SOLO estas dos propiedades: el borde y el
+     anillo de foco no funden, y la capa de estado funde sola en su
+     ::after. */
+  transition:
+    background-color
+      var(--md-comp-segmented-button-swap-duration)
+      var(--md-comp-segmented-button-swap-easing),
+    color
+      var(--md-comp-segmented-button-swap-duration)
+      var(--md-comp-segmented-button-swap-easing);
 
   /* Cursor de mano en el segmento vivo, `:enabled cursor: pointer` de la
      receta web y el mismo cursor del boton de la casa. El apagado llega
@@ -490,4 +514,41 @@
     var(--md-sys-color-on-surface-rgb) /
     var(--md-sys-state-disabled-container-opacity)
   );
+}
+
+/* --------------------------------------------------------------------------
+   PREFERS-REDUCED-MOTION
+   --------------------------------------------------------------------------
+   El fundido del segmented button es movimiento SUAVE: no cambia la
+   geometria, solo cruzan colores y opacidades. La regla del catalogo
+   exige la consulta a quien hace movimiento fuerte --cambiar la forma
+   del componente--; no es esta la situacion, y aun asi el bloque anula
+   los tres fundidos: quien pide menos movimiento no ve tampoco el swap
+   de los glifos, que ES el movimiento del componente, y el estado llega
+   de una vez al mismo sitio que el fundido alcanzaba.
+
+   Tres reglas y no una: las transiciones viven en tres elementos y no
+   se heredan entre ellos --el item lleva tinte y leyenda, los glifos el
+   swap, la capa de estado el suyo en el ::after--. La regla del item
+   sola dejaria el tinte de hover y el swap fundiendo.
+
+   `transition: none` y no `transition-duration: 0s`: el sistema no tiene
+   un token de duracion cero (el mas corto es short1, 50ms, que no es
+   cero), y escribir 0s a mano es un valor crudo -- REGLA 1 lo prohibe
+   fuera de 1-reference-tokens. Inventar un token de duracion cero para
+   esto seria mas caro que la regla que evita.
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .md-segmented-button-item {
+    transition: none;
+  }
+
+  .md-segmented-button-item > .md-icon {
+    transition: none;
+  }
+
+  .md-segmented-button-item::after {
+    transition: none;
+  }
 }
