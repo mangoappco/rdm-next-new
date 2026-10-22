@@ -15,11 +15,12 @@
 </head>
 
 <!--
-  ESTA VISTA TIENE ONCE PARES Y DOS BLOQUES. El Bloque 1 normativo
+  ESTA VISTA TIENE DOCE PARES Y DOS BLOQUES. El Bloque 1 normativo
   --Especificacion tecnica y anatomia-- abre con la clase base, sigue con
-  la seleccion, el cambio icono → check, la multi-seleccion, los extremos
-  de dos a cinco, la densidad de la escala vertical y las capas de
-  estado, y cierra con el playground de recetas. El Bloque 2 pasa del
+  la seleccion, el cambio icono → check y su desliz en solo-texto, la
+  multi-seleccion, los extremos de dos a cinco, la densidad de la escala
+  vertical y las capas de estado, y cierra con el playground de recetas.
+  El Bloque 2 pasa del
   control a las pantallas: los tres casos de uso de ManGo! App --la
   comanda del POS, el filtro del KDS y las dos vistas del catalogo--
   ensamblados por dogfooding con card, divider, button e icon-button.
@@ -167,7 +168,7 @@
         <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
       </div>
       <h1 class="md-type-display-large">Segmented Button</h1>
-      <p class="md-type-body-large">El grupo conectado de M3: segmentos de ancho compartido que alternan modo o vista. · <em>Once pares</em></p>
+      <p class="md-type-body-large">El grupo conectado de M3: segmentos de ancho compartido que alternan modo o vista. · <em>Doce pares</em></p>
     </header>
     <!-- HEADER: fin -->
 
@@ -232,6 +233,39 @@
   &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;star&lt;/span&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;&lt;span class="md-segmented-button-item-label"&gt;Día&lt;/span&gt;&lt;/button&gt;
   &lt;button class="md-segmented-button-item md-segmented-button-item-selected" type="button" role="radio" aria-checked="true"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;star&lt;/span&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;&lt;span class="md-segmented-button-item-label"&gt;Semana&lt;/span&gt;&lt;/button&gt;
   &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;star&lt;/span&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;&lt;span class="md-segmented-button-item-label"&gt;Mes&lt;/span&gt;&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: el desliz del check en solo-texto (h3 + prosa + 2 specimen + 2 pre + 2 boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">El desliz del check</h3>
+      <p class="md-type-body-medium">El canon en solo-texto: en reposo la leyenda va sola, centrada al píxel; al marcarse el check abre de 0 a 18dp y la pareja vuelve a centrarse —el desliz corre frame a frame con el par del canje, y se pliega igual al conmutar. Nada va marcado en el primer grupo: pruébalo con el clic.</p>
+      <div class="sr-specimen">
+        <div class="md-segmented-button" role="radiogroup" aria-label="Elegir un momento">
+          <button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"><span class="md-icon md-segmented-button-item-check" aria-hidden="true">check</span><span class="md-segmented-button-item-label">Desayuno</span></button>
+          <button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"><span class="md-icon md-segmented-button-item-check" aria-hidden="true">check</span><span class="md-segmented-button-item-label">Comida</span></button>
+          <button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"><span class="md-icon md-segmented-button-item-check" aria-hidden="true">check</span><span class="md-segmented-button-item-label">Cena</span></button>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-segmented-button" role="radiogroup" aria-label="Elegir un momento"&gt;
+  &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;&lt;span class="md-segmented-button-item-label"&gt;Desayuno&lt;/span&gt;&lt;/button&gt;
+  &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;&lt;span class="md-segmented-button-item-label"&gt;Comida&lt;/span&gt;&lt;/button&gt;
+  &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;&lt;span class="md-segmented-button-item-label"&gt;Cena&lt;/span&gt;&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+      <div class="sr-specimen">
+        <div class="md-segmented-button" role="radiogroup" aria-label="Elegir un momento">
+          <button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"><span class="md-icon md-segmented-button-item-check" aria-hidden="true">check</span><span class="md-segmented-button-item-label">Desayuno</span></button>
+          <button class="md-segmented-button-item md-segmented-button-item-selected" type="button" role="radio" aria-checked="true"><span class="md-icon md-segmented-button-item-check" aria-hidden="true">check</span><span class="md-segmented-button-item-label">Comida</span></button>
+          <button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"><span class="md-icon md-segmented-button-item-check" aria-hidden="true">check</span><span class="md-segmented-button-item-label">Cena</span></button>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-segmented-button" role="radiogroup" aria-label="Elegir un momento"&gt;
+  &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;&lt;span class="md-segmented-button-item-label"&gt;Desayuno&lt;/span&gt;&lt;/button&gt;
+  &lt;button class="md-segmented-button-item md-segmented-button-item-selected" type="button" role="radio" aria-checked="true"&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;&lt;span class="md-segmented-button-item-label"&gt;Comida&lt;/span&gt;&lt;/button&gt;
+  &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;&lt;span class="md-segmented-button-item-label"&gt;Cena&lt;/span&gt;&lt;/button&gt;
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
