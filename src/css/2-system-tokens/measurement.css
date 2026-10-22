@@ -1009,10 +1009,21 @@
          el mismo 12 que usa el boton small.
        - La separacion icono-etiqueta es 8DP ("Padding between elements"):
          space-100, el mismo hueco de la fila de la lista.
+        - El glifo del icono mide 18DP. Es la UNICA medida de la familia que
+          no sale de la escala: Space 0-900 va de 16 a 20 y no trae 18. El
+          comp web lo trae como literal (`with-icon-icon-size: 18px`, sin
+          token sys al que apuntar --los seis sys de v0_192 son color,
+          elevation, motion, shape, state y typescale--), Android lo
+          publica igual (IconSize=18dp), y la primitiva llego a capa 1 con
+          su excepcion documentada: `--md-ref-icon-size-segmented-button`
+          en iconfont.css, el mismo descongelamiento del FAB 28. Este rol
+          es el puente por el que la capa 3 la pide sin saltarse la
+          reticula.
      ======================================================================== */
   --md-sys-measurement-segmented-button-height: var(--md-ref-container-height-small);
   --md-sys-measurement-segmented-button-padding-inline: var(--md-ref-spacing-150);
   --md-sys-measurement-segmented-button-between-space: var(--md-ref-spacing-100);
+  --md-sys-measurement-segmented-button-icon-size: var(--md-ref-icon-size-segmented-button);
 }
 
 /* Las clases utilitarias de esta familia se mudaron a 4-utilities/ en la auditoria M3:

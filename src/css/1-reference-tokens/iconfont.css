@@ -480,4 +480,28 @@
      pone el optico grande (40). El optico sigue al escalon, no al pixel.
      ------------------------------------------------------------------------ */
   --md-ref-icon-size-fab-medium: 28px;
+
+  /* ------------------------------------------------------------------------
+     EL TAMANO DE ICONO DEL SEGMENTED BUTTON
+     ------------------------------------------------------------------------
+     El par de seleccion dejo la decision abierta --20px por doctrina de
+     reticula, o abrir esta capa por el 18 exacto--. La medicion y los
+     ficheros de M3 la cerraron: el comp web trae `with-icon-icon-size` como
+     LITERAL (18px, sin token sys al que apuntar --los seis sys de v0_192
+     son color, elevation, motion, shape, state y typescale, y ninguno
+     declara tamano de icono) y Android lo publica igual (IconSize=18dp).
+     El 18 no es de la escalera de esta familia (la del boton y el
+     icon-button va 20, 24, 32, 40) y no es paso de Space 0-900 (va 16 ->
+     20): es la medida de un componente concreto, escrita dos veces por
+     Google con el mismo numero.
+
+     Aqui vive como los otros casos de este archivo: con nombre propio, sin
+     apuntar a ninguna escala, y sin llamarlo `spacing-225` --a 18px le
+     tocaria ese nombre por la formula Space N = (N / 100) x 8dp, pero un
+     paso que la escala no publica no se inventa. El mismo criterio que ya
+     separo `container-width` de `container-height`, y el del FAB 28 de
+     al lado. Este es el segundo descongelamiento de la capa por una medida
+     de componente de M3 Expressive.
+     ------------------------------------------------------------------------ */
+  --md-ref-icon-size-segmented-button: 18px;
 }

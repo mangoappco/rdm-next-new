@@ -15,10 +15,10 @@
 </head>
 
 <!--
-  ESTA VISTA TIENE DOS PARES, EN CONSTRUCCION PAR A PAR. El bloque
-  normativo --Especificacion tecnica y anatomia-- abre con la clase base
-  y sigue con la seleccion, y crece un par cada vez que se verifica en el
-  navegador: cambio icono → check, de dos a cinco, estados y el
+  ESTA VISTA TIENE TRES PARES, EN CONSTRUCCION PAR A PAR. El bloque
+  normativo --Especificacion tecnica y anatomia-- abre con la clase base,
+  sigue con la seleccion y el cambio icono → check, y crece un par cada
+  vez que se verifica en el navegador: de dos a cinco, estados y el
   playground de recetas. Despues viene el bloque de casos de uso de
   ManGo! App con los tres acordados: el tipo de comanda del POS, el
   monitor de despacho del KDS y el cambio de vista del catalogo.
@@ -34,16 +34,17 @@
      para el segmento, el precedente de `md-list` / `md-list-item`. M3 web
      llama `set` al grupo; es un detalle de su API de Web Components, no una
      clase de CSS publicada.
-  2. ICONO EN 18dp: TODAVIA SIN PAR, y con una decision abierta que este
-     archivo no tapa. Los tokens web y Android convergen en 18dp, pero el
-     catalogo ya resolvio esa interseccion con su doctrina: el literal de
-     18px NO esta en la reticula de space (ni en la de M3), y la REGLA 1 no
-     lo deja vivir ni en capa 2 ni en capa 3. Su precedente es el gap xsmall
-     del grupo de botones: M3 publica 18, el componente pide el valor de
-     escala mas proximo --y se documenta el desvio de 2px--. Lo verdadero
-     el dia que entre el icono: si M3 misma diera el 18 exacto, toca abrir
-     1-reference-tokens. El candidato cercano es space-250 (20px), el mismo
-     que eligio la lista por su epoca Expressive.
+  2. ICONO EN 18dp: RESUELTO EN EL PAR 3. La decision abierta se cerro con
+     medicion y ficheros: los tokens web y Android convergen en 18dp de
+     verdad --el comp web trae `with-icon-icon-size` como literal de 18px
+     sin token sys al que apuntar, y Android publica IconSize=18dp--. Con
+     M3 misma dando el 18 exacto, toca abrir 1-reference-tokens, que es lo
+     que este acuerdo preveia. La primitiva
+     `--md-ref-icon-size-segmented-button` vive en iconfont.css con su
+     excepcion documentada, el mismo descongelamiento que ya habian hecho
+     el FAB 28 y los paddings del extended. La via de reticula que quedaba
+     pendiente (20px, space-250) es la que la LISTA eligio para su epoca
+     y no entra aqui.
   3. ARIA DIFERENCIADA. El single-select lleva `role="radiogroup"` en el
      grupo y `role="radio"` + `aria-checked` en cada segmento; el multi-
      select, `role="group"` y `aria-pressed`. La lista y los radio no son
@@ -99,7 +100,7 @@
         <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
       </div>
       <h1 class="md-type-display-large">Segmented Button</h1>
-      <p class="md-type-body-large">El grupo conectado de M3: segmentos de ancho compartido que alternan modo o vista. · <em>Dos pares</em></p>
+      <p class="md-type-body-large">El grupo conectado de M3: segmentos de ancho compartido que alternan modo o vista. · <em>Tres pares</em></p>
     </header>
     <!-- HEADER: fin -->
 
@@ -144,6 +145,26 @@
   &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;Opción uno&lt;/button&gt;
   &lt;button class="md-segmented-button-item md-segmented-button-item-selected" type="button" role="radio" aria-checked="true"&gt;Opción dos&lt;/button&gt;
   &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;Opción tres&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: el cambio icono → check (h3 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Cambiar icono por check</h3>
+      <p class="md-type-body-medium">Un segmento con icono, marcado y sin marcar: el icono describe la opción y el check vive detrás, en la misma ranura de 18dp —la medida que M3 publica en web y Android con el mismo número, y la única del componente que no sale de la retícula—. Al marcar, el icono sale y el check entra por transparencia con el par Expressive <code>effects + short4</code>; la leyenda no se mueve un píxel. La receta web dibuja el check con un trazo animado de 150ms, que no reproduce un glifo de font: desviación consciente. Con el código en la mano, el estado es <code>role="radio"</code> + <code>aria-checked</code>, y los glifos son decoración: llevan <code>aria-hidden</code>.</p>
+      <div class="sr-specimen">
+        <div class="md-segmented-button" role="radiogroup" aria-label="Elegir una opción">
+          <button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"><span class="md-icon" aria-hidden="true">star</span><span class="md-icon md-segmented-button-item-check" aria-hidden="true">check</span>Opción uno</button>
+          <button class="md-segmented-button-item md-segmented-button-item-selected" type="button" role="radio" aria-checked="true"><span class="md-icon" aria-hidden="true">star</span><span class="md-icon md-segmented-button-item-check" aria-hidden="true">check</span>Opción dos</button>
+          <button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"><span class="md-icon" aria-hidden="true">star</span><span class="md-icon md-segmented-button-item-check" aria-hidden="true">check</span>Opción tres</button>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-segmented-button" role="radiogroup" aria-label="Elegir una opción"&gt;
+  &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;star&lt;/span&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;Opción uno&lt;/button&gt;
+  &lt;button class="md-segmented-button-item md-segmented-button-item-selected" type="button" role="radio" aria-checked="true"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;star&lt;/span&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;Opción dos&lt;/button&gt;
+  &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;star&lt;/span&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;Opción tres&lt;/button&gt;
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>

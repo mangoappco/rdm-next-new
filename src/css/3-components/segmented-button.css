@@ -20,12 +20,14 @@
 
    CONSTRUCCION PAR A PAR
    ----------------------
-   El archivo crece con la vista. Hoy tiene dos pares: la clase base
+   El archivo crece con la vista. Hoy tiene tres pares: la clase base
    --contenedor de 40dp, los dos o tres segmentos en reposo, la tipografia
-   label-large y los bordes-- y la seleccion --el tinte secondary-container
-   con su on-secondary-container y las dos clases que lo declaran--. El
-   cambio icono → check, el disabled y las capas de estado llegan con los
-   pares que los demostraran; nada se escribe antes de su par.
+   label-large y los bordes--, la seleccion --el tinte secondary-container
+   con su on-secondary-container y las dos clases que lo declaran-- y el
+   cambio icono → check --la ranura compartida, el swap de transparencia y
+   el glifo de 18dp con su excepcion en capa 1--. El disabled y las capas
+   de estado llegan con los pares que los demostraran; nada se escribe
+   antes de su par.
 
    LO QUE ESTA VERIFICADO Y DONDE
    ------------------------------
@@ -138,6 +140,22 @@
      typography.css y button.css: el segmento es un boton y comparte su
      letra, no la redeclara. */
   --md-comp-segmented-button-label-text: var(--md-sys-typescale-label-large);
+
+  /* EL GLIFO DEL ICONO. with-icon-icon-size: 18dp, M3 lo publica dos veces
+     con el mismo valor y la reticula no lo trae: la primitiva vive en
+     1-reference-tokens/iconfont.css con su excepcion documentada y este
+     rol llega por measurement.css. Cierra la decision que el par de
+     seleccion dejo abierta: 20px de reticula o el 18 exacto de M3. */
+  --md-comp-segmented-button-icon-size: var(--md-sys-measurement-segmented-button-icon-size);
+
+  /* EL FUNDIDO DEL CAMBIO ICONO → CHECK. Del catalogo de motion: "algo
+     cambia de color y de opacidad" describiendo el par Expressive entero,
+     effects + short4 (200ms), el mismo par que usan el icon-button y la
+     fila de la lista para sus capas de opacidad. La receta web hace el
+     cambio con un stroke-draw de 150ms y ese trazo no reproduce un glifo
+     de font: la desviacion esta escrita en el template. */
+  --md-comp-segmented-button-swap-duration: var(--md-sys-motion-duration-short4);
+  --md-comp-segmented-button-swap-easing: var(--md-sys-motion-easing-effects-default);
 }
 
 /* --------------------------------------------------------------------------
@@ -166,9 +184,25 @@
    -------------------------------------------------------------------------- */
 
 .md-segmented-button-item {
-  display: flex;
-  align-items: center;
+  /* El contenido va en retícula de columnas y no en flex: el icono y el
+     check ocupan la MISMA celda --la ranura--, la leyenda auto-fluye a la
+     siguiente, y el hueco entre celdas es el between-space. Asi el swap es
+     transparencia entre dos glifos de la misma caja y la leyenda no se
+     mueve un pixel cuando el cambia pasa. La alineacion es la misma que
+     tenia el flex: contenido centrado en los dos ejes. */
+  display: grid;
+  grid-auto-flow: column;
   justify-content: center;
+  align-content: center;
+  align-items: center;
+  column-gap: var(--md-comp-segmented-button-between-space);
+
+  /* EL PUENTE AL GLIFO, el patron de list.css: `.md-icon` declara su
+     font-size en la capa 4 y la regla de aqui siempre pierde; lo que
+     funciona es reapuntar el rol que `.md-icon` LEE, y los dos glifos de
+     esta celda --el icono y el check, que tambien es .md-icon-- lo
+     heredan. Asi la ranura y el glifo miden lo mismo, 18dp de M3. */
+  --md-sys-measurement-icon-size: var(--md-comp-segmented-button-icon-size);
 
   /* La costura, en dos vueltas: cada segmento entrega su borde derecho al
      siguiente --la union la pinta una vez el izquierdo del vecino-- y el
@@ -208,6 +242,54 @@
 .md-segmented-button-item-selected {
   background-color: var(--md-comp-segmented-button-selected-container-color);
   color: var(--md-comp-segmented-button-selected-label-text-color);
+}
+
+/* --------------------------------------------------------------------------
+   EL CAMBIO ICONO → CHECK
+   --------------------------------------------------------------------------
+   La guia lo dice literal: "the icon is replaced by the checkmark when the
+   segment is selected". En los dos glifos comparten celda y el cambio es
+   transparencia cruzada: el icono sale, el check entra, la leyenda queda
+   quieta porque ni ancho ni alto cambian. Los incendios de moverle el
+   ancho a la ranura y animar un trazo (la receta web dibuja el check con
+   keyframes de stroke-dash a 75/150ms) no reproducen un glifo de font:
+   aqui la desviacion es consciente y va al par Expressive entero,
+   effects + short4, como el resto del sistema.
+
+   El check se pinta SIEMPRE en el marcado, como en la receta web --su svg
+   anda en todo segmento aunque no se vea-- para que el snippet y el
+   specimen sean el mismo dato y REGLA 11 no viva sobre una excepcion.
+
+   COLOR DE LOS DOS GLIFOS. El icono unselected lleva
+   unselected-with-icon-icon-color: on-surface, y el check selected
+   selected-with-icon-icon-color: on-secondary-container. Son los mismos
+   valores que las leyendas de cada estado, y como `color` se hereda, los
+   glifos siguen a la leyenda del segmento sin regla nueva: cuando los
+   estados de hover y focus tiñen la leyenda, tambien los atanen.
+   -------------------------------------------------------------------------- */
+
+.md-segmented-button-item > .md-icon {
+  /* La celda compartida. Se declara explicita: sin ella, el check caeria
+     en la celda siguiente del flujo automatico y no cubriria al icono.
+     La leyenda sigue auto-fluyendo a la celda siguiente y el hueco de
+     8dp la separa. */
+  grid-column: 1;
+  grid-row: 1;
+  transition: opacity
+    var(--md-comp-segmented-button-swap-duration)
+    var(--md-comp-segmented-button-swap-easing);
+}
+
+.md-segmented-button-item-check {
+  opacity: 0;
+}
+
+.md-segmented-button-item-selected > .md-segmented-button-item-check {
+  opacity: 1;
+}
+
+.md-segmented-button-item-selected > .md-icon:not(.md-segmented-button-item-check) {
+  opacity: 0;
 }
 
 /* La forma. Los extremos redondeados le tocan al primero y al ultimo: es la
