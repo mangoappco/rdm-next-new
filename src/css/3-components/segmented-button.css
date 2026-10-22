@@ -20,27 +20,27 @@
 
    CONSTRUCCION PAR A PAR
    ----------------------
-   El archivo crece con la vista. Hoy tiene once pares: la clase base
-   --contenedor de 40dp, los dos o tres segmentos en reposo, la tipografia
-   label-large y los bordes--, la seleccion --el tinte secondary-container
-   con su on-secondary-container y las dos clases que lo declaran--, los
-   iconos solos --la ranura sin leyenda: el glifo NO se despide al
-   marcarse --un check sin icono al lado pierde la referencia-- y la
-   seleccion la paga el tinte con su on-secondary-container--. El
-   cambio icono → check --la ranura compartida, el swap de transparencia y
-   el glifo de 18dp con su excepcion en capa 1--, la multi-seleccion --dos
-   marcadas conviviendo bajo role="group" y aria-pressed--, la extension
-   --de dos a cinco segmentos y su contrato de diseno--, la densidad --la
+   El archivo crece con la vista. Hoy tiene diez pares: la clase base y
+   anatomia --contenedor de 40dp, tipografia label-large y bordes, en
+   sus dos caras: solo texto y solo icono, en reposo--, el check de solo
+   texto --With label text only: el ancho de estado completo, la ranura
+   del check mide en los dos estados, el centrado va por transform y el
+   grupo no se mueve--, el cambio icono → check --With icons and label
+   text: la ranura compartida, el swap de transparencia y el glifo de
+   18dp con su excepcion en capa 1--, los iconos solos --With icons
+   only: la ranura sin leyenda, el glifo NO se despide al marcarse --un
+   check sin icono al lado pierde la referencia-- y la seleccion la
+   paga el tinte con su on-secondary-container--, la seleccion unica
+   --Single-select, el tinte secondary-container y las dos clases que
+   lo declaran--, la multi-seleccion --Multi-select, dos marcadas
+   conviviendo bajo role="group" y aria-pressed--, la extension --de
+   dos a cinco segmentos y su contrato de diseno--, la densidad --la
    escala vertical de M3: el paso -2 cae en 32px y solo la altura
-   cambia--, las capas de estado --hover y pressed en ::after, anillo de
-   focus-visible y disabled nativo del atributo-- y el playground --la
-   seleccion viva, con el motor en src/js/segmented-button.js escribiendo
-   LAS DOS caras del estado: la clase que este CSS pinta y el aria que
-   anuncia--, el check de solo texto en seleccion unica --el ancho de
-   estado completo: la ranura del check mide en los dos estados, el
-   centrado va por transform y el grupo no se mueve-- y el mismo en
-   multi --la misma doctrina sin exclusividad, role="group" con
-   aria-pressed y ranura de check--. Nada se escribe antes de su par.
+   cambia--, las capas de estado --hover y pressed en ::after, anillo
+   de focus-visible y disabled nativo del atributo-- y el playground
+   --la seleccion viva, con el motor en src/js/segmented-button.js
+   escribiendo LAS DOS caras del estado: la clase que este CSS pinta y
+   el aria que anuncia--. Nada se escribe antes de su par.
 
    LO QUE ESTA VERIFICADO Y DONDE
    ------------------------------
