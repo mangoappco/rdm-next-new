@@ -32,11 +32,11 @@
    LO QUE NO TIENE QUE LLEVAR UN ARCHIVO AQUI
    ------------------------------------------
    Solo los componentes que necesiten algo que el CSS no puede expresar:
-   abrir y cerrar, o conmutar estado. Hoy son DOS, el dialog y el toggle,
-   y NO por simetria de componentes: son los unicos con una pieza de
-   estado que el CSS no puede cambiar por si sola.
+   abrir y cerrar, o conmutar estado. Hoy son TRES, el dialog, el toggle y
+   el segmented button, y NO por simetria de componentes: son los unicos con
+   una pieza de estado que el CSS no puede cambiar por si sola.
 
-   Los otros cinco --divider, button-group, fab, fab-extended y card-- no
+   Los otros seis --divider, button-group, fab, fab-extended y card-- no
    crean archivo. No se crean vacios por simetria: un archivo sin
    contenido obliga a mantenerlo y a acordarse de que existe, que es mas
    trabajo que el que ahorra.
@@ -105,6 +105,7 @@
 
 import { registrar } from './dialog.js';
 import { registrar as registrarToggle } from './toggle.js';
+import { registrar as registrarSegmented } from './segmented-button.js';
 
 /* Se registra al cargar el script, no al hacer clic. Los specimens del
    showroom llevan `<dialog open>` a secas, que NO es modal, asi que ahi no
@@ -115,6 +116,12 @@ registrar();
    viva antes de que exista ningun [data-toggle] en la pagina. No se
    recorre el documento al cargar; quien llegue despues funciona igual. */
 registrarToggle();
+
+/* El segmented button, por la misma razon todavia: dos delegaciones (click
+   y keydown) y el gancho es el rol que el marcado ya publica --su cabecera
+   lo cuenta--. No se recorre el documento al cargar; los tabindex del
+   roving llegan con la primera flecha, no aqui. */
+registrarSegmented();
 
 /* Y aqui iran los que lo necesiten:
      import { registrar as registrarFabMenu } from './fab-menu.js';

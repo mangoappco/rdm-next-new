@@ -20,16 +20,19 @@
 
    CONSTRUCCION PAR A PAR
    ----------------------
-   El archivo crece con la vista. Hoy tiene seis pares: la clase base
+   El archivo crece con la vista. Hoy tiene siete pares: la clase base
    --contenedor de 40dp, los dos o tres segmentos en reposo, la tipografia
    label-large y los bordes--, la seleccion --el tinte secondary-container
    con su on-secondary-container y las dos clases que lo declaran--, el
    cambio icono → check --la ranura compartida, el swap de transparencia y
    el glifo de 18dp con su excepcion en capa 1--, la multi-seleccion --dos
    marcadas conviviendo bajo role="group" y aria-pressed--, la extension
-   --de dos a cinco segmentos y su contrato de diseno-- y el par de las
-   capas de estado --hover y pressed en ::after, anillo de focus-visible
-   y disabled nativo del atributo--. Nada se escribe antes de su par.
+   --de dos a cinco segmentos y su contrato de diseno--, las capas de
+   estado --hover y pressed en ::after, anillo de focus-visible y disabled
+   nativo del atributo-- y el playground --la seleccion viva, con el motor
+   en src/js/segmented-button.js escribiendo LAS DOS caras del estado: la
+   clase que este CSS pinta y el aria que anuncia--. Nada se escribe antes
+   de su par.
 
    LO QUE ESTA VERIFICADO Y DONDE
    ------------------------------
@@ -56,11 +59,13 @@
 
    LAS DOS DECISIONES QUE NO SON DE M3
    -----------------------------------
-   1. La seleccion es estatica. Llega un par con `.md-segmented-button-
-      item-selected`, y el grupo no decide: lo dice quien escribe el
-      marcado, como en la lista. Para el cambio de verdad --que un click
-      mueva la seleccion-- hace falta JavaScript, y el componente no
-      lo lleva: la clase es el dato, la app pone el motor.
+   1. La seleccion es CLASE DE CSS, y el motor es de la casa. La clase
+      `md-segmented-button-item-selected` es el dato: quien la escribe
+      decide la seleccion. Ahora decide `src/js/segmented-button.js`,
+      orquestado en `main.js`: mueve la clase y con ella el aria, tal como
+      el playground del template demuestra. Sin ese archivo la clase sigue
+      siendo un contrato estatico --los otros pares deshabilitados la
+      necesitan-- y nada se rompe: es la autosuficiencia de la REGLA 13.
 
    2. LA COSTURA: el borde compartido, SIN solape. La receta web resuelve
       el borde continuo con un outline absoluto de cada segmento con
@@ -263,10 +268,10 @@
        md-list-item md-list-item-selected
 
    --porque la cascada decide: las dos reglas pesan lo mismo y la que
-   pinta es la ultima declarada. La seleccion, como en la lista, es
-   estatica: la clase es el dato y quien escribe el marcado decide.
-   El motor de seleccion --que un click mueva aria-checked-- es JS de
-   app y el componente no lo lleva.
+   pinta es la ultima declarada. La escribe el motor del sistema,
+   `src/js/segmented-button.js`, que mueve clase y aria-checked de una
+   vez --o quien escriba el marcado a mano: el CSS pinta el mismo dato
+   y no decide QUIEN lo puso.
    -------------------------------------------------------------------------- */
 
 .md-segmented-button-item-selected {
