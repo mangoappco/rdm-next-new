@@ -133,7 +133,7 @@
     <!-- PAREJA: la seleccion (h3 + specimen + pre + boton). -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Selección</h3>
-      <p class="md-type-body-medium">Un segmento marcado: el interior se tiñe de <code>secondary-container</code> y su leyenda cambia a <code>on-secondary-container</code>, la pareja de selección de toda la familia —el botón tonal, la fila de la lista—. La selección es estática: la clase es el dato y el marcado lo dice, con <code>role="radiogroup"</code> en el grupo y <code>role="radio"</code> con <code>aria-checked</code> en cada segmento, porque el single-select de M3 es un grupo de opciones excluyentes, no una lista de archivos ni un interruptor.</p>
+      <p class="md-type-body-medium">Un solo segmento marcado: tinte de selección y leyenda en su color. El grupo es single-select: <code>role="radiogroup"</code> y <code>role="radio"</code> con <code>aria-checked</code>.</p>
       <div class="sr-specimen">
         <div class="md-segmented-button" role="radiogroup" aria-label="Elegir una opción">
           <button class="md-segmented-button-item" type="button" role="radio" aria-checked="false">Opción uno</button>
@@ -153,7 +153,7 @@
     <!-- PAREJA: el cambio icono → check (h3 + specimen + pre + boton). -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Cambiar icono por check</h3>
-      <p class="md-type-body-medium">Un segmento con icono, marcado y sin marcar: el icono describe la opción y el check vive detrás, en la misma ranura de 18dp —la medida que M3 publica en web y Android con el mismo número, y la única del componente que no sale de la retícula—. Al marcar, el icono sale y el check entra por transparencia con el par Expressive <code>effects + short4</code>; la leyenda no se mueve un píxel. La receta web dibuja el check con un trazo animado de 150ms, que no reproduce un glifo de font: desviación consciente. Con el código en la mano, el estado es <code>role="radio"</code> + <code>aria-checked</code>, y los glifos son decoración: llevan <code>aria-hidden</code>.</p>
+      <p class="md-type-body-medium">Al marcar, el icono deja paso al check en la misma ranura de 18dp: el icono sale, el check entra y la leyenda no se mueve.</p>
       <div class="sr-specimen">
         <div class="md-segmented-button" role="radiogroup" aria-label="Elegir una opción">
           <button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"><span class="md-icon" aria-hidden="true">star</span><span class="md-icon md-segmented-button-item-check" aria-hidden="true">check</span>Opción uno</button>
