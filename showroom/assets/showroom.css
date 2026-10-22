@@ -213,8 +213,17 @@
      padding, la fila rendia 16px desde el escenario y 0px desde su <pre>,
      que es justo lo que REGLA 11 existe para impedir. Los demas
      componentes se libran por ser <button>, que no es un div.
+
+     Lo mismo .md-segmented-button, y aqui el padding envenena la GEOMETRIA
+     y no solo la comparacion copiable: su inline-grid declara block-size
+     40dp, asi que con padding-block 16 dentro, la fila de segmentos nace
+     a +16 y desborda —el grupo se pinta pegado al borde inferior de su
+     escenario y arriba flota aire de mas (medido en pixeles reales del
+     render: 40 arriba / 8 abajo, y los hijos viven 16px por debajo de la
+     caja de su padre). El snippet queda limpio de padding; el showroom es
+     quien no debe pintarle encima.
      --------------------------------------------------------------------- */
-  .sr-specimen:not(.sr-meter) > div:not(.sr-motion-dot):not(.md-divider-vertical):not(.md-button-group) {
+  .sr-specimen:not(.sr-meter) > div:not(.sr-motion-dot):not(.md-divider-vertical):not(.md-button-group):not(.md-segmented-button) {
     padding: var(--md-ref-spacing-200);
   }
 

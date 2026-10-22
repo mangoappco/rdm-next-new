@@ -66,6 +66,16 @@
      entran pisando con `margin-inline-start: calc(-1 * borde)`. El borde
      siguiente tapa al anterior y la linea funde en 1px, como pinta el
      solape, sin literal nuevo y sin pseudo fuera de caja.
+  8. EL SHOWROOM NO LE PINTA ENCIMA. El grupo es un <div> directo del
+     escenario y showroom.css reparte padding a todo div directo, herencia
+     de las muestras que lo respira. Aqui el padding envenenaba la
+     geometria: la fila de 40dp de la grid nacia a +16 dentro de una caja
+     de 40 y desbordaba, y el grupo se pinto pegado al borde inferior del
+     lienzo --40 de aire arriba, 8 abajo, medido en pixeles de render. El
+     snippet no trae ese padding, asi que showroom.css lo excluyo, como ya
+     hizo con el grupo de botones. Verificado en pixeles reales: 24 y 24
+     re-renderizados. La leccion es la de siempre: aire que el snippet no
+     trae, es lo que REGLA 11 existe para impedir.
 
   LO QUE ESTA VISTA NO DICE, Y POR QUE
   ------------------------------------
