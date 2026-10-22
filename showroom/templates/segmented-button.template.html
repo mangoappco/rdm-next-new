@@ -299,6 +299,26 @@
     </section>
     <!-- PAREJA: hasta aqui -->
 
+    <!-- PAREJA: la multi-seleccion (h3 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Multi-selección</h3>
+      <p class="md-type-body-medium">Dos segmentos marcados a la vez: la selección no es excluyente. La semántica cambia con el modo: <code>role="group"</code> en el grupo y <code>aria-pressed</code> en cada segmento.</p>
+      <div class="sr-specimen">
+        <div class="md-segmented-button" role="group" aria-label="Elegir una o más opciones">
+          <button class="md-segmented-button-item md-segmented-button-item-selected" type="button" aria-pressed="true"><span class="md-segmented-button-item-label">Día</span></button>
+          <button class="md-segmented-button-item md-segmented-button-item-selected" type="button" aria-pressed="true"><span class="md-segmented-button-item-label">Semana</span></button>
+          <button class="md-segmented-button-item" type="button" aria-pressed="false"><span class="md-segmented-button-item-label">Mes</span></button>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-segmented-button" role="group" aria-label="Elegir una o más opciones"&gt;
+  &lt;button class="md-segmented-button-item md-segmented-button-item-selected" type="button" aria-pressed="true"&gt;&lt;span class="md-segmented-button-item-label"&gt;Día&lt;/span&gt;&lt;/button&gt;
+  &lt;button class="md-segmented-button-item md-segmented-button-item-selected" type="button" aria-pressed="true"&gt;&lt;span class="md-segmented-button-item-label"&gt;Semana&lt;/span&gt;&lt;/button&gt;
+  &lt;button class="md-segmented-button-item" type="button" aria-pressed="false"&gt;&lt;span class="md-segmented-button-item-label"&gt;Mes&lt;/span&gt;&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
     <!-- PAREJA: el desliz del check en multi (h3 + prosa + 2 specimen + 2 pre + boton). -->
     <section class="sr-section">
       <h3 class="md-type-title-large">El desliz del check en multi</h3>
@@ -327,26 +347,6 @@
   &lt;button class="md-segmented-button-item md-segmented-button-item-selected" type="button" aria-pressed="true"&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;&lt;span class="md-segmented-button-item-label"&gt;Desayuno&lt;/span&gt;&lt;/button&gt;
   &lt;button class="md-segmented-button-item" type="button" aria-pressed="false"&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;&lt;span class="md-segmented-button-item-label"&gt;Comida&lt;/span&gt;&lt;/button&gt;
   &lt;button class="md-segmented-button-item md-segmented-button-item-selected" type="button" aria-pressed="true"&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;&lt;span class="md-segmented-button-item-label"&gt;Cena&lt;/span&gt;&lt;/button&gt;
-&lt;/div&gt;</code></pre>
-      <button type="button" class="sr-copy" data-copy>Copiar</button>
-    </section>
-    <!-- PAREJA: hasta aqui -->
-
-    <!-- PAREJA: la multi-seleccion (h3 + specimen + pre + boton). -->
-    <section class="sr-section">
-      <h3 class="md-type-title-large">Multi-selección</h3>
-      <p class="md-type-body-medium">Dos segmentos marcados a la vez: la selección no es excluyente. La semántica cambia con el modo: <code>role="group"</code> en el grupo y <code>aria-pressed</code> en cada segmento.</p>
-      <div class="sr-specimen">
-        <div class="md-segmented-button" role="group" aria-label="Elegir una o más opciones">
-          <button class="md-segmented-button-item md-segmented-button-item-selected" type="button" aria-pressed="true"><span class="md-segmented-button-item-label">Día</span></button>
-          <button class="md-segmented-button-item md-segmented-button-item-selected" type="button" aria-pressed="true"><span class="md-segmented-button-item-label">Semana</span></button>
-          <button class="md-segmented-button-item" type="button" aria-pressed="false"><span class="md-segmented-button-item-label">Mes</span></button>
-        </div>
-      </div>
-      <pre class="sr-code"><code>&lt;div class="md-segmented-button" role="group" aria-label="Elegir una o más opciones"&gt;
-  &lt;button class="md-segmented-button-item md-segmented-button-item-selected" type="button" aria-pressed="true"&gt;&lt;span class="md-segmented-button-item-label"&gt;Día&lt;/span&gt;&lt;/button&gt;
-  &lt;button class="md-segmented-button-item md-segmented-button-item-selected" type="button" aria-pressed="true"&gt;&lt;span class="md-segmented-button-item-label"&gt;Semana&lt;/span&gt;&lt;/button&gt;
-  &lt;button class="md-segmented-button-item" type="button" aria-pressed="false"&gt;&lt;span class="md-segmented-button-item-label"&gt;Mes&lt;/span&gt;&lt;/button&gt;
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
