@@ -140,24 +140,60 @@
     </section>
     <!-- PAREJA: hasta aqui -->
 
+    <!-- PAREJA: el chip set (h3 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Chip set (Disposición y espaciado)</h3>
+      <p class="md-type-body-medium">El contenedor canónico de M3 organiza los chips en una fila flexible con wrap y 8dp de separación reglamentaria entre cada dos. Tres chips en reposo, todos con su borde de 1px y su texto alineado a la izquierda.</p>
+      <div class="sr-specimen">
+        <div class="md-chip-set">
+          <button type="button" class="md-chip">
+            <span class="md-chip-label">Activo</span>
+          </button>
+          <button type="button" class="md-chip">
+            <span class="md-chip-label">Pendiente</span>
+          </button>
+          <button type="button" class="md-chip">
+            <span class="md-chip-label">Completado</span>
+          </button>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-chip-set"&gt;
+  &lt;button type="button" class="md-chip"&gt;
+    &lt;span class="md-chip-label"&gt;Activo&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-chip"&gt;
+    &lt;span class="md-chip-label"&gt;Pendiente&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-chip"&gt;
+    &lt;span class="md-chip-label"&gt;Completado&lt;/span&gt;
+  &lt;/button&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
     <!-- PAREJA: las superficies (h3 + specimen + pre + boton). -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Superficies: Flat vs. Elevated</h3>
-      <p class="md-type-body-medium">El chip plano lleva borde de 1px y fondo transparente; el chip elevado cambia el fondo y aplica elevación, y retira el borde. Ambos miden lo mismo: 32dp de alto.</p>
+      <p class="md-type-body-medium">El chip plano lleva borde de 1px y fondo transparente; el chip elevado cambia el fondo y aplica elevación, y retira el borde. Ambos miden lo mismo: 32dp de alto, con su holgura de 8dp entre ellos.</p>
       <div class="sr-specimen">
-        <button type="button" class="md-chip">
-          <span class="md-chip-label">Flat</span>
-        </button>
-        <button type="button" class="md-chip md-chip-elevated">
-          <span class="md-chip-label">Elevated</span>
-        </button>
+        <div class="md-chip-set">
+          <button type="button" class="md-chip">
+            <span class="md-chip-label">Flat</span>
+          </button>
+          <button type="button" class="md-chip md-chip-elevated">
+            <span class="md-chip-label">Elevated</span>
+          </button>
+        </div>
       </div>
-      <pre class="sr-code"><code>&lt;button type="button" class="md-chip"&gt;
-  &lt;span class="md-chip-label"&gt;Flat&lt;/span&gt;
-&lt;/button&gt;
-&lt;button type="button" class="md-chip md-chip-elevated"&gt;
-  &lt;span class="md-chip-label"&gt;Elevated&lt;/span&gt;
-&lt;/button&gt;</code></pre>
+      <pre class="sr-code"><code>&lt;div class="md-chip-set"&gt;
+  &lt;button type="button" class="md-chip"&gt;
+    &lt;span class="md-chip-label"&gt;Flat&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-chip md-chip-elevated"&gt;
+    &lt;span class="md-chip-label"&gt;Elevated&lt;/span&gt;
+  &lt;/button&gt;
+&lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
     <!-- PAREJA: hasta aqui -->

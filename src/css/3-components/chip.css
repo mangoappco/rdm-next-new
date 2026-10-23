@@ -75,6 +75,18 @@
   /* sin adornos: el label es el contenido del chip */
 }
 
+/* CONTENEDOR COLECTIVO DE CHIPS (Chip Set / Chip Row, M3).
+   Contenedor canónico para conjuntos de chips: fila flexible con wrap,
+   separación reglamentaria de 8dp entre chips y alineación vertical
+   centrada. Toda la separación proviene de aquí; los specimens no llevan
+   estilos inline ni hacks de layout. */
+.md-chip-set {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--md-sys-measurement-space-100);   /* 8dp canónicos de M3 */
+}
+
 /* SUPERFICIE ELEVATED: fondo solido, elevacion-1 y sin borde visible.
    La retirada del borde usa 0 (valor de identidad, sin unidad) para que
    la altura neta siga siendo exactamente 32dp, igual que la variante flat. */
