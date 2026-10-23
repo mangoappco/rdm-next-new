@@ -373,8 +373,9 @@
       var(--md-comp-segmented-button-swap-easing);
 
   /* Cursor de mano en el segmento vivo, `:enabled cursor: pointer` de la
-     receta web y el mismo cursor del boton de la casa. El apagado llega
-     mas tarde con su not-allowed. */
+     receta web y el mismo cursor del boton de la casa. El apagado no
+     declara cursor: sale del hit-testing con pointer-events: none, como
+     el boton de la casa. */
   cursor: pointer;
 
   background-color: transparent;
@@ -672,14 +673,14 @@
    mismo gris que el boton de la casa, y el specimen del par ensena
    marcado y desmarcado distinguibles a la vista.
 
-   EL CURSOR. `not-allowed`, criterio del par. El boton de la casa declara
-   `pointer-events: none` en disabled, y un pointer-events none saca al
-   elemento del hit-testing: el cursor que se declare no se dibuja nunca.
-   Aqui NO se declara: el atributo disabled del <button> ya anula clicks,
-   foco y :active nativamente --la anulacion de eventos de puntero que
-   pide el estado-- y queda un cursor que avisa. La divergencia con el
-   boton queda escrita aqui; si un dia se unifica el cursor en la
-   familia, sera un par aparte.
+   EL CURSOR. Unificado con el boton de la casa: `pointer-events: none`.
+   Un pointer-events none saca al elemento del hit-testing, asi que el
+   cursor que se declare ahi no se dibuja nunca --por eso el not-allowed
+   que el par antes declaraba se retira--: el atributo disabled del
+   <button> ya anula clicks, foco y :active nativamente, y el apagado se
+   anuncia a la vista por su leyenda y su trazo al 0.38, no por cursor.
+   La divergencia con el boton queda resuelta: la familia toda habla el
+   mismo idioma del none.
    ------------------------------------------------------------------------ */
 
 .md-segmented-button-item:disabled {
@@ -701,7 +702,7 @@
     var(--md-sys-state-disabled-outline-opacity)
   );
 
-  cursor: not-allowed;
+  pointer-events: none;
 }
 
 /* La seleccion desconectada: on-surface al 0.10 en vez del secondary-

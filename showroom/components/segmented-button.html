@@ -98,9 +98,10 @@
       `disabled` en el `<button>`, leyenda al 0.38 compuesta como color con
       alfa (la leyenda es nodo de texto), trazo al 0.12 sobre el rgb del
       outline y contenedor deshabilitado al 0.10 on-surface, la linea del
-      boton de la casa. cursor: not-allowed a la vista, sin `pointer-events:
-      none`, que es la anulacion que el atributo ya hace. Las divergencias
-      quedan escritas en `segmented-button.css`.
+       boton de la casa. Sin cursor especial: pointer-events: none
+       unificado con el boton saca al elemento del hit-testing, y el
+       atributo ya anula clicks, foco y active. Las decisiones quedan
+       escritas en segmented-button.css.
   10. LA API VIVA VIVE EN `src/js/segmented-button.js`, orquestada en
       `main.js`. El motor no inventa un data-*: el gancho es el rol que el
       marcado ya publica --radiogroup + aria-checked, group + aria-pressed--
