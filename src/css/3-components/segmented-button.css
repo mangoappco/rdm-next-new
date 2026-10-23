@@ -20,7 +20,7 @@
 
    CONSTRUCCION PAR A PAR
    ----------------------
-   El archivo crece con la vista. Hoy tiene diez pares: la clase base y
+   El archivo crece con la vista. Hoy tiene nueve pares: la clase base y
    anatomia --contenedor de 40dp, tipografia label-large y bordes, en
    sus dos caras: solo texto y solo icono, en reposo--, el check de solo
    texto --With label text only: el ancho de estado completo, la ranura
@@ -37,10 +37,8 @@
    dos a cinco segmentos y su contrato de diseno--, la densidad --la
    escala vertical de M3: el paso -2 cae en 32px y solo la altura
    cambia--, las capas de estado --hover y pressed en ::after, anillo
-   de focus-visible y disabled nativo del atributo-- y el playground
-   --la seleccion viva, con el motor en src/js/segmented-button.js
-   escribiendo LAS DOS caras del estado: la clase que este CSS pinta y
-   el aria que anuncia--. Nada se escribe antes de su par.
+   de focus-visible y disabled nativo del atributo--. Nada se escribe
+   antes de su par.
 
    LO QUE ESTA VERIFICADO Y DONDE
    ------------------------------
@@ -70,8 +68,8 @@
    1. La seleccion es CLASE DE CSS, y el motor es de la casa. La clase
       `md-segmented-button-item-selected` es el dato: quien la escribe
       decide la seleccion. Ahora decide `src/js/segmented-button.js`,
-      orquestado en `main.js`: mueve la clase y con ella el aria, tal como
-      el playground del template demuestra. Sin ese archivo la clase sigue
+      orquestado en `main.js`: mueve la clase y con ella el aria, como lo
+      demuestran los pares con roles de la vista. Sin ese archivo la clase sigue
       siendo un contrato estatico --los otros pares deshabilitados la
       necesitan-- y nada se rompe: es la autosuficiencia de la REGLA 13.
 
@@ -516,7 +514,7 @@
    abre centrada con su +13. La familia con icono NO desliza --su regla
    lo declara abajo con transform none: su par es simetrico por la
    presencia del icono y vive en +13 constante--. Los bare-text --los
-   dias del par de extremos, el playground, la multi, los meses-- no
+   dias del par de extremos, la multi, los meses-- no
    llevan check en su marcado: su regla base queda margin 0 y sin
    transform, la leyenda sola centrada como siempre, sin fantasma. El
    gancho es la presencia del glifo --:has--: no hay clase por

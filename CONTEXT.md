@@ -235,7 +235,7 @@ Los hechos que **no** se leen en el código:
 
 ## Segmented button — publicada
 
-Diez pares, en la estructura de cuatro bloques al marco de la spec de M3: la clase base y anatomía -Clase base y anatomía, con sus dos caras solo texto y solo icono en reposo-, las bifurcaciones de contenido y dinámica del check -With label text only, With icons and label text, With icons only-, las variantes funcionales de comportamiento -Single-select, Multi-select- y la escala, densidad, estados y laboratorio -Scale: Two to five segments, Density: Standard vs Compact, Interactive States, Interactive Playground-. `segmented-button.html` es copia byte-idéntica a su molde.
+Nueve pares, en la estructura de cuatro bloques al marco de la spec de M3: la clase base y anatomía -Clase base y anatomía, con sus dos caras solo texto y solo icono en reposo-, las bifurcaciones de contenido y dinámica del check -With label text only, With icons and label text, With icons only-, las variantes funcionales de comportamiento -Single-select, Multi-select- y la escala, densidad y estados -Scale: Two to five segments, Density: Standard vs Compact, Interactive States-. `segmented-button.html` es copia byte-idéntica a su molde.
 
 Los hechos que **no** se leen en el código:
 
