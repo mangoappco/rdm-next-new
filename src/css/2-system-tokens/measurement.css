@@ -1039,15 +1039,16 @@
   --md-sys-measurement-segmented-button-icon-size: var(--md-ref-icon-size-segmented-button);
 
   /* ==========================================================================
-     MEDIDAS DEL CHIP
+     ESPACIO GENERAL DE COMPONENTE
      --------------------------------------------------------------------------
-     El chip de M3 mide 32dp de alto, esquina de 8dp y ancho dinamico segun
-     su label. Sin iconos lleva 16dp a cada lado; con iconos laterales, 8dp
-     de inicio y 8dp de fin con 8dp de hueco entre icono y texto. Los roles
-     se piden por su intencion, nunca como literales.
+     Roles genericos de espacio que cualquier componente de 3-components/
+     puede pedir sin saltar a 1-reference-tokens (REGLA 2). No estan
+     acoplados a un componente: son la escalera de espacio del sistema
+     expresada como roles semanticos.
      ======================================================================== */
-  --md-sys-measurement-chip-height: var(--md-ref-spacing-400);
-  --md-sys-measurement-chip-padding-inline: var(--md-ref-spacing-200);
+  --md-sys-measurement-space-100: var(--md-ref-spacing-100);
+  --md-sys-measurement-space-200: var(--md-ref-spacing-200);
+  --md-sys-measurement-space-400: var(--md-ref-spacing-400);
 }
 
 /* Las clases utilitarias de esta familia se mudaron a 4-utilities/ en la auditoria M3:

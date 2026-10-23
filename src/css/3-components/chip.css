@@ -55,8 +55,8 @@
   display: inline-flex;
   align-items: center;
   gap: var(--md-sys-measurement-touch-target-spacing);   /* 8dp entre icono y label */
-  height: var(--md-sys-measurement-chip-height);          /* 32dp */
-  padding-inline: var(--md-sys-measurement-chip-padding-inline); /* 16dp a cada lado */
+  height: var(--md-sys-measurement-space-400);            /* 32dp */
+  padding-inline: var(--md-sys-measurement-space-200);    /* 16dp a cada lado */
   border: var(--md-sys-shape-stroke-thin) solid var(--md-sys-color-outline-variant);   /* 1px */
   border-radius: var(--md-sys-shape-corner-small);        /* 8dp */
   background-color: var(--md-sys-color-surface);
