@@ -120,3 +120,22 @@
   justify-content: center;
   flex-shrink: 0;
 }
+
+/* ESTADO SELECCIONADO DEL FILTER CHIP (M3):
+   Fondo tiñido, contenido en on-secondary-container y borde retirado
+   sin alterar la caja fija de 32dp: border-color: transparent conserva
+   la geometría exactamente igual que el estado no seleccionado (cero
+   reflow, cero jitter al conmutar).
+   El gancho es la clase .md-chip-selected y el atributo
+   aria-selected="true", sin inventar nombres con "item". */
+.md-chip.md-chip-selected,
+.md-chip[aria-selected="true"] {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  border-color: transparent;
+}
+
+.md-chip.md-chip-selected .md-icon,
+.md-chip[aria-selected="true"] .md-icon {
+  color: var(--md-sys-color-on-secondary-container);
+}
