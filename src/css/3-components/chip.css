@@ -139,3 +139,34 @@
 .md-chip[aria-selected="true"] .md-icon {
   color: var(--md-sys-color-on-secondary-container);
 }
+
+/* PADDINGS ASIMETRICOS CON TRAILING ICON (Input chip, M3):
+   16dp start, 8dp gap label → close, 8dp end.
+   La regla base del chip aplica 16dp a cada lado; esta la acota solo
+   cuando hay un glifo de cierre (trailing). El gancho es :has, no una
+   clase por anatomía. */
+.md-chip:has(> .md-chip-close) {
+  padding-inline-start: var(--md-sys-measurement-space-200);   /* 16dp */
+  padding-inline-end: var(--md-sys-measurement-space-100);     /* 8dp */
+  gap: var(--md-sys-measurement-space-100);                    /* 8dp entre label y close */
+}
+
+/* BOTÓN DE CIERRE DEL INPUT CHIP (M3):
+   Botón independiente de remoción, 18dp, peso ligero (wght 300 via
+   utilidad de Capa 4), color on-surface-variant. Se declara como
+   <button type="button"> para ser removible por el motor en el Par 9. */
+.md-chip-close {
+  --md-sys-measurement-icon-size: var(--md-sys-measurement-segmented-button-icon-size);
+  width: var(--md-sys-measurement-segmented-button-icon-size);   /* 18dp */
+  height: var(--md-sys-measurement-segmented-button-icon-size);  /* 18dp */
+  color: var(--md-sys-color-on-surface-variant);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+}
