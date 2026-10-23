@@ -74,3 +74,12 @@
 .md-chip-label {
   /* sin adornos: el label es el contenido del chip */
 }
+
+/* SUPERFICIE ELEVATED: fondo solido, elevacion-1 y sin borde visible.
+   La retirada del borde usa 0 (valor de identidad, sin unidad) para que
+   la altura neta siga siendo exactamente 32dp, igual que la variante flat. */
+.md-chip-elevated {
+  border: none;
+  background-color: var(--md-sys-color-surface-container-low);
+  box-shadow: var(--md-sys-elevation-level1);
+}
