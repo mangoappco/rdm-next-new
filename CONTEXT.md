@@ -18,7 +18,7 @@ Solo prohibiciones verbales. Las reglas de showroom, de capas y de ciclo no se c
 
 ## Componentes creados
 
-Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **10 componentes y 19 vistas** (10 de componente + 9 de tokens), las 19 enlazadas en `showroom/index.html`. El orden es el de `index.css`:
+Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **11 componentes y 20 vistas** (11 de componente + 9 de tokens), las 20 enlazadas en `showroom/index.html`. El orden es el de `index.css`:
 
 | Componente | Hoja | Vista |
 | --- | --- | --- |
@@ -32,6 +32,7 @@ Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **10 compo
 | Dialog | `dialog.css` | `dialog.html` |
 | List | `list.css` | `list.html` |
 | Segmented button | `segmented-button.css` | `segmented-button.html` |
+| Chips | `chips.css` | `chips.html` |
 
 Cada componente tiene además su molde en `showroom/templates/<nombre>.template.html`.
 
@@ -247,6 +248,18 @@ Los hechos que **no** se leen en el código:
 - **La fila de la portada come del List, y la frase del índice es la de M3 traducida** («El grupo de segmentos ayuda a las personas a seleccionar opciones, cambiar de vista y ordenar datos. Se suele ubicar después de un título de página o de grupo.»), byte a byte al encabezado de la vista, solo con el añadido del recuento de pares.
 - **La fila `.md-row` nace aquí y vive en `4-utilities/row.css`.** Un solo `<div class="md-row">` reparte un título y una acción en horizontal —el caso de lista+acción de la card—, con exclusión del padding de specimen en `showroom.css`. La medida de densidad −2 = 32dp comparte primitiva con el peldaño `xsmall` del escalon de `container-height`.
 
+## Chips — publicada
+
+Nueve pares, en un solo bloque (Especificación, anatomía y superficies): la clase base y anatomía, el chip set (disposición y espaciado), las dos superficies (Flat/Outlined y Elevated), el Assist chip, el Filter chip (estados visuales), el Input chip (estructura y remoción), la Suggestion chip y el Filter chip interactivo (multi-filtro). `chips.html` es copia byte-idéntica a su molde.
+
+- **El glifo mide 18dp.** Consume el rol `--md-sys-measurement-segmented-button-icon-size` de Capa 2 (18dp), sin crear tokens acoplados a chip en Capas 1 ni 2.
+- **Paddings asimétricos con trailing icon:** 16dp start, 8dp gap label→close, 8dp end. Con leading icon: 8dp start, 8dp gap, 16dp end. Gancho `:has(> .md-chip-close)` y `:has(> .md-icon)`, sin clases por anatomía.
+- **Dos superficies:** Flat/Outlined (fondo `surface`, borde 1px `outline-variant`) y Elevated (fondo `surface-container-low`, elevación-1, sin borde visible).
+- **Los iconos solos no llevan check:** al marcarse no llevan check —un check sin glifo pierde la referencia de qué eligió—; el icono persiste y la selección la paga el tinte del container con su `on-secondary-container`.
+- **Input chip:** `<div class="md-chip" role="button" tabindex="0">` + `<button type="button" class="md-chip-close">` con `aria-label="Remover [etiqueta]"`. El cierre elimina el chip del DOM y reubica el foco en el chip adyacente (o en el grupo si queda vacío).
+- **Filter chip interactivo:** `data-chip-filter-group` con toggles individuales. Cada chip conmuta `aria-selected` y la clase `md-chip-selected` de forma independiente. Inserción/animación del check por `main.js`.
+- **Motion canónico:** transiciones de estado con `short4` (200ms) + easing-standard para color, borde y padding; salida del input chip con `short3` (150ms) + `opacity` y `scale(0.85)`; `prefers-reduced-motion` desactiva todo.
+
 ## Las dos mitades de una vista del showroom
 
 A partir del `list` (2026-10-21), cada vista del showroom se estructura en dos bloques, y el corte se marca con un divisor:
@@ -260,7 +273,7 @@ En el marcado, el corte es un `<hr class="md-divider">` —el mismo mecanismo co
 
 ## Siguiente tarea
 
-**El catálogo está cerrado.** Los diez componentes del README §11 están hechos, publicados y enlazados, y las diecinueve vistas también. `segmented-button`, el último, se acaba de publicar: es el primero que nace con la estructura de dos bloques —laboratorio normativo + casos de ManGo! App— y a la vez trajo la utilidad `.md-row` a `4-utilities`.
+**El catálogo está cerrado.** Los once componentes del README §11 están hechos, publicados y enlazados, y las veinte vistas también. `chips`, el último, se acaba de publicar: es el primero que nace con motor de interacción propio en `src/js/` (fuera de `dialog` y `toggle`), y a la vez trae la utilidad `.md-row` a `4-utilities` (heredada de segmented-button).
 
 Lo que queda por delante no es un componente nuevo sino la **deuda conocida** de más abajo, que es lo que de verdad está pendiente:
 
@@ -285,7 +298,7 @@ Nada de esto se ha tocado. Está anotado para que no se dé por verdad:
 - **`dialog` ya no es una deuda de `main.css`.** La línea de la capa `comp` lo enunciaba como «button, card, dialog» cuando no existía, y el README §11 avisaba de ello —«esa línea es hoy más un recordatorio que una descripción: `card` ya existe y `dialog` no»—. Con la publicación esa línea describe lo que hay, así que la nota queda cerrada. **El recordatorio sigue sirviendo para los siguientes**: `3-components/index.css` avisa de los que vendrán.
 - **12 de 18 moldes no son copia de su vista** respecto a la vista publicada: `button-group`, `button`, `color`, `divider`, `elevation`, `icon`, `icon-button`, `measurement`, `motion`, `shape`, `spacing` y `state` (a `icon-button.template.html` el trabajo posterior a su publicación lo dejó atrás). Llevan el bloque largo `COMO USAR ESTE TEMPLATE` donde la vista lleva el puntero de dos líneas, y se quedaron atrás en `5422fb2` (recorte de prosa), que tocó las vistas y no los moldes. Usar cualquiera de esos doce como molde arrastraría prosa ya recortada; los buenos son `fab`, `fab-extended`, `card`, `dialog`, `list` y `segmented-button`. `typography.html` y `spacing.html` no siguen la vía de molde: la primera no tiene propio y apunta a `component.template.html`.
 - **`navigator.clipboard` solo existe en contexto seguro**, así que abierto por la IP de la red el botón «Copiar» no tenía copia ni alternativa y quedaba muerto en las quince vistas de entonces; ahora son diecinueve y todas tienen el respaldo. Corregido con un respaldo de `document.execCommand` y con texto honesto en los dos sentidos. Probado en las dos rutas: por `localhost` y por `http://10.226.28.43/`.
-- **Las diecinueve vistas llevan `<meta name="description">`.** El README §5 decía que solo `card.html` lo cumplía y que las otras quince eran deuda conocida; al publicar `dialog.html` se comprobó una por una y las diecisiete lo tienen. La deuda estaba ya cerrada y no se había anotado. Con `list.html` son dieciocho; con `segmented-button.html`, diecinueve.
+- **Las veinte vistas llevan `<meta name="description">`.** El README §5 decía que solo `card.html` lo cumplía y que las otras quince eran deuda conocida; al publicar `dialog.html` se comprobó una por una y las diecisiete lo tienen. La deuda estaba ya cerrada y no se había anotado. Con `list.html` son dieciocho; con `segmented-button.html`, diecinueve; con `chips.html`, veinte.
 - **El Chrome del arnés no sirve para medir scroll ni rueda, y ya se ha perdido tiempo por ello.** La herramienta de rueda da resultados contradictorios —movió la página con un modal abierto y no la movió sin él— y **sus lecturas van un paso atrasadas**, así que hay que leer cuatro veces seguidas para que cuadre. No se fía de ella para nada que sea scroll. El bloqueo del fondo con modal está comprobado en el Chrome de Danny. Y en este entorno no hay barra de desplazamiento clásica (`innerWidth - clientWidth` da 0), así que **el salto de la barra al abrir un modal no se puede ver aquí**: es el único punto de `dialog` que queda sin comprobar, y la solución si molesta es `scrollbar-gutter: stable` en el `html`, que no se ha añadido porque cambia el layout de todas las vistas.
 
 ## El verificador en macOS

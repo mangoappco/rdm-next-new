@@ -1005,7 +1005,7 @@ de dónde sale cada cosa, y el precio es que cada vista tiene que acordarse de e
 
 ## 11. Componentes
 
-El catálogo de M3 tiene decenas de componentes y aquí hay **diez**. Se construyen uno a
+El catálogo de M3 tiene decenas de componentes y aquí hay **once**. Se construyen uno a
 uno, y ninguno se da por bueno sin medirlo en el navegador: `tools/verify-tokens.mjs`
 comprueba la arquitectura, no que el componente se vea bien.
 
@@ -1023,6 +1023,7 @@ El orden es el de `3-components/index.css`, que es el de carga y el de dependenc
 | Dialog | `3-components/dialog.css` | 5 | 3 | `dialog.html`, 6 secciones |
 | List | `3-components/list.css` | 16 | 25 | `list.html`, 15 secciones |
 | Segmented Button | `3-components/segmented-button.css` | 6 | 18 | `segmented-button.html`, 9 secciones |
+| Chips | `3-components/chip.css` | 6 | 0 | `chips.html`, 9 secciones |
 
 Las "clases" son las que expone el componente, sin contar las de `2-system-tokens` que compone para
 colocar la capa de estado: `button.css` nombra `.md-state-layer` y `.md-disabled` en sus
