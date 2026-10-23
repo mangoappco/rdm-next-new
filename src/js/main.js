@@ -107,6 +107,7 @@ import { registrar } from './dialog.js';
 import { registrar as registrarToggle } from './toggle.js';
 import { registrar as registrarSegmented } from './segmented-button.js';
 import { registrar as registrarChipFilter } from './chip-filter.js';
+import { registrar as registrarChipInput } from './chip-input.js';
 
 /* Se registra al cargar el script, no al hacer clic. Los specimens del
    showroom llevan `<dialog open>` a secas, que NO es modal, asi que ahi no
@@ -129,6 +130,12 @@ registrarSegmented();
    cuenta--. No se recorre el documento al cargar; quien llegue despues
    funciona igual. */
 registrarChipFilter();
+
+/* Los input chips, por la misma razon: una delegacion de click y el
+   gancho es el atributo de datos que el marcado ya publica --su cabecera
+   lo cuenta--. No se recorre el documento al cargar; quien llegue despues
+   funciona igual. */
+registrarChipInput();
 
 /* Y aqui iran los que lo necesiten:
      import { registrar as registrarFabMenu } from './fab-menu.js';
