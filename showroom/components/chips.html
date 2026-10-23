@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Chip de RDM Next: la píldora táctil de M3, con sus variantes de asistencia, filtro, entrada y sugerencia.">
+  <title>Chip — RDM ManGo! App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+  <link rel="stylesheet" href="../../src/css/main.css">
+  <link rel="stylesheet" href="../assets/showroom.css">
+    <script type="module" src="../../src/js/main.js"></script>
+<script src="../assets/showroom.js"></script>
+</head>
+
+<!--
+  ESTA VISTA TIENE UN PAR Y UN BLOQUE. El Bloque 1 --Especificacion,
+  anatomia y superficies-- abre con la clase base, sigue con las dos
+  superficies (Flat/Outlined y Elevated), y cierra con las cuatro
+  variantes de contenido: Assist, Suggestion, Filter e Input.
+  El corte se marca con un divisor, el titulo de cada bloque es un h2 y los
+  pares van en h3 debajo: el h1 es el nombre del componente, y el esquema
+  queda h1 > h2 (bloque) > h3 (par). La aparicion no cambia, porque el tipo
+  lo pone la clase y no la etiqueta.
+
+  LOS DOCE ACUERDOS ANTES DE ESCRIBIR NADA
+  -----------------------------------------
+  1. Clases: `md-chip` para el chip y `md-chip-label` para su leyenda, el
+     precedente de `md-list` / `md-list-item`. M3 publica el chip como
+     componente propio, no como un boton disfrazado: es una opcion en un
+     contexto concreto, no una accion persistente.
+
+  2. ANCHO DINAMICO, SIN MIN-WIDTH RIGIDO: el contenedor crece con su
+     label y su contenido ("Container width: Dynamic based on labels").
+     El touch target de 48dp se resuelve en el eje tactil y de
+     accesibilidad, nunca con un min-width artificial de 88dp que rompa
+     layouts fluidos.
+
+  3. DOS SUPERFICIES: Flat/Outlined (base, fondo surface y borde 1px en
+     outline-variant) y Elevated (elevacion-1, fondo surface-container-low
+     y sin borde visible). La seleccion en Filter Chip adopta
+     secondary-container y on-secondary-container, y retira el borde de
+     1px: el contenedor solido provee el contraste canónico de M3.
+
+  4. PADDINGS ASIMETRICOS EXACTOS: sin iconos 16dp inicio y 16dp fin
+     (space-200); con leading icon/avatar 8dp inicio, 8dp gap y 16dp fin;
+     con trailing icon (Input chip close) 16dp inicio, 8dp gap y 8dp fin;
+     con leading y trailing, 8dp a cada lado. Todo consumido desde
+     measurement.css.
+
+  5. EL GLIFO check EN FILTER CHIPS: sin icono previo se despliega al
+     seleccionar sin provocar reflow exterior; con leading icon tematico
+     previo, sustituye en la misma celda de 18dp al icono base (swap
+     directo en crossfade).
+
+  6. ARIA DIFERENCIADA: el chip usa `aria-selected="true|false"` para
+     anunciar su estado de seleccion. El input chip usa ademas el trailing
+     icon `close` para su remoción.
+
+  7. LA FUENTE DE TIPOS: el chip lleva label-large (peso medium, fuente
+     plain), el texto corto de interfaz que necesita afirmarse sin competir
+     con los titulos.
+
+  8. EL APAGADO ES ATRIBUTO Y COLOR: nativo con `disabled` en el elemento,
+     leyenda al 0.38 compuesta como color con alfa, trazo al 0.12 sobre el
+     rgb del outline y contenedor deshabilitado al 0.10 on-surface.
+     cursor: not-allowed no se declara: la casa unifica el apagado con el
+     boton --pointer-events: none--, que saca al elemento del hit-testing.
+
+  9. EL SHOWROOM NO LE PINTA ENCIMA. El grupo es un elemento directo del
+     escenario y showroom.css reparte padding a todo div directo, herencia
+     de las muestras que lo respira. Aqui el padding envenenaba la
+     geometria: la fila de 32dp de la grid nacia a +16 dentro de una caja
+     de 32 y desbordaba. El snippet no trae ese padding, asi que
+     showroom.css lo excluyo, como ya hizo con el grupo de botones.
+
+ 10. LA INTERACCION VIVE EN `src/js/main.js`, orquestada ahi. El motor no
+     inventa un data-*: el gancho es el rol que el marcado ya publica
+     (aria-selected), acotado por la clase del componente. Cada cambio
+     escribe LOS DOS datos: la clase que pinta el CSS y el aria que anuncia
+     el lector de pantalla. Sin main.js la seleccion queda estatica, como
+     en los otros pares: es la autosuficiencia de la REGLA 13.
+
+ 11. LOS PARES 1 AL 7 SON ESTATICOS: muestran la anatomia, variantes de
+     contenido, superficies y matrices de estados con clases de estado
+     fijas. Cero JS en estos pares. A partir del Par 8 entra la
+     interaccion dinamica gobernada por main.js.
+
+ 12. DOGFOODING REAL: los pares no son el control a solas, sino el control
+     en su contexto real de M3 —dentro de tarjetas, filas o barras de
+     acciones— ensamblado con componentes vivos del catalogo cuando el caso
+     lo requiere.
+
+  LO QUE ESTA VISTA NO DICE, Y POR QUE
+  ------------------------------------
+  TOKENES Y MEDIDAS NO TIENEN PAR. La altura de 32, el borde de 1, el
+  relleno y los colores estan en la cabecera de
+  `src/css/3-components/chip.css`, con el token de M3 al que corresponde
+  cada uno. Un par que dijera "el chip mide 32" seria el mismo specimen
+  con otro h2.
+
+  EL LIMITE DE VARIANTES ES CONTRATO DE DISENO, no CSS: M3 publica cuatro
+  variantes y ninguna medida denuncia una quinta. Lo custodian el par de
+  anatomia que ensaya la familia completa y la prosa.
+-->
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <main class="sr-page">
+
+    <!-- HEADER: inicio (barra + titulo + descripcion) -->
+    <header class="sr-header">
+      <div class="sr-bar">
+        <p class="md-type-body-medium"><a href="../index.html">RDM ManGo! App</a></p>
+        <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
+      </div>
+      <h1 class="md-type-display-large">Chip</h1>
+      <p class="md-type-body-large">El chip ayuda a las personas a representar opciones, filtros y entradas de datos en una sola píldora táctil. Se suele ubicar dentro de tarjetas, filas o barras de acciones. · <em>Un par</em></p>
+    </header>
+    <!-- HEADER: fin -->
+
+    <hr class="md-divider">
+
+    <!-- BLOQUE 1: la especificacion tecnica y la anatomia. El laboratorio
+         normativo: pares minimalistas que aislan una sola cosa. -->
+    <h2 class="md-type-headline-medium">Especificación, anatomía y superficies</h2>
+
+    <!-- PAREJA: la clase base (h3 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Clase base y anatomía</h3>
+      <p class="md-type-body-medium">El chip en su estado de partida: una píldora de 32dp, sin iconos, sin selección, con su borde de 1px y su texto alineado a la izquierda. Nada está marcado y el ancho depende solo del label.</p>
+      <div class="sr-specimen">
+        <div class="md-chip" aria-selected="false">
+          <span class="md-chip-label">Etiqueta</span>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-chip" aria-selected="false"&gt;
+  &lt;span class="md-chip-label"&gt;Etiqueta&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <hr class="md-divider">
+
+  </main>
+  <!-- MAIN: fin -->
+</body>
+</html>

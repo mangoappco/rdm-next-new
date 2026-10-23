@@ -1,0 +1,76 @@
+/* ==========================================================================
+   3-components/chip.css — CHIP (Capa 3)
+   ==========================================================================
+
+   QUE ES ESTE ARCHIVO
+   -------------------
+   Capa 3. La píldora táctil de M3: un contenedor de ancho dinámico, 32dp de
+   alto, esquinas de 8dp y borde de 1px, que representa opciones, filtros,
+   entradas o sugerencias. M3 lo publica en cuatro variantes —assist, filter,
+   input y suggestion— y dos superficies —Flat/Outlined (base) y Elevated—.
+
+   M3 no fija ancho al chip: crece con su label y su contenido, y el touch
+   target de 48dp se resuelve desde la accesibilidad, no con un min-width
+   rígido que rompa layouts fluidos.
+
+   y se implementan igual que el resto de la familia: una sola clase base,
+   `md-chip`, porque un chip sin su receta no sabe pintarse a sí mismo.
+
+   CONSTRUCCION PAR A PAR
+   ----------------------
+   El archivo crece con la vista. Hoy tiene un par: la clase base y su
+   anatomía —chip plano de 32dp, sin iconos, sin selección, texto alineado
+   al inicio y borde de 1px en outline-variant—. Nada se escribe antes de
+   su par.
+
+   LO QUE ESTA VERIFICADO Y DONDE
+   ------------------------------
+   Values de color, altura, forma y grosor de borde, de los tokens
+   publicados:
+
+       C:\xampp\htdocs\proyectos\material-web-main
+       tokens\_md-comp-chip.scss          (esquema)
+
+   Y la spec que las ata, de m3.material.io/components/chips:
+   altura 32dp, borde 1dp, corner 8dp, padding lateral 16dp, icono 18dp,
+   hueco entre elementos 8dp, target 48dp, ancho dinamico por label.
+
+   LAS DOS DECISIONES QUE NO SON DE M3
+   -----------------------------------
+   1. LA CLASE BASE ES `md-chip`, y su receta es estática. Quien decida la
+      selección y la interacción es `src/js/main.js`, orquestado desde el
+      showroom: mueve `aria-selected` y con ella la clase de estado. Sin ese
+      archivo el chip sigue siendo un contrato estático —los pares
+      deshabilitados lo necesitan— y nada se rompe: es la autosuficiencia
+      de la REGLA 13.
+
+   2. LA SUPERFICIE ELEVATED VA EN SU PROPIA CLASE. La base es
+      Flat/Outlined (fondo surface, borde 1px); Elevated añade elevación-1
+      y fondo surface-container-low sin borde. Son dos recetas distintas
+      que el componente declara por separado, no modificadores sobre la
+      misma regla.
+*/
+
+.md-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--md-sys-measurement-touch-target-spacing);   /* 8dp entre icono y label */
+  height: var(--md-sys-measurement-chip-height);          /* 32dp */
+  padding-inline: var(--md-sys-measurement-chip-padding-inline); /* 16dp a cada lado */
+  border: var(--md-sys-shape-stroke-thin) solid var(--md-sys-color-outline-variant);   /* 1px */
+  border-radius: var(--md-sys-shape-corner-small);        /* 8dp */
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+  font-family: var(--md-sys-typescale-label-large-font);
+  font-weight: var(--md-sys-typescale-label-large-weight);
+  font-size: var(--md-sys-typescale-label-large-size);
+  line-height: var(--md-sys-typescale-label-large-line-height);
+  letter-spacing: var(--md-sys-typescale-label-large-tracking);
+  white-space: nowrap;
+}
+
+/* La leyenda del chip: lleva el texto puro, sin envoltura de sistema. */
+.md-chip-label {
+  /* sin adornos: el label es el contenido del chip */
+}
