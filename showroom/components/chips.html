@@ -15,11 +15,11 @@
 </head>
 
 <!--
-  ESTA VISTA TIENE SIETE PARES Y UN BLOQUE. El Bloque 1 --Especificacion,
+  ESTA VISTA TIENE OCHO PARES Y UN BLOQUE. El Bloque 1 --Especificacion,
   anatomia y superficies-- abre con la clase base, sigue con el chip set,
   las dos superficies (Flat/Outlined y Elevated), el asistente, el filtro
-  en sus dos estados visuales, el chip de entrada y cierra con la
-  sugerencia.
+  en sus dos estados visuales, el chip de entrada, la sugerencia y cierra
+  con el filter chip interactivo en multi-filtro.
   El corte se marca con un divisor, el titulo de cada bloque es un h2 y los
   pares van en h3 debajo: el h1 es el nombre del componente, y el esquema
   queda h1 > h2 (bloque) > h3 (par). La aparicion no cambia, porque el tipo
@@ -115,7 +115,7 @@
         <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
       </div>
       <h1 class="md-type-display-large">Chip</h1>
-      <p class="md-type-body-large">El chip ayuda a las personas a representar opciones, filtros y entradas de datos en una sola píldora táctil. Se suele ubicar dentro de tarjetas, filas o barras de acciones. · <em>Siete pares</em></p>
+      <p class="md-type-body-large">El chip ayuda a las personas a representar opciones, filtros y entradas de datos en una sola píldora táctil. Se suele ubicar dentro de tarjetas, filas o barras de acciones. · <em>Ocho pares</em></p>
     </header>
     <!-- HEADER: fin -->
 
@@ -333,6 +333,46 @@
   &lt;/button&gt;
   &lt;button type="button" class="md-chip"&gt;
     &lt;span class="md-chip-label"&gt;Ver postres&lt;/span&gt;
+  &lt;/button&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: el filter chip interactivo (h3 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Filter chips interactivos (Multi-filter)</h3>
+      <p class="md-type-body-medium">Los filtros de M3 son toggles individuales: cada chip conmuta su propio estado sin afectar al resto del grupo. La seleccion mutuamente exclusiva queda reservada al Segmented Button.</p>
+      <div class="sr-specimen">
+        <div class="md-chip-set" data-chip-filter-group>
+          <button type="button" class="md-chip md-chip-selected" aria-selected="true">
+            <span class="md-icon md-icon-wght-light" aria-hidden="true">check</span>
+            <span class="md-chip-label">Vegetariano</span>
+          </button>
+          <button type="button" class="md-chip" aria-selected="false">
+            <span class="md-chip-label">Sin gluten</span>
+          </button>
+          <button type="button" class="md-chip" aria-selected="false">
+            <span class="md-chip-label">Promociones</span>
+          </button>
+          <button type="button" class="md-chip" aria-selected="false">
+            <span class="md-chip-label">En terraza</span>
+          </button>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-chip-set" data-chip-filter-group&gt;
+  &lt;button type="button" class="md-chip md-chip-selected" aria-selected="true"&gt;
+    &lt;span class="md-icon md-icon-wght-light" aria-hidden="true"&gt;check&lt;/span&gt;
+    &lt;span class="md-chip-label"&gt;Vegetariano&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-chip" aria-selected="false"&gt;
+    &lt;span class="md-chip-label"&gt;Sin gluten&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-chip" aria-selected="false"&gt;
+    &lt;span class="md-chip-label"&gt;Promociones&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-chip" aria-selected="false"&gt;
+    &lt;span class="md-chip-label"&gt;En terraza&lt;/span&gt;
   &lt;/button&gt;
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
