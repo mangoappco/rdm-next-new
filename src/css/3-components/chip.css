@@ -114,7 +114,7 @@
   --md-sys-measurement-icon-size: var(--md-sys-measurement-segmented-button-icon-size);
   width: var(--md-sys-measurement-segmented-button-icon-size);   /* 18dp caja del glifo */
   height: var(--md-sys-measurement-segmented-button-icon-size);  /* 18dp */
-  color: var(--md-sys-color-primary);                            /* tinte de accion canonico M3 */
+  color: var(--md-sys-color-on-surface-variant);                   /* menos énfasis que la etiqueta */
   display: inline-flex;
   align-items: center;
   justify-content: center;

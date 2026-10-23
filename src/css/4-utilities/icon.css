@@ -202,3 +202,19 @@
   min-width: var(--md-sys-measurement-icon-target-small);
   min-height: var(--md-sys-measurement-icon-target-small);
 }
+
+/* ---------------------------------------------------------------------------
+   .md-icon-wght-light
+   ---------------------------------------------------------------------------
+   Peso ligero (wght 300) para glifos que no deben competir con la leyenda
+   adjacente, como el icono de 18dp de un chip. Declara TODOS los ejes para
+   no perder los valores del sistema (opsz, GRAD, FILL) al sobrescribir
+   font-variation-settings, que es una propiedad todo-o-nada.
+   --------------------------------------------------------------------------- */
+.md-icon-wght-light {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 300,
+    'opsz' var(--_icon-optical-size),
+    'GRAD' var(--md-sys-typescale-icon-grade);
+}
