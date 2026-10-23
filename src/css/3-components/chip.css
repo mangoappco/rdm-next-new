@@ -95,3 +95,23 @@
   background-color: var(--md-sys-color-surface-container-low);
   box-shadow: var(--md-sys-elevation-level1);
 }
+
+/* PADDINGS ASIMETRICOS CON LEADING ICON (M3):
+   8dp start, 8dp gap entre icono y label, 16dp end.
+   La regla base del chip aplica 16dp a cada lado; esta la acota solo
+   cuando hay un glifo delante. El gancho es :has, no una clase
+   por anatomia (misma tecnica que segmented-button).
+   El tamaño de 18dp del glifo se consume del rol de Capa 2
+   --md-sys-measurement-segmented-button-icon-size (ya mide 18dp),
+   sin crear nuevos tokens en Capas 1 o 2. */
+.md-chip:has(> .md-icon) {
+  padding-inline-start: var(--md-sys-measurement-space-100);   /* 8dp */
+  padding-inline-end: var(--md-sys-measurement-space-200);     /* 16dp */
+  gap: var(--md-sys-measurement-space-100);                    /* 8dp entre icono y label */
+}
+
+.md-chip .md-icon {
+  width: var(--md-sys-measurement-segmented-button-icon-size); /* 18dp caja del glifo */
+  height: var(--md-sys-measurement-segmented-button-icon-size); /* 18dp */
+  flex-shrink: 0;
+}

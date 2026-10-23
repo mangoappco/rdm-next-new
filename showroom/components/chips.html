@@ -15,10 +15,10 @@
 </head>
 
 <!--
-  ESTA VISTA TIENE UN PAR Y UN BLOQUE. El Bloque 1 --Especificacion,
-  anatomia y superficies-- abre con la clase base, sigue con las dos
-  superficies (Flat/Outlined y Elevated), y cierra con las cuatro
-  variantes de contenido: Assist, Suggestion, Filter e Input.
+  ESTA VISTA TIENE CUATRO PARES Y UN BLOQUE. El Bloque 1 --Especificacion,
+  anatomia y superficies-- abre con la clase base, sigue con el chip set
+  y las dos superficies (Flat/Outlined y Elevated), y cierra con la
+  variante de asistencia.
   El corte se marca con un divisor, el titulo de cada bloque es un h2 y los
   pares van en h3 debajo: el h1 es el nombre del componente, y el esquema
   queda h1 > h2 (bloque) > h3 (par). La aparicion no cambia, porque el tipo
@@ -114,7 +114,7 @@
         <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
       </div>
       <h1 class="md-type-display-large">Chip</h1>
-      <p class="md-type-body-large">El chip ayuda a las personas a representar opciones, filtros y entradas de datos en una sola píldora táctil. Se suele ubicar dentro de tarjetas, filas o barras de acciones. · <em>Un par</em></p>
+      <p class="md-type-body-large">El chip ayuda a las personas a representar opciones, filtros y entradas de datos en una sola píldora táctil. Se suele ubicar dentro de tarjetas, filas o barras de acciones. · <em>Cuatro pares</em></p>
     </header>
     <!-- HEADER: fin -->
 
@@ -192,6 +192,44 @@
   &lt;/button&gt;
   &lt;button type="button" class="md-chip md-chip-elevated"&gt;
     &lt;span class="md-chip-label"&gt;Elevated&lt;/span&gt;
+  &lt;/button&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: el assist chip (h3 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Assist chip</h3>
+      <p class="md-type-body-medium">Accion contextual inteligente sin estado de seleccion persistente: el chip trae su glifo de delante y su leyenda, y no guarda marca al marcarse. Tres ejemplos de asistente en su conjunto canonico.</p>
+      <div class="sr-specimen">
+        <div class="md-chip-set">
+          <button type="button" class="md-chip">
+            <span class="md-icon" aria-hidden="true">save</span>
+            <span class="md-chip-label">Guardar</span>
+          </button>
+          <button type="button" class="md-chip">
+            <span class="md-icon" aria-hidden="true">share</span>
+            <span class="md-chip-label">Compartir</span>
+          </button>
+          <button type="button" class="md-chip">
+            <span class="md-icon" aria-hidden="true">add</span>
+            <span class="md-chip-label">Añadir</span>
+          </button>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-chip-set"&gt;
+  &lt;button type="button" class="md-chip"&gt;
+    &lt;span class="md-icon" aria-hidden="true"&gt;save&lt;/span&gt;
+    &lt;span class="md-chip-label"&gt;Guardar&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-chip"&gt;
+    &lt;span class="md-icon" aria-hidden="true"&gt;share&lt;/span&gt;
+    &lt;span class="md-chip-label"&gt;Compartir&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-chip"&gt;
+    &lt;span class="md-icon" aria-hidden="true"&gt;add&lt;/span&gt;
+    &lt;span class="md-chip-label"&gt;Añadir&lt;/span&gt;
   &lt;/button&gt;
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
