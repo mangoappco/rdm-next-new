@@ -52,20 +52,26 @@ export function registrar() {
     /* Evitar que el cierre propague al contenedor del chip. */
     evento.stopPropagation();
 
-    /* Reubicar el foco antes de eliminar el chip. */
-    const todos = [...grupo.querySelectorAll('.md-chip')];
-    const indice = todos.indexOf(chip);
-    const siguiente = todos[indice + 1] ?? todos[indice - 1];
+    /* Añadir clase de salida para que el CSS anime la desaparición */
+    chip.classList.add('md-chip--removing');
 
-    chip.remove();
+    /* Postergar la eliminación y el reubicado de foco 150ms
+       (short-3) para que la salida visual sea fluida. */
+    setTimeout(() => {
+      const todos = [...grupo.querySelectorAll('.md-chip')];
+      const indice = todos.indexOf(chip);
+      const siguiente = todos[indice + 1] ?? todos[indice - 1];
 
-    if (siguiente) {
-      siguiente.focus();
-    } else if (grupo) {
-      /* El grupo quedo vacío: asignar tabindex temporal para poder enfocar
-         y no perder el foco en el <body>. */
-      grupo.setAttribute('tabindex', '-1');
-      grupo.focus();
-    }
+      chip.remove();
+
+      if (siguiente) {
+        siguiente.focus();
+      } else if (grupo) {
+        /* El grupo quedó vacío: asignar tabindex temporal para poder enfocar
+           y no perder el foco en el <body>. */
+        grupo.setAttribute('tabindex', '-1');
+        grupo.focus();
+      }
+    }, 150);
   });
 }

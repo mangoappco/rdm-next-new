@@ -68,6 +68,23 @@
   line-height: var(--md-sys-typescale-label-large-line-height);
   letter-spacing: var(--md-sys-typescale-label-large-tracking);
   white-space: nowrap;
+  /* Transiciones de estado (efectos + short4, 200ms): color, tinte, borde y padding */
+  transition:
+    background-color
+      var(--md-sys-motion-duration-short4)
+      var(--md-sys-motion-easing-standard),
+    border-color
+      var(--md-sys-motion-duration-short4)
+      var(--md-sys-motion-easing-standard),
+    color
+      var(--md-sys-motion-duration-short4)
+      var(--md-sys-motion-easing-standard),
+    box-shadow
+      var(--md-sys-motion-duration-short4)
+      var(--md-sys-motion-easing-standard),
+    padding
+      var(--md-sys-motion-duration-short4)
+      var(--md-sys-motion-easing-standard);
 }
 
 /* La leyenda del chip: lleva el texto puro, sin envoltura de sistema. */
@@ -119,6 +136,12 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  /* Transición del glifo (color y opacidad) al cambiar de estado */
+  transition:
+    color var(--md-sys-motion-duration-short4)
+      var(--md-sys-motion-easing-standard),
+    opacity var(--md-sys-motion-duration-short4)
+      var(--md-sys-motion-easing-standard);
 }
 
 /* ESTADO SELECCIONADO DEL FILTER CHIP (M3):
@@ -169,4 +192,39 @@
   cursor: pointer;
   padding: 0;
   margin: 0;
+  /* Transición del botón de cierre (color y opacidad) */
+  transition:
+    color var(--md-sys-motion-duration-short4)
+      var(--md-sys-motion-easing-standard),
+    opacity var(--md-sys-motion-duration-short4)
+      var(--md-sys-motion-easing-standard);
+}
+
+/* SALIDA DEL CHIP (input chip, M3): desvanecerse y encogerse antes de
+   eliminarse del DOM. short-3 (150ms) con curva standard. */
+.md-chip.md-chip--removing {
+  opacity: 0;
+  transform: scale(0.85);
+  transition:
+    opacity
+      var(--md-sys-motion-duration-short3)
+      var(--md-sys-motion-easing-standard),
+    transform
+      var(--md-sys-motion-duration-short3)
+      var(--md-sys-motion-easing-standard);
+}
+
+/* ACCESIBILIDAD: prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .md-chip,
+  .md-chip .md-icon,
+  .md-chip-close,
+  .md-chip.md-chip--removing {
+    transition: none !important;
+  }
+
+  .md-chip.md-chip--removing {
+    opacity: 0 !important;
+    transform: none !important;
+  }
 }
