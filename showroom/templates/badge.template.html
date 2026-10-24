@@ -15,14 +15,10 @@
 </head>
 
 <!--
-  ESTA VISTA TIENE OCHO PARES ORGANIZADOS EN DOS BLOQUES NORMATIVOS. La
-  jerarquía es h1 > h2 (bloque) > h3 (par), igual que chip.list y
-  segmented-button. Cada par es un <section> con, en orden:
-  h3 (nombre) -> p (descripcion) -> .sr-specimen (render) ->
-  pre.sr-code (snippet) -> button (copiar).
-
-  BLOQUE 1: Especificacion tecnica y anatomia (Pares 1 al 5).
-  BLOQUE 2: Casos de uso reales de ManGo! App (Pares 6 al 8).
+  ESTA VISTA SE CONSTRUYE PAR POR PAR. Por ahora esta el Par 1
+  (Clase base y anclaje) y el Par 2 (Small badge / Dot) del Bloque 1
+  (Especificacion tecnica y anatomia). Los pares siguientes se iran
+  agregando uno a uno tras aprobacion.
 
   REGLA DE ACCESIBILIDAD (WAI-ARIA): el badge lleva aria-hidden="true" y la
   informacion visual se anuncia en el aria-label del boton ancla, nunca en
@@ -61,21 +57,21 @@
     <!-- PAR 1: Clase base y anclaje -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Par 1 · Clase base y anclaje</h3>
-      <p class="md-type-body-medium">El contenedor .md-badge-anchor (position: relative; display: inline-flex) envuelve el elemento ancla y un .md-badge en reposo estructural. El badge se posiciona con position: absolute respecto de su ancla.</p>
+      <p class="md-type-body-medium">El Badge no se ancla al boton interactivo (40dp/48dp), sino dentro de la caja del icono de 24dp, en la esquina superior derecha (top trailing). .md-badge-anchor es la caja limite de 24x24dp que envuelve directamente al glifo y al indicador, todo dentro del boton padre (patron BadgedBox de M3).</p>
       <div class="sr-specimen">
-        <div class="md-badge-anchor">
-          <button type="button" class="md-icon-button" aria-label="Notificaciones">
-            <span class="md-icon" aria-hidden="true">notifications</span>
-          </button>
-          <span class="md-badge" aria-hidden="true"></span>
-        </div>
+        <button type="button" class="md-icon-button" aria-label="Mensajes no leídos">
+          <span class="md-badge-anchor">
+            <span class="md-icon" aria-hidden="true">mail</span>
+            <span class="md-badge md-badge-small" aria-hidden="true"></span>
+          </span>
+        </button>
       </div>
-      <pre class="sr-code"><code>&lt;div class="md-badge-anchor"&gt;
-  &lt;button type="button" class="md-icon-button" aria-label="Notificaciones"&gt;
-    &lt;span class="md-icon" aria-hidden="true"&gt;notifications&lt;/span&gt;
-  &lt;/button&gt;
-  &lt;span class="md-badge" aria-hidden="true"&gt;&lt;/span&gt;
-&lt;/div&gt;</code></pre>
+      <pre class="sr-code"><code>&lt;button type="button" class="md-icon-button" aria-label="Mensajes no leídos"&gt;
+  &lt;span class="md-badge-anchor"&gt;
+    &lt;span class="md-icon" aria-hidden="true"&gt;mail&lt;/span&gt;
+    &lt;span class="md-badge md-badge-small" aria-hidden="true"&gt;&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/button&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
     <!-- PAR 1: hasta aqui -->
@@ -83,183 +79,20 @@
     <!-- PAR 2: Small badge / Dot -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Par 2 · Small badge / Dot</h3>
-      <p class="md-type-body-medium">Variante puntual de 6 × 6 dp (.md-badge-small), sin contenido, forma circular (corner-full) y aria-hidden="true", anclada en la esquina superior derecha (top-trailing) del icono de 24 dp.</p>
+      <p class="md-type-body-medium">Indicador puntual de 6 × 6 dp (.md-badge-small), sin contenido, forma circular (corner-full), anclado en el vértice superior derecho del icono de 24 dp (top trailing). El círculo queda contenido en la esquina interior de la caja de 24 dp, sin expulsarse hacia el exterior del botón ni tapar el dibujo del glifo.</p>
       <div class="sr-specimen">
-        <div class="md-badge-anchor">
-          <button type="button" class="md-icon-button" aria-label="Notificaciones">
-            <span class="md-icon" aria-hidden="true">notifications</span>
-          </button>
+        <div class="md-badge-anchor" role="status" aria-label="Mensajes no leídos">
+          <span class="md-icon" aria-hidden="true">mail</span>
           <span class="md-badge md-badge-small" aria-hidden="true"></span>
         </div>
       </div>
-      <pre class="sr-code"><code>&lt;div class="md-badge-anchor"&gt;
-  &lt;button type="button" class="md-icon-button" aria-label="Notificaciones"&gt;
-    &lt;span class="md-icon" aria-hidden="true"&gt;notifications&lt;/span&gt;
-  &lt;/button&gt;
+      <pre class="sr-code"><code>&lt;div class="md-badge-anchor" role="status" aria-label="Mensajes no leídos"&gt;
+  &lt;span class="md-icon" aria-hidden="true"&gt;mail&lt;/span&gt;
   &lt;span class="md-badge md-badge-small" aria-hidden="true"&gt;&lt;/span&gt;
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
     <!-- PAR 2: hasta aqui -->
-
-    <!-- PAR 3: Large badge numérico de un dígito -->
-    <section class="sr-section">
-      <h3 class="md-type-title-large">Par 3 · Large badge numérico de un dígito</h3>
-      <p class="md-type-body-medium">Variante contador (.md-badge-large) con valor 3: caja simétrica de 16 × 16 dp, tipografía label-small centrada vertical y horizontalmente, y aria-label descriptivo en el botón ancla.</p>
-      <div class="sr-specimen">
-        <div class="md-badge-anchor">
-          <button type="button" class="md-icon-button" aria-label="3 pedidos pendientes">
-            <span class="md-icon" aria-hidden="true">receipt_long</span>
-          </button>
-          <span class="md-badge md-badge-large" aria-hidden="true">3</span>
-        </div>
-      </div>
-      <pre class="sr-code"><code>&lt;div class="md-badge-anchor"&gt;
-  &lt;button type="button" class="md-icon-button" aria-label="3 pedidos pendientes"&gt;
-    &lt;span class="md-icon" aria-hidden="true"&gt;receipt_long&lt;/span&gt;
-  &lt;/button&gt;
-  &lt;span class="md-badge md-badge-large" aria-hidden="true"&gt;3&lt;/span&gt;
-&lt;/div&gt;</code></pre>
-      <button type="button" class="sr-copy" data-copy>Copiar</button>
-    </section>
-    <!-- PAR 3: hasta aqui -->
-
-    <!-- PAR 4: Large badge multidígito -->
-    <section class="sr-section">
-      <h3 class="md-type-title-large">Par 4 · Large badge multidígito</h3>
-      <p class="md-type-body-medium">Variante para cantidades mayores (12 y 99+): el ancho crece horizontalmente de forma intrínseca con padding-inline: var(--md-sys-measurement-space-50) y radio corner-small (8 dp), sin restricción artificial de ancho en CSS.</p>
-      <div class="sr-specimen">
-        <div class="md-badge-anchor">
-          <button type="button" class="md-icon-button" aria-label="12 comandas pendientes">
-            <span class="md-icon" aria-hidden="true">receipt_long</span>
-          </button>
-          <span class="md-badge md-badge-large" aria-hidden="true">12</span>
-        </div>
-        <div class="md-badge-anchor">
-          <button type="button" class="md-icon-button" aria-label="Más de 99 notificaciones">
-            <span class="md-icon" aria-hidden="true">inbox</span>
-          </button>
-          <span class="md-badge md-badge-large" aria-hidden="true">99+</span>
-        </div>
-      </div>
-      <pre class="sr-code"><code>&lt;div class="md-badge-anchor"&gt;
-  &lt;button type="button" class="md-icon-button" aria-label="12 comandas pendientes"&gt;
-    &lt;span class="md-icon" aria-hidden="true"&gt;receipt_long&lt;/span&gt;
-  &lt;/button&gt;
-  &lt;span class="md-badge md-badge-large" aria-hidden="true"&gt;12&lt;/span&gt;
-&lt;/div&gt;
-&lt;div class="md-badge-anchor"&gt;
-  &lt;button type="button" class="md-icon-button" aria-label="Más de 99 notificaciones"&gt;
-    &lt;span class="md-icon" aria-hidden="true"&gt;inbox&lt;/span&gt;
-  &lt;/button&gt;
-  &lt;span class="md-badge md-badge-large" aria-hidden="true"&gt;99+&lt;/span&gt;
-&lt;/div&gt;</code></pre>
-      <button type="button" class="sr-copy" data-copy>Copiar</button>
-    </section>
-    <!-- PAR 4: hasta aqui -->
-
-    <!-- PAR 5: Variaciones de anclaje -->
-    <section class="sr-section">
-      <h3 class="md-type-title-large">Par 5 · Variaciones de anclaje</h3>
-      <p class="md-type-body-medium">Comparativa de anclaje: a la izquierda, el badge sobre un botón interactivo (.md-icon-button); a la derecha, sobre un icono estructural aislado (.md-icon). En ambos casos el ancla usa .md-badge-anchor.</p>
-      <div class="sr-specimen">
-        <div class="md-badge-anchor">
-          <button type="button" class="md-icon-button" aria-label="Mensajes, 5 sin leer">
-            <span class="md-icon" aria-hidden="true">message</span>
-          </button>
-          <span class="md-badge md-badge-large" aria-hidden="true">5</span>
-        </div>
-        <div class="md-badge-anchor">
-          <span class="md-icon" aria-hidden="true">favorite</span>
-          <span class="md-badge md-badge-small" aria-hidden="true"></span>
-        </div>
-      </div>
-      <pre class="sr-code"><code>&lt;div class="md-badge-anchor"&gt;
-  &lt;button type="button" class="md-icon-button" aria-label="Mensajes, 5 sin leer"&gt;
-    &lt;span class="md-icon" aria-hidden="true"&gt;message&lt;/span&gt;
-  &lt;/button&gt;
-  &lt;span class="md-badge md-badge-large" aria-hidden="true"&gt;5&lt;/span&gt;
-&lt;/div&gt;
-&lt;div class="md-badge-anchor"&gt;
-  &lt;span class="md-icon" aria-hidden="true"&gt;favorite&lt;/span&gt;
-  &lt;span class="md-badge md-badge-small" aria-hidden="true"&gt;&lt;/span&gt;
-&lt;/div&gt;</code></pre>
-      <button type="button" class="sr-copy" data-copy>Copiar</button>
-    </section>
-    <!-- PAR 5: hasta aqui -->
-
-    <hr class="md-divider">
-
-    <!-- ====================================================================
-         BLOQUE 2: Casos de uso reales de ManGo! App
-         ==================================================================== -->
-    <h2 class="md-type-headline-medium">Casos de uso reales de ManGo! App</h2>
-
-    <!-- PAR 6: Alertas en barra superior (AppBar) -->
-    <section class="sr-section">
-      <h3 class="md-type-title-large">Par 6 · Alertas en barra superior (AppBar)</h3>
-      <p class="md-type-body-medium">Campana de notificaciones con Small badge (dot) indicando avisos no leídos en el punto de venta.</p>
-      <div class="sr-specimen">
-        <div class="md-badge-anchor">
-          <button type="button" class="md-icon-button" aria-label="Alertas, 2 nuevas">
-            <span class="md-icon" aria-hidden="true">notifications</span>
-          </button>
-          <span class="md-badge md-badge-small" aria-hidden="true"></span>
-        </div>
-      </div>
-      <pre class="sr-code"><code>&lt;div class="md-badge-anchor"&gt;
-  &lt;button type="button" class="md-icon-button" aria-label="Alertas, 2 nuevas"&gt;
-    &lt;span class="md-icon" aria-hidden="true"&gt;notifications&lt;/span&gt;
-  &lt;/button&gt;
-  &lt;span class="md-badge md-badge-small" aria-hidden="true"&gt;&lt;/span&gt;
-&lt;/div&gt;</code></pre>
-      <button type="button" class="sr-copy" data-copy>Copiar</button>
-    </section>
-    <!-- PAR 6: hasta aqui -->
-
-    <!-- PAR 7: Monitor de cocina KDS -->
-    <section class="sr-section">
-      <h3 class="md-type-title-large">Par 7 · Monitor de cocina KDS</h3>
-      <p class="md-type-body-medium">Icono de comandas (receipt_long) con Large badge numérico (8) indicando pedidos en cola de preparación.</p>
-      <div class="sr-specimen">
-        <div class="md-badge-anchor">
-          <button type="button" class="md-icon-button" aria-label="8 comandas pendientes">
-            <span class="md-icon" aria-hidden="true">receipt_long</span>
-          </button>
-          <span class="md-badge md-badge-large" aria-hidden="true">8</span>
-        </div>
-      </div>
-      <pre class="sr-code"><code>&lt;div class="md-badge-anchor"&gt;
-  &lt;button type="button" class="md-icon-button" aria-label="8 comandas pendientes"&gt;
-    &lt;span class="md-icon" aria-hidden="true"&gt;receipt_long&lt;/span&gt;
-  &lt;/button&gt;
-  &lt;span class="md-badge md-badge-large" aria-hidden="true"&gt;8&lt;/span&gt;
-&lt;/div&gt;</code></pre>
-      <button type="button" class="sr-copy" data-copy>Copiar</button>
-    </section>
-    <!-- PAR 7: hasta aqui -->
-
-    <!-- PAR 8: Bandeja de despacho / Domicilios -->
-    <section class="sr-section">
-      <h3 class="md-type-title-large">Par 8 · Bandeja de despacho / Domicilios</h3>
-      <p class="md-type-body-medium">Icono de pedidos (delivery_dining) con Large badge saturado (99+) indicando sobrecarga de órdenes activas.</p>
-      <div class="sr-specimen">
-        <div class="md-badge-anchor">
-          <button type="button" class="md-icon-button" aria-label="Más de 99 pedidos activos">
-            <span class="md-icon" aria-hidden="true">delivery_dining</span>
-          </button>
-          <span class="md-badge md-badge-large" aria-hidden="true">99+</span>
-        </div>
-      </div>
-      <pre class="sr-code"><code>&lt;div class="md-badge-anchor"&gt;
-  &lt;button type="button" class="md-icon-button" aria-label="Más de 99 pedidos activos"&gt;
-    &lt;span class="md-icon" aria-hidden="true"&gt;delivery_dining&lt;/span&gt;
-  &lt;/button&gt;
-  &lt;span class="md-badge md-badge-large" aria-hidden="true"&gt;99+&lt;/span&gt;
-&lt;/div&gt;</code></pre>
-      <button type="button" class="sr-copy" data-copy>Copiar</button>
-    </section>
-    <!-- PAR 8: hasta aqui -->
 
     <hr class="md-divider">
 
