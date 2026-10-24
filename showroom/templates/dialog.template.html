@@ -299,7 +299,7 @@
 
     <!-- PAREJA: la clase base (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Clase base</h2>
+      <h3 class="md-type-title-large">Base &amp; anatomy</h3>
       <p class="md-type-body-medium">Icono, titular, contenido y acciones. El ancho crece con el texto entre 280 y 560.</p>
       <div class="sr-specimen">
 <dialog class="md-dialog" open aria-labelledby="dialog-title">
@@ -334,7 +334,7 @@
     <!-- PAREJA: hasta aqui -->
     <!-- PAREJA: sin titular (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Sin titular</h2>
+      <h3 class="md-type-title-large">No title</h3>
       <p class="md-type-body-medium">Sin titular ni icono, el texto de apoyo sube al borde. El aria-labelledby también se va: no hay id al que apuntar.</p>
       <div class="sr-specimen">
 <dialog class="md-dialog" open>
@@ -361,7 +361,7 @@
     <!-- PAREJA: hasta aqui -->
     <!-- PAREJA: el dialog modal (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Modal</h2>
+      <h3 class="md-type-title-large">Modal</h3>
       <p class="md-type-body-medium">Con showModal el dialog sale centrado, tapa el fondo y el scroll de debajo se bloquea. El velo es el ::backdrop nativo: no hay que escribirlo.</p>
       <div class="sr-specimen sr-specimen-gap">
 <button class="md-button md-button-filled" type="button" data-open-dialog="dialogo-modal">Abrir dialog</button>
@@ -398,7 +398,7 @@
     <!-- PAREJA: hasta aqui -->
     <!-- PAREJA: lista (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Lista</h2>
+      <h3 class="md-type-title-large">Confirmation</h3>
       <p class="md-type-body-medium">Un trigger y un dialog por fila, cada uno con su id. Abrir uno no toca los otros dos, y cada botón de cerrar cierra el suyo. <code>data-open-dialog</code> es lo único que dice qué botón abre qué dialog, así que el id tiene que ser único por fila.</p>
       <div class="sr-specimen sr-specimen-gap">
 <button class="md-button md-button-filled" type="button" data-open-dialog="dialogo-lista-1">Eliminar Alfa</button>
@@ -495,7 +495,7 @@
     <!-- PAREJA: hasta aqui -->
     <!-- PAREJA: divisor (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Divisor</h2>
+      <h3 class="md-type-title-large">Dividers</h3>
       <p class="md-type-body-medium">Un separador opcional en cada ranura. Las dos son independientes: puedes ponerlas, poner una o no poner ninguna. El sitio lo decide dónde pongas el <code>&lt;hr&gt;</code>, no una clase. Cada uno lleva 16px de aire por su lado, así que este dialog es más alto que uno sin separador.</p>
       <div class="sr-specimen">
 <dialog class="md-dialog" open aria-labelledby="dialog-divisor-titulo">
@@ -532,7 +532,7 @@
     <!-- PAREJA: hasta aqui -->
     <!-- PAREJA: contenido largo (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Contenido largo</h2>
+      <h3 class="md-type-title-large">Scrollable content</h3>
       <p class="md-type-body-medium">El texto hace scroll dentro del dialog en vez de empujarlo fuera de la pantalla. El límite de 560px viene del componente y es lo que lo hace posible; los botones de abajo nunca se salen y se siguen viendo. Solo scrollea siendo modal: sin <code>showModal</code> el dialog crece hasta 1584px, porque su <code>max-height</code> se mide contra una altura que en la página todavía no existe.</p>
       <div class="sr-specimen">
 <button class="md-button md-button-filled" type="button" data-open-dialog="dialogo-largo">Abrir dialog largo</button>
