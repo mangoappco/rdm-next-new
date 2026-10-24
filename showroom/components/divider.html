@@ -3,19 +3,28 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Divider de RDM Next: una línea de 1px en outline-variant, el contrato mínimo de la capa 3.">
   <title>Divider — RDM ManGo! App</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
   <link rel="stylesheet" href="../../src/css/main.css">
   <link rel="stylesheet" href="../assets/showroom.css">
-    <script type="module" src="../../src/js/main.js"></script>
-<script src="../assets/showroom.js"></script>
+  <script src="../assets/showroom.js"></script>
 </head>
 
-<!-- Vista de componente: linea de 1px en outline-variant.
-     Molde: showroom/templates/divider.template.html. -->
+<!--
+  COMO USAR ESTE TEMPLATE (copiar a showroom/components/divider.html):
+  1. Cambiar <title> y el h1 si hace falta; la descripcion ya dice la
+     doctrina de la vista.
+  2. Seis parejas (h2 + specimen + pre + boton): 3 horizontales sobre
+     <hr> y 3 verticales sobre div con role="separator".
+  3. Las verticales viven en escenario alto: height: 100% necesita un
+     padre dimensionado y el escenario pelado colapsaria a cero.
+  4. Sin margenes en el componente: el aire lo pone el gap de la pagina,
+     no la receta. Sin modificadores de color: un solo rol.
+  5. El boton va justo despues de su <pre>: copia ese bloque y ningun otro.
+  6. No anidar .sr-specimen dentro de otro: REGLA 11 no lo soporta.
+-->
 
 <body class="md-bg-background md-text-on-background md-type-body-medium">
   <main class="sr-page">
@@ -27,7 +36,7 @@
         <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
       </div>
       <h1 class="md-type-display-large">Divider</h1>
-      <p class="md-type-body-large">Línea delgada que agrupa contenido en listas y diseños. · <em>Seis pares</em></p>
+      <p class="md-type-body-large">Una linea de 1px en outline-variant: el contrato minimo de la capa 3.</p>
     </header>
 
     <hr class="md-divider">
@@ -35,7 +44,7 @@
 
     <!-- PAREJA: variante del divisor (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Default</h2>
+      <h3 class="md-type-title-large">Default</h3>
       <p class="md-type-body-medium">Ancho completo, sin sangria.</p>
       <div class="sr-specimen">
         <hr class="md-divider">
@@ -47,7 +56,7 @@
 
     <!-- PAREJA: variante del divisor (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Inset</h2>
+      <h3 class="md-type-title-large">Inset</h3>
       <p class="md-type-body-medium">Sangria de 16dp al inicio.</p>
       <div class="sr-specimen">
         <hr class="md-divider md-divider-inset">
@@ -59,7 +68,7 @@
 
     <!-- PAREJA: variante del divisor (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Middle inset</h2>
+      <h3 class="md-type-title-large">Middle inset</h3>
       <p class="md-type-body-medium">Sangria de 16dp en ambos lados.</p>
       <div class="sr-specimen">
         <hr class="md-divider md-divider-middle-inset">
@@ -71,7 +80,7 @@
 
     <!-- PAREJA: variante vertical (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Vertical</h2>
+      <h3 class="md-type-title-large">Vertical</h3>
       <p class="md-type-body-medium">Ejes intercambiados en escenario alto: uso canonico M3 para pantallas amplias. Pide padre dimensionado (sin altura de referencia colapsa a cero).</p>
       <div class="sr-specimen sr-specimen-tall">
         <div class="md-divider md-divider-vertical" role="separator" aria-orientation="vertical"></div>
@@ -83,7 +92,7 @@
 
     <!-- PAREJA: variante vertical (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Vertical inset</h2>
+      <h3 class="md-type-title-large">Vertical inset</h3>
       <p class="md-type-body-medium">Sangria sobre el eje de bloque. Como todo vertical: padre dimensionado o colapsa.</p>
       <div class="sr-specimen sr-specimen-tall">
         <div class="md-divider md-divider-vertical md-divider-inset" role="separator" aria-orientation="vertical"></div>
@@ -95,7 +104,7 @@
 
     <!-- PAREJA: variante vertical (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Vertical middle inset</h2>
+      <h3 class="md-type-title-large">Vertical middle inset</h3>
       <p class="md-type-body-medium">Sangria en ambos extremos del eje de bloque. Como todo vertical: padre dimensionado o colapsa.</p>
       <div class="sr-specimen sr-specimen-tall">
         <div class="md-divider md-divider-vertical md-divider-middle-inset" role="separator" aria-orientation="vertical"></div>
