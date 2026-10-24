@@ -1,0 +1,92 @@
+/* ==========================================================================
+   3-components/badge.css — BADGE (Capa 3)
+   ==========================================================================
+
+   QUE ES ESTE COMPONENTE
+   ----------------------
+   Indicador estructural de M3 que se acopla a un ancla interactiva
+   (icon button o contenedor de icono) para comunicar alertas o contadores.
+   M3 define UNICAMENTE dos variantes:
+
+     1. Small Badge (dot): indicador puntual sin texto, 6dp de diametro,
+        forma circular, anclado en la esquina superior derecha (top
+        trailing) del icono de 24dp.
+     2. Large Badge (counter): contenedor de 16dp de alto, radio 8dp,
+        tipografia label-small centrada, para numeros o "99+".
+
+   Queda terminantemente prohibido usar el badge como pastilla de texto
+   tipo estado ("Activo", "Pendiente").
+
+   ESTRUCTURA
+   ----------
+   <div class="md-badge-anchor">
+     <button class="md-icon-button" ...>...</button>
+     <span class="md-badge md-badge-small" aria-hidden="true"></span>
+   </div>
+
+   El badge lleva aria-hidden="true": la informacion se anuncia en el
+   aria-label del boton padre, nunca en el badge (WAI-ARIA).
+
+   TOKENS (Capa 2 unicamente, REGLA 2)
+   ----------------------------------
+   background-color  --md-sys-color-error
+   color             --md-sys-color-on-error
+   forma pequena     --md-sys-shape-corner-full
+   forma grande      --md-sys-shape-corner-small
+   tipografia        --md-sys-typescale-label-small (y longhands)
+   espacio 6dp       --md-sys-measurement-space-75
+   espacio 16dp      --md-sys-measurement-space-200
+   espacio 4dp       --md-sys-measurement-space-50
+   ========================================================================== */
+
+.md-badge-anchor {
+  /* Contenedor de anclaje: se posiciona respecto de el para que el badge
+     quede superpuesto sobre el icono sin salir del flujo del documento. */
+  position: relative;
+  display: inline-flex;
+}
+
+.md-badge {
+  /* Base comun a las dos variantes: superficie de urgencia y contraste
+     de texto sobre ella, tipografia label-small centrada. */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  background-color: var(--md-sys-color-error);
+  color: var(--md-sys-color-on-error);
+  font-family: var(--md-sys-typescale-label-small-font);
+  font-weight: var(--md-sys-typescale-label-small-weight);
+  font-size: var(--md-sys-typescale-label-small-size);
+  line-height: var(--md-sys-typescale-label-small-line-height);
+  letter-spacing: var(--md-sys-typescale-label-small-tracking);
+  white-space: nowrap;
+}
+
+.md-badge-small {
+  /* Dot: 6dp x 6dp, circulo completo, top-trailing sobre el icono de 24dp.
+     translate(50%, -50%) centra el punto en la esquina superior derecha. */
+  width: var(--md-sys-measurement-space-75);
+  height: var(--md-sys-measurement-space-75);
+  border-radius: var(--md-sys-shape-corner-full);
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%);
+  /* Sin padding ni contenido de texto: indicador puntual puro. */
+}
+
+.md-badge-large {
+  /* Counter: altura fija 16dp, anchura minima 16dp, radio 8dp, padding
+     lateral 4dp. El ancho crece con el contenido (1 digito o "99+"). */
+  height: var(--md-sys-measurement-space-200);
+  min-inline-size: var(--md-sys-measurement-space-200);
+  border-radius: var(--md-sys-shape-corner-small);
+  padding-inline: var(--md-sys-measurement-space-50);
+}
+
+/* ACCESIBILIDAD: prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .md-badge {
+    transition: none !important;
+  }
+}
