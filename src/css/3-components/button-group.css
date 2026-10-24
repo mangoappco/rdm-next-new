@@ -128,6 +128,13 @@
   /* `middle`, y no lo que trae M3, que no declara `vertical-align` ninguno.
      Ver la nota de arriba sobre el defecto que hereda de ser inline-flex. */
   vertical-align: middle;
+  position: relative;
+}
+
+.md-button-group > .md-button,
+.md-button-group > .md-icon-button {
+  position: relative;
+  overflow: hidden;
 }
 
 /* Los dos tamanos pequenos llevan mas aire: a 32px de alto y 40px de alto,

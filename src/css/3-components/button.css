@@ -141,6 +141,8 @@
      La base viste SMALL (40px), que es el tamano por defecto de M3: asi lo
      nombra `_md-comp-button.scss`, el token sin sufijo de tamano. Los otros
      cuatro llevan su clase. */
+  position: relative;
+  overflow: hidden;
   --md-comp-button-height: var(--md-sys-measurement-button-height);
   --md-comp-button-icon-size: var(--md-sys-measurement-button-icon-size);
   --md-comp-button-label-space: var(--md-sys-measurement-button-label-space);
@@ -435,6 +437,21 @@
 }
 
 /* ---------------------------------------------------------------------------
+   RIPPLE WAVE
+   ------------------------------------------------------------------------ */
+
+.md-ripple-wave {
+  position: absolute;
+  z-index: 0;
+  border-radius: var(--md-sys-shape-corner-full);
+  background-color: currentColor;
+  pointer-events: none;
+  user-select: none;
+  will-change: transform, opacity;
+  contain: layout paint;
+}
+
+/* ---------------------------------------------------------------------------
    LA ETIQUETA
    ---------------------------------------------------------------------------
    El texto va en un elemento, no como nodo suelto. Dos razones: el `gap` del
@@ -449,6 +466,8 @@
   display: inline-flex;
   align-items: center;
   min-inline-size: 0;
+  position: relative;
+  z-index: 1;
 }
 
 /* ---------------------------------------------------------------------------
@@ -469,6 +488,8 @@
   block-size: var(--md-comp-button-icon-size);
   font-size: var(--md-comp-button-icon-size);
   line-height: 1;
+  position: relative;
+  z-index: 1;
 }
 
 /* ---------------------------------------------------------------------------

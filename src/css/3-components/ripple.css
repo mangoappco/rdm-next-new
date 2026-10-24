@@ -1,0 +1,30 @@
+
+/* Confinamiento del ripple para controles interactivos */
+.md-button,
+.md-icon-button,
+.md-fab,
+.md-chip,
+.md-chip-close,
+.md-segmented-button-item,
+button.md-list-item,
+a.md-list-item,
+.md-list-item[tabindex],
+button.md-card,
+a.md-card,
+.md-card[tabindex],
+[data-ripple],
+.md-button-group > .md-button,
+.md-button-group > .md-icon-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.md-ripple-wave {
+  position: absolute;
+  border-radius: var(--md-sys-shape-corner-full);
+  background-color: currentColor;
+  pointer-events: none;
+  user-select: none;
+  will-change: transform, opacity;
+  contain: layout paint;
+}

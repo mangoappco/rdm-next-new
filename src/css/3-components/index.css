@@ -24,6 +24,7 @@
 @import url("dialog.css");
 @import url("list.css");
 @import url("segmented-button.css");
+@import url("ripple.css");
 
 /* list.css va al final, y no por orden alfabetico: no compone con ningun
    componente anterior, asi que su sitio es el final de la lista de construccion.
