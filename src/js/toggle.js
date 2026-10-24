@@ -17,17 +17,16 @@
    El unico contrato de un boton conmutable es `aria-pressed` (WAI-ARIA):
    `false` desactivado, `true` activado. El lector de pantalla lo anuncia,
    el CSS lo lee para pintar y este archivo es el UNICO que lo escribe.
-   No existe `data-*` en M3 ni en ARIA: la autoría y el estado pesan en el
-   mismo atributo, y este archivo lo respeta. Sirve para button e
-   icon-button por igual: un solo gancho, no uno por componente.
+   No existe `data-*` en M3 ni en ARIA: no hay gancho inventado. Sirve
+   para button e icon-button por igual: un solo contrato, no uno por
+   componente.
 
    ASI QUE EL AUTOR ESCRIBE ESTO
    ------------------------------
 
-   TOGGLE INDIVIDUAL -- un filtro de una sola pieza, el caso del
-   icon-button con estado. El boton conmuta a base de escribir su
-   `aria-pressed`, sin clase ni data-* que lo distinga: el atributo ES la
-   autoria y el estado:
+   TOGGLE INDIVIDUAL -- un filtro de una sola pieza. La autoria y el
+   estado viven en el mismo atributo: el boton conmuta a base de
+   escribir su `aria-pressed`:
 
        <button type="button" class="md-icon-button"
                aria-pressed="false" aria-label="Guardar">
@@ -35,20 +34,20 @@
          <span class="md-icon-button-touch"></span>
        </button>
 
-   GRUPO EXCLUSIVO -- "Comandas activas / cerradas" en ManGo! App. El
-   contenedor lleva `role="group"` y `aria-label` (lo que ARIA llama un
-   grupo) y cada boton lleva su `aria-pressed` inicial puesto a mano:
+   GRUPO EXCLUSIVO -- seleccion mutuamente excluyente, una sola opcion
+   activa a la vez. El contenedor lleva `role="group"` y `aria-label`,
+   y cada boton lleva su `aria-pressed` inicial puesto a mano:
 
        <div class="md-button-group" role="group" aria-label="Filtro de comandas">
          <button type="button" class="md-button" aria-pressed="true">Activas</button>
          <button type="button" class="md-button" aria-pressed="false">Cerradas</button>
        </div>
 
-   GRUPO MULTIPLE -- cada boton se conmuta solo, sin pisar a sus hermanos.
-   La forma es el atributo estandar WAI-ARIA `aria-multiselectable`:
+   GRUPO MULTIPLE -- cada boton se conmuta solo, sin pisar a sus hermanos,
+   marcado con el atributo estandar WAI-ARIA `aria-multiselectable="true"`:
 
-       <div class="md-button-group" role="group"
-            aria-label="Formato de texto" aria-multiselectable="true">
+       <div class="md-button-group" role="group" aria-label="Formato de texto"
+            aria-multiselectable="true">
          <button type="button" class="md-icon-button" aria-pressed="true"
                  aria-label="Negrita">...</button>
          <button type="button" class="md-icon-button" aria-pressed="false"
@@ -64,9 +63,8 @@
    silencio es un segundo autor no visto, y el marcado es la unica fuente
    de la verdad del sistema.
 
-   Un toggle individual SIN `aria-pressed` es un boton de accion a secas y
-   este archivo no lo toca: la puerta ES el atributo, no una clase a
-   buen hacer.
+   Un boton SIN `aria-pressed` no entra en el selector y este archivo no
+   lo toca: la puerta ES el atributo, no una clase a buen hacer.
 
    LA REGLA DE SELECCION EXCLUSIVA: NUNCA VACIO
    --------------------------------------------
@@ -85,14 +83,21 @@
    Material Symbols --que es un `<span>` hijo del button-- sube por
    closest y alcanza el `button[aria-pressed]`.
 
-   SOLO BUTTON, PORQUE ASI SE DECIDIO
-   -----------------------------------
-   El toggle es un `<button>`. Un `<a aria-pressed>` o un
-   `<div aria-pressed>` se IGNORAN: no existe `aria-pressed` sobre
-   enlaces, y `closest('button[aria-pressed]')` los descarta de entrada.
-   Un `<div role="button" aria-pressed>` seria equivalente, pero el
-   `aria-pressed` de un div es un control con estado sin mecanismo de
-   conmutacion nativo: queda fuera por la misma razon que en dialog.js.
+   SOLO BUTTON, PORQUE EL SELECTOR LO GARANTIZA
+   ---------------------------------------------
+   La puerta es `button[aria-pressed]`: el selector SOLO casa con
+   elementos `<button>`. Un `<a aria-pressed>` o un `<div aria-pressed>`
+   no existen en ARIA y no casan aqui. No hace falta una comprobacion
+   `instanceof` despues: el propio selector la ejecuta de entrada.
+
+   DESACTIVADO: DOS PUERTAS, NO UNA
+   ---------------------------------
+   `disabled` nativo Y `aria-disabled="true"` se descartan de entrada.
+   El disabled nativo no dispara click a traves del boton, PERO un click
+   delegado en `document` si llega al objetivo: sin esta guarda, un
+   toggle disabled conmutaria igual. El `aria-disabled` no corta el
+   evento de click de forma nativa: es advertencia semantica para el
+   lector de pantalla, y el motor la respeta.
 
    type="button" ES REGLA DE AUTORIA, Y AUN ASI HAY SALVAGUARDA
    ------------------------------------------------------------
@@ -101,14 +106,10 @@
    siendo type="submit" implicito, ENVIA el formulario al clic y recarga
    la pantalla, perdiendo la seleccion y el estado.
 
-   Por eso el archivo mira `boton.type` --la propiedad, no el atributo:
-   devuelve "submit" tanto si el autor lo escribio como si no puso
-   nada-- y en ese caso llama a `preventDefault()` antes de conmutar. Es
-   el UNICO sitio de todo el archivo que toca el comportamiento del
-   navegador, y su razon es la de arriba. La propiedad `cancelable` del
-   evento comprueba que el navegador lo permita, y un formulario fuera de
-   un `<form>` no pasa nada: `preventDefault` sobre un boton sin
-   formulario no tiene efecto ni efecto adverso.
+   Por eso el archivo mira `btn.type` y en ese caso llama a
+   `preventDefault()` antes de conmutar. Es el UNICO sitio de todo el
+   archivo que toca el comportamiento del navegador, y su razon es la de
+   arriba.
 
    LO QUE ESTE ARCHIVO NO HACE
    ---------------------------
@@ -128,72 +129,46 @@
    libreria importa `src/js/main.js` y ya.
    ========================================================================== */
 
-/* Conmutacion individual. Lee el estado y apunta el contrario.
-   `null` (atributo ausente) se lee como desactivado y coincide con lo
-   que el CSS pinta hasta el primer clic. */
-function conmutar(boton) {
-  const activado = boton.getAttribute('aria-pressed') === 'true';
-  boton.setAttribute('aria-pressed', String(!activado));
-}
-
 /* Un unico listener delegado en `document`, y no uno por boton. Ver la
    nota de la cabecera: la razon es la misma que en dialog.js, un boton
    que se anada despues de cargar funciona sin volver a registrar. */
 export function registrar() {
-  document.addEventListener('click', (evento) => {
+  document.addEventListener('click', (event) => {
     /* AUTORIA. La puerta es el atributo: `button[aria-pressed]`. Sin el
        atributo en ningun ancestro, el clic no es de este archivo. */
-    const objetivo = evento.target instanceof Element
-      ? evento.target.closest('button[aria-pressed]')
-      : null;
-    if (!objetivo) return;
+    const btn = event.target.closest('button[aria-pressed]');
+    if (!btn || btn.disabled || btn.getAttribute('aria-disabled') === 'true') return;
 
-    /* DESACTIVADO. Un boton disabled no recibe click a traves de si
-       mismo, pero un click delegado ARRIBA de el el clic llega igual:
-       el objetivo del evento es debajo del disabled. */
-    if (objetivo.disabled) return;
+    /* SALVAGUARDA DE FORMULARIO. Un `<button>` conexion submit implicito
+       enviaria el formulario antes de conmutar: se frena ANTES. */
+    if (btn.type === 'submit') event.preventDefault();
 
-    /* SALVAGUARDA DE FORMULARIO. Si el autor olvido el `type="button"`,
-       el boton es de tipo submit y el clic dispararia el envio del
-       formulario. Se frena ANTES de conmutar: con la conmutacion ya en
-       marcha, el submit iria detras y recargaria la pantalla. */
-    if (objetivo.type === 'submit' && evento.cancelable) {
-      evento.preventDefault();
-    }
+    const group = btn.closest('.md-button-group');
 
-    /* GRUPOS. El grupo valido es el ancestro `.md-button-group`: la clase
-       del sistema que los tres casos (exclusivo, multiple, grupo de
-       pares) comparten. La clase no pinta nada por si sola: es el
-       contenedor que el sistema declara, y `closest()` sobre ella
-       funciona con varios grupos en la pagina sin añadir ni un id. */
-    const grupo = objetivo.closest('.md-button-group');
-
-    if (grupo) {
+    if (group) {
       /* MULTIPLE. El atributo `aria-multiselectable="true"` marca grupos
          que admiten mas de una seleccion: cada boton conmuta su propio
          estado sin tocar a los hermanos. */
-      const multiple =
-        grupo.getAttribute('aria-multiselectable') === 'true';
+      const isMulti = group.getAttribute('aria-multiselectable') === 'true';
+      if (isMulti) {
+        const isPressed = btn.getAttribute('aria-pressed') === 'true';
+        btn.setAttribute('aria-pressed', String(!isPressed));
+      } else {
+        /* EXCLUSIVA. GUARDA TEMPRANA: si esta activo, el estado no
+           cambia. El grupo exclusivo NUNCA queda sin opcion activa, y el
+           lector de pantalla no recibe un re-anuncio del mismo valor. */
+        if (btn.getAttribute('aria-pressed') === 'true') return;
 
-      if (multiple) {
-        conmutar(objetivo);
-        return;
+        /* Los hermanos se apagan y el pulsado enciende. */
+        const siblings = group.querySelectorAll('button[aria-pressed]');
+        siblings.forEach((sibling) => {
+          sibling.setAttribute('aria-pressed', String(sibling === btn));
+        });
       }
-
-      /* EXCLUSIVA. GUARDA TEMPRANA: si esta activo, el estado no cambia.
-         El grupo exclusivo NUNCA se queda sin opcion activa, y el lector
-         de pantalla no recibe un re-anuncio del mismo valor. */
-      if (objetivo.getAttribute('aria-pressed') === 'true') return;
-
-      /* Los hermanos se apagan y el pulsado enciende. */
-      grupo.querySelectorAll('button[aria-pressed]').forEach((otro) => {
-        otro.setAttribute('aria-pressed', String(otro === objetivo));
-      });
-
-      return;
+    } else {
+      /* SIN GRUPO: toggle individual, libre de conmutar lo suyo. */
+      const isPressed = btn.getAttribute('aria-pressed') === 'true';
+      btn.setAttribute('aria-pressed', String(!isPressed));
     }
-
-    /* SIN GRUPO: toggle individual, libre de conmutar lo suyo. */
-    conmutar(objetivo);
   });
 }
