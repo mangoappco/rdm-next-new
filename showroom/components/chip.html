@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Chip de RDM Next: la píldora táctil de M3, con sus variantes de asistencia, filtro, entrada y sugerencia.">
+  <title>Chip — RDM ManGo! App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+  <link rel="stylesheet" href="../../src/css/main.css">
+  <link rel="stylesheet" href="../assets/showroom.css">
+    <script type="module" src="../../src/js/main.js"></script>
+<script src="../assets/showroom.js"></script>
+</head>
+
+<!--
+  ESTA VISTA TIENE NUEVE PARES Y UN BLOQUE. El Bloque 1 --Especificacion,
+  anatomia y superficies-- abre con la clase base, sigue con el chip set,
+  las dos superficies (Flat/Outlined y Elevated), el asistente, el filtro
+  en sus dos estados visuales, el chip de entrada, la sugerencia y cierra
+  con el input chip interactivo y su boton de remocion.
+  El corte se marca con un divisor, el titulo de cada bloque es un h2 y los
+  pares van en h3 debajo: el h1 es el nombre del componente, y el esquema
+  queda h1 > h2 (bloque) > h3 (par). La aparicion no cambia, porque el tipo
+  lo pone la clase y no la etiqueta.
+
+  LOS DOCE ACUERDOS ANTES DE ESCRIBIR NADA
+  -----------------------------------------
+  1. Clases: `md-chip` para el chip y `md-chip-label` para su leyenda, el
+     precedente de `md-list` / `md-list-item`. M3 publica el chip como
+     componente propio, no como un boton disfrazado: es una opcion en un
+     contexto concreto, no una accion persistente.
+
+  2. ANCHO DINAMICO, SIN MIN-WIDTH RIGIDO: el contenedor crece con su
+     label y su contenido ("Container width: Dynamic based on labels").
+     El touch target de 48dp se resuelve en el eje tactil y de
+     accesibilidad, nunca con un min-width artificial de 88dp que rompa
+     layouts fluidos.
+
+  3. DOS SUPERFICIES: Flat/Outlined (base, fondo surface y borde 1px en
+     outline-variant) y Elevated (elevacion-1, fondo surface-container-low
+     y sin borde visible). La seleccion en Filter Chip adopta
+     secondary-container y on-secondary-container, y retira el borde de
+     1px: el contenedor solido provee el contraste canónico de M3.
+
+  4. PADDINGS ASIMETRICOS EXACTOS: sin iconos 16dp inicio y 16dp fin
+     (space-200); con leading icon/avatar 8dp inicio, 8dp gap y 16dp fin;
+     con trailing icon (Input chip close) 16dp inicio, 8dp gap y 8dp fin;
+     con leading y trailing, 8dp a cada lado. Todo consumido desde
+     measurement.css.
+
+  5. EL GLIFO check EN FILTER CHIPS: sin icono previo se despliega al
+     seleccionar sin provocar reflow exterior; con leading icon tematico
+     previo, sustituye en la misma celda de 18dp al icono base (swap
+     directo en crossfade).
+
+  6. ARIA DIFERENCIADA: el chip usa `aria-selected="true|false"` para
+     anunciar su estado de seleccion. El input chip usa ademas el trailing
+     icon `close` para su remoción.
+
+  7. LA FUENTE DE TIPOS: el chip lleva label-large (peso medium, fuente
+     plain), el texto corto de interfaz que necesita afirmarse sin competir
+     con los titulos.
+
+  8. EL APAGADO ES ATRIBUTO Y COLOR: nativo con `disabled` en el elemento,
+     leyenda al 0.38 compuesta como color con alfa, trazo al 0.12 sobre el
+     rgb del outline y contenedor deshabilitado al 0.10 on-surface.
+     cursor: not-allowed no se declara: la casa unifica el apagado con el
+     boton --pointer-events: none--, que saca al elemento del hit-testing.
+
+  9. EL SHOWROOM NO LE PINTA ENCIMA. El grupo es un elemento directo del
+     escenario y showroom.css reparte padding a todo div directo, herencia
+     de las muestras que lo respira. Aqui el padding envenenaba la
+     geometria: la fila de 32dp de la grid nacia a +16 dentro de una caja
+     de 32 y desbordaba. El snippet no trae ese padding, asi que
+     showroom.css lo excluyo, como ya hizo con el grupo de botones.
+
+ 10. LA INTERACCION VIVE EN `src/js/main.js`, orquestada ahi. El motor no
+     inventa un data-*: el gancho es el rol que el marcado ya publica
+     (aria-selected), acotado por la clase del componente. Cada cambio
+     escribe LOS DOS datos: la clase que pinta el CSS y el aria que anuncia
+     el lector de pantalla. Sin main.js la seleccion queda estatica, como
+     en los otros pares: es la autosuficiencia de la REGLA 13.
+
+ 11. LOS PARES 1 AL 7 SON ESTATICOS: muestran la anatomia, variantes de
+     contenido, superficies y matrices de estados con clases de estado
+     fijas. Cero JS en estos pares. A partir del Par 8 entra la
+     interaccion dinamica gobernada por main.js.
+
+ 12. DOGFOODING REAL: los pares no son el control a solas, sino el control
+     en su contexto real de M3 —dentro de tarjetas, filas o barras de
+     acciones— ensamblado con componentes vivos del catalogo cuando el caso
+     lo requiere.
+
+  LO QUE ESTA VISTA NO DICE, Y POR QUE
+  ------------------------------------
+  TOKENES Y MEDIDAS NO TIENEN PAR. La altura de 32, el borde de 1, el
+  relleno y los colores estan en la cabecera de
+  `src/css/3-components/chip.css`, con el token de M3 al que corresponde
+  cada uno. Un par que dijera "el chip mide 32" seria el mismo specimen
+  con otro h2.
+
+  EL LIMITE DE VARIANTES ES CONTRATO DE DISENO, no CSS: M3 publica cuatro
+  variantes y ninguna medida denuncia una quinta. Lo custodian el par de
+  anatomia que ensaya la familia completa y la prosa.
+-->
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <main class="sr-page">
+
+    <!-- HEADER: inicio (barra + titulo + descripcion) -->
+    <header class="sr-header">
+      <div class="sr-bar">
+        <p class="md-type-body-medium"><a href="../index.html">RDM ManGo! App</a></p>
+        <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
+      </div>
+      <h1 class="md-type-display-large">Chip</h1>
+      <p class="md-type-body-large">El chip ayuda a las personas a representar opciones, filtros y entradas de datos en una sola píldora táctil. Se suele ubicar dentro de tarjetas, filas o barras de acciones. · <em>Once pares</em></p>
+    </header>
+    <!-- HEADER: fin -->
+
+    <hr class="md-divider">
+
+    <!-- BLOQUE 1: la especificacion tecnica y la anatomia. El laboratorio
+         normativo: pares minimalistas que aislan una sola cosa. -->
+    <h2 class="md-type-headline-medium">Especificación, anatomía y superficies</h2>
+
+    <!-- PAREJA: la clase base (h3 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Anatomy</h3>
+      <p class="md-type-body-medium">Una píldora de 32dp con borde de 1px y ancho dinámico: el punto de partida de todas las variantes.</p>
+      <div class="sr-specimen">
+        <button type="button" class="md-chip">
+          <span class="md-chip-label">Etiqueta</span>
+        </button>
+      </div>
+      <pre class="sr-code"><code>&lt;button type="button" class="md-chip"&gt;
+  &lt;span class="md-chip-label"&gt;Etiqueta&lt;/span&gt;
+&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: el chip set (h3 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Chip set</h3>
+      <p class="md-type-body-medium">La fila flexible canónica de M3: wrap y 8dp de separación entre chips.</p>
+      <div class="sr-specimen">
+        <div class="md-chip-set">
+          <button type="button" class="md-chip">
+            <span class="md-chip-label">Activo</span>
+          </button>
+          <button type="button" class="md-chip">
+            <span class="md-chip-label">Pendiente</span>
+          </button>
+          <button type="button" class="md-chip">
+            <span class="md-chip-label">Completado</span>
+          </button>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-chip-set"&gt;
+  &lt;button type="button" class="md-chip"&gt;
+    &lt;span class="md-chip-label"&gt;Activo&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-chip"&gt;
+    &lt;span class="md-chip-label"&gt;Pendiente&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-chip"&gt;
+    &lt;span class="md-chip-label"&gt;Completado&lt;/span&gt;
+  &lt;/button&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: las superficies (h3 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Surfaces</h3>
+      <p class="md-type-body-medium">Flat (outlined) para fondos limpios: borde 1px outline-variant. Elevated para fondos con ruido visual: su sombra de Nivel 1 despega el chip del fondo.</p>
+      <div class="sr-specimen">
+        <div class="md-chip-set">
+          <button type="button" class="md-chip">
+            <span class="md-chip-label">Flat</span>
+          </button>
+          <button type="button" class="md-chip md-chip-elevated">
+            <span class="md-chip-label">Elevated</span>
+          </button>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-chip-set"&gt;
+  &lt;button type="button" class="md-chip"&gt;
+    &lt;span class="md-chip-label"&gt;Flat&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-chip md-chip-elevated"&gt;
+    &lt;span class="md-chip-label"&gt;Elevated&lt;/span&gt;
+  &lt;/button&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: el assist chip (h3 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Assist chip</h3>
+      <p class="md-type-body-medium">Acción contextual sin estado de selección: glifo de delante y label, sin marca persistente.</p>
+      <div class="sr-specimen">
+        <div class="md-chip-set">
+          <button type="button" class="md-chip">
+            <span class="md-icon md-icon-wght-light" aria-hidden="true">save</span>
+            <span class="md-chip-label">Guardar</span>
+          </button>
+          <button type="button" class="md-chip">
+            <span class="md-icon md-icon-wght-light" aria-hidden="true">share</span>
+            <span class="md-chip-label">Compartir</span>
+          </button>
+          <button type="button" class="md-chip">
+            <span class="md-icon md-icon-wght-light" aria-hidden="true">add</span>
+            <span class="md-chip-label">Añadir</span>
+          </button>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-chip-set"&gt;
+  &lt;button type="button" class="md-chip"&gt;
+    &lt;span class="md-icon md-icon-wght-light" aria-hidden="true"&gt;save&lt;/span&gt;
+    &lt;span class="md-chip-label"&gt;Guardar&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-chip"&gt;
+    &lt;span class="md-icon md-icon-wght-light" aria-hidden="true"&gt;share&lt;/span&gt;
+    &lt;span class="md-chip-label"&gt;Compartir&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-chip"&gt;
+    &lt;span class="md-icon md-icon-wght-light" aria-hidden="true"&gt;add&lt;/span&gt;
+    &lt;span class="md-chip-label"&gt;Añadir&lt;/span&gt;
+  &lt;/button&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: el filter chip (h3 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Filter chip</h3>
+      <p class="md-type-body-medium">Dos estados visuales: reposo con borde y fondo transparente; seleccionado con fondo tiñido y glifo check.</p>
+      <div class="sr-specimen">
+        <div class="md-chip-set">
+          <button type="button" class="md-chip" aria-selected="false">
+            <span class="md-chip-label">Categoría A</span>
+          </button>
+          <button type="button" class="md-chip md-chip-selected" aria-selected="true">
+            <span class="md-icon md-icon-wght-light" aria-hidden="true">check</span>
+            <span class="md-chip-label">Categoría B</span>
+          </button>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-chip-set"&gt;
+  &lt;button type="button" class="md-chip" aria-selected="false"&gt;
+    &lt;span class="md-chip-label"&gt;Categoría A&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-chip md-chip-selected" aria-selected="true"&gt;
+    &lt;span class="md-icon md-icon-wght-light" aria-hidden="true"&gt;check&lt;/span&gt;
+    &lt;span class="md-chip-label"&gt;Categoría B&lt;/span&gt;
+  &lt;/button&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: el input chip (h3 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Input chip</h3>
+      <p class="md-type-body-medium">Información asignada por la persona, con botón de cierre para removerla. El glifo close lleva aria-label.</p>
+      <div class="sr-specimen">
+        <div class="md-chip-set">
+          <div class="md-chip" role="button" tabindex="0">
+            <span class="md-chip-label">Sin cebolla</span>
+            <button type="button" class="md-chip-close" aria-label="Remover Sin cebolla">
+              <span class="md-icon md-icon-wght-light" aria-hidden="true">close</span>
+            </button>
+          </div>
+          <div class="md-chip" role="button" tabindex="0">
+            <span class="md-chip-label">Extra queso</span>
+            <button type="button" class="md-chip-close" aria-label="Remover Extra queso">
+              <span class="md-icon md-icon-wght-light" aria-hidden="true">close</span>
+            </button>
+          </div>
+          <div class="md-chip" role="button" tabindex="0">
+            <span class="md-chip-label">Término medio</span>
+            <button type="button" class="md-chip-close" aria-label="Remover Término medio">
+              <span class="md-icon md-icon-wght-light" aria-hidden="true">close</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-chip-set"&gt;
+  &lt;div class="md-chip" role="button" tabindex="0"&gt;
+    &lt;span class="md-chip-label"&gt;Sin cebolla&lt;/span&gt;
+    &lt;button type="button" class="md-chip-close" aria-label="Remover Sin cebolla"&gt;&lt;span class="md-icon md-icon-wght-light" aria-hidden="true"&gt;close&lt;/span&gt;&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="md-chip" role="button" tabindex="0"&gt;
+    &lt;span class="md-chip-label"&gt;Extra queso&lt;/span&gt;
+    &lt;button type="button" class="md-chip-close" aria-label="Remover Extra queso"&gt;&lt;span class="md-icon md-icon-wght-light" aria-hidden="true"&gt;close&lt;/span&gt;&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="md-chip" role="button" tabindex="0"&gt;
+    &lt;span class="md-chip-label"&gt;Término medio&lt;/span&gt;
+    &lt;button type="button" class="md-chip-close" aria-label="Remover Término medio"&gt;&lt;span class="md-icon md-icon-wght-light" aria-hidden="true"&gt;close&lt;/span&gt;&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: el suggestion chip (h3 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Suggestion chip</h3>
+      <p class="md-type-body-medium">Opciones predictivas generadas por el sistema, sin selección persistente.</p>
+      <div class="sr-specimen">
+        <div class="md-chip-set">
+          <button type="button" class="md-chip">
+            <span class="md-chip-label">Bebidas frías</span>
+          </button>
+          <button type="button" class="md-chip">
+            <span class="md-chip-label">Más pedidos</span>
+          </button>
+          <button type="button" class="md-chip">
+            <span class="md-chip-label">Ver postres</span>
+          </button>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-chip-set"&gt;
+  &lt;button type="button" class="md-chip"&gt;
+    &lt;span class="md-chip-label"&gt;Bebidas frías&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-chip"&gt;
+    &lt;span class="md-chip-label"&gt;Más pedidos&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-chip"&gt;
+    &lt;span class="md-chip-label"&gt;Ver postres&lt;/span&gt;
+  &lt;/button&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: el filter chip interactivo (h3 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Interactive filter</h3>
+      <p class="md-type-body-medium">Toggles individuales: cada chip conmuta su propio estado sin afectar al resto del grupo.</p>
+      <div class="sr-specimen">
+        <div class="md-chip-set" data-chip-filter-group>
+          <button type="button" class="md-chip md-chip-selected" aria-selected="true">
+            <span class="md-icon md-icon-wght-light" aria-hidden="true">check</span>
+            <span class="md-chip-label">Vegetariano</span>
+          </button>
+          <button type="button" class="md-chip" aria-selected="false">
+            <span class="md-chip-label">Sin gluten</span>
+          </button>
+          <button type="button" class="md-chip" aria-selected="false">
+            <span class="md-chip-label">Promociones</span>
+          </button>
+          <button type="button" class="md-chip" aria-selected="false">
+            <span class="md-chip-label">En terraza</span>
+          </button>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-chip-set" data-chip-filter-group&gt;
+  &lt;button type="button" class="md-chip md-chip-selected" aria-selected="true"&gt;
+    &lt;span class="md-icon md-icon-wght-light" aria-hidden="true"&gt;check&lt;/span&gt;
+    &lt;span class="md-chip-label"&gt;Vegetariano&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-chip" aria-selected="false"&gt;
+    &lt;span class="md-chip-label"&gt;Sin gluten&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-chip" aria-selected="false"&gt;
+    &lt;span class="md-chip-label"&gt;Promociones&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-chip" aria-selected="false"&gt;
+    &lt;span class="md-chip-label"&gt;En terraza&lt;/span&gt;
+  &lt;/button&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: el input chip interactivo (h3 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Interactive input</h3>
+      <p class="md-type-body-medium">El botón de cierre remueve el chip del conjunto y el foco pasa al chip adyacente.</p>
+      <div class="sr-specimen">
+        <div class="md-chip-set" data-chip-input-group>
+          <div class="md-chip" role="button" tabindex="0">
+            <span class="md-chip-label">Sin cebolla</span>
+            <button type="button" class="md-chip-close" aria-label="Remover Sin cebolla">
+              <span class="md-icon md-icon-wght-light" aria-hidden="true">close</span>
+            </button>
+          </div>
+          <div class="md-chip" role="button" tabindex="0">
+            <span class="md-chip-label">Extra queso</span>
+            <button type="button" class="md-chip-close" aria-label="Remover Extra queso">
+              <span class="md-icon md-icon-wght-light" aria-hidden="true">close</span>
+            </button>
+          </div>
+          <div class="md-chip" role="button" tabindex="0">
+            <span class="md-chip-label">Término medio</span>
+            <button type="button" class="md-chip-close" aria-label="Remover Término medio">
+              <span class="md-icon md-icon-wght-light" aria-hidden="true">close</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-chip-set" data-chip-input-group&gt;
+  &lt;div class="md-chip" role="button" tabindex="0"&gt;
+    &lt;span class="md-chip-label"&gt;Sin cebolla&lt;/span&gt;
+    &lt;button type="button" class="md-chip-close" aria-label="Remover Sin cebolla"&gt;&lt;span class="md-icon md-icon-wght-light" aria-hidden="true"&gt;close&lt;/span&gt;&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="md-chip" role="button" tabindex="0"&gt;
+    &lt;span class="md-chip-label"&gt;Extra queso&lt;/span&gt;
+    &lt;button type="button" class="md-chip-close" aria-label="Remover Extra queso"&gt;&lt;span class="md-icon md-icon-wght-light" aria-hidden="true"&gt;close&lt;/span&gt;&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="md-chip" role="button" tabindex="0"&gt;
+    &lt;span class="md-chip-label"&gt;Término medio&lt;/span&gt;
+    &lt;button type="button" class="md-chip-close" aria-label="Remover Término medio"&gt;&lt;span class="md-icon md-icon-wght-light" aria-hidden="true"&gt;close&lt;/span&gt;&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: el interactive states (h3 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">States</h3>
+      <p class="md-type-body-medium">Reposo, seleccionado y los dos disabled. El disabled baja la opacidad del conjunto al 38% y pierde los eventos.</p>
+      <div class="sr-specimen">
+        <div class="md-chip-set">
+          <button type="button" class="md-chip">
+            <span class="md-chip-label">Reposo</span>
+          </button>
+          <button type="button" class="md-chip md-chip-selected" aria-selected="true">
+            <span class="md-icon md-icon-wght-light" aria-hidden="true">check</span>
+            <span class="md-chip-label">Seleccionado</span>
+          </button>
+          <button type="button" class="md-chip" disabled>
+            <span class="md-chip-label">Deshabilitado</span>
+          </button>
+          <button type="button" class="md-chip md-chip-selected" aria-selected="true" disabled>
+            <span class="md-icon md-icon-wght-light" aria-hidden="true">check</span>
+            <span class="md-chip-label">Deshabilitado selec.</span>
+          </button>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-chip-set"&gt;
+  &lt;button type="button" class="md-chip"&gt;
+    &lt;span class="md-chip-label"&gt;Reposo&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-chip md-chip-selected" aria-selected="true"&gt;
+    &lt;span class="md-icon md-icon-wght-light" aria-hidden="true"&gt;check&lt;/span&gt;
+    &lt;span class="md-chip-label"&gt;Seleccionado&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-chip" disabled&gt;
+    &lt;span class="md-chip-label"&gt;Deshabilitado&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-chip md-chip-selected" aria-selected="true" disabled&gt;
+    &lt;span class="md-icon md-icon-wght-light" aria-hidden="true"&gt;check&lt;/span&gt;
+    &lt;span class="md-chip-label"&gt;Deshabilitado selec.&lt;/span&gt;
+  &lt;/button&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: el elevated states (h3 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Elevated states</h3>
+      <p class="md-type-body-medium">Los mismos estados sobre la superficie elevada: sombra de Nivel 1 en reposo y sin sombra en disabled.</p>
+      <div class="sr-specimen">
+        <div class="md-chip-set">
+          <button type="button" class="md-chip md-chip-elevated">
+            <span class="md-chip-label">Reposo</span>
+          </button>
+          <button type="button" class="md-chip md-chip-elevated md-chip-selected" aria-selected="true">
+            <span class="md-icon md-icon-wght-light" aria-hidden="true">check</span>
+            <span class="md-chip-label">Seleccionado</span>
+          </button>
+          <button type="button" class="md-chip md-chip-elevated" disabled>
+            <span class="md-chip-label">Deshabilitado</span>
+          </button>
+          <button type="button" class="md-chip md-chip-elevated md-chip-selected" aria-selected="true" disabled>
+            <span class="md-icon md-icon-wght-light" aria-hidden="true">check</span>
+            <span class="md-chip-label">Deshabilitado selec.</span>
+          </button>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-chip-set"&gt;
+  &lt;button type="button" class="md-chip md-chip-elevated"&gt;
+    &lt;span class="md-chip-label"&gt;Reposo&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-chip md-chip-elevated md-chip-selected" aria-selected="true"&gt;
+    &lt;span class="md-icon md-icon-wght-light" aria-hidden="true"&gt;check&lt;/span&gt;
+    &lt;span class="md-chip-label"&gt;Seleccionado&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-chip md-chip-elevated" disabled&gt;
+    &lt;span class="md-chip-label"&gt;Deshabilitado&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-chip md-chip-elevated md-chip-selected" aria-selected="true" disabled&gt;
+    &lt;span class="md-icon md-icon-wght-light" aria-hidden="true"&gt;check&lt;/span&gt;
+    &lt;span class="md-chip-label"&gt;Deshabilitado selec.&lt;/span&gt;
+  &lt;/button&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <hr class="md-divider">
+
+  </main>
+  <!-- MAIN: fin -->
+</body>
+</html>
