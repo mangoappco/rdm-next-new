@@ -12,51 +12,48 @@
    `aria-pressed`, y decidir cuando la conmutacion es exclusiva. El CSS
    pinta el estado; aqui se decide cuando cambia.
 
-   LA PUERTA SON DOS ATRIBUTOS
-   ---------------------------
-   Como en dialog.js, el orden de lectura es AUTORIA -> ESTADO:
-
-       `data-toggle`          el atributo de AUTORIA. Dice "este boton
-                              conmuta". Sin el, no hay nada que leer y el
-                              boton es de accion a secas.
-       `aria-pressed`         el atributo de ESTADO. Lo anuncia el lector de
-                              pantalla, lo lee el CSS y es lo UNICO que este
-                              archivo escribe. Sirve para button e
-                              icon-button por igual: un solo gancho, no uno
-                              por componente.
+   LA PUERTA ES UN ATRIBUTO NATIVO
+   -------------------------------
+   El unico contrato de un boton conmutable es `aria-pressed` (WAI-ARIA):
+   `false` desactivado, `true` activado. El lector de pantalla lo anuncia,
+   el CSS lo lee para pintar y este archivo es el UNICO que lo escribe.
+   No existe `data-*` en M3 ni en ARIA: la autoría y el estado pesan en el
+   mismo atributo, y este archivo lo respeta. Sirve para button e
+   icon-button por igual: un solo gancho, no uno por componente.
 
    ASI QUE EL AUTOR ESCRIBE ESTO
    ------------------------------
 
    TOGGLE INDIVIDUAL -- un filtro de una sola pieza, el caso del
-   icon-button con estado:
+   icon-button con estado. El boton conmuta a base de escribir su
+   `aria-pressed`, sin clase ni data-* que lo distinga: el atributo ES la
+   autoria y el estado:
 
-       <button type="button" class="md-icon-button" data-toggle
+       <button type="button" class="md-icon-button"
                aria-pressed="false" aria-label="Guardar">
          <span class="md-icon-button-icon md-icon" aria-hidden="true">bookmark</span>
          <span class="md-icon-button-touch"></span>
        </button>
 
    GRUPO EXCLUSIVO -- "Comandas activas / cerradas" en ManGo! App. El
-   contenedor lleva `data-toggle-group` a secas y los botones llevan el
-   `data-toggle` de siempre, con su aria-pressed inicial puesto a mano:
+   contenedor lleva `role="group"` y `aria-label` (lo que ARIA llama un
+   grupo) y cada boton lleva su `aria-pressed` inicial puesto a mano:
 
-       <div class="md-button-group" data-toggle-group>
-         <button type="button" class="md-button" data-toggle aria-pressed="true">Activas</button>
-         <button type="button" class="md-button" data-toggle aria-pressed="false">Cerradas</button>
+       <div class="md-button-group" role="group" aria-label="Filtro de comandas">
+         <button type="button" class="md-button" aria-pressed="true">Activas</button>
+         <button type="button" class="md-button" aria-pressed="false">Cerradas</button>
        </div>
 
-   GRUPO MULTIPLE -- los filtros "Para llevar / En mesa": cada boton se
-   conmuta solo, sin pisar a sus hermanos. Dos formas de marcarlo, las DOS
-   validas y equivalentes para este archivo:
+   GRUPO MULTIPLE -- cada boton se conmuta solo, sin pisar a sus hermanos.
+   La forma es el atributo estandar WAI-ARIA `aria-multiselectable`:
 
-       <div class="md-button-group" data-toggle-group="multi"> ...
-       <div class="md-button-group" data-toggle-group aria-multiselectable="true"> ...
-
-   `aria-multiselectable` es la forma ARIA y conviene al autor que ya lleva
-   atributos ARIA en el bloque; `data-toggle-group="multi"` es la forma de
-   los data-* del sistema. Las dos existen porque una cuarta convencion no
-   cabe en este archivo.
+       <div class="md-button-group" role="group"
+            aria-label="Formato de texto" aria-multiselectable="true">
+         <button type="button" class="md-icon-button" aria-pressed="true"
+                 aria-label="Negrita">...</button>
+         <button type="button" class="md-icon-button" aria-pressed="false"
+                 aria-label="Cursiva">...</button>
+       </div>
 
    EL ESTADO INICIAL LO PONE EL AUTOR, NO ESTE ARCHIVO
    ---------------------------------------------------
@@ -67,18 +64,18 @@
    silencio es un segundo autor no visto, y el marcado es la unica fuente
    de la verdad del sistema.
 
-   Un toggle individual SIN `aria-pressed` se lee como desactivado, que
-   coincide con lo que ya pinta el CSS: su estado unselected sale de
-   `:not([aria-pressed="true"])`. En el primer clic el atributo aparece.
+   Un toggle individual SIN `aria-pressed` es un boton de accion a secas y
+   este archivo no lo toca: la puerta ES el atributo, no una clase a
+   buen hacer.
 
    LA REGLA DE SELECCION EXCLUSIVA: NUNCA VACIO
    --------------------------------------------
-   En un grupo exclusivo, clicar el que ya esta activo NO lo desmarca. Es
-   una decision, no un detalle: M3 pide que un grupo exclusivo tenga una
-   opcion unica, y si el clic desmarcara, el grupo quedaria vacio y la
-   pantalla sin filtro. Por eso el clic en el activo re-escribe `true`:
-   escribir el mismo valor es un suceso nulo en el DOM y no re-anuncia nada
-   al lector de pantalla.
+   En un grupo exclusivo, clicar el que ya esta activo NO lo desmarca. Y
+   no re-escribe `true`: es un RETORNO TEMPRANO. M3 pide que un grupo
+   exclusivo tenga una opcion unica, y si el clic desmarcara, el grupo
+   quedaria vacio y la pantalla sin filtro. El retorno no es un detalle
+   de rendimiento: tambien evita re-anunciar al lector de pantalla el
+   mismo estado que ya tiene.
 
    UN SOLO LISTENER DELEGADO EN `document`
    ---------------------------------------
@@ -86,17 +83,16 @@
    cargar la pagina y `closest()` desde el objetivo del clic. Un boton que
    se añada DESPUES de cargar funciona igual. Y un clic en el glifo de
    Material Symbols --que es un `<span>` hijo del button-- sube por
-   closest y alcanza el `button[data-toggle]`.
+   closest y alcanza el `button[aria-pressed]`.
 
    SOLO BUTTON, PORQUE ASI SE DECIDIO
    -----------------------------------
-   El toggle es un `<button>` con estado. Un `<a data-toggle>` o un
-   `<div role="button" data-toggle>` se IGNORAN: equivalente tecnicamente,
-   pero la ratificacion de la API es estricta y el `aria-pressed` de un
-   enlace no vale lo que el de un control con estado. La comprobacion es
-   `instanceof HTMLButtonElement` y no un selector fino en closest(), por
-   el mismo motivo que en dialog.js separan autoria y uso: el atributo
-   marca, el uso decide.
+   El toggle es un `<button>`. Un `<a aria-pressed>` o un
+   `<div aria-pressed>` se IGNORAN: no existe `aria-pressed` sobre
+   enlaces, y `closest('button[aria-pressed]')` los descarta de entrada.
+   Un `<div role="button" aria-pressed>` seria equivalente, pero el
+   `aria-pressed` de un div es un control con estado sin mecanismo de
+   conmutacion nativo: queda fuera por la misma razon que en dialog.js.
 
    type="button" ES REGLA DE AUTORIA, Y AUN ASI HAY SALVAGUARDA
    ------------------------------------------------------------
@@ -145,16 +141,17 @@ function conmutar(boton) {
    que se anada despues de cargar funciona sin volver a registrar. */
 export function registrar() {
   document.addEventListener('click', (evento) => {
-    /* AUTORIA. closest() sube desde el objetivo del clic: un clic en el
-       glifo del icon-button alcanza el button igualmente. Sin
-       [data-toggle] en ningun ancestro, el clic no es de este archivo. */
+    /* AUTORIA. La puerta es el atributo: `button[aria-pressed]`. Sin el
+       atributo en ningun ancestro, el clic no es de este archivo. */
     const objetivo = evento.target instanceof Element
-      ? evento.target.closest('[data-toggle]')
+      ? evento.target.closest('button[aria-pressed]')
       : null;
     if (!objetivo) return;
 
-    /* CIFRAS. Solo `<button>` conmuta (ver la nota SOLO BUTTON). */
-    if (!(objetivo instanceof HTMLButtonElement)) return;
+    /* DESACTIVADO. Un boton disabled no recibe click a traves de si
+       mismo, pero un click delegado ARRIBA de el el clic llega igual:
+       el objetivo del evento es debajo del disabled. */
+    if (objetivo.disabled) return;
 
     /* SALVAGUARDA DE FORMULARIO. Si el autor olvido el `type="button"`,
        el boton es de tipo submit y el clic dispararia el envio del
@@ -164,37 +161,32 @@ export function registrar() {
       evento.preventDefault();
     }
 
-    /* GRUPO. El grupo valido es el ancestro mas cercano con
-       `data-toggle-group`, igual que dialog.js cerraba el dialog en el que
-       ESA boton esta con `closest('dialog')`: el mismo marcado sirve con
-       varios grupos en la pagina sin añadir ni un id. */
-    const grupo = objetivo.closest('[data-toggle-group]');
+    /* GRUPOS. El grupo valido es el ancestro `.md-button-group`: la clase
+       del sistema que los tres casos (exclusivo, multiple, grupo de
+       pares) comparten. La clase no pinta nada por si sola: es el
+       contenedor que el sistema declara, y `closest()` sobre ella
+       funciona con varios grupos en la pagina sin añadir ni un id. */
+    const grupo = objetivo.closest('.md-button-group');
 
     if (grupo) {
-      /* MULTIPLE. Dos formas equivalentes de marcarlo (ver la cabecera):
-         `aria-multiselectable="true"` o `data-toggle-group="multi"`. La
-         segunda es un ATRIBUTO con valor, no un booleano a secas: `a
-         secas` por defecto es exclusivo, y por eso la comprobacion es
-         exactamente la cadena "multi" y no la presencia. */
+      /* MULTIPLE. El atributo `aria-multiselectable="true"` marca grupos
+         que admiten mas de una seleccion: cada boton conmuta su propio
+         estado sin tocar a los hermanos. */
       const multiple =
-        grupo.getAttribute('aria-multiselectable') === 'true' ||
-        grupo.getAttribute('data-toggle-group') === 'multi';
+        grupo.getAttribute('aria-multiselectable') === 'true';
 
       if (multiple) {
         conmutar(objetivo);
         return;
       }
 
-      /* EXCLUSIVA. El clic se activa y los hermanos `button[data-toggle]`
-         del GRUPO se desactivan de golpe. Tres casos en una sola linea:
-         clic en inactivo --se activa--, clic en el ya activo --re-escribe
-         `true`, y nunca vacio--, y ausencia inicial --pasa a `true` y a
-         partir de ahi hay estado.
+      /* EXCLUSIVA. GUARDA TEMPRANA: si esta activo, el estado no cambia.
+         El grupo exclusivo NUNCA se queda sin opcion activa, y el lector
+         de pantalla no recibe un re-anuncio del mismo valor. */
+      if (objetivo.getAttribute('aria-pressed') === 'true') return;
 
-         El selector es `button[data-toggle]` y no `[data-toggle]`: los
-         hijos que no son boton no son electrones de este sistema (ver la
-         nota SOLO BUTTON) y no reciben atributos que ellos no declaran. */
-      grupo.querySelectorAll('button[data-toggle]').forEach((otro) => {
+      /* Los hermanos se apagan y el pulsado enciende. */
+      grupo.querySelectorAll('button[aria-pressed]').forEach((otro) => {
         otro.setAttribute('aria-pressed', String(otro === objetivo));
       });
 

@@ -46,9 +46,9 @@
    El caso del toggle lo dice claro: el estado es UNO (`aria-pressed`) y
    lo pintan DOS componentes --icon-button y button--, cada uno con su
    CSS. Aun asi hay UN archivo de comportamiento, no dos, porque no hay
-   dos atributos que pelearse: `data-toggle` es el gancho de los dos.
+   dos atributos que pelearse: `aria-pressed` es el gancho de los dos.
    La regla no es "un archivo por componente" sino "un archivo por
-   atributos": cada familia de `data-*` tiene un solo dueno, y el fallo
+   contratos de atributos": cada atributo tiene un solo dueno, y el fallo
    que hay que impedir es que DOS archivos toquen el mismo atributo.
 
    Por eso el dialog y el toggle no comparten archivo aunque los dos
@@ -96,7 +96,7 @@
    ------------------------------------
    Una peticion mas, lo mismo que trajo `dialog.js`: dos archivos
    pequenos por HTTP/2. La logica del toggle no ejecuta nada si la
-   pagina no lleva `[data-toggle]`, pero cargarla siempre es el precio
+   pagina no lleva `[aria-pressed]`, pero cargarla siempre es el precio
    de que anadirla a una pagina sea escribir atributos en el marcado y
    nada mas. Es el mismo peaje que ya se acepto con el dialog, y la
    alternativa es peor: sin archivo, cada pagina conmutaria a mano, y
@@ -115,7 +115,7 @@ import { registrar as registrarChipInput } from './chip-input.js';
 registrar();
 
 /* El toggle, tambien al cargar y por la misma razon: la delegacion esta
-   viva antes de que exista ningun [data-toggle] en la pagina. No se
+   viva antes de que exista ningun button[aria-pressed] en la pagina. No se
    recorre el documento al cargar; quien llegue despues funciona igual. */
 registrarToggle();
 
