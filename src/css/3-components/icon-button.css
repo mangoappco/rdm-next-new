@@ -58,10 +58,10 @@
    Version 34.0.21, marco de contexto selected/unselected de cada variante)
                             unselected            selected
       standard              on-surface-variant    primary; container transparent
-      filled                primary          primary sobre primary
+      filled                surface-container-highest + on-surface-variant   primary + on-primary
                             sobre surface-container-highest
-      tonal                 secondary          secondary sobre secondary
-                            sobre secondary-container
+      tonal                 surface-container-highest + on-surface-variant   secondary-container + on-secondary-container
+                            sobre surface-container-highest     sobre secondary-container
       outlined              on-surface-variant    inverse-on-surface sobre
                             sobre outline-variant  inverse-surface
 
@@ -633,15 +633,15 @@
 
        unselected            selected
        standard    transparent + on-surface-variant    transparent + primary
-       filled      surface-container-highest + primary   primary + on-primary
-        tonal       secondary-container + secondary   secondary + on-secondary
+       filled      surface-container-highest + on-surface-variant   primary + on-primary
+        tonal       surface-container-highest + on-surface-variant   secondary-container + on-secondary-container
        outlined    transparent + outline-variant    inverse-surface + inverse-on-surface
 
     El 'FILL' del glifo NO entra en la tabla porque no es un color: va por
     el token --md-sys-icon-fill (regla de arriba). Canon: relleno en la
-    base y en todos los seleccionados; contorno SOLO en el reposo de las
-    variantes sin contenedor solido (standard y outlined).
-
+    base y en todos los seleccionados; contorno SOLO en el reposo de TODOS
+    los toggles (standard, outlined, filled y tonal), por la regla de
+    Columna 2. */
    TRES HECHOS que el marcado aprovecha y que conviene no perder:
 
    1. EL STANDARD SOLO CONMUTA EL GLIFO. No existe
@@ -670,9 +670,9 @@
    con sus estados de interaccion.
 
    DISABLED GANA. Un toggle seleccionado y disabled se ve igual que un
-   disabled normal (glifo on-surface al 38%, contenedor neutro al 12%
+   disabled normal (glifo on-surface en opacidad de disabled,
+   contenedor neutro en opacidad de disabled-container
    en filled y tonal, sin capa de estado), y el
-   que no lo esta TAMBIEN: el disabled no presenta el chrome del toggle
    muestre el estado que muestre por debajo. Por eso TODAS las reglas de
    abajo --color y forma-- llevan `:not(:disabled)`: un disabled se
    queda con el chrome de su variante en reposo, atenuado, sin importar
@@ -703,7 +703,7 @@
    - Columna 2 (Toggle unselected aria-pressed="false"): TODAS llevan FILL 0
    - Columna 3 (Toggle selected aria-pressed="true"): TODAS llevan FILL 1
    
-   Aplicado con font-variation-settings directo (fuerza sobre utilities). */
+   Aplicado con el token --md-sys-icon-fill (herencia al glifo). */
 
 /* Base: Botones normales (Default) llevan FILL 1 */
 .md-icon-button .md-icon,
@@ -711,16 +711,17 @@
   font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
 
-/* Columna 2: TODOS los toggles en reposo llevan FILL 0 */
-.md-icon-button[aria-pressed="false"] .md-icon,
-.md-icon-button[aria-pressed="false"] .md-icon-button-icon {
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+/* Columna 2: TODOS los toggles en reposo llevan FILL 0 (contorno).
+   Usa el token --md-sys-icon-fill (herencia al glifo via .md-icon),
+   nunca font-variation-settings directo: esa propiedad vive en
+   .md-icon (utilidades, capa 4) y gana siempre en Capa 3. */
+.md-icon-button[aria-pressed="false"]:not(:disabled) {
+  --md-sys-icon-fill: var(--md-sys-icon-fill-none);
 }
 
-/* Columna 3: TODOS los toggles seleccionados llevan FILL 1 */
-.md-icon-button[aria-pressed="true"] .md-icon,
-.md-icon-button[aria-pressed="true"] .md-icon-button-icon {
-  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+/* Columna 3: TODOS los toggles seleccionados llevan FILL 1 (relleno). */
+.md-icon-button[aria-pressed="true"]:not(:disabled) {
+  --md-sys-icon-fill: var(--md-sys-icon-fill-full);
 }
 
 /* Standard: solo el glifo. La regla excluye a las tres variantes con
@@ -740,30 +741,26 @@
   --md-comp-icon-button-icon-color: var(--md-sys-color-primary);
 }
 
-/* Tonal: el toggle SIN seleccionar. Canon M3 (tabla oficial de specs):
-   container = secondary-container, icono = secondary, glifo relleno (FILL 1),
-   forma corner-full (circulo). Los tokens resuelven a #E8DEF8 + #4A4458
-   en tema claro, y se adaptan en oscuro. La regla del contorno de arriba
-   excluye a esta variante por nombre, y la base ya es relleno.
+/* Tonal: el toggle SIN seleccionar. Canon M3 guideline: "Toggle buttons
+   should use an outlined icon when unselected". El glifo lleva FILL 0 por
+   la regla de Columna 2 (arriba), no se declara aqui. Colores: container
+   surface-container-highest, icono on-surface-variant (contrato semantico
+   de M3 Web: un contenedor *-container exige su glifo en on-*-container).
    Sin disabled: DISABLED GANA. */
 .md-icon-button-tonal[aria-pressed="false"]:not(:disabled) {
-  --md-comp-icon-button-container-color: var(--md-sys-color-secondary-container);
-  --md-comp-icon-button-icon-color: var(--md-sys-color-secondary);
-  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  --md-comp-icon-button-container-color: var(--md-sys-color-surface-container-highest);
+  --md-comp-icon-button-icon-color: var(--md-sys-color-on-surface-variant);
   border-radius: var(--md-sys-shape-corner-full);
 }
 
-/* Y al seleccionar vuelve el tonal DE SIEMPRE: la base de la variante
-   segun la tabla oficial de M3: container = secondary, icono = on-secondary,
-   glifo relleno (FILL 1), forma corner-medium (12px morph). Los tokens
-   resuelven a #625B71 + #FFFFFF en tema claro, y se adaptan en oscuro.
-   El selected del tonal toggle no inventa un tercer color: usa el rol
-   secondary para el contenedor y on-secondary para el glifo. Sin disabled:
-   DISABLED GANA. */
+/* Y al seleccionar vuelve el tonal DE SIEMPRE: container = secondary-
+   container, icono = on-secondary-container (contrato semantico de M3
+   Web: contenedor *-container exige su glifo en on-*-container). Glifo
+   relleno (FILL 1) por la regla de Columna 3 (arriba). Forma corner-
+   medium (12px morph). Sin disabled: DISABLED GANA. */
 .md-icon-button-tonal[aria-pressed="true"]:not(:disabled) {
-  --md-comp-icon-button-container-color: var(--md-sys-color-secondary);
-  --md-comp-icon-button-icon-color: var(--md-sys-color-on-secondary);
-  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  --md-comp-icon-button-container-color: var(--md-sys-color-secondary-container);
+  --md-comp-icon-button-icon-color: var(--md-sys-color-on-secondary-container);
   border-radius: var(--md-sys-shape-corner-medium);
 }
 
