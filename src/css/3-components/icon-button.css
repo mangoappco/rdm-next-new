@@ -690,34 +690,37 @@
    `:not(:disabled)` el disabled esta siempre uniforme por variante.
    ------------------------------------------------------------------------ */
 
-/* El RELLENO del glifo es la segunda senal de seleccion, y la pide la
-   guideline de M3: "Toggle buttons should use an outlined icon when
-   unselected, and a filled version of the icon when selected. This is to
-   ensure that selection is communicated through at least two properties,
-   rather than just color" -- y "Default icon buttons should use filled
-   icons": el relleno es la base del componente (ver el token, mas arriba),
-   y SOLO el toggle sin marcar sale del relleno hacia el contorno con el
-   token del extremo, el mismo gesto que hace .md-icon-filled en
-   utilities. El seleccionado no lleva regla: vuelve a la base, como en el
-   button.
+/* ==========================================================================
+   REGLA CANONICA DEFINITIVA DE GLIFO (M3 Icon Buttons)
+   ==========================================================================
+   Evidencia oficial:
+   "Default icon buttons should use filled icons. Toggle buttons should use
+   an outlined icon when unselected, and a filled version of the icon when
+   selected."
+   
+   Matriz:
+   - Columna 1 (Default): TODAS las 4 variantes llevan glifo relleno (FILL 1)
+   - Columna 2 (Toggle unselected aria-pressed="false"): TODAS llevan FILL 0
+   - Columna 3 (Toggle selected aria-pressed="true"): TODAS llevan FILL 1
+   
+   Aplicado con font-variation-settings directo (fuerza sobre utilities). */
 
-   EL CONTORNO NO ES PARA TODAS LAS VARIANTES. Canon de M3: el glifo
-   hueco en reposo es de las variantes SIN contenedor solido --standard
-   y outlined--, alli el unico documento del toggle es el glifo y por eso
-   es contorno. Las variantes CON contenedor solido (filled y tonal)
-   llevan el glifo relleno en los DOS estados: su segunda senal es el
-   PAR DE COLORES del contenedor (surface-container ->
-   surface-container-highest... ver las reglas de abajo), y un glifo
-   hueco sobre un contenedor solido pierde la silueta. Por eso el
-   selector excluye filled y tonal por nombre.
+/* Base: Botones normales (Default) llevan FILL 1 */
+.md-icon-button .md-icon,
+.md-icon-button-icon {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
 
-   Con :not(:disabled) como el resto de la seccion: DISABLED GANA y el
-   toggle deshabilitado se queda con el chrome de su variante en reposo,
-   hablando en relleno. Y de nuevo por token, NO con
-   font-variation-settings: .md-icon en utilities ganaria siempre, y
-   tocar la propiedad entera apagaria el GRAD del tema. */
-.md-icon-button:not(.md-icon-button-filled):not(.md-icon-button-tonal)[aria-pressed="false"]:not(:disabled) {
-  --md-sys-icon-fill: var(--md-sys-icon-fill-none);
+/* Columna 2: TODOS los toggles en reposo llevan FILL 0 */
+.md-icon-button[aria-pressed="false"] .md-icon,
+.md-icon-button[aria-pressed="false"] .md-icon-button-icon {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Columna 3: TODOS los toggles seleccionados llevan FILL 1 */
+.md-icon-button[aria-pressed="true"] .md-icon,
+.md-icon-button[aria-pressed="true"] .md-icon-button-icon {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
 
 /* Standard: solo el glifo. La regla excluye a las tres variantes con
