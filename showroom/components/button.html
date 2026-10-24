@@ -1,31 +1,52 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Button de RDM Next: cinco variantes de color, cinco tamaños y dos formas, con icono delante o detrás y como enlace.">
-  <title>Button — RDM ManGo! App</title>
+  <title>Button â€” RDM ManGo! App</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
   <link rel="stylesheet" href="../../src/css/main.css">
   <link rel="stylesheet" href="../assets/showroom.css">
-    <script type="module" src="../../src/js/main.js"></script>
-<script src="../assets/showroom.js"></script>
+  <script src="../assets/showroom.js"></script>
 </head>
 
-<!-- Vista de componente: el boton de M3, cinco variantes, cinco tamanos, dos formas.
-     Molde: showroom/templates/button.template.html.
+<!--
+  COMO USAR ESTE TEMPLATE (copiar a showroom/components/button.html):
+  1. Cambiar <title> y el h1. La descripcion del header ya dice el alcance.
+  2. Parejas por seccion (specimen + pre + boton). El specimen y el <pre>
+     llevan EXACTAMENTE el mismo marcado: REGLA 11 compara los dos.
+  3. NADA de showroom dentro del snippet (REGLA 13): sin sr-*, sin barras
+     medidoras. Si una seccion necesita mas contexto que sus botones, ese
+     contexto va en el parrafo de arriba, no en el bloque copiable.
+  4. El glifo lleva SIEMPRE aria-hidden="true" y la clase .md-icon (REGLA 9).
+     La etiqueta de texto es el nombre accesible, asi que el glifo no se
+     anuncia: sin aria-hidden el boton se leeria dos veces.
+  5. El boton de Copiar va justo despues de su <pre>. Copia ese bloque y
+     ningun otro.
 
-     Se regenera desde el molde. La version anterior, de cuando el componente solo
-     tenia filled, tenia dos pares que ya no existen: "Morph de forma" y "Lo que no
-     hace". El morph de pulsado y el selected de FORMA siguen sin existir; la mitad
-     de COLOR del seleccionado ahora existe (ver UPDATE).
+  LO QUE ESTA VISTA NO DICE, Y POR QUE
+  ------------------------------------
+  Tres secciones de la lista de 22 se resuelven sin seccion propia:
 
-     UPDATE 2026-10-18: el estado toggle entro como serie --cuatro pares
-     "Toggle <variante>" mas el par "Toggle group". El gancho es data-toggle +
-     aria-pressed; el conmutador vive en src/js/toggle.js. La variante text no
-     es conmutable, decidido. -->
+    Responsive       este componente no tiene ni un media query. Se dice en
+                     la descripcion del header.
+    Content States   no hay loading, ni empty, ni error: el estado de
+                     contenido lo resuelve quien llama, no el boton.
+    Tokens / Medidas el sistema ya las tiene en su sitio, y esa duplicacion
+                     aqui seria una copia que se desincroniza:
+                       showroom/components/measurement.html  -> medidas
+                       showroom/components/motion.html      -> pares
+                       showroom/components/shapes.html      -> radios
+
+  Y una cosa no tiene seccion propia, porque no hay nada que mostrar:
+    el estado selected     ManGo! App no usa botones conmutables. El boton no
+                           cambia de forma ni de color al seleccionarse, y
+                           eso se dice en el componente, no aqui. Lo mismo
+                           con el morph de pulsado: hay que apretar el boton
+                           para verlo, y no es una foto.
+-->
 
 <body class="md-bg-background md-text-on-background md-type-body-medium">
   <main class="sr-page">
@@ -37,7 +58,7 @@
         <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
       </div>
       <h1 class="md-type-display-large">Button</h1>
-      <p class="md-type-body-large">Componente que ayuda a las personas a iniciar acciones como enviar un correo, compartir un documento o dar like a una publicación. · <em>Diecinueve pares</em></p>
+      <p class="md-type-body-large">Los botones son los encargados de iniciar la mayorÃ­a de las acciones en una interfaz de usuario.</p>
     </header>
     <!-- HEADER: fin -->
 
@@ -45,7 +66,7 @@
 
     <!-- PAREJA: el ejemplo basico (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Clase base</h2>
+      <h3 class="md-type-title-large">Base</h3>
       <p class="md-type-body-medium">La clase base sola: relleno primary, sin borde, tamano small (40). Aqui la base es filled, al reves que en el icon-button.</p>
       <div class="sr-specimen sr-specimen-gap">
         <button class="md-button" type="button"><span class="md-button-label">Filled</span></button>
@@ -57,7 +78,7 @@
 
     <!-- PAREJA: las 5 variantes de color (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Colors</h2>
+      <h3 class="md-type-title-large">Colors</h3>
       <p class="md-type-body-medium">Las cinco de M3, de mayor a menor enfasis. La base ya es filled, asi que su clase es opcional.</p>
       <div class="sr-specimen sr-specimen-gap">
         <button class="md-button md-button-filled" type="button"><span class="md-button-label">Filled</span></button>
@@ -77,7 +98,7 @@
 
     <!-- PAREJA: los 5 tamanos (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Sizes</h2>
+      <h3 class="md-type-title-large">Sizes</h3>
       <p class="md-type-body-medium">Los cinco de M3: xsmall (32), small (40), medium (56), large (96) y xlarge (136). Todo crece con la caja, incluida la tipografia de la etiqueta: 14, 14, 16, 24 y 32.</p>
       <div class="sr-specimen sr-specimen-gap">
         <button class="md-button md-button-filled md-button-xsmall" type="button"><span class="md-button-label">xsmall</span></button>
@@ -97,7 +118,7 @@
 
     <!-- PAREJA: las 2 formas (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Shapes</h2>
+      <h3 class="md-type-title-large">Shapes</h3>
       <p class="md-type-body-medium">Round y square en filled small: las dos formas del componente. El square sube a 16px en medium y a 28px en large y xlarge.</p>
       <div class="sr-specimen sr-specimen-gap">
         <button class="md-button md-button-filled md-button-small" type="button"><span class="md-button-label">Round</span></button>
@@ -111,7 +132,7 @@
 
     <!-- PAREJA: estados filled (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">States filled</h2>
+      <h3 class="md-type-title-large">States filled</h3>
       <p class="md-type-body-medium">Enabled y disabled en filled small: hover, focus y pressed se ven interactuando.</p>
       <div class="sr-specimen sr-specimen-gap">
         <button class="md-button md-button-filled md-button-small" type="button"><span class="md-button-label">Filled</span></button>
@@ -123,23 +144,9 @@
     </section>
     <!-- PAREJA: hasta aqui -->
 
-    <!-- PAREJA: toggle filled (h2 + specimen + pre + boton). -->
-    <section class="sr-section">
-      <h2 class="md-type-title-large">Toggle filled</h2>
-      <p class="md-type-body-medium">Del toggle sin marcar al marcado: surface-container en reposo, y el marcado es el filled de siempre, porque su base es su estado seleccionado. data-toggle y aria-pressed son los atributos del autor.</p>
-      <div class="sr-specimen sr-specimen-gap">
-        <button class="md-button md-button-filled md-button-small" type="button" data-toggle aria-pressed="false"><span class="md-button-label">Guardar</span></button>
-        <button class="md-button md-button-filled md-button-small" type="button" data-toggle aria-pressed="true"><span class="md-button-label">Guardar</span></button>
-      </div>
-      <pre class="sr-code"><code>&lt;button class="md-button md-button-filled md-button-small" type="button" data-toggle aria-pressed="false"&gt;&lt;span class="md-button-label"&gt;Guardar&lt;/span&gt;&lt;/button&gt;
-&lt;button class="md-button md-button-filled md-button-small" type="button" data-toggle aria-pressed="true"&gt;&lt;span class="md-button-label"&gt;Guardar&lt;/span&gt;&lt;/button&gt;</code></pre>
-      <button type="button" class="sr-copy" data-copy>Copiar</button>
-    </section>
-    <!-- PAREJA: hasta aqui -->
-
     <!-- PAREJA: estados tonal (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">States tonal</h2>
+      <h3 class="md-type-title-large">States tonal</h3>
       <p class="md-type-body-medium">Enabled y disabled en tonal small: hover, focus y pressed se ven interactuando.</p>
       <div class="sr-specimen sr-specimen-gap">
         <button class="md-button md-button-tonal md-button-small" type="button"><span class="md-button-label">Tonal</span></button>
@@ -151,23 +158,9 @@
     </section>
     <!-- PAREJA: hasta aqui -->
 
-    <!-- PAREJA: toggle tonal (h2 + specimen + pre + boton). -->
-    <section class="sr-section">
-      <h2 class="md-type-title-large">Toggle tonal</h2>
-      <p class="md-type-body-medium">Del toggle sin marcar al marcado: de secondary-container a secondary, el mismo tono un paso más fuerte. Los estados de clic y de foco se tiñen solos por currentColor.</p>
-      <div class="sr-specimen sr-specimen-gap">
-        <button class="md-button md-button-tonal md-button-small" type="button" data-toggle aria-pressed="false"><span class="md-button-label">Guardar</span></button>
-        <button class="md-button md-button-tonal md-button-small" type="button" data-toggle aria-pressed="true"><span class="md-button-label">Guardar</span></button>
-      </div>
-      <pre class="sr-code"><code>&lt;button class="md-button md-button-tonal md-button-small" type="button" data-toggle aria-pressed="false"&gt;&lt;span class="md-button-label"&gt;Guardar&lt;/span&gt;&lt;/button&gt;
-&lt;button class="md-button md-button-tonal md-button-small" type="button" data-toggle aria-pressed="true"&gt;&lt;span class="md-button-label"&gt;Guardar&lt;/span&gt;&lt;/button&gt;</code></pre>
-      <button type="button" class="sr-copy" data-copy>Copiar</button>
-    </section>
-    <!-- PAREJA: hasta aqui -->
-
     <!-- PAREJA: estados elevated (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">States elevated</h2>
+      <h3 class="md-type-title-large">States elevated</h3>
       <p class="md-type-body-medium">Enabled y disabled en elevated small: hover, focus y pressed se ven interactuando.</p>
       <div class="sr-specimen sr-specimen-gap">
         <button class="md-button md-button-elevated md-button-small" type="button"><span class="md-button-label">Elevated</span></button>
@@ -179,23 +172,9 @@
     </section>
     <!-- PAREJA: hasta aqui -->
 
-    <!-- PAREJA: toggle elevated (h2 + specimen + pre + boton). -->
-    <section class="sr-section">
-      <h2 class="md-type-title-large">Toggle elevated</h2>
-      <p class="md-type-body-medium">Del toggle sin marcar al marcado: de surface-container-low a primary, con la sombra Level1 intacta, que es de la variante y no del estado. El glifo va con la etiqueta.</p>
-      <div class="sr-specimen sr-specimen-gap">
-        <button class="md-button md-button-elevated md-button-small" type="button" data-toggle aria-pressed="false"><span class="md-button-label">Guardar</span></button>
-        <button class="md-button md-button-elevated md-button-small" type="button" data-toggle aria-pressed="true"><span class="md-button-label">Guardar</span></button>
-      </div>
-      <pre class="sr-code"><code>&lt;button class="md-button md-button-elevated md-button-small" type="button" data-toggle aria-pressed="false"&gt;&lt;span class="md-button-label"&gt;Guardar&lt;/span&gt;&lt;/button&gt;
-&lt;button class="md-button md-button-elevated md-button-small" type="button" data-toggle aria-pressed="true"&gt;&lt;span class="md-button-label"&gt;Guardar&lt;/span&gt;&lt;/button&gt;</code></pre>
-      <button type="button" class="sr-copy" data-copy>Copiar</button>
-    </section>
-    <!-- PAREJA: hasta aqui -->
-
     <!-- PAREJA: estados outlined (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">States outlined</h2>
+      <h3 class="md-type-title-large">States outlined</h3>
       <p class="md-type-body-medium">Enabled y disabled en outlined small: hover, focus y pressed se ven interactuando.</p>
       <div class="sr-specimen sr-specimen-gap">
         <button class="md-button md-button-outlined md-button-small" type="button"><span class="md-button-label">Outlined</span></button>
@@ -207,24 +186,10 @@
     </section>
     <!-- PAREJA: hasta aqui -->
 
-    <!-- PAREJA: toggle outlined (h2 + specimen + pre + boton). -->
-    <section class="sr-section">
-      <h2 class="md-type-title-large">Toggle outlined</h2>
-      <p class="md-type-body-medium">Del toggle sin marcar al marcado: la inversión del lienzo, inverse-surface con inverse-on-surface, y el borde outline que no cambia. No es un tono de primario.</p>
-      <div class="sr-specimen sr-specimen-gap">
-        <button class="md-button md-button-outlined md-button-small" type="button" data-toggle aria-pressed="false"><span class="md-button-label">Guardar</span></button>
-        <button class="md-button md-button-outlined md-button-small" type="button" data-toggle aria-pressed="true"><span class="md-button-label">Guardar</span></button>
-      </div>
-      <pre class="sr-code"><code>&lt;button class="md-button md-button-outlined md-button-small" type="button" data-toggle aria-pressed="false"&gt;&lt;span class="md-button-label"&gt;Guardar&lt;/span&gt;&lt;/button&gt;
-&lt;button class="md-button md-button-outlined md-button-small" type="button" data-toggle aria-pressed="true"&gt;&lt;span class="md-button-label"&gt;Guardar&lt;/span&gt;&lt;/button&gt;</code></pre>
-      <button type="button" class="sr-copy" data-copy>Copiar</button>
-    </section>
-    <!-- PAREJA: hasta aqui -->
-
     <!-- PAREJA: estados text (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">States text</h2>
-      <p class="md-type-body-medium">Enabled y disabled en text small: hover, focus y pressed se ven interactuando. La variante text no es conmutable: con data-toggle no pinta nada.</p>
+      <h3 class="md-type-title-large">States text</h3>
+      <p class="md-type-body-medium">Enabled y disabled en text small: hover, focus y pressed se ven interactuando.</p>
       <div class="sr-specimen sr-specimen-gap">
         <button class="md-button md-button-text md-button-small" type="button"><span class="md-button-label">Text</span></button>
         <button class="md-button md-button-text md-button-small" type="button" disabled><span class="md-button-label">Text</span></button>
@@ -235,41 +200,9 @@
     </section>
     <!-- PAREJA: hasta aqui -->
 
-    <!-- PAREJA: toggle square (h2 + specimen + pre + boton). -->
-    <section class="sr-section">
-      <h2 class="md-type-title-large">Toggle square</h2>
-      <p class="md-type-body-medium">La inversión al revés que el round: con md-button-square el seleccionado vuelve a redondo. Clic en cualquiera de los dos y míralo en los dos sentidos.</p>
-      <div class="sr-specimen sr-specimen-gap">
-        <button class="md-button md-button-filled md-button-square md-button-small" type="button" data-toggle aria-pressed="false"><span class="md-button-label">Guardar</span></button>
-        <button class="md-button md-button-filled md-button-square md-button-small" type="button" data-toggle aria-pressed="true"><span class="md-button-label">Guardar</span></button>
-      </div>
-      <pre class="sr-code"><code>&lt;button class="md-button md-button-filled md-button-square md-button-small" type="button" data-toggle aria-pressed="false"&gt;&lt;span class="md-button-label"&gt;Guardar&lt;/span&gt;&lt;/button&gt;
-&lt;button class="md-button md-button-filled md-button-square md-button-small" type="button" data-toggle aria-pressed="true"&gt;&lt;span class="md-button-label"&gt;Guardar&lt;/span&gt;&lt;/button&gt;</code></pre>
-      <button type="button" class="sr-copy" data-copy>Copiar</button>
-    </section>
-    <!-- PAREJA: hasta aqui -->
-
-    <!-- PAREJA: toggle group (h2 + specimen + pre + boton). -->
-    <section class="sr-section">
-      <h2 class="md-type-title-large">Toggle group</h2>
-      <p class="md-type-body-medium">Selección exclusiva con data-toggle-group en el contenedor: clic en el activo no lo desmarca nunca. El estado inicial lo escribe el autor en el marcado.</p>
-      <div class="sr-specimen sr-specimen-gap" data-toggle-group>
-        <button class="md-button md-button-filled md-button-small" type="button" data-toggle aria-pressed="true"><span class="md-button-label">Activas</span></button>
-        <button class="md-button md-button-filled md-button-small" type="button" data-toggle aria-pressed="false"><span class="md-button-label">Cerradas</span></button>
-        <button class="md-button md-button-filled md-button-small" type="button" data-toggle aria-pressed="false"><span class="md-button-label">Programadas</span></button>
-      </div>
-      <pre class="sr-code"><code>&lt;div data-toggle-group&gt;
-  &lt;button class="md-button md-button-filled md-button-small" type="button" data-toggle aria-pressed="true"&gt;&lt;span class="md-button-label"&gt;Activas&lt;/span&gt;&lt;/button&gt;
-  &lt;button class="md-button md-button-filled md-button-small" type="button" data-toggle aria-pressed="false"&gt;&lt;span class="md-button-label"&gt;Cerradas&lt;/span&gt;&lt;/button&gt;
-  &lt;button class="md-button md-button-filled md-button-small" type="button" data-toggle aria-pressed="false"&gt;&lt;span class="md-button-label"&gt;Programadas&lt;/span&gt;&lt;/button&gt;
-&lt;/div&gt;</code></pre>
-      <button type="button" class="sr-copy" data-copy>Copiar</button>
-    </section>
-    <!-- PAREJA: hasta aqui -->
-
     <!-- PAREJA: anatomia (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Anatomy sizes</h2>
+      <h3 class="md-type-title-large">Anatomy sizes</h3>
       <p class="md-type-body-medium">Las cuatro piezas del marcado: el contenedor, el glifo, la etiqueta y la superficie de toque. El relleno y la capa de estado no son elementos: son el ::before y el ::after del contenedor.</p>
       <div class="sr-specimen sr-specimen-gap">
         <button class="md-button md-button-filled md-button-xsmall" type="button"><span class="md-button-icon md-icon" aria-hidden="true">add</span><span class="md-button-label">Label</span><span class="md-button-touch"></span></button>
@@ -289,8 +222,8 @@
 
     <!-- PAREJA: anatomia por color (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Anatomy colors</h2>
-      <p class="md-type-body-medium">Las mismas cuatro piezas en las cinco variantes. El marcado no cambia: lo único que se mueve es la clase, y con ella el color del relleno, del texto y del glifo.</p>
+      <h3 class="md-type-title-large">Anatomy colors</h3>
+      <p class="md-type-body-medium">Las mismas cuatro piezas en las cinco variantes. El marcado no cambia: lo Ãºnico que se mueve es la clase, y con ella el color del relleno, del texto y del glifo.</p>
       <div class="sr-specimen sr-specimen-gap">
         <button class="md-button md-button-filled md-button-small" type="button"><span class="md-button-icon md-icon" aria-hidden="true">add</span><span class="md-button-label">Label</span><span class="md-button-touch"></span></button>
         <button class="md-button md-button-tonal md-button-small" type="button"><span class="md-button-icon md-icon" aria-hidden="true">add</span><span class="md-button-label">Label</span><span class="md-button-touch"></span></button>
@@ -309,8 +242,8 @@
 
     <!-- PAREJA: posicion del icono (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Icon position</h2>
-      <p class="md-type-body-medium">Sin icono, con icono delante o detrás. El lado lo decide el orden en el DOM y no una clase, y el padding sigue siendo 16px en los tres casos.</p>
+      <h3 class="md-type-title-large">Icon position</h3>
+      <p class="md-type-body-medium">Sin icono, con icono delante o detrÃ¡s. El lado lo decide el orden en el DOM y no una clase, y el padding sigue siendo 16px en los tres casos.</p>
       <div class="sr-specimen sr-specimen-gap">
         <button class="md-button md-button-filled md-button-small" type="button"><span class="md-button-label">Label</span><span class="md-button-touch"></span></button>
         <button class="md-button md-button-filled md-button-small" type="button"><span class="md-button-icon md-icon" aria-hidden="true">add</span><span class="md-button-label">Label</span><span class="md-button-touch"></span></button>
@@ -325,7 +258,7 @@
 
     <!-- PAREJA: boton o enlace (h2 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h2 class="md-type-title-large">Link</h2>
+      <h3 class="md-type-title-large">Link</h3>
       <p class="md-type-body-medium">El mismo marcado con <code>&lt;button&gt;</code> y con <code>&lt;a&gt;</code>. El enlace no necesita ninguna clase extra: en el componente no hay ni un selector de elemento.</p>
       <div class="sr-specimen sr-specimen-gap">
         <button class="md-button md-button-filled md-button-small" type="button"><span class="md-button-label">Label</span><span class="md-button-touch"></span></button>
@@ -339,3 +272,4 @@
   </main>
 </body>
 </html>
+
