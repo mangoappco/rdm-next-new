@@ -1106,6 +1106,20 @@
    de M3 sigue fuera con la clase square (ver LA FORMA SQUARE).
    ------------------------------------------------------------------------ */
 
+/* El RELLENO del glifo, segunda senal de seleccion (guideline de M3 para
+   los conmutables: "outlined icon when unselected, and a filled version
+   of the icon when selected... selection is communicated through at
+   least two properties"). El icono del toggle sin activar va
+   CONTORNEADO; el seleccionado vuelve al relleno de la base del
+   componente, que ya es FILL 1, asi que la regla del seleccionado no
+   existe: es la base misma. Solo alcanza a los botones que llevan
+   aria-pressed (la puerta del toggle) y excluye a text (no es conmutable,
+   RATIFICADO) y a los disabled (DISABLED GANA). Y por tokens, no con
+   font-variation-settings: .md-icon en utilities ganaria siempre. */
+.md-button[aria-pressed]:not([aria-pressed="true"]):not(:disabled):not(.md-button-text) {
+  --md-sys-icon-fill: var(--md-sys-icon-fill-none);
+}
+
 /* Filled unselected: la unica regla del filled. Excluye a las demas
    variantes (cada una trae su par) y a text (no es toggle, decidido),
    y a los disabled (DISABLED GANA). */

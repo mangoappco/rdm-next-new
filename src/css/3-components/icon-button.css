@@ -163,12 +163,20 @@
      los tokens personalizados heredan, .md-icon lo lee del glifo, y ahi ya
      vale lo que decidio el boton. Sin pelea de capas.
 
-     El glifo es relleno siempre, tambien con el toggle activo. La
-     decision: la seleccion se comunica con COLOR y con FORMA, no con el
-     contorno del glifo; M3 clasico conmutaba el eje FILL (off
-     contorneado, on relleno) y aqui se queda fijo en relleno. Es una
-     desviacion consciente del clasico, ratificada al devolver el toggle. */
-  --md-sys-icon-fill: var(--md-sys-icon-fill-full);
+     El reposo del toggle es el glifo CONTORNEADO (FILL 0) y el seleccionado
+     lleva el relleno (FILL 1, regla de la seccion SELECCIONADO): "use an
+     outlined icon when unselected, and a filled version of the icon when
+     selected", icon-buttons/guidelines. Asi la seleccion se anuncia con DOS
+     propiedades --color y relleno-- y no con el color a secas, y el morph
+     de forma square/round sigue siendo la tercera senal del sistema.
+
+     UPDATE 2026-10-23 (auditoria canonica): revierte la desviacion
+     ratificada "relleno siempre, la seleccion se comunica con color y
+     forma". La guideline de M3 pide el relleno del glifo como senal de
+     estado y el componente vuelve al clasico: contorno en reposo, relleno
+     al seleccionar. Los icon-button que no son toggle quedan en reposo
+     permanente: contorneados, que es el aspecto por defecto de M3. */
+  --md-sys-icon-fill: var(--md-sys-icon-fill-none);
 
   /* Forma. El reposo es round, la media altura del tamano ("exact
    half-height radii"), que es como lo define M3 Expressive y no
@@ -674,6 +682,21 @@
    quedaria dependiente del estado. Medido en el navegador, con el
    `:not(:disabled)` el disabled esta siempre uniforme por variante.
    ------------------------------------------------------------------------ */
+
+/* El RELLENO del glifo es la segunda senal de seleccion, y la pide la
+   guideline de M3: "use an outlined icon when unselected, and a filled
+   version of the icon when selected. This is to ensure that selection is
+   communicated through at least two properties, rather than just color."
+   El reposo ya lleva FILL 0 desde la base; el seleccionado lo lleva a 1
+   con el token del extremo, el mismo gesto que hace .md-icon-filled en
+   utilities. Una regla comun para las cuatro variantes: el eje FILL no
+   depende de la variante, depende del estado. Con :not(:disabled) como el
+   resto de la seccion: DISABLED GANA y el deshabilitado se queda con el
+   chrome de su variante en reposo. Y de nuevo por tokens, NO con
+   font-variation-settings: .md-icon en utilities ganaria siempre. */
+.md-icon-button[aria-pressed="true"]:not(:disabled) {
+  --md-sys-icon-fill: var(--md-sys-icon-fill-full);
+}
 
 /* Standard: solo el glifo. La regla excluye a las tres variantes con
    relleno porque cada una trae su par, y a los disabled: ver DISABLED
