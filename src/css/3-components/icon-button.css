@@ -58,8 +58,8 @@
    Version 34.0.21, marco de contexto selected/unselected de cada variante)
                             unselected            selected
       standard              on-surface-variant    primary; container transparent
-      filled                on-surface-variant    on-primary sobre primary
-                            sobre surface-container
+      filled                primary          primary sobre primary
+                            sobre surface-container-highest
       tonal                 on-surface-variant    on-secondary-container
                             sobre surface-        sobre secondary-container
                             container-highest     (reposo del tonal: la
@@ -636,7 +636,7 @@
 
        unselected            selected
        standard    transparent + on-surface-variant    transparent + primary
-       filled      surface-container + on-surface-variant   primary + on-primary
+       filled      surface-container-highest + primary   primary + on-primary
        tonal       surface-container-highest + on-surface-variant   secondary-container + on-secondary-container
        outlined    transparent + outline-variant    inverse-surface + inverse-on-surface
 
@@ -732,10 +732,12 @@
 
 /* Filled: el toggle SIN seleccionar. Y tambien sin disabled: un filled
    deshabilitado se queda con el filled en reposo (primary), que es lo
-   que ya muestra el disabled normal. */
+   que ya muestra el disabled normal. Canon M3: unselected del filled es
+   surface-container-highest con el icono en primary (no on-surface-variant);
+   el contenedor de marca (primary) solo aparece al seleccionar. */
 .md-icon-button-filled[aria-pressed]:not([aria-pressed="true"]):not(:disabled) {
-  --md-comp-icon-button-container-color: var(--md-sys-color-surface-container);
-  --md-comp-icon-button-icon-color: var(--md-sys-color-on-surface-variant);
+  --md-comp-icon-button-container-color: var(--md-sys-color-surface-container-highest);
+  --md-comp-icon-button-icon-color: var(--md-sys-color-primary);
 }
 
 /* Tonal: el toggle SIN seleccionar. El unselected del toggle tonal es el
@@ -761,6 +763,9 @@
 .md-icon-button-outlined[aria-pressed="true"]:not(:disabled) {
   --md-comp-icon-button-container-color: var(--md-sys-color-inverse-surface);
   --md-comp-icon-button-icon-color: var(--md-sys-color-inverse-on-surface);
+  /* Canon M3: al seleccionar, el outlined pierde el trazo (inversion del
+     lienzo sin contorno). El 1px de outline-variant del reposo se anula. */
+  --md-comp-icon-button-outline-width: var(--md-sys-shape-stroke-none);
 }
 
 /* ---------------------------------------------------------------------------
