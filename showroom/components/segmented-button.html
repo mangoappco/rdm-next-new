@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Segmented Button de RDM Next: el grupo conectado de M3, con sus segmentos de ancho compartido y su estado de selección.">
-  <title>Segmented Button — RDM ManGo! App</title>
+  <meta name="description" content="Segmented Button de RDM Next: el grupo conectado de M3, con sus segmentos de ancho compartido y su estado de selecciÃ³n.">
+  <title>Segmented Button â€” RDM ManGo! App</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
@@ -20,7 +20,7 @@
   la clase base en sus dos caras: solo texto y solo icono, ambas en
   reposo y sin seleccion. El Bloque 2 --Bifurcaciones de contenido y
   dinamica del check-- sigue con las tres anatomias de contenido: el
-  check de solo texto --With label text only--, el cambio icono →
+  check de solo texto --With label text only--, el cambio icono â†’
   check --With icons and label text-- y los iconos solos --With icons
   only, que no llevan check--. El Bloque 3 --Variantes funcionales de
   comportamiento-- trae los dos modos: la seleccion unica
@@ -56,12 +56,12 @@
      select, `role="group"` y `aria-pressed`. La lista y los radio no son
      lo mismo, y el marcado lo dice. El pais de cursor --esta seleccion
      pedaleada con tecla-- es JS de app; el componente no lo lleva.
-  4. EL CAMBIO ICONO → CHECK ES COMPORTE, NO VARIANTE: la guia lo dice
+  4. EL CAMBIO ICONO â†’ CHECK ES COMPORTE, NO VARIANTE: la guia lo dice
      ("the icon is replaced by the checkmark when the segment is selected")
      y la receta web lo transcribe: el icono se desvanece, el check entra.
      El stroke-draw del check web no reproduce un glifo de font; llegara
      con fundidos de motion.css y su nota de desviacion.
-  5. NO SE MEZCLAN ANATOMIAS: la guia lo prohíbe --segmentos solo-icono con
+  5. NO SE MEZCLAN ANATOMIAS: la guia lo prohÃ­be --segmentos solo-icono con
      segmentos textuales en el mismo grupo--. Custodian los pares.
   6. DENSIDAD, ENTRA POR EL PASO -2 (resuelto en el Par 8 de densidad).
      Este acuerdo cerraba la puerta cuando los tokens web no traian la
@@ -194,19 +194,19 @@
         <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
       </div>
       <h1 class="md-type-display-large">Segmented Button</h1>
-      <p class="md-type-body-large">El grupo de segmentos ayuda a las personas a seleccionar opciones, cambiar de vista y ordenar datos. Se suele ubicar después de un título de página o de grupo. · <em>Nueve pares</em></p>
+      <p class="md-type-body-large">El grupo de segmentos ayuda a las personas a seleccionar opciones, cambiar de vista y ordenar datos. Se suele ubicar despuÃ©s de un tÃ­tulo de pÃ¡gina o de grupo. Â· <em>Nueve pares</em></p>
     </header>
     <!-- HEADER: fin -->
 
     <hr class="md-divider">
 
     <!-- BLOQUE 1: la clase base y su anatomia, en reposo. -->
-    <h2 class="md-type-headline-medium">Clase base y anatomía</h2>
+    <h2 class="md-type-headline-medium">Clase base y anatomÃ­a</h2>
 
     <!-- PAREJA: la clase base y anatomia, las dos caras en reposo (h3 + prosa + 2 specimen + 2 pre + 2 boton). -->
     <section class="sr-section">
-      <h3 class="md-type-title-large">Clase base y anatomía</h3>
-      <p class="md-type-body-medium">La clase base pinta las dos caras del mismo grupo: una de solo texto y otra de solo icono, ambas en reposo y sin selección. Los segmentos miden lo mismo —el más ancho reparte su medida—, cada uno con su aire lateral y su borde compartido.</p>
+      <h3 class="md-type-title-large">Base & anatomy</h3>
+      <p class="md-type-body-medium">La clase base pinta las dos caras del mismo grupo: una de solo texto y otra de solo icono, ambas en reposo y sin selecciÃ³n. Los segmentos miden lo mismo â€”el mÃ¡s ancho reparte su medidaâ€”, cada uno con su aire lateral y su borde compartido.</p>
       <div class="sr-specimen">
         <div class="md-segmented-button">
           <button class="md-segmented-button-item" type="button"><span class="md-segmented-button-item-label">Desayuno</span></button>
@@ -223,13 +223,13 @@
       <div class="sr-specimen">
         <div class="md-segmented-button">
           <button class="md-segmented-button-item" type="button" aria-label="Pantalla lista"><span class="md-icon" aria-hidden="true">view_list</span></button>
-          <button class="md-segmented-button-item" type="button" aria-label="Pantalla cuadrícula"><span class="md-icon" aria-hidden="true">grid_view</span></button>
+          <button class="md-segmented-button-item" type="button" aria-label="Pantalla cuadrÃ­cula"><span class="md-icon" aria-hidden="true">grid_view</span></button>
           <button class="md-segmented-button-item" type="button" aria-label="Pantalla calendario"><span class="md-icon" aria-hidden="true">calendar_view_month</span></button>
         </div>
       </div>
       <pre class="sr-code"><code>&lt;div class="md-segmented-button"&gt;
   &lt;button class="md-segmented-button-item" type="button" aria-label="Pantalla lista"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;view_list&lt;/span&gt;&lt;/button&gt;
-  &lt;button class="md-segmented-button-item" type="button" aria-label="Pantalla cuadrícula"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;grid_view&lt;/span&gt;&lt;/button&gt;
+  &lt;button class="md-segmented-button-item" type="button" aria-label="Pantalla cuadrÃ­cula"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;grid_view&lt;/span&gt;&lt;/button&gt;
   &lt;button class="md-segmented-button-item" type="button" aria-label="Pantalla calendario"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;calendar_view_month&lt;/span&gt;&lt;/button&gt;
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
@@ -238,12 +238,12 @@
 
     <hr class="md-divider">
     <!-- BLOQUE 2: las bifurcaciones de contenido y la dinamica del check. -->
-    <h2 class="md-type-headline-medium">Bifurcaciones de contenido y dinámica del check</h2>
+    <h2 class="md-type-headline-medium">Bifurcaciones de contenido y dinÃ¡mica del check</h2>
 
     <!-- PAREJA: el check de solo texto --With label text only-- (h3 + prosa + 2 specimen + 2 pre + 2 boton). -->
     <section class="sr-section">
       <h3 class="md-type-title-large">With label text only</h3>
-      <p class="md-type-body-medium">El texto descansa centrado en su pastilla; al marcar, el check entra a su ranura y la leyenda se reacomoda sin que el grupo cambie de tamaño. Nada va marcado en el primer grupo: pruébalo con el clic.</p>
+      <p class="md-type-body-medium">El texto descansa centrado en su pastilla; al marcar, el check entra a su ranura y la leyenda se reacomoda sin que el grupo cambie de tamaÃ±o. Nada va marcado en el primer grupo: pruÃ©balo con el clic.</p>
       <div class="sr-specimen">
         <div class="md-segmented-button" role="radiogroup" aria-label="Elegir un momento">
           <button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"><span class="md-icon md-segmented-button-item-check" aria-hidden="true">check</span><span class="md-segmented-button-item-label">Desayuno</span></button>
@@ -273,19 +273,19 @@
     </section>
     <!-- PAREJA: hasta aqui -->
 
-    <!-- PAREJA: el cambio icono → check --With icons and label text-- (h3 + specimen + pre + boton). -->
+    <!-- PAREJA: el cambio icono â†’ check --With icons and label text-- (h3 + specimen + pre + boton). -->
     <section class="sr-section">
       <h3 class="md-type-title-large">With icons and label text</h3>
       <p class="md-type-body-medium">Al marcar, el icono deja paso al check en la misma ranura compartida de 18dp: el icono sale, el check entra y la leyenda no se mueve.</p>
       <div class="sr-specimen">
-        <div class="md-segmented-button" role="radiogroup" aria-label="Elegir una opción">
-          <button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"><span class="md-icon" aria-hidden="true">star</span><span class="md-icon md-segmented-button-item-check" aria-hidden="true">check</span><span class="md-segmented-button-item-label">Día</span></button>
+        <div class="md-segmented-button" role="radiogroup" aria-label="Elegir una opciÃ³n">
+          <button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"><span class="md-icon" aria-hidden="true">star</span><span class="md-icon md-segmented-button-item-check" aria-hidden="true">check</span><span class="md-segmented-button-item-label">DÃ­a</span></button>
           <button class="md-segmented-button-item md-segmented-button-item-selected" type="button" role="radio" aria-checked="true"><span class="md-icon" aria-hidden="true">star</span><span class="md-icon md-segmented-button-item-check" aria-hidden="true">check</span><span class="md-segmented-button-item-label">Semana</span></button>
           <button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"><span class="md-icon" aria-hidden="true">star</span><span class="md-icon md-segmented-button-item-check" aria-hidden="true">check</span><span class="md-segmented-button-item-label">Mes</span></button>
         </div>
       </div>
-      <pre class="sr-code"><code>&lt;div class="md-segmented-button" role="radiogroup" aria-label="Elegir una opción"&gt;
-  &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;star&lt;/span&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;&lt;span class="md-segmented-button-item-label"&gt;Día&lt;/span&gt;&lt;/button&gt;
+      <pre class="sr-code"><code>&lt;div class="md-segmented-button" role="radiogroup" aria-label="Elegir una opciÃ³n"&gt;
+  &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;star&lt;/span&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;&lt;span class="md-segmented-button-item-label"&gt;DÃ­a&lt;/span&gt;&lt;/button&gt;
   &lt;button class="md-segmented-button-item md-segmented-button-item-selected" type="button" role="radio" aria-checked="true"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;star&lt;/span&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;&lt;span class="md-segmented-button-item-label"&gt;Semana&lt;/span&gt;&lt;/button&gt;
   &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;star&lt;/span&gt;&lt;span class="md-icon md-segmented-button-item-check" aria-hidden="true"&gt;check&lt;/span&gt;&lt;span class="md-segmented-button-item-label"&gt;Mes&lt;/span&gt;&lt;/button&gt;
 &lt;/div&gt;</code></pre>
@@ -296,28 +296,28 @@
     <!-- PAREJA: los iconos solos sin check --With icons only--, el tinte paga la seleccion (h3 + prosa + 2 specimen + 2 pre + 2 boton). -->
     <section class="sr-section">
       <h3 class="md-type-title-large">With icons only</h3>
-      <p class="md-type-body-medium">El segmento que solo trae su glifo: el icono pinta en reposo y sigue pintando al marcar —no se despide de su referencia—; la selección se ve en el tinte del segmento. El primer grupo marca una sola vez (<code>role="radiogroup"</code> con <code>aria-checked</code>); el segundo marca sin exclusividad (<code>role="group"</code> con <code>aria-pressed</code>).</p>
+      <p class="md-type-body-medium">El segmento que solo trae su glifo: el icono pinta en reposo y sigue pintando al marcar â€”no se despide de su referenciaâ€”; la selecciÃ³n se ve en el tinte del segmento. El primer grupo marca una sola vez (<code>role="radiogroup"</code> con <code>aria-checked</code>); el segundo marca sin exclusividad (<code>role="group"</code> con <code>aria-pressed</code>).</p>
       <div class="sr-specimen">
-        <div class="md-segmented-button" role="radiogroup" aria-label="Elegir una opción">
+        <div class="md-segmented-button" role="radiogroup" aria-label="Elegir una opciÃ³n">
           <button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"><span class="md-icon" aria-hidden="true">star</span></button>
           <button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"><span class="md-icon" aria-hidden="true">star</span></button>
           <button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"><span class="md-icon" aria-hidden="true">star</span></button>
         </div>
       </div>
-      <pre class="sr-code"><code>&lt;div class="md-segmented-button" role="radiogroup" aria-label="Elegir una opción"&gt;
+      <pre class="sr-code"><code>&lt;div class="md-segmented-button" role="radiogroup" aria-label="Elegir una opciÃ³n"&gt;
   &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;star&lt;/span&gt;&lt;/button&gt;
   &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;star&lt;/span&gt;&lt;/button&gt;
   &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;star&lt;/span&gt;&lt;/button&gt;
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
       <div class="sr-specimen">
-        <div class="md-segmented-button" role="group" aria-label="Elegir una o más opciones">
+        <div class="md-segmented-button" role="group" aria-label="Elegir una o mÃ¡s opciones">
           <button class="md-segmented-button-item" type="button" aria-pressed="false"><span class="md-icon" aria-hidden="true">star</span></button>
           <button class="md-segmented-button-item" type="button" aria-pressed="false"><span class="md-icon" aria-hidden="true">star</span></button>
           <button class="md-segmented-button-item" type="button" aria-pressed="false"><span class="md-icon" aria-hidden="true">star</span></button>
         </div>
       </div>
-      <pre class="sr-code"><code>&lt;div class="md-segmented-button" role="group" aria-label="Elegir una o más opciones"&gt;
+      <pre class="sr-code"><code>&lt;div class="md-segmented-button" role="group" aria-label="Elegir una o mÃ¡s opciones"&gt;
   &lt;button class="md-segmented-button-item" type="button" aria-pressed="false"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;star&lt;/span&gt;&lt;/button&gt;
   &lt;button class="md-segmented-button-item" type="button" aria-pressed="false"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;star&lt;/span&gt;&lt;/button&gt;
   &lt;button class="md-segmented-button-item" type="button" aria-pressed="false"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;star&lt;/span&gt;&lt;/button&gt;
@@ -333,16 +333,16 @@
     <!-- PAREJA: la seleccion unica --Single-select-- (h3 + specimen + pre + boton). -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Single-select</h3>
-      <p class="md-type-body-medium">Un solo segmento marcado: tinte de selección y leyenda en su color. El grupo es single-select: <code>role="radiogroup"</code> y <code>role="radio"</code> con <code>aria-checked</code>, y las flechas del teclado mueven la selección al unísono.</p>
+      <p class="md-type-body-medium">Un solo segmento marcado: tinte de selecciÃ³n y leyenda en su color. El grupo es single-select: <code>role="radiogroup"</code> y <code>role="radio"</code> con <code>aria-checked</code>, y las flechas del teclado mueven la selecciÃ³n al unÃ­sono.</p>
       <div class="sr-specimen">
-        <div class="md-segmented-button" role="radiogroup" aria-label="Elegir una opción">
-          <button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"><span class="md-segmented-button-item-label">Día</span></button>
+        <div class="md-segmented-button" role="radiogroup" aria-label="Elegir una opciÃ³n">
+          <button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"><span class="md-segmented-button-item-label">DÃ­a</span></button>
           <button class="md-segmented-button-item md-segmented-button-item-selected" type="button" role="radio" aria-checked="true"><span class="md-segmented-button-item-label">Semana</span></button>
           <button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"><span class="md-segmented-button-item-label">Mes</span></button>
         </div>
       </div>
-      <pre class="sr-code"><code>&lt;div class="md-segmented-button" role="radiogroup" aria-label="Elegir una opción"&gt;
-  &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;&lt;span class="md-segmented-button-item-label"&gt;Día&lt;/span&gt;&lt;/button&gt;
+      <pre class="sr-code"><code>&lt;div class="md-segmented-button" role="radiogroup" aria-label="Elegir una opciÃ³n"&gt;
+  &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;&lt;span class="md-segmented-button-item-label"&gt;DÃ­a&lt;/span&gt;&lt;/button&gt;
   &lt;button class="md-segmented-button-item md-segmented-button-item-selected" type="button" role="radio" aria-checked="true"&gt;&lt;span class="md-segmented-button-item-label"&gt;Semana&lt;/span&gt;&lt;/button&gt;
   &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;&lt;span class="md-segmented-button-item-label"&gt;Mes&lt;/span&gt;&lt;/button&gt;
 &lt;/div&gt;</code></pre>
@@ -353,16 +353,16 @@
     <!-- PAREJA: la multi-seleccion --Multi-select-- (h3 + prosa + specimen + pre + boton). -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Multi-select</h3>
-      <p class="md-type-body-medium">Dos segmentos marcados a la vez: la selección no es excluyente, y entre marcados adyacentes el borde se funde en la costura de un píxel. La semántica cambia con el modo: <code>role="group"</code> en el grupo y <code>aria-pressed</code> en cada segmento.</p>
+      <p class="md-type-body-medium">Dos segmentos marcados a la vez: la selecciÃ³n no es excluyente, y entre marcados adyacentes el borde se funde en la costura de un pÃ­xel. La semÃ¡ntica cambia con el modo: <code>role="group"</code> en el grupo y <code>aria-pressed</code> en cada segmento.</p>
       <div class="sr-specimen">
-        <div class="md-segmented-button" role="group" aria-label="Elegir una o más opciones">
-          <button class="md-segmented-button-item md-segmented-button-item-selected" type="button" aria-pressed="true"><span class="md-segmented-button-item-label">Día</span></button>
+        <div class="md-segmented-button" role="group" aria-label="Elegir una o mÃ¡s opciones">
+          <button class="md-segmented-button-item md-segmented-button-item-selected" type="button" aria-pressed="true"><span class="md-segmented-button-item-label">DÃ­a</span></button>
           <button class="md-segmented-button-item md-segmented-button-item-selected" type="button" aria-pressed="true"><span class="md-segmented-button-item-label">Semana</span></button>
           <button class="md-segmented-button-item" type="button" aria-pressed="false"><span class="md-segmented-button-item-label">Mes</span></button>
         </div>
       </div>
-      <pre class="sr-code"><code>&lt;div class="md-segmented-button" role="group" aria-label="Elegir una o más opciones"&gt;
-  &lt;button class="md-segmented-button-item md-segmented-button-item-selected" type="button" aria-pressed="true"&gt;&lt;span class="md-segmented-button-item-label"&gt;Día&lt;/span&gt;&lt;/button&gt;
+      <pre class="sr-code"><code>&lt;div class="md-segmented-button" role="group" aria-label="Elegir una o mÃ¡s opciones"&gt;
+  &lt;button class="md-segmented-button-item md-segmented-button-item-selected" type="button" aria-pressed="true"&gt;&lt;span class="md-segmented-button-item-label"&gt;DÃ­a&lt;/span&gt;&lt;/button&gt;
   &lt;button class="md-segmented-button-item md-segmented-button-item-selected" type="button" aria-pressed="true"&gt;&lt;span class="md-segmented-button-item-label"&gt;Semana&lt;/span&gt;&lt;/button&gt;
   &lt;button class="md-segmented-button-item" type="button" aria-pressed="false"&gt;&lt;span class="md-segmented-button-item-label"&gt;Mes&lt;/span&gt;&lt;/button&gt;
 &lt;/div&gt;</code></pre>
@@ -377,31 +377,31 @@
     <!-- PAREJA: los extremos de dos a cinco --Scale: Two to five segments-- (h3 + prosa + 2 specimen + 2 pre + 2 boton). -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Scale: Two to five segments</h3>
-      <p class="md-type-body-medium">El mínimo y el máximo de la anatomía: dos y cinco segmentos caben en la misma retícula de columnas, y cada columna toma el ancho del segmento más ancho.</p>
+      <p class="md-type-body-medium">El mÃ­nimo y el mÃ¡ximo de la anatomÃ­a: dos y cinco segmentos caben en la misma retÃ­cula de columnas, y cada columna toma el ancho del segmento mÃ¡s ancho.</p>
       <div class="sr-specimen">
-        <div class="md-segmented-button" role="radiogroup" aria-label="Elegir una opción">
-          <button class="md-segmented-button-item md-segmented-button-item-selected" type="button" role="radio" aria-checked="true"><span class="md-segmented-button-item-label">Día</span></button>
+        <div class="md-segmented-button" role="radiogroup" aria-label="Elegir una opciÃ³n">
+          <button class="md-segmented-button-item md-segmented-button-item-selected" type="button" role="radio" aria-checked="true"><span class="md-segmented-button-item-label">DÃ­a</span></button>
           <button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"><span class="md-segmented-button-item-label">Noche</span></button>
         </div>
       </div>
-      <pre class="sr-code"><code>&lt;div class="md-segmented-button" role="radiogroup" aria-label="Elegir una opción"&gt;
-  &lt;button class="md-segmented-button-item md-segmented-button-item-selected" type="button" role="radio" aria-checked="true"&gt;&lt;span class="md-segmented-button-item-label"&gt;Día&lt;/span&gt;&lt;/button&gt;
+      <pre class="sr-code"><code>&lt;div class="md-segmented-button" role="radiogroup" aria-label="Elegir una opciÃ³n"&gt;
+  &lt;button class="md-segmented-button-item md-segmented-button-item-selected" type="button" role="radio" aria-checked="true"&gt;&lt;span class="md-segmented-button-item-label"&gt;DÃ­a&lt;/span&gt;&lt;/button&gt;
   &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;&lt;span class="md-segmented-button-item-label"&gt;Noche&lt;/span&gt;&lt;/button&gt;
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
       <div class="sr-specimen">
-        <div class="md-segmented-button" role="radiogroup" aria-label="Elegir una opción">
+        <div class="md-segmented-button" role="radiogroup" aria-label="Elegir una opciÃ³n">
           <button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"><span class="md-segmented-button-item-label">Lun</span></button>
           <button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"><span class="md-segmented-button-item-label">Mar</span></button>
-          <button class="md-segmented-button-item md-segmented-button-item-selected" type="button" role="radio" aria-checked="true"><span class="md-segmented-button-item-label">Mié</span></button>
+          <button class="md-segmented-button-item md-segmented-button-item-selected" type="button" role="radio" aria-checked="true"><span class="md-segmented-button-item-label">MiÃ©</span></button>
           <button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"><span class="md-segmented-button-item-label">Jue</span></button>
           <button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"><span class="md-segmented-button-item-label">Vie</span></button>
         </div>
       </div>
-      <pre class="sr-code"><code>&lt;div class="md-segmented-button" role="radiogroup" aria-label="Elegir una opción"&gt;
+      <pre class="sr-code"><code>&lt;div class="md-segmented-button" role="radiogroup" aria-label="Elegir una opciÃ³n"&gt;
   &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;&lt;span class="md-segmented-button-item-label"&gt;Lun&lt;/span&gt;&lt;/button&gt;
   &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;&lt;span class="md-segmented-button-item-label"&gt;Mar&lt;/span&gt;&lt;/button&gt;
-  &lt;button class="md-segmented-button-item md-segmented-button-item-selected" type="button" role="radio" aria-checked="true"&gt;&lt;span class="md-segmented-button-item-label"&gt;Mié&lt;/span&gt;&lt;/button&gt;
+  &lt;button class="md-segmented-button-item md-segmented-button-item-selected" type="button" role="radio" aria-checked="true"&gt;&lt;span class="md-segmented-button-item-label"&gt;MiÃ©&lt;/span&gt;&lt;/button&gt;
   &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;&lt;span class="md-segmented-button-item-label"&gt;Jue&lt;/span&gt;&lt;/button&gt;
   &lt;button class="md-segmented-button-item" type="button" role="radio" aria-checked="false"&gt;&lt;span class="md-segmented-button-item-label"&gt;Vie&lt;/span&gt;&lt;/button&gt;
 &lt;/div&gt;</code></pre>
@@ -412,30 +412,30 @@
     <!-- PAREJA: la densidad --Density: Standard vs Compact-- (h3 + prosa + 2 specimen + 2 pre + 2 boton). -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Density: Standard vs Compact</h3>
-      <p class="md-type-body-medium">La escala vertical de M3 con su base a cero: la pastilla de 40px del botón estándar, la misma caja que alinea un segmented con un botón.</p>
+      <p class="md-type-body-medium">La escala vertical de M3 con su base a cero: la pastilla de 40px del botÃ³n estÃ¡ndar, la misma caja que alinea un segmented con un botÃ³n.</p>
       <div class="sr-specimen">
         <div class="md-segmented-button">
-          <button class="md-segmented-button-item" type="button"><span class="md-segmented-button-item-label">Día</span></button>
+          <button class="md-segmented-button-item" type="button"><span class="md-segmented-button-item-label">DÃ­a</span></button>
           <button class="md-segmented-button-item" type="button"><span class="md-segmented-button-item-label">Semana</span></button>
           <button class="md-segmented-button-item" type="button"><span class="md-segmented-button-item-label">Mes</span></button>
         </div>
       </div>
       <pre class="sr-code"><code>&lt;div class="md-segmented-button"&gt;
-  &lt;button class="md-segmented-button-item" type="button"&gt;&lt;span class="md-segmented-button-item-label"&gt;Día&lt;/span&gt;&lt;/button&gt;
+  &lt;button class="md-segmented-button-item" type="button"&gt;&lt;span class="md-segmented-button-item-label"&gt;DÃ­a&lt;/span&gt;&lt;/button&gt;
   &lt;button class="md-segmented-button-item" type="button"&gt;&lt;span class="md-segmented-button-item-label"&gt;Semana&lt;/span&gt;&lt;/button&gt;
   &lt;button class="md-segmented-button-item" type="button"&gt;&lt;span class="md-segmented-button-item-label"&gt;Mes&lt;/span&gt;&lt;/button&gt;
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
-      <p class="md-type-body-medium">Y el paso -2 de la densidad: la clase dense baja la pastilla a 32px y solo la altura cambia —la tipografía, el glifo, el borde y la costura no se enteran—.</p>
+      <p class="md-type-body-medium">Y el paso -2 de la densidad: la clase dense baja la pastilla a 32px y solo la altura cambia â€”la tipografÃ­a, el glifo, el borde y la costura no se enteranâ€”.</p>
       <div class="sr-specimen">
         <div class="md-segmented-button md-segmented-button-dense">
-          <button class="md-segmented-button-item" type="button"><span class="md-segmented-button-item-label">Día</span></button>
+          <button class="md-segmented-button-item" type="button"><span class="md-segmented-button-item-label">DÃ­a</span></button>
           <button class="md-segmented-button-item" type="button"><span class="md-segmented-button-item-label">Semana</span></button>
           <button class="md-segmented-button-item" type="button"><span class="md-segmented-button-item-label">Mes</span></button>
         </div>
       </div>
       <pre class="sr-code"><code>&lt;div class="md-segmented-button md-segmented-button-dense"&gt;
-  &lt;button class="md-segmented-button-item" type="button"&gt;&lt;span class="md-segmented-button-item-label"&gt;Día&lt;/span&gt;&lt;/button&gt;
+  &lt;button class="md-segmented-button-item" type="button"&gt;&lt;span class="md-segmented-button-item-label"&gt;DÃ­a&lt;/span&gt;&lt;/button&gt;
   &lt;button class="md-segmented-button-item" type="button"&gt;&lt;span class="md-segmented-button-item-label"&gt;Semana&lt;/span&gt;&lt;/button&gt;
   &lt;button class="md-segmented-button-item" type="button"&gt;&lt;span class="md-segmented-button-item-label"&gt;Mes&lt;/span&gt;&lt;/button&gt;
 &lt;/div&gt;</code></pre>
@@ -446,20 +446,20 @@
     <!-- PAREJA: los estados --Interactive States-- (h3 + specimen + pre + boton). -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Interactive States</h3>
-      <p class="md-type-body-medium">Las cuatro caras del estado conviviendo: reposo, marcado, deshabilitado y deshabilitado marcado —el tinte de hover y el anillo de foco se prueban con el ratón y con Tab, y el deshabilitado no responde.</p>
+      <p class="md-type-body-medium">Las cuatro caras del estado conviviendo: reposo, marcado, deshabilitado y deshabilitado marcado â€”el tinte de hover y el anillo de foco se prueban con el ratÃ³n y con Tab, y el deshabilitado no responde.</p>
       <div class="sr-specimen">
-        <div class="md-segmented-button" role="group" aria-label="Elegir una o más opciones">
-          <button class="md-segmented-button-item" type="button" aria-pressed="false"><span class="md-segmented-button-item-label">Día</span></button>
+        <div class="md-segmented-button" role="group" aria-label="Elegir una o mÃ¡s opciones">
+          <button class="md-segmented-button-item" type="button" aria-pressed="false"><span class="md-segmented-button-item-label">DÃ­a</span></button>
           <button class="md-segmented-button-item md-segmented-button-item-selected" type="button" aria-pressed="true"><span class="md-segmented-button-item-label">Semana</span></button>
           <button class="md-segmented-button-item" type="button" aria-pressed="false" disabled><span class="md-segmented-button-item-label">Mes</span></button>
-          <button class="md-segmented-button-item md-segmented-button-item-selected" type="button" aria-pressed="true" disabled><span class="md-segmented-button-item-label">Año</span></button>
+          <button class="md-segmented-button-item md-segmented-button-item-selected" type="button" aria-pressed="true" disabled><span class="md-segmented-button-item-label">AÃ±o</span></button>
         </div>
       </div>
-      <pre class="sr-code"><code>&lt;div class="md-segmented-button" role="group" aria-label="Elegir una o más opciones"&gt;
-  &lt;button class="md-segmented-button-item" type="button" aria-pressed="false"&gt;&lt;span class="md-segmented-button-item-label"&gt;Día&lt;/span&gt;&lt;/button&gt;
+      <pre class="sr-code"><code>&lt;div class="md-segmented-button" role="group" aria-label="Elegir una o mÃ¡s opciones"&gt;
+  &lt;button class="md-segmented-button-item" type="button" aria-pressed="false"&gt;&lt;span class="md-segmented-button-item-label"&gt;DÃ­a&lt;/span&gt;&lt;/button&gt;
   &lt;button class="md-segmented-button-item md-segmented-button-item-selected" type="button" aria-pressed="true"&gt;&lt;span class="md-segmented-button-item-label"&gt;Semana&lt;/span&gt;&lt;/button&gt;
   &lt;button class="md-segmented-button-item" type="button" aria-pressed="false" disabled&gt;&lt;span class="md-segmented-button-item-label"&gt;Mes&lt;/span&gt;&lt;/button&gt;
-  &lt;button class="md-segmented-button-item md-segmented-button-item-selected" type="button" aria-pressed="true" disabled&gt;&lt;span class="md-segmented-button-item-label"&gt;Año&lt;/span&gt;&lt;/button&gt;
+  &lt;button class="md-segmented-button-item md-segmented-button-item-selected" type="button" aria-pressed="true" disabled&gt;&lt;span class="md-segmented-button-item-label"&gt;AÃ±o&lt;/span&gt;&lt;/button&gt;
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
