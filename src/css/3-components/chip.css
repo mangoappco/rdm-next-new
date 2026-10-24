@@ -62,6 +62,8 @@
   background-color: var(--md-sys-color-surface);
   color: var(--md-sys-color-on-surface);
   cursor: pointer;
+  position: relative;   /* ancla el state layer (::after) dentro del chip */
+  overflow: hidden;     /* el state layer respeta las esquinas de 8dp */
   font-family: var(--md-sys-typescale-label-large-font);
   font-weight: var(--md-sys-typescale-label-large-weight);
   font-size: var(--md-sys-typescale-label-large-size);
@@ -87,6 +89,53 @@
       var(--md-sys-motion-easing-standard);
 }
 
+/* STATE LAYER (M3): el chip no altera su color base en las interacciones;
+   proyecta una capa semitransparente con currentColor y las opacidades
+   semánticas de Capa 2. El color hereda del texto (on-surface o del
+   selected), así el tinte acompaña al estado sin regla por variante. */
+.md-chip::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-color: currentColor;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity
+    var(--md-sys-motion-duration-short2)
+    var(--md-sys-motion-easing-standard);
+}
+
+/* La capa cruza opacidad, no color: hover 0.08, focus 0.12, pressed 0.12 */
+.md-chip:hover:not(:disabled)::after {
+  opacity: var(--md-sys-state-hover-state-layer-opacity);
+}
+
+.md-chip:focus-visible::after {
+  opacity: var(--md-sys-state-focus-state-layer-opacity);
+}
+
+.md-chip:active:not(:disabled)::after {
+  opacity: var(--md-sys-state-pressed-state-layer-opacity);
+}
+
+/* FOCO VISIBLE ACCESIBLE: outline por fuera del chip, sin desplazar
+   la caja de 32dp ni depender del state layer para el teclado. */
+.md-chip:focus-visible {
+  outline: var(--md-sys-shape-stroke-thick) solid var(--md-sys-color-primary);
+  outline-offset: var(--md-sys-shape-stroke-thick);
+}
+
+/* DESHABILITADO: 38% de opacidad sobre el conjunto y sin eventos;
+   como es atrás de la caja entera, la variante Elevated pierde su
+   elevación con box-shadow none, como exige M3. */
+.md-chip:disabled,
+.md-chip[aria-disabled="true"] {
+  opacity: var(--md-sys-state-disabled-state-layer-opacity);
+  box-shadow: none;
+  pointer-events: none;
+}
+
 /* La leyenda del chip: lleva el texto puro, sin envoltura de sistema. */
 .md-chip-label {
   /* sin adornos: el label es el contenido del chip */
@@ -110,6 +159,17 @@
 .md-chip-elevated {
   border: none;
   background-color: var(--md-sys-color-surface-container-low);
+  box-shadow: var(--md-sys-elevation-level1);
+}
+
+/* ELEVACION DINAMICA (M3): la variante elevated responde a la interaccion
+   subiendo a nivel 2 en hover y descendiendo a nivel 1 mientras se pulsa.
+   La transicion de box-shadow ya vive en .md-chip (short4 + standard). */
+.md-chip-elevated:hover:not(:disabled) {
+  box-shadow: var(--md-sys-elevation-level2);
+}
+
+.md-chip-elevated:active:not(:disabled) {
   box-shadow: var(--md-sys-elevation-level1);
 }
 
