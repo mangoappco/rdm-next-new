@@ -115,7 +115,7 @@
         <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
       </div>
       <h1 class="md-type-display-large">Chip</h1>
-      <p class="md-type-body-large">El chip ayuda a las personas a representar opciones, filtros y entradas de datos en una sola píldora táctil. Se suele ubicar dentro de tarjetas, filas o barras de acciones. · <em>Nueve pares</em></p>
+      <p class="md-type-body-large">El chip ayuda a las personas a representar opciones, filtros y entradas de datos en una sola píldora táctil. Se suele ubicar dentro de tarjetas, filas o barras de acciones. · <em>Diez pares</em></p>
     </header>
     <!-- HEADER: fin -->
 
@@ -418,6 +418,48 @@
     &lt;span class="md-chip-label"&gt;Término medio&lt;/span&gt;
     &lt;button type="button" class="md-chip-close" aria-label="Remover Término medio"&gt;&lt;span class="md-icon md-icon-wght-light" aria-hidden="true"&gt;close&lt;/span&gt;&lt;/button&gt;
   &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: el interactive states (h3 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Interactive states (Estados de interacción)</h3>
+      <p class="md-type-body-medium">Las interacciones de M3 no alteran el color base del chip: una capa con currentColor se funde al pasar el ratón, al pulsar y al enfocar con teclado. El estado deshabilitado baja la opacidad de todo el conjunto y la variante elevada pierde su sombra.</p>
+      <div class="sr-specimen">
+        <div class="md-chip-set">
+          <button type="button" class="md-chip">
+            <span class="md-chip-label">Reposo</span>
+          </button>
+          <button type="button" class="md-chip md-chip-selected" aria-selected="true">
+            <span class="md-icon md-icon-wght-light" aria-hidden="true">check</span>
+            <span class="md-chip-label">Seleccionado</span>
+          </button>
+          <button type="button" class="md-chip" disabled>
+            <span class="md-chip-label">Deshabilitado</span>
+          </button>
+          <button type="button" class="md-chip md-chip-selected" aria-selected="true" disabled>
+            <span class="md-icon md-icon-wght-light" aria-hidden="true">check</span>
+            <span class="md-chip-label">Deshabilitado selec.</span>
+          </button>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-chip-set"&gt;
+  &lt;button type="button" class="md-chip"&gt;
+    &lt;span class="md-chip-label"&gt;Reposo&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-chip md-chip-selected" aria-selected="true"&gt;
+    &lt;span class="md-icon md-icon-wght-light" aria-hidden="true"&gt;check&lt;/span&gt;
+    &lt;span class="md-chip-label"&gt;Seleccionado&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-chip" disabled&gt;
+    &lt;span class="md-chip-label"&gt;Deshabilitado&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-chip md-chip-selected" aria-selected="true" disabled&gt;
+    &lt;span class="md-icon md-icon-wght-light" aria-hidden="true"&gt;check&lt;/span&gt;
+    &lt;span class="md-chip-label"&gt;Deshabilitado selec.&lt;/span&gt;
+  &lt;/button&gt;
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>

@@ -250,7 +250,7 @@ Los hechos que **no** se leen en el código:
 
 ## Chips — publicada
 
-Nueve pares, en un solo bloque (Especificación, anatomía y superficies): la clase base y anatomía, el chip set (disposición y espaciado), las dos superficies (Flat/Outlined y Elevated), el Assist chip, el Filter chip (estados visuales), el Input chip (estructura y remoción), la Suggestion chip y el Filter chip interactivo (multi-filtro). `chips.html` es copia byte-idéntica a su molde.
+Diez pares, en un solo bloque (Especificación, anatomía y superficies): la clase base y anatomía, el chip set (disposición y espaciado), las dos superficies (Flat/Outlined y Elevated), el Assist chip, el Filter chip (estados visuales), el Input chip (estructura y remoción), la Suggestion chip, el Filter chip interactivo (multi-filtro), el Input chip interactivo (remoción dinámica) y el Interactive states (estados de interacción: reposo, seleccionado, disabled y disabled seleccionado). `chips.html` es copia byte-idéntica a su molde.
 
 - **El glifo mide 18dp.** Consume el rol `--md-sys-measurement-segmented-button-icon-size` de Capa 2 (18dp), sin crear tokens acoplados a chip en Capas 1 ni 2.
 - **Paddings asimétricos con trailing icon:** 16dp start, 8dp gap label→close, 8dp end. Con leading icon: 8dp start, 8dp gap, 16dp end. Gancho `:has(> .md-chip-close)` y `:has(> .md-icon)`, sin clases por anatomía.
