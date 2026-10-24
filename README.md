@@ -868,19 +868,21 @@ rdm-next-new/
 │   │   ├── list-thumb.svg
 │   ├── components/           Una vista por componente o por familia de capa 1 y 2
 │   │   ├── button-group.html Button group · 6 secciones
-│   │   ├── button.html       Button · 13 secciones
-│   │   ├── card.html         Card · 9 secciones
+│   │   ├── button.html       Button · 19 secciones
+│   │   ├── card.html         Card · 16 secciones
+│   │   ├── chips.html        Chips · 11 secciones
 │   │   ├── color.html        Color · 18 secciones
 │   │   ├── dialog.html       Dialog · 6 secciones
 │   │   ├── divider.html      Divider · 6 secciones
 │   │   ├── elevation.html    Elevation · 6 secciones
 │   │   ├── fab-extended.html FAB extended · 6 secciones
 │   │   ├── fab.html          FAB · 7 secciones
-│   │   ├── icon-button.html  Icon Button · 10 secciones
+│   │   ├── icon-button.html  Icon Button · 16 secciones
 │   │   ├── icon.html         Iconos · 9 secciones
-│   │   ├── list.html         List · 9 secciones
+│   │   ├── list.html         List · 15 secciones
 │   │   ├── measurement.html  Measurement · 6 secciones
 │   │   ├── motion.html       Motion · 20 secciones
+│   │   ├── segmented-button.html Segmented Button · 9 secciones
 │   │   ├── shapes.html       Shapes · 11 secciones
 │   │   ├── spacing.html      Spacing · 1 sección
 │   │   ├── state.html        State · 2 secciones
@@ -1014,8 +1016,8 @@ El orden es el de `3-components/index.css`, que es el de carga y el de dependenc
 | Componente | Archivo | Clases | Tokens propios | Vista del showroom |
 | ---------- | ------- | ------ | -------------- | ------------------ |
 | Divider | `3-components/divider.css` | 4 | 2 | `divider.html`, 6 secciones |
-| Icon Button | `3-components/icon-button.css` | 15 | 17 | `icon-button.html`, 10 secciones |
-| Button | `3-components/button.css` | 15 | 18 | `button.html`, 13 secciones |
+| Icon Button | `3-components/icon-button.css` | 15 | 17 | `icon-button.html`, 16 secciones |
+| Button | `3-components/button.css` | 15 | 18 | `button.html`, 19 secciones |
 | Button group | `3-components/button-group.css` | 2 | 1 | `button-group.html`, 6 secciones |
 | FAB | `3-components/fab.css` | 7 | 14 | `fab.html`, 7 secciones |
 | FAB extended | `3-components/fab-extended.css` | 1 | 3 | `fab-extended.html`, 6 secciones |
