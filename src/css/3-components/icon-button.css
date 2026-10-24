@@ -70,7 +70,7 @@
    de forma SI es de este componente desde el 2026-10-18 (ver LA
    INVERSION DE FORMA, al final).
    EL TOGGLE A SECAS --estado seleccionado por color y forma-- SI ES DE ESTE
-   COMPONENTE: entra por `data-toggle` + `aria-pressed`, obra de
+   COMPONENTE: entra por `aria-pressed`, obra de
    `src/js/toggle.js` (la misma delegacion que dialog.js) y se documenta
    en la seccion SELECCIONADO, junto a las variantes.
 
@@ -601,19 +601,17 @@
 }
 
 /* ---------------------------------------------------------------------------
-   EL SELECCIONADO: data-toggle + aria-pressed (TOGGLE)
+   EL SELECCIONADO: aria-pressed (TOGGLE)
    ---------------------------------------------------------------------------
-   El estado que estuvo fuera del componente y vuelve. La puerta es doble:
+   El estado que estuvo fuera del componente y vuelve. La puerta ya no es
+   doble: `aria-pressed`, atributo estandar WAI-ARIA, es AUTORIA y ESTADO a
+   la vez --dice "este boton conmuta" y dice su valor--. `src/js/toggle.js`
+   lo escucha y conmuta, y el CSS de abajo lo lee. Es la misma puerta del
+   button: sin clase de estado ni data-* inventado en el marcado.
 
-       `data-toggle`   el atributo de AUTORIA. Dice "este boton conmuta", es
-                       lo que escucha `src/js/toggle.js` y entra en el marcado.
-       `aria-pressed`  el atributo de ESTADO. Es lo que el lector de pantalla
-                       anuncia, lo que el CSS de abajo lee y lo unico que el
-                       controlador conmuta.
-
-   El autor escribe los dos, con el estado inicial puesto a mano (ej:
-   `aria-pressed="false"`); el controlador no inicializa nada. Sin
-   `data-toggle` no hay estado que leer y las reglas de abajo no existen.
+   El autor escribe el estado inicial a mano (ej: `aria-pressed="false"`);
+   el controlador no inicializa nada. Un icon-button SIN `aria-pressed` es
+   una accion a secas y las reglas de abajo no lo alcanzan.
 
    COLORES, LEIDOS UNO A UNO DE LOS TOKENS PUBLICADOS DE M3 Y RATIFICADOS
    ----------------------------------------------------------------------
@@ -680,24 +678,24 @@
 /* Standard: solo el glifo. La regla excluye a las tres variantes con
    relleno porque cada una trae su par, y a los disabled: ver DISABLED
    GANA arriba. */
-.md-icon-button[data-toggle][aria-pressed="true"]:not(:disabled):not(.md-icon-button-filled):not(.md-icon-button-tonal):not(.md-icon-button-outlined) {
+.md-icon-button[aria-pressed="true"]:not(:disabled):not(.md-icon-button-filled):not(.md-icon-button-tonal):not(.md-icon-button-outlined) {
   --md-comp-icon-button-icon-color: var(--md-sys-color-primary);
 }
 
 /* Filled: el toggle SIN seleccionar. Y tambien sin disabled: un filled
    deshabilitado se queda con el filled en reposo (primary), que es lo
    que ya muestra el disabled normal. */
-.md-icon-button-filled[data-toggle]:not([aria-pressed="true"]):not(:disabled) {
+.md-icon-button-filled[aria-pressed]:not([aria-pressed="true"]):not(:disabled) {
   --md-comp-icon-button-container-color: var(--md-sys-color-surface-container);
   --md-comp-icon-button-icon-color: var(--md-sys-color-on-surface-variant);
 }
 
-.md-icon-button-tonal[data-toggle][aria-pressed="true"]:not(:disabled) {
+.md-icon-button-tonal[aria-pressed="true"]:not(:disabled) {
   --md-comp-icon-button-container-color: var(--md-sys-color-secondary);
   --md-comp-icon-button-icon-color: var(--md-sys-color-on-secondary);
 }
 
-.md-icon-button-outlined[data-toggle][aria-pressed="true"]:not(:disabled) {
+.md-icon-button-outlined[aria-pressed="true"]:not(:disabled) {
   --md-comp-icon-button-container-color: var(--md-sys-color-inverse-surface);
   --md-comp-icon-button-icon-color: var(--md-sys-color-inverse-on-surface);
 }
@@ -729,38 +727,38 @@
 /* Un round seleccionado toma la forma square de su tamano. Cuatro tamanos
    que escalan la pendiente, y el base (small) que se queda con la de la
    clase square mas abajo... el mismo valor: 12px. */
-.md-icon-button[data-toggle][aria-pressed="true"]:not(.md-icon-button-square):not(:disabled) {
+.md-icon-button[aria-pressed="true"]:not(.md-icon-button-square):not(:disabled) {
   --md-comp-icon-button-shape: var(--md-sys-shape-corner-medium);
 }
 
-.md-icon-button-medium[data-toggle][aria-pressed="true"]:not(.md-icon-button-square):not(:disabled) {
+.md-icon-button-medium[aria-pressed="true"]:not(.md-icon-button-square):not(:disabled) {
   --md-comp-icon-button-shape: var(--md-sys-shape-corner-large);
 }
 
-.md-icon-button-large[data-toggle][aria-pressed="true"]:not(.md-icon-button-square):not(:disabled),
-.md-icon-button-xlarge[data-toggle][aria-pressed="true"]:not(.md-icon-button-square):not(:disabled) {
+.md-icon-button-large[aria-pressed="true"]:not(.md-icon-button-square):not(:disabled),
+.md-icon-button-xlarge[aria-pressed="true"]:not(.md-icon-button-square):not(:disabled) {
   --md-comp-icon-button-shape: var(--md-sys-shape-corner-extra-large);
 }
 
 /* Un square seleccionado vuelve al redondo de su tamano. La generica cubre
    small; xsmall, medium, large y xlarge llevan la suya por compuesto. */
-.md-icon-button-square[data-toggle][aria-pressed="true"]:not(:disabled) {
+.md-icon-button-square[aria-pressed="true"]:not(:disabled) {
   --md-comp-icon-button-shape: var(--md-sys-shape-corner-half-small);
 }
 
-.md-icon-button-xsmall.md-icon-button-square[data-toggle][aria-pressed="true"]:not(:disabled) {
+.md-icon-button-xsmall.md-icon-button-square[aria-pressed="true"]:not(:disabled) {
   --md-comp-icon-button-shape: var(--md-sys-shape-corner-half-xsmall);
 }
 
-.md-icon-button-medium.md-icon-button-square[data-toggle][aria-pressed="true"]:not(:disabled) {
+.md-icon-button-medium.md-icon-button-square[aria-pressed="true"]:not(:disabled) {
   --md-comp-icon-button-shape: var(--md-sys-shape-corner-half-medium);
 }
 
-.md-icon-button-large.md-icon-button-square[data-toggle][aria-pressed="true"]:not(:disabled) {
+.md-icon-button-large.md-icon-button-square[aria-pressed="true"]:not(:disabled) {
   --md-comp-icon-button-shape: var(--md-sys-shape-corner-half-large);
 }
 
-.md-icon-button-xlarge.md-icon-button-square[data-toggle][aria-pressed="true"]:not(:disabled) {
+.md-icon-button-xlarge.md-icon-button-square[aria-pressed="true"]:not(:disabled) {
   --md-comp-icon-button-shape: var(--md-sys-shape-corner-half-xlarge);
 }
 

@@ -69,7 +69,7 @@
    3. EL ESTADO `selected`, ENTRANTE MEDIO A MEDIO POR LA PUERTA DEL
       TOGGLE. La mitad de COLOR entro con la seccion EL ESTADO
       SELECCIONADO, al final del archivo, que pinta el selected de cada
-      variante con `data-toggle` + `aria-pressed`, y su par unselected
+      variante con `aria-pressed`, y su par unselected
       para el filled. Los tokens son los publicados, verificados uno a
       uno (`_md-comp-button-*.scss`, 34.0.21). La mitad de FORMA entro el
       mismo dia: `selected-container-shape-round` y
@@ -127,7 +127,7 @@
      3 iconos    ninguno / lider / posterior
      4 estados   hover, focus-visible, active, disabled
      2 formas    round (corner-half-{tamano}) y square, por clase
-     toggle      estado selected con data-toggle + aria-pressed: color Y
+     toggle      estado selected con aria-pressed: color Y
                  forma, la forma se invierte en los dos sentidos
      ademas      forced-colors, etiqueta como <a>, area tactil
      sin motion  sin morph de pulsado
@@ -816,36 +816,36 @@
 
    Todas con `:not(:disabled)`, igual que las de color: un toggle
    deshabilitado no insinua que se le pueda dar a la forma. */
-.md-button[data-toggle][aria-pressed="true"]:not(.md-button-square):not(:disabled) {
+.md-button[aria-pressed="true"]:not(.md-button-square):not(:disabled) {
   --md-comp-button-shape: var(--md-sys-shape-corner-medium);
 }
 
-.md-button-medium[data-toggle][aria-pressed="true"]:not(.md-button-square):not(:disabled) {
+.md-button-medium[aria-pressed="true"]:not(.md-button-square):not(:disabled) {
   --md-comp-button-shape: var(--md-sys-shape-corner-large);
 }
 
-.md-button-large[data-toggle][aria-pressed="true"]:not(.md-button-square):not(:disabled),
-.md-button-xlarge[data-toggle][aria-pressed="true"]:not(.md-button-square):not(:disabled) {
+.md-button-large[aria-pressed="true"]:not(.md-button-square):not(:disabled),
+.md-button-xlarge[aria-pressed="true"]:not(.md-button-square):not(:disabled) {
   --md-comp-button-shape: var(--md-sys-shape-corner-extra-large);
 }
 
-.md-button-square[data-toggle][aria-pressed="true"]:not(:disabled) {
+.md-button-square[aria-pressed="true"]:not(:disabled) {
   --md-comp-button-shape: var(--md-sys-shape-corner-half-small);
 }
 
-.md-button-xsmall.md-button-square[data-toggle][aria-pressed="true"]:not(:disabled) {
+.md-button-xsmall.md-button-square[aria-pressed="true"]:not(:disabled) {
   --md-comp-button-shape: var(--md-sys-shape-corner-half-xsmall);
 }
 
-.md-button-medium.md-button-square[data-toggle][aria-pressed="true"]:not(:disabled) {
+.md-button-medium.md-button-square[aria-pressed="true"]:not(:disabled) {
   --md-comp-button-shape: var(--md-sys-shape-corner-half-medium);
 }
 
-.md-button-large.md-button-square[data-toggle][aria-pressed="true"]:not(:disabled) {
+.md-button-large.md-button-square[aria-pressed="true"]:not(:disabled) {
   --md-comp-button-shape: var(--md-sys-shape-corner-half-large);
 }
 
-.md-button-xlarge.md-button-square[data-toggle][aria-pressed="true"]:not(:disabled) {
+.md-button-xlarge.md-button-square[aria-pressed="true"]:not(:disabled) {
   --md-comp-button-shape: var(--md-sys-shape-corner-half-xlarge);
 }
 
@@ -1024,7 +1024,7 @@
    La puerta del toggle no la abre, RATIFICADO: la variante text no es
    conmutable. El selector del filled unselected (EL ESTADO SELECCIONADO)
    la excluye por nombre y ninguna de las reglas selected la alcanza, asi
-   que un data-toggle sobre ella es inerte por diseño. */
+   que un aria-pressed sobre ella es inerte por diseño. */
 .md-button-text {
   --md-comp-button-container-color: transparent;
   --md-comp-button-label-color: var(--md-sys-color-primary);
@@ -1032,18 +1032,15 @@
 }
 
 /* ---------------------------------------------------------------------------
-   EL ESTADO SELECCIONADO: data-toggle + aria-pressed (TOGGLE)
+   EL ESTADO SELECCIONADO: aria-pressed (TOGGLE)
    ---------------------------------------------------------------------------
    El estado que estuvo fuera del componente y vuelve. La puerta es la misma
    que en el icon-button (su memoria, con los tokens verificados, esta en
-   `icon-button.css`, seccion SELECCIONADO):
-
-       `data-toggle`   el atributo de AUTORIA. Dice "este boton conmuta"; es
-                       lo que escucha `src/js/toggle.js`, que conmuta
-                       `aria-pressed` con la misma delegacion de dialog.js.
-       `aria-pressed`  el atributo de ESTADO. Lo anuncia el lector de
-                       pantalla, lo lee el CSS de abajo y no hay ninguna
-                       clase de estado que conmutar.
+   `icon-button.css`, seccion SELECCIONADO) y ya no es doble: `aria-pressed`,
+   atributo estandar WAI-ARIA, es AUTORIA y ESTADO a la vez --dice "este
+   boton conmuta" y dice su valor--. `src/js/toggle.js` lo escucha y conmuta
+   con su delegacion en `document`, el CSS de abajo lo lee y no hay ninguna
+   clase de estado que conmutar: sin data-* inventado en el marcado.
 
    COLORES, LEIDOS UNO A UNO DE LOS TOKENS PUBLICADOS DE M3
    --------------------------------------------------------
@@ -1068,14 +1065,14 @@
       on-primary). Por eso la UNICA regla del filled es la del
       unselected: surface-container + on-surface-variant mientras el
       toggle este sin activar. Y esa regla SOLO alcanza al boton que
-      lleva `data-toggle`: un filled sin toggle, que es la mayoria
+      lleva `aria-pressed`: un filled sin toggle, que es la mayoria
       aplastante de los botones del sistema, no cambia ni un token.
 
    2. EL FILLED EXCLUYE A LAS DEMAS VARIANTES en su unselected, porque
       cada una trae su par (regla abajo); y excluye a la variante
       `text` por nombre, RATIFICADO que text no es un toggle. Ellas
       si conmutan: su regla selected no distingue, el autor que pone
-      data-toggle sobre ellas la activa.
+      aria-pressed sobre ellas la activa.
 
    3. EL OUTLINED ES LA INVERSION DEL LIENZO, no un tono de primario:
       inverse-surface / inverse-on-surface. Y los tokens selected de la
@@ -1112,7 +1109,7 @@
 /* Filled unselected: la unica regla del filled. Excluye a las demas
    variantes (cada una trae su par) y a text (no es toggle, decidido),
    y a los disabled (DISABLED GANA). */
-.md-button[data-toggle]:not([aria-pressed="true"]):not(:disabled):not(.md-button-tonal):not(.md-button-outlined):not(.md-button-elevated):not(.md-button-text) {
+.md-button[aria-pressed]:not([aria-pressed="true"]):not(:disabled):not(.md-button-tonal):not(.md-button-outlined):not(.md-button-elevated):not(.md-button-text) {
   --md-comp-button-container-color: var(--md-sys-color-surface-container);
   --md-comp-button-label-color: var(--md-sys-color-on-surface-variant);
 }
@@ -1121,19 +1118,19 @@
    la misma de siempre. Conmutar hacia el selected no repinta nada. */
 
 /* Tonal: secondary-container -> secondary. */
-.md-button-tonal[data-toggle][aria-pressed="true"]:not(:disabled) {
+.md-button-tonal[aria-pressed="true"]:not(:disabled) {
   --md-comp-button-container-color: var(--md-sys-color-secondary);
   --md-comp-button-label-color: var(--md-sys-color-on-secondary);
 }
 
 /* Outlined: inversion del lienzo; el borde outline-variant se queda. */
-.md-button-outlined[data-toggle][aria-pressed="true"]:not(:disabled) {
+.md-button-outlined[aria-pressed="true"]:not(:disabled) {
   --md-comp-button-container-color: var(--md-sys-color-inverse-surface);
   --md-comp-button-label-color: var(--md-sys-color-inverse-on-surface);
 }
 
 /* Elevated: a primary y con su Level1 intacto. */
-.md-button-elevated[data-toggle][aria-pressed="true"]:not(:disabled) {
+.md-button-elevated[aria-pressed="true"]:not(:disabled) {
   --md-comp-button-container-color: var(--md-sys-color-primary);
   --md-comp-button-label-color: var(--md-sys-color-on-primary);
 }

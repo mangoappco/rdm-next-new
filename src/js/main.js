@@ -104,7 +104,15 @@
    ========================================================================== */
 
 import { registrar } from './dialog.js';
-import { registrar as registrarToggle } from './toggle.js';
+/* CACHE-BUSTER EN CASCADA. El <script type="module" src=".../main.js?v=NN">
+   de las vistas del showroom solo renueva URL de main.js: el navegador
+   resuelve `./toggle.js` contra main.js SIN la query y puede servir el
+   modulo viejo desde su cache de modulos de sesion (Chromium la mantiene
+   pese a `Cache-Control: no-store`; pozo del showroom de 2026-10). La
+   version del import TIENE que ir a la par con el buster del <script>:
+   al publicar una version N+1, cambia `?v=N` aqui y en los templates.
+   Los demas imports no se tocaron este ciclo: solo toggle.js cambio. */
+import { registrar as registrarToggle } from './toggle.js?v=59';
 import { registrar as registrarSegmented } from './segmented-button.js';
 import { registrar as registrarChipFilter } from './chip-filter.js';
 import { registrar as registrarChipInput } from './chip-input.js';
