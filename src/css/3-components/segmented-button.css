@@ -310,6 +310,7 @@
      La misma pareja que el boton declara en su propia caja. */
   position: relative;
   isolation: isolate;
+  overflow: hidden;
 
   /* El contenido va en reticula de columnas y no en flex: el icono y el
      check ocupan la MISMA celda --la ranura--, y la leyenda auto-fluye a
@@ -609,6 +610,16 @@
   transition: opacity
     var(--md-comp-segmented-button-state-duration)
     var(--md-comp-segmented-button-state-easing);
+}
+
+.md-ripple-wave {
+  position: absolute;
+  border-radius: var(--md-sys-shape-corner-full);
+  background-color: currentColor;
+  pointer-events: none;
+  user-select: none;
+  will-change: transform, opacity;
+  contain: layout paint;
 }
 
 /* :active despues de :hover y :focus-visible, el orden del boton: mantener

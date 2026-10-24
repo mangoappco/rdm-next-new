@@ -119,6 +119,8 @@
 .md-icon-button {
   /* Medidas. La base viste SMALL (40px): es el tamano por defecto de M3.
      Medium lleva su clase y es la excepcion. */
+  position: relative;
+  overflow: hidden;
   --md-comp-icon-button-height: var(--md-sys-measurement-icon-button-height-small);
   --md-comp-icon-button-icon-size: var(--md-sys-measurement-icon-button-icon-small);
 
@@ -336,6 +338,16 @@
   transition: opacity
     var(--md-comp-icon-button-state-duration)
     var(--md-comp-icon-button-state-easing);
+}
+
+.md-ripple-wave {
+  position: absolute;
+  border-radius: var(--md-sys-shape-corner-full);
+  background-color: currentColor;
+  pointer-events: none;
+  user-select: none;
+  will-change: transform, opacity;
+  contain: layout paint;
 }
 
 /* :active despues de :hover y :focus-visible: mantener pulsado un control

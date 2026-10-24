@@ -206,6 +206,8 @@
    ------------------------------------------------------------------------ */
 
 .md-fab-extended {
+  position: relative;
+  overflow: hidden;
   --md-comp-fab-height: var(--md-sys-measurement-fab-height);
   --md-comp-fab-shape: var(--md-sys-shape-corner-large);
   --md-comp-fab-icon-size: var(--md-sys-measurement-fab-icon-size);
@@ -280,4 +282,14 @@
 
   font: var(--md-sys-typescale-headline-small);
   letter-spacing: var(--md-sys-typescale-headline-small-tracking);
+}
+
+.md-ripple-wave {
+  position: absolute;
+  border-radius: var(--md-sys-shape-corner-full);
+  background-color: currentColor;
+  pointer-events: none;
+  user-select: none;
+  will-change: transform, opacity;
+  contain: layout paint;
 }

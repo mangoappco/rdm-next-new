@@ -168,6 +168,8 @@
    ========================================================================== */
 
 .md-card {
+  position: relative;
+  overflow: hidden;
   /* ---------------------------------------------------------------------------
      FORMA
      ---------------------------------------------------------------------------
@@ -457,6 +459,16 @@
 
 .md-card:is(a[href], button, [tabindex]):not(:disabled):active::after {
   opacity: var(--md-sys-state-pressed-state-layer-opacity);
+}
+
+.md-ripple-wave {
+  position: absolute;
+  border-radius: var(--md-sys-shape-corner-full);
+  background-color: currentColor;
+  pointer-events: none;
+  user-select: none;
+  will-change: transform, opacity;
+  contain: layout paint;
 }
 
 /* ---------------------------------------------------------------------------

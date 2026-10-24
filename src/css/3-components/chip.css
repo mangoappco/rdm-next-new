@@ -106,6 +106,16 @@
     var(--md-sys-motion-easing-standard);
 }
 
+.md-ripple-wave {
+  position: absolute;
+  border-radius: var(--md-sys-shape-corner-full);
+  background-color: currentColor;
+  pointer-events: none;
+  user-select: none;
+  will-change: transform, opacity;
+  contain: layout paint;
+}
+
 /* La capa cruza opacidad, no color: hover 0.08, focus 0.12, pressed 0.12 */
 .md-chip:hover:not(:disabled)::after {
   opacity: var(--md-sys-state-hover-state-layer-opacity);

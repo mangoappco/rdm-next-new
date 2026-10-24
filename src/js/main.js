@@ -116,6 +116,7 @@ import { registrar as registrarToggle } from './toggle.js?v=59';
 import { registrar as registrarSegmented } from './segmented-button.js';
 import { registrar as registrarChipFilter } from './chip-filter.js';
 import { registrar as registrarChipInput } from './chip-input.js';
+import { registrar as registrarRipple } from './ripple.js';
 
 /* Se registra al cargar el script, no al hacer clic. Los specimens del
    showroom llevan `<dialog open>` a secas, que NO es modal, asi que ahi no
@@ -126,6 +127,7 @@ registrar();
    viva antes de que exista ningun button[aria-pressed] en la pagina. No se
    recorre el documento al cargar; quien llegue despues funciona igual. */
 registrarToggle();
+registrarRipple();
 
 /* El segmented button, por la misma razon todavia: dos delegaciones (click
    y keydown) y el gancho es el rol que el marcado ya publica --su cabecera

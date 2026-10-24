@@ -267,6 +267,8 @@
    ------------------------------------------------------------------------ */
 
 .md-list-item {
+  position: relative;
+  overflow: hidden;
   --md-comp-list-item-container-color: transparent;
   --md-comp-list-item-shape: var(--md-sys-shape-corner-extra-small);
   --md-comp-list-item-label-color: var(--md-sys-color-on-surface);
@@ -648,6 +650,16 @@
   transition: opacity
     var(--md-comp-list-item-state-duration)
     var(--md-comp-list-item-state-easing);
+}
+
+.md-ripple-wave {
+  position: absolute;
+  border-radius: var(--md-sys-shape-corner-full);
+  background-color: currentColor;
+  pointer-events: none;
+  user-select: none;
+  will-change: transform, opacity;
+  contain: layout paint;
 }
 
 .md-list-item:not(:disabled):is(a[href], button, [role='button']) {

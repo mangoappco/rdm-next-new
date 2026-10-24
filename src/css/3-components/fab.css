@@ -186,6 +186,7 @@
   box-sizing: border-box;
   position: relative;
   isolation: isolate;
+  overflow: hidden;
 
   display: inline-flex;
   align-items: center;
@@ -284,6 +285,16 @@
   transition: opacity
     var(--md-comp-fab-state-duration)
     var(--md-comp-fab-state-easing);
+}
+
+.md-ripple-wave {
+  position: absolute;
+  border-radius: var(--md-sys-shape-corner-full);
+  background-color: currentColor;
+  pointer-events: none;
+  user-select: none;
+  will-change: transform, opacity;
+  contain: layout paint;
 }
 
 /* :active despues de :hover y :focus-visible: mantener pulsado un control
