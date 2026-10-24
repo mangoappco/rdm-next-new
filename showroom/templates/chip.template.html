@@ -115,7 +115,7 @@
         <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
       </div>
       <h1 class="md-type-display-large">Chip</h1>
-      <p class="md-type-body-large">El chip ayuda a las personas a representar opciones, filtros y entradas de datos en una sola píldora táctil. Se suele ubicar dentro de tarjetas, filas o barras de acciones. · <em>Diez pares</em></p>
+      <p class="md-type-body-large">El chip ayuda a las personas a representar opciones, filtros y entradas de datos en una sola píldora táctil. Se suele ubicar dentro de tarjetas, filas o barras de acciones. · <em>Once pares</em></p>
     </header>
     <!-- HEADER: fin -->
 
@@ -127,8 +127,8 @@
 
     <!-- PAREJA: la clase base (h3 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h3 class="md-type-title-large">Clase base y anatomía</h3>
-      <p class="md-type-body-medium">El chip en su estado de partida: una píldora de 32dp, sin iconos, sin selección, con su borde de 1px y su texto alineado a la izquierda. Nada está marcado y el ancho depende solo del label.</p>
+      <h3 class="md-type-title-large">Anatomy</h3>
+      <p class="md-type-body-medium">Una píldora de 32dp con borde de 1px y ancho dinámico: el punto de partida de todas las variantes.</p>
       <div class="sr-specimen">
         <button type="button" class="md-chip">
           <span class="md-chip-label">Etiqueta</span>
@@ -143,8 +143,8 @@
 
     <!-- PAREJA: el chip set (h3 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h3 class="md-type-title-large">Chip set (Disposición y espaciado)</h3>
-      <p class="md-type-body-medium">El contenedor canónico de M3 organiza los chips en una fila flexible con wrap y 8dp de separación reglamentaria entre cada dos. Tres chips en reposo, todos con su borde de 1px y su texto alineado a la izquierda.</p>
+      <h3 class="md-type-title-large">Chip set</h3>
+      <p class="md-type-body-medium">La fila flexible canónica de M3: wrap y 8dp de separación entre chips.</p>
       <div class="sr-specimen">
         <div class="md-chip-set">
           <button type="button" class="md-chip">
@@ -175,8 +175,8 @@
 
     <!-- PAREJA: las superficies (h3 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h3 class="md-type-title-large">Superficies: Flat vs. Elevated</h3>
-      <p class="md-type-body-medium">En M3 la superficie no es decorativa, responde al contraste sobre el fondo. Flat (outlined): opción por defecto para fondos limpios y planos (surface); delimita mediante borde de 1px outline-variant sin sobrecargar la pantalla (ej. listas de comandas y pedidos). Elevated: diseñada para fondos complejos con ruido visual (fotografías de platos, degradados o tarjetas surface-container-high); su sombra de Nivel 1 despega el chip de la imagen garantizando legibilidad inmediata y evitando que se muela con el fondo. Ambas superficies comparten la misma anatomía e interactividad.</p>
+      <h3 class="md-type-title-large">Surfaces</h3>
+      <p class="md-type-body-medium">Flat (outlined) para fondos limpios: borde 1px outline-variant. Elevated para fondos con ruido visual: su sombra de Nivel 1 despega el chip del fondo.</p>
       <div class="sr-specimen">
         <div class="md-chip-set">
           <button type="button" class="md-chip">
@@ -202,7 +202,7 @@
     <!-- PAREJA: el assist chip (h3 + specimen + pre + boton). -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Assist chip</h3>
-      <p class="md-type-body-medium">Accion contextual inteligente sin estado de seleccion persistente: el chip trae su glifo de delante y su leyenda, y no guarda marca al marcarse. Tres ejemplos de asistente en su conjunto canonico.</p>
+      <p class="md-type-body-medium">Acción contextual sin estado de selección: glifo de delante y label, sin marca persistente.</p>
       <div class="sr-specimen">
         <div class="md-chip-set">
           <button type="button" class="md-chip">
@@ -239,8 +239,8 @@
 
     <!-- PAREJA: el filter chip (h3 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h3 class="md-type-title-large">Filter chip (Estados visuales)</h3>
-      <p class="md-type-body-medium">El chip de filtro admite dos estados visuales: no seleccionado, con borde de 1px y fondo transparente; y seleccionado, con fondo tiñido y el glifo check precediendo a la etiqueta. Ninguno guarda selección persistente sin el motor de interacción.</p>
+      <h3 class="md-type-title-large">Filter chip</h3>
+      <p class="md-type-body-medium">Dos estados visuales: reposo con borde y fondo transparente; seleccionado con fondo tiñido y glifo check.</p>
       <div class="sr-specimen">
         <div class="md-chip-set">
           <button type="button" class="md-chip" aria-selected="false">
@@ -268,7 +268,7 @@
     <!-- PAREJA: el input chip (h3 + specimen + pre + boton). -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Input chip</h3>
-      <p class="md-type-body-medium">El chip de entrada representa información asignada por la persona (etiquetas, modificadores de comanda) e incluye un botón de cierre para removerla. Cada chip lleva su label y el glifo close al final.</p>
+      <p class="md-type-body-medium">Información asignada por la persona, con botón de cierre para removerla. El glifo close lleva aria-label.</p>
       <div class="sr-specimen">
         <div class="md-chip-set">
           <div class="md-chip" role="button" tabindex="0">
@@ -310,7 +310,7 @@
     <!-- PAREJA: el suggestion chip (h3 + specimen + pre + boton). -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Suggestion chip</h3>
-      <p class="md-type-body-medium">El chip sugiere opciones predictivas o contextuales generadas por el sistema, sin estado de selección persistente. Tres sugerencias de restaurante en su conjunto canónico.</p>
+      <p class="md-type-body-medium">Opciones predictivas generadas por el sistema, sin selección persistente.</p>
       <div class="sr-specimen">
         <div class="md-chip-set">
           <button type="button" class="md-chip">
@@ -341,8 +341,8 @@
 
     <!-- PAREJA: el filter chip interactivo (h3 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h3 class="md-type-title-large">Filter chips interactivos (Multi-filter)</h3>
-      <p class="md-type-body-medium">Los filtros de M3 son toggles individuales: cada chip conmuta su propio estado sin afectar al resto del grupo. La seleccion mutuamente exclusiva queda reservada al Segmented Button.</p>
+      <h3 class="md-type-title-large">Interactive filter</h3>
+      <p class="md-type-body-medium">Toggles individuales: cada chip conmuta su propio estado sin afectar al resto del grupo.</p>
       <div class="sr-specimen">
         <div class="md-chip-set" data-chip-filter-group>
           <button type="button" class="md-chip md-chip-selected" aria-selected="true">
@@ -381,8 +381,8 @@
 
     <!-- PAREJA: el input chip interactivo (h3 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h3 class="md-type-title-large">Input chips interactivos (Remoción dinámica)</h3>
-      <p class="md-type-body-medium">Cada chip de entrada incluye un botón de cierre para removerla. Al hacer clic en el cierre, el chip desaparece del conjunto y el foco se reubica en el chip adyacente.</p>
+      <h3 class="md-type-title-large">Interactive input</h3>
+      <p class="md-type-body-medium">El botón de cierre remueve el chip del conjunto y el foco pasa al chip adyacente.</p>
       <div class="sr-specimen">
         <div class="md-chip-set" data-chip-input-group>
           <div class="md-chip" role="button" tabindex="0">
@@ -425,8 +425,8 @@
 
     <!-- PAREJA: el interactive states (h3 + specimen + pre + boton). -->
     <section class="sr-section">
-      <h3 class="md-type-title-large">Interactive states (Estados de interacción)</h3>
-      <p class="md-type-body-medium">Las interacciones de M3 no alteran el color base del chip: una capa con currentColor se funde al pasar el ratón, al pulsar y al enfocar con teclado. El estado deshabilitado baja la opacidad de todo el conjunto y la variante elevada pierde su sombra.</p>
+      <h3 class="md-type-title-large">States</h3>
+      <p class="md-type-body-medium">Reposo, seleccionado y los dos disabled. El disabled baja la opacidad del conjunto al 38% y pierde los eventos.</p>
       <div class="sr-specimen">
         <div class="md-chip-set">
           <button type="button" class="md-chip">
@@ -457,6 +457,48 @@
     &lt;span class="md-chip-label"&gt;Deshabilitado&lt;/span&gt;
   &lt;/button&gt;
   &lt;button type="button" class="md-chip md-chip-selected" aria-selected="true" disabled&gt;
+    &lt;span class="md-icon md-icon-wght-light" aria-hidden="true"&gt;check&lt;/span&gt;
+    &lt;span class="md-chip-label"&gt;Deshabilitado selec.&lt;/span&gt;
+  &lt;/button&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: el elevated states (h3 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Elevated states</h3>
+      <p class="md-type-body-medium">Los mismos estados sobre la superficie elevada: sombra de Nivel 1 en reposo y sin sombra en disabled.</p>
+      <div class="sr-specimen">
+        <div class="md-chip-set">
+          <button type="button" class="md-chip md-chip-elevated">
+            <span class="md-chip-label">Reposo</span>
+          </button>
+          <button type="button" class="md-chip md-chip-elevated md-chip-selected" aria-selected="true">
+            <span class="md-icon md-icon-wght-light" aria-hidden="true">check</span>
+            <span class="md-chip-label">Seleccionado</span>
+          </button>
+          <button type="button" class="md-chip md-chip-elevated" disabled>
+            <span class="md-chip-label">Deshabilitado</span>
+          </button>
+          <button type="button" class="md-chip md-chip-elevated md-chip-selected" aria-selected="true" disabled>
+            <span class="md-icon md-icon-wght-light" aria-hidden="true">check</span>
+            <span class="md-chip-label">Deshabilitado selec.</span>
+          </button>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-chip-set"&gt;
+  &lt;button type="button" class="md-chip md-chip-elevated"&gt;
+    &lt;span class="md-chip-label"&gt;Reposo&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-chip md-chip-elevated md-chip-selected" aria-selected="true"&gt;
+    &lt;span class="md-icon md-icon-wght-light" aria-hidden="true"&gt;check&lt;/span&gt;
+    &lt;span class="md-chip-label"&gt;Seleccionado&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-chip md-chip-elevated" disabled&gt;
+    &lt;span class="md-chip-label"&gt;Deshabilitado&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-chip md-chip-elevated md-chip-selected" aria-selected="true" disabled&gt;
     &lt;span class="md-icon md-icon-wght-light" aria-hidden="true"&gt;check&lt;/span&gt;
     &lt;span class="md-chip-label"&gt;Deshabilitado selec.&lt;/span&gt;
   &lt;/button&gt;
