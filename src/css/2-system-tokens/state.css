@@ -131,6 +131,19 @@
      La primitiva la declara la card; el outlined es el que la va a leer. */
   --md-sys-state-disabled-outline-opacity: var(--md-ref-opacity-12);
 
+  /* 12% — el CONTENEDOR deshabilitado del icon-button CON relleno (filled y
+     tonal). Es el canon propio del icon-button en @material/web:
+     `disabled-container-opacity: 0.12` en filled-icon-button y
+     filled-tonal-icon-button, un valor que no es el 0.10 del boton filled
+     (role de arriba).
+
+     La primitiva es la misma del borde (12%), pero el rol no: el borde es
+     perimetro y esto es relleno neutro tenue. Lo consume
+     3-components/icon-button.css con colores relativos
+     (`rgb(from ... r g b / ...)`) para tenir `on-surface` y dibujar el
+     circulo neutro del disabled sin lavar el glifo. */
+  --md-sys-state-icon-button-disabled-container-opacity: var(--md-ref-opacity-12);
+
   /* 32% — el SCRIM. Y este rol es el unico de este archivo que NO es un estado.
 
      Es el velo que oscurece el fondo detras de un dialogo o un menu. Lo

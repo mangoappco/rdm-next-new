@@ -50,7 +50,8 @@
    COLORES (tokens/versions/v0_192)
       icono               on-surface-variant
       seleccionado        primary (solo en standard)
-      deshabilitado       on-surface al 38%
+      deshabilitado       on-surface: glifo al 38% en todas las variantes,
+                          y contenedor neutro al 12% en filled y tonal
       capa de estado      inset 0 (toma el tamano del contenedor), corner-full
 
    TOGGLE: COLORES SELECCIONADO VS UNSELECCIONADO (tokens/versions/latest,
@@ -357,25 +358,68 @@
 /* ---------------------------------------------------------------------------
    DISABLED
    ---------------------------------------------------------------------------
-   M3 baja el icono a on-surface al 38%, sin capa de estado. pointer-events
-   para que no responda aunque se vea.
+   Canon de @material/web, en DOS capas que nunca comparten ni valor ni
+   elemento:
 
-   OJO CON EL SELECTOR DOBLE, QUE NO ES REDUNDANTE. `.md-icon-button:
-   disabled` llega con (0,1,1) y el glifo de las variantes con relleno lo
-   pinta `.md-icon-button-filled .md-icon-button-icon`, que es (0,2,0) y le
-   gana. Sin la segunda parte del selector el host se ponia en on-surface
-   y el glifo seguia en on-primary: medido, un glifo blanco al 38% sobre
-   fondo claro, casi invisible. Con `.md-icon-button:disabled .md-icon-
-   button-icon` sube a (0,3,0) y alcanza al glifo. Quitar la mitad del
-   selector se vuelve al fallo en silencio.
+      contenedor   on-surface al 12%: un circulo neutro tenue, SOLO en las
+                   variantes con relleno (filled y tonal). El 12% es el rol
+                   --md-sys-state-icon-button-disabled-container-opacity,
+                   valor propio del icon-button que no es el 10% del boton
+                   filled; vive en 2-system-tokens/state.css.
+      icono        on-surface al 38% (--md-sys-state-disabled-state-layer-
+                   opacity), en TODAS las variantes: es contenido, no relleno.
+
+   POR QUE EL 38% NO PUEDE SER UNA `opacity` DEL HOST: lavaria el fondo de
+   marca de filled y tonal (un primary al 38% ya no leeria como nada) y
+   arrastraria el glifo blanco consigo. El 38% baja al glifo con `color`
+   y `opacity`, y el contenedor se repinta neutro: dos decisiones que el
+   boton resuelve con `::before` y aqui resuelve con `color-mix`, porque
+   el relleno vive en el host.
+
+   LA REGLA REAPUNTA EL COMP TOKEN, no a `background-color` directo: la
+   base pinta `background-color: var(--md-comp-icon-button-container-
+   color)`, y reapuntar el comp token hace que el repintado pase por la
+   transicion de la base. El tinte se escribe con colores relativos; ver
+   EL RELLENO NEUTRO, en la regla.
+
+   OJO CON EL SELECTOR QUE TEÑE EL GLIFO, QUE NO ES REDUNDANTE. El glifo
+   de las variantes con relleno lo pinta `.md-icon-button-filled .md-
+   icon-button-icon`, que es (0,2,0) y gana a cualquier regla del host.
+   `.md-icon-button:disabled .md-icon-button-icon` sube a (0,3,0) y lo
+   alcanza: sin el, el glifo blanco de filled seguia en on-primary sobre
+   el fondo neutro y desaparecia.
+
+   Elevacion vuelve a level0 (M3 no declara sombra en disabled) y
+   `pointer-events: none` para que no responda aunque se vea.
    ------------------------------------------------------------------------ */
 
-.md-icon-button:disabled,
+.md-icon-button:disabled {
+  --md-comp-icon-button-elevation: var(--md-sys-elevation-level0);
+  cursor: default;
+  pointer-events: none;
+}
+
+/* El 38% va en el glifo, no en el host: el relleno de marca no se lava. */
 .md-icon-button:disabled .md-icon-button-icon {
   color: var(--md-sys-color-on-surface);
   opacity: var(--md-sys-state-disabled-state-layer-opacity);
-  cursor: default;
-  pointer-events: none;
+}
+
+/* El circulo neutro de 12%: SOLO filled y tonal. Standard no declara
+   relleno y outlined conserva su contorno; en los dos el disabled vive
+   en el glifo. */
+/* EL RELLENO NEUTRO SE ESCRIBE CON COLORES RELATIVOS, NO CON COLOR-MIX.
+   La opacidad entra por token y es un NUMERO (0.12). Chrome no acepta un
+   `<number>` donde color-mix pide el porcentaje --con `red 0.12` la
+   declaracion es invalida y el fondo cae a transparente, medido--, y el
+   `12%` literal esta prohibido por REGLA 1 fuera de 1-reference-tokens.
+   `rgb(from ... r g b / alpha)` si acepta el numero por token y produce
+   exactamente el mismo color: on-surface con su canal alfa al 12%. */
+.md-icon-button-filled:disabled,
+.md-icon-button-tonal:disabled {
+  --md-comp-icon-button-container-color: rgb(from
+    var(--md-sys-color-on-surface) r g b /
+    var(--md-sys-state-icon-button-disabled-container-opacity));
 }
 
 /* ---------------------------------------------------------------------------
@@ -613,7 +657,8 @@
    con sus estados de interaccion.
 
    DISABLED GANA. Un toggle seleccionado y disabled se ve igual que un
-   disabled normal (glifo on-surface al 38%, sin capa de estado), y el
+   disabled normal (glifo on-surface al 38%, contenedor neutro al 12%
+   en filled y tonal, sin capa de estado), y el
    que no lo esta TAMBIEN: el disabled no presenta el chrome del toggle
    muestre el estado que muestre por debajo. Por eso TODAS las reglas de
    abajo --color y forma-- llevan `:not(:disabled)`: un disabled se
@@ -829,7 +874,8 @@
     border: var(--md-sys-shape-stroke-thin) solid CanvasText;
   }
 
-  .md-icon-button:disabled {
+  .md-icon-button:disabled,
+  .md-icon-button:disabled .md-icon-button-icon {
     color: GrayText;
     opacity: 1;
   }
