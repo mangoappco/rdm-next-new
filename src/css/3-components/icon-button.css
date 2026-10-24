@@ -60,11 +60,8 @@
       standard              on-surface-variant    primary; container transparent
       filled                primary          primary sobre primary
                             sobre surface-container-highest
-      tonal                 on-surface-variant    on-secondary-container
-                            sobre surface-        sobre secondary-container
-                            container-highest     (reposo del tonal: la
-                            (glifo relleno,       variante de siempre)
-                            FILL 1)
+      tonal                 secondary          secondary sobre secondary
+                            sobre secondary-container
       outlined              on-surface-variant    inverse-on-surface sobre
                             sobre outline-variant  inverse-surface
 
@@ -637,7 +634,7 @@
        unselected            selected
        standard    transparent + on-surface-variant    transparent + primary
        filled      surface-container-highest + primary   primary + on-primary
-       tonal       surface-container-highest + on-surface-variant   secondary-container + on-secondary-container
+        tonal       secondary-container + secondary   secondary + on-secondary
        outlined    transparent + outline-variant    inverse-surface + inverse-on-surface
 
     El 'FILL' del glifo NO entra en la tabla porque no es un color: va por
@@ -740,26 +737,29 @@
   --md-comp-icon-button-icon-color: var(--md-sys-color-primary);
 }
 
-/* Tonal: el toggle SIN seleccionar. El unselected del toggle tonal es el
-   lienzo neutro por encima de todo: surface-container-highest con glifo
-   on-surface-variant, el mismo gesto que el filled lleva a surface-
-   container. El glifo va relleno (FILL 1): la regla del contorno de
-   arriba excluye a esta variante por nombre, y la base ya es relleno.
+/* Tonal: el toggle SIN seleccionar. Canon M3 (tabla oficial de specs):
+   container = secondary-container, icono = secondary, glifo relleno (FILL 1),
+   forma corner-full (circulo). Los tokens resuelven a #E8DEF8 + #4A4458
+   en tema claro, y se adaptan en oscuro. La regla del contorno de arriba
+   excluye a esta variante por nombre, y la base ya es relleno.
    Sin disabled: DISABLED GANA. */
 .md-icon-button-tonal[aria-pressed="false"]:not(:disabled) {
-  --md-comp-icon-button-container-color: var(--md-sys-color-surface-container-highest);
-  --md-comp-icon-button-icon-color: var(--md-sys-color-on-surface-variant);
+  --md-comp-icon-button-container-color: var(--md-sys-color-secondary-container);
+  --md-comp-icon-button-icon-color: var(--md-sys-color-secondary);
   font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
   border-radius: var(--md-sys-shape-corner-full);
 }
 
 /* Y al seleccionar vuelve el tonal DE SIEMPRE: la base de la variante
-   (secondary-container + on-secondary-container). El selected del tonal
-   toggle no inventa un tercer color: repone la variante. Sin disabled:
+   segun la tabla oficial de M3: container = secondary, icono = on-secondary,
+   glifo relleno (FILL 1), forma corner-medium (12px morph). Los tokens
+   resuelven a #625B71 + #FFFFFF en tema claro, y se adaptan en oscuro.
+   El selected del tonal toggle no inventa un tercer color: usa el rol
+   secondary para el contenedor y on-secondary para el glifo. Sin disabled:
    DISABLED GANA. */
 .md-icon-button-tonal[aria-pressed="true"]:not(:disabled) {
-  --md-comp-icon-button-container-color: var(--md-sys-color-secondary-container);
-  --md-comp-icon-button-icon-color: var(--md-sys-color-on-secondary-container);
+  --md-comp-icon-button-container-color: var(--md-sys-color-secondary);
+  --md-comp-icon-button-icon-color: var(--md-sys-color-on-secondary);
   font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
   border-radius: var(--md-sys-shape-corner-medium);
 }
