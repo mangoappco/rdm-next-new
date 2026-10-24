@@ -60,8 +60,11 @@
       standard              on-surface-variant    primary; container transparent
       filled                on-surface-variant    on-primary sobre primary
                             sobre surface-container
-      tonal                 on-secondary-container on-secondary sobre secondary
-                            sobre secondary-container
+      tonal                 on-surface-variant    on-secondary-container
+                            sobre surface-        sobre secondary-container
+                            container-highest     (reposo del tonal: la
+                            (glifo relleno,       variante de siempre)
+                            FILL 1)
       outlined              on-surface-variant    inverse-on-surface sobre
                             sobre outline-variant  inverse-surface
 
@@ -634,8 +637,13 @@
        unselected            selected
        standard    transparent + on-surface-variant    transparent + primary
        filled      surface-container + on-surface-variant   primary + on-primary
-       tonal       secondary-container + on-secondary-container    secondary + on-secondary
+       tonal       surface-container-highest + on-surface-variant   secondary-container + on-secondary-container
        outlined    transparent + outline-variant    inverse-surface + inverse-on-surface
+
+    El 'FILL' del glifo NO entra en la tabla porque no es un color: va por
+    el token --md-sys-icon-fill (regla de arriba). Canon: relleno en la
+    base y en todos los seleccionados; contorno SOLO en el reposo de las
+    variantes sin contenedor solido (standard y outlined).
 
    TRES HECHOS que el marcado aprovecha y que conviene no perder:
 
@@ -694,17 +702,24 @@
    y SOLO el toggle sin marcar sale del relleno hacia el contorno con el
    token del extremo, el mismo gesto que hace .md-icon-filled en
    utilities. El seleccionado no lleva regla: vuelve a la base, como en el
-   button. Una regla comun para las cuatro variantes: el eje FILL no
-   depende de la variante, depende del estado. Con :not(:disabled) como el
-   resto de la seccion: DISABLED GANA y el toggle deshabilitado se queda
-   con el chrome de su variante en reposo, hablando en relleno. Y de nuevo
-   por token, NO con font-variation-settings: .md-icon en utilities
-   ganaria siempre, y tocar la propiedad entera apagaria el GRAD del
-   tema. (El selector va por `[aria-pressed]` y no por
-   `[aria-pressed="false"]`: el motor lee el atributo ausente como
-   desactivado, y la regla cubre el mismo caso sin la suposicion de que el
-   autor escribio el valor -- aunque la regla de marcado es escribirlo.) */
-.md-icon-button[aria-pressed]:not([aria-pressed="true"]):not(:disabled) {
+   button.
+
+   EL CONTORNO NO ES PARA TODAS LAS VARIANTES. Canon de M3: el glifo
+   hueco en reposo es de las variantes SIN contenedor solido --standard
+   y outlined--, alli el unico documento del toggle es el glifo y por eso
+   es contorno. Las variantes CON contenedor solido (filled y tonal)
+   llevan el glifo relleno en los DOS estados: su segunda senal es el
+   PAR DE COLORES del contenedor (surface-container ->
+   surface-container-highest... ver las reglas de abajo), y un glifo
+   hueco sobre un contenedor solido pierde la silueta. Por eso el
+   selector excluye filled y tonal por nombre.
+
+   Con :not(:disabled) como el resto de la seccion: DISABLED GANA y el
+   toggle deshabilitado se queda con el chrome de su variante en reposo,
+   hablando en relleno. Y de nuevo por token, NO con
+   font-variation-settings: .md-icon en utilities ganaria siempre, y
+   tocar la propiedad entera apagaria el GRAD del tema. */
+.md-icon-button:not(.md-icon-button-filled):not(.md-icon-button-tonal)[aria-pressed="false"]:not(:disabled) {
   --md-sys-icon-fill: var(--md-sys-icon-fill-none);
 }
 
@@ -723,9 +738,24 @@
   --md-comp-icon-button-icon-color: var(--md-sys-color-on-surface-variant);
 }
 
+/* Tonal: el toggle SIN seleccionar. El unselected del toggle tonal es el
+   lienzo neutro por encima de todo: surface-container-highest con glifo
+   on-surface-variant, el mismo gesto que el filled lleva a surface-
+   container. El glifo va relleno (FILL 1): la regla del contorno de
+   arriba excluye a esta variante por nombre, y la base ya es relleno.
+   Sin disabled: DISABLED GANA. */
+.md-icon-button-tonal[aria-pressed="false"]:not(:disabled) {
+  --md-comp-icon-button-container-color: var(--md-sys-color-surface-container-highest);
+  --md-comp-icon-button-icon-color: var(--md-sys-color-on-surface-variant);
+}
+
+/* Y al seleccionar vuelve el tonal DE SIEMPRE: la base de la variante
+   (secondary-container + on-secondary-container). El selected del tonal
+   toggle no inventa un tercer color: repone la variante. Sin disabled:
+   DISABLED GANA. */
 .md-icon-button-tonal[aria-pressed="true"]:not(:disabled) {
-  --md-comp-icon-button-container-color: var(--md-sys-color-secondary);
-  --md-comp-icon-button-icon-color: var(--md-sys-color-on-secondary);
+  --md-comp-icon-button-container-color: var(--md-sys-color-secondary-container);
+  --md-comp-icon-button-icon-color: var(--md-sys-color-on-secondary-container);
 }
 
 .md-icon-button-outlined[aria-pressed="true"]:not(:disabled) {
