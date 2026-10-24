@@ -25,18 +25,23 @@
   4. El boton va justo despues de su <pre>: copia ese bloque y ningun otro.
   5. No anidar .sr-specimen dentro de otro: REGLA 11 no lo soporta.
 
-  LO QUE ESTA VISTA YA NO DICE, Y POR QUE
-  ---------------------------------------
-  Esta vista teve cinco pares mas: cuatro "Default y toggle" y uno "Etiqueta
-  del toggle". Se quitaron porque ManGo! App no usa botones conmutables, ni de
-  icono ni de texto. El componente tampoco los expone: no existe
-  .md-icon-button-toggle ni regla que lea [aria-pressed].
+  LO QUE ESTA VISTA YA NO DECIA, Y LO QUE VOLVIO
+  ---------------------------------------------
+  Esta vista tuvo cinco pares menos: cuatro "Default y toggle" y uno "Etiqueta
+  del toggle". Se quitaron cuando el componente dejo de leer [aria-pressed].
 
-  Consecuencia que conviene no perder: si algum dia hace falta, hay que
-  reconstruir el eje entero, no solo las clases. Los tokens de "no
-  seleccionado" son por variante y no coinciden con los de la variante, y el
-  glifo arranca contorneado en vez de relleno. Ese segundo detalle es el que
-  separa un toggle de un boton de accion a simple vista.
+  UPDATE 2026-10-18: el estado seleccionado volvio POR COLOR, y con él. Cuatro
+  pares nuevos "Toggle <variante>" mas el par "Toggle group": el gancho es
+  data-toggle + aria-pressed y el conmutador vive en src/js/toggle.js. El
+  eje FILL no conmuta con el toggle (glifo siempre relleno, desviacion
+  documentada en el componente), y la inversion de forma sigue tal cual:
+  round seleccionado toma la forma square de su tamano y al reves.
+
+  UPDATE 2026-10-18 (segundo): un par mas, "Toggle square", porque la vista
+  documentaba la forma round pero no la square, y sin el par el morph de la
+  inversion no se podia ver en la direccion square -> round. Ese par tambien
+  es el que expone que el morph existe: la inversion de forma se anima con
+  spatial + long2, en los dos sentidos.
 
   TAMBIEN SE FUE EL PAR "Fab", Y ESTA VEZ PORQUE AHORA ES UN COMPONENTE.
   Estuvo aqui como receta: icono-button con forma cuadrada y
@@ -59,7 +64,7 @@
         <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
       </div>
       <h1 class="md-type-display-large">Icon button</h1>
-      <p class="md-type-body-large">Los botones de icono permiten realizar acciones con un solo toque. · <em>Diez pares</em></p>
+      <p class="md-type-body-large">Los botones de icono permiten realizar acciones con un solo toque. · <em>Dieciséis pares</em></p>
     </header>
     <!-- HEADER: fin -->
 
@@ -159,6 +164,20 @@
     </section>
     <!-- PAREJA: hasta aqui -->
 
+    <!-- PAREJA: toggle filled (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Toggle filled</h3>
+      <p class="md-type-body-medium">Del toggle sin marcar al marcado, al revés que el filled del button: sin marcar lleva surface-container, y el marcado es el filled de siempre. Los atributos del autor son data-toggle y aria-pressed.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" data-toggle aria-pressed="false" aria-label="Guardar"><span class="md-icon-button-icon md-icon" aria-hidden="true">bookmark</span><span class="md-icon-button-touch"></span></button>
+        <button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" data-toggle aria-pressed="true" aria-label="Guardar"><span class="md-icon-button-icon md-icon" aria-hidden="true">bookmark</span><span class="md-icon-button-touch"></span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" data-toggle aria-pressed="false" aria-label="Guardar"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;bookmark&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" data-toggle aria-pressed="true" aria-label="Guardar"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;bookmark&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
     <!-- PAREJA: estados tonal (h2 + specimen + pre + boton). -->
     <section class="sr-section">
       <h3 class="md-type-title-large">States tonal</h3>
@@ -169,6 +188,20 @@
       </div>
       <pre class="sr-code"><code>&lt;button class="md-icon-button md-icon-button-tonal md-icon-button-small" type="button" aria-label="Eliminar"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
 &lt;button class="md-icon-button md-icon-button-tonal md-icon-button-small" type="button" aria-label="Eliminar" disabled&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: toggle tonal (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Toggle tonal</h3>
+      <p class="md-type-body-medium">Del toggle sin marcar al marcado: de secondary-container a secondary; el glifo toma on-secondary por currentColor, sin ninguna regla propia.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-icon-button md-icon-button-tonal md-icon-button-small" type="button" data-toggle aria-pressed="false" aria-label="Guardar"><span class="md-icon-button-icon md-icon" aria-hidden="true">bookmark</span><span class="md-icon-button-touch"></span></button>
+        <button class="md-icon-button md-icon-button-tonal md-icon-button-small" type="button" data-toggle aria-pressed="true" aria-label="Guardar"><span class="md-icon-button-icon md-icon" aria-hidden="true">bookmark</span><span class="md-icon-button-touch"></span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-icon-button md-icon-button-tonal md-icon-button-small" type="button" data-toggle aria-pressed="false" aria-label="Guardar"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;bookmark&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-icon-button md-icon-button-tonal md-icon-button-small" type="button" data-toggle aria-pressed="true" aria-label="Guardar"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;bookmark&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
     <!-- PAREJA: hasta aqui -->
@@ -187,6 +220,20 @@
     </section>
     <!-- PAREJA: hasta aqui -->
 
+    <!-- PAREJA: toggle outlined (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Toggle outlined</h3>
+      <p class="md-type-body-medium">Del toggle sin marcar al marcado: la inversión del lienzo, inverse-surface con inverse-on-surface; el borde outline-variant no cambia.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-icon-button md-icon-button-outlined md-icon-button-small" type="button" data-toggle aria-pressed="false" aria-label="Guardar"><span class="md-icon-button-icon md-icon" aria-hidden="true">bookmark</span><span class="md-icon-button-touch"></span></button>
+        <button class="md-icon-button md-icon-button-outlined md-icon-button-small" type="button" data-toggle aria-pressed="true" aria-label="Guardar"><span class="md-icon-button-icon md-icon" aria-hidden="true">bookmark</span><span class="md-icon-button-touch"></span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-icon-button md-icon-button-outlined md-icon-button-small" type="button" data-toggle aria-pressed="false" aria-label="Guardar"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;bookmark&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-icon-button md-icon-button-outlined md-icon-button-small" type="button" data-toggle aria-pressed="true" aria-label="Guardar"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;bookmark&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
     <!-- PAREJA: estados standard (h2 + specimen + pre + boton). -->
     <section class="sr-section">
       <h3 class="md-type-title-large">States standard</h3>
@@ -197,6 +244,52 @@
       </div>
       <pre class="sr-code"><code>&lt;button class="md-icon-button md-icon-button-standard md-icon-button-small" type="button" aria-label="Eliminar"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
 &lt;button class="md-icon-button md-icon-button-standard md-icon-button-small" type="button" aria-label="Eliminar" disabled&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: toggle standard (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Toggle standard</h3>
+      <p class="md-type-body-medium">Del toggle sin marcar al marcado: el contenedor no cambia, porque el standard no declara uno seleccionado; solo el glifo pasa de on-surface-variant a primary.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-icon-button md-icon-button-standard md-icon-button-small" type="button" data-toggle aria-pressed="false" aria-label="Guardar"><span class="md-icon-button-icon md-icon" aria-hidden="true">bookmark</span><span class="md-icon-button-touch"></span></button>
+        <button class="md-icon-button md-icon-button-standard md-icon-button-small" type="button" data-toggle aria-pressed="true" aria-label="Guardar"><span class="md-icon-button-icon md-icon" aria-hidden="true">bookmark</span><span class="md-icon-button-touch"></span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-icon-button md-icon-button-standard md-icon-button-small" type="button" data-toggle aria-pressed="false" aria-label="Guardar"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;bookmark&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-icon-button md-icon-button-standard md-icon-button-small" type="button" data-toggle aria-pressed="true" aria-label="Guardar"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;bookmark&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: toggle square (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Toggle square</h3>
+      <p class="md-type-body-medium">La inversión al revés que el round: con md-icon-button-square el seleccionado se vuelve redondo. Haz clic en cualquiera de los dos y míralo en los dos sentidos.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <button class="md-icon-button md-icon-button-filled md-icon-button-square md-icon-button-small" type="button" data-toggle aria-pressed="false" aria-label="Guardar"><span class="md-icon-button-icon md-icon" aria-hidden="true">bookmark</span><span class="md-icon-button-touch"></span></button>
+        <button class="md-icon-button md-icon-button-filled md-icon-button-square md-icon-button-small" type="button" data-toggle aria-pressed="true" aria-label="Guardar"><span class="md-icon-button-icon md-icon" aria-hidden="true">bookmark</span><span class="md-icon-button-touch"></span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;button class="md-icon-button md-icon-button-filled md-icon-button-square md-icon-button-small" type="button" data-toggle aria-pressed="false" aria-label="Guardar"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;bookmark&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;button class="md-icon-button md-icon-button-filled md-icon-button-square md-icon-button-small" type="button" data-toggle aria-pressed="true" aria-label="Guardar"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;bookmark&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: toggle group (h2 + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Toggle group</h3>
+      <p class="md-type-body-medium">Selección exclusiva con data-toggle-group en el contenedor: el clic en el activo no desmarca nunca. El estado inicial lo pone el autor en el marcado.</p>
+      <div class="sr-specimen sr-specimen-gap" data-toggle-group>
+        <button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" data-toggle aria-pressed="true" aria-label="Guardar"><span class="md-icon-button-icon md-icon" aria-hidden="true">bookmark</span><span class="md-icon-button-touch"></span></button>
+        <button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" data-toggle aria-pressed="false" aria-label="Guardar"><span class="md-icon-button-icon md-icon" aria-hidden="true">bookmark</span><span class="md-icon-button-touch"></span></button>
+        <button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" data-toggle aria-pressed="false" aria-label="Guardar"><span class="md-icon-button-icon md-icon" aria-hidden="true">bookmark</span><span class="md-icon-button-touch"></span></button>
+      </div>
+      <pre class="sr-code"><code>&lt;div data-toggle-group&gt;
+  &lt;button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" data-toggle aria-pressed="true" aria-label="Guardar"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;bookmark&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+  &lt;button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" data-toggle aria-pressed="false" aria-label="Guardar"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;bookmark&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+  &lt;button class="md-icon-button md-icon-button-filled md-icon-button-small" type="button" data-toggle aria-pressed="false" aria-label="Guardar"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;bookmark&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
     <!-- PAREJA: hasta aqui -->
