@@ -128,6 +128,7 @@
     padding: var(--md-ref-spacing-300);
     background-color: var(--md-sys-color-surface-container);
     border-radius: var(--md-sys-shape-corner-medium);
+    --md-text-field-surface: var(--md-sys-color-surface-container);
   }
 
   /* Aire entre ejemplos del mismo specimen (botones en fila): opt-in por

@@ -1056,8 +1056,16 @@
   --md-sys-measurement-space-100: var(--md-ref-spacing-100);
   --md-sys-measurement-space-150: var(--md-ref-spacing-150);
   --md-sys-measurement-space-200: var(--md-ref-spacing-200);
+  --md-sys-measurement-space-250: var(--md-ref-spacing-250); /* 20dp */
   --md-sys-measurement-space-300: var(--md-ref-spacing-300);
   --md-sys-measurement-space-400: var(--md-ref-spacing-400);
+  --md-sys-measurement-space-500: var(--md-ref-spacing-500); /* 40dp */
+
+  /* --------------------------------------------------------------------------
+     TEXT FIELD -- Altura de contenedor densa y multilínea
+     -------------------------------------------------------------------------- */
+  --md-sys-measurement-text-field-container-height-dense: var(--md-ref-spacing-600); /* 48dp */
+  --md-sys-measurement-text-field-textarea-min-height: calc(var(--md-sys-measurement-text-field-container-height) + var(--md-sys-measurement-space-500)); /* 96dp */
 }
 
 /* Las clases utilitarias de esta familia se mudaron a 4-utilities/ en la auditoria M3:

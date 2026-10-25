@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="utf-8">
@@ -76,8 +76,11 @@
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
+    <!-- PAR 1: hasta aqui -->
 
-    <!-- PAR 2: Icon slots (Leading + Trailing) -->
+    <hr class="md-divider">
+
+    <!-- PAREJA 2: Icon slots (Leading + Trailing) -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Par 2 · Icon slots (Leading + Trailing)</h3>
       <p class="md-type-body-medium">Campo Outlined con iconos leading (search) y trailing (tune) contextuales. Padding lateral 12dp (space-150) con iconos, gap icono-texto 16dp (space-200). Label se reposiciona a 52dp (12+24+16). Iconos cambian a color primary en focus y error en estado de error.</p>
@@ -196,6 +199,182 @@
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
     <!-- PAR 4: hasta aqui -->
+
+    <!-- PAR 5: Disabled state -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Par 5 · Disabled state</h3>
+      <p class="md-type-body-medium">Outlined y Filled deshabilitados con opacidad 38% en contenido (gobernado por :has()), outline 12% (Outlined), fondo 10% (Filled), active indicator 38%. Cursor not-allowed, pointer-events none. Iconos simétricos (search + tune) en ambas variantes.</p>
+
+      <div class="sr-specimen sr-specimen-gap">
+        <div class="md-text-field md-text-field-outlined">
+          <div class="md-text-field-container">
+            <span class="md-text-field-leading-icon" aria-hidden="true">
+              <span class="md-icon">search</span>
+            </span>
+            <input type="text" class="md-text-field-input" id="tf-outlined-disabled" placeholder=" " aria-describedby="tf-outlined-disabled-supporting" disabled value="Solo lectura">
+            <label class="md-text-field-label" for="tf-outlined-disabled">Buscar productos</label>
+            <span class="md-text-field-outline" aria-hidden="true"></span>
+            <span class="md-text-field-trailing-icon" aria-hidden="true">
+              <span class="md-icon">tune</span>
+            </span>
+          </div>
+          <span class="md-text-field-supporting-text" id="tf-outlined-disabled-supporting">Campo deshabilitado</span>
+        </div>
+
+        <div class="md-text-field md-text-field-filled">
+          <div class="md-text-field-container">
+            <span class="md-text-field-leading-icon" aria-hidden="true">
+              <span class="md-icon">search</span>
+            </span>
+            <input type="text" class="md-text-field-input" id="tf-filled-disabled" placeholder=" " aria-describedby="tf-filled-disabled-supporting" disabled value="Solo lectura">
+            <label class="md-text-field-label" for="tf-filled-disabled">Buscar productos</label>
+            <span class="md-text-field-trailing-icon" aria-hidden="true">
+              <span class="md-icon">tune</span>
+            </span>
+            <span class="md-text-field-outline" aria-hidden="true"></span>
+          </div>
+          <span class="md-text-field-supporting-text" id="tf-filled-disabled-supporting">Campo deshabilitado</span>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;div class="md-text-field md-text-field-outlined"&gt;
+  &lt;div class="md-text-field-container"&gt;
+    &lt;span class="md-text-field-leading-icon" aria-hidden="true"&gt;
+      &lt;span class="md-icon"&gt;search&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;input type="text" class="md-text-field-input" id="tf-outlined-disabled" placeholder=" " aria-describedby="tf-outlined-disabled-supporting" disabled value="Solo lectura"&gt;
+    &lt;label class="md-text-field-label" for="tf-outlined-disabled"&gt;Buscar productos&lt;/label&gt;
+    &lt;span class="md-text-field-outline" aria-hidden="true"&gt;&lt;/span&gt;
+    &lt;span class="md-text-field-trailing-icon" aria-hidden="true"&gt;
+      &lt;span class="md-icon"&gt;tune&lt;/span&gt;
+    &lt;/span&gt;
+  &lt;/div&gt;
+  &lt;span class="md-text-field-supporting-text" id="tf-outlined-disabled-supporting"&gt;Campo deshabilitado&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;div class="md-text-field md-text-field-filled"&gt;
+  &lt;div class="md-text-field-container"&gt;
+    &lt;span class="md-text-field-leading-icon" aria-hidden="true"&gt;
+      &lt;span class="md-icon"&gt;search&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;input type="text" class="md-text-field-input" id="tf-filled-disabled" placeholder=" " aria-describedby="tf-filled-disabled-supporting" disabled value="Solo lectura"&gt;
+    &lt;label class="md-text-field-label" for="tf-filled-disabled"&gt;Buscar productos&lt;/label&gt;
+    &lt;span class="md-text-field-trailing-icon" aria-hidden="true"&gt;
+      &lt;span class="md-icon"&gt;tune&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;span class="md-text-field-outline" aria-hidden="true"&gt;&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;span class="md-text-field-supporting-text" id="tf-filled-disabled-supporting"&gt;Campo deshabilitado&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAR 5: hasta aqui -->
+
+    <hr class="md-divider">
+
+    <!-- PAR 6: Dense variant -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Par 6 · Dense variant</h3>
+      <p class="md-type-body-medium">Variante densa (48dp) de Text Field. Paso -2 de densidad M3 (48dp touch target) conservando tipografía body-medium (14px) para legibilidad. Iconos a 20dp (space-250). Ambas variantes en Outlined y Filled.</p>
+
+      <div class="sr-specimen sr-specimen-gap">
+        <div class="md-text-field md-text-field-outlined md-text-field-dense">
+          <div class="md-text-field-container">
+            <input type="text" class="md-text-field-input" id="tf-dense-outlined" placeholder=" " aria-describedby="tf-dense-outlined-supporting">
+            <label class="md-text-field-label" for="tf-dense-outlined">Buscar productos</label>
+            <span class="md-text-field-outline" aria-hidden="true"></span>
+          </div>
+          <span class="md-text-field-supporting-text" id="tf-dense-outlined-supporting">Campo denso (48dp)</span>
+        </div>
+
+        <div class="md-text-field md-text-field-filled md-text-field-dense">
+          <div class="md-text-field-container">
+            <input type="text" class="md-text-field-input" id="tf-dense-filled" placeholder=" " aria-describedby="tf-dense-filled-supporting">
+            <label class="md-text-field-label" for="tf-dense-filled">Buscar productos</label>
+            <span class="md-text-field-outline" aria-hidden="true"></span>
+          </div>
+          <span class="md-text-field-supporting-text" id="tf-dense-filled-supporting">Campo denso (48dp)</span>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;div class="md-text-field md-text-field-outlined md-text-field-dense"&gt;
+  &lt;div class="md-text-field-container"&gt;
+    &lt;input type="text" class="md-text-field-input" id="tf-dense-outlined" placeholder=" " aria-describedby="tf-dense-outlined-supporting"&gt;
+    &lt;label class="md-text-field-label" for="tf-dense-outlined"&gt;Buscar productos&lt;/label&gt;
+    &lt;span class="md-text-field-outline" aria-hidden="true"&gt;&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;span class="md-text-field-supporting-text" id="tf-dense-outlined-supporting"&gt;Campo denso (48dp)&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;div class="md-text-field md-text-field-filled md-text-field-dense"&gt;
+  &lt;div class="md-text-field-container"&gt;
+    &lt;input type="text" class="md-text-field-input" id="tf-dense-filled" placeholder=" " aria-describedby="tf-dense-filled-supporting"&gt;
+    &lt;label class="md-text-field-label" for="tf-dense-filled"&gt;Buscar productos&lt;/label&gt;
+    &lt;span class="md-text-field-outline" aria-hidden="true"&gt;&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;span class="md-text-field-supporting-text" id="tf-dense-filled-supporting"&gt;Campo denso (48dp)&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAR 6: hasta aqui -->
+
+    <!-- PAR 7: Textarea (Multiline) -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Par 7 · Textarea (Multiline)</h3>
+      <p class="md-type-body-medium">Área de texto multilínea. Textarea usa label alineado arriba (16dp) en reposo, min-height 96dp (3 líneas), resize none, y counter opcional. Ambas variantes en Outlined y Filled.</p>
+
+      <div class="sr-specimen sr-specimen-gap">
+        <div class="md-text-field md-text-field-outlined md-text-field-textarea">
+          <div class="md-text-field-container">
+            <textarea class="md-text-field-input" id="tf-textarea-outlined" placeholder=" " aria-describedby="tf-textarea-outlined-supporting" rows="3"></textarea>
+            <label class="md-text-field-label" for="tf-textarea-outlined">Descripción del producto</label>
+            <span class="md-text-field-outline" aria-hidden="true"></span>
+          </div>
+          <div class="md-text-field-supporting-row" aria-live="polite">
+            <span class="md-text-field-supporting-text" id="tf-textarea-outlined-supporting">Descripción detallada</span>
+            <span class="md-text-field-counter">0/500</span>
+          </div>
+        </div>
+
+        <div class="md-text-field md-text-field-filled md-text-field-textarea">
+          <div class="md-text-field-container">
+            <textarea class="md-text-field-input" id="tf-textarea-filled" placeholder=" " aria-describedby="tf-textarea-filled-supporting" rows="3"></textarea>
+            <label class="md-text-field-label" for="tf-textarea-filled">Descripción del producto</label>
+            <span class="md-text-field-outline" aria-hidden="true"></span>
+          </div>
+          <div class="md-text-field-supporting-row" aria-live="polite">
+            <span class="md-text-field-supporting-text" id="tf-textarea-filled-supporting">Descripción detallada</span>
+            <span class="md-text-field-counter">0/500</span>
+          </div>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;div class="md-text-field md-text-field-outlined md-text-field-textarea"&gt;
+  &lt;div class="md-text-field-container"&gt;
+    &lt;textarea class="md-text-field-input" id="tf-textarea-outlined" placeholder=" " aria-describedby="tf-textarea-outlined-supporting" rows="3"&gt;&lt;/textarea&gt;
+    &lt;label class="md-text-field-label" for="tf-textarea-outlined"&gt;Descripción del producto&lt;/label&gt;
+    &lt;span class="md-text-field-outline" aria-hidden="true"&gt;&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class="md-text-field-supporting-row" aria-live="polite"&gt;
+    &lt;span class="md-text-field-supporting-text" id="tf-textarea-outlined-supporting"&gt;Descripción detallada&lt;/span&gt;
+    &lt;span class="md-text-field-counter"&gt;0/500&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="md-text-field md-text-field-filled md-text-field-textarea"&gt;
+  &lt;div class="md-text-field-container"&gt;
+    &lt;textarea class="md-text-field-input" id="tf-textarea-filled" placeholder=" " aria-describedby="tf-textarea-filled-supporting" rows="3"&gt;&lt;/textarea&gt;
+    &lt;label class="md-text-field-label" for="tf-textarea-filled"&gt;Descripción del producto&lt;/label&gt;
+    &lt;span class="md-text-field-outline" aria-hidden="true"&gt;&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class="md-text-field-supporting-row" aria-live="polite"&gt;
+    &lt;span class="md-text-field-supporting-text" id="tf-textarea-filled-supporting"&gt;Descripción detallada&lt;/span&gt;
+    &lt;span class="md-text-field-counter"&gt;0/500&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAR 7: hasta aqui -->
 
     <hr class="md-divider">
 

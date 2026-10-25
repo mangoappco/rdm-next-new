@@ -18,7 +18,7 @@ Solo prohibiciones verbales. Las reglas de showroom, de capas y de ciclo no se c
 
 ## Componentes creados
 
-Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **11 componentes y 20 vistas** (11 de componente + 9 de tokens), las 20 enlazadas en `showroom/index.html`. El orden es el de `index.css`:
+Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **12 componentes y 21 vistas** (12 de componente + 9 de tokens), las 21 enlazadas en `showroom/index.html`. El orden es el de `index.css`:
 
 | Componente | Hoja | Vista |
 | --- | --- | --- |
@@ -33,6 +33,7 @@ Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **11 compo
 | List | `list.css` | `list.html` |
 | Segmented button | `segmented-button.css` | `segmented-button.html` |
 | Chips | `chips.css` | `chips.html` |
+| Text Field | `text-field.css` | `text-field.html` |
 
 Cada componente tiene además su molde en `showroom/templates/<nombre>.template.html`.
 
@@ -273,7 +274,7 @@ En el marcado, el corte es un `<hr class="md-divider">` —el mismo mecanismo co
 
 ## Siguiente tarea
 
-**El catálogo está cerrado.** Los once componentes del README §11 están hechos, publicados y enlazados, y las veinte vistas también. `chips`, el último, se acaba de publicar: es el primero que nace con motor de interacción propio en `src/js/` (fuera de `dialog` y `toggle`), y a la vez trae la utilidad `.md-row` a `4-utilities` (heredada de segmented-button).
+**Text Field completado (7 pares).** El componente cubre: Clase base Outlined con label flotante, icon slots (leading/trailing), supporting text/helper/error states, Filled variant ortogonal, Disabled state (HTML nativo + CSS `:has()`), Dense variant (48dp) y Textarea (multilínea). Verificador en verde (EXIT_CODE=0, 13 reglas OK).
 
 Lo que queda por delante no es un componente nuevo sino la **deuda conocida** de más abajo, que es lo que de verdad está pendiente:
 

@@ -72,6 +72,7 @@
   --_color-surface: var(--md-sys-color-surface);
   --_color-on-surface: var(--md-sys-color-on-surface);
   --_color-on-surface-variant: var(--md-sys-color-on-surface-variant);
+  --_text-field-bg: var(--md-text-field-surface, var(--md-sys-color-surface));
 }
 
 /* Container: layout puro, SIN borde, SIN fondo, SIN radius */
@@ -82,7 +83,7 @@
   width: 100%;
   height: var(--_container-height);
   padding-inline: var(--md-sys-measurement-space-200);
-  background-color: var(--md-sys-color-surface-container);
+  background-color: transparent;
   box-sizing: border-box;
 }
 
@@ -138,13 +139,13 @@
 .md-text-field-outlined:has(.md-text-field-input:not(:placeholder-shown)) .md-text-field-label {
   top: 0;
   transform: translateY(-50%) scale(0.75);
+  transform-origin: left center; /* Simetría vertical: ecuador del texto sobre el borde */
   color: var(--_color-primary);
-  background-color: inherit;
-  padding-inline: var(--md-sys-measurement-space-50);
-  padding-block: 0;
-  z-index: 1;
+  background-color: var(--_text-field-bg); /* Notch contextual */
   line-height: 1;
-  border-radius: var(--md-sys-shape-corner-extra-small);
+  padding-block: 0;
+  padding-inline: var(--md-sys-measurement-space-50); /* 4dp */
+  z-index: 1;
 }
 
 /* Supporting text: body-small, 4dp bajo container */
@@ -185,10 +186,9 @@
   color: var(--_color-error);
 }
 
-/* Disabled: opacidad 38% via .md-disabled utility (4-utilities/state.css) */
+/* Disabled: pointer-events none (opacidad en contenido, no en container) */
 .md-text-field-outlined.md-disabled .md-text-field-container,
 .md-text-field-outlined:disabled .md-text-field-container {
-  opacity: var(--md-sys-state-disabled-state-layer-opacity);
   pointer-events: none;
 }
 
@@ -314,9 +314,6 @@
   border-width: var(--_stroke-focus);
   border-color: var(--_color-error);
 }
-.md-text-field-outlined.md-text-field-error .md-text-field-label {
-  color: var(--_color-error);
-}
 .md-text-field-outlined.md-text-field-error .md-text-field-supporting-text,
 .md-text-field-outlined.md-text-field-error .md-text-field-counter {
   color: var(--_color-error);
@@ -324,6 +321,19 @@
 .md-text-field-outlined.md-text-field-error .md-text-field-leading-icon,
 .md-text-field-outlined.md-text-field-error .md-text-field-trailing-icon {
   color: var(--_color-error);
+}
+
+/* Prioridad absoluta de Error State sobre el label (gana sobre :has(:not(:placeholder-shown))) */
+.md-text-field-error .md-text-field-label,
+.md-text-field-error:has(.md-text-field-input:focus) .md-text-field-label,
+.md-text-field-error:has(.md-text-field-input:not(:placeholder-shown)) .md-text-field-label,
+.md-text-field-outlined.md-text-field-error .md-text-field-label,
+.md-text-field-outlined.md-text-field-error:has(.md-text-field-input:focus) .md-text-field-label,
+.md-text-field-outlined.md-text-field-error:has(.md-text-field-input:not(:placeholder-shown)) .md-text-field-label,
+.md-text-field-filled.md-text-field-error .md-text-field-label,
+.md-text-field-filled.md-text-field-error:has(.md-text-field-input:focus) .md-text-field-label,
+.md-text-field-filled.md-text-field-error:has(.md-text-field-input:not(:placeholder-shown)) .md-text-field-label {
+  color: var(--md-sys-color-error);
 }
 
 /* Focus en error state: outline error (no primary) */
@@ -573,6 +583,218 @@
   .md-text-field-filled .md-text-field-outline,
   .md-text-field-filled .md-text-field-label,
   .md-text-field-filled .md-text-field-container {
+    transition: none !important;
+  }
+}
+
+/* ==========================================================================
+   PAR 5 · DISABLED STATE (Ortogonal, Outlined + Filled)
+   ========================================================================== */
+
+/* Bloqueo de puntero e input */
+.md-text-field:has(.md-text-field-input:disabled) {
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.md-text-field-input:disabled {
+  cursor: not-allowed;
+}
+
+/* Opacidad contenido 38% (state layer opacity) — universal */
+.md-text-field:has(.md-text-field-input:disabled) .md-text-field-input,
+.md-text-field:has(.md-text-field-input:disabled) .md-text-field-leading-icon,
+.md-text-field:has(.md-text-field-input:disabled) .md-text-field-trailing-icon,
+.md-text-field:has(.md-text-field-input:disabled) .md-text-field-supporting-text {
+  opacity: var(--md-sys-state-disabled-state-layer-opacity); /* 0.38 */
+}
+
+/* Label disabled: color atenuado (NO opacity, para preservar notch sólido) */
+.md-text-field:has(.md-text-field-input:disabled) .md-text-field-label {
+  color: rgb(from var(--md-sys-color-on-surface) r g b / var(--md-sys-state-disabled-state-layer-opacity));
+  opacity: 1;
+  background-color: var(--_text-field-bg); /* Notch sólido preservado */
+  border-radius: 0; /* Sin pastilla ovalada */
+}
+
+/* Outlined disabled: outline 12% sobre on-surface */
+.md-text-field-outlined:has(.md-text-field-input:disabled) .md-text-field-outline {
+  border-color: rgb(from var(--md-sys-color-on-surface) r g b / var(--md-sys-state-disabled-outline-opacity));
+  opacity: 1;
+}
+
+/* FILLED: fondo container 10% (CSS Relative Colors) */
+.md-text-field-filled:has(.md-text-field-input:disabled) .md-text-field-container {
+  background-color: rgb(from var(--md-sys-color-surface-container) r g b / var(--md-sys-state-disabled-container-opacity));
+  opacity: 1;
+}
+
+/* FILLED: active indicator visible al 38% */
+.md-text-field-filled:has(.md-text-field-input:disabled) .md-text-field-outline {
+  background-color: var(--md-sys-color-outline);
+  opacity: var(--md-sys-state-disabled-state-layer-opacity); /* 0.38 */
+}
+
+/* FILLED: input disabled con padding vertical canónico */
+.md-text-field-filled:has(.md-text-field-input:disabled) .md-text-field-input {
+  padding-block-start: var(--md-sys-measurement-space-300); /* 24dp */
+  padding-block-end: var(--md-sys-measurement-space-100);   /* 8dp */
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   PAR 6 · DENSE VARIANT (48dp) & TEXTAREA (Multilínea)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   DENSE VARIANT BASE (48dp)
+   ------------------------------------------------------------------------ */
+
+.md-text-field-dense {
+  --_container-height: var(--md-sys-measurement-text-field-container-height-dense); /* 48dp */
+}
+
+.md-text-field-dense .md-text-field-container {
+  height: var(--_container-height);
+}
+
+.md-text-field-dense .md-text-field-input {
+  font: var(--md-sys-typescale-body-medium);
+  line-height: var(--md-sys-typescale-body-medium-line-height);
+}
+
+.md-text-field-dense .md-text-field-label {
+  font: var(--md-sys-typescale-label-medium);
+}
+
+/* Iconos a 20dp consumiendo space-250 */
+.md-text-field-dense .md-text-field-leading-icon,
+.md-text-field-dense .md-text-field-trailing-icon {
+  width: var(--md-sys-measurement-space-250); /* 20dp */
+  height: var(--md-sys-measurement-space-250);
+}
+
+.md-text-field-dense .md-text-field-leading-icon .md-icon,
+.md-text-field-dense .md-text-field-trailing-icon .md-icon {
+  font-size: var(--md-sys-measurement-space-250);
+}
+
+/* --------------------------------------------------------------------------
+   TEXTAREA BASE (Multilínea)
+   ------------------------------------------------------------------------ */
+
+.md-text-field-textarea .md-text-field-container {
+  min-height: var(--md-sys-measurement-text-field-textarea-min-height);
+  height: auto;
+  align-items: flex-start;
+  padding-block: var(--md-sys-measurement-space-200); /* 16dp */
+  box-sizing: border-box;
+}
+
+.md-text-field-textarea .md-text-field-input {
+  width: 100%;
+  height: auto;
+  min-height: calc(var(--md-sys-measurement-text-field-textarea-min-height) - var(--md-sys-measurement-space-400));
+  max-height: calc(var(--md-sys-measurement-text-field-textarea-min-height) * 1.8);
+  border: none;
+  outline: none;
+  background: transparent;
+  resize: none;
+  padding: 0;
+  margin: 0;
+  font: var(--md-sys-typescale-body-large);
+  line-height: var(--md-sys-typescale-body-large-line-height);
+  field-sizing: content;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+/* Label flotante en Textarea - OUTLINED (con notch) */
+.md-text-field-outlined.md-text-field-textarea:has(.md-text-field-input:focus) .md-text-field-label,
+.md-text-field-outlined.md-text-field-textarea:has(.md-text-field-input:not(:placeholder-shown)) .md-text-field-label {
+  top: 0;
+  transform: translateY(-50%) scale(0.75);
+  transform-origin: left center;
+  background-color: var(--_text-field-bg);
+  padding-inline: var(--md-sys-measurement-space-50);
+  z-index: 1;
+}
+
+/* Label flotante en Textarea - FILLED (sin notch, dentro del contenedor a 8dp) */
+.md-text-field-filled.md-text-field-textarea:has(.md-text-field-input:focus) .md-text-field-label,
+.md-text-field-filled.md-text-field-textarea:has(.md-text-field-input:not(:placeholder-shown)) .md-text-field-label {
+  top: var(--md-sys-measurement-space-100); /* 8dp interior */
+  transform: scale(0.75);
+  transform-origin: top left;
+  background-color: transparent;
+  padding-inline: 0;
+}
+
+/* Label en reposo en Textarea Filled: alineado arriba (16dp), NO centrado verticalmente */
+.md-text-field-filled.md-text-field-textarea .md-text-field-label {
+  top: var(--md-sys-measurement-space-200); /* 16dp */
+  transform: none;
+}
+
+/* Label en reposo en Textarea Outlined: alineado arriba (16dp), NO centrado verticalmente */
+.md-text-field-outlined.md-text-field-textarea .md-text-field-label {
+  top: var(--md-sys-measurement-space-200); /* 16dp */
+  transform: none;
+}
+
+/* Desplazamiento del texto en Filled Textarea para no solaparse con el label */
+.md-text-field-filled.md-text-field-textarea .md-text-field-input {
+  padding-block-start: var(--md-sys-measurement-space-300); /* 24dp */
+  padding-block-end: var(--md-sys-measurement-space-100);   /* 8dp */
+  box-sizing: border-box;
+}
+
+/* --------------------------------------------------------------------------
+   TEXTAREA -- SUPPORTING ROW & COUNTER
+   ------------------------------------------------------------------------ */
+
+.md-text-field-textarea .md-text-field-supporting-row {
+  margin-block-start: var(--md-sys-measurement-space-50);
+  padding-inline: var(--md-sys-measurement-space-200);
+}
+
+.md-text-field-textarea .md-text-field-supporting-text,
+.md-text-field-textarea .md-text-field-counter {
+  margin: 0;
+  padding: 0;
+  color: var(--_color-on-surface-variant);
+  font: var(--md-sys-typescale-body-small);
+  line-height: var(--md-sys-typescale-body-small-line-height);
+}
+
+.md-text-field-textarea .md-text-field-counter {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* Error state en Textarea */
+.md-text-field-textarea.md-text-field-error .md-text-field-outline {
+  border-width: var(--_stroke-focus);
+  border-color: var(--_color-error);
+}
+.md-text-field-textarea.md-text-field-error .md-text-field-label,
+.md-text-field-textarea.md-text-field-error .md-text-field-supporting-text,
+.md-text-field-textarea.md-text-field-error .md-text-field-counter,
+.md-text-field-textarea.md-text-field-error .md-text-field-leading-icon,
+.md-text-field-textarea.md-text-field-error .md-text-field-trailing-icon {
+  color: var(--_color-error);
+}
+
+/* Supporting row oculta si vacía */
+.md-text-field-textarea .md-text-field-supporting-row:empty {
+  display: none;
+}
+
+/* ACCESIBILIDAD: prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .md-text-field-dense .md-text-field-label,
+  .md-text-field-textarea .md-text-field-label,
+  .md-text-field-textarea .md-text-field-outline {
     transition: none !important;
   }
 }
