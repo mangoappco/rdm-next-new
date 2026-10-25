@@ -117,6 +117,7 @@ import { registrar as registrarSegmented } from './segmented-button.js';
 import { registrar as registrarChipFilter } from './chip-filter.js';
 import { registrar as registrarChipInput } from './chip-input.js';
 import { registrar as registrarRipple } from './ripple.js';
+import { initTextField } from './text-field.js';
 
 /* Se registra al cargar el script, no al hacer clic. Los specimens del
    showroom llevan `<dialog open>` a secas, que NO es modal, asi que ahi no
@@ -146,6 +147,10 @@ registrarChipFilter();
    lo cuenta--. No se recorre el documento al cargar; quien llegue despues
    funciona igual. */
 registrarChipInput();
+
+/* Text field trailing actions: delegación global viva antes de que exista
+   ningún botón con data-md-text-field-* en la página. */
+initTextField();
 
 /* Y aqui iran los que lo necesiten:
      import { registrar as registrarFabMenu } from './fab-menu.js';

@@ -790,11 +790,212 @@
   display: none;
 }
 
+/* ==========================================================================
+   PAR 8 · PREFIX & SUFFIX TEXT
+   ========================================================================== */
+
+/* Prefix: elemento en línea antes del input */
+.md-text-field-prefix {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--md-sys-color-on-surface-variant);
+  font: var(--md-sys-typescale-body-large);
+  line-height: var(--md-sys-typescale-body-large-line-height);
+  margin-inline-end: var(--md-sys-measurement-space-100); /* 8dp gap hacia el input */
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+}
+
+/* Suffix: elemento en línea después del input */
+.md-text-field-suffix {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--md-sys-color-on-surface-variant);
+  font: var(--md-sys-typescale-body-large);
+  line-height: var(--md-sys-typescale-body-large-line-height);
+  margin-inline-start: var(--md-sys-measurement-space-100); /* 8dp gap desde el input */
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+}
+
+/* Visibilidad dinámica: solo visible cuando el label flota (focus o contenido) */
+.md-text-field-outlined:has(.md-text-field-input:focus) .md-text-field-prefix,
+.md-text-field-outlined:has(.md-text-field-input:not(:placeholder-shown)) .md-text-field-prefix,
+.md-text-field-outlined:has(.md-text-field-input:focus) .md-text-field-suffix,
+.md-text-field-outlined:has(.md-text-field-input:not(:placeholder-shown)) .md-text-field-suffix,
+.md-text-field-filled:has(.md-text-field-input:focus) .md-text-field-prefix,
+.md-text-field-filled:has(.md-text-field-input:not(:placeholder-shown)) .md-text-field-prefix,
+.md-text-field-filled:has(.md-text-field-input:focus) .md-text-field-suffix,
+.md-text-field-filled:has(.md-text-field-input:not(:placeholder-shown)) .md-text-field-suffix {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Prefijo/Sufijo en estado de error: color error */
+.md-text-field.md-text-field-error .md-text-field-prefix,
+.md-text-field.md-text-field-error .md-text-field-suffix {
+  color: var(--md-sys-color-error);
+}
+
+/* Prefijo/Sufijo en estado disabled: opacidad 38% */
+.md-text-field:has(.md-text-field-input:disabled) .md-text-field-prefix,
+.md-text-field:has(.md-text-field-input:disabled) .md-text-field-suffix {
+  opacity: var(--md-sys-state-disabled-state-layer-opacity);
+}
+
 /* ACCESIBILIDAD: prefers-reduced-motion */
 @media (prefers-reduced-motion: reduce) {
-  .md-text-field-dense .md-text-field-label,
-  .md-text-field-textarea .md-text-field-label,
-  .md-text-field-textarea .md-text-field-outline {
+  .md-text-field-prefix,
+  .md-text-field-suffix {
     transition: none !important;
   }
+}
+
+/* ==========================================================================
+   ALINEACIÓN CANÓNICA DE PREFIX / SUFFIX EN FILLED
+   ========================================================================== */
+
+/* En Outlined: permanecen centrados verticalmente junto al input */
+.md-text-field-outlined .md-text-field-prefix,
+.md-text-field-outlined .md-text-field-suffix {
+  align-self: center;
+}
+
+/* En Filled: descienden a la línea base del texto, bajo el label flotante */
+.md-text-field-filled .md-text-field-prefix,
+.md-text-field-filled .md-text-field-suffix {
+  align-self: flex-end;
+  padding-bottom: var(--md-sys-measurement-space-100); /* 8dp base */
+  line-height: var(--md-sys-typescale-body-large-line-height); /* 24px */
+}
+
+/* Sincronización exacta con el input en Filled */
+.md-text-field-filled .md-text-field-input {
+  align-self: flex-end;
+  padding-bottom: var(--md-sys-measurement-space-100); /* 8dp */
+  height: auto;
+}
+
+/* ==========================================================================
+   PAR 9 · TRAILING ACTIONS (Clear & Visibility toggle)
+   ========================================================================== */
+
+/* Base del botón de acción trailing */
+.md-text-field-trailing-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--md-sys-measurement-touch-target); /* 48dp */
+  height: var(--md-sys-measurement-touch-target); /* 48dp */
+  flex-shrink: 0;
+  color: var(--md-sys-color-on-surface-variant);
+  background: transparent;
+  border: none;
+  border-radius: var(--md-sys-shape-corner-full);
+  cursor: pointer;
+  padding: 0;
+  margin-inline-start: var(--md-sys-measurement-space-100); /* 8dp */
+  transition:
+    color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+}
+
+/* Icono dentro del botón de acción */
+.md-text-field-trailing-action .md-icon {
+  font-size: var(--md-sys-measurement-icon-size);
+  width: var(--md-sys-measurement-icon-size);
+  height: var(--md-sys-measurement-icon-size);
+  line-height: 1;
+}
+
+/* Visibilidad por defecto: Clear button oculto en reposo vacío */
+.md-text-field-trailing-action-clear {
+  display: none;
+}
+
+/* Clear button visible exclusivamente cuando hay texto ingresado */
+.md-text-field:has(.md-text-field-input:not(:placeholder-shown)) .md-text-field-trailing-action-clear {
+  display: inline-flex;
+}
+
+/* Password Toggle: visible por defecto cuando habita en el container */
+.md-text-field-trailing-action-password {
+  display: inline-flex;
+}
+
+/* Hover: color on-surface */
+.md-text-field-trailing-action:hover {
+  color: var(--md-sys-color-on-surface);
+}
+
+/* Focus: anillo de foco */
+.md-text-field-trailing-action:focus-visible {
+  outline: var(--md-sys-shape-stroke-thick) solid var(--md-sys-color-primary);
+  outline-offset: var(--md-sys-shape-stroke-thick);
+}
+
+/* Error state: color error */
+.md-text-field.md-text-field-error .md-text-field-trailing-action {
+  color: var(--md-sys-color-error);
+}
+
+/* Disabled: opacidad 38% */
+.md-text-field:has(.md-text-field-input:disabled) .md-text-field-trailing-action {
+  opacity: var(--md-sys-state-disabled-state-layer-opacity);
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+/* ACCESIBILIDAD: prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .md-text-field-trailing-action {
+    transition: none !important;
+  }
+}
+
+/* ==========================================================================
+   PAR 10 · READONLY STATE
+   ========================================================================== */
+
+/* Readonly: opacidad al 100% (cero 38% de disabled), conserva toda la
+   legibilidad y contraste. No se toca el contenedor con clases inventadas:
+   el gancho es el pseudo-selector estándar :read-only del input nativo. */
+.md-text-field:has(.md-text-field-input:read-only) {
+  opacity: 1;
+}
+
+/* Input readonly: cursor de selección, permite Tab, posicionar el cursor
+   y copiar el texto. Nunca not-allowed. */
+.md-text-field-input:read-only {
+  cursor: text;
+  user-select: text;
+}
+
+/* Outlined readonly: trazo permanece en 1px outline, sin viraje a primary
+   ni engrosamiento a 2px en :focus, para comunicar no-editabilidad. */
+.md-text-field-outlined:has(.md-text-field-input:read-only) .md-text-field-outline {
+  border-width: var(--md-sys-shape-stroke-thin);
+  border-color: var(--md-sys-color-outline);
+}
+.md-text-field-outlined:has(.md-text-field-input:read-only:focus) .md-text-field-outline {
+  border-width: var(--md-sys-shape-stroke-thin);
+  border-color: var(--md-sys-color-outline);
+}
+
+/* Filled readonly: indicador activo permanece en 1px outline, sin viraje
+   a primary ni engrosamiento en :focus. */
+.md-text-field-filled:has(.md-text-field-input:read-only) .md-text-field-outline {
+  height: var(--md-sys-shape-stroke-thin);
+  background-color: var(--md-sys-color-outline);
+}
+.md-text-field-filled:has(.md-text-field-input:read-only:focus) .md-text-field-outline {
+  height: var(--md-sys-shape-stroke-thin);
+  background-color: var(--md-sys-color-outline);
 }
