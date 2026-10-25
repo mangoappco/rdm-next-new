@@ -1046,8 +1046,6 @@
      acoplados a un componente: son la escalera de espacio del sistema
      expresada como roles semanticos.
      ======================================================================== */
-  --md-sys-measurement-space-50: var(--md-ref-spacing-50);
-  --md-sys-measurement-space-75: var(--md-ref-spacing-75);
   --md-sys-measurement-space-100: var(--md-ref-spacing-100);
   --md-sys-measurement-space-200: var(--md-ref-spacing-200);
   --md-sys-measurement-space-400: var(--md-ref-spacing-400);

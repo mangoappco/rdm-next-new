@@ -845,7 +845,6 @@ rdm-next-new/
 │   │   │   ├── fab-extended.css --md-comp-fab-* (va DESPUÉS de fab.css)
 │   │   │   ├── card.css       --md-comp-card-*
 │   │   │   ├── dialog.css     --md-comp-dialog-*
-│   │   │   ├── badge.css      --md-comp-badge-*
 │   │   │   └── list.css       --md-comp-list-* (va el último)
 │   │   └── 4-utilities/             Clases atómicas (solo var(), sin tokens)
 │   │       ├── index.css      Índice: una familia por archivo
@@ -869,7 +868,6 @@ rdm-next-new/
 │   │   ├── list-thumb.svg
 │   ├── components/           Una vista por componente o por familia de capa 1 y 2
 │   │   ├── button-group.html Button group · 6 secciones
-│   │   ├── badge.html        Badge · 2 pares (Par 1 y Par 2 aprobados; Par 3 pendiente)
 │   │   ├── button.html       Button · 19 secciones
 │   │   ├── card.html         Card · 16 secciones
 │   │   ├── chips.html        Chips · 11 secciones
@@ -939,7 +937,7 @@ showroom/
 - Cada componente tiene su propia vista en `showroom/components/`: `divider.html`,
   `icon-button.html`, `button.html`, `button-group.html`, `fab.html`,
   `fab-extended.html`, `card.html`, `dialog.html`, `list.html`,
-  `segmented-button.html`, `badge.html`.
+  `segmented-button.html`.
 - **Y la descripción de un componente en `index.html` es el mismo texto que el encabezado
   de su vista**, byte a byte. La fuente es el encabezado: si cambia, el índice cambia con
   él. El recuento de pares vive en el encabezado de cada vista, no en la portada: la fila

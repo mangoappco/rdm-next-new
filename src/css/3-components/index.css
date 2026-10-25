@@ -25,14 +25,10 @@
 @import url("list.css");
 @import url("segmented-button.css");
 @import url("ripple.css");
-@import url("badge.css");
 
 /* list.css va al final, y no por orden alfabetico: no compone con ningun
    componente anterior, asi que su sitio es el final de la lista de construccion.
    Mismo criterio que los tres bloques siguientes.
-
-   badge.css va despues de ripple.css: no depende de ningun componente anterior,
-   asi que su sitio es el final de la lista de construccion.
 
    fab-extended.css va DESPUES de fab.css, y no por orden alfabetico.
    Los dos importan en la misma capa `comp`, donde la especificidad se

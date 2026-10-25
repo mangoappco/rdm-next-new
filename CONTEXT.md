@@ -18,7 +18,7 @@ Solo prohibiciones verbales. Las reglas de showroom, de capas y de ciclo no se c
 
 ## Componentes creados
 
-Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **12 componentes y 21 vistas** (12 de componente + 9 de tokens), las 21 enlazadas en `showroom/index.html`. El orden es el de `index.css`:
+Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **11 componentes y 20 vistas** (11 de componente + 9 de tokens), las 20 enlazadas en `showroom/index.html`. El orden es el de `index.css`:
 
 | Componente | Hoja | Vista |
 | --- | --- | --- |
@@ -33,7 +33,6 @@ Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **12 compo
 | List | `list.css` | `list.html` |
 | Segmented button | `segmented-button.css` | `segmented-button.html` |
 | Chips | `chips.css` | `chips.html` |
-| Badge | `badge.css` | `badge.html` |
 
 Cada componente tiene además su molde en `showroom/templates/<nombre>.template.html`.
 
