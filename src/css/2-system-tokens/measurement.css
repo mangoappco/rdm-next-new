@@ -1039,6 +1039,11 @@
   --md-sys-measurement-segmented-button-icon-size: var(--md-ref-icon-size-segmented-button);
 
   /* ==========================================================================
+     TEXT FIELD — Altura de contenedor (M3: 56dp = container-height-medium)
+     -------------------------------------------------------------------------- */
+  --md-sys-measurement-text-field-container-height: var(--md-ref-container-height-medium);
+
+  /* ==========================================================================
      ESPACIO GENERAL DE COMPONENTE
      --------------------------------------------------------------------------
      Roles genericos de espacio que cualquier componente de 3-components/
@@ -1046,8 +1051,12 @@
      acoplados a un componente: son la escalera de espacio del sistema
      expresada como roles semanticos.
      ======================================================================== */
+  --md-sys-measurement-space-50: var(--md-ref-spacing-50);
+  --md-sys-measurement-space-75: var(--md-ref-spacing-75);
   --md-sys-measurement-space-100: var(--md-ref-spacing-100);
+  --md-sys-measurement-space-150: var(--md-ref-spacing-150);
   --md-sys-measurement-space-200: var(--md-ref-spacing-200);
+  --md-sys-measurement-space-300: var(--md-ref-spacing-300);
   --md-sys-measurement-space-400: var(--md-ref-spacing-400);
 }
 

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Text Field de RDM Next: campo de texto estructural M3 para entrada de datos, variante Outlined con label flotante CSS-only.">
+  <title>Text Field — RDM ManGo! App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+  <link rel="stylesheet" href="../../src/css/main.css">
+  <link rel="stylesheet" href="../assets/showroom.css">
+  <script type="module" src="../../src/js/main.js"></script>
+  <script src="../assets/showroom.js"></script>
+</head>
+
+<!--
+  ESTA VISTA SE CONSTRUYE PAR POR PAR. Por ahora esta el Par 1
+  (Clase base y label flotante) del Bloque 1 (Especificacion tecnica y anatomia).
+  Los pares siguientes se iran agregando uno a uno tras aprobacion.
+
+  REGLA DE ACCESIBILIDAD (WAI-ARIA): el input lleva aria-describedby
+  apuntando al supporting text; el label usa for=ID del input.
+
+  REGLA 11: el texto de cada pre.sr-code desescapado es identico al
+  innerHTML de su .sr-specimen (normalizando solo el espacio entre etiquetas).
+
+  REGLA 6: sin atributos de estilo en linea ni bloques <style> en el HTML.
+  REGLA 9: los iconos siempre con .md-icon, nunca con material-symbols-*.
+  REGLA 10: toda clase md-* del showroom existe en src/css/.
+  REGLA 13: cada snippet es autonomo (solo clases del sistema).
+-->
+
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <main class="sr-page">
+
+    <!-- HEADER: inicio (barra + titulo + descripcion) -->
+    <header class="sr-header">
+      <div class="sr-bar">
+        <p class="md-type-body-medium"><a href="../index.html">RDM ManGo! App</a></p>
+        <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
+      </div>
+      <h1 class="md-type-display-large">Text Field</h1>
+      <p class="md-type-body-large">Campo de texto estructural M3 para entrada de datos. Variante Outlined con label flotante CSS-only (sin JS), notch automatico y estados interactivos.</p>
+    </header>
+    <!-- HEADER: fin -->
+
+    <hr class="md-divider">
+
+    <!-- ====================================================================
+         BLOQUE 1: Especificacion tecnica y anatomia
+         ==================================================================== -->
+    <h2 class="md-type-headline-medium">Especificacion tecnica y anatomia</h2>
+
+    <!-- PAREJA 1: Clase base y label flotante -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Base & anatomy</h3>
+      <p class="md-type-body-medium">Outlined Text Field en reposo estructural con label flotante gobernado 100% por CSS (:focus-within y :not(:placeholder-shown)), sin JavaScript.</p>
+      <div class="sr-specimen">
+        <div class="md-text-field md-text-field-outlined">
+          <div class="md-text-field-container">
+            <input type="text" class="md-text-field-input" id="tf-base" placeholder=" " aria-describedby="tf-base-supporting">
+            <label class="md-text-field-label" for="tf-base">Nombre del producto</label>
+            <span class="md-text-field-outline" aria-hidden="true"></span>
+          </div>
+          <span class="md-text-field-supporting-text" id="tf-base-supporting">Ingresa el nombre visible en el catálogo</span>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-text-field md-text-field-outlined"&gt;
+  &lt;div class="md-text-field-container"&gt;
+    &lt;input type="text" class="md-text-field-input" id="tf-base" placeholder=" " aria-describedby="tf-base-supporting"&gt;
+    &lt;label class="md-text-field-label" for="tf-base"&gt;Nombre del producto&lt;/label&gt;
+    &lt;span class="md-text-field-outline" aria-hidden="true"&gt;&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;span class="md-text-field-supporting-text" id="tf-base-supporting"&gt;Ingresa el nombre visible en el catálogo&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- PAR 2: Icon slots (Leading + Trailing) -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Par 2 · Icon slots (Leading + Trailing)</h3>
+      <p class="md-type-body-medium">Campo Outlined con iconos leading (search) y trailing (tune) contextuales. Padding lateral 12dp (space-150) con iconos, gap icono-texto 16dp (space-200). Label se reposiciona a 52dp (12+24+16). Iconos cambian a color primary en focus y error en estado de error.</p>
+      <div class="sr-specimen">
+        <div class="md-text-field md-text-field-outlined">
+          <div class="md-text-field-container">
+            <span class="md-text-field-leading-icon" aria-hidden="true">
+              <span class="md-icon">search</span>
+            </span>
+            <input type="text" class="md-text-field-input" id="tf-icons" placeholder=" " aria-describedby="tf-icons-supporting">
+            <label class="md-text-field-label" for="tf-icons">Buscar productos</label>
+            <span class="md-text-field-outline" aria-hidden="true"></span>
+            <span class="md-text-field-trailing-icon" aria-hidden="true">
+              <span class="md-icon">tune</span>
+            </span>
+          </div>
+          <span class="md-text-field-supporting-text" id="tf-icons-supporting">Filtra el catálogo por nombre</span>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-text-field md-text-field-outlined"&gt;
+  &lt;div class="md-text-field-container"&gt;
+    &lt;span class="md-text-field-leading-icon" aria-hidden="true"&gt;
+      &lt;span class="md-icon"&gt;search&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;input type="text" class="md-text-field-input" id="tf-icons" placeholder=" " aria-describedby="tf-icons-supporting"&gt;
+    &lt;label class="md-text-field-label" for="tf-icons"&gt;Buscar productos&lt;/label&gt;
+    &lt;span class="md-text-field-outline" aria-hidden="true"&gt;&lt;/span&gt;
+    &lt;span class="md-text-field-trailing-icon" aria-hidden="true"&gt;
+      &lt;span class="md-icon"&gt;tune&lt;/span&gt;
+    &lt;/span&gt;
+  &lt;/div&gt;
+  &lt;span class="md-text-field-supporting-text" id="tf-icons-supporting"&gt;Filtra el catálogo por nombre&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAR 2: hasta aqui -->
+
+    <!-- PAR 3: Supporting text, Helper & Error states -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Par 3 · Supporting text, Helper & Error states</h3>
+      <p class="md-type-body-medium">Campo Outlined en estado de error (clase .md-text-field-error + aria-invalid="true"). Outline 2px error, label error, supporting text error, iconos error, counter error. Supporting row con aria-live="polite" para anuncio AT. Helper text y counter en la misma fila con gap 8dp.</p>
+      <div class="sr-specimen">
+        <div class="md-text-field md-text-field-outlined md-text-field-error">
+          <div class="md-text-field-container">
+            <span class="md-text-field-leading-icon" aria-hidden="true">
+              <span class="md-icon">email</span>
+            </span>
+            <input type="email" class="md-text-field-input" id="tf-error" placeholder=" " aria-describedby="tf-error-supporting" aria-invalid="true" value="email-invalido">
+            <label class="md-text-field-label" for="tf-error">Correo electrónico</label>
+            <span class="md-text-field-outline" aria-hidden="true"></span>
+            <span class="md-text-field-trailing-icon" aria-hidden="true">
+              <span class="md-icon">error</span>
+            </span>
+          </div>
+          <div class="md-text-field-supporting-row" aria-live="polite">
+            <span class="md-text-field-supporting-text" id="tf-error-supporting">Ingresa un correo válido (ej: usuario@dominio.com)</span>
+            <span class="md-text-field-counter">15/50</span>
+          </div>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-text-field md-text-field-outlined md-text-field-error"&gt;
+  &lt;div class="md-text-field-container"&gt;
+    &lt;span class="md-text-field-leading-icon" aria-hidden="true"&gt;
+      &lt;span class="md-icon"&gt;email&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;input type="email" class="md-text-field-input" id="tf-error" placeholder=" " aria-describedby="tf-error-supporting" aria-invalid="true" value="email-invalido"&gt;
+    &lt;label class="md-text-field-label" for="tf-error"&gt;Correo electrónico&lt;/label&gt;
+    &lt;span class="md-text-field-outline" aria-hidden="true"&gt;&lt;/span&gt;
+    &lt;span class="md-text-field-trailing-icon" aria-hidden="true"&gt;
+      &lt;span class="md-icon"&gt;error&lt;/span&gt;
+    &lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class="md-text-field-supporting-row" aria-live="polite"&gt;
+    &lt;span class="md-text-field-supporting-text" id="tf-error-supporting"&gt;Ingresa un correo válido (ej: usuario@dominio.com)&lt;/span&gt;
+    &lt;span class="md-text-field-counter"&gt;15/50&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAR 3: hasta aqui -->
+
+    <!-- PAR 4: Filled variant -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Par 4 · Filled variant</h3>
+      <p class="md-type-body-medium">Filled Text Field: mismo HTML que Outlined, solo cambia la clase raíz. Fondo surface-container-highest, esquinas asimétricas (4dp arriba, 0dp abajo), active indicator inferior (1px reposo → 2px focus/error). Label sin notch (fondo surface-container-highest). Iconos, supporting text y error states idénticos a Outlined.</p>
+      <div class="sr-specimen">
+        <div class="md-text-field md-text-field-filled">
+          <div class="md-text-field-container">
+            <span class="md-text-field-leading-icon" aria-hidden="true">
+              <span class="md-icon">search</span>
+            </span>
+            <input type="text" class="md-text-field-input" id="tf-filled" placeholder=" " aria-describedby="tf-filled-supporting">
+            <label class="md-text-field-label" for="tf-filled">Buscar productos</label>
+            <span class="md-text-field-trailing-icon" aria-hidden="true">
+              <span class="md-icon">tune</span>
+            </span>
+            <span class="md-text-field-outline" aria-hidden="true"></span>
+          </div>
+          <span class="md-text-field-supporting-text" id="tf-filled-supporting">Filtra el catálogo por nombre</span>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-text-field md-text-field-filled"&gt;
+  &lt;div class="md-text-field-container"&gt;
+    &lt;span class="md-text-field-leading-icon" aria-hidden="true"&gt;
+      &lt;span class="md-icon"&gt;search&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;input type="text" class="md-text-field-input" id="tf-filled" placeholder=" " aria-describedby="tf-filled-supporting"&gt;
+    &lt;label class="md-text-field-label" for="tf-filled"&gt;Buscar productos&lt;/label&gt;
+    &lt;span class="md-text-field-trailing-icon" aria-hidden="true"&gt;
+      &lt;span class="md-icon"&gt;tune&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;span class="md-text-field-outline" aria-hidden="true"&gt;&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;span class="md-text-field-supporting-text" id="tf-filled-supporting"&gt;Filtra el catálogo por nombre&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAR 4: hasta aqui -->
+
+    <hr class="md-divider">
+
+  </main>
+  <!-- MAIN: fin -->
+</body>
+</html>

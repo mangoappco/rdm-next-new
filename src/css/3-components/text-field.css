@@ -1,0 +1,578 @@
+/* ==========================================================================
+   3-components/text-field.css — TEXT FIELD (Capa 3)
+   ==========================================================================
+
+   QUE ES ESTE COMPONENTE
+   ----------------------
+   Campo de texto estructural de M3 para entrada de datos. M3 define dos
+   variantes de superficie: Outlined (contenedor con borde) y Filled (fondo
+   surface-container-high, sin borde en reposo). Este archivo implementa
+   Outlined como variante base; Filled se anadira en par posterior.
+
+   ANATOMIA CANONICA M3 (Outlined Text Field)
+   -----------------------------------------
+   .md-text-field-outlined (56dp alto, corner-extra-small 4dp simétrico)
+   ├── .md-text-field-container (layout, sin borde, sin fondo)
+   │   ├── .md-text-field-input (body-large, placeholder=" ")
+   │   ├── .md-text-field-label (en reposo body-large, flotante label-large scale 0.75)
+   │   └── .md-text-field-outline (único borde: 1px outline, 2px focus/error)
+   └── .md-text-field-supporting-text (body-small, 4dp bajo container)
+
+   PADDINGS CANONICOS M3 (Specs oficiales)
+   ---------------------------------------
+   - Sin iconos: padding lateral 16dp (space-200)
+   - Con iconos (Par 2): padding lateral 12dp (space-150), gap icono-texto 16dp (space-200)
+
+   FLOTACION CSS-ONLY
+   ------------------
+   input antes que label en DOM + :has() sobre contenedor:
+   - Reposo: top: 50%; transform: translateY(-50%);
+   - Flotante: top: 0; transform: translateY(-50%) scale(0.75);
+   - Notch: background-color surface + padding-inline 4dp (space-50)
+
+   TOKENS (Capa 2 unicamente, REGLA 2)
+   ----------------------------------
+   --md-sys-measurement-text-field-container-height  56dp
+   --md-sys-shape-corner-extra-small                 4dp
+   --md-sys-shape-stroke-thin                        1px
+   --md-sys-shape-stroke-thick                       2px
+   --md-sys-typescale-body-large-*                   16/24/0.5/regular
+   --md-sys-typescale-label-large-*                  12/16/0.5/medium
+   --md-sys-typescale-body-small-*                   12/16/0.4/regular
+   --md-sys-color-outline / primary / error / surface / on-surface / on-surface-variant
+   --md-sys-measurement-space-50   4dp (notch, supporting gap)
+   --md-sys-measurement-space-200  16dp (padding lateral sin iconos)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   CLASE BASE COMPARTIDA — .md-text-field (común a outlined y filled)
+   ------------------------------------------------------------------------ */
+
+.md-text-field {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-block-end: var(--md-sys-measurement-space-200); /* 16dp canónico M3 */
+  box-sizing: border-box;
+  gap: var(--md-sys-measurement-space-50);
+}
+
+/* --------------------------------------------------------------------------
+   PAR 1 · CLASE BASE OUTLINED — CONTAINER, INPUT, LABEL, OUTLINE, SUPPORTING
+   ------------------------------------------------------------------------ */
+
+.md-text-field-outlined {
+  --_container-height: var(--md-sys-measurement-text-field-container-height);
+  --_corner: var(--md-sys-shape-corner-extra-small);
+  --_stroke-rest: var(--md-sys-shape-stroke-thin);
+  --_stroke-focus: var(--md-sys-shape-stroke-thick);
+  --_color-outline: var(--md-sys-color-outline);
+  --_color-primary: var(--md-sys-color-primary);
+  --_color-error: var(--md-sys-color-error);
+  --_color-surface: var(--md-sys-color-surface);
+  --_color-on-surface: var(--md-sys-color-on-surface);
+  --_color-on-surface-variant: var(--md-sys-color-on-surface-variant);
+}
+
+/* Container: layout puro, SIN borde, SIN fondo, SIN radius */
+.md-text-field-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: var(--_container-height);
+  padding-inline: var(--md-sys-measurement-space-200);
+  background-color: var(--md-sys-color-surface-container);
+  box-sizing: border-box;
+}
+
+/* Outline span: ÚNICO portador del borde */
+.md-text-field-outline {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--_corner);
+  border: var(--_stroke-rest) solid var(--_color-outline);
+  pointer-events: none;
+  box-sizing: border-box;
+  transition:
+    border-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
+    border-width var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+}
+
+/* Input: transparente, sin estilos de navegador */
+.md-text-field-input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--_color-on-surface);
+  font: var(--md-sys-typescale-body-large);
+  padding: 0;
+  margin: 0;
+}
+
+/* Placeholder invisible para control de :placeholder-shown */
+.md-text-field-input::placeholder {
+  color: transparent;
+}
+
+/* Label: en reposo centrado vertical (body-large) */
+.md-text-field-label {
+  position: absolute;
+  left: var(--md-sys-measurement-space-200);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--_color-on-surface-variant);
+  font: var(--md-sys-typescale-body-large);
+  pointer-events: none;
+  transform-origin: left top;
+  transition:
+    transform var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
+    color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
+    font-size var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+}
+
+/* FLOTACIÓN CSS-ONLY con :has() — input antes que label en DOM */
+.md-text-field-outlined:has(.md-text-field-input:focus) .md-text-field-label,
+.md-text-field-outlined:has(.md-text-field-input:not(:placeholder-shown)) .md-text-field-label {
+  top: 0;
+  transform: translateY(-50%) scale(0.75);
+  color: var(--_color-primary);
+  background-color: inherit;
+  padding-inline: var(--md-sys-measurement-space-50);
+  padding-block: 0;
+  z-index: 1;
+  line-height: 1;
+  border-radius: var(--md-sys-shape-corner-extra-small);
+}
+
+/* Supporting text: body-small, 4dp bajo container */
+.md-text-field-supporting-text {
+  display: block;
+  margin-block-start: var(--md-sys-measurement-space-50); /* 4dp */
+  padding-inline: var(--md-sys-measurement-space-200);   /* 16dp alineado al input */
+  color: var(--_color-on-surface-variant);
+  font: var(--md-sys-typescale-body-small);
+  line-height: var(--md-sys-typescale-body-small-line-height);
+}
+
+/* --------------------------------------------------------------------------
+   ESTADOS INTERACTIVOS (hover, focus, error) — solo outline, sin JS
+   ------------------------------------------------------------------------ */
+
+/* Hover: outline 1px → 2px, color outline */
+.md-text-field-outlined:hover:not(:has(.md-text-field-input:focus)) .md-text-field-outline {
+  border-width: var(--_stroke-focus);
+  border-color: var(--_color-outline);
+}
+
+/* Focus: outline 2px primary */
+.md-text-field-outlined:has(.md-text-field-input:focus) .md-text-field-outline {
+  border-width: var(--_stroke-focus);
+  border-color: var(--_color-primary);
+}
+
+/* Error: outline 2px error, supporting text error, label error */
+.md-text-field-outlined.md-text-field-error .md-text-field-outline {
+  border-width: var(--_stroke-focus);
+  border-color: var(--_color-error);
+}
+.md-text-field-outlined.md-text-field-error .md-text-field-supporting-text {
+  color: var(--_color-error);
+}
+.md-text-field-outlined.md-text-field-error .md-text-field-label {
+  color: var(--_color-error);
+}
+
+/* Disabled: opacidad 38% via .md-disabled utility (4-utilities/state.css) */
+.md-text-field-outlined.md-disabled .md-text-field-container,
+.md-text-field-outlined:disabled .md-text-field-container {
+  opacity: var(--md-sys-state-disabled-state-layer-opacity);
+  pointer-events: none;
+}
+
+/* ACCESIBILIDAD: prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .md-text-field-outline,
+  .md-text-field-label {
+    transition: none !important;
+  }
+}
+
+/* ==========================================================================
+   PAR 2 · ICON SLOTS — LEADING + TRAILING
+   ========================================================================== */
+
+/* Contenedor con iconos: padding perimetral 12dp (space-150) */
+.md-text-field-outlined:has(.md-text-field-leading-icon) .md-text-field-container {
+  padding-inline-start: var(--md-sys-measurement-space-150);
+}
+.md-text-field-outlined:has(.md-text-field-trailing-icon) .md-text-field-container {
+  padding-inline-end: var(--md-sys-measurement-space-150);
+}
+
+/* Leading icon: solo margin hacia el input (16dp), sin margen exterior */
+.md-text-field-leading-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--md-sys-measurement-icon-size);
+  height: var(--md-sys-measurement-icon-size);
+  flex-shrink: 0;
+  color: var(--_color-on-surface-variant);
+  margin-inline-end: var(--md-sys-measurement-space-200);
+}
+
+.md-text-field-leading-icon .md-icon {
+  font-size: var(--md-sys-measurement-icon-size);
+  width: var(--md-sys-measurement-icon-size);
+  height: var(--md-sys-measurement-icon-size);
+  line-height: 1;
+}
+
+/* Trailing icon: solo margin hacia el input (16dp), sin margen exterior */
+.md-text-field-trailing-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--md-sys-measurement-icon-size);
+  height: var(--md-sys-measurement-icon-size);
+  flex-shrink: 0;
+  color: var(--_color-on-surface-variant);
+  margin-inline-start: var(--md-sys-measurement-space-200);
+}
+
+.md-text-field-trailing-icon .md-icon {
+  font-size: var(--md-sys-measurement-icon-size);
+  width: var(--md-sys-measurement-icon-size);
+  height: var(--md-sys-measurement-icon-size);
+  line-height: 1;
+}
+
+/* Label se reposiciona con leading icon: 12dp pad + 24dp icon + 16dp gap = 52dp */
+.md-text-field-outlined:has(.md-text-field-leading-icon) .md-text-field-label {
+  left: calc(var(--md-sys-measurement-space-150) + var(--md-sys-measurement-icon-size) + var(--md-sys-measurement-space-200));
+}
+
+/* Icon color states */
+.md-text-field-outlined:has(.md-text-field-input:focus) .md-text-field-leading-icon,
+.md-text-field-outlined:has(.md-text-field-input:focus) .md-text-field-trailing-icon {
+  color: var(--_color-primary);
+}
+.md-text-field-outlined.md-text-field-error .md-text-field-leading-icon,
+.md-text-field-outlined.md-text-field-error .md-text-field-trailing-icon {
+  color: var(--_color-error);
+}
+
+/* ==========================================================================
+   PAR 3 · SUPPORTING TEXT, HELPER & ERROR STATES
+   ========================================================================== */
+
+/* Fila de supporting text + counter: única portadora del espacio exterior */
+.md-text-field-supporting-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--md-sys-measurement-space-100); /* 8dp gap helper ↔ counter */
+  width: 100%;
+  margin-block-start: var(--md-sys-measurement-space-50); /* 4dp bajo container */
+  padding-inline: var(--md-sys-measurement-space-200);   /* 16dp resguardo */
+  box-sizing: border-box;
+}
+
+/* Hijos de la fila: SIN duplicar padding ni márgenes */
+.md-text-field-supporting-row .md-text-field-supporting-text {
+  margin: 0;
+  padding: 0;
+  flex: 1;
+  min-width: 0;
+  color: var(--_color-on-surface-variant);
+  font: var(--md-sys-typescale-body-small);
+  line-height: var(--md-sys-typescale-body-small-line-height);
+}
+
+/* Counter: body-small, alineado derecha, color on-surface-variant */
+.md-text-field-counter {
+  display: inline-flex;
+  align-items: center;
+  color: var(--_color-on-surface-variant);
+  font: var(--md-sys-typescale-body-small);
+  line-height: var(--md-sys-typescale-body-small-line-height);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Helper text sin error: color on-surface-variant */
+.md-text-field-outlined:not(.md-text-field-error) .md-text-field-supporting-text {
+  color: var(--_color-on-surface-variant);
+}
+
+/* Error state: outline, label, supporting text, icons en color error */
+.md-text-field-outlined.md-text-field-error .md-text-field-outline {
+  border-width: var(--_stroke-focus);
+  border-color: var(--_color-error);
+}
+.md-text-field-outlined.md-text-field-error .md-text-field-label {
+  color: var(--_color-error);
+}
+.md-text-field-outlined.md-text-field-error .md-text-field-supporting-text,
+.md-text-field-outlined.md-text-field-error .md-text-field-counter {
+  color: var(--_color-error);
+}
+.md-text-field-outlined.md-text-field-error .md-text-field-leading-icon,
+.md-text-field-outlined.md-text-field-error .md-text-field-trailing-icon {
+  color: var(--_color-error);
+}
+
+/* Focus en error state: outline error (no primary) */
+.md-text-field-outlined.md-text-field-error:has(.md-text-field-input:focus) .md-text-field-outline {
+  border-width: var(--_stroke-focus);
+  border-color: var(--_color-error);
+}
+
+/* Supporting row oculta si está vacía (server-side/JS) */
+.md-text-field-supporting-row:empty {
+  display: none;
+}
+
+/* ==========================================================================
+   PAR 4 · FILLED VARIANT (ortogonal: mismo HTML, CSS transforma el outline)
+   ========================================================================== */
+
+.md-text-field-filled {
+  --_container-height: var(--md-sys-measurement-text-field-container-height);
+  --_color-container: var(--md-sys-color-surface-container-highest);
+  --_indicator-rest: var(--md-sys-color-outline);
+  --_indicator-hover: var(--md-sys-color-primary);
+  --_indicator-focus: var(--md-sys-color-primary);
+  --_indicator-error: var(--md-sys-color-error);
+  --_color-on-surface: var(--md-sys-color-on-surface);
+  --_color-on-surface-variant: var(--md-sys-color-on-surface-variant);
+}
+
+/* Container: fondo surface-container-highest, esquinas asimétricas 4dp arriba / 0dp abajo */
+.md-text-field-filled .md-text-field-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: var(--md-sys-measurement-text-field-container-height);
+  padding-inline: var(--md-sys-measurement-space-200);
+  background-color: var(--md-sys-color-surface-container-highest);
+  border-start-start-radius: var(--md-sys-shape-corner-extra-small);
+  border-start-end-radius: var(--md-sys-shape-corner-extra-small);
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
+  box-sizing: border-box;
+}
+
+/* Active indicator: reutiliza .md-text-field-outline como línea inferior */
+.md-text-field-filled .md-text-field-outline {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  top: auto;
+  height: var(--md-sys-shape-stroke-thin); /* 1px reposo */
+  border: none;
+  border-radius: 0;
+  background-color: var(--md-sys-color-outline);
+  pointer-events: none;
+  transition:
+    background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
+    height var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+}
+
+/* Input: transparente, full-width */
+.md-text-field-filled .md-text-field-input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--md-sys-color-on-surface);
+  font: var(--md-sys-typescale-body-large);
+  line-height: var(--md-sys-typescale-body-large-line-height);
+  /* Espaciado vertical canónico M3 para Filled: 24dp arriba para librar el label, 8dp abajo */
+  padding-block-start: var(--md-sys-measurement-space-300); /* 24dp */
+  padding-block-end: var(--md-sys-measurement-space-100);   /* 8dp */
+  box-sizing: border-box;
+}
+
+/* Label flotante: misma lógica que outlined, sin notch (no hay outline perimetral) */
+.md-text-field-filled .md-text-field-label {
+  position: absolute;
+  left: var(--md-sys-measurement-space-200);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--md-sys-color-on-surface-variant);
+  font: var(--md-sys-typescale-body-large);
+  pointer-events: none;
+  transform-origin: left top;
+  transition:
+    transform var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
+    color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
+    font-size var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+}
+
+.md-text-field-filled:has(.md-text-field-input:focus) .md-text-field-label,
+.md-text-field-filled:has(.md-text-field-input:not(:placeholder-shown)) .md-text-field-label {
+  top: var(--md-sys-measurement-space-100); /* 8dp interior */
+  transform: scale(0.75);
+  transform-origin: top left;
+  color: var(--md-sys-color-primary);
+  background-color: transparent; /* Sin parche de notch */
+  padding-inline: 0;
+  border-radius: 0;
+}
+
+/* --------------------------------------------------------------------------
+   FILLED - ICON SLOTS (reutiliza lógica Par 2)
+   ------------------------------------------------------------------------ */
+
+.md-text-field-filled:has(.md-text-field-leading-icon) .md-text-field-container {
+  padding-inline-start: var(--md-sys-measurement-space-150);
+}
+.md-text-field-filled:has(.md-text-field-trailing-icon) .md-text-field-container {
+  padding-inline-end: var(--md-sys-measurement-space-150);
+}
+
+.md-text-field-filled .md-text-field-leading-icon,
+.md-text-field-filled .md-text-field-trailing-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--md-sys-measurement-icon-size);
+  height: var(--md-sys-measurement-icon-size);
+  flex-shrink: 0;
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.md-text-field-filled .md-text-field-leading-icon {
+  margin-inline-end: var(--md-sys-measurement-space-200);
+}
+.md-text-field-filled .md-text-field-trailing-icon {
+  margin-inline-start: var(--md-sys-measurement-space-200);
+}
+
+.md-text-field-filled:has(.md-text-field-leading-icon) .md-text-field-label {
+  left: calc(var(--md-sys-measurement-space-150) + var(--md-sys-measurement-icon-size) + var(--md-sys-measurement-space-200));
+}
+
+/* --------------------------------------------------------------------------
+   FILLED - ESTADOS INTERACTIVOS (active indicator morph)
+   ------------------------------------------------------------------------ */
+
+/* Hover: overlay 8% en container, indicator 2px primary */
+.md-text-field-filled:hover:not(:has(.md-text-field-input:focus)) .md-text-field-container {
+  /* Overlay via pseudo-element */
+}
+.md-text-field-filled:hover:not(:has(.md-text-field-input:focus)) .md-text-field-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-color: var(--md-sys-color-on-surface);
+  opacity: var(--md-sys-state-hover-state-layer-opacity);
+  pointer-events: none;
+}
+.md-text-field-filled:hover:not(:has(.md-text-field-input:focus)) .md-text-field-outline {
+  height: var(--md-sys-shape-stroke-thick); /* 2px */
+  background-color: var(--md-sys-color-primary);
+}
+
+/* Focus: indicator 2px primary, label primary */
+.md-text-field-filled:has(.md-text-field-input:focus) .md-text-field-outline {
+  height: var(--md-sys-shape-stroke-thick); /* 2px */
+  background-color: var(--md-sys-color-primary);
+}
+
+/* Error: indicator 2px error, label/supporting/icons error */
+.md-text-field-filled.md-text-field-error .md-text-field-outline {
+  height: var(--md-sys-shape-stroke-thick); /* 2px */
+  background-color: var(--md-sys-color-error);
+}
+.md-text-field-filled.md-text-field-error .md-text-field-label,
+.md-text-field-filled.md-text-field-error .md-text-field-supporting-text,
+.md-text-field-filled.md-text-field-error .md-text-field-counter,
+.md-text-field-filled.md-text-field-error .md-text-field-leading-icon,
+.md-text-field-filled.md-text-field-error .md-text-field-trailing-icon {
+  color: var(--md-sys-color-error);
+}
+.md-text-field-filled.md-text-field-error:has(.md-text-field-input:focus) .md-text-field-outline {
+  height: var(--md-sys-shape-stroke-thick);
+  background-color: var(--md-sys-color-error);
+}
+
+/* --------------------------------------------------------------------------
+   FILLED - SUPPORTING TEXT (reutiliza supporting-row de Par 3)
+   ------------------------------------------------------------------------ */
+
+.md-text-field-filled .md-text-field-supporting-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--md-sys-measurement-space-100);
+  width: 100%;
+  margin-block-start: var(--md-sys-measurement-space-50);
+  padding-inline: var(--md-sys-measurement-space-200);
+  box-sizing: border-box;
+}
+
+/* Supporting text directo (sin fila): padding 16dp canónico */
+.md-text-field-filled > .md-text-field-supporting-text {
+  display: block;
+  margin-block-start: var(--md-sys-measurement-space-50);
+  padding-inline: var(--md-sys-measurement-space-200);
+  color: var(--md-sys-color-on-surface-variant);
+  font: var(--md-sys-typescale-body-small);
+  line-height: var(--md-sys-typescale-body-small-line-height);
+  box-sizing: border-box;
+}
+
+/* Supporting text dentro de fila: sin padding duplicado */
+.md-text-field-filled .md-text-field-supporting-row .md-text-field-supporting-text,
+.md-text-field-filled .md-text-field-supporting-row .md-text-field-counter {
+  margin: 0;
+  padding: 0;
+  color: var(--md-sys-color-on-surface-variant);
+  font: var(--md-sys-typescale-body-small);
+  line-height: var(--md-sys-typescale-body-small-line-height);
+}
+
+.md-text-field-filled .md-text-field-counter {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* Error state en filled: active indicator error, label/supporting/icons error */
+.md-text-field-filled.md-text-field-error .md-text-field-outline {
+  height: var(--md-sys-shape-stroke-thick);
+  background-color: var(--md-sys-color-error);
+}
+.md-text-field-filled.md-text-field-error .md-text-field-label,
+.md-text-field-filled.md-text-field-error .md-text-field-supporting-text,
+.md-text-field-filled.md-text-field-error .md-text-field-counter,
+.md-text-field-filled.md-text-field-error .md-text-field-leading-icon,
+.md-text-field-filled.md-text-field-error .md-text-field-trailing-icon {
+  color: var(--md-sys-color-error);
+}
+.md-text-field-filled.md-text-field-error:has(.md-text-field-input:focus) .md-text-field-outline {
+  background-color: var(--md-sys-color-error);
+}
+
+/* Supporting row oculta si vacía */
+.md-text-field-filled .md-text-field-supporting-row:empty {
+  display: none;
+}
+
+/* ACCESIBILIDAD: prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .md-text-field-filled .md-text-field-outline,
+  .md-text-field-filled .md-text-field-label,
+  .md-text-field-filled .md-text-field-container {
+    transition: none !important;
+  }
+}
