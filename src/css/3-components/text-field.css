@@ -1004,14 +1004,20 @@
    PAR 3 · VALIDACIÓN INTERACTIVA Y COUNTER EN VIVO
    ========================================================================== */
 
-/* Ícono de error en trailing slot: oculto por defecto */
-.md-text-field-error-icon {
+/* Ícono de error en trailing slot: oculto por defecto con especificidad
+   compuesta (0,3,0) para gobernar sobre las reglas display inline-flex de
+   icon slots en ambas variantes —Outlined (0,2,0) y Filled (0,2,0)—. Sin
+   esta elevación, `display: none` era aplastado en Filled y el ícono
+   fantasma aparecía en reposo pasivo, contrario M3 canónico. */
+.md-text-field .md-text-field-trailing-icon.md-text-field-error-icon {
   display: none;
 }
 
-/* Visible con clase .md-text-field-error o input nativo inválido (dirty y sin foco) */
-.md-text-field.md-text-field-error .md-text-field-error-icon,
-.md-text-field:has(.md-text-field-input:invalid:not(:placeholder-shown):not(:focus)) .md-text-field-error-icon {
+/* Despertar ÚNICAMENTE con clase de error (validación JS) o con input
+   nativo inválido sucio y sin foco. Misma especificidad que el oculto,
+   pero colocado después en la cascada: gana por orden. */
+.md-text-field.md-text-field-error .md-text-field-trailing-icon.md-text-field-error-icon,
+.md-text-field:has(.md-text-field-input:invalid:not(:placeholder-shown):not(:focus)) .md-text-field-trailing-icon.md-text-field-error-icon {
   display: inline-flex;
   color: var(--md-sys-color-error);
 }
