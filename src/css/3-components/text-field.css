@@ -999,3 +999,31 @@
   height: var(--md-sys-shape-stroke-thin);
   background-color: var(--md-sys-color-outline);
 }
+
+/* ==========================================================================
+   PAR 3 · VALIDACIÓN INTERACTIVA Y COUNTER EN VIVO
+   ========================================================================== */
+
+/* Ícono de error en trailing slot: oculto por defecto */
+.md-text-field-error-icon {
+  display: none;
+}
+
+/* Visible con clase .md-text-field-error o input nativo inválido (dirty y sin foco) */
+.md-text-field.md-text-field-error .md-text-field-error-icon,
+.md-text-field:has(.md-text-field-input:invalid:not(:placeholder-shown):not(:focus)) .md-text-field-error-icon {
+  display: inline-flex;
+  color: var(--md-sys-color-error);
+}
+
+.md-text-field:has(.md-text-field-input:invalid:not(:placeholder-shown):not(:focus)) .md-text-field-outline {
+  border-color: var(--md-sys-color-error);
+  border-width: var(--md-sys-shape-stroke-thick);
+}
+
+.md-text-field:has(.md-text-field-input:invalid:not(:placeholder-shown):not(:focus)) .md-text-field-label,
+.md-text-field:has(.md-text-field-input:invalid:not(:placeholder-shown):not(:focus)) .md-text-field-supporting-text,
+.md-text-field:has(.md-text-field-input:invalid:not(:placeholder-shown):not(:focus)) .md-text-field-counter,
+.md-text-field:has(.md-text-field-input:invalid:not(:placeholder-shown):not(:focus)) .md-text-field-leading-icon {
+  color: var(--md-sys-color-error);
+}

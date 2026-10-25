@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="utf-8">
@@ -121,41 +121,41 @@
     <!-- PAR 3: Supporting text, Helper & Error states -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Par 3 · Supporting text, Helper & Error states</h3>
-      <p class="md-type-body-medium">Campo Outlined en estado de error (clase .md-text-field-error + aria-invalid="true"). Outline 2px error, label error, supporting text error, iconos error, counter error. Supporting row con aria-live="polite" para anuncio AT. Helper text y counter en la misma fila con gap 8dp.</p>
+      <p class="md-type-body-medium">Campo Outlined con validación interactiva HTML5 nativa (Constraint Validation API). Al escribir, el counter se actualiza en tiempo real (longitud/maxlength). Al desenfocar un campo sucio e inválido, se añade .md-text-field-error, el ícono de error se activa en el trailing slot, el outline vira a 2px error y el helper text se permuta al mensaje de error. Gobernado por la Constraint Validation API y CSS-only para los estados visuales.</p>
       <div class="sr-specimen">
-        <div class="md-text-field md-text-field-outlined md-text-field-error">
+        <div class="md-text-field md-text-field-outlined">
           <div class="md-text-field-container">
             <span class="md-text-field-leading-icon" aria-hidden="true">
-              <span class="md-icon">email</span>
+              <span class="md-icon">mail</span>
             </span>
-            <input type="email" class="md-text-field-input" id="tf-error" placeholder=" " aria-describedby="tf-error-supporting" aria-invalid="true" value="email-invalido">
-            <label class="md-text-field-label" for="tf-error">Correo electrónico</label>
+            <input type="email" class="md-text-field-input" id="tf-email-interactive" placeholder=" " maxlength="50" required aria-describedby="tf-email-supporting">
+            <label class="md-text-field-label" for="tf-email-interactive">Correo electrónico</label>
             <span class="md-text-field-outline" aria-hidden="true"></span>
-            <span class="md-text-field-trailing-icon" aria-hidden="true">
+            <span class="md-text-field-trailing-icon md-text-field-error-icon" aria-hidden="true">
               <span class="md-icon">error</span>
             </span>
           </div>
           <div class="md-text-field-supporting-row" aria-live="polite">
-            <span class="md-text-field-supporting-text" id="tf-error-supporting">Ingresa un correo válido (ej: usuario@dominio.com)</span>
-            <span class="md-text-field-counter">15/50</span>
+            <span class="md-text-field-supporting-text" id="tf-email-supporting" data-md-helper-text="Ingresa un correo para la factura electrónica" data-md-error-text="Formato de correo inválido (ej. usuario@dominio.com)">Ingresa un correo para la factura electrónica</span>
+            <span class="md-text-field-counter" data-md-text-field-counter>0/50</span>
           </div>
         </div>
       </div>
-      <pre class="sr-code"><code>&lt;div class="md-text-field md-text-field-outlined md-text-field-error"&gt;
+      <pre class="sr-code"><code>&lt;div class="md-text-field md-text-field-outlined"&gt;
   &lt;div class="md-text-field-container"&gt;
     &lt;span class="md-text-field-leading-icon" aria-hidden="true"&gt;
-      &lt;span class="md-icon"&gt;email&lt;/span&gt;
+      &lt;span class="md-icon"&gt;mail&lt;/span&gt;
     &lt;/span&gt;
-    &lt;input type="email" class="md-text-field-input" id="tf-error" placeholder=" " aria-describedby="tf-error-supporting" aria-invalid="true" value="email-invalido"&gt;
-    &lt;label class="md-text-field-label" for="tf-error"&gt;Correo electrónico&lt;/label&gt;
+    &lt;input type="email" class="md-text-field-input" id="tf-email-interactive" placeholder=" " maxlength="50" required aria-describedby="tf-email-supporting"&gt;
+    &lt;label class="md-text-field-label" for="tf-email-interactive"&gt;Correo electrónico&lt;/label&gt;
     &lt;span class="md-text-field-outline" aria-hidden="true"&gt;&lt;/span&gt;
-    &lt;span class="md-text-field-trailing-icon" aria-hidden="true"&gt;
+    &lt;span class="md-text-field-trailing-icon md-text-field-error-icon" aria-hidden="true"&gt;
       &lt;span class="md-icon"&gt;error&lt;/span&gt;
     &lt;/span&gt;
   &lt;/div&gt;
   &lt;div class="md-text-field-supporting-row" aria-live="polite"&gt;
-    &lt;span class="md-text-field-supporting-text" id="tf-error-supporting"&gt;Ingresa un correo válido (ej: usuario@dominio.com)&lt;/span&gt;
-    &lt;span class="md-text-field-counter"&gt;15/50&lt;/span&gt;
+    &lt;span class="md-text-field-supporting-text" id="tf-email-supporting" data-md-helper-text="Ingresa un correo para la factura electrónica" data-md-error-text="Formato de correo inválido (ej. usuario@dominio.com)"&gt;Ingresa un correo para la factura electrónica&lt;/span&gt;
+    &lt;span class="md-text-field-counter" data-md-text-field-counter&gt;0/50&lt;/span&gt;
   &lt;/div&gt;
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
@@ -542,3 +542,7 @@
   <!-- MAIN: fin -->
 </body>
 </html>
+
+
+
+
