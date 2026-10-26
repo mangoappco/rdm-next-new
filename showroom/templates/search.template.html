@@ -44,7 +44,7 @@
         <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
       </div>
       <h1 class="md-type-display-large">Search</h1>
-      <p class="md-type-body-large">El componente Search permite a los usuarios introducir palabras clave o frases para consultar informacion en la aplicacion. Incluye Search bar y Search view (docked). · <em>Tres pares</em></p>
+      <p class="md-type-body-large">El componente Search permite a los usuarios introducir palabras clave o frases para consultar informacion en la aplicacion. Incluye Search bar, Search view y estados de superficie. · <em>Cuatro pares</em></p>
     </header>
     <!-- HEADER: fin -->
 
@@ -210,6 +210,53 @@
       &lt;span class="md-search-suggestion-trailing" aria-hidden="true"&gt;
         &lt;span class="md-icon"&gt;north_west&lt;/span&gt;
       &lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- Surfaces and states (Flat vs. Disabled) -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Surfaces and states</h3>
+      <p class="md-type-body-medium">Variantes de superficie: Flat (sin sombra, fondo surface-container-highest) y Disabled (opacidad 38%, pointer-events none, cursor not-allowed).</p>
+
+      <div class="sr-specimen sr-specimen-gap">
+        <div class="md-search md-search-bar md-search-flat">
+          <span class="md-search-leading" aria-hidden="true">
+            <span class="md-icon">search</span>
+          </span>
+          <input type="search" class="md-search-input" placeholder="Buscar en ManGo!..." aria-label="Buscar en ManGo!">
+        </div>
+
+        <div class="md-search md-search-bar">
+          <span class="md-search-leading" aria-hidden="true">
+            <span class="md-icon">search</span>
+          </span>
+          <input type="search" class="md-search-input" placeholder="Buscar en ManGo!..." aria-label="Buscar en ManGo!" disabled value="Campo deshabilitado">
+          <div class="md-search-trailing">
+            <button type="button" class="md-icon-button" data-md-search-mic aria-label="Búsqueda por voz">
+              <span class="md-icon" aria-hidden="true">mic</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;div class="md-search md-search-bar md-search-flat"&gt;
+  &lt;span class="md-search-leading" aria-hidden="true"&gt;
+    &lt;span class="md-icon"&gt;search&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;input type="search" class="md-search-input" placeholder="Buscar en ManGo!..." aria-label="Buscar en ManGo!"&gt;
+&lt;/div&gt;
+
+&lt;div class="md-search md-search-bar"&gt;
+  &lt;span class="md-search-leading" aria-hidden="true"&gt;
+    &lt;span class="md-icon"&gt;search&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;input type="search" class="md-search-input" placeholder="Buscar en ManGo!..." aria-label="Buscar en ManGo!" disabled value="Campo deshabilitado"&gt;
+  &lt;div class="md-search-trailing"&gt;
+    &lt;button type="button" class="md-icon-button" data-md-search-mic aria-label="Búsqueda por voz"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;mic&lt;/span&gt;
     &lt;/button&gt;
   &lt;/div&gt;
 &lt;/div&gt;</code></pre>

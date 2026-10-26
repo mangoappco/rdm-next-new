@@ -253,3 +253,43 @@
   height: var(--md-sys-measurement-space-300);
   line-height: 1;
 }
+
+/* ==========================================================================
+   PAR 4 · SURFACES & STATES (FLAT vs. DISABLED)
+   ========================================================================== */
+
+/* Flat / Tonal variant: sin sombra, fondo surface-container-highest */
+.md-search-flat,
+.md-search-bar.md-search-flat {
+  box-shadow: none;
+  background-color: var(--md-sys-color-surface-container-highest);
+}
+
+/* Hover state layer para flat (mismo patrón que elevated) */
+.md-search-bar.md-search-flat:hover::after {
+  opacity: var(--md-sys-state-hover-state-layer-opacity);
+}
+
+/* Disabled state: pointer-events none, cursor not-allowed, sin elevación */
+.md-search-bar:has(.md-search-input:disabled),
+.md-search-flat:has(.md-search-input:disabled) {
+  pointer-events: none;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.md-search-bar:has(.md-search-input:disabled)::after,
+.md-search-flat:has(.md-search-input:disabled)::after {
+  opacity: var(--md-sys-state-disabled-state-layer-opacity);
+  background-color: var(--md-sys-color-on-surface);
+}
+
+/* Opacidad 38% en contenido disabled */
+.md-search-bar:has(.md-search-input:disabled) .md-search-leading,
+.md-search-bar:has(.md-search-input:disabled) .md-search-input,
+.md-search-bar:has(.md-search-input:disabled) .md-search-trailing,
+.md-search-flat:has(.md-search-input:disabled) .md-search-leading,
+.md-search-flat:has(.md-search-input:disabled) .md-search-input,
+.md-search-flat:has(.md-search-input:disabled) .md-search-trailing {
+  opacity: var(--md-sys-state-disabled-state-layer-opacity);
+}
