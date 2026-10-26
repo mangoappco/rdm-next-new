@@ -89,23 +89,6 @@
   display: none;
 }
 
-/* Disabled state */
-.md-search-bar:has(.md-search-input:disabled) {
-  pointer-events: none;
-  cursor: not-allowed;
-  box-shadow: none;
-}
-
-.md-search-bar:has(.md-search-input:disabled)::after {
-  opacity: var(--md-sys-state-disabled-state-layer-opacity);
-  background-color: var(--md-sys-color-on-surface);
-}
-
-.md-search-bar:has(.md-search-input:disabled) .md-search-leading,
-.md-search-bar:has(.md-search-input:disabled) .md-search-input {
-  opacity: var(--md-sys-state-disabled-state-layer-opacity);
-}
-
 /* ==========================================================================
    PAR 2 · TRAILING ACTIONS (CLEAR BUTTON & MIC)
    ========================================================================== */
@@ -268,13 +251,24 @@
    PAR 5 · INTERACTIVE & DISABLED STATES
    ========================================================================== */
 
-/* Estado deshabilitado (Disabled state) — contenedor sin opacidad,
-   solo pierde sombra y bloquea interacción */
+/* Estado deshabilitado canónico M3 — unificación total:
+   contenedor sólido al 100% en surface-container (idéntico al Text Field
+   disabled de referencia), sin sombra, sin capas de estado residuales y
+   sin interacción; la atenuación 38% aplica solo al contenido */
 .md-search:has(.md-search-input:disabled),
 .md-search.is-disabled {
+  background-color: var(--md-sys-color-surface-container);
   box-shadow: none;
   cursor: not-allowed;
   pointer-events: none;
+  opacity: 1;
+}
+
+/* Neutraliza pseudo-elementos de estado (hover/focus) en disabled */
+.md-search:has(.md-search-input:disabled)::before,
+.md-search:has(.md-search-input:disabled)::after {
+  content: none;
+  display: none;
 }
 
 /* Contenido disabled: opacidad 38% en glifos, texto y controles */
@@ -314,33 +308,4 @@
   box-shadow: none;
 }
 
-/* Disabled state: pointer-events none, cursor not-allowed */
-.md-search-bar:has(.md-search-input:disabled),
-.md-search-flat:has(.md-search-input:disabled) {
-  pointer-events: none;
-  cursor: not-allowed;
-}
-
-/* Disabled Elevated: conserva elevación level3, solo atenúa contenido */
-.md-search-bar:has(.md-search-input:disabled) {
-  box-shadow: var(--md-sys-elevation-level3);
-}
-
-/* Disabled Search view: fondo surface-container (más claro) para mejor contraste */
-.md-search-view:has(.md-search-input:disabled) {
-  background-color: var(--md-sys-color-surface-container);
-}
-
-/* Disabled Flat: sin elevación (level0) */
-.md-search-flat:has(.md-search-input:disabled) {
-  box-shadow: none;
-}
-
-.md-search-bar:has(.md-search-input:disabled)::after,
-.md-search-flat:has(.md-search-input:disabled)::after {
-  opacity: var(--md-sys-state-disabled-state-layer-opacity);
-  background-color: var(--md-sys-color-on-surface);
-}
-
-/* Fin del bloque disabled. Opacidad 38% aplicada al contenido (glifos, texto, controles).
-   El contenedor mantiene su fondo y forma sin atenuación radical. */
+/* Todo el estado deshabilitado vive en el bloque PAR 5 (regla única canónica). */
