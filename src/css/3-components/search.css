@@ -191,7 +191,7 @@
   align-items: center;
   gap: var(--md-sys-measurement-space-200);
   padding-inline: var(--md-sys-measurement-space-200);
-  min-height: var(--md-sys-measurement-space-600);
+  min-height: var(--md-sys-measurement-text-field-container-height); /* 56dp */
   color: var(--md-sys-color-on-surface);
   cursor: pointer;
   border: none;
