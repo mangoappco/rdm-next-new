@@ -18,7 +18,7 @@ Solo prohibiciones verbales. Las reglas de showroom, de capas y de ciclo no se c
 
 ## Componentes creados
 
-Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **12 componentes y 21 vistas** (12 de componente + 9 de tokens), las 21 enlazadas en `showroom/index.html`. El orden es el de `index.css`:
+Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **13 componentes y 22 vistas** (13 de componente + 9 de tokens), las 22 enlazadas en `showroom/index.html`. El orden es el de `index.css`:
 
 | Componente | Hoja | Vista |
 | --- | --- | --- |
@@ -34,10 +34,11 @@ Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **12 compo
 | Segmented button | `segmented-button.css` | `segmented-button.html` |
 | Chips | `chips.css` | `chips.html` |
 | Text Field | `text-field.css` | `text-field.html` |
+| Search | `search.css` | `search.html` |
 
 Cada componente tiene además su molde en `showroom/templates/<nombre>.template.html`.
 
-**Solo 6 de 18 las tienen byte-idénticas a su vista** — `fab`, `fab-extended`, `card`, `dialog`, `list` y `segmented-button`, las más recientes. Las otras 12 vistas son distintas de su molde, por el puntero de dos líneas de la convención antigua o porque el molde se quedó atrás del trabajo publicado: esa es la convención mayoritaria, pero la cambió el rumbo del 2026-10-13, no al revés. `typography.html` no tiene molde propio y apunta a `component.template.html`.
+**Hoy un solo par molde/vista rinde byte-idéntico, y es `search`** —verificado por hash el 2026-10-26; los moldes de `fab`, `fab-extended`, `card`, `dialog`, `list` y `segmented-button`, que sí lo fueron a su día (rumbo del 2026-10-13), se quedaron atrás de su vista. Las demás vistas difieren de su molde por el puntero de dos líneas de la convención antigua o por el desfase del molde anotado en deuda. `chips` no tiene molde propio y `typography.html` apunta a `component.template.html`.
 
 ## FAB — la base NO es el `md-fab-medium`
 
@@ -261,6 +262,22 @@ Once pares, en un solo bloque (Especificación, anatomía y superficies): Anatom
 - **Filter chip interactivo:** `data-chip-filter-group` con toggles individuales. Cada chip conmuta `aria-selected` y la clase `md-chip-selected` de forma independiente. Inserción/animación del check por `main.js`.
 - **Motion canónico:** transiciones de estado con `short4` (200ms) + easing-standard para color, borde y padding; salida del input chip con `short3` (150ms) + `opacity` y `scale(0.85)`; `prefers-reduced-motion` desactiva todo.
 
+## Search - publicada
+
+Cinco pares, cerrados el 2026-10-26: **Bar base** (elevada, 56dp, level3), **Trailing actions** (clear + mic), **Search view** con sugerencias docked, **Superficies** (Elevated vs Flat) e **Interactive & disabled**. El corte de Danny manda ahí: el Par 6 que M3 publica —Top bar con avatar— es una COMPOSICIÓN (menu + avatar + recorte de texto) y las composiciones de negocio no entran al molde; su lugar es la **Galería de Usos** que se abrirá después del catálogo. El contador de la vista queda en «· *Cinco pares*» y la vista es el ÚNICO par byte-idéntico con su moldería —como abajo se anota—.
+
+### El disabled, y por qué medía #9E98A3 gris plomizo
+
+El estado disabled heredó DOS scrims oscuros `::after`, uno temprano y otro en el bloque del Par 4, con `background-color: on-surface` al 38%: una capa semitransparente de tinta sobre la pastilla entera. La matemática lo decía: `0.38×#1D1B20 + 0.62×#ECE6F0 = #9D99A1`, exactamente el `#9E98A3` que Danny midió en su captura del lab. Encima, el Par 4 hacia revivir `elevation-level3` en el disabled elevado: misma especificidad que el `box-shadow: none` del Par 5, ganaba el último de la hoja, y el disabled flotaba cuando no debía. Otra lección del asunto: el harness headless propio emula `prefers-color-scheme: dark` —el mecanismo de `main.css` (`@media` + `html[data-theme]`) responde a eso—, y una lectura «todo bien» podía ser verdad EN OSCURO y mentir para el esquema claro que Danny ve: toda lectura de color va con el esquema fijado por el toggle.
+
+El canon final vive en UN bloque (Par 5, commit `70e2e63`, neto −35 líneas): contenedor sólido al 100% en `surface-container` —unificado, el mismo tono `#F3EDF7` del Text Field disabled de referencia—, `box-shadow: none`, `pointer-events: none`, `cursor: not-allowed`, `opacity: 1` y pseudo-elementos de estado `content: none; display: none`; la atenuación al 38% (`--md-sys-state-disabled-state-layer-opacity`) existe SOLO en el contenido: `.md-search-leading`, `-input`, `-trailing` y `-suggestion`.
+
+### El comportamiento vive en `src/js/search.js`
+
+Una delegación ÚNICA en `document` con dos ramas (commit `cab8ae7`): el clear (`[data-md-search-clear]`) vacía el input, dispara `input`+`change` y devuelve el foco; la sugerencia transfiere su texto —que vive en un span SIN clase entre los spans `leading`/`trailing`; un `textContent` a secas absorbería las ligaduras `history` y `north_west`. Guards de `disabled`/`readOnly` en las dos: el CSS disabled bloquea la caja con `pointer-events: none` —el clic ni entra—, y con un clic programático protege el guard de JS. Sentinels REGLA 13 (`[data-md-search-clear]`, `[data-md-search-mic]`) registradas explícitamente. Mic queda sin comportamiento: placeholder para el futuro.
+
+Del mismo cierre, junta y aparte: `src/js/theme.js`, el conmutador de tema DEL SISTEMA (`data-md-theme-toggle`, llave `rdm-theme`, distinta del chrome), cableado en `main.js` (commit `c88b2b7`); y `showroom/lab.html` versionado otra vez por decisión de Danny (commit `ac63856`), con el toggle dentro.
+
 ## Las dos mitades de una vista del showroom
 
 A partir del `list` (2026-10-21), cada vista del showroom se estructura en dos bloques, y el corte se marca con un divisor:
@@ -274,7 +291,7 @@ En el marcado, el corte es un `<hr class="md-divider">` —el mismo mecanismo co
 
 ## Siguiente tarea
 
-**Text Field completado (7 pares).** El componente cubre: Clase base Outlined con label flotante, icon slots (leading/trailing), supporting text/helper/error states, Filled variant ortogonal, Disabled state (HTML nativo + CSS `:has()`), Dense variant (48dp) y Textarea (multilínea). Verificador en verde (EXIT_CODE=0, 13 reglas OK).
+**Search completado (5 pares), y el rumbo de las composiciones cambia.** El componente cierra en el Par 5 —sección arriba—; el Par 6 de M3 (Top bar con avatar) y las pantallas reales (POS, KDS, carta, modal de cobro) van a la **Galería de Usos**, que se abrirá cuando el catálogo acabe de cerrarse. Verificador en verde (EXIT_CODE=0 con las excepciones de siempre).
 
 Lo que queda por delante no es un componente nuevo sino la **deuda conocida** de más abajo, que es lo que de verdad está pendiente:
 
