@@ -41,7 +41,7 @@
         <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
       </div>
       <h1 class="md-type-display-large">Search</h1>
-      <p class="md-type-body-large">El componente Search permite a los usuarios introducir palabras clave o frases para consultar informacion en la aplicacion. Incluye la variante Search bar (punto de entrada en reposo) y trailing actions. · <em>Dos pares</em></p>
+      <p class="md-type-body-large">El componente Search permite a los usuarios introducir palabras clave o frases para consultar informacion en la aplicacion. Incluye Search bar y Search view (docked). · <em>Tres pares</em></p>
     </header>
     <!-- HEADER: fin -->
 
@@ -104,6 +104,109 @@
     &lt;/button&gt;
     &lt;button type="button" class="md-icon-button" data-md-search-mic aria-label="Búsqueda por voz"&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;mic&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- Search view (Docked suggestions) -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Search view</h3>
+      <p class="md-type-body-medium">Vista expandida en modo acoplado (docked). Contenedor unificado con elevacion level3, cabecera de busqueda activa, divisor horizontal y lista de sugerencias con historial y terminos recomendados.</p>
+
+      <div class="sr-specimen">
+        <div class="md-search md-search-view">
+          <div class="md-search-view-header">
+            <span class="md-search-leading" aria-hidden="true">
+              <span class="md-icon">search</span>
+            </span>
+            <input type="search" class="md-search-input" id="search-input-docked" placeholder="Buscar en el catálogo..." aria-label="Buscar en el catálogo" value="Hamburguesa">
+            <div class="md-search-trailing">
+              <button type="button" class="md-icon-button" data-md-search-clear aria-label="Borrar búsqueda">
+                <span class="md-icon" aria-hidden="true">close</span>
+              </button>
+              <button type="button" class="md-icon-button" data-md-search-mic aria-label="Búsqueda por voz">
+                <span class="md-icon" aria-hidden="true">mic</span>
+              </button>
+            </div>
+          </div>
+          <hr class="md-divider">
+          <div class="md-search-suggestions" role="listbox" aria-label="Sugerencias de búsqueda">
+            <button type="button" class="md-search-suggestion" role="option">
+              <span class="md-search-suggestion-leading" aria-hidden="true">
+                <span class="md-icon">history</span>
+              </span>
+              <span>Hamburguesa artesanal</span>
+              <span class="md-search-suggestion-trailing" aria-hidden="true">
+                <span class="md-icon">north_west</span>
+              </span>
+            </button>
+            <button type="button" class="md-search-suggestion" role="option">
+              <span class="md-search-suggestion-leading" aria-hidden="true">
+                <span class="md-icon">history</span>
+              </span>
+              <span>Hamburguesa doble carne</span>
+              <span class="md-search-suggestion-trailing" aria-hidden="true">
+                <span class="md-icon">north_west</span>
+              </span>
+            </button>
+            <button type="button" class="md-search-suggestion" role="option">
+              <span class="md-search-suggestion-leading" aria-hidden="true">
+                <span class="md-icon">search</span>
+              </span>
+              <span>Hamburguesa vegetariana</span>
+              <span class="md-search-suggestion-trailing" aria-hidden="true">
+                <span class="md-icon">north_west</span>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;div class="md-search md-search-view"&gt;
+  &lt;div class="md-search-view-header"&gt;
+    &lt;span class="md-search-leading" aria-hidden="true"&gt;
+      &lt;span class="md-icon"&gt;search&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;input type="search" class="md-search-input" id="search-input-docked" placeholder="Buscar en el catálogo..." aria-label="Buscar en el catálogo" value="Hamburguesa"&gt;
+    &lt;div class="md-search-trailing"&gt;
+      &lt;button type="button" class="md-icon-button" data-md-search-clear aria-label="Borrar búsqueda"&gt;
+        &lt;span class="md-icon" aria-hidden="true"&gt;close&lt;/span&gt;
+      &lt;/button&gt;
+      &lt;button type="button" class="md-icon-button" data-md-search-mic aria-label="Búsqueda por voz"&gt;
+        &lt;span class="md-icon" aria-hidden="true"&gt;mic&lt;/span&gt;
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;hr class="md-divider"&gt;
+  &lt;div class="md-search-suggestions" role="listbox" aria-label="Sugerencias de búsqueda"&gt;
+    &lt;button type="button" class="md-search-suggestion" role="option"&gt;
+      &lt;span class="md-search-suggestion-leading" aria-hidden="true"&gt;
+        &lt;span class="md-icon"&gt;history&lt;/span&gt;
+      &lt;/span&gt;
+      &lt;span&gt;Hamburguesa artesanal&lt;/span&gt;
+      &lt;span class="md-search-suggestion-trailing" aria-hidden="true"&gt;
+        &lt;span class="md-icon"&gt;north_west&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-search-suggestion" role="option"&gt;
+      &lt;span class="md-search-suggestion-leading" aria-hidden="true"&gt;
+        &lt;span class="md-icon"&gt;history&lt;/span&gt;
+      &lt;/span&gt;
+      &lt;span&gt;Hamburguesa doble carne&lt;/span&gt;
+      &lt;span class="md-search-suggestion-trailing" aria-hidden="true"&gt;
+        &lt;span class="md-icon"&gt;north_west&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-search-suggestion" role="option"&gt;
+      &lt;span class="md-search-suggestion-leading" aria-hidden="true"&gt;
+        &lt;span class="md-icon"&gt;search&lt;/span&gt;
+      &lt;/span&gt;
+      &lt;span&gt;Hamburguesa vegetariana&lt;/span&gt;
+      &lt;span class="md-search-suggestion-trailing" aria-hidden="true"&gt;
+        &lt;span class="md-icon"&gt;north_west&lt;/span&gt;
+      &lt;/span&gt;
     &lt;/button&gt;
   &lt;/div&gt;
 &lt;/div&gt;</code></pre>

@@ -126,13 +126,103 @@
 }
 
 /* ==========================================================================
-   SEARCH VIEW (vista expandida — placeholder para Par 3+)
+   PAR 3 · SEARCH VIEW (DOCKED SUGGESTIONS)
    ========================================================================== */
+
+/* Contenedor unificado docked (elevación level3, fondo continuo) */
 .md-search-view {
   display: flex;
   flex-direction: column;
   width: 100%;
-  background-color: var(--md-sys-color-surface);
+  background-color: var(--md-sys-color-surface-container-high);
+  box-shadow: var(--md-sys-elevation-level3);
   border-radius: var(--md-sys-shape-corner-extra-large);
   overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Cabecera integrada (misma altura 56dp que la Search bar) */
+.md-search-view-header {
+  display: flex;
+  align-items: center;
+  height: var(--md-sys-measurement-text-field-container-height);
+  padding-inline: var(--md-sys-measurement-space-200);
+  background-color: transparent;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1;
+}
+
+/* Divisor horizontal sin márgenes parásitos */
+.md-search-view .md-divider {
+  margin: 0;
+  border-color: var(--md-sys-color-outline-variant);
+}
+
+/* Contenedor de la lista de sugerencias */
+.md-search-suggestions {
+  display: flex;
+  flex-direction: column;
+  padding-block: var(--md-sys-measurement-space-100);
+}
+
+/* Fila interactiva de sugerencia */
+.md-search-suggestion {
+  display: flex;
+  align-items: center;
+  gap: var(--md-sys-measurement-space-200);
+  padding-inline: var(--md-sys-measurement-space-200);
+  min-height: var(--md-sys-measurement-space-600);
+  color: var(--md-sys-color-on-surface);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: start;
+  font: var(--md-sys-typescale-body-large);
+  border-radius: 0;
+  box-sizing: border-box;
+  transition: background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+}
+
+/* State layer al 8% en hover */
+.md-search-suggestion:hover {
+  background-color: rgb(from var(--md-sys-color-on-surface) r g b / var(--md-sys-state-hover-state-layer-opacity));
+}
+
+/* Ranura leading en sugerencia (history / search) */
+.md-search-suggestion-leading {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--md-sys-measurement-space-300);
+  height: var(--md-sys-measurement-space-300);
+  color: var(--md-sys-color-on-surface-variant);
+  flex-shrink: 0;
+}
+
+.md-search-suggestion-leading .md-icon {
+  font-size: var(--md-sys-measurement-space-300);
+  width: var(--md-sys-measurement-space-300);
+  height: var(--md-sys-measurement-space-300);
+  line-height: 1;
+}
+
+/* Ranura trailing en sugerencia (autocompletar / borrar) */
+.md-search-suggestion-trailing {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--md-sys-measurement-space-300);
+  height: var(--md-sys-measurement-space-300);
+  color: var(--md-sys-color-on-surface-variant);
+  flex-shrink: 0;
+  margin-inline-start: auto;
+}
+
+.md-search-suggestion-trailing .md-icon {
+  font-size: var(--md-sys-measurement-space-300);
+  width: var(--md-sys-measurement-space-300);
+  height: var(--md-sys-measurement-space-300);
+  line-height: 1;
 }
