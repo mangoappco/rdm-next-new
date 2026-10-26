@@ -1,0 +1,343 @@
+/* ==========================================================================
+   src/css/3-components/switch.css — SWITCH (M3 Selección)
+   ==========================================================================
+
+   QUE HACE
+   --------
+   El conmutador alterna UNA opcion entre activada y desactivada. Se
+   construye sobre un checkbox NATIVO: el estado vive en :checked y toda la
+   conmutacion es CSS. Sin JavaScript, sin data-* que registrar (REGLA 13
+   vacía por diseño), igual que el toggle de tema.
+
+   LA ANATOMIA
+   -----------
+     <label class="md-switch">
+       <input type="checkbox" class="md-switch-input">    control nativo
+       <span class="md-switch-track" aria-hidden="true">  la pastilla visual
+         <span class="md-switch-handle"></span>           la manija (con o
+       </span>                                             sin iconos)
+     </label>
+
+   El input es invisible (appearance: none) y a la vez ES el touch target
+   de 48dp centrado, como en material-web. El label da el nombre accesible:
+   no hace falta duplicarlo en la pastilla.
+
+   FUENTES
+   -------
+   - m3.material.io/components/switch/overview, /specs, /guidelines
+   - `tokens/versions/v0_192/_md-comp-switch.scss` (defaults numericos)
+   - `switch/internal/_track.scss`, `_handle.scss`, `_icon.scss` + el CSS
+     compilado publicado (`switch-styles.cssresult.js`), de donde sale la
+     geometría de reposo que la tabla no lista: manija desconectada
+     descansando con hueco de 8dp (Space 100) y conectada con hueco de 4dp
+     (Space 50); el viaje completo es de 20dp.
+
+   DOS DECISIONES ESTRUCTURALES
+   ----------------------------
+   1. El color del track se dibuja en `::before`, separado del span, usando
+     el mismo truco del oracle ("Separate node ... to support opacity
+     changes"): asi el disabled baja la capa al 12% SIN opacidad anidada. Si
+     la pastilla entera bajara a 12%, la manija (hija) quedaria a 12%x38%.
+   2. El viaje y el crecimiento de la manija corren en paralelo: el centro
+     viaja 20dp (margen 8 -> 24) mientras el tamaño crece 16 -> 24. El
+     resultado visual coincide con material-web, que anima el CONTENEDOR
+     con un bezier overshoot custom (cubic-bezier(0.175, 0.885, 0.32, 1.275))
+     que no es token de esta casa: aqui el viaje usa
+     --md-sys-motion-easing-spatial-default, la desviacion se deja anotada.
+   ========================================================================== */
+
+/* Base: el label ES la caja de la pastilla (52x32dp, corner-full) */
+.md-switch {
+  position: relative;
+  display: inline-flex;
+  width: var(--md-sys-measurement-switch-track-width);
+  height: var(--md-sys-measurement-switch-track-height);
+  cursor: pointer;
+  vertical-align: top;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* DESHABILITADO: sin eventos de puntero; el input nativo disabled ya
+   excluye al teclado y a la activacion, y el cursor se apaga con el label. */
+.md-switch:has(.md-switch-input:disabled) {
+  cursor: default;
+  pointer-events: none;
+}
+
+/* EL INPUT NATIVO ES EL TOUCH TARGET: 48dp minimos centrados sobre la
+   pastilla (52x32), con el mismo criterio de material-web. Los insets
+   salen de calc() de tokens: (52-48)/2 = 2dp y (32-48)/2 = -8dp. */
+.md-switch-input {
+  position: absolute;
+  appearance: none;
+  background: none;
+  margin: 0;
+  outline: none;
+  z-index: 1;
+  cursor: inherit;
+  width: var(--md-sys-measurement-touch-target);
+  height: var(--md-sys-measurement-touch-target);
+  inset-block: calc(
+    (
+      var(--md-sys-measurement-switch-track-height) -
+        var(--md-sys-measurement-touch-target)
+    ) / 2
+  );
+  inset-inline: calc(
+    (
+      var(--md-sys-measurement-switch-track-width) -
+        var(--md-sys-measurement-touch-target)
+    ) / 2
+  );
+}
+
+/* LA PASTILLA: llena el label, esquinas completas, y CENTRA la manija en
+   el eje vertical (la altura del hueco ya se la dan los tamaños). */
+.md-switch-track {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  border-radius: var(--md-sys-shape-corner-full);
+}
+
+/* La capa de COLOR del track vive aqui, separada del span, para que el
+   disabled pueda atenuar solo esta capa (material-web: "Separate node for
+   background/outline colors to support opacity changes")...
+   UNSELECTED EN REPOSO: fondo surface-container-highest con borde de 2dp
+   en outline (v0_192 'track-outline-width': 2px). */
+.md-switch-track::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  border-radius: inherit;
+  background-color: var(--md-sys-color-surface-container-highest);
+  border: var(--md-sys-shape-stroke-thick) solid var(--md-sys-color-outline);
+  transition:
+    background-color var(--md-sys-motion-duration-short4)
+      var(--md-sys-motion-easing-standard),
+    border-color var(--md-sys-motion-duration-short4)
+      var(--md-sys-motion-easing-standard),
+    opacity var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-linear);
+}
+
+/* SELECTED: fondo primary solido. El borde NO se retira: se vuelve
+   transparente y la geometria de 32dp no se mueve un pixel (cero reflow,
+   precedent chips). */
+.md-switch-input:checked + .md-switch-track::before {
+  background-color: var(--md-sys-color-primary);
+  border-color: transparent;
+}
+
+/* CAPA DE ESTADO: circulo de 40dp (más grande que la pastilla, se asoma
+   4dp por arriba y por abajo), centrada con los mismos calc() del sistema.
+   Color del oracle: on-surface desconectada, primary conectada. */
+.md-switch-track::after {
+  content: "";
+  position: absolute;
+  inset-block: calc(
+    (
+      var(--md-sys-measurement-switch-track-height) -
+        var(--md-sys-measurement-switch-state-layer-size)
+    ) / 2
+  );
+  inset-inline: calc(
+    (
+      var(--md-sys-measurement-switch-track-width) -
+        var(--md-sys-measurement-switch-state-layer-size)
+    ) / 2
+  );
+  border-radius: var(--md-sys-shape-corner-full);
+  background-color: var(--md-sys-color-on-surface);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--md-sys-motion-duration-short4)
+    var(--md-sys-motion-easing-standard);
+}
+
+.md-switch-input:checked + .md-switch-track::after {
+  background-color: var(--md-sys-color-primary);
+}
+
+/* Hover 8%, foco 10%, presion 10%: los tres roles de opacidad que ya
+   existen en 2-system-tokens/state.css. El disabled apague el hover con
+   pointer-events: none del bloque de arriba, y arrastra su capa a la vez.*/
+.md-switch:hover .md-switch-track::after {
+  opacity: var(--md-sys-state-hover-state-layer-opacity);
+}
+
+.md-switch-input:focus-visible + .md-switch-track::after {
+  opacity: var(--md-sys-state-focus-state-layer-opacity);
+}
+
+.md-switch-input:active + .md-switch-track::after {
+  opacity: var(--md-sys-state-pressed-state-layer-opacity);
+}
+
+/* ANILLO DE FOCO: 3px de grosor y 2px de offset (los mismos que usan
+   button, icon-button y fab) con el color que M3 publica para el focus
+   indicator: secondary (decisión de card.css). */
+.md-switch-input:focus-visible + .md-switch-track {
+  outline: var(--md-sys-shape-stroke-extra-thick) solid var(--md-sys-color-secondary);
+  outline-offset: var(--md-sys-shape-stroke-thick);
+}
+
+/* LA MANIJA. En reposo desconectado es un disco de 16dp en outline que
+   descansa con hueco de 8dp desde el borde inicial (derivado del CSS
+   compilado). El growth a 24dp y el viaje corren EN PARALELO con dos
+   duraciones distintas y el color por su propio canal. */
+.md-switch-handle {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  box-sizing: border-box;
+  border-radius: var(--md-sys-shape-corner-full);
+  width: var(--md-sys-measurement-switch-handle-size-unselected);
+  height: var(--md-sys-measurement-switch-handle-size-unselected);
+  margin-inline-start: var(--md-sys-measurement-switch-handle-gap-unselected);
+  background-color: var(--md-sys-color-outline);
+  transition:
+    width var(--md-sys-motion-duration-medium1) var(--md-sys-motion-easing-emphasized),
+    height var(--md-sys-motion-duration-medium1) var(--md-sys-motion-easing-emphasized),
+    margin-inline-start var(--md-sys-motion-duration-medium2)
+      var(--md-sys-motion-easing-spatial-default),
+    background-color var(--md-sys-motion-duration-short4)
+      var(--md-sys-motion-easing-standard);
+}
+
+/* CON ICONOS: la manija se fija a 24dp en AMBOS estados (v0_192
+   'with-icon-handle-*': 24px) y su hueco pasa a 4dp de reposo. La
+   deteccion es :has, igual que chip.css con los iconos de su label. */
+.md-switch-handle:has(.md-switch-icon) {
+  width: var(--md-sys-measurement-switch-handle-size-selected);
+  height: var(--md-sys-measurement-switch-handle-size-selected);
+  margin-inline-start: var(--md-sys-measurement-switch-handle-gap-selected);
+}
+
+/* SELECTED EN REPOSO: manija de 24dp anclada al borde final con hueco de
+   4dp (Space 50). El margen sale del mismo calc que material-web cambia
+   con `track-width - track-height` mas el hueco del borde final. */
+.md-switch-input:checked + .md-switch-track .md-switch-handle {
+  width: var(--md-sys-measurement-switch-handle-size-selected);
+  height: var(--md-sys-measurement-switch-handle-size-selected);
+  margin-inline-start: calc(
+    var(--md-sys-measurement-switch-track-width) -
+      var(--md-sys-measurement-switch-handle-size-selected) -
+      var(--md-sys-measurement-switch-handle-gap-selected)
+  );
+  background-color: var(--md-sys-color-on-primary);
+}
+
+/* RECOLOR DE INTERACCION (v0_192): la manija responde con color, no solo
+   con la capa de estado. Desconectada se oscurece a on-surface-variant;
+   conectada pasa a primary-container. Los iconos no cambian (el oracle
+   les da el MISMO color en reposo y en cada estado). */
+.md-switch-input:not(:checked):hover + .md-switch-track .md-switch-handle,
+.md-switch-input:not(:checked):focus-visible + .md-switch-track .md-switch-handle,
+.md-switch-input:not(:checked):active + .md-switch-track .md-switch-handle {
+  background-color: var(--md-sys-color-on-surface-variant);
+}
+
+.md-switch-input:checked:hover + .md-switch-track .md-switch-handle,
+.md-switch-input:checked:focus-visible + .md-switch-track .md-switch-handle,
+.md-switch-input:checked:active + .md-switch-track .md-switch-handle {
+  background-color: var(--md-sys-color-primary-container);
+}
+
+/* PRESIONADO: la manija crece a 28dp, con la respuesta rapida que material
+   web pide (100ms lineales) por encima de los 250ms del reposo. */
+.md-switch-input:active + .md-switch-track .md-switch-handle {
+  width: var(--md-sys-measurement-switch-handle-size-pressed);
+  height: var(--md-sys-measurement-switch-handle-size-pressed);
+  transition:
+    width var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-linear),
+    height var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-linear);
+}
+
+/* ICONOS (par con iconos): 16dp SIEMPRE en el manifest, DOM dentro de la
+   manija, y el swap lo hace la opacidad (material-web: icon--off /
+   icon--on). El tamaño del glifo re-apunta el ropel de icono, igual que
+   chip.css. */
+.md-switch-icon {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  --md-sys-measurement-icon-size: var(--md-sys-measurement-switch-icon-size);
+  width: var(--md-sys-measurement-switch-icon-size);
+  height: var(--md-sys-measurement-switch-icon-size);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
+    color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+}
+
+.md-switch-icon-off {
+  color: var(--md-sys-color-surface-container-highest);
+}
+
+.md-switch-icon-on {
+  color: var(--md-sys-color-on-primary-container);
+}
+
+.md-switch-input:not(:checked) + .md-switch-track .md-switch-icon-off {
+  opacity: 1;
+}
+
+.md-switch-input:checked + .md-switch-track .md-switch-icon-on {
+  opacity: 1;
+}
+
+/* DESHABILITADO (v0_192), POR CAPAS: el track baja COMPLETO (fondo y
+   borde number 12% en el ::before); la manija desconectada queda en
+   on-surface a 38% y la conectada pasa a SÓLIDA en surface (su opacidad
+   es 1 en el oracle); los iconos caen al 38%. Todas las transiciones se
+   cortan, igual que material-web. */
+.md-switch-input:disabled + .md-switch-track::before {
+  opacity: var(--md-sys-state-switch-disabled-container-opacity);
+  background-clip: content-box;
+  transition: none;
+}
+
+.md-switch-input:disabled:not(:checked) + .md-switch-track::before {
+  border-color: var(--md-sys-color-on-surface);
+}
+
+.md-switch-input:disabled:checked + .md-switch-track::before {
+  background-color: var(--md-sys-color-on-surface);
+  border-color: transparent;
+  background-clip: border-box;
+}
+
+.md-switch-input:disabled + .md-switch-track::after {
+  content: none;
+}
+
+.md-switch-input:disabled + .md-switch-track .md-switch-handle {
+  transition: none;
+}
+
+.md-switch-input:disabled:not(:checked) + .md-switch-track .md-switch-handle {
+  background-color: var(--md-sys-color-on-surface);
+  opacity: var(--md-sys-state-disabled-state-layer-opacity);
+}
+
+.md-switch-input:disabled:checked + .md-switch-track .md-switch-handle {
+  background-color: var(--md-sys-color-surface);
+}
+
+.md-switch-input:disabled + .md-switch-track .md-switch-icon {
+  opacity: var(--md-sys-state-disabled-state-layer-opacity);
+  transition: none;
+}
+
+.md-switch-input:disabled + .md-switch-track .md-switch-icon-on {
+  color: var(--md-sys-color-on-surface);
+}
