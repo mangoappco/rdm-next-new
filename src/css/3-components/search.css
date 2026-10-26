@@ -280,11 +280,20 @@
   opacity: var(--md-sys-state-hover-state-layer-opacity);
 }
 
-/* Disabled state: pointer-events none, cursor not-allowed, sin elevación */
+/* Disabled state: pointer-events none, cursor not-allowed */
 .md-search-bar:has(.md-search-input:disabled),
 .md-search-flat:has(.md-search-input:disabled) {
   pointer-events: none;
   cursor: not-allowed;
+}
+
+/* Disabled Elevated: conserva elevación level3, solo atenúa contenido */
+.md-search-bar:has(.md-search-input:disabled) {
+  box-shadow: var(--md-sys-elevation-level3);
+}
+
+/* Disabled Flat: sin elevación (level0) */
+.md-search-flat:has(.md-search-input:disabled) {
   box-shadow: none;
 }
 
