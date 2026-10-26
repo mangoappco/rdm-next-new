@@ -18,7 +18,7 @@ Solo prohibiciones verbales. Las reglas de showroom, de capas y de ciclo no se c
 
 ## Componentes creados
 
-Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **13 componentes y 22 vistas** (13 de componente + 9 de tokens), las 22 enlazadas en `showroom/index.html`. El orden es el de `index.css`:
+Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **14 componentes y 23 vistas** (14 de componente + 9 de tokens), las 23 enlazadas en `showroom/index.html`. El orden es el de `index.css`:
 
 | Componente | Hoja | Vista |
 | --- | --- | --- |
@@ -35,10 +35,11 @@ Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **13 compo
 | Chips | `chips.css` | `chips.html` |
 | Text Field | `text-field.css` | `text-field.html` |
 | Search | `search.css` | `search.html` |
+| Switch | `switch.css` | `switch.html` |
 
 Cada componente tiene además su molde en `showroom/templates/<nombre>.template.html`.
 
-**Hoy un solo par molde/vista rinde byte-idéntico, y es `search`** —verificado por hash el 2026-10-26; los moldes de `fab`, `fab-extended`, `card`, `dialog`, `list` y `segmented-button`, que sí lo fueron a su día (rumbo del 2026-10-13), se quedaron atrás de su vista. Las demás vistas difieren de su molde por el puntero de dos líneas de la convención antigua o por el desfase del molde anotado en deuda. `chips` no tiene molde propio y `typography.html` apunta a `component.template.html`.
+**Hoy DOS pares molde/vista rinden byte-idénticos: `search` y `switch`** —verificados por hash el 2026-10-26; los moldes de `fab`, `fab-extended`, `card`, `dialog`, `list` y `segmented-button`, que sí lo fueron a su día (rumbo del 2026-10-13), se quedaron atrás de su vista. Las demás vistas difieren de su molde por el puntero de dos líneas de la convención antigua o por el desfase del molde anotado en deuda. `chips` no tiene molde propio y `typography.html` apunta a `component.template.html`.
 
 ## FAB — la base NO es el `md-fab-medium`
 
@@ -264,7 +265,7 @@ Once pares, en un solo bloque (Especificación, anatomía y superficies): Anatom
 
 ## Search - publicada
 
-Cinco pares, cerrados el 2026-10-26: **Bar base** (elevada, 56dp, level3), **Trailing actions** (clear + mic), **Search view** con sugerencias docked, **Superficies** (Elevated vs Flat) e **Interactive & disabled**. El corte de Danny manda ahí: el Par 6 que M3 publica —Top bar con avatar— es una COMPOSICIÓN (menu + avatar + recorte de texto) y las composiciones de negocio no entran al molde; su lugar es la **Galería de Usos** que se abrirá después del catálogo. El contador de la vista queda en «· *Cinco pares*» y la vista es el ÚNICO par byte-idéntico con su moldería —como abajo se anota—.
+Cinco pares, cerrados el 2026-10-26: **Bar base** (elevada, 56dp, level3), **Trailing actions** (clear + mic), **Search view** con sugerencias docked, **Superficies** (Elevated vs Flat) e **Interactive & disabled**. El corte de Danny manda ahí: el Par 6 que M3 publica —Top bar con avatar— es una COMPOSICIÓN (menu + avatar + recorte de texto) y las composiciones de negocio no entran al molde; su lugar es la **Galería de Usos** que se abrirá después del catálogo. El contador de la vista queda en «· *Cinco pares*» y su vista fue el PRIMER par byte-idéntico con su moldería — hoy le acompaña el de Switch, como abajo se anota—.
 
 ### El disabled, y por qué medía #9E98A3 gris plomizo
 
@@ -277,6 +278,28 @@ El canon final vive en UN bloque (Par 5, commit `70e2e63`, neto −35 líneas): 
 Una delegación ÚNICA en `document` con dos ramas (commit `cab8ae7`): el clear (`[data-md-search-clear]`) vacía el input, dispara `input`+`change` y devuelve el foco; la sugerencia transfiere su texto —que vive en un span SIN clase entre los spans `leading`/`trailing`; un `textContent` a secas absorbería las ligaduras `history` y `north_west`. Guards de `disabled`/`readOnly` en las dos: el CSS disabled bloquea la caja con `pointer-events: none` —el clic ni entra—, y con un clic programático protege el guard de JS. Sentinels REGLA 13 (`[data-md-search-clear]`, `[data-md-search-mic]`) registradas explícitamente. Mic queda sin comportamiento: placeholder para el futuro.
 
 Del mismo cierre, junta y aparte: `src/js/theme.js`, el conmutador de tema DEL SISTEMA (`data-md-theme-toggle`, llave `rdm-theme`, distinta del chrome), cableado en `main.js` (commit `c88b2b7`); y `showroom/lab.html` versionado otra vez por decisión de Danny (commit `ac63856`), con el toggle dentro.
+
+## Switch - publicada
+
+Cuatro pares, cerrados el 2026-10-26: **Basic switch** (la pastilla de 52x32dp con esquinas completas: `surface-container-highest` y borde `outline` de 2dp desconectada, `primary` sólido conectada), **Switch with icons** (close/check de 16dp embebidos en la manija, que se fija a 24dp en ambos estados), **Interactive states** y **Disabled states**. Cero JavaScript de componente: el estado vive en `:checked` del checkbox NATIVO — `label.md-switch > input.md-switch-input + span.md-switch-track > span.md-switch-handle` — y REGLA 13 queda vacía por diseño: no hay sentinels que registrar, el mismo mecanismo del toggle de tema. La vista es el SEGUNDO par byte-idéntico con su moldería —como abajo se anota—.
+
+### El oracle manda sobre el borrador de mano
+
+El dibujo a mano quedó SUPERADO por lo que mide el oracle `v0_192` de material-web, adoptado entero tras verificar su fuente (el CSS compilado `switch-styles.cssresult.js` más `_track.scss`, `_handle.scss` e `_icon.scss`): la manija desconectada con icono descansa en `outline` con un close claro en `surface-container-highest`; el hover RECONECTA color en la manija — `on-surface-variant` desconectada, `primary-container` conectada — y los glifos no cambian de color en ningún estado (el oracle les da el mismo en reposo e interacción); y el disabled SELECTED lleva manija SÓLIDA en `surface` (opacidad 1 en el oracle): al 38% van SOLO la manija desconectada y el contenido, mientras el track baja COMPLETO — fondo y borde de 2dp — a un 12% propio (`disabled-track-opacity: 0.12`, token nuevo `--md-sys-state-switch-disabled-container-opacity` en `state.css`). El anillo de foco es `secondary` con 3px de grosor y 2px de offset — la decisión de `card.css` que usan button, icon-button, fab y card —, no el de chips. Los tokens de medida van tras segmented-button en `measurement.css` (orden de `index.css`).
+
+### El disabled baja al 12% POR CAPAS, no en la pastilla
+
+Si la pastilla entera bajara al 12%, la manija — hija del track — quedaría a 12%×38% ≈ 4.5%: invisible. Por eso el color del track vive en un `::before` del span — el mismo truco oracular «Separate node for background/outline colors to support opacity changes» — y el 12% cae SOLO ahí, con `background-clip` distinto por estado: `content-box` desconectada (el relleno del 12% respeta el borde) y `border-box` conectada (la pastilla es un anillo sólido de 2dp en `on-surface`, el deflate del canon). La capa de estado `::after` se APAGA (`content: none`) y todas las transiciones se cortan, igual que material-web.
+
+### Desviaciones del oracle, ratificadas
+
+- El bezier overshoot custom de material-web para el swing — `cubic-bezier(0.175, 0.885, 0.32, 1.275)` — no es token de esta casa: el viaje corre en `--md-sys-motion-easing-spatial-default` y la desviación queda escrita en la cabecera de `switch.css`.
+- La capa de estado es el círculo de 40dp del sistema CENTRADO en la pastilla (se asoma 4dp por arriba y por abajo); material-web la ancla a su contenedor de estado con otra matemática.
+- Sin capa `forced-colors`/HCM: material-web la publica para switch, pero esta casa no la da en NINGÚN componente — deuda transversal, no se inventó para este.
+
+### La geometría se calcula, no se memoriza
+
+El viaje de la manija (20dp) NO es un token: es `track-width − track-height` (52−32) vía `calc()`, la misma relación del oracle; los insets del touch target de 48dp salen de la misma cuenta — `(52−48)/2` y `(32−48)/2` —, sin `translate()` ni `max()`. Con iconos la manija se FIJA a 24dp en los dos estados — v0_192 `with-icon-handle-*` — porque los glifos viven SIEMPRE en el DOM y el intercambio lo hace la opacidad (`md-switch-icon-off` / `-on`); la detección es por `:has()`, igual que chip.css. El presionado (28dp, 100ms lineales) queda DESPUÉS de la regla de checked en el fichero: misma especificidad, gana el orden de fuente. Acuñación: 52 y 28 no son escalones de la escala oficial de espaciado, así que se declararon como primitivas de componente en `container-height.css` — el precedente de las anchuras del icon-button — y el resto (16, 24, 32, 40, 48) lo sirve la escala sin duplicar.
 
 ## Las dos mitades de una vista del showroom
 
@@ -291,7 +314,7 @@ En el marcado, el corte es un `<hr class="md-divider">` —el mismo mecanismo co
 
 ## Siguiente tarea
 
-**Search completado (5 pares), y el rumbo de las composiciones cambia.** El componente cierra en el Par 5 —sección arriba—; el Par 6 de M3 (Top bar con avatar) y las pantallas reales (POS, KDS, carta, modal de cobro) van a la **Galería de Usos**, que se abrirá cuando el catálogo acabe de cerrarse. Verificador en verde (EXIT_CODE=0 con las excepciones de siempre).
+**Switch completado (4 pares), y Search sigue cerrado en los suyos (5 pares).** En los dos mandó lo mismo: el componente termina en sus pares de especificación y nada de composiciones de negocio en la vista — el Par 6 de M3 que Search no tomó (Top bar con avatar) y las pantallas reales (POS, KDS, carta, modal de cobro) van a la **Galería de Usos**, que se abrirá cuando el catálogo acabe de cerrarse. Verificador en verde (EXIT_CODE=0 con las excepciones de siempre).
 
 Lo que queda por delante no es un componente nuevo sino la **deuda conocida** de más abajo, que es lo que de verdad está pendiente:
 
