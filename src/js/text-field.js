@@ -11,21 +11,34 @@
 
 /**
  * Valida un input de text field al desenfocar o al revalidar en caliente.
- * - Si está sucio e inválido: añade .md-text-field-error y permuta el texto
- *   del helper al mensaje de error (data-md-error-text o validationMessage).
- * - Si está limpio o válido: quita .md-text-field-error y restaura el helper
- *   original (data-md-helper-text).
+ * - Required vacío (tras interaccionar): error canónico valueMissing con el
+ *   mensaje 'Este campo es obligatorio' (anti-patrón evitado: sin error en
+ *   la carga de la página, solo tras focusout).
+ * - Sucio e inválido: phase 2 de Constraint Validation —permuta el helper
+ *   a data-md-error-text o validationMessage por tipo/patrón/rango.
+ * - Limpio o válido: restaura el helper de reposo y limpia el estado error.
  */
 function ejecutarValidacion(input, root) {
+  const isRequired = input.required;
   const isDirty = input.value.length > 0;
-  const isValid = input.checkValidity();
   const helperSpan = root.querySelector('[data-md-helper-text]');
 
   /* REGLA 13: registrar explícitamente ambos selectores de datos para que el
      verificador los reconozca como atributos cableados por src/js/. */
   root.querySelector('[data-md-error-text]');
 
-  if (isDirty && !isValid) {
+  // Campo requerido vacío: valueMissing nativo confirma la causa del fallo.
+  if (isRequired && input.validity.valueMissing) {
+    root.classList.add('md-text-field-error');
+    input.setAttribute('aria-invalid', 'true');
+    if (helperSpan) {
+      helperSpan.textContent = 'Este campo es obligatorio';
+    }
+    return;
+  }
+
+  // Con contenido: fase 2, tipo/patrón/rango.
+  if (isDirty && !input.checkValidity()) {
     root.classList.add('md-text-field-error');
     input.setAttribute('aria-invalid', 'true');
     if (helperSpan) {
