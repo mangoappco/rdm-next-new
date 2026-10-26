@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Switch de RDM Next: conmutador M3 de 52x32dp con manija de 16/24/28dp, iconos opcionales de 16dp, estados interactivos y disabled — todo CSS puro sobre :checked.">
+  <title>Switch — RDM ManGo! App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+  <link rel="stylesheet" href="../../src/css/main.css?v=8">
+  <link rel="stylesheet" href="../assets/showroom.css">
+  <script type="module" src="../../src/js/main.js"></script>
+  <script src="../assets/showroom.js"></script>
+</head>
+
+<!--
+  ESTA VISTA TIENE CUATRO PARES. El Bloque 1 --Especificacion tecnica y
+  anatomia-- cubre Basic switch, Switch with icons, Interactive states y
+  Disabled states. No hay Bloque 2: las composiciones de ManGo! App (el
+  POS de caja, la comanda de cocina, la carta, el modal de cobro)
+  pertenecen a la futura Galeria de Usos.
+
+  LOS ACUERDOS DEL SHOWROOM
+  -------------------------
+  1. Jerarquia: h1 (componente) > h2 (bloque) > h3 (par). Los titulos de
+     bloque y par estan en ingles; las descripciones en espanol breve.
+  2. REGLA 11: el texto de cada pre.sr-code desescapado es identico al
+     innerHTML de su .sr-specimen (normalizando solo el espacio).
+  3. REGLA 6: sin atributos de estilo en linea ni bloques <style>.
+  4. REGLA 9: iconos siempre con .md-icon, nunca material-symbols-*.
+  5. REGLA 10: toda clase md-* del showroom existe en src/css/.
+  6. REGLA 13: cada snippet es autonomo (solo clases del sistema).
+  7. ARIA: el input lleva aria-label; pastilla e iconos van aria-hidden
+     a traves del track (el label nativo nombra al control).
+  8. CERO JavaScript de componente: el estado vive en :checked del input
+     nativo. No hay data-* ni sentinels que registrar (REGLA 13 vacia
+     por diseño).
+-->
+
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <main class="sr-page">
+
+    <!-- HEADER: inicio (barra + titulo + descripcion) -->
+    <header class="sr-header">
+      <div class="sr-bar">
+        <p class="md-type-body-medium"><a href="../index.html">RDM ManGo! App</a></p>
+        <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
+      </div>
+      <h1 class="md-type-display-large">Switch</h1>
+      <p class="md-type-body-large">Los conmutadores (Switches) alternan el estado de una sola configuración entre activado y desactivado. · <em>Cuatro pares</em></p>
+    </header>
+    <!-- HEADER: fin -->
+
+    <hr class="md-divider">
+
+    <!-- BLOQUE 1: Especificacion tecnica y anatomia -->
+    <h2 class="md-type-headline-medium">Especificacion tecnica y anatomia</h2>
+
+    <!-- PAR 1: Basic switch -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Basic switch</h3>
+      <p class="md-type-body-medium">Pastilla de 52x32dp con esquinas completas: no seleccionada lleva borde de 2dp en outline y fondo surface-container-highest con manija de 16dp; seleccionada es fondo primary solido con manija de 24dp. Toda la conmutacion la expresa :checked del checkbox nativo, sin JavaScript.</p>
+
+      <div class="sr-specimen sr-specimen-gap">
+        <label class="md-switch">
+          <input type="checkbox" class="md-switch-input" aria-label="Notificaciones desactivadas">
+          <span class="md-switch-track" aria-hidden="true">
+            <span class="md-switch-handle"></span>
+          </span>
+        </label>
+
+        <label class="md-switch">
+          <input type="checkbox" class="md-switch-input" checked aria-label="Notificaciones activadas">
+          <span class="md-switch-track" aria-hidden="true">
+            <span class="md-switch-handle"></span>
+          </span>
+        </label>
+      </div>
+
+      <pre class="sr-code"><code>&lt;label class="md-switch"&gt;
+  &lt;input type="checkbox" class="md-switch-input" aria-label="Notificaciones desactivadas"&gt;
+  &lt;span class="md-switch-track" aria-hidden="true"&gt;
+    &lt;span class="md-switch-handle"&gt;&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="md-switch"&gt;
+  &lt;input type="checkbox" class="md-switch-input" checked aria-label="Notificaciones activadas"&gt;
+  &lt;span class="md-switch-track" aria-hidden="true"&gt;
+    &lt;span class="md-switch-handle"&gt;&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/label&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- PAR 2: Switch with icons -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Switch with icons</h3>
+      <p class="md-type-body-medium">Variante con iconos contextuales de 16dp embebidos en la manija: close en no seleccionada y check en seleccionada. La manija se fija a 24dp en ambos estados (with-icon del canon M3) y los dos glifos viven siempre en el DOM: el intercambio lo hace la opacidad.</p>
+
+      <div class="sr-specimen sr-specimen-gap">
+        <label class="md-switch">
+          <input type="checkbox" class="md-switch-input" aria-label="Modo oscuro desactivado">
+          <span class="md-switch-track" aria-hidden="true">
+            <span class="md-switch-handle">
+              <span class="md-icon md-switch-icon md-switch-icon-off">close</span>
+              <span class="md-icon md-switch-icon md-switch-icon-on">check</span>
+            </span>
+          </span>
+        </label>
+
+        <label class="md-switch">
+          <input type="checkbox" class="md-switch-input" checked aria-label="Modo oscuro activado">
+          <span class="md-switch-track" aria-hidden="true">
+            <span class="md-switch-handle">
+              <span class="md-icon md-switch-icon md-switch-icon-off">close</span>
+              <span class="md-icon md-switch-icon md-switch-icon-on">check</span>
+            </span>
+          </span>
+        </label>
+      </div>
+
+      <pre class="sr-code"><code>&lt;label class="md-switch"&gt;
+  &lt;input type="checkbox" class="md-switch-input" aria-label="Modo oscuro desactivado"&gt;
+  &lt;span class="md-switch-track" aria-hidden="true"&gt;
+    &lt;span class="md-switch-handle"&gt;
+      &lt;span class="md-icon md-switch-icon md-switch-icon-off"&gt;close&lt;/span&gt;
+      &lt;span class="md-icon md-switch-icon md-switch-icon-on"&gt;check&lt;/span&gt;
+    &lt;/span&gt;
+  &lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="md-switch"&gt;
+  &lt;input type="checkbox" class="md-switch-input" checked aria-label="Modo oscuro activado"&gt;
+  &lt;span class="md-switch-track" aria-hidden="true"&gt;
+    &lt;span class="md-switch-handle"&gt;
+      &lt;span class="md-icon md-switch-icon md-switch-icon-off"&gt;close&lt;/span&gt;
+      &lt;span class="md-icon md-switch-icon md-switch-icon-on"&gt;check&lt;/span&gt;
+    &lt;/span&gt;
+  &lt;/span&gt;
+&lt;/label&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- PAR 3: Interactive states -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Interactive states</h3>
+      <p class="md-type-body-medium">Respuesta al puntero y al teclado: capa de estado circular de 40dp al 8% en hover y 10% en foco y presion; anillo de foco de 3px con offset de 2px en secondary; la manija unselected se oscurece a on-surface-variant y la selected pasa a primary-container, y al presionar crece a 28dp.</p>
+
+      <div class="sr-specimen sr-specimen-gap">
+        <label class="md-switch">
+          <input type="checkbox" class="md-switch-input" aria-label="Notificaciones desactivadas">
+          <span class="md-switch-track" aria-hidden="true">
+            <span class="md-switch-handle"></span>
+          </span>
+        </label>
+
+        <label class="md-switch">
+          <input type="checkbox" class="md-switch-input" checked aria-label="Notificaciones activadas">
+          <span class="md-switch-track" aria-hidden="true">
+            <span class="md-switch-handle"></span>
+          </span>
+        </label>
+      </div>
+
+      <pre class="sr-code"><code>&lt;label class="md-switch"&gt;
+  &lt;input type="checkbox" class="md-switch-input" aria-label="Notificaciones desactivadas"&gt;
+  &lt;span class="md-switch-track" aria-hidden="true"&gt;
+    &lt;span class="md-switch-handle"&gt;&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="md-switch"&gt;
+  &lt;input type="checkbox" class="md-switch-input" checked aria-label="Notificaciones activadas"&gt;
+  &lt;span class="md-switch-track" aria-hidden="true"&gt;
+    &lt;span class="md-switch-handle"&gt;&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/label&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- PAR 4: Disabled states -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Disabled states</h3>
+      <p class="md-type-body-medium">Estado inactivo con disabled nativo: la pastilla baja al 12% por su capa de color —borde on-surface en no seleccionada y relleno on-surface en seleccionada—, la manija desconectada queda en on-surface al 38% y la conectada pasa a solida en surface, y los iconos caen al 38%. Sin eventos ni transiciones.</p>
+
+      <div class="sr-specimen sr-specimen-gap">
+        <label class="md-switch">
+          <input type="checkbox" class="md-switch-input" disabled aria-label="Notificaciones deshabilitadas">
+          <span class="md-switch-track" aria-hidden="true">
+            <span class="md-switch-handle"></span>
+          </span>
+        </label>
+
+        <label class="md-switch">
+          <input type="checkbox" class="md-switch-input" checked disabled aria-label="Notificaciones encendidas, control deshabilitado">
+          <span class="md-switch-track" aria-hidden="true">
+            <span class="md-switch-handle"></span>
+          </span>
+        </label>
+      </div>
+
+      <pre class="sr-code"><code>&lt;label class="md-switch"&gt;
+  &lt;input type="checkbox" class="md-switch-input" disabled aria-label="Notificaciones deshabilitadas"&gt;
+  &lt;span class="md-switch-track" aria-hidden="true"&gt;
+    &lt;span class="md-switch-handle"&gt;&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="md-switch"&gt;
+  &lt;input type="checkbox" class="md-switch-input" checked disabled aria-label="Notificaciones encendidas, control deshabilitado"&gt;
+  &lt;span class="md-switch-track" aria-hidden="true"&gt;
+    &lt;span class="md-switch-handle"&gt;&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/label&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+  </main>
+  <!-- MAIN: fin -->
+</body>
+</html>
