@@ -11,9 +11,13 @@
 /**
  * Inicializa la delegación de eventos del componente Search.
  * - Botón Clear: limpia el input, dispara eventos y devuelve el foco.
+ * - Sugerencia (Search view): transfiere su texto al input, dispara los
+ *   mismos eventos y devuelve el foco.
  * - Botón Mic: placeholder para búsqueda por voz (futuro).
  */
 export function initSearch() {
+  /* UN solo listener delegado en document, no uno por acción: un botón que
+     llegue despues de cargar funciona sin volver a registrar. */
   document.addEventListener('click', (event) => {
     const clearBtn = event.target.closest('[data-md-search-clear]');
     if (clearBtn) {
@@ -23,6 +27,28 @@ export function initSearch() {
       const input = container.querySelector('.md-search-input');
       if (input && !input.disabled && !input.readOnly) {
         input.value = '';
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+        input.focus();
+      }
+    }
+
+    /* Sugerencia: el texto vive en un span SIN clase entre los spans
+       leading/trailing; un textContent a secas absorberia las ligaduras de
+       icono (`history`, `north_west`). Sin guardas de disabled ni readonly el
+       rama no escribe nada; el CSS del Par 5 ademas bloquea la caja entera
+       con `pointer-events: none`, asi que ni siquiera llega el clic. */
+    const suggestion = event.target.closest('.md-search-suggestion');
+    if (suggestion) {
+      const container = suggestion.closest('.md-search');
+      if (!container) return;
+
+      const input = container.querySelector('.md-search-input');
+      const textSpan = suggestion.querySelector('span:not([class])');
+      const text = textSpan ? textSpan.textContent.trim() : '';
+
+      if (input && !input.disabled && !input.readOnly && text) {
+        input.value = text;
         input.dispatchEvent(new Event('input', { bubbles: true }));
         input.dispatchEvent(new Event('change', { bubbles: true }));
         input.focus();
