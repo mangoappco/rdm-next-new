@@ -326,6 +326,11 @@
   box-shadow: var(--md-sys-elevation-level3);
 }
 
+/* Disabled Search view: fondo surface-container (más claro) para mejor contraste */
+.md-search-view:has(.md-search-input:disabled) {
+  background-color: var(--md-sys-color-surface-container);
+}
+
 /* Disabled Flat: sin elevación (level0) */
 .md-search-flat:has(.md-search-input:disabled) {
   box-shadow: none;
