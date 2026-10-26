@@ -265,6 +265,22 @@
 }
 
 /* ==========================================================================
+   PAR 5 · INTERACTIVE & DISABLED STATES
+   ========================================================================== */
+
+/* Estado deshabilitado (Disabled state) */
+.md-search:has(.md-search-input:disabled),
+.md-search.is-disabled {
+  cursor: not-allowed;
+  opacity: var(--md-sys-state-disabled-state-layer-opacity);
+  pointer-events: none;
+}
+
+.md-search:has(.md-search-input:disabled) .md-search-input {
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
    PAR 4 · SURFACES & STATES (FLAT vs. DISABLED)
    ========================================================================== */
 
