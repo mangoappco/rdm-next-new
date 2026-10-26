@@ -176,8 +176,11 @@
 .md-search-suggestions {
   display: flex;
   flex-direction: column;
-  padding-block: var(--md-sys-measurement-space-100);
+  padding-block-start: var(--md-sys-measurement-space-100);
+  padding-block-end: 0;
+  width: 100%;
   border-radius: inherit;
+  box-sizing: border-box;
 }
 
 /* Fila interactiva de sugerencia */
