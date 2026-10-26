@@ -328,12 +328,5 @@
   background-color: var(--md-sys-color-on-surface);
 }
 
-/* Opacidad 38% en contenido disabled */
-.md-search-bar:has(.md-search-input:disabled) .md-search-leading,
-.md-search-bar:has(.md-search-input:disabled) .md-search-input,
-.md-search-bar:has(.md-search-input:disabled) .md-search-trailing,
-.md-search-flat:has(.md-search-input:disabled) .md-search-leading,
-.md-search-flat:has(.md-search-input:disabled) .md-search-input,
-.md-search-flat:has(.md-search-input:disabled) .md-search-trailing {
-  opacity: var(--md-sys-state-disabled-state-layer-opacity);
-}
+/* Opacidad 38% aplicada UNA SOLA VEZ a nivel de contenedor (Par 5).
+   No se duplica aquí para evitar opacidad multiplicada (0.38 × 0.38). */
