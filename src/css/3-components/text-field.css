@@ -617,13 +617,14 @@
   border-radius: 0; /* Sin pastilla ovalada */
 }
 
-/* Outlined disabled: outline 12% sobre on-surface (especificidad elevada
-   para no ser aplastado por hover/focus/error) */
+/* Outlined disabled: borde atenuado al 12% (M3 disabled outline opacity).
+   Se usa opacity sobre el elemento outline + border-color on-surface para
+   garantizar que la atenuación se aplique sin ser pisada por hover/focus. */
 .md-text-field-outlined:has(.md-text-field-input:disabled) .md-text-field-outline,
 .md-text-field-outlined.md-disabled .md-text-field-outline {
-  border-color: rgb(from var(--md-sys-color-on-surface) r g b / var(--md-sys-state-disabled-outline-opacity));
+  border-color: var(--md-sys-color-on-surface);
   border-width: var(--_stroke-rest);
-  opacity: 1;
+  opacity: var(--md-sys-state-disabled-outline-opacity);
 }
 
 /* FILLED: fondo container 10% (CSS Relative Colors) */
