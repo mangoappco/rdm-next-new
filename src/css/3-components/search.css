@@ -14,9 +14,15 @@
   border-radius: var(--md-sys-shape-corner-full); /* 28dp / corner-full */
   background-color: var(--md-sys-color-surface-container-high);
   box-shadow: var(--md-sys-elevation-level3);
-  padding-inline: var(--md-sys-measurement-space-200); /* 16dp */
+  padding-inline-start: var(--md-sys-measurement-space-200); /* 16dp */
+  padding-inline-end: var(--md-sys-measurement-space-200);   /* 16dp base */
   overflow: hidden;
   transition: box-shadow var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+}
+
+/* Compensación perimetral derecha cuando hay trailing buttons */
+.md-search-bar:has(.md-search-trailing) {
+  padding-inline-end: var(--md-sys-measurement-space-100); /* 8dp */
 }
 
 /* State layer pseudo-element (hover/focus) */
@@ -113,11 +119,6 @@
   flex-shrink: 0;
   position: relative;
   z-index: 1;
-}
-
-/* Compensación perimetral derecha cuando hay trailing buttons */
-.md-search-bar:has(.md-search-trailing) {
-  padding-inline-end: var(--md-sys-measurement-space-100); /* 8dp */
 }
 
 /* Visibilidad reactiva CSS-only: ocultar botón clear si el input está vacío */
