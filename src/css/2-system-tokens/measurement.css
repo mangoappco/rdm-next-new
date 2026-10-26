@@ -1039,6 +1039,36 @@
   --md-sys-measurement-segmented-button-icon-size: var(--md-ref-icon-size-segmented-button);
 
   /* ==========================================================================
+     SWITCH — Geometría canónica M3 (Selection)
+     --------------------------------------------------------------------------
+     Fuentes: `tokens/versions/v0_192/_md-comp-switch.scss` (defaults
+     generados) y el CSS compilado de material-web
+     (`switch/internal/switch-styles.cssresult.js`), que resuelve lo que la
+     tabla no muestra: la manija descansa con OTHER math:
+     unselected -> hueco de 8dp desde el borde inicial (Space 100);
+     selected   -> hueco de 4dp desde el borde final (Space 50).
+     El desplazamiento completo (20dp) sale de `track-width - track-height`
+     (52-32) y aqui no se declara como token: lo calcula el componente con
+     calc() de los dos tokens de abajo, igual que material-web.
+
+     Todo lo demás existe en la escala oficial y se mapea sin duplicar:
+        track 52×32 ... ancho (52) es primitiva de container-width/+
+        manija       ... 16 (Space 200) / 24 (Space 300) / 28 prensada (primitiva propia de container-height)
+        icono        ... 16dp (Space 200)
+        state layer  ... círculo de 40dp (Space 500)
+        touch target ... 48dp — rol existente --md-sys-measurement-touch-target
+     ========================================================================== */
+  --md-sys-measurement-switch-track-width: var(--md-ref-container-width-switch-track);
+  --md-sys-measurement-switch-track-height: var(--md-ref-spacing-400);            /* 32dp */
+  --md-sys-measurement-switch-handle-size-unselected: var(--md-ref-spacing-200);  /* 16dp */
+  --md-sys-measurement-switch-handle-size-selected: var(--md-ref-spacing-300);    /* 24dp */
+  --md-sys-measurement-switch-handle-size-pressed: var(--md-ref-container-height-switch-handle-pressed); /* 28dp */
+  --md-sys-measurement-switch-handle-gap-unselected: var(--md-ref-spacing-100);   /* 8dp desde el borde inicial */
+  --md-sys-measurement-switch-handle-gap-selected: var(--md-ref-spacing-50);      /* 4dp desde el borde final */
+  --md-sys-measurement-switch-icon-size: var(--md-ref-spacing-200);               /* 16dp */
+  --md-sys-measurement-switch-state-layer-size: var(--md-ref-spacing-500);        /* 40dp */
+
+  /* ==========================================================================
      TEXT FIELD — Altura de contenedor (M3: 56dp = container-height-medium)
      -------------------------------------------------------------------------- */
   --md-sys-measurement-text-field-container-height: var(--md-ref-container-height-medium);

@@ -145,6 +145,32 @@
   --md-ref-container-width-icon-button-xlarge-wide: 184px;
 
   /* ------------------------------------------------------------------------
+     SWITCH — LA PISTA DE 52DP Y LA MANIJA PRENSADA DE 28DP
+     ------------------------------------------------------------------------
+     El Switch (selección M3) aporta dos medidas que la escala de espaciado
+     no tiene, por el mismo motivo que las del icon-button de arriba: la
+     escala oficial va 24 -> 32 y 48 -> 56, y 52 y 28 no son escalones suyos.
+     "Medidas de este componente, no del espaciado."
+
+     Fuentes (v0_192, `tokens/versions/_md-comp-switch.scss`):
+        'track-width':        52px   -> pista horizontal completa
+        'pressed-handle-height': 28px -> manija crece 16->24->28 al presionar
+
+     La altura de la pista (32) y las manijas en reposo (16/24) SI existen
+     en la escala (spacing-400/200/300); 1-reference-tokens/spacing.css las
+     sirve sin duplicarlas. El touch target de 48 ya es rol de sistema
+     (--md-sys-measurement-touch-target) y no se duplica aqui.
+
+     La manija es un círculo: su diámetro es ancho y alto a la vez, asi que
+     el rol de medida (3-capas/measurement.css) lee esta altura y la usa
+     para las dos dimensiones, igual que el oracle de material-web, que
+     declara 'pressed-handle-height' y 'pressed-handle-width' con 28px los
+     dos.
+     ------------------------------------------------------------------------ */
+  --md-ref-container-width-switch-track: 52px;
+  --md-ref-container-height-switch-handle-pressed: 28px;
+
+  /* ------------------------------------------------------------------------
      EL ANCHO MINIMO DEL BOTON
      ------------------------------------------------------------------------
      M3 lo declara, pero NO como token: es un literal en su SCSS compartido,

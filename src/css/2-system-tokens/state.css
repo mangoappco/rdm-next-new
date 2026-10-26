@@ -144,6 +144,19 @@
      circulo neutro del disabled sin lavar el glifo. */
   --md-sys-state-icon-button-disabled-container-opacity: var(--md-ref-opacity-12);
 
+  /* 12% — el CONTENEDOR deshabilitado del Switch. Es el canon propio del
+     switch en material-web (v0_192): `disabled-track-opacity: 0.12`, un
+     valor que NO es el 0.10 del boton filled ni el 38% del contenido.
+
+     Y ojo al mecanismo: el 12% va en la capa de COLOR del track
+     (fondo + borde de 2dp dibujados en un pseudo-elemento aparte, tal como
+     material-web separa su `.track::before` "to support opacity changes"),
+     NO en la pastilla entera. Si la pastilla entera bajara al 12%, la
+     manija —hija del track— quedaria a 12%x38% = 4.5%: invisible.
+     El 38% del contenido reusa el rol general de arriba
+     (`--md-sys-state-disabled-state-layer-opacity`), igual que search. */
+  --md-sys-state-switch-disabled-container-opacity: var(--md-ref-opacity-12);
+
   /* 32% — el SCRIM. Y este rol es el unico de este archivo que NO es un estado.
 
      Es el velo que oscurece el fondo detras de un dialogo o un menu. Lo
