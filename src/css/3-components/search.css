@@ -203,6 +203,20 @@
   background-color: rgb(from var(--md-sys-color-on-surface) r g b / var(--md-sys-state-hover-state-layer-opacity));
 }
 
+/* ==========================================================================
+   Cosido de esquinas en sugerencias (M3 Container Fitting)
+   ========================================================================== */
+
+.md-search-suggestions > :last-child {
+  border-end-start-radius: inherit;
+  border-end-end-radius: inherit;
+}
+
+.md-search-suggestions > :only-child {
+  border-end-start-radius: inherit;
+  border-end-end-radius: inherit;
+}
+
 /* Ranura leading en sugerencia (history / search) */
 .md-search-suggestion-leading {
   display: inline-flex;
