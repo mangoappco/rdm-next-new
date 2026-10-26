@@ -19,6 +19,11 @@
    distribuye. La frontera es esa: si algo describe un componente, vive
    aqui; si sirve para leer la documentacion, vive alla.
 
+   El tema tiene ahora DOS conmutadores, y no se pisan: el del chrome
+   (`data-theme-toggle`, showroom.js) y el del sistema
+   (`data-md-theme-toggle`, theme.js) para las paginas que cargan main.js
+   sin clases sr-* -- el lab y ManGo! App. Otro gancho, otra llave.
+
    POR QUE UN ARCHIVO POR COMPONENTE Y NO UNO SOLO
    -----------------------------------------------
    Cada componente es dueño de sus atributos `data-*` y no puede pisar los
@@ -119,6 +124,7 @@ import { registrar as registrarChipInput } from './chip-input.js';
 import { registrar as registrarRipple } from './ripple.js';
 import { initTextField } from './text-field.js';
 import { initSearch } from './search.js';
+import { initTheme } from './theme.js';
 
 /* Se registra al cargar el script, no al hacer clic. Los specimens del
    showroom llevan `<dialog open>` a secas, que NO es modal, asi que ahi no
@@ -156,6 +162,12 @@ initTextField();
 /* Search trailing actions: delegación global viva antes de que exista
    ningún botón con data-md-search-* en la página. */
 initSearch();
+
+/* Conmutador de tema del sistema: aplica la eleccion guardada al evaluar
+   el modulo (o deja mandar al sistema si nunca se eligio) y cablea
+   [data-md-theme-toggle] si la pagina lo trae. Distinto gancho y llave
+   que el conmutador del chrome (showroom.js): no se pisan. */
+initTheme();
 
 /* Y aqui iran los que lo necesiten:
      import { registrar as registrarFabMenu } from './fab-menu.js';
