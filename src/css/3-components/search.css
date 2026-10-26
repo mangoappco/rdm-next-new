@@ -1,0 +1,138 @@
+/* ==========================================================================
+   src/css/3-components/search.css — SEARCH BAR (M3 Elevated)
+   ========================================================================== */
+
+/* Base: Search bar elevated (56dp, pill shape, level3 elevation) */
+.md-search,
+.md-search-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  height: var(--md-sys-measurement-text-field-container-height); /* 56dp */
+  width: 100%;
+  border-radius: var(--md-sys-shape-corner-full); /* 28dp / corner-full */
+  background-color: var(--md-sys-color-surface-container-high);
+  box-shadow: var(--md-sys-elevation-level3);
+  padding-inline: var(--md-sys-measurement-space-200); /* 16dp */
+  overflow: hidden;
+  transition: box-shadow var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+}
+
+/* State layer pseudo-element (hover/focus) */
+.md-search-bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-color: var(--md-sys-color-on-surface);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+}
+
+/* Hover: state layer 8% on-surface (M3 canonical) */
+.md-search-bar:hover::after {
+  opacity: var(--md-sys-state-hover-state-layer-opacity);
+}
+
+/* Focus-within: elevated to level4, state layer focus */
+.md-search-bar:focus-within {
+  box-shadow: var(--md-sys-elevation-level4);
+}
+
+.md-search-bar:focus-within::after {
+  opacity: var(--md-sys-state-focus-state-layer-opacity);
+}
+
+/* Leading icon slot (search glyph, 24dp) */
+.md-search-leading {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--md-sys-measurement-space-300); /* 24dp */
+  height: var(--md-sys-measurement-space-300); /* 24dp */
+  color: var(--md-sys-color-on-surface);
+  margin-inline-end: var(--md-sys-measurement-space-200); /* 16dp */
+  flex-shrink: 0;
+}
+
+/* Input transparent, body-large typography */
+.md-search-input {
+  position: relative;
+  z-index: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 100%;
+  height: 100%;
+  font: var(--md-sys-typescale-body-large);
+  color: var(--md-sys-color-on-surface);
+  padding: 0;
+}
+
+.md-search-input::placeholder {
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* Reset cancel button nativo WebKit */
+.md-search-input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  display: none;
+}
+
+/* Disabled state */
+.md-search-bar:has(.md-search-input:disabled) {
+  pointer-events: none;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.md-search-bar:has(.md-search-input:disabled)::after {
+  opacity: var(--md-sys-state-disabled-state-layer-opacity);
+  background-color: var(--md-sys-color-on-surface);
+}
+
+.md-search-bar:has(.md-search-input:disabled) .md-search-leading,
+.md-search-bar:has(.md-search-input:disabled) .md-search-input {
+  opacity: var(--md-sys-state-disabled-state-layer-opacity);
+}
+
+/* ==========================================================================
+   PAR 2 · TRAILING ACTIONS (CLEAR BUTTON & MIC)
+   ========================================================================== */
+
+/* Contenedor en fila para botones de acción posteriores */
+.md-search-trailing {
+  display: flex;
+  align-items: center;
+  gap: var(--md-sys-measurement-space-50); /* 4dp entre botones */
+  margin-inline-start: var(--md-sys-measurement-space-100);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* Compensación perimetral derecha cuando hay trailing buttons */
+.md-search-bar:has(.md-search-trailing) {
+  padding-inline-end: var(--md-sys-measurement-space-100); /* 8dp */
+}
+
+/* Visibilidad reactiva CSS-only: ocultar botón clear si el input está vacío */
+.md-search:has(.md-search-input:placeholder-shown) [data-md-search-clear] {
+  display: none;
+}
+
+/* ==========================================================================
+   SEARCH VIEW (vista expandida — placeholder para Par 3+)
+   ========================================================================== */
+.md-search-view {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: var(--md-sys-color-surface);
+  border-radius: var(--md-sys-shape-corner-extra-large);
+  overflow: hidden;
+}

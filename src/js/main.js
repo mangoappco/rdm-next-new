@@ -118,6 +118,7 @@ import { registrar as registrarChipFilter } from './chip-filter.js';
 import { registrar as registrarChipInput } from './chip-input.js';
 import { registrar as registrarRipple } from './ripple.js';
 import { initTextField } from './text-field.js';
+import { initSearch } from './search.js';
 
 /* Se registra al cargar el script, no al hacer clic. Los specimens del
    showroom llevan `<dialog open>` a secas, que NO es modal, asi que ahi no
@@ -151,6 +152,10 @@ registrarChipInput();
 /* Text field trailing actions: delegación global viva antes de que exista
    ningún botón con data-md-text-field-* en la página. */
 initTextField();
+
+/* Search trailing actions: delegación global viva antes de que exista
+   ningún botón con data-md-search-* en la página. */
+initSearch();
 
 /* Y aqui iran los que lo necesiten:
      import { registrar as registrarFabMenu } from './fab-menu.js';

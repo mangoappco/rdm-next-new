@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Search de RDM Next: barra de busqueda M3 con elevacion flotante, forma de pastilla y estados interactivos.">
+  <title>Search — RDM ManGo! App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+  <link rel="stylesheet" href="../../src/css/main.css">
+  <link rel="stylesheet" href="../assets/showroom.css">
+  <script type="module" src="../../src/js/main.js"></script>
+  <script src="../assets/showroom.js"></script>
+</head>
+
+<!--
+  ESTA VISTA TIENE UN PAR. El Bloque 1 --Especificacion tecnica y anatomia--
+  abre con la Search bar Elevated base (56dp, corner-full, level3 elevation).
+
+  LOS ACUERDOS DEL SHOWROOM
+  -------------------------
+  1. Jerarquia: h1 (componente) > h2 (bloque) > h3 (par). Los titulos de
+     bloque y par estan en ingles; las descripciones en espanol breve.
+  2. REGLA 11: el texto de cada pre.sr-code desescapado es identico al
+     innerHTML de su .sr-specimen (normalizando solo el espacio).
+  3. REGLA 6: sin atributos de estilo en linea ni bloques <style>.
+  4. REGLA 9: iconos siempre con .md-icon, nunca material-symbols-*.
+  5. REGLA 10: toda clase md-* del showroom existe en src/css/.
+  6. REGLA 13: cada snippet es autonomo (solo clases del sistema).
+  7. ARIA: input con aria-label; leading icon aria-hidden.
+-->
+
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <main class="sr-page">
+
+    <!-- HEADER: inicio (barra + titulo + descripcion) -->
+    <header class="sr-header">
+      <div class="sr-bar">
+        <p class="md-type-body-medium"><a href="../index.html">RDM ManGo! App</a></p>
+        <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
+      </div>
+      <h1 class="md-type-display-large">Search</h1>
+      <p class="md-type-body-large">El componente Search permite a los usuarios introducir palabras clave o frases para consultar informacion en la aplicacion. Incluye la variante Search bar (punto de entrada en reposo) y trailing actions. · <em>Dos pares</em></p>
+    </header>
+    <!-- HEADER: fin -->
+
+    <hr class="md-divider">
+
+    <!-- BLOQUE 1: Especificacion tecnica y anatomia -->
+    <h2 class="md-type-headline-medium">Especificacion tecnica y anatomia</h2>
+
+    <!-- Search bar Elevated base -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Search bar (Elevated base)</h3>
+      <p class="md-type-body-medium">Barra de busqueda colapsada, 56dp de altura, esquinas completas, fondo surface-container-high, sombra level-3. Icono leading search de 24dp, input transparente con tipografia body-large.</p>
+      <div class="sr-specimen">
+        <div class="md-search md-search-bar">
+          <span class="md-search-leading" aria-hidden="true">
+            <span class="md-icon">search</span>
+          </span>
+          <input type="search" class="md-search-input" placeholder="Buscar en ManGo!..." aria-label="Buscar en ManGo!">
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-search md-search-bar"&gt;
+  &lt;span class="md-search-leading" aria-hidden="true"&gt;
+    &lt;span class="md-icon"&gt;search&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;input type="search" class="md-search-input" placeholder="Buscar en ManGo!..." aria-label="Buscar en ManGo!"&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- PAR 2: Trailing actions -->
+    <section class="sr-section">
+      <h3 class="md-type-title-medium">Par 2 · Trailing actions</h3>
+      <p class="md-type-body-medium">Barra con botón Clear (reactivo por CSS mediante :placeholder-shown) y botón de voz (mic). Reutiliza el componente .md-icon-button de 48dp.</p>
+
+      <div class="sr-specimen">
+        <div class="md-search md-search-bar">
+          <span class="md-search-leading" aria-hidden="true">
+            <span class="md-icon">search</span>
+          </span>
+          <input type="search" class="md-search-input" id="search-input-trailing" placeholder="Buscar productos o ingredientes..." aria-label="Buscar productos o ingredientes">
+          <div class="md-search-trailing">
+            <button type="button" class="md-icon-button" data-md-search-clear aria-label="Borrar búsqueda">
+              <span class="md-icon" aria-hidden="true">close</span>
+            </button>
+            <button type="button" class="md-icon-button" data-md-search-mic aria-label="Búsqueda por voz">
+              <span class="md-icon" aria-hidden="true">mic</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;div class="md-search md-search-bar"&gt;
+  &lt;span class="md-search-leading" aria-hidden="true"&gt;
+    &lt;span class="md-icon"&gt;search&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;input type="search" class="md-search-input" id="search-input-trailing" placeholder="Buscar productos o ingredientes..." aria-label="Buscar productos o ingredientes"&gt;
+  &lt;div class="md-search-trailing"&gt;
+    &lt;button type="button" class="md-icon-button" data-md-search-clear aria-label="Borrar búsqueda"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;close&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-icon-button" data-md-search-mic aria-label="Búsqueda por voz"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;mic&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <hr class="md-divider">
+
+  </main>
+  <!-- MAIN: fin -->
+</body>
+</html>
