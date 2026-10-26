@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lab — RDM ManGo! App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+  <link rel="stylesheet" href="../src/css/main.css">
+  <script type="module" src="../src/js/main.js"></script>
+</head>
+
+<!--
+  LABORATORIO: página de pruebas del cuaderno, versionada desde el
+  2026-10-26 (sin specimens ni snippets que el verificador compare); sí
+  viaja en el repo, pero no es parte del catálogo. Consume UNICAMENTE
+  main.css y main.js: lo que aquí rinda, rinde en ManGo! App.
+
+  Con main.js se puede comprobar también lo que el CSS no dice: un snippet
+  con `data-toggle` o con un `<dialog>` necesita el comportamiento, y aquí
+  se ve si funciona o si depende de algo que no se distribuye.
+
+  Dinámica: pegar el snippet bajo ZONA DE PRUEBAS, recargar, mirar y medir
+  en DevTools. Nada de estilos ni clases sr-*: si algo no se ve aquí, el
+  snippet depende del chrome y hay que corregirlo, no la página.
+-->
+
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+
+  <main>
+
+    <button type="button" class="md-button md-button-tonal" data-md-theme-toggle>
+      <span class="md-button-label">Tema: sistema</span>
+    </button>
+
+    <br>
+    <br>
+
+    <!-- ZONA DE PRUEBAS LIBRE: pegar el snippet aqui debajo -->
+
+
+    <br>
+
+
+
+
+    <div class="md-search md-search-bar md-search-flat">
+  <span class="md-search-leading" aria-hidden="true">
+    <span class="md-icon">search</span>
+  </span>
+  <input type="search" class="md-search-input" id="search-input-flat" placeholder="Búsqueda plana (Flat level 0)..." aria-label="Búsqueda plana">
+  <div class="md-search-trailing">
+    <button type="button" class="md-icon-button" data-md-search-mic aria-label="Búsqueda por voz">
+      <span class="md-icon" aria-hidden="true">mic</span>
+    </button>
+  </div>
+</div>
+
+<br>
+
+<div class="md-search md-search-bar">
+  <span class="md-search-leading" aria-hidden="true">
+    <span class="md-icon">search</span>
+  </span>
+  <input type="search" class="md-search-input" id="search-input-elevated" placeholder="Búsqueda elevada (Level 3)..." aria-label="Búsqueda elevada">
+  <div class="md-search-trailing">
+    <button type="button" class="md-icon-button" data-md-search-mic aria-label="Búsqueda por voz">
+      <span class="md-icon" aria-hidden="true">mic</span>
+    </button>
+  </div>
+</div>
+
+
+
+
+
+<br>
+
+
+
+
+
+
+
+
+
+
+   <div class="md-search md-search-view">
+  <div class="md-search-view-header">
+    <span class="md-search-leading" aria-hidden="true">
+      <span class="md-icon">search</span>
+    </span>
+    <input type="search" class="md-search-input" id="search-input-docked" placeholder="Buscar en el catálogo..." aria-label="Buscar en el catálogo" value="Hamburguesa" disabled>
+    <div class="md-search-trailing">
+      <button type="button" class="md-icon-button" data-md-search-clear aria-label="Borrar búsqueda">
+        <span class="md-icon" aria-hidden="true">close</span>
+      </button>
+      <button type="button" class="md-icon-button" data-md-search-mic aria-label="Búsqueda por voz">
+        <span class="md-icon" aria-hidden="true">mic</span>
+      </button>
+    </div>
+  </div>
+  <hr class="md-divider">
+  <div class="md-search-suggestions" role="listbox" aria-label="Sugerencias de búsqueda">
+    <button type="button" class="md-search-suggestion" role="option">
+      <span class="md-search-suggestion-leading" aria-hidden="true">
+        <span class="md-icon">history</span>
+      </span>
+      <span>Hamburguesa artesanal</span>
+      <span class="md-search-suggestion-trailing" aria-hidden="true">
+        <span class="md-icon">north_west</span>
+      </span>
+    </button>
+    <button type="button" class="md-search-suggestion" role="option">
+      <span class="md-search-suggestion-leading" aria-hidden="true">
+        <span class="md-icon">history</span>
+      </span>
+      <span>Hamburguesa doble carne</span>
+      <span class="md-search-suggestion-trailing" aria-hidden="true">
+        <span class="md-icon">north_west</span>
+      </span>
+    </button>
+    <button type="button" class="md-search-suggestion" role="option">
+      <span class="md-search-suggestion-leading" aria-hidden="true">
+        <span class="md-icon">search</span>
+      </span>
+      <span>Hamburguesa vegetariana</span>
+      <span class="md-search-suggestion-trailing" aria-hidden="true">
+        <span class="md-icon">north_west</span>
+      </span>
+    </button>
+  </div>
+</div>
+
+
+
+<br>
+
+
+<div class="md-search md-search-bar md-search-flat">
+  <span class="md-search-leading" aria-hidden="true">
+    <span class="md-icon">search</span>
+  </span>
+  <input type="search" class="md-search-input" id="search-input-flat" placeholder="Búsqueda plana (Flat level 0)..." aria-label="Búsqueda plana" disabled>
+  <div class="md-search-trailing">
+    <button type="button" class="md-icon-button" data-md-search-mic aria-label="Búsqueda por voz">
+      <span class="md-icon" aria-hidden="true">mic</span>
+    </button>
+  </div>
+</div>
+
+<br>
+
+<div class="md-search md-search-bar">
+  <span class="md-search-leading" aria-hidden="true">
+    <span class="md-icon">search</span>
+  </span>
+  <input type="search" class="md-search-input" id="search-input-elevated" placeholder="Búsqueda elevada (Level 3)..." aria-label="Búsqueda elevada" disabled>
+  <div class="md-search-trailing">
+    <button type="button" class="md-icon-button" data-md-search-mic aria-label="Búsqueda por voz">
+      <span class="md-icon" aria-hidden="true">mic</span>
+    </button>
+  </div>
+</div>
+
+
+<br>
+
+
+<div class="md-text-field md-text-field-outlined">
+  <div class="md-text-field-container">
+    <span class="md-text-field-leading-icon" aria-hidden="true">
+      <span class="md-icon">search</span>
+    </span>
+    <input type="text" class="md-text-field-input" id="tf-outlined-disabled" placeholder=" " aria-describedby="tf-outlined-disabled-supporting" disabled value="Solo lectura">
+    <label class="md-text-field-label" for="tf-outlined-disabled">Buscar productos</label>
+    <span class="md-text-field-outline" aria-hidden="true"></span>
+    <span class="md-text-field-trailing-icon" aria-hidden="true">
+      <span class="md-icon">tune</span>
+    </span>
+  </div>
+  <span class="md-text-field-supporting-text" id="tf-outlined-disabled-supporting">Campo deshabilitado</span>
+</div>
+
+<div class="md-text-field md-text-field-filled">
+  <div class="md-text-field-container">
+    <span class="md-text-field-leading-icon" aria-hidden="true">
+      <span class="md-icon">search</span>
+    </span>
+    <input type="text" class="md-text-field-input" id="tf-filled-disabled" placeholder=" " aria-describedby="tf-filled-disabled-supporting" disabled value="Solo lectura">
+    <label class="md-text-field-label" for="tf-filled-disabled">Buscar productos</label>
+    <span class="md-text-field-trailing-icon" aria-hidden="true">
+      <span class="md-icon">tune</span>
+    </span>
+    <span class="md-text-field-outline" aria-hidden="true"></span>
+  </div>
+  <span class="md-text-field-supporting-text" id="tf-filled-disabled-supporting">Campo deshabilitado</span>
+</div>
+
+
+
+    <!-- ZONA DE PRUEBAS LIBRE: hasta aqui -->
+
+
+    <div class="sr-lab-canvas">
+
+      <!-- ZONA DE PRUEBAS CON ANCHO FIJO: pegar el snippet aqui debajo -->
+
+
+
+
+
+      <!-- ZONA DE PRUEBAS CON ANCHO FIJO: hasta aqui -->
+
+    </div>
+
+  </main>
+</body>
+</html>

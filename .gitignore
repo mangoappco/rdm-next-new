@@ -39,22 +39,23 @@ build/
 # Herramienta local de trabajo
 # ---------------------------------------------------------------------------
 # showroom/lab.html es el banco de pruebas: se pega ahi el snippet que se
-# esta mirando y se comprueba que rinde con SOLO main.css y main.js. Es un
-# cuaderno personal, no documentacion del design system, asi que su contenido
-# cambia con cada componente. Por eso tampoco hay enlace en showroom/index.html:
-# un enlace a un archivo que no existe en un clon seria un 404 en la portada
-# del catalogo.
+# esta mirando y se comprueba que rinde con SOLO main.css y main.js, con el
+# conmutador de tema aparte. Es el cuaderno de la sesion de trabajo, no
+# documentacion del design system, y su contenido cambia con cada componente.
+# No lleva enlace en showroom/index.html: el lab no es catalogo, y un enlace
+# que falta en un clon daria 404 en la portada.
 #
-# VERSIONADO TEMPORALMENTE: se necesitaba llevar la sesion de trabajo a otra
-# maquina via push/pull. Descomentado el 2026-10-16, al volver a una sola
-# maquina. Sigue en la historia --commit ea9759e-- asi que el cuaderno no se
-# pierde: deja de recibir cambios.
-# Ojo: aunque estos esten ignorados, tools/verify-tokens.ps1 los escanea
-# igualmente, porque recorre todo *.html del proyecto. Un `style=` aqui tumba
-# el verificador igual que en cualquier otra vista.
+# VERSIONADO: lab.html DIO LA VUELTA DOS VECES. Se versiono temporalmente el
+# 2026-10-16 para llevar la sesion a otra maquina por push/pull (commit
+# ea9759e), se retiro al volver a una sola maquina, y el 2026-10-26 Danny
+# mando versionarlo otra vez, esta vez de plan: el cuaderno viaja en el repo,
+# y la historia no se pierde en ninguno de los cambios.
 #
-# `showroom/lab.css` es su papel: el lienzo de 600px donde se mide el
-# snippet. Tambien personal, y tambien fuera del control de versiones: el
-# lienzo no es del sistema, asi que no tiene por que viajar con la libreria.
-showroom/lab.html
+# Ojo: aunque su css siga ignorado, tools/verify-tokens.ps1 recorre todo
+# *.html del proyecto igualmente: un `style=` aqui tumba el verificador igual
+# que en cualquier otra vista.
+#
+# `showroom/lab.css` es el lienzo de 600px donde se mide el snippet. Personal
+# y fuera del control de versiones: el lienzo no es del sistema, asi que no
+# tiene por que viajar con la libreria.
 showroom/lab.css
