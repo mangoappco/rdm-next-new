@@ -272,15 +272,9 @@
    solo pierde sombra y bloquea interacción */
 .md-search:has(.md-search-input:disabled),
 .md-search.is-disabled {
+  box-shadow: none;
   cursor: not-allowed;
   pointer-events: none;
-}
-
-/* Contenedor disabled: sin elevación */
-.md-search-bar:has(.md-search-input:disabled),
-.md-search-flat:has(.md-search-input:disabled),
-.md-search-view:has(.md-search-input:disabled) {
-  box-shadow: none;
 }
 
 /* Contenido disabled: opacidad 38% en glifos, texto y controles */
