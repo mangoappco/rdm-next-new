@@ -148,6 +148,7 @@
 .md-search-view-header {
   display: flex;
   align-items: center;
+  width: 100%;
   height: var(--md-sys-measurement-text-field-container-height);
   padding-inline-start: var(--md-sys-measurement-space-200);
   padding-inline-end: var(--md-sys-measurement-space-200);
