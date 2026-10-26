@@ -64,7 +64,7 @@
     <!-- Anatomy -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Anatomy</h3>
-      <p class="md-type-body-medium">Outlined Text Field en reposo con label flotante gobernado 100% por CSS (:focus-within y :not(:placeholder-shown)), sin JavaScript.</p>
+      <p class="md-type-body-medium">Outlined Text Field en reposo. Label flotante gobernado 100% por CSS (:focus-within, :placeholder-shown). Sin JS.</p>
       <div class="sr-specimen">
         <div class="md-text-field md-text-field-outlined">
           <div class="md-text-field-container">
@@ -89,7 +89,7 @@
     <!-- Icon slots -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Icon slots</h3>
-      <p class="md-type-body-medium">Campo Outlined con iconos leading (search) y trailing (tune) contextuales. Padding lateral 12dp, gap icono-texto 16dp.</p>
+      <p class="md-type-body-medium">Campo Outlined con iconos leading y trailing contextuales.</p>
       <div class="sr-specimen">
         <div class="md-text-field md-text-field-outlined">
           <div class="md-text-field-container">
@@ -126,7 +126,7 @@
     <!-- Filled variant -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Filled variant</h3>
-      <p class="md-type-body-medium">Mismo HTML que Outlined, solo cambia la clase raíz. Fondo surface-container-highest, esquinas asimétricas (4dp arriba, 0dp abajo), active indicator inferior (1px reposo → 2px focus/error).</p>
+      <p class="md-type-body-medium">Variante Filled: fondo surface-container-highest, esquinas asimétricas arriba, active indicator inferior.</p>
       <div class="sr-specimen">
         <div class="md-text-field md-text-field-filled">
           <div class="md-text-field-container">
@@ -163,7 +163,7 @@
     <!-- Disabled state -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Disabled state</h3>
-      <p class="md-type-body-medium">Outlined y Filled deshabilitados con opacidad 38% en contenido, outline 12% (Outlined), fondo 10% (Filled). Iconos simétricos en ambas variantes.</p>
+      <p class="md-type-body-medium">Outlined y Filled deshabilitados. Opacidad 38% contenido, outline 12% (Outlined), fondo 10% (Filled).</p>
       <div class="sr-specimen sr-specimen-gap">
         <div class="md-text-field md-text-field-outlined">
           <div class="md-text-field-container">
@@ -229,7 +229,7 @@
     <!-- Dense variant -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Dense variant</h3>
-      <p class="md-type-body-medium">Variante densa (48dp) de Text Field. Paso -2 de densidad M3 conservando tipografía body-medium (14px). Iconos a 20dp. Ambas variantes Outlined y Filled.</p>
+      <p class="md-type-body-medium">Variante densa de Text Field. Ambas variantes Outlined y Filled.</p>
       <div class="sr-specimen sr-specimen-gap">
         <div class="md-text-field md-text-field-outlined md-text-field-dense">
           <div class="md-text-field-container">
@@ -271,7 +271,7 @@
     <!-- Textarea -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Textarea</h3>
-      <p class="md-type-body-medium">Área de texto multilínea con label alineado arriba (16dp), min-height 96dp (3 líneas), resize none y counter opcional. Ambas variantes Outlined y Filled.</p>
+      <p class="md-type-body-medium">Área de texto multilínea con label alineado arriba. Counter opcional. Outlined y Filled.</p>
       <div class="sr-specimen sr-specimen-gap">
         <div class="md-text-field md-text-field-outlined md-text-field-textarea">
           <div class="md-text-field-container">
@@ -330,7 +330,7 @@
     <!-- Prefix & Suffix -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Prefix and suffix</h3>
-      <p class="md-type-body-medium">Campo Outlined y Filled con prefijo ($) y sufijo (COP) contextuales. Solo se muestran cuando el label flota (focus o contenido).</p>
+      <p class="md-type-body-medium">Prefijo y sufijo contextuales. Solo visibles con label flotante.</p>
       <div class="sr-specimen sr-specimen-gap">
         <div class="md-text-field md-text-field-outlined">
           <div class="md-text-field-container">
@@ -380,7 +380,7 @@
     <!-- Trailing actions -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Trailing actions</h3>
-      <p class="md-type-body-medium">Acciones interactivas finales: botón Clear (visible solo con contenido) y toggle de contraseña (siempre visible en campos password). Botón 48dp con área táctil accesible.</p>
+      <p class="md-type-body-medium">Botón Clear (visible con contenido) y toggle de contraseña. Área táctil accesible.</p>
       <div class="sr-specimen sr-specimen-gap">
         <div class="md-text-field md-text-field-outlined">
           <div class="md-text-field-container">
@@ -439,7 +439,7 @@
     <!-- Readonly state -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Readonly state</h3>
-      <p class="md-type-body-medium">Campo de solo lectura con atributo nativo readonly. Mantiene 100% opacidad y contraste, cursor de selección, trazo de reposo en 1px durante foco. Gobernado 100% por CSS con :has(.md-text-field-input:read-only).</p>
+      <p class="md-type-body-medium">Campo readonly con atributo nativo. 100% opacidad y contraste, cursor de selección. CSS con :read-only.</p>
       <div class="sr-specimen sr-specimen-gap">
         <div class="md-text-field md-text-field-outlined">
           <div class="md-text-field-container">
@@ -486,7 +486,7 @@
     <!-- Interactive validation -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Interactive validation</h3>
-      <p class="md-type-body-medium">Campo Outlined con validación HTML5 nativa (Constraint Validation API). Counter en vivo (longitud/maxlength). Al desenfocar campo sucio inválido: .md-text-field-error, ícono error en trailing, outline 2px error, helper permutado a mensaje de error.</p>
+      <p class="md-type-body-medium">Validación HTML5 nativa. Counter en vivo. Error en focusout: clase error, icono, outline 2px, helper cambiado.</p>
       <div class="sr-specimen">
         <div class="md-text-field md-text-field-outlined">
           <div class="md-text-field-container">
@@ -529,7 +529,7 @@
     <!-- Number range required -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Number range required</h3>
-      <p class="md-type-body-medium">Input type=number con min=1, max=30, step=1 y required. Error solo en focusout: vacío → "Este campo es obligatorio"; fuera de rango → helper de error.</p>
+      <p class="md-type-body-medium">Input number con min=1, max=30, required. Error en focusout: vacío o fuera de rango.</p>
       <div class="sr-specimen">
         <div class="md-text-field md-text-field-outlined">
           <div class="md-text-field-container">
@@ -570,7 +570,7 @@
     <!-- Phone pattern required -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Phone pattern required</h3>
-      <p class="md-type-body-medium">Input type=tel con pattern=[0-9]{10}, maxlength=10, inputmode=numeric, required y counter 0/10 en vivo. Error en focusout: inválido o vacío requerido.</p>
+      <p class="md-type-body-medium">Input tel con pattern 10 dígitos, maxlength 10, required y counter. Error en focusout.</p>
       <div class="sr-specimen">
         <div class="md-text-field md-text-field-outlined">
           <div class="md-text-field-container">
@@ -613,7 +613,7 @@
     <!-- Price prefix required -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Price prefix required</h3>
-      <p class="md-type-body-medium">Input type=number con min=500, step=100, required, prefix $ y suffix COP. Error en focusout: valor por debajo del mínimo.</p>
+      <p class="md-type-body-medium">Input number con min=500, required, prefix y suffix. Error en focusout: valor inferior al mínimo.</p>
       <div class="sr-specimen">
         <div class="md-text-field md-text-field-outlined">
           <div class="md-text-field-container">
@@ -652,7 +652,7 @@
     <!-- URL filled required -->
     <section class="sr-section">
       <h3 class="md-type-title-large">URL filled required</h3>
-      <p class="md-type-body-medium">Input type=url en variante Filled con required. Valida esquema https nativo. Error en focusout: inválido o vacío requerido. Orden DOM canónico input → label → outline → error-icon.</p>
+      <p class="md-type-body-medium">Input url en variante Filled con required. Valida esquema https. Error en focusout.</p>
       <div class="sr-specimen">
         <div class="md-text-field md-text-field-filled">
           <div class="md-text-field-container">
@@ -689,8 +689,6 @@
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
-
-    <hr class="md-divider">
 
   </main>
   <!-- MAIN: fin -->
