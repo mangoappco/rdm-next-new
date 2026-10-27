@@ -18,7 +18,7 @@ Solo prohibiciones verbales. Las reglas de showroom, de capas y de ciclo no se c
 
 ## Componentes creados
 
-Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **16 componentes y 25 vistas** (16 de componente + 9 de tokens), las 25 enlazadas en `showroom/index.html`. El orden es el de `index.css`:
+Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **17 componentes y 26 vistas** (17 de componente + 9 de tokens), las 26 enlazadas en `showroom/index.html`. El orden es el de `index.css`:
 
 | Componente | Hoja | Vista |
 | --- | --- | --- |
@@ -38,10 +38,11 @@ Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **16 compo
 | Switch | `switch.css` | `switch.html` |
 | Checkbox | `checkbox.css` | `checkbox.html` |
 | Radio Button | `radio.css` | `radio.html` |
+| Select | `select.css` | `select.html` |
 
 Cada componente tiene además su molde en `showroom/templates/<nombre>.template.html`.
 
-**Hoy CUATRO pares molde/vista rinden byte-idénticos: `search`, `switch`, `checkbox` y `radio`** —verificados por hash el 2026-10-26; los moldes de `fab`, `fab-extended`, `card`, `dialog`, `list` y `segmented-button`, que sí lo fueron a su día (rumbo del 2026-10-13), se quedaron atrás de su vista. Las demás vistas difieren de su molde por el puntero de dos líneas de la convención antigua o por el desfase del molde anotado en deuda. `chips` no tiene molde propio y `typography.html` apunta a `component.template.html`.
+**Hoy CINCO pares molde/vista rinden byte-idénticos: `search`, `switch`, `checkbox`, `radio` y `select`** —verificados por hash el 2026-10-27; los moldes de `fab`, `fab-extended`, `card`, `dialog`, `list` y `segmented-button`, que sí lo fueron a su día (rumbo del 2026-10-13), se quedaron atrás de su vista. Las demás vistas difieren de su molde por el puntero de dos líneas de la convención antigua o por el desfase del molde anotado en deuda. `chips` no tiene molde propio y `typography.html` apunta a `component.template.html`.
 
 ## FAB — la base NO es el `md-fab-medium`
 
@@ -347,6 +348,22 @@ State layer de 40dp `::after` centrado en el círculo exterior (se asoma 10dp po
 
 Mecanismo primario: clase `.md-radio-error`, con `:invalid` como fallback. Unselected error = borde en `error`. Selected error = borde y punto en `error`. Halo error al 8%.
 
+## Select - publicada
+
+Cinco pares, cerrados el 2026-10-27: **Outlined Select** (cerrado en reposo vs. seleccionado con valor), **Filled Select**, **Open state / Dropdown Menu** (menú desplegado estático con elevación level2), **Select with Leading Icon** y **Disabled and Error states**. Es una composición de dos componentes: ancla con anatomía de Text Field (56dp) + menú flotante (`.md-menu`) con ítems de List Item (48dp). JS mínimo en `src/js/select.js` con delegación global (`data-md-select`). Cero tokens nuevos (100% dogfooding). REGLA 13 con JS mínimo (igual que search/text-field). La vista es el QUINTO par byte-idéntico con su moldería —como abajo se anota—.
+
+### Componente Menu (`.md-menu`)
+
+Superficie flotante mínima creada como componente independiente: elevación level2, fondo `surface-container`, esquinas 4px, padding vertical 8dp, ancho min 112dp / max 280dp, z-index 1000. Reutilizable para futuros overflow menus.
+
+### Controlador JS (`src/js/select.js`)
+
+Delegación global en `document` con `click` y `keydown`. Toggle de `.md-select-open` + `aria-expanded`. Selección de opción transfiere valor al input + hidden input, actualiza `aria-selected`. Cierre con Escape y clics externos. Navegación con ArrowDown/ArrowUp/Enter.
+
+### Disabled y Error
+
+Disabled al 38% (opacity en el host, pointer-events none). Error con clase `.md-select-error`: borde, etiqueta y flecha en color error.
+
 ## Las dos mitades de una vista del showroom
 
 A partir del `list` (2026-10-21), cada vista del showroom se estructura en dos bloques, y el corte se marca con un divisor:
@@ -360,7 +377,7 @@ En el marcado, el corte es un `<hr class="md-divider">` —el mismo mecanismo co
 
 ## Siguiente tarea
 
-**Radio Button completado (5 pares), y Checkbox sigue cerrado en los suyos (5 pares) + Switch (4 pares) + Search (5 pares).** En los cuatro mandó lo mismo: el componente termina en sus pares de especificación y nada de composiciones de negocio en la vista — el Par 6 de M3 que Search no tomó (Top bar con avatar) y las pantallas reales (POS, KDS, carta, modal de cobro) van a la **Galería de Usos**, que se abrirá cuando el catálogo acabe de cerrarse. Verificador en verde (EXIT_CODE=0 con las excepciones de siempre).
+**Select completado (5 pares), y Radio Button sigue cerrado en los suyos (5 pares) + Checkbox (5 pares) + Switch (4 pares) + Search (5 pares).** En los cinco mandó lo mismo: el componente termina en sus pares de especificación y nada de composiciones de negocio en la vista — el Par 6 de M3 que Search no tomó (Top bar con avatar) y las pantallas reales (POS, KDS, carta, modal de cobro) van a la **Galería de Usos**, que se abrirá cuando el catálogo acabe de cerrarse. Verificador en verde (EXIT_CODE=0 con las excepciones de siempre).
 
 Lo que queda por delante no es un componente nuevo sino la **deuda conocida** de más abajo, que es lo que de verdad está pendiente:
 

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Select de RDM Next: selector M3 compuesto de Text Field ancla + menú desplegable con ítems de 48dp — todo CSS + JS mínimo sobre delegación global.">
+  <title>Select — RDM ManGo! App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+  <link rel="stylesheet" href="../../src/css/main.css?v=8">
+  <link rel="stylesheet" href="../assets/showroom.css">
+  <script type="module" src="../../src/js/main.js"></script>
+  <script src="../assets/showroom.js"></script>
+</head>
+
+<!--
+  ESTA VISTA TIENE CINCO PARES. El Bloque 1 --Especificacion tecnica y
+  anatomia-- cubre Outlined select, Filled select, Open state / Dropdown
+  menu, Select with leading icon y Disabled & Error states. No hay Bloque 2:
+  las composiciones de ManGo! App (el POS de caja, la comanda de cocina,
+  la carta, el modal de cobro) pertenecen a la futura Galeria de Usos.
+
+  LOS ACUERDOS DEL SHOWROOM
+  -------------------------
+  1. Jerarquia: h1 (componente) > h2 (bloque) > h3 (par). Los titulos de
+     bloque y par estan en ingles; las descripciones en espanol breve.
+  2. REGLA 11: el texto de cada pre.sr-code desescapado es identico al
+     innerHTML de su .sr-specimen (normalizando solo el espacio).
+  3. REGLA 6: sin atributos de estilo en linea ni bloques <style>.
+  4. REGLA 9: iconos siempre con .md-icon, nunca material-symbols-*.
+  5. REGLA 10: toda clase md-* del showroom existe en src/css/.
+  6. REGLA 13: cada snippet es autonomo (solo clases del sistema).
+  7. ARIA: combobox + listbox + option con aria-expanded y aria-selected.
+  8. JS mínimo: delegación global en src/js/select.js (data-md-select).
+-->
+
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <main class="sr-page">
+
+    <!-- HEADER: inicio (barra + titulo + descripcion) -->
+    <header class="sr-header">
+      <div class="sr-bar">
+        <p class="md-type-body-medium"><a href="../index.html">RDM ManGo! App</a></p>
+        <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
+      </div>
+      <h1 class="md-type-display-large">Select</h1>
+      <p class="md-type-body-large">Los selectores (Selects) permiten a las personas elegir una opción de una lista. · <em>Cinco pares</em></p>
+    </header>
+    <!-- HEADER: fin -->
+
+    <hr class="md-divider">
+
+    <!-- BLOQUE 1: Especificacion tecnica y anatomia -->
+    <h2 class="md-type-headline-medium">Especificacion tecnica y anatomia</h2>
+
+    <!-- PAR 1: Outlined Select -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Outlined Select</h3>
+      <p class="md-type-body-medium">Ancla de 56dp con contorno outline y menú desplegable. Variante cerrada en reposo y seleccionada con valor.</p>
+
+      <div class="sr-specimen sr-specimen-gap">
+        <div class="md-select md-select-outlined" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox">
+          <div class="md-select-container">
+            <input type="text" class="md-select-input" id="select-outlined-closed" readonly value="" placeholder=" " aria-label="Método de pago">
+            <label class="md-select-label" for="select-outlined-closed">Método de pago</label>
+            <span class="md-select-outline" aria-hidden="true"></span>
+            <span class="md-select-trailing-icon" aria-hidden="true">
+              <span class="md-icon">arrow_drop_down</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="md-select md-select-outlined" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox">
+          <div class="md-select-container">
+            <input type="text" class="md-select-input" id="select-outlined-selected" readonly value="Efectivo" placeholder=" " aria-label="Método de pago">
+            <label class="md-select-label" for="select-outlined-selected">Método de pago</label>
+            <span class="md-select-outline" aria-hidden="true"></span>
+            <span class="md-select-trailing-icon" aria-hidden="true">
+              <span class="md-icon">arrow_drop_down</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;div class="md-select md-select-outlined" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox"&gt;
+  &lt;div class="md-select-container"&gt;
+    &lt;input type="text" class="md-select-input" id="select-outlined-closed" readonly value="" placeholder=" " aria-label="Método de pago"&gt;
+    &lt;label class="md-select-label" for="select-outlined-closed"&gt;Método de pago&lt;/label&gt;
+    &lt;span class="md-select-outline" aria-hidden="true"&gt;&lt;/span&gt;
+    &lt;span class="md-select-trailing-icon" aria-hidden="true"&gt;
+      &lt;span class="md-icon"&gt;arrow_drop_down&lt;/span&gt;
+    &lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="md-select md-select-outlined" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox"&gt;
+  &lt;div class="md-select-container"&gt;
+    &lt;input type="text" class="md-select-input" id="select-outlined-selected" readonly value="Efectivo" placeholder=" " aria-label="Método de pago"&gt;
+    &lt;label class="md-select-label" for="select-outlined-selected"&gt;Método de pago&lt;/label&gt;
+    &lt;span class="md-select-outline" aria-hidden="true"&gt;&lt;/span&gt;
+    &lt;span class="md-select-trailing-icon" aria-hidden="true"&gt;
+      &lt;span class="md-icon"&gt;arrow_drop_down&lt;/span&gt;
+    &lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- PAR 2: Filled Select -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Filled Select</h3>
+      <p class="md-type-body-medium">Variante con fondo de contenedor surface-container-highest y borde inferior.</p>
+
+      <div class="sr-specimen sr-specimen-gap">
+        <div class="md-select md-select-filled" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox">
+          <div class="md-select-container">
+            <input type="text" class="md-select-input" id="select-filled-closed" readonly value="" placeholder=" " aria-label="Categoría">
+            <label class="md-select-label" for="select-filled-closed">Categoría</label>
+            <span class="md-select-trailing-icon" aria-hidden="true">
+              <span class="md-icon">arrow_drop_down</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="md-select md-select-filled" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox">
+          <div class="md-select-container">
+            <input type="text" class="md-select-input" id="select-filled-selected" readonly value="Bebidas" placeholder=" " aria-label="Categoría">
+            <label class="md-select-label" for="select-filled-selected">Categoría</label>
+            <span class="md-select-trailing-icon" aria-hidden="true">
+              <span class="md-icon">arrow_drop_down</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;div class="md-select md-select-filled" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox"&gt;
+  &lt;div class="md-select-container"&gt;
+    &lt;input type="text" class="md-select-input" id="select-filled-closed" readonly value="" placeholder=" " aria-label="Categoría"&gt;
+    &lt;label class="md-select-label" for="select-filled-closed"&gt;Categoría&lt;/label&gt;
+    &lt;span class="md-select-trailing-icon" aria-hidden="true"&gt;
+      &lt;span class="md-icon"&gt;arrow_drop_down&lt;/span&gt;
+    &lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="md-select md-select-filled" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox"&gt;
+  &lt;div class="md-select-container"&gt;
+    &lt;input type="text" class="md-select-input" id="select-filled-selected" readonly value="Bebidas" placeholder=" " aria-label="Categoría"&gt;
+    &lt;label class="md-select-label" for="select-filled-selected"&gt;Categoría&lt;/label&gt;
+    &lt;span class="md-select-trailing-icon" aria-hidden="true"&gt;
+      &lt;span class="md-icon"&gt;arrow_drop_down&lt;/span&gt;
+    &lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- PAR 3: Open state / Dropdown Menu -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Open state / Dropdown Menu</h3>
+      <p class="md-type-body-medium">Menú desplegado con elevación level2, ítems de 48dp y opción seleccionada con check trailing.</p>
+
+      <div class="sr-specimen sr-specimen-gap">
+        <div class="md-select md-select-outlined md-select-open" data-md-select role="combobox" aria-expanded="true" aria-haspopup="listbox">
+          <div class="md-select-container">
+            <input type="text" class="md-select-input" id="select-open" readonly value="Efectivo" placeholder=" " aria-label="Método de pago">
+            <label class="md-select-label" for="select-open">Método de pago</label>
+            <span class="md-select-outline" aria-hidden="true"></span>
+            <span class="md-select-trailing-icon" aria-hidden="true">
+              <span class="md-icon">arrow_drop_down</span>
+            </span>
+          </div>
+          <div class="md-menu" role="listbox" aria-labelledby="select-open">
+            <div class="md-list-item md-list-item-selected" role="option" aria-selected="true" data-value="efectivo">
+              <span class="md-list-item-headline">Efectivo</span>
+            </div>
+            <div class="md-list-item" role="option" aria-selected="false" data-value="tarjeta">
+              <span class="md-list-item-headline">Tarjeta Débito/Crédito</span>
+            </div>
+            <div class="md-list-item" role="option" aria-selected="false" data-value="transferencia">
+              <span class="md-list-item-headline">Transferencia</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;div class="md-select md-select-outlined md-select-open" data-md-select role="combobox" aria-expanded="true" aria-haspopup="listbox"&gt;
+  &lt;div class="md-select-container"&gt;
+    &lt;input type="text" class="md-select-input" id="select-open" readonly value="Efectivo" placeholder=" " aria-label="Método de pago"&gt;
+    &lt;label class="md-select-label" for="select-open"&gt;Método de pago&lt;/label&gt;
+    &lt;span class="md-select-outline" aria-hidden="true"&gt;&lt;/span&gt;
+    &lt;span class="md-select-trailing-icon" aria-hidden="true"&gt;
+      &lt;span class="md-icon"&gt;arrow_drop_down&lt;/span&gt;
+    &lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class="md-menu" role="listbox" aria-labelledby="select-open"&gt;
+    &lt;div class="md-list-item md-list-item-selected" role="option" aria-selected="true" data-value="efectivo"&gt;
+      &lt;span class="md-list-item-headline"&gt;Efectivo&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class="md-list-item" role="option" aria-selected="false" data-value="tarjeta"&gt;
+      &lt;span class="md-list-item-headline"&gt;Tarjeta Débito/Crédito&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class="md-list-item" role="option" aria-selected="false" data-value="transferencia"&gt;
+      &lt;span class="md-list-item-headline"&gt;Transferencia&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- PAR 4: Select with Leading Icon -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Select with Leading Icon</h3>
+      <p class="md-type-body-medium">Selector con icono frontal para métodos de pago o roles.</p>
+
+      <div class="sr-specimen sr-specimen-gap">
+        <div class="md-select md-select-outlined" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox">
+          <div class="md-select-container">
+            <span class="md-select-leading-icon" aria-hidden="true">
+              <span class="md-icon">payments</span>
+            </span>
+            <input type="text" class="md-select-input" id="select-leading" readonly value="Efectivo" placeholder=" " aria-label="Método de pago">
+            <label class="md-select-label" for="select-leading">Método de pago</label>
+            <span class="md-select-outline" aria-hidden="true"></span>
+            <span class="md-select-trailing-icon" aria-hidden="true">
+              <span class="md-icon">arrow_drop_down</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;div class="md-select md-select-outlined" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox"&gt;
+  &lt;div class="md-select-container"&gt;
+    &lt;span class="md-select-leading-icon" aria-hidden="true"&gt;
+      &lt;span class="md-icon"&gt;payments&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;input type="text" class="md-select-input" id="select-leading" readonly value="Efectivo" placeholder=" " aria-label="Método de pago"&gt;
+    &lt;label class="md-select-label" for="select-leading"&gt;Método de pago&lt;/label&gt;
+    &lt;span class="md-select-outline" aria-hidden="true"&gt;&lt;/span&gt;
+    &lt;span class="md-select-trailing-icon" aria-hidden="true"&gt;
+      &lt;span class="md-icon"&gt;arrow_drop_down&lt;/span&gt;
+    &lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- PAR 5: Disabled and Error states -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Disabled and Error states</h3>
+      <p class="md-type-body-medium">Select desactivado al 38% y select con validación fallida en error.</p>
+
+      <div class="sr-specimen sr-specimen-gap">
+        <div class="md-select md-select-outlined" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox">
+          <div class="md-select-container">
+            <input type="text" class="md-select-input" id="select-disabled" readonly value="Efectivo" placeholder=" " aria-label="Método de pago" disabled>
+            <label class="md-select-label" for="select-disabled">Método de pago</label>
+            <span class="md-select-outline" aria-hidden="true"></span>
+            <span class="md-select-trailing-icon" aria-hidden="true">
+              <span class="md-icon">arrow_drop_down</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="md-select md-select-outlined md-select-error" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox">
+          <div class="md-select-container">
+            <input type="text" class="md-select-input" id="select-error" readonly value="" placeholder=" " aria-label="Método de pago" aria-invalid="true">
+            <label class="md-select-label" for="select-error">Método de pago</label>
+            <span class="md-select-outline" aria-hidden="true"></span>
+            <span class="md-select-trailing-icon" aria-hidden="true">
+              <span class="md-icon">arrow_drop_down</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;div class="md-select md-select-outlined" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox"&gt;
+  &lt;div class="md-select-container"&gt;
+    &lt;input type="text" class="md-select-input" id="select-disabled" readonly value="Efectivo" placeholder=" " aria-label="Método de pago" disabled&gt;
+    &lt;label class="md-select-label" for="select-disabled"&gt;Método de pago&lt;/label&gt;
+    &lt;span class="md-select-outline" aria-hidden="true"&gt;&lt;/span&gt;
+    &lt;span class="md-select-trailing-icon" aria-hidden="true"&gt;
+      &lt;span class="md-icon"&gt;arrow_drop_down&lt;/span&gt;
+    &lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="md-select md-select-outlined md-select-error" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox"&gt;
+  &lt;div class="md-select-container"&gt;
+    &lt;input type="text" class="md-select-input" id="select-error" readonly value="" placeholder=" " aria-label="Método de pago" aria-invalid="true"&gt;
+    &lt;label class="md-select-label" for="select-error"&gt;Método de pago&lt;/label&gt;
+    &lt;span class="md-select-outline" aria-hidden="true"&gt;&lt;/span&gt;
+    &lt;span class="md-select-trailing-icon" aria-hidden="true"&gt;
+      &lt;span class="md-icon"&gt;arrow_drop_down&lt;/span&gt;
+    &lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+  </main>
+  <!-- MAIN: fin -->
+</body>
+</html

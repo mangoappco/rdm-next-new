@@ -124,6 +124,7 @@ import { registrar as registrarChipInput } from './chip-input.js';
 import { registrar as registrarRipple } from './ripple.js';
 import { initTextField } from './text-field.js';
 import { initSearch } from './search.js';
+import { initSelect } from './select.js';
 import { initTheme } from './theme.js';
 
 /* Se registra al cargar el script, no al hacer clic. Los specimens del
@@ -162,6 +163,10 @@ initTextField();
 /* Search trailing actions: delegación global viva antes de que exista
    ningún botón con data-md-search-* en la página. */
 initSearch();
+
+/* Select: delegación global viva antes de que exista ningún contenedor
+   con data-md-select en la página. */
+initSelect();
 
 /* Conmutador de tema del sistema: aplica la eleccion guardada al evaluar
    el modulo (o deja mandar al sistema si nunca se eligio) y cablea
