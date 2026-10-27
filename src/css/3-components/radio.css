@@ -205,17 +205,16 @@
   transition: none;
 }
 
-/* Selected Disabled: relleno 38%, sin borde, punto visible en surface */
+/* Selected Disabled: aro transparente con borde 38%, punto sólido en on-surface */
 .md-radio:has(.md-radio-input:disabled:checked) .md-radio-circle {
-  background-color: var(--md-sys-color-on-surface);
-  border-color: transparent;
+  background-color: transparent;
+  border-color: var(--md-sys-color-on-surface);
   opacity: var(--md-sys-state-disabled-state-layer-opacity);
   transition: none;
 }
 
 .md-radio:has(.md-radio-input:disabled:checked) .md-radio-dot {
-  background-color: var(--md-sys-color-surface);
-  opacity: var(--md-sys-state-disabled-state-layer-opacity);
+  background-color: var(--md-sys-color-on-surface);
   transform: translate(-50%, -50%) scale(1);
   transition: none;
 }
