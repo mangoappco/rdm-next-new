@@ -132,48 +132,43 @@
   border-color: transparent;
 }
 
-/* CAPA DE ESTADO: circulo de 40dp (más grande que la pastilla, se asoma
-   4dp por arriba y por abajo), centrada con los mismos calc() del sistema.
-   Color del oracle: on-surface desconectada, primary conectada. */
-.md-switch-track::after {
+/* CAPA DE ESTADO (state layer): círculo de 40dp CONCÉNTRICO CON EL HANDLE.
+   M3: el halo de hover/focus/press emana del centro de la manija y viaja
+   con ella (izquierda en unselected, derecha en selected).
+   Tamaño: --md-sys-measurement-switch-state-layer-size = 40dp (Space 500).
+   Color: on-surface en unselected, primary en selected (oracle v0_192). */
+.md-switch-handle::after {
   content: "";
   position: absolute;
-  inset-block: calc(
-    (
-      var(--md-sys-measurement-switch-track-height) -
-        var(--md-sys-measurement-switch-state-layer-size)
-    ) / 2
-  );
-  inset-inline: calc(
-    (
-      var(--md-sys-measurement-switch-track-width) -
-        var(--md-sys-measurement-switch-state-layer-size)
-    ) / 2
-  );
+  top: 50%;
+  left: 50%;
+  width: var(--md-sys-measurement-switch-state-layer-size);
+  height: var(--md-sys-measurement-switch-state-layer-size);
+  transform: translate(-50%, -50%);
   border-radius: var(--md-sys-shape-corner-full);
   background-color: var(--md-sys-color-on-surface);
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--md-sys-motion-duration-short4)
-    var(--md-sys-motion-easing-standard);
+  transition:
+    opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
+    background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
 }
 
-.md-switch-input:checked + .md-switch-track::after {
+/* Selected: el state layer cambia a primary (viaja con la manija a la derecha) */
+.md-switch-input:checked + .md-switch-track .md-switch-handle::after {
   background-color: var(--md-sys-color-primary);
 }
 
-/* Hover 8%, foco 10%, presion 10%: los tres roles de opacidad que ya
-   existen en 2-system-tokens/state.css. El disabled apague el hover con
-   pointer-events: none del bloque de arriba, y arrastra su capa a la vez.*/
-.md-switch:hover .md-switch-track::after {
+/* Hover 8%, foco 10%, presion 10%: opacidad sobre el pseudo del handle */
+.md-switch:hover .md-switch-handle::after {
   opacity: var(--md-sys-state-hover-state-layer-opacity);
 }
 
-.md-switch-input:focus-visible + .md-switch-track::after {
+.md-switch-input:focus-visible + .md-switch-track .md-switch-handle::after {
   opacity: var(--md-sys-state-focus-state-layer-opacity);
 }
 
-.md-switch-input:active + .md-switch-track::after {
+.md-switch-input:active + .md-switch-track .md-switch-handle::after {
   opacity: var(--md-sys-state-pressed-state-layer-opacity);
 }
 
@@ -316,7 +311,7 @@
   background-clip: border-box;
 }
 
-.md-switch-input:disabled + .md-switch-track::after {
+.md-switch-input:disabled + .md-switch-track .md-switch-handle::after {
   content: none;
 }
 
