@@ -204,30 +204,59 @@
   color: var(--md-sys-color-on-primary);
 }
 
-/* DESHABILITADO (M3 canonico): 38% unificado en TODO (caja + borde + icono).
-   Sin state layer, sin transiciones. */
-.md-checkbox-input:disabled + .md-checkbox-box {
-  opacity: var(--md-sys-state-disabled-state-layer-opacity); /* 38% */
-  background-color: var(--md-sys-color-on-surface);
+/* DESHABILITADO (M3 canonico): 38% en TODO, pero SOLO cuando esta
+   marcado o indeterminado. Unselected disabled = transparente con borde
+   al 38% y sin icono. Sin state layer, sin transiciones. */
+/* Universal: bloqueo de interaccion */
+.md-checkbox:has(.md-checkbox-input:disabled) {
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+/* 1. UNSELECTED DISABLED: contenedor transparente, borde al 38%, icono invisible */
+.md-checkbox:has(.md-checkbox-input:disabled:not(:checked)):not(.md-checkbox-indeterminate) .md-checkbox-box {
+  background-color: transparent;
   border-color: var(--md-sys-color-on-surface);
+  opacity: var(--md-sys-state-disabled-state-layer-opacity);
   transition: none;
 }
 
-.md-checkbox-input:disabled:checked + .md-checkbox-box,
-.md-checkbox-indeterminate:has(.md-checkbox-input:disabled) .md-checkbox-box {
+.md-checkbox:has(.md-checkbox-input:disabled:not(:checked)):not(.md-checkbox-indeterminate) .md-checkbox-icon {
+  opacity: 0;
+  transition: none;
+}
+
+/* 2. SELECTED DISABLED: contenedor relleno al 38%, sin borde, check visible */
+.md-checkbox:has(.md-checkbox-input:disabled:checked):not(.md-checkbox-indeterminate) .md-checkbox-box {
   background-color: var(--md-sys-color-on-surface);
   border-color: transparent;
+  opacity: var(--md-sys-state-disabled-state-layer-opacity);
+  transition: none;
 }
 
-.md-checkbox-input:disabled + .md-checkbox-box::after {
-  content: none;
-}
-
-.md-checkbox-input:disabled + .md-checkbox-box .md-checkbox-icon,
-.md-checkbox-indeterminate:has(.md-checkbox-input:disabled) .md-checkbox-box .md-checkbox-icon {
+.md-checkbox:has(.md-checkbox-input:disabled:checked):not(.md-checkbox-indeterminate) .md-checkbox-icon {
   opacity: var(--md-sys-state-disabled-state-layer-opacity);
   color: var(--md-sys-color-surface);
   transition: none;
+}
+
+/* 3. INDETERMINATE DISABLED: contenedor relleno al 38%, sin borde, guion visible */
+.md-checkbox.md-checkbox-indeterminate:has(.md-checkbox-input:disabled) .md-checkbox-box {
+  background-color: var(--md-sys-color-on-surface);
+  border-color: transparent;
+  opacity: var(--md-sys-state-disabled-state-layer-opacity);
+  transition: none;
+}
+
+.md-checkbox.md-checkbox-indeterminate:has(.md-checkbox-input:disabled) .md-checkbox-icon {
+  opacity: var(--md-sys-state-disabled-state-layer-opacity);
+  color: var(--md-sys-color-surface);
+  transition: none;
+}
+
+/* State layer apagado en todos los disabled */
+.md-checkbox:has(.md-checkbox-input:disabled) .md-checkbox-box::after {
+  content: none;
 }
 
 /* Ajuste fino: en indeterminate el icono es 'remove' (guion), no 'check'.
