@@ -117,6 +117,8 @@ export function initSelect() {
         }
         break;
     }
+  });
+
   /* REGLA 13: registrar explícitamente los selectores de datos para que el
      verificador los reconozca como atributos cableados por src/js/. */
   document.querySelector('[data-md-select]');
