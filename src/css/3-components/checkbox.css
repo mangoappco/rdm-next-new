@@ -41,13 +41,16 @@
    4. Disabled: todo al 38% (contenedor + borde + icono) en on-surface.
    ========================================================================== */
 
-/* Base: el label ES la caja de 18x18dp con esquina de 2dp */
+/* Base: el label ES el touch target de 48x48dp (M3 canonico).
+   La caja visual de 18dp queda centrada dentro. El halo de 40dp y el
+   anillo de foco viven dentro de los 48dp sin pisar vecinos. */
 .md-checkbox {
   position: relative;
   display: inline-flex;
   align-items: center;
-  width: var(--md-sys-measurement-checkbox-box-size);
-  height: var(--md-sys-measurement-checkbox-box-size);
+  justify-content: center;
+  width: var(--md-sys-measurement-checkbox-touch-target);
+  height: var(--md-sys-measurement-checkbox-touch-target);
   cursor: pointer;
   vertical-align: top;
   -webkit-tap-highlight-color: transparent;
@@ -59,8 +62,8 @@
   pointer-events: none;
 }
 
-/* EL INPUT NATIVO ES EL TOUCH TARGET: 48dp minimos centrados sobre la
-   caja (18x18), insets calculados: (18-48)/2 = -15dp */
+/* EL INPUT NATIVO ES EL TOUCH TARGET: 48dp (mismo tamaño que el host,
+   insets en 0) */
 .md-checkbox-input {
   position: absolute;
   appearance: none;
@@ -71,24 +74,18 @@
   cursor: inherit;
   width: var(--md-sys-measurement-checkbox-touch-target);
   height: var(--md-sys-measurement-checkbox-touch-target);
-  inset-block: calc(
-    (
-      var(--md-sys-measurement-checkbox-box-size) -
-        var(--md-sys-measurement-checkbox-touch-target)
-    ) / 2
-  );
-  inset-inline: calc(
-    (
-      var(--md-sys-measurement-checkbox-box-size) -
-        var(--md-sys-measurement-checkbox-touch-target)
-    ) / 2
-  );
+  inset: 0;
 }
 
-/* LA CAJA: llena el label, esquinas 2dp, borde 2dp en unselected */
+/* LA CAJA: 18x18dp centrada en el touch target de 48dp, esquinas 2dp,
+   borde 2dp en unselected. */
 .md-checkbox-box {
   position: absolute;
-  inset: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: var(--md-sys-measurement-checkbox-box-size);
+  height: var(--md-sys-measurement-checkbox-box-size);
   z-index: 0;
   display: flex;
   align-items: center;
