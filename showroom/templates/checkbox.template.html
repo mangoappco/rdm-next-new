@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Checkbox de RDM Next: casilla de verificacion M3 de 18x18dp con estados binario, indeterminado, interactivos y disabled — todo CSS puro sobre :checked/:indeterminate.">
+  <title>Checkbox — RDM ManGo! App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+  <link rel="stylesheet" href="../../src/css/main.css?v=8">
+  <link rel="stylesheet" href="../assets/showroom.css">
+  <script type="module" src="../../src/js/main.js"></script>
+  <script src="../assets/showroom.js"></script>
+</head>
+
+<!--
+  ESTA VISTA TIENE CUATRO PARES. El Bloque 1 --Especificacion tecnica y
+  anatomia-- cubre Basic checkbox, Indeterminate state, Interactive states y
+  Disabled states. No hay Bloque 2: las composiciones de ManGo! App (el
+  POS de caja, la comanda de cocina, la carta, el modal de cobro)
+  pertenecen a la futura Galeria de Usos.
+
+  LOS ACUERDOS DEL SHOWROOM
+  -------------------------
+  1. Jerarquia: h1 (componente) > h2 (bloque) > h3 (par). Los titulos de
+     bloque y par estan en ingles; las descripciones en espanol breve.
+  2. REGLA 11: el texto de cada pre.sr-code desescapado es identico al
+     innerHTML de su .sr-specimen (normalizando solo el espacio).
+  3. REGLA 6: sin atributos de estilo en linea ni bloques <style>.
+  4. REGLA 9: iconos siempre con .md-icon, nunca material-symbols-*.
+  5. REGLA 10: toda clase md-* del showroom existe en src/css/.
+  6. REGLA 13: cada snippet es autonomo (solo clases del sistema).
+  7. ARIA: el input lleva aria-label; caja e iconos van aria-hidden
+     a traves del box (el label nativo nombra al control).
+  8. CERO JavaScript de componente: el estado vive en :checked/:indeterminate
+     del input nativo. No hay data-* ni sentinels que registrar (REGLA 13
+     vacia por diseño).
+-->
+
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <main class="sr-page">
+
+    <!-- HEADER: inicio (barra + titulo + descripcion) -->
+    <header class="sr-header">
+      <div class="sr-bar">
+        <p class="md-type-body-medium"><a href="../index.html">RDM ManGo! App</a></p>
+        <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
+      </div>
+      <h1 class="md-type-display-large">Checkbox</h1>
+      <p class="md-type-body-large">Las casillas de verificación (Checkboxes) permiten a las personas seleccionar uno o más elementos de una lista, o alternar un estado binario o indeterminado. · <em>Cuatro pares</em></p>
+    </header>
+    <!-- HEADER: fin -->
+
+    <hr class="md-divider">
+
+    <!-- BLOQUE 1: Especificacion tecnica y anatomia -->
+    <h2 class="md-type-headline-medium">Especificacion tecnica y anatomia</h2>
+
+    <!-- PAR 1: Basic checkbox -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Basic checkbox</h3>
+      <p class="md-type-body-medium">Caja de 18x18dp con esquina de 2dp: desmarcada tiene borde de 2dp en outline y fondo transparente; marcada tiene relleno primary solido con glifo check en on-primary. Toda la conmutacion la expresa :checked del checkbox nativo, sin JavaScript.</p>
+
+      <div class="sr-specimen sr-specimen-gap">
+        <label class="md-checkbox">
+          <input type="checkbox" class="md-checkbox-input" aria-label="Opción desmarcada">
+          <span class="md-checkbox-box" aria-hidden="true">
+            <span class="md-icon md-checkbox-icon">check</span>
+          </span>
+        </label>
+
+        <label class="md-checkbox">
+          <input type="checkbox" class="md-checkbox-input" checked aria-label="Opción marcada">
+          <span class="md-checkbox-box" aria-hidden="true">
+            <span class="md-icon md-checkbox-icon">check</span>
+          </span>
+        </label>
+      </div>
+
+      <pre class="sr-code"><code>&lt;label class="md-checkbox"&gt;
+  &lt;input type="checkbox" class="md-checkbox-input" aria-label="Opción desmarcada"&gt;
+  &lt;span class="md-checkbox-box" aria-hidden="true"&gt;
+    &lt;span class="md-icon md-checkbox-icon"&gt;check&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="md-checkbox"&gt;
+  &lt;input type="checkbox" class="md-checkbox-input" checked aria-label="Opción marcada"&gt;
+  &lt;span class="md-checkbox-box" aria-hidden="true"&gt;
+    &lt;span class="md-icon md-checkbox-icon"&gt;check&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/label&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- PAR 2: Indeterminate state -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Indeterminate state</h3>
+      <p class="md-type-body-medium">Estado tri-state / mixto vital para selección masiva: la caja tiene relleno primary solido y el glifo es un guion horizontal (remove) en on-primary. En el molde se usa la clase .md-checkbox-indeterminate para auditar sin JS.</p>
+
+      <div class="sr-specimen sr-specimen-gap">
+        <label class="md-checkbox md-checkbox-indeterminate">
+          <input type="checkbox" class="md-checkbox-input" aria-label="Selección mixta (algunos elementos)">
+          <span class="md-checkbox-box" aria-hidden="true">
+            <span class="md-icon md-checkbox-icon">remove</span>
+          </span>
+        </label>
+
+        <label class="md-checkbox md-checkbox-indeterminate">
+          <input type="checkbox" class="md-checkbox-input" checked aria-label="Selección mixta, input checked">
+          <span class="md-checkbox-box" aria-hidden="true">
+            <span class="md-icon md-checkbox-icon">remove</span>
+          </span>
+        </label>
+      </div>
+
+      <pre class="sr-code"><code>&lt;label class="md-checkbox md-checkbox-indeterminate"&gt;
+  &lt;input type="checkbox" class="md-checkbox-input" aria-label="Selección mixta (algunos elementos)"&gt;
+  &lt;span class="md-checkbox-box" aria-hidden="true"&gt;
+    &lt;span class="md-icon md-checkbox-icon"&gt;remove&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="md-checkbox md-checkbox-indeterminate"&gt;
+  &lt;input type="checkbox" class="md-checkbox-input" checked aria-label="Selección mixta, input checked"&gt;
+  &lt;span class="md-checkbox-box" aria-hidden="true"&gt;
+    &lt;span class="md-icon md-checkbox-icon"&gt;remove&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/label&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- PAR 3: Interactive states -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Interactive states</h3>
+      <p class="md-type-body-medium">Respuesta al puntero y al teclado: capa de estado circular de 40dp al 8% en hover y 10% en foco y presion; anillo de foco de 3px con offset de 2px en secondary. La capa de estado usa on-surface en desmarcado y primary en marcado/indeterminado.</p>
+
+      <div class="sr-specimen sr-specimen-gap">
+        <label class="md-checkbox">
+          <input type="checkbox" class="md-checkbox-input" aria-label="Opción desmarcada interactiva">
+          <span class="md-checkbox-box" aria-hidden="true">
+            <span class="md-icon md-checkbox-icon">check</span>
+          </span>
+        </label>
+
+        <label class="md-checkbox">
+          <input type="checkbox" class="md-checkbox-input" checked aria-label="Opción marcada interactiva">
+          <span class="md-checkbox-box" aria-hidden="true">
+            <span class="md-icon md-checkbox-icon">check</span>
+          </span>
+        </label>
+      </div>
+
+      <pre class="sr-code"><code>&lt;label class="md-checkbox"&gt;
+  &lt;input type="checkbox" class="md-checkbox-input" aria-label="Opción desmarcada interactiva"&gt;
+  &lt;span class="md-checkbox-box" aria-hidden="true"&gt;
+    &lt;span class="md-icon md-checkbox-icon"&gt;check&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="md-checkbox"&gt;
+  &lt;input type="checkbox" class="md-checkbox-input" checked aria-label="Opción marcada interactiva"&gt;
+  &lt;span class="md-checkbox-box" aria-hidden="true"&gt;
+    &lt;span class="md-icon md-checkbox-icon"&gt;check&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/label&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- PAR 4: Disabled states -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Disabled states</h3>
+      <p class="md-type-body-medium">Estado inactivo con disabled nativo: todo (caja, borde, icono) se atenua al 38% en on-surface. Sin eventos ni transiciones. Tres variantes: desmarcada, marcada e indeterminada.</p>
+
+      <div class="sr-specimen sr-specimen-gap">
+        <label class="md-checkbox">
+          <input type="checkbox" class="md-checkbox-input" disabled aria-label="Opción deshabilitada">
+          <span class="md-checkbox-box" aria-hidden="true">
+            <span class="md-icon md-checkbox-icon">check</span>
+          </span>
+        </label>
+
+        <label class="md-checkbox">
+          <input type="checkbox" class="md-checkbox-input" checked disabled aria-label="Opción marcada deshabilitada">
+          <span class="md-checkbox-box" aria-hidden="true">
+            <span class="md-icon md-checkbox-icon">check</span>
+          </span>
+        </label>
+
+        <label class="md-checkbox md-checkbox-indeterminate">
+          <input type="checkbox" class="md-checkbox-input" disabled aria-label="Selección mixta deshabilitada">
+          <span class="md-checkbox-box" aria-hidden="true">
+            <span class="md-icon md-checkbox-icon">remove</span>
+          </span>
+        </label>
+      </div>
+
+      <pre class="sr-code"><code>&lt;label class="md-checkbox"&gt;
+  &lt;input type="checkbox" class="md-checkbox-input" disabled aria-label="Opción deshabilitada"&gt;
+  &lt;span class="md-checkbox-box" aria-hidden="true"&gt;
+    &lt;span class="md-icon md-checkbox-icon"&gt;check&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="md-checkbox"&gt;
+  &lt;input type="checkbox" class="md-checkbox-input" checked disabled aria-label="Opción marcada deshabilitada"&gt;
+  &lt;span class="md-checkbox-box" aria-hidden="true"&gt;
+    &lt;span class="md-icon md-checkbox-icon"&gt;check&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="md-checkbox md-checkbox-indeterminate"&gt;
+  &lt;input type="checkbox" class="md-checkbox-input" disabled aria-label="Selección mixta deshabilitada"&gt;
+  &lt;span class="md-checkbox-box" aria-hidden="true"&gt;
+    &lt;span class="md-icon md-checkbox-icon"&gt;remove&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/label&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+  </main>
+  <!-- MAIN: fin -->
+</body>
+</html>
