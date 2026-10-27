@@ -41,10 +41,21 @@
   flex-direction: column;
 }
 
-/* Items dentro del menu: heredan de list-item, ajustes minimos */
+/* Items: ancho completo, borde recto (M3 full-bleed), sin morph heredado */
 .md-menu .md-list-item {
+  width: 100%;
+  border-radius: 0;
+  margin: 0;
   min-height: var(--md-sys-measurement-touch-target); /* 48dp */
   padding-inline: var(--md-sys-measurement-space-200); /* 16dp */
+}
+
+/* Estado seleccionado: fondo plano de borde a borde, sin esquinas redondeadas */
+.md-menu .md-list-item.md-list-item-selected,
+.md-menu .md-list-item[aria-selected="true"] {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+  border-radius: 0;
 }
 
 /* Item seleccionado: checkmark trailing opcional */
