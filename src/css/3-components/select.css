@@ -99,37 +99,54 @@
   min-height: var(--md-sys-measurement-text-field-container-height);
 }
 
-/* Label flotante */
+/* Label flotante (calco de text-field.css) */
 .md-select-label {
   position: absolute;
   top: 50%;
   left: var(--md-sys-measurement-space-200);
   transform: translateY(-50%);
+  transform-origin: left center;
   color: var(--md-sys-color-on-surface-variant);
   pointer-events: none;
-  transition: all var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+  font: var(--md-sys-typescale-body-large);
+  transition:
+    transform var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
+    color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
+    top var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
 }
 
-/* Label flotante cuando hay valor o foco */
+/* Label flotante: a caballo del borde superior (notch) */
 .md-select:has(.md-select-input:not(:placeholder-shown)) .md-select-label,
 .md-select-open .md-select-label,
 .md-select:has(.md-select-input:focus) .md-select-label {
-  top: var(--md-sys-measurement-space-50);
-  transform: translateY(0);
-  font-size: var(--md-sys-typescale-body-small-size);
+  top: 0;
+  transform: translateY(-50%) scale(0.75);
   color: var(--md-sys-color-primary);
+  background-color: var(--md-sys-color-surface);
+  padding-inline: var(--md-sys-measurement-space-50);
+  z-index: 1;
 }
 
-/* Trailing icon (arrow) */
+/* Error: label en color error */
+.md-select-error .md-select-label {
+  color: var(--md-sys-color-error);
+}
+
+/* Trailing icon (arrow): 24dp, centrado, rotacion 180deg */
 .md-select-trailing-icon {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: var(--md-sys-measurement-icon-size);
+  height: var(--md-sys-measurement-icon-size);
   margin-inline-start: var(--md-sys-measurement-space-100);
+  margin-inline-end: var(--md-sys-measurement-space-200);
+  color: var(--md-sys-color-on-surface-variant);
   transition: transform var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
 }
 
-.md-select-open .md-select-trailing-icon {
+.md-select-open .md-select-trailing-icon,
+.md-select[aria-expanded="true"] .md-select-trailing-icon {
   transform: rotate(0.5turn);
 }
 
@@ -138,6 +155,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  width: var(--md-sys-measurement-icon-size);
+  height: var(--md-sys-measurement-icon-size);
   margin-inline-end: var(--md-sys-measurement-space-100);
   color: var(--md-sys-color-on-surface-variant);
 }
