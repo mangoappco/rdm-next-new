@@ -286,5 +286,37 @@
   content: none;
 }
 
-/* Ajuste fino: en indeterminate el icono es 'remove' (guion), no 'check'.
-   El contenido del icono lo pone el HTML (class md-checkbox-icon + texto). */
+/* ==========================================================================
+   CHECKBOX ERROR STATES (Canónico M3)
+   ==========================================================================
+   Mecanismo primario: clase `.md-checkbox-error`. El pseudo-clase `:invalid`
+   es un fallback que solo se activa si el input lleva `required` y permanece
+   desmarcado (HTML estándar). */
+
+/* 1. Unselected Error: borde en color error */
+.md-checkbox-error:has(.md-checkbox-input:not(:checked)):not(.md-checkbox-indeterminate) .md-checkbox-box,
+.md-checkbox:has(.md-checkbox-input:invalid:not(:checked)):not(.md-checkbox-indeterminate) .md-checkbox-box {
+  border-color: var(--md-sys-color-error);
+}
+
+/* 2. Selected & Indeterminate Error: fondo y borde en error, glifo en on-error */
+.md-checkbox-error:has(.md-checkbox-input:checked):not(.md-checkbox-indeterminate) .md-checkbox-box,
+.md-checkbox-error.md-checkbox-indeterminate .md-checkbox-box,
+.md-checkbox:has(.md-checkbox-input:invalid:checked):not(.md-checkbox-indeterminate) .md-checkbox-box,
+.md-checkbox.md-checkbox-indeterminate:has(.md-checkbox-input:invalid) .md-checkbox-box {
+  background-color: var(--md-sys-color-error);
+  border-color: var(--md-sys-color-error);
+}
+
+.md-checkbox-error:has(.md-checkbox-input:checked) .md-checkbox-icon,
+.md-checkbox-error.md-checkbox-indeterminate .md-checkbox-icon,
+.md-checkbox:has(.md-checkbox-input:invalid:checked) .md-checkbox-icon,
+.md-checkbox.md-checkbox-indeterminate:has(.md-checkbox-input:invalid) .md-checkbox-icon {
+  color: var(--md-sys-color-on-error);
+}
+
+/* 3. Halo (State Layer) en Error: tiñe en error */
+.md-checkbox-error:hover:not(:has(:disabled)) .md-checkbox-box::after,
+.md-checkbox:has(.md-checkbox-input:invalid):hover:not(:has(:disabled)) .md-checkbox-box::after {
+  background-color: var(--md-sys-color-error);
+}

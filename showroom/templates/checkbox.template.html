@@ -48,7 +48,7 @@
         <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
       </div>
       <h1 class="md-type-display-large">Checkbox</h1>
-      <p class="md-type-body-large">Las casillas de verificación (Checkboxes) permiten a las personas seleccionar uno o más elementos de una lista, o alternar un estado binario o indeterminado. · <em>Cuatro pares</em></p>
+      <p class="md-type-body-large">Las casillas de verificación (Checkboxes) permiten a las personas seleccionar uno o más elementos de una lista, o alternar un estado binario o indeterminado. · <em>Cinco pares</em></p>
     </header>
     <!-- HEADER: fin -->
 
@@ -212,6 +212,57 @@
 
 &lt;label class="md-checkbox md-checkbox-indeterminate"&gt;
   &lt;input type="checkbox" class="md-checkbox-input" aria-checked="mixed" disabled aria-label="Selección mixta deshabilitada"&gt;
+  &lt;span class="md-checkbox-box" aria-hidden="true"&gt;
+    &lt;span class="md-icon md-checkbox-icon"&gt;remove&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/label&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- PAR 5: Error states -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Error states</h3>
+      <p class="md-type-body-medium">Estado de validación fallida gobernado por la clase .md-checkbox-error o el pseudo-estado nativo :invalid. La variante desmarcada vira el contorno a error, mientras que las variantes marcada e indeterminada adoptan relleno sólido en error con glifos en on-error.</p>
+
+      <div class="sr-specimen sr-specimen-gap">
+        <label class="md-checkbox md-checkbox-error">
+          <input type="checkbox" class="md-checkbox-input" aria-invalid="true" aria-label="Opción obligatoria no seleccionada">
+          <span class="md-checkbox-box" aria-hidden="true">
+            <span class="md-icon md-checkbox-icon">check</span>
+          </span>
+        </label>
+
+        <label class="md-checkbox md-checkbox-error">
+          <input type="checkbox" class="md-checkbox-input" checked aria-invalid="true" aria-label="Selección incompatible">
+          <span class="md-checkbox-box" aria-hidden="true">
+            <span class="md-icon md-checkbox-icon">check</span>
+          </span>
+        </label>
+
+        <label class="md-checkbox md-checkbox-error md-checkbox-indeterminate">
+          <input type="checkbox" class="md-checkbox-input" aria-checked="mixed" aria-invalid="true" aria-label="Selección mixta fuera de rango">
+          <span class="md-checkbox-box" aria-hidden="true">
+            <span class="md-icon md-checkbox-icon">remove</span>
+          </span>
+        </label>
+      </div>
+
+      <pre class="sr-code"><code>&lt;label class="md-checkbox md-checkbox-error"&gt;
+  &lt;input type="checkbox" class="md-checkbox-input" aria-invalid="true" aria-label="Opción obligatoria no seleccionada"&gt;
+  &lt;span class="md-checkbox-box" aria-hidden="true"&gt;
+    &lt;span class="md-icon md-checkbox-icon"&gt;check&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="md-checkbox md-checkbox-error"&gt;
+  &lt;input type="checkbox" class="md-checkbox-input" checked aria-invalid="true" aria-label="Selección incompatible"&gt;
+  &lt;span class="md-checkbox-box" aria-hidden="true"&gt;
+    &lt;span class="md-icon md-checkbox-icon"&gt;check&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="md-checkbox md-checkbox-error md-checkbox-indeterminate"&gt;
+  &lt;input type="checkbox" class="md-checkbox-input" aria-checked="mixed" aria-invalid="true" aria-label="Selección mixta fuera de rango"&gt;
   &lt;span class="md-checkbox-box" aria-hidden="true"&gt;
     &lt;span class="md-icon md-checkbox-icon"&gt;remove&lt;/span&gt;
   &lt;/span&gt;

@@ -304,7 +304,7 @@ El viaje de la manija (20dp) NO es un token: es `track-width − track-height` (
 
 ## Checkbox - publicada
 
-Cuatro pares, cerrados el 2026-10-26: **Basic checkbox** (18×18dp, esquina 2dp, borde outline 2dp desmarcada vs relleno primary con check en on-primary), **Indeterminate state** (glifo remove para selección mixta), **Interactive states** y **Disabled states** (38% unificado en todo: caja, borde e icono). Cero JavaScript de componente: el estado vive en `:checked` del checkbox NATIVO; la variante indeterminada usa la clase `.md-checkbox-indeterminate` (CSS-only en el showroom) — en producción se setea el IDL attribute `input.indeterminate = true`, que activa el pseudo-clase `:indeterminate` nativo. REGLA 13 vacía por diseño. La vista es el TERCER par byte-idéntico con su moldería —como abajo se anota—.
+Cinco pares, cerrados el 2026-10-26: **Basic checkbox** (18×18dp, esquina 2dp, borde outline 2dp desmarcada vs relleno primary con check en on-primary), **Indeterminate state** (glifo remove para selección mixta), **Interactive states**, **Disabled states** (38% unificado en todo: caja, borde e icono) y **Error states** (borde error en unselected, relleno error con glifos on-error en checked/indeterminate, halo error al 8%). Cero JavaScript de componente: el estado vive en `:checked` del checkbox NATIVO; la variante indeterminada usa la clase `.md-checkbox-indeterminate` (CSS-only en el showroom) — en producción se setea el IDL attribute `input.indeterminate = true`, que activa el pseudo-clase `:indeterminate` nativo. El error se gobierna por la clase `.md-checkbox-error` (con `:invalid` como fallback). REGLA 13 vacía por diseño. La vista es el CUARTO par byte-idéntico con su moldería —como abajo se anota—.
 
 ### Tokens acuñados en Capa 1
 
@@ -339,7 +339,7 @@ En el marcado, el corte es un `<hr class="md-divider">` —el mismo mecanismo co
 
 ## Siguiente tarea
 
-**Checkbox completado (4 pares), y Switch sigue cerrado en los suyos (4 pares) + Search (5 pares).** En los tres mandó lo mismo: el componente termina en sus pares de especificación y nada de composiciones de negocio en la vista — el Par 6 de M3 que Search no tomó (Top bar con avatar) y las pantallas reales (POS, KDS, carta, modal de cobro) van a la **Galería de Usos**, que se abrirá cuando el catálogo acabe de cerrarse. Verificador en verde (EXIT_CODE=0 con las excepciones de siempre).
+**Checkbox completado (5 pares), y Switch sigue cerrado en los suyos (4 pares) + Search (5 pares).** En los tres mandó lo mismo: el componente termina en sus pares de especificación y nada de composiciones de negocio en la vista — el Par 6 de M3 que Search no tomó (Top bar con avatar) y las pantallas reales (POS, KDS, carta, modal de cobro) van a la **Galería de Usos**, que se abrirá cuando el catálogo acabe de cerrarse. Verificador en verde (EXIT_CODE=0 con las excepciones de siempre).
 
 Lo que queda por delante no es un componente nuevo sino la **deuda conocida** de más abajo, que es lo que de verdad está pendiente:
 
