@@ -167,11 +167,13 @@
 }
 
 /* ICONOS: 18dp, siempre en DOM, swap por opacity.
-   check para :checked, remove para :indeterminate. */
+   check para :checked, remove para :indeterminate.
+   Centrado absoluto para evitar desplazamiento por baseline tipografico. */
 .md-checkbox-icon {
   position: absolute;
-  inset: 0;
-  margin: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -179,6 +181,8 @@
   --md-sys-measurement-icon-size: var(--md-sys-measurement-checkbox-icon-size);
   width: var(--md-sys-measurement-checkbox-icon-size);
   height: var(--md-sys-measurement-checkbox-icon-size);
+  font-size: var(--md-sys-measurement-checkbox-icon-size);
+  line-height: 1;
   opacity: 0;
   pointer-events: none;
   transition:
