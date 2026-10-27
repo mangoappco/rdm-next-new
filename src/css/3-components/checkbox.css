@@ -1,0 +1,230 @@
+/* ==========================================================================
+   src/css/3-components/checkbox.css — CHECKBOX (M3 Selección)
+   ==========================================================================
+
+   QUE HACE
+   --------
+   La casilla de verificación permite seleccionar uno o más elementos de una
+   lista, o alternar un estado binario/indeterminado. Se construye sobre un
+   checkbox NATIVO: el estado vive en :checked / :indeterminate y toda la
+   conmutación es CSS. Sin JavaScript de componente (REGLA 13 vacía por
+   diseño).
+
+   LA ANATOMIA
+   -----------
+     <label class="md-checkbox">
+       <input type="checkbox" class="md-checkbox-input">
+       <span class="md-checkbox-box" aria-hidden="true">
+         <span class="md-icon md-checkbox-icon"></span>
+       </span>
+     </label>
+
+   El input es invisible (appearance: none) y a la vez ES el touch target
+   de 48dp centrado. El label da el nombre accesible.
+   La caja (box) dibuja el contorno/relleno; el icono vive dentro y se
+   muestra/oculta con opacity segun :checked / :indeterminate.
+
+   FUENTES
+   -------
+   - m3.material.io/components/checkbox/overview, /specs, /guidelines
+   - tokens/versions/v0_192/_md-comp-checkbox.scss
+   - checkbox/internal/_box.scss, _icon.scss + CSS compilado
+
+   ESTADOS M3
+   ----------
+   1. Unselected: caja transparente, borde 2dp outline/on-surface-variant,
+      icono invisible.
+   2. Selected (:checked): caja rellena primary, sin borde, icono check
+      en on-primary.
+   3. Indeterminate (.md-checkbox-indeterminate): caja rellena primary,
+      sin borde, icono remove (guion) en on-primary.
+   4. Disabled: todo al 38% (contenedor + borde + icono) en on-surface.
+   ========================================================================== */
+
+/* Base: el label ES la caja de 18x18dp con esquina de 2dp */
+.md-checkbox {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: var(--md-sys-measurement-checkbox-box-size);
+  height: var(--md-sys-measurement-checkbox-box-size);
+  cursor: pointer;
+  vertical-align: top;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* DESHABILITADO: sin eventos de puntero */
+.md-checkbox:has(.md-checkbox-input:disabled) {
+  cursor: default;
+  pointer-events: none;
+}
+
+/* EL INPUT NATIVO ES EL TOUCH TARGET: 48dp minimos centrados sobre la
+   caja (18x18), insets calculados: (18-48)/2 = -15dp */
+.md-checkbox-input {
+  position: absolute;
+  appearance: none;
+  background: none;
+  margin: 0;
+  outline: none;
+  z-index: 1;
+  cursor: inherit;
+  width: var(--md-sys-measurement-checkbox-touch-target);
+  height: var(--md-sys-measurement-checkbox-touch-target);
+  inset-block: calc(
+    (
+      var(--md-sys-measurement-checkbox-box-size) -
+        var(--md-sys-measurement-checkbox-touch-target)
+    ) / 2
+  );
+  inset-inline: calc(
+    (
+      var(--md-sys-measurement-checkbox-box-size) -
+        var(--md-sys-measurement-checkbox-touch-target)
+    ) / 2
+  );
+}
+
+/* LA CAJA: llena el label, esquinas 2dp, borde 2dp en unselected */
+.md-checkbox-box {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  border-radius: var(--md-sys-shape-corner-checkbox);
+  border: var(--md-sys-measurement-checkbox-border-width) solid var(--md-sys-color-outline);
+  background-color: transparent;
+  transition:
+    background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
+    border-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
+    opacity var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-linear);
+}
+
+/* SELECTED (:checked): fondo primary solido, sin borde */
+.md-checkbox-input:checked + .md-checkbox-box {
+  background-color: var(--md-sys-color-primary);
+  border-color: transparent;
+}
+
+/* INDETERMINATE: mismo aspecto visual que selected (fondo primary,
+   sin borde), el icono cambia via clase en el label */
+.md-checkbox-indeterminate .md-checkbox-box {
+  background-color: var(--md-sys-color-primary);
+  border-color: transparent;
+}
+
+/* CAPA DE ESTADO: circulo de 40dp centrado en la caja (se asoma
+   11dp por cada lado). Color: on-surface en unselected, primary en
+   selected/indeterminate. */
+.md-checkbox-box::after {
+  content: "";
+  position: absolute;
+  inset-block: calc(
+    (
+      var(--md-sys-measurement-checkbox-box-size) -
+        var(--md-sys-measurement-checkbox-state-layer-size)
+    ) / 2
+  );
+  inset-inline: calc(
+    (
+      var(--md-sys-measurement-checkbox-box-size) -
+        var(--md-sys-measurement-checkbox-state-layer-size)
+    ) / 2
+  );
+  border-radius: var(--md-sys-shape-corner-full);
+  background-color: var(--md-sys-color-on-surface);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--md-sys-motion-duration-short4)
+    var(--md-sys-motion-easing-standard);
+}
+
+.md-checkbox-input:checked + .md-checkbox-box::after,
+.md-checkbox-indeterminate .md-checkbox-box::after {
+  background-color: var(--md-sys-color-primary);
+}
+
+/* Hover 8%, foco 10%, presion 10% */
+.md-checkbox:hover .md-checkbox-box::after {
+  opacity: var(--md-sys-state-hover-state-layer-opacity);
+}
+
+.md-checkbox-input:focus-visible + .md-checkbox-box::after {
+  opacity: var(--md-sys-state-focus-state-layer-opacity);
+}
+
+.md-checkbox-input:active + .md-checkbox-box::after {
+  opacity: var(--md-sys-state-pressed-state-layer-opacity);
+}
+
+/* ANILLO DE FOCO: 3px/2px en secondary (coherente con Switch/Button/Card) */
+.md-checkbox-input:focus-visible + .md-checkbox-box {
+  outline: var(--md-sys-shape-stroke-extra-thick) solid var(--md-sys-color-secondary);
+  outline-offset: var(--md-sys-shape-stroke-thick);
+}
+
+/* ICONOS: 18dp, siempre en DOM, swap por opacity.
+   check para :checked, remove para :indeterminate. */
+.md-checkbox-icon {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  --md-sys-measurement-icon-size: var(--md-sys-measurement-checkbox-icon-size);
+  width: var(--md-sys-measurement-checkbox-icon-size);
+  height: var(--md-sys-measurement-checkbox-icon-size);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
+    color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+}
+
+/* Unselected: icono invisible (opacity 0 ya en base) */
+
+/* Selected: check en on-primary */
+.md-checkbox-input:checked + .md-checkbox-box .md-checkbox-icon {
+  opacity: 1;
+  color: var(--md-sys-color-on-primary);
+}
+
+/* Indeterminate: remove en on-primary */
+.md-checkbox-indeterminate .md-checkbox-box .md-checkbox-icon {
+  opacity: 1;
+  color: var(--md-sys-color-on-primary);
+}
+
+/* DESHABILITADO (M3 canonico): 38% unificado en TODO (caja + borde + icono).
+   Sin state layer, sin transiciones. */
+.md-checkbox-input:disabled + .md-checkbox-box {
+  opacity: var(--md-sys-state-disabled-state-layer-opacity); /* 38% */
+  background-color: var(--md-sys-color-on-surface);
+  border-color: var(--md-sys-color-on-surface);
+  transition: none;
+}
+
+.md-checkbox-input:disabled:checked + .md-checkbox-box,
+.md-checkbox-indeterminate:has(.md-checkbox-input:disabled) .md-checkbox-box {
+  background-color: var(--md-sys-color-on-surface);
+  border-color: transparent;
+}
+
+.md-checkbox-input:disabled + .md-checkbox-box::after {
+  content: none;
+}
+
+.md-checkbox-input:disabled + .md-checkbox-box .md-checkbox-icon,
+.md-checkbox-indeterminate:has(.md-checkbox-input:disabled) .md-checkbox-box .md-checkbox-icon {
+  opacity: var(--md-sys-state-disabled-state-layer-opacity);
+  color: var(--md-sys-color-surface);
+  transition: none;
+}
+
+/* Ajuste fino: en indeterminate el icono es 'remove' (guion), no 'check'.
+   El contenido del icono lo pone el HTML (class md-checkbox-icon + texto). */
