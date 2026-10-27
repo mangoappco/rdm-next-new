@@ -11,6 +11,25 @@
    Se construye sobre un input readonly + hidden input. El estado se gestiona
    con .md-select-open y aria-expanded, con JS mínimo (src/js/select.js).
 
+   CERTIFICACIÓN DE CALCO
+   ----------------------
+   Este archivo es un calco de text-field.css: label flotante con notch
+   (top 0, translateY(-50%) scale(0.75), fondo que abre el corte), outline
+   como ÚNICO portador del borde, variante filled con active indicator en
+   barrita y esquinas asimétricas, disabled fino por partes (sin opacidad
+   de bloque), hover/focus/error con :has() y reduced-motion. Las ÚNICAS
+   diferencias autorizadas frente al calco son:
+   1. Input display-only: pointer-events none (el clic se captura en el
+      ancla; el texto no roba el foco) y host con cursor pointer (spec M3).
+   2. La flecha trailing rota 0.5turn cuando el menú abre.
+   3. El disparador del flotado suma .md-select-open / [aria-expanded].
+   4. Sin supporting text ni counter (el menú de opciones los sustituye).
+   5. El host es inline-flex para el layout de pares del showroom y con
+      max-width del menú (--md-sys-measurement-menu-max-width).
+   6. El ancla NUNCA hereda el estado readonly de Par 10 de text-field:
+      el input es readonly por diseño pero es un control interactivo que
+      sí muestra hover/focus/open.
+
    FUENTES
    -------
    - m3.material.io/components/menus/specs
@@ -18,36 +37,58 @@
    - material-web select
    ========================================================================== */
 
-/* Base: contenedor relativo de 56dp min-height */
+/* --------------------------------------------------------------------------
+   VARIABLES Y HOST (calco de .md-text-field-outlined)
+   ------------------------------------------------------------------------ */
+
 .md-select {
+  --_height: var(--md-sys-measurement-text-field-container-height); /* 56dp */
+  --_corner: var(--md-sys-shape-corner-extra-small); /* 4dp */
+  --_stroke-rest: var(--md-sys-shape-stroke-thin); /* 1px */
+  --_stroke-focus: var(--md-sys-shape-stroke-thick); /* 2px */
+  --_color-outline: var(--md-sys-color-outline);
+  --_color-primary: var(--md-sys-color-primary);
+  --_color-error: var(--md-sys-color-error);
+  --_color-on-surface: var(--md-sys-color-on-surface);
+  --_color-on-surface-variant: var(--md-sys-color-on-surface-variant);
+  --_select-bg: var(--md-text-field-surface, var(--md-sys-color-surface)); /* superficie que abre el notch (mismo hook que text-field) */
+
   position: relative;
   display: inline-flex;
   flex-direction: column;
-  min-height: var(--md-sys-measurement-text-field-container-height); /* 56dp */
   width: 100%;
   max-width: var(--md-sys-measurement-menu-max-width);
   cursor: pointer;
+  box-sizing: border-box;
 }
 
-/* Contenedor del ancla (text field anatomy) */
+/* Filled no lleva borde superior: el parche del label es transparente */
+.md-select-filled {
+  --_select-bg: transparent;
+}
+
+/* --------------------------------------------------------------------------
+   CONTAINER, OUTLINE E INPUT (calco de text-field.css)
+   ------------------------------------------------------------------------ */
+
+/* Container: layout puro, SIN borde, SIN fondo, SIN radius */
 .md-select-container {
   position: relative;
   display: flex;
   align-items: center;
-  min-height: var(--md-sys-measurement-text-field-container-height);
-  border-radius: var(--md-sys-shape-corner-extra-small);
-  background-color: var(--md-sys-color-surface-container-highest);
+  width: 100%;
+  height: var(--_height);
   padding-inline: var(--md-sys-measurement-space-200); /* 16dp */
+  background-color: transparent;
   box-sizing: border-box;
-  overflow: hidden;
 }
 
-/* Outline (outlined variant border) - UNICO portador del borde */
+/* Outline span: ÚNICO portador del borde */
 .md-select-outline {
   position: absolute;
   inset: 0;
-  border-radius: var(--md-sys-shape-corner-extra-small);
-  border: var(--md-sys-shape-stroke-thin) solid var(--md-sys-color-outline);
+  border-radius: var(--_corner);
+  border: var(--_stroke-rest) solid var(--_color-outline);
   pointer-events: none;
   box-sizing: border-box;
   transition:
@@ -55,137 +96,341 @@
     border-width var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
 }
 
-.md-select-outlined.md-select-open .md-select-outline,
-.md-select-outlined:has(.md-select-input:focus) .md-select-outline {
-  border-color: var(--md-sys-color-primary);
-  border-width: var(--md-sys-shape-stroke-thick);
-}
-
-/* Filled variant */
-.md-select-filled .md-select-container {
-  background-color: var(--md-sys-color-surface-container-highest);
-  border-bottom: var(--md-sys-shape-stroke-thin) solid var(--md-sys-color-on-surface-variant);
-}
-
-/* Disabled */
-.md-select:has(.md-select-input:disabled) {
-  cursor: not-allowed;
-  pointer-events: none;
-  opacity: var(--md-sys-state-disabled-state-layer-opacity);
-}
-
-/* Error */
-.md-select-error .md-select-outline {
-  border-color: var(--md-sys-color-error);
-}
-
-.md-select-error .md-select-label {
-  color: var(--md-sys-color-error);
-}
-
-.md-select-error .md-select-trailing-icon {
-  color: var(--md-sys-color-error);
-}
+/* Input display-only: sin estilos de navegador (calco + pointer-events none) */
 .md-select-input {
-  flex: 1;
+  width: 100%;
+  height: 100%;
   border: none;
-  background: none;
   outline: none;
-  font: inherit;
-  color: var(--md-sys-color-on-surface);
+  background: transparent;
+  color: var(--_color-on-surface);
+  font: var(--md-sys-typescale-body-large);
   padding: 0;
+  margin: 0;
   cursor: pointer;
   pointer-events: none;
-  min-height: var(--md-sys-measurement-text-field-container-height);
 }
 
-/* Label flotante (calco de text-field.css) */
+/* Placeholder invisible para el control de :placeholder-shown (calco) */
+.md-select-input::placeholder {
+  color: transparent;
+}
+
+/* --------------------------------------------------------------------------
+   LABEL — REPOSO Y FLOTACIÓN CON NOTCH (calco de text-field.css)
+   ------------------------------------------------------------------------ */
+
+/* Label en reposo: centrado vertical (body-large) */
 .md-select-label {
   position: absolute;
-  top: 50%;
   left: var(--md-sys-measurement-space-200);
+  top: 50%;
   transform: translateY(-50%);
-  transform-origin: left center;
-  color: var(--md-sys-color-on-surface-variant);
-  pointer-events: none;
+  color: var(--_color-on-surface-variant);
   font: var(--md-sys-typescale-body-large);
+  pointer-events: none;
+  transform-origin: left top;
   transition:
     transform var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
     color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
-    top var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+    font-size var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
 }
 
-/* Label flotante: a caballo del borde superior (notch) */
+/* FLOTACIÓN + NOTCH: a caballo del borde superior (calco del flotado de
+   text-field, más .md-select-open / [aria-expanded] como disparadores
+   propios del select). El fondo --_select-bg abre el corte en el outline. */
+.md-select:has(.md-select-input:focus) .md-select-label,
 .md-select:has(.md-select-input:not(:placeholder-shown)) .md-select-label,
-.md-select-open .md-select-label,
-.md-select:has(.md-select-input:focus) .md-select-label {
+.md-select.md-select-open .md-select-label,
+.md-select[aria-expanded="true"] .md-select-label {
   top: 0;
   transform: translateY(-50%) scale(0.75);
-  color: var(--md-sys-color-primary);
-  background-color: var(--md-sys-color-surface);
-  padding-inline: var(--md-sys-measurement-space-50);
+  transform-origin: left center; /* Simetría vertical: ecuador del texto sobre el borde */
+  color: var(--_color-primary);
+  background-color: var(--_select-bg); /* Notch contextual */
+  line-height: 1;
+  padding-block: 0;
+  padding-inline: var(--md-sys-measurement-space-50); /* 4dp */
   z-index: 1;
 }
 
-/* Error: label en color error */
-.md-select-error .md-select-label {
-  color: var(--md-sys-color-error);
+/* --------------------------------------------------------------------------
+   HOVER / FOCUS / OPEN — OUTLINED (calco de text-field.css)
+   ------------------------------------------------------------------------ */
+
+/* Hover: outline 1px → 2px, color outline (excluye open, focus y disabled) */
+.md-select-outlined:hover:not(.md-select-open):not(:has(.md-select-input:focus)):not(:has(.md-select-input:disabled)) .md-select-outline {
+  border-width: var(--_stroke-focus);
+  border-color: var(--_color-outline);
 }
 
-/* Trailing icon (arrow): 24dp, centrado, rotacion 180deg */
-.md-select-trailing-icon {
-  display: flex;
+/* Focus: outline 2px primary (excluye disabled) */
+.md-select-outlined:has(.md-select-input:focus):not(:has(.md-select-input:disabled)) .md-select-outline {
+  border-width: var(--_stroke-focus);
+  border-color: var(--_color-primary);
+}
+
+/* Open: outline 2px primary (evento propio del select) */
+.md-select-outlined.md-select-open .md-select-outline {
+  border-width: var(--_stroke-focus);
+  border-color: var(--_color-primary);
+}
+
+/* --------------------------------------------------------------------------
+   VARIANTES FILLED (calco de text-field.css Par 4)
+   ------------------------------------------------------------------------ */
+
+/* Container: fondo surface-container-highest, esquinas asimétricas 4dp arriba / 0dp abajo */
+.md-select-filled .md-select-container {
+  background-color: var(--md-sys-color-surface-container-highest);
+  border-start-start-radius: var(--_corner);
+  border-start-end-radius: var(--_corner);
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
+}
+
+/* Active indicator: reutiliza .md-select-outline como línea inferior */
+.md-select-filled .md-select-outline {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  top: auto;
+  height: var(--_stroke-rest); /* 1px reposo */
+  border: none;
+  border-radius: 0;
+  background-color: var(--_color-outline);
+  pointer-events: none;
+  transition:
+    background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
+    height var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+}
+
+/* Input: padding vertical canónico de Filled (24dp arriba / 8dp abajo) */
+.md-select-filled .md-select-input {
+  padding-block-start: var(--md-sys-measurement-space-300); /* 24dp */
+  padding-block-end: var(--md-sys-measurement-space-100); /* 8dp */
+  box-sizing: border-box;
+}
+
+/* Label flotante filled: misma lógica, sin notch (interior a 8dp) */
+.md-select-filled.md-select-open .md-select-label,
+.md-select-filled[aria-expanded="true"] .md-select-label,
+.md-select-filled:has(.md-select-input:focus) .md-select-label,
+.md-select-filled:has(.md-select-input:not(:placeholder-shown)) .md-select-label {
+  top: var(--md-sys-measurement-space-100); /* 8dp interior */
+  transform: scale(0.75);
+  transform-origin: top left;
+  color: var(--_color-primary);
+  background-color: transparent; /* Sin parche de notch */
+  padding-inline: 0;
+  border-radius: 0;
+}
+
+/* Filled hover: overlay 8% en container, indicator 2px primary (calco) */
+.md-select-filled:hover:not(.md-select-open):not(:has(.md-select-input:focus)) .md-select-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-color: var(--md-sys-color-on-surface);
+  opacity: var(--md-sys-state-hover-state-layer-opacity);
+  pointer-events: none;
+}
+.md-select-filled:hover:not(.md-select-open):not(:has(.md-select-input:focus)):not(:has(.md-select-input:disabled)) .md-select-outline {
+  height: var(--_stroke-focus); /* 2px */
+  background-color: var(--_color-primary);
+}
+
+/* Filled focus / open: indicator 2px primary (calco + open propio del select) */
+.md-select-filled:has(.md-select-input:focus):not(:has(.md-select-input:disabled)) .md-select-outline {
+  height: var(--_stroke-focus);
+  background-color: var(--_color-primary);
+}
+.md-select-filled.md-select-open .md-select-outline {
+  height: var(--_stroke-focus);
+  background-color: var(--_color-primary);
+}
+
+/* --------------------------------------------------------------------------
+   ICON SLOTS — LEADING + TRAILING (calco de text-field.css Par 2)
+   ------------------------------------------------------------------------ */
+
+/* Contenedor con iconos: padding perimetral 12dp (space-150) */
+.md-select:has(.md-select-leading-icon) .md-select-container {
+  padding-inline-start: var(--md-sys-measurement-space-150);
+}
+.md-select:has(.md-select-trailing-icon) .md-select-container {
+  padding-inline-end: var(--md-sys-measurement-space-150);
+}
+
+/* Leading icon: solo margin hacia el input (16dp), sin margen exterior */
+.md-select-leading-icon {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   width: var(--md-sys-measurement-icon-size);
   height: var(--md-sys-measurement-icon-size);
-  margin-inline-start: var(--md-sys-measurement-space-100);
+  flex-shrink: 0;
+  color: var(--_color-on-surface-variant);
   margin-inline-end: var(--md-sys-measurement-space-200);
-  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* Trailing icon (flecha): solo margin hacia el input (16dp), sin margen
+   exterior + transición de ROTACIÓN propia del select */
+.md-select-trailing-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--md-sys-measurement-icon-size);
+  height: var(--md-sys-measurement-icon-size);
+  flex-shrink: 0;
+  color: var(--_color-on-surface-variant);
+  margin-inline-start: var(--md-sys-measurement-space-200);
   transition: transform var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
 }
 
-.md-select-open .md-select-trailing-icon,
+.md-select-leading-icon .md-icon,
+.md-select-trailing-icon .md-icon {
+  font-size: var(--md-sys-measurement-icon-size);
+  width: var(--md-sys-measurement-icon-size);
+  height: var(--md-sys-measurement-icon-size);
+  line-height: 1;
+}
+
+/* Rotación 0.5turn al abrir (única añadidura funcional sobre text-field) */
+.md-select.md-select-open .md-select-trailing-icon,
 .md-select[aria-expanded="true"] .md-select-trailing-icon {
   transform: rotate(0.5turn);
 }
 
-/* Leading icon */
-.md-select-leading-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: var(--md-sys-measurement-icon-size);
-  height: var(--md-sys-measurement-icon-size);
-  margin-inline-end: var(--md-sys-measurement-space-100);
-  color: var(--md-sys-color-on-surface-variant);
+/* Label se reposiciona con leading icon: 12dp pad + 24dp icon + 16dp gap = 52dp */
+.md-select:has(.md-select-leading-icon) .md-select-label {
+  left: calc(var(--md-sys-measurement-space-150) + var(--md-sys-measurement-icon-size) + var(--md-sys-measurement-space-200));
 }
 
-/* Menu dropdown (posicionado debajo del ancla) */
+/* Icon color states (calco) */
+.md-select:has(.md-select-input:focus) .md-select-leading-icon,
+.md-select:has(.md-select-input:focus) .md-select-trailing-icon {
+  color: var(--_color-primary);
+}
+
+/* --------------------------------------------------------------------------
+   ERROR (calco de text-field.css Par 3, con prioridad sobre el flotado)
+   ------------------------------------------------------------------------ */
+
+/* Error: outline 2px error */
+.md-select.md-select-error .md-select-outline {
+  border-width: var(--_stroke-focus);
+  border-color: var(--_color-error);
+}
+
+/* Filled error: indicador 2px error */
+.md-select-filled.md-select-error .md-select-outline {
+  height: var(--_stroke-focus);
+  background-color: var(--_color-error);
+}
+
+/* Error en foco/abierto: sigue en error, NO vira a primary (calco) */
+.md-select.md-select-error:has(.md-select-input:focus) .md-select-outline,
+.md-select.md-select-error.md-select-open .md-select-outline {
+  border-width: var(--_stroke-focus);
+  border-color: var(--_color-error);
+}
+.md-select-filled.md-select-error:has(.md-select-input:focus) .md-select-outline,
+.md-select-filled.md-select-error.md-select-open .md-select-outline {
+  height: var(--_stroke-focus);
+  background-color: var(--_color-error);
+}
+
+/* Iconos en error: color error (calco) */
+.md-select.md-select-error .md-select-leading-icon,
+.md-select.md-select-error .md-select-trailing-icon {
+  color: var(--md-sys-color-error);
+}
+
+/* Prioridad absoluta del Error State sobre el label flotado (calco de
+   text-field: la cascada gana por orden con la misma especificidad) */
+.md-select.md-select-error .md-select-label,
+.md-select.md-select-error:has(.md-select-input:focus) .md-select-label,
+.md-select.md-select-error:has(.md-select-input:not(:placeholder-shown)) .md-select-label,
+.md-select.md-select-error.md-select-open .md-select-label,
+.md-select.md-select-error[aria-expanded="true"] .md-select-label,
+.md-select-filled.md-select-error:has(.md-select-input:focus) .md-select-label,
+.md-select-filled.md-select-error:has(.md-select-input:not(:placeholder-shown)) .md-select-label {
+  color: var(--md-sys-color-error);
+}
+
+/* --------------------------------------------------------------------------
+   DISABLED — FINO POR PARTES (calco de text-field.css Par 5)
+   ------------------------------------------------------------------------ */
+
+/* Bloqueo de puntero e input */
+.md-select:has(.md-select-input:disabled) {
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.md-select-input:disabled {
+  cursor: not-allowed;
+}
+
+/* Opacidad del contenido 38% (state layer opacity): NUNCA en bloque */
+.md-select:has(.md-select-input:disabled) .md-select-input,
+.md-select:has(.md-select-input:disabled) .md-select-leading-icon,
+.md-select:has(.md-select-input:disabled) .md-select-trailing-icon {
+  opacity: var(--md-sys-state-disabled-state-layer-opacity); /* 0.38 */
+}
+
+/* Label disabled: color atenuado (NO opacity, para preservar notch sólido) */
+.md-select:has(.md-select-input:disabled) .md-select-label {
+  color: rgb(from var(--md-sys-color-on-surface) r g b / var(--md-sys-state-disabled-state-layer-opacity));
+  opacity: 1;
+  background-color: var(--_select-bg); /* Notch sólido preservado */
+  border-radius: 0; /* Sin pastilla ovalada */
+}
+
+/* Filled: label sin parche (el notch no existe en Filled) */
+.md-select-filled:has(.md-select-input:disabled) .md-select-label {
+  background-color: transparent;
+}
+
+/* Outlined disabled: borde atenuado al 12% (opacity sobre el outline +
+   border-color on-surface para no ser pisado por hover/focus) */
+.md-select-outlined:has(.md-select-input:disabled) .md-select-outline {
+  border-color: var(--md-sys-color-on-surface);
+  border-width: var(--_stroke-rest);
+  opacity: var(--md-sys-state-disabled-outline-opacity);
+}
+
+/* Filled disabled: fondo container al 10% (CSS Relative Colors) */
+.md-select-filled:has(.md-select-input:disabled) .md-select-container {
+  background-color: rgb(from var(--md-sys-color-surface-container) r g b / var(--md-sys-state-disabled-container-opacity));
+  opacity: 1;
+}
+
+/* Filled disabled: active indicator visible al 38% */
+.md-select-filled:has(.md-select-input:disabled) .md-select-outline {
+  background-color: var(--_color-outline);
+  opacity: var(--md-sys-state-disabled-state-layer-opacity); /* 0.38 */
+}
+
+/* --------------------------------------------------------------------------
+   MENÚ DEL SELECT (posición bajo el ancla; la superficie vive en menu.css)
+   ------------------------------------------------------------------------ */
+
 .md-select .md-menu {
   position: absolute;
   top: 100%;
   left: 0;
   right: 0;
-  margin-top: var(--md-sys-measurement-space-50);
+  margin-top: var(--md-sys-measurement-space-50); /* 4dp separación M3 */
 }
 
-/* Disabled */
-.md-select:has(.md-select-input:disabled) {
-  cursor: not-allowed;
-  pointer-events: none;
-  opacity: var(--md-sys-state-disabled-state-layer-opacity);
-}
-
-/* Error */
-.md-select-error .md-select-outline {
-  border-color: var(--md-sys-color-error);
-}
-
-.md-select-error .md-select-label {
-  color: var(--md-sys-color-error);
-}
-
-.md-select-error .md-select-trailing-icon {
-  color: var(--md-sys-color-error);
+/* ACCESIBILIDAD: prefers-reduced-motion (calco) */
+@media (prefers-reduced-motion: reduce) {
+  .md-select-outline,
+  .md-select-label,
+  .md-select-trailing-icon {
+    transition: none !important;
+  }
 }

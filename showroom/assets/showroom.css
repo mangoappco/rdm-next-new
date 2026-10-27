@@ -230,8 +230,13 @@
      directos del escenario; con el padding, la fila copiada nace con
      aire que el snippet no trae. La exclusion la escribe el archivo
      4-utilities/row.css en su cabecera, y aqui solo se aplica.
+
+      Y AHORA .md-select, por el motivo del segmented-button: el ancla del
+      select es div directo del escenario y este padding le entra DENTRO
+      del host (16dp de aire que el texto copiable no trae), revientando
+      la geometria del calco de text-field entre specimen y app.
      --------------------------------------------------------------------- */
-  .sr-specimen:not(.sr-meter) > div:not(.sr-motion-dot):not(.md-divider-vertical):not(.md-button-group):not(.md-segmented-button):not(.md-row) {
+  .sr-specimen:not(.sr-meter) > div:not(.sr-motion-dot):not(.md-divider-vertical):not(.md-button-group):not(.md-segmented-button):not(.md-row):not(.md-select) {
     padding: var(--md-ref-spacing-200);
   }
 
