@@ -65,7 +65,7 @@
 /* Contexto elevado cuando el menú está abierto: gana sobre labels de selects contiguos */
 .md-select.md-select-open,
 .md-select[aria-expanded="true"] {
-  z-index: 2;
+  z-index: 1;
 }
 
 /* Filled no lleva borde superior: el parche del label es transparente */
@@ -195,8 +195,8 @@
   border-end-end-radius: 0;
 }
 
-/* Active indicator: reutiliza .md-select-outline como línea inferior */
-.md-select-filled .md-select-outline {
+/* Active indicator: línea inferior activa para la variante Filled */
+.md-select-filled .md-select-active-indicator {
   position: absolute;
   inset-inline: 0;
   bottom: 0;
@@ -242,17 +242,17 @@
   opacity: var(--md-sys-state-hover-state-layer-opacity);
   pointer-events: none;
 }
-.md-select-filled:hover:not(.md-select-open):not(:has(.md-select-input:focus)):not(:has(.md-select-input:disabled)) .md-select-outline {
+.md-select-filled:hover:not(.md-select-open):not(:has(.md-select-input:focus)):not(:has(.md-select-input:disabled)) .md-select-active-indicator {
   height: var(--_stroke-focus); /* 2px */
   background-color: var(--_color-primary);
 }
 
 /* Filled focus / open: indicator 2px primary (calco + open propio del select) */
-.md-select-filled:has(.md-select-input:focus):not(:has(.md-select-input:disabled)) .md-select-outline {
+.md-select-filled:has(.md-select-input:focus):not(:has(.md-select-input:disabled)) .md-select-active-indicator {
   height: var(--_stroke-focus);
   background-color: var(--_color-primary);
 }
-.md-select-filled.md-select-open .md-select-outline {
+.md-select-filled.md-select-open .md-select-active-indicator {
   height: var(--_stroke-focus);
   background-color: var(--_color-primary);
 }
@@ -331,7 +331,7 @@
 }
 
 /* Filled error: indicador 2px error */
-.md-select-filled.md-select-error .md-select-outline {
+.md-select-filled.md-select-error .md-select-active-indicator {
   height: var(--_stroke-focus);
   background-color: var(--_color-error);
 }
@@ -342,8 +342,8 @@
   border-width: var(--_stroke-focus);
   border-color: var(--_color-error);
 }
-.md-select-filled.md-select-error:has(.md-select-input:focus) .md-select-outline,
-.md-select-filled.md-select-error.md-select-open .md-select-outline {
+.md-select-filled.md-select-error:has(.md-select-input:focus) .md-select-active-indicator,
+.md-select-filled.md-select-error.md-select-open .md-select-active-indicator {
   height: var(--_stroke-focus);
   background-color: var(--_color-error);
 }
@@ -415,7 +415,7 @@
 }
 
 /* Filled disabled: active indicator visible al 38% */
-.md-select-filled:has(.md-select-input:disabled) .md-select-outline {
+.md-select-filled:has(.md-select-input:disabled) .md-select-active-indicator {
   background-color: var(--_color-outline);
   opacity: var(--md-sys-state-disabled-state-layer-opacity); /* 0.38 */
 }
@@ -430,7 +430,7 @@
   left: 0;
   right: 0;
   margin-top: var(--md-sys-measurement-space-50); /* 4dp separación M3 */
-  z-index: 2; /* Gana sobre labels de selects contiguos */
+  z-index: 1; /* Gana sobre labels de selects contiguos */
 }
 
 /* --------------------------------------------------------------------------
