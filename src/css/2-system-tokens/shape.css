@@ -111,6 +111,9 @@
   /* Chips, chips y snackbars */
   --md-sys-shape-corner-extra-small: var(--md-ref-corner-extra-small);
 
+  /* Checkbox (caja 18dp) — 2dp */
+  --md-sys-shape-corner-checkbox: var(--md-ref-corner-xxxsmall);
+
   /* Inputs, bordes de lista, superficies pequenas */
   --md-sys-shape-corner-small: var(--md-ref-corner-small);
 

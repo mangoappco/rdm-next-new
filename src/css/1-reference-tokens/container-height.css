@@ -171,6 +171,23 @@
   --md-ref-container-height-switch-handle-pressed: 28px;
 
   /* ------------------------------------------------------------------------
+     CHECKBOX — CAJA DE 18DP
+     ------------------------------------------------------------------------
+     Checkbox (selección M3) aporta una medida que la escala de espaciado
+     no tiene: 18dp no es escalon oficial (la escala va 16 -> 20).
+     "Medida de este componente, no del espaciado."
+
+     Fuente (M3 Specs: checkbox/specs):
+        'container-size': 18px -> caja cuadrada contenedora (ancho = alto)
+
+     La esquina de 2dp vive en corner.css (--md-ref-corner-xxxsmall).
+     El icono de 18dp vive en icon.css (--md-ref-icon-size-checkbox).
+     El touch target de 48dp es rol de sistema
+     (--md-sys-measurement-touch-target) y no se duplica aqui.
+     ------------------------------------------------------------------------ */
+  --md-ref-container-size-checkbox-box: 18px;
+
+  /* ------------------------------------------------------------------------
      EL ANCHO MINIMO DEL BOTON
      ------------------------------------------------------------------------
      M3 lo declara, pero NO como token: es un literal en su SCSS compartido,

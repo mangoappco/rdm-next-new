@@ -135,6 +135,12 @@
   --md-ref-corner-none: 0px;
 
   /* ------------------------------------------------------------------------
+     XXXSMALL — 2px
+     Checkbox (caja de 18dp). Esquina minima del canon M3.
+     --------------------------------------------------------------------- */
+  --md-ref-corner-xxxsmall: 2px;
+
+  /* ------------------------------------------------------------------------
      EXTRA SMALL — 4px
      Chips, snackbars, campos de texto pequenos. El menor radio del sistema.
      --------------------------------------------------------------------- */

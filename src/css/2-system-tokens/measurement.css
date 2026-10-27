@@ -1069,6 +1069,22 @@
   --md-sys-measurement-switch-state-layer-size: var(--md-ref-spacing-500);        /* 40dp */
 
   /* ==========================================================================
+     CHECKBOX — Geometría canónica M3 (Selection)
+     --------------------------------------------------------------------------
+     Fuentes: M3 Specs (checkbox/specs) y material-web v0_192.
+     Caja: 18x18dp, esquina 2dp, borde 2dp en unselected.
+     Iconos: 18dp (check / remove).
+     State layer: círculo 40dp centrado en la caja.
+     Touch target: 48dp (rol de sistema).
+     ========================================================================== */
+  --md-sys-measurement-checkbox-box-size: var(--md-ref-container-size-checkbox-box); /* 18dp */
+  --md-sys-measurement-checkbox-box-corner: var(--md-ref-corner-xxxsmall);          /* 2dp */
+  --md-sys-measurement-checkbox-border-width: var(--md-sys-shape-stroke-thick);     /* 2dp */
+  --md-sys-measurement-checkbox-icon-size: var(--md-ref-icon-size-checkbox);        /* 18dp */
+  --md-sys-measurement-checkbox-state-layer-size: var(--md-ref-spacing-500);        /* 40dp */
+  --md-sys-measurement-checkbox-touch-target: var(--md-sys-measurement-touch-target); /* 48dp */
+
+  /* ==========================================================================
      TEXT FIELD — Altura de contenedor (M3: 56dp = container-height-medium)
      -------------------------------------------------------------------------- */
   --md-sys-measurement-text-field-container-height: var(--md-ref-container-height-medium);

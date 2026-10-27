@@ -504,4 +504,22 @@
      de componente de M3 Expressive.
      ------------------------------------------------------------------------ */
   --md-ref-icon-size-segmented-button: 18px;
+
+  /* ------------------------------------------------------------------------
+     CHECKBOX / RADIO — ICONO DE 18DP
+     ------------------------------------------------------------------------
+     M3 Checkbox y Radio usan iconos de 18dp (check / remove / dot).
+     18 no existe en la escala oficial de espacio (16 -> 20), asi que es
+     una medida de componente concreta, escrita dos veces por
+     Google con el mismo numero.
+
+     Aqui vive como los otros casos de este archivo: con nombre propio, sin
+     apuntar a ninguna escala, y sin llamarlo `spacing-225` --a 18px le
+     tocaria ese nombre por la formula Space N = (N / 100) x 8dp, pero un
+     paso que la escala no publica no se inventa. El mismo criterio que ya
+     separo `container-width` de `container-height`, y el del FAB 28 de
+     al lado. Este es el tercer descongelamiento de la capa por una medida
+     de componente de M3 Expressive.
+     ------------------------------------------------------------------------ */
+  --md-ref-icon-size-checkbox: 18px;
 }
