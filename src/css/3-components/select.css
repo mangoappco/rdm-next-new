@@ -59,6 +59,13 @@
   width: 100%;
   cursor: pointer;
   box-sizing: border-box;
+  z-index: 0;
+}
+
+/* Contexto elevado cuando el menú está abierto: gana sobre labels de selects contiguos */
+.md-select.md-select-open,
+.md-select[aria-expanded="true"] {
+  z-index: 2;
 }
 
 /* Filled no lleva borde superior: el parche del label es transparente */
@@ -423,6 +430,7 @@
   left: 0;
   right: 0;
   margin-top: var(--md-sys-measurement-space-50); /* 4dp separación M3 */
+  z-index: 2; /* Gana sobre labels de selects contiguos */
 }
 
 /* --------------------------------------------------------------------------
