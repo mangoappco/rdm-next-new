@@ -350,7 +350,7 @@ Mecanismo primario: clase `.md-radio-error`, con `:invalid` como fallback. Unsel
 
 ## Select - publicada
 
-Cinco pares, cerrados el 2026-10-27: **Outlined Select** (cerrado en reposo vs. seleccionado con valor), **Filled Select**, **Open state / Dropdown Menu** (menú desplegado estático con elevación level2), **Select with Leading Icon** y **Disabled and Error states**. Es una composición de dos componentes: ancla con anatomía de Text Field (56dp) + menú flotante (`.md-menu`) con ítems de List Item (48dp). JS mínimo en `src/js/select.js` con delegación global (`data-md-select`). Cero tokens nuevos (100% dogfooding). REGLA 13 con JS mínimo (igual que search/text-field). La vista es el QUINTO par byte-idéntico con su moldería —como abajo se anota—.
+Seis pares, cerrados el 2026-10-27 con la estructura alineada al patrón de text-field: **Anatomy** (ancla Outlined de 56dp en reposo, label flotante CSS-only), **Filled variant** (reposo vacío y seleccionado), **Icon slots** (leading icon de 24dp, label corrido a 52dp), **Open state** (menú desplegado con elevación level2 e ítems de 48dp), **Disabled state** (outline al 12%, contenido al 38%) y **Error state** (outline/label/flecha en error). Como en checkbox y radio, Disabled y Error viven en pares independientes — un par es un concepto atómico. Es una composición de dos componentes: ancla con anatomía de Text Field (56dp) + menú flotante (`.md-menu`) con ítems de List Item (48dp). El ancla de `select.css` es calco de `text-field.css` —notch del label, active indicator de filled, disabled fino por partes— con tres diferencias autorizadas: input display-only con `pointer-events: none`, flecha trailing que rota 0.5turn al abrir, y disparadores propios del flotado (`.md-select-open` / `[aria-expanded]`). JS mínimo en `src/js/select.js` con delegación global (`data-md-select`). Cero tokens nuevos (100% dogfooding). REGLA 13 con JS mínimo (igual que search/text-field). La vista es el QUINTO par byte-idéntico con su moldería —como abajo se anota—.
 
 ### Componente Menu (`.md-menu`)
 
@@ -362,7 +362,7 @@ Delegación global en `document` con `click` y `keydown`. Toggle de `.md-select-
 
 ### Disabled y Error
 
-Disabled al 38% (opacity en el host, pointer-events none). Error con clase `.md-select-error`: borde, etiqueta y flecha en color error.
+Disabled fino por partes (calco de text-field): contenido al 38%, label atenuado con `rgb(from on-surface r g b / 38%)` sin opacidad de bloque, outlined al 12% de opacidad de borde y `pointer-events: none` en el host. Error con clase `.md-select-error`: outline 2px, label flotado y flecha en color error (prioridad sobre el flotado primary).
 
 ## Las dos mitades de una vista del showroom
 
@@ -377,7 +377,7 @@ En el marcado, el corte es un `<hr class="md-divider">` —el mismo mecanismo co
 
 ## Siguiente tarea
 
-**Select completado (5 pares), y Radio Button sigue cerrado en los suyos (5 pares) + Checkbox (5 pares) + Switch (4 pares) + Search (5 pares).** En los cinco mandó lo mismo: el componente termina en sus pares de especificación y nada de composiciones de negocio en la vista — el Par 6 de M3 que Search no tomó (Top bar con avatar) y las pantallas reales (POS, KDS, carta, modal de cobro) van a la **Galería de Usos**, que se abrirá cuando el catálogo acabe de cerrarse. Verificador en verde (EXIT_CODE=0 con las excepciones de siempre).
+**Select completado (6 pares, estructura al patrón text-field), y Radio Button sigue cerrado en los suyos (5 pares) + Checkbox (5 pares) + Switch (4 pares) + Search (5 pares).** En los cinco mandó lo mismo: el componente termina en sus pares de especificación y nada de composiciones de negocio en la vista — el Par 6 de M3 que Search no tomó (Top bar con avatar) y las pantallas reales (POS, KDS, carta, modal de cobro) van a la **Galería de Usos**, que se abrirá cuando el catálogo acabe de cerrarse. Verificador en verde (EXIT_CODE=0 con las excepciones de siempre).
 
 Lo que queda por delante no es un componente nuevo sino la **deuda conocida** de más abajo, que es lo que de verdad está pendiente:
 
