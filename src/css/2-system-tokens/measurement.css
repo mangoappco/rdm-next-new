@@ -1085,6 +1085,21 @@
   --md-sys-measurement-checkbox-touch-target: var(--md-sys-measurement-touch-target); /* 48dp */
 
   /* ==========================================================================
+     RADIO BUTTON — Geometría canónica M3 (Selection)
+     --------------------------------------------------------------------------
+     Fuentes: M3 Specs (radio-button/specs) y material-web v0_192.
+     Círculo exterior: 20x20dp, borde 2dp, esquina full.
+     Punto interior: 10x10dp centrado absoluto.
+     State layer: círculo 40dp centrado en la caja.
+     Touch target: 48dp (rol de sistema).
+     ========================================================================== */
+  --md-sys-measurement-radio-circle-size: var(--md-ref-spacing-250);                /* 20dp */
+  --md-sys-measurement-radio-dot-size: var(--md-ref-spacing-125);                  /* 10dp */
+  --md-sys-measurement-radio-border-width: var(--md-sys-shape-stroke-thick);       /* 2dp */
+  --md-sys-measurement-radio-state-layer-size: var(--md-ref-spacing-500);           /* 40dp */
+  --md-sys-measurement-radio-touch-target: var(--md-sys-measurement-touch-target);  /* 48dp */
+
+  /* ==========================================================================
      TEXT FIELD — Altura de contenedor (M3: 56dp = container-height-medium)
      -------------------------------------------------------------------------- */
   --md-sys-measurement-text-field-container-height: var(--md-ref-container-height-medium);

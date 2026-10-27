@@ -18,7 +18,7 @@ Solo prohibiciones verbales. Las reglas de showroom, de capas y de ciclo no se c
 
 ## Componentes creados
 
-Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **15 componentes y 24 vistas** (15 de componente + 9 de tokens), las 24 enlazadas en `showroom/index.html`. El orden es el de `index.css`:
+Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **16 componentes y 25 vistas** (16 de componente + 9 de tokens), las 25 enlazadas en `showroom/index.html`. El orden es el de `index.css`:
 
 | Componente | Hoja | Vista |
 | --- | --- | --- |
@@ -37,10 +37,11 @@ Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **15 compo
 | Search | `search.css` | `search.html` |
 | Switch | `switch.css` | `switch.html` |
 | Checkbox | `checkbox.css` | `checkbox.html` |
+| Radio Button | `radio.css` | `radio.html` |
 
 Cada componente tiene además su molde en `showroom/templates/<nombre>.template.html`.
 
-**Hoy TRES pares molde/vista rinden byte-idénticos: `search`, `switch` y `checkbox`** —verificados por hash el 2026-10-26; los moldes de `fab`, `fab-extended`, `card`, `dialog`, `list` y `segmented-button`, que sí lo fueron a su día (rumbo del 2026-10-13), se quedaron atrás de su vista. Las demás vistas difieren de su molde por el puntero de dos líneas de la convención antigua o por el desfase del molde anotado en deuda. `chips` no tiene molde propio y `typography.html` apunta a `component.template.html`.
+**Hoy CUATRO pares molde/vista rinden byte-idénticos: `search`, `switch`, `checkbox` y `radio`** —verificados por hash el 2026-10-26; los moldes de `fab`, `fab-extended`, `card`, `dialog`, `list` y `segmented-button`, que sí lo fueron a su día (rumbo del 2026-10-13), se quedaron atrás de su vista. Las demás vistas difieren de su molde por el puntero de dos líneas de la convención antigua o por el desfase del molde anotado en deuda. `chips` no tiene molde propio y `typography.html` apunta a `component.template.html`.
 
 ## FAB — la base NO es el `md-fab-medium`
 
@@ -326,6 +327,26 @@ El pseudo-clase `:indeterminate` solo se activa cuando el IDL attribute `indeter
 
 El halo de 40dp es `::after` de `.md-checkbox-box`, centrado con `inset` calc (18-40)/2 = -11dp. Viaja con la caja (no hay handle). Color: on-surface en unselected, primary en selected/indeterminate. Disabled: `content: none`.
 
+## Radio Button - publicada
+
+Cinco pares, cerrados el 2026-10-26: **Basic radio** (20×20dp, borde 2dp, aro vacío vs punto 10dp en primary), **Radio group** (exclusión mutua nativa via `name`), **Interactive states**, **Disabled states** (38% unificado) y **Error states** (aro y punto en error). Cero JavaScript de componente: el estado vive en `:checked` del radio input nativo. La exclusión mutua la maneja el atributo `name`. REGLA 13 vacía por diseño. La vista es el QUINTO par byte-idéntico con su moldería —como abajo se anota—.
+
+### Tokens reutilizados (cero primitivos nuevos)
+
+Todos los tokens de Capa 1 ya existían: `--md-ref-spacing-250` (20dp), `--md-ref-spacing-125` (10dp), `--md-ref-stroke-thick` (2dp), `--md-ref-spacing-600` (48dp), `--md-ref-spacing-500` (40dp), `--md-ref-corner-full` (9999px). Capa 2: sección `RADIO` en `measurement.css` con 5 roles mapeados.
+
+### disabled al 38% unificado
+
+Igual que Checkbox: `on-surface` al 38% para aro y punto. Unselected disabled = transparente con borde 38%. Selected disabled = relleno 38% con punto en `surface`. Sin state layer, sin transiciones, sin focus ring.
+
+### State layer y focus ring
+
+State layer de 40dp `::after` centrado en el círculo exterior (se asoma 10dp por cada lado). Focus ring circular de 44dp `::before` con borde 3px en `secondary`. Ambos apagados en disabled con `content: none`.
+
+### Error states
+
+Mecanismo primario: clase `.md-radio-error`, con `:invalid` como fallback. Unselected error = borde en `error`. Selected error = borde y punto en `error`. Halo error al 8%.
+
 ## Las dos mitades de una vista del showroom
 
 A partir del `list` (2026-10-21), cada vista del showroom se estructura en dos bloques, y el corte se marca con un divisor:
@@ -339,7 +360,7 @@ En el marcado, el corte es un `<hr class="md-divider">` —el mismo mecanismo co
 
 ## Siguiente tarea
 
-**Checkbox completado (5 pares), y Switch sigue cerrado en los suyos (4 pares) + Search (5 pares).** En los tres mandó lo mismo: el componente termina en sus pares de especificación y nada de composiciones de negocio en la vista — el Par 6 de M3 que Search no tomó (Top bar con avatar) y las pantallas reales (POS, KDS, carta, modal de cobro) van a la **Galería de Usos**, que se abrirá cuando el catálogo acabe de cerrarse. Verificador en verde (EXIT_CODE=0 con las excepciones de siempre).
+**Radio Button completado (5 pares), y Checkbox sigue cerrado en los suyos (5 pares) + Switch (4 pares) + Search (5 pares).** En los cuatro mandó lo mismo: el componente termina en sus pares de especificación y nada de composiciones de negocio en la vista — el Par 6 de M3 que Search no tomó (Top bar con avatar) y las pantallas reales (POS, KDS, carta, modal de cobro) van a la **Galería de Usos**, que se abrirá cuando el catálogo acabe de cerrarse. Verificador en verde (EXIT_CODE=0 con las excepciones de siempre).
 
 Lo que queda por delante no es un componente nuevo sino la **deuda conocida** de más abajo, que es lo que de verdad está pendiente:
 

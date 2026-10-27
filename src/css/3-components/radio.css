@@ -1,0 +1,256 @@
+/* ==========================================================================
+   src/css/3-components/radio.css — RADIO BUTTON (M3 Selección)
+   ==========================================================================
+
+   QUE HACE
+   --------
+   El botón de radio permite seleccionar una opción de un conjunto mutuamente
+   exclusivo. Se construye sobre un radio input NATIVO: el estado vive en
+   :checked y toda la conmutación es CSS. Sin JavaScript de componente
+   (REGLA 13 vacía por diseño). La exclusión mutua la maneja el atributo
+   `name` del input nativo.
+
+   LA ANATOMIA
+   -----------
+     <label class="md-radio">
+       <input type="radio" class="md-radio-input" name="grupo">
+       <span class="md-radio-circle" aria-hidden="true">
+         <span class="md-radio-dot"></span>
+       </span>
+     </label>
+
+   El input es invisible (appearance: none) y a la vez ES el touch target
+   de 48dp centrado. El label da el nombre accesible.
+   El círculo exterior dibuja el contorno/relleno; el punto interior vive
+   dentro y se muestra/oculta con scale según :checked.
+
+   FUENTES
+   -------
+   - m3.material.io/components/radio-button/overview, /specs, /guidelines
+   - tokens/versions/v0_192/_md-comp-radio-button.scss
+   ========================================================================== */
+
+/* Base: el label ES el touch target de 48x48dp (M3 canonico).
+   El círculo de 20dp queda centrado dentro. */
+.md-radio {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--md-sys-measurement-radio-touch-target);
+  height: var(--md-sys-measurement-radio-touch-target);
+  cursor: pointer;
+  vertical-align: top;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* DESHABILITADO: sin eventos de puntero */
+.md-radio:has(.md-radio-input:disabled) {
+  cursor: default;
+  pointer-events: none;
+}
+
+/* EL INPUT NATIVO ES EL TOUCH TARGET: 48dp (mismo tamaño que el host) */
+.md-radio-input {
+  position: absolute;
+  appearance: none;
+  background: none;
+  margin: 0;
+  outline: none;
+  z-index: 1;
+  cursor: inherit;
+  width: var(--md-sys-measurement-radio-touch-target);
+  height: var(--md-sys-measurement-radio-touch-target);
+  inset: 0;
+}
+
+/* CÍRCULO EXTERIOR: 20x20dp, borde 2dp, esquina full */
+.md-radio-circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: var(--md-sys-measurement-radio-circle-size);
+  height: var(--md-sys-measurement-radio-circle-size);
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  border-radius: var(--md-sys-shape-corner-full);
+  border: var(--md-sys-measurement-radio-border-width) solid var(--md-sys-color-outline);
+  background-color: transparent;
+  transition:
+    background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
+    border-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
+    opacity var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-linear);
+}
+
+/* SELECTED (:checked): borde primary, punto aparece */
+.md-radio-input:checked + .md-radio-circle {
+  border-color: var(--md-sys-color-primary);
+}
+
+/* CAPA DE ESTADO: círculo de 40dp centrado en la caja (se asoma
+   10dp por cada lado). Color: on-surface en unselected, primary en
+   selected. */
+.md-radio-circle::after {
+  content: "";
+  position: absolute;
+  inset-block: calc(
+    (
+      var(--md-sys-measurement-radio-circle-size) -
+        var(--md-sys-measurement-radio-state-layer-size)
+    ) / 2
+  );
+  inset-inline: calc(
+    (
+      var(--md-sys-measurement-radio-circle-size) -
+        var(--md-sys-measurement-radio-state-layer-size)
+    ) / 2
+  );
+  border-radius: var(--md-sys-shape-corner-full);
+  background-color: var(--md-sys-color-on-surface);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--md-sys-motion-duration-short4)
+    var(--md-sys-motion-easing-standard);
+}
+
+.md-radio-input:checked + .md-radio-circle::after {
+  background-color: var(--md-sys-color-primary);
+}
+
+/* Hover 8%, foco 10%, presion 10% */
+.md-radio:hover .md-radio-circle::after {
+  opacity: var(--md-sys-state-hover-state-layer-opacity);
+}
+
+.md-radio-input:focus-visible + .md-radio-circle::after {
+  opacity: var(--md-sys-state-focus-state-layer-opacity);
+}
+
+.md-radio-input:active + .md-radio-circle::after {
+  opacity: var(--md-sys-state-pressed-state-layer-opacity);
+}
+
+/* ANILLO DE FOCO: circular exterior de 3px en secondary, centrado en el
+   state layer (44dp = 40 + 4). Mismo patrón que Checkbox. */
+.md-radio-circle::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(var(--md-sys-measurement-radio-state-layer-size) + var(--md-sys-measurement-space-50));
+  height: calc(var(--md-sys-measurement-radio-state-layer-size) + var(--md-sys-measurement-space-50));
+  border-radius: var(--md-sys-shape-corner-full);
+  border: var(--md-sys-shape-stroke-extra-thick) solid transparent;
+  pointer-events: none;
+  box-sizing: border-box;
+  opacity: 0;
+  transition: opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+}
+
+.md-radio:has(.md-radio-input:focus-visible) .md-radio-circle::before {
+  border-color: var(--md-sys-color-secondary);
+  opacity: 1;
+}
+
+.md-radio-input:focus-visible + .md-radio-circle {
+  outline: none;
+}
+
+/* PUNTO INTERIOR: 10dp, centrado absoluto, scale(0) en reposo */
+.md-radio-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  width: var(--md-sys-measurement-radio-dot-size);
+  height: var(--md-sys-measurement-radio-dot-size);
+  border-radius: var(--md-sys-shape-corner-full);
+  background-color: var(--md-sys-color-primary);
+  opacity: 0;
+  transition:
+    transform var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized),
+    opacity var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
+    background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+}
+
+/* Selected: punto aparece con scale(1) */
+.md-radio-input:checked + .md-radio-circle .md-radio-dot {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+
+/* DESHABILITADO (M3 canonico): 38% unificado en TODO.
+   Sin state layer, sin transiciones, sin focus ring. */
+.md-radio:has(.md-radio-input:disabled) {
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+/* Unselected Disabled: transparente, borde 38%, punto invisible */
+.md-radio:has(.md-radio-input:disabled:not(:checked)) .md-radio-circle {
+  background-color: transparent;
+  border-color: var(--md-sys-color-on-surface);
+  opacity: var(--md-sys-state-disabled-state-layer-opacity);
+  transition: none;
+}
+
+.md-radio:has(.md-radio-input:disabled:not(:checked)) .md-radio-dot {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0);
+  transition: none;
+}
+
+/* Selected Disabled: relleno 38%, sin borde, punto visible en surface */
+.md-radio:has(.md-radio-input:disabled:checked) .md-radio-circle {
+  background-color: var(--md-sys-color-on-surface);
+  border-color: transparent;
+  opacity: var(--md-sys-state-disabled-state-layer-opacity);
+  transition: none;
+}
+
+.md-radio:has(.md-radio-input:disabled:checked) .md-radio-dot {
+  background-color: var(--md-sys-color-surface);
+  opacity: var(--md-sys-state-disabled-state-layer-opacity);
+  transform: translate(-50%, -50%) scale(1);
+  transition: none;
+}
+
+/* State layer y focus ring apagados en disabled */
+.md-radio:has(.md-radio-input:disabled) .md-radio-circle::after,
+.md-radio:has(.md-radio-input:disabled) .md-radio-circle::before {
+  content: none;
+}
+
+/* ==========================================================================
+   RADIO ERROR STATES (Canónico M3)
+   ==========================================================================
+   Mecanismo primario: clase `.md-radio-error`. El pseudo-clase `:invalid`
+   es un fallback que solo se activa si el input lleva `required`. */
+
+/* Unselected Error: borde en color error */
+.md-radio-error:has(.md-radio-input:not(:checked)) .md-radio-circle,
+.md-radio:has(.md-radio-input:invalid:not(:checked)) .md-radio-circle {
+  border-color: var(--md-sys-color-error);
+}
+
+/* Selected Error: borde y punto en error */
+.md-radio-error:has(.md-radio-input:checked) .md-radio-circle,
+.md-radio:has(.md-radio-input:invalid:checked) .md-radio-circle {
+  border-color: var(--md-sys-color-error);
+}
+
+.md-radio-error:has(.md-radio-input:checked) .md-radio-dot,
+.md-radio:has(.md-radio-input:invalid:checked) .md-radio-dot {
+  background-color: var(--md-sys-color-error);
+}
+
+/* Halo (State Layer) en Error: tiñe en error */
+.md-radio-error:hover:not(:has(:disabled)) .md-radio-circle::after,
+.md-radio:has(.md-radio-input:invalid):hover:not(:has(:disabled)) .md-radio-circle::after {
+  background-color: var(--md-sys-color-error);
+}

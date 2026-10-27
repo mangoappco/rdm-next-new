@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Radio Button de RDM Next: botón de radio M3 de 20x20dp con punto de 10dp, estados binario, grupo exclusivo, interactivos, disabled y error — todo CSS puro sobre :checked.">
+  <title>Radio Button — RDM ManGo! App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+  <link rel="stylesheet" href="../../src/css/main.css?v=8">
+  <link rel="stylesheet" href="../assets/showroom.css">
+  <script type="module" src="../../src/js/main.js"></script>
+  <script src="../assets/showroom.js"></script>
+</head>
+
+<!--
+  ESTA VISTA TIENE CINCO PARES. El Bloque 1 --Especificacion tecnica y
+  anatomia-- cubre Basic radio, Radio group, Interactive states, Disabled
+  states y Error states. No hay Bloque 2: las composiciones de ManGo! App
+  (el POS de caja, la comanda de cocina, la carta, el modal de cobro)
+  pertenecen a la futura Galeria de Usos.
+
+  LOS ACUERDOS DEL SHOWROOM
+  -------------------------
+  1. Jerarquia: h1 (componente) > h2 (bloque) > h3 (par). Los titulos de
+     bloque y par estan en ingles; las descripciones en espanol breve.
+  2. REGLA 11: el texto de cada pre.sr-code desescapado es identico al
+     innerHTML de su .sr-specimen (normalizando solo el espacio).
+  3. REGLA 6: sin atributos de estilo en linea ni bloques <style>.
+  4. REGLA 9: iconos siempre con .md-icon, nunca material-symbols-*.
+  5. REGLA 10: toda clase md-* del showroom existe en src/css/.
+  6. REGLA 13: cada snippet es autonomo (solo clases del sistema).
+  7. ARIA: el input lleva aria-label; circulo y punto van aria-hidden
+     a traves del circle (el label nativo nombra al control).
+  8. CERO JavaScript de componente: el estado vive en :checked del input
+     nativo. La exclusion mutua la maneja el atributo name. No hay data-*
+     ni sentinels que registrar (REGLA 13 vacia por diseño).
+-->
+
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <main class="sr-page">
+
+    <!-- HEADER: inicio (barra + titulo + descripcion) -->
+    <header class="sr-header">
+      <div class="sr-bar">
+        <p class="md-type-body-medium"><a href="../index.html">RDM ManGo! App</a></p>
+        <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
+      </div>
+      <h1 class="md-type-display-large">Radio Button</h1>
+      <p class="md-type-body-large">Los botones de radio (Radio Buttons) permiten a las personas seleccionar una sola opción de un conjunto. · <em>Cinco pares</em></p>
+    </header>
+    <!-- HEADER: fin -->
+
+    <hr class="md-divider">
+
+    <!-- BLOQUE 1: Especificacion tecnica y anatomia -->
+    <h2 class="md-type-headline-medium">Especificacion tecnica y anatomia</h2>
+
+    <!-- PAR 1: Basic radio -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Basic radio</h3>
+      <p class="md-type-body-medium">Círculo exterior de 20x20dp con borde de 2dp: desmarcado tiene borde en outline y fondo transparente; marcado tiene borde y punto de 10dp en primary. Toda la conmutación la expresa :checked del radio input nativo, sin JavaScript.</p>
+
+      <div class="sr-specimen sr-specimen-gap">
+        <label class="md-radio">
+          <input type="radio" name="basic-demo" class="md-radio-input" aria-label="Opción desmarcada">
+          <span class="md-radio-circle" aria-hidden="true">
+            <span class="md-radio-dot"></span>
+          </span>
+        </label>
+
+        <label class="md-radio">
+          <input type="radio" name="basic-demo" class="md-radio-input" checked aria-label="Opción marcada">
+          <span class="md-radio-circle" aria-hidden="true">
+            <span class="md-radio-dot"></span>
+          </span>
+        </label>
+      </div>
+
+      <pre class="sr-code"><code>&lt;label class="md-radio"&gt;
+  &lt;input type="radio" name="basic-demo" class="md-radio-input" aria-label="Opción desmarcada"&gt;
+  &lt;span class="md-radio-circle" aria-hidden="true"&gt;
+    &lt;span class="md-radio-dot"&gt;&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="md-radio"&gt;
+  &lt;input type="radio" name="basic-demo" class="md-radio-input" checked aria-label="Opción marcada"&gt;
+  &lt;span class="md-radio-circle" aria-hidden="true"&gt;
+    &lt;span class="md-radio-dot"&gt;&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/label&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- PAR 2: Radio group -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Radio group</h3>
+      <p class="md-type-body-medium">Grupo de tres opciones con el mismo atributo name, demostrando la exclusión mutua nativa: solo una puede estar seleccionada a la vez, sin JavaScript. El estado se gobierna por :checked del input nativo.</p>
+
+      <div class="sr-specimen sr-specimen-gap">
+        <label class="md-radio">
+          <input type="radio" name="grupo-demo" class="md-radio-input" checked aria-label="Opción A seleccionada">
+          <span class="md-radio-circle" aria-hidden="true">
+            <span class="md-radio-dot"></span>
+          </span>
+        </label>
+
+        <label class="md-radio">
+          <input type="radio" name="grupo-demo" class="md-radio-input" aria-label="Opción B">
+          <span class="md-radio-circle" aria-hidden="true">
+            <span class="md-radio-dot"></span>
+          </span>
+        </label>
+
+        <label class="md-radio">
+          <input type="radio" name="grupo-demo" class="md-radio-input" aria-label="Opción C">
+          <span class="md-radio-circle" aria-hidden="true">
+            <span class="md-radio-dot"></span>
+          </span>
+        </label>
+      </div>
+
+      <pre class="sr-code"><code>&lt;label class="md-radio"&gt;
+  &lt;input type="radio" name="grupo-demo" class="md-radio-input" checked aria-label="Opción A seleccionada"&gt;
+  &lt;span class="md-radio-circle" aria-hidden="true"&gt;
+    &lt;span class="md-radio-dot"&gt;&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="md-radio"&gt;
+  &lt;input type="radio" name="grupo-demo" class="md-radio-input" aria-label="Opción B"&gt;
+  &lt;span class="md-radio-circle" aria-hidden="true"&gt;
+    &lt;span class="md-radio-dot"&gt;&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="md-radio"&gt;
+  &lt;input type="radio" name="grupo-demo" class="md-radio-input" aria-label="Opción C"&gt;
+  &lt;span class="md-radio-circle" aria-hidden="true"&gt;
+    &lt;span class="md-radio-dot"&gt;&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/label&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- PAR 3: Interactive states -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Interactive states</h3>
+      <p class="md-type-body-medium">Respuesta al puntero y al teclado: capa de estado circular de 40dp al 8% en hover y 10% en foco y presión; anillo de foco circular de 3px con offset de 2px en secondary. La capa de estado usa on-surface en desmarcado y primary en marcado.</p>
+
+      <div class="sr-specimen sr-specimen-gap">
+        <label class="md-radio">
+          <input type="radio" name="interactive-demo" class="md-radio-input" aria-label="Opción desmarcada interactiva">
+          <span class="md-radio-circle" aria-hidden="true">
+            <span class="md-radio-dot"></span>
+          </span>
+        </label>
+
+        <label class="md-radio">
+          <input type="radio" name="interactive-demo" class="md-radio-input" checked aria-label="Opción marcada interactiva">
+          <span class="md-radio-circle" aria-hidden="true">
+            <span class="md-radio-dot"></span>
+          </span>
+        </label>
+      </div>
+
+      <pre class="sr-code"><code>&lt;label class="md-radio"&gt;
+  &lt;input type="radio" name="interactive-demo" class="md-radio-input" aria-label="Opción desmarcada interactiva"&gt;
+  &lt;span class="md-radio-circle" aria-hidden="true"&gt;
+    &lt;span class="md-radio-dot"&gt;&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="md-radio"&gt;
+  &lt;input type="radio" name="interactive-demo" class="md-radio-input" checked aria-label="Opción marcada interactiva"&gt;
+  &lt;span class="md-radio-circle" aria-hidden="true"&gt;
+    &lt;span class="md-radio-dot"&gt;&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/label&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- PAR 4: Disabled states -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Disabled states</h3>
+      <p class="md-type-body-medium">Estado inactivo con disabled nativo: todo (aro, punto) se atenúa al 38% en on-surface. Sin eventos ni transiciones. Dos variantes: desmarcado y marcado.</p>
+
+      <div class="sr-specimen sr-specimen-gap">
+        <label class="md-radio">
+          <input type="radio" name="disabled-demo" class="md-radio-input" disabled aria-label="Opción deshabilitada">
+          <span class="md-radio-circle" aria-hidden="true">
+            <span class="md-radio-dot"></span>
+          </span>
+        </label>
+
+        <label class="md-radio">
+          <input type="radio" name="disabled-demo" class="md-radio-input" checked disabled aria-label="Opción marcada deshabilitada">
+          <span class="md-radio-circle" aria-hidden="true">
+            <span class="md-radio-dot"></span>
+          </span>
+        </label>
+      </div>
+
+      <pre class="sr-code"><code>&lt;label class="md-radio"&gt;
+  &lt;input type="radio" name="disabled-demo" class="md-radio-input" disabled aria-label="Opción deshabilitada"&gt;
+  &lt;span class="md-radio-circle" aria-hidden="true"&gt;
+    &lt;span class="md-radio-dot"&gt;&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="md-radio"&gt;
+  &lt;input type="radio" name="disabled-demo" class="md-radio-input" checked disabled aria-label="Opción marcada deshabilitada"&gt;
+  &lt;span class="md-radio-circle" aria-hidden="true"&gt;
+    &lt;span class="md-radio-dot"&gt;&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/label&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- PAR 5: Error states -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Error states</h3>
+      <p class="md-type-body-medium">Estado de validación fallida gobernado por la clase .md-radio-error o el pseudo-estado nativo :invalid. La variante desmarcada vira el aro a error, mientras que la marcada adopta aro y punto en error.</p>
+
+      <div class="sr-specimen sr-specimen-gap">
+        <label class="md-radio md-radio-error">
+          <input type="radio" name="error-demo" class="md-radio-input" aria-invalid="true" aria-label="Opción obligatoria no seleccionada">
+          <span class="md-radio-circle" aria-hidden="true">
+            <span class="md-radio-dot"></span>
+          </span>
+        </label>
+
+        <label class="md-radio md-radio-error">
+          <input type="radio" name="error-demo" class="md-radio-input" checked aria-invalid="true" aria-label="Selección incompatible">
+          <span class="md-radio-circle" aria-hidden="true">
+            <span class="md-radio-dot"></span>
+          </span>
+        </label>
+      </div>
+
+      <pre class="sr-code"><code>&lt;label class="md-radio md-radio-error"&gt;
+  &lt;input type="radio" name="error-demo" class="md-radio-input" aria-invalid="true" aria-label="Opción obligatoria no seleccionada"&gt;
+  &lt;span class="md-radio-circle" aria-hidden="true"&gt;
+    &lt;span class="md-radio-dot"&gt;&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/label&gt;
+
+&lt;label class="md-radio md-radio-error"&gt;
+  &lt;input type="radio" name="error-demo" class="md-radio-input" checked aria-invalid="true" aria-label="Selección incompatible"&gt;
+  &lt;span class="md-radio-circle" aria-hidden="true"&gt;
+    &lt;span class="md-radio-dot"&gt;&lt;/span&gt;
+  &lt;/span&gt;
+&lt;/label&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+  </main>
+  <!-- MAIN: fin -->
+</body>
+</html
