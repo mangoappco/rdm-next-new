@@ -18,7 +18,7 @@ Solo prohibiciones verbales. Las reglas de showroom, de capas y de ciclo no se c
 
 ## Componentes creados
 
-Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **14 componentes y 23 vistas** (14 de componente + 9 de tokens), las 23 enlazadas en `showroom/index.html`. El orden es el de `index.css`:
+Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **15 componentes y 24 vistas** (15 de componente + 9 de tokens), las 24 enlazadas en `showroom/index.html`. El orden es el de `index.css`:
 
 | Componente | Hoja | Vista |
 | --- | --- | --- |
@@ -36,10 +36,11 @@ Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **14 compo
 | Text Field | `text-field.css` | `text-field.html` |
 | Search | `search.css` | `search.html` |
 | Switch | `switch.css` | `switch.html` |
+| Checkbox | `checkbox.css` | `checkbox.html` |
 
 Cada componente tiene además su molde en `showroom/templates/<nombre>.template.html`.
 
-**Hoy DOS pares molde/vista rinden byte-idénticos: `search` y `switch`** —verificados por hash el 2026-10-26; los moldes de `fab`, `fab-extended`, `card`, `dialog`, `list` y `segmented-button`, que sí lo fueron a su día (rumbo del 2026-10-13), se quedaron atrás de su vista. Las demás vistas difieren de su molde por el puntero de dos líneas de la convención antigua o por el desfase del molde anotado en deuda. `chips` no tiene molde propio y `typography.html` apunta a `component.template.html`.
+**Hoy TRES pares molde/vista rinden byte-idénticos: `search`, `switch` y `checkbox`** —verificados por hash el 2026-10-26; los moldes de `fab`, `fab-extended`, `card`, `dialog`, `list` y `segmented-button`, que sí lo fueron a su día (rumbo del 2026-10-13), se quedaron atrás de su vista. Las demás vistas difieren de su molde por el puntero de dos líneas de la convención antigua o por el desfase del molde anotado en deuda. `chips` no tiene molde propio y `typography.html` apunta a `component.template.html`.
 
 ## FAB — la base NO es el `md-fab-medium`
 
@@ -301,6 +302,30 @@ Si la pastilla entera bajara al 12%, la manija — hija del track — quedaría 
 
 El viaje de la manija (20dp) NO es un token: es `track-width − track-height` (52−32) vía `calc()`, la misma relación del oracle; los insets del touch target de 48dp salen de la misma cuenta — `(52−48)/2` y `(32−48)/2` —, sin `translate()` ni `max()`. Con iconos la manija se FIJA a 24dp en los dos estados — v0_192 `with-icon-handle-*` — porque los glifos viven SIEMPRE en el DOM y el intercambio lo hace la opacidad (`md-switch-icon-off` / `-on`); la detección es por `:has()`, igual que chip.css. El presionado (28dp, 100ms lineales) queda DESPUÉS de la regla de checked en el fichero: misma especificidad, gana el orden de fuente. Acuñación: 52 y 28 no son escalones de la escala oficial de espaciado, así que se declararon como primitivas de componente en `container-height.css` — el precedente de las anchuras del icon-button — y el resto (16, 24, 32, 40, 48) lo sirve la escala sin duplicar.
 
+## Checkbox - publicada
+
+Cuatro pares, cerrados el 2026-10-26: **Basic checkbox** (18×18dp, esquina 2dp, borde outline 2dp desmarcada vs relleno primary con check en on-primary), **Indeterminate state** (glifo remove para selección mixta), **Interactive states** y **Disabled states** (38% unificado en todo: caja, borde e icono). Cero JavaScript de componente: el estado vive en `:checked` del checkbox NATIVO; la variante indeterminada usa la clase `.md-checkbox-indeterminate` (CSS-only en el showroom) — en producción se setea el IDL attribute `input.indeterminate = true`, que activa el pseudo-clase `:indeterminate` nativo. REGLA 13 vacía por diseño. La vista es el TERCER par byte-idéntico con su moldería —como abajo se anota—.
+
+### Tokens acuñados en Capa 1
+
+- `--md-ref-corner-xxxsmall: 2px` en `corner.css` (la esquina mas pequeña del sistema, solo para checkbox).
+- `--md-ref-container-size-checkbox-box: 18px` en `container-height.css` (18 no es escalon de spacing).
+- `--md-ref-icon-size-checkbox: 18px` en `iconfont.css` (18 no es escalon de icono).
+- `--md-sys-shape-corner-checkbox` en `shape.css` (alias al primitivo).
+- `--md-sys-measurement-checkbox-*` en `measurement.css` (box 18, corner 2, border 2, icon 18, state layer 40, touch target 48).
+
+### Disabled al 38% unificado (canon M3)
+
+A diferencia del Switch, que usa capas separadas (12% track + 38% contenido), el Checkbox de M3 publica un unico token de opacidad para TODA la superficie: `md.comp.checkbox.disabled.container.opacity` = 38%. Por eso no hay capa `::before` separada; la opacidad cae sobre el `.md-checkbox-box` completo (caja + borde + icono) en `on-surface`. Cero `pointer-events: none` via `:has(:disabled)` en el label, igual que Switch.
+
+### Indeterminate: clase de molde, no pseudo-clase en el showroom
+
+El pseudo-clase `:indeterminate` solo se activa cuando el IDL attribute `indeterminate = true` se setea via JS. En el showroom, el Par 2 usa `.md-checkbox-indeterminate` para auditar el estilo visual (fondo primary + glifo remove) sin depender de scripts, manteniendo REGLA 11 intacta. En producción, el mismo estilo se aplica via `:indeterminate` si el atributo se setea.
+
+### State layer centrado en la caja
+
+El halo de 40dp es `::after` de `.md-checkbox-box`, centrado con `inset` calc (18-40)/2 = -11dp. Viaja con la caja (no hay handle). Color: on-surface en unselected, primary en selected/indeterminate. Disabled: `content: none`.
+
 ## Las dos mitades de una vista del showroom
 
 A partir del `list` (2026-10-21), cada vista del showroom se estructura en dos bloques, y el corte se marca con un divisor:
@@ -314,7 +339,7 @@ En el marcado, el corte es un `<hr class="md-divider">` —el mismo mecanismo co
 
 ## Siguiente tarea
 
-**Switch completado (4 pares), y Search sigue cerrado en los suyos (5 pares).** En los dos mandó lo mismo: el componente termina en sus pares de especificación y nada de composiciones de negocio en la vista — el Par 6 de M3 que Search no tomó (Top bar con avatar) y las pantallas reales (POS, KDS, carta, modal de cobro) van a la **Galería de Usos**, que se abrirá cuando el catálogo acabe de cerrarse. Verificador en verde (EXIT_CODE=0 con las excepciones de siempre).
+**Checkbox completado (4 pares), y Switch sigue cerrado en los suyos (4 pares) + Search (5 pares).** En los tres mandó lo mismo: el componente termina en sus pares de especificación y nada de composiciones de negocio en la vista — el Par 6 de M3 que Search no tomó (Top bar con avatar) y las pantallas reales (POS, KDS, carta, modal de cobro) van a la **Galería de Usos**, que se abrirá cuando el catálogo acabe de cerrarse. Verificador en verde (EXIT_CODE=0 con las excepciones de siempre).
 
 Lo que queda por delante no es un componente nuevo sino la **deuda conocida** de más abajo, que es lo que de verdad está pendiente:
 
