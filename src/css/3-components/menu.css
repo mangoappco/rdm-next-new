@@ -1,0 +1,57 @@
+/* ==========================================================================
+   src/css/3-components/menu.css — MENU (M3 Superficie flotante)
+   ==========================================================================
+
+   QUE HACE
+   --------
+   Superficie flotante de Material Design 3: contenedor elevado que muestra
+   una lista de opciones (items) por encima del contenido. Se usa como
+   dropdown de Select, overflow menu, etc.
+
+   M3 publica menus con elevacion level2, fondo surface-container, esquinas
+   extra-small (4px), padding vertical de 8dp, ancho minimo 112dp y maximo
+   280dp.
+
+   FUENTES
+   -------
+   - m3.material.io/components/menus/specs
+   - tokens/versions/v0_192/_md-comp-menu.scss
+   ========================================================================== */
+
+/* Base: superficie flotante */
+.md-menu {
+  position: absolute;
+  z-index: 1;
+  min-width: var(--md-sys-measurement-menu-min-width);
+  max-width: var(--md-sys-measurement-menu-max-width);
+  padding-block: var(--md-sys-measurement-space-100); /* 8dp */
+  border-radius: var(--md-sys-shape-corner-extra-small);
+  background-color: var(--md-sys-color-surface-container);
+  box-shadow: var(--md-sys-elevation-level2);
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: var(--md-sys-measurement-menu-max-height);
+  display: none;
+}
+
+/* Visible: se muestra cuando el padre tiene .md-select-open o aria-expanded */
+.md-select-open > .md-menu,
+.md-select[aria-expanded="true"] > .md-menu {
+  display: block;
+}
+
+/* Items dentro del menu: heredan de list-item, ajustes minimos */
+.md-menu .md-list-item {
+  min-height: var(--md-sys-measurement-touch-target); /* 48dp */
+  padding-inline: var(--md-sys-measurement-space-200); /* 16dp */
+}
+
+/* Item seleccionado: checkmark trailing opcional */
+.md-menu .md-list-item[aria-selected="true"]::after {
+  content: "check";
+  font-family: var(--md-sys-icon-font);
+  font-size: var(--md-sys-measurement-icon-size-small);
+  line-height: 1;
+  color: var(--md-sys-color-on-surface);
+  margin-inline-start: auto;
+}

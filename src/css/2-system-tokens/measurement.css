@@ -1100,6 +1100,17 @@
   --md-sys-measurement-radio-touch-target: var(--md-sys-measurement-touch-target);  /* 48dp */
 
   /* ==========================================================================
+     MENU — Geometría canónica M3 (Superficie flotante)
+     --------------------------------------------------------------------------
+     Fuente: M3 Specs (menus/specs).
+     Ancho min: 112dp, max: 280dp, alto max: 300dp.
+     Padding vertical: 8dp. Esquinas: 4dp (extra-small).
+     ========================================================================== */
+  --md-sys-measurement-menu-min-width: var(--md-ref-container-width-menu-min);   /* 112dp */
+  --md-sys-measurement-menu-max-width: var(--md-ref-container-width-menu-max);   /* 280dp */
+  --md-sys-measurement-menu-max-height: var(--md-ref-container-height-menu-max); /* 300dp */
+
+  /* ==========================================================================
      TEXT FIELD — Altura de contenedor (M3: 56dp = container-height-medium)
      -------------------------------------------------------------------------- */
   --md-sys-measurement-text-field-container-height: var(--md-ref-container-height-medium);

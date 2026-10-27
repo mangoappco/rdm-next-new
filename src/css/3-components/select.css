@@ -1,0 +1,171 @@
+/* ==========================================================================
+   src/css/3-components/select.css — SELECT (M3 Selección)
+   ==========================================================================
+
+   QUE HACE
+   --------
+   El selector (Select) permite elegir una opción de una lista. En M3 canónico
+   es una composición de dos componentes: un ancla con anatomía de Text Field
+   (56dp) y un menú desplegable (.md-menu) con ítems de List Item (48dp).
+
+   Se construye sobre un input readonly + hidden input. El estado se gestiona
+   con .md-select-open y aria-expanded, con JS mínimo (src/js/select.js).
+
+   FUENTES
+   -------
+   - m3.material.io/components/menus/specs
+   - m3.material.io/components/text-fields/specs
+   - material-web select
+   ========================================================================== */
+
+/* Base: contenedor relativo de 56dp min-height */
+.md-select {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  min-height: var(--md-sys-measurement-text-field-container-height); /* 56dp */
+  width: 100%;
+  max-width: var(--md-sys-measurement-menu-max-width);
+  cursor: pointer;
+}
+
+/* Contenedor del ancla (text field anatomy) */
+.md-select-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: var(--md-sys-measurement-text-field-container-height);
+  border-radius: var(--md-sys-shape-corner-extra-small);
+  background-color: var(--md-sys-color-surface-container-highest);
+  padding-inline: var(--md-sys-measurement-space-200); /* 16dp */
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Outline (outlined variant border) - UNICO portador del borde */
+.md-select-outline {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--md-sys-shape-corner-extra-small);
+  border: var(--md-sys-shape-stroke-thin) solid var(--md-sys-color-outline);
+  pointer-events: none;
+  box-sizing: border-box;
+  transition:
+    border-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
+    border-width var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+}
+
+.md-select-outlined.md-select-open .md-select-outline,
+.md-select-outlined:has(.md-select-input:focus) .md-select-outline {
+  border-color: var(--md-sys-color-primary);
+  border-width: var(--md-sys-shape-stroke-thick);
+}
+
+/* Filled variant */
+.md-select-filled .md-select-container {
+  background-color: var(--md-sys-color-surface-container-highest);
+  border-bottom: var(--md-sys-shape-stroke-thin) solid var(--md-sys-color-on-surface-variant);
+}
+
+/* Disabled */
+.md-select:has(.md-select-input:disabled) {
+  cursor: not-allowed;
+  pointer-events: none;
+  opacity: var(--md-sys-state-disabled-state-layer-opacity);
+}
+
+/* Error */
+.md-select-error .md-select-outline {
+  border-color: var(--md-sys-color-error);
+}
+
+.md-select-error .md-select-label {
+  color: var(--md-sys-color-error);
+}
+
+.md-select-error .md-select-trailing-icon {
+  color: var(--md-sys-color-error);
+}
+.md-select-input {
+  flex: 1;
+  border: none;
+  background: none;
+  outline: none;
+  font: inherit;
+  color: var(--md-sys-color-on-surface);
+  padding: 0;
+  cursor: pointer;
+  min-height: var(--md-sys-measurement-text-field-container-height);
+}
+
+/* Label flotante */
+.md-select-label {
+  position: absolute;
+  top: 50%;
+  left: var(--md-sys-measurement-space-200);
+  transform: translateY(-50%);
+  color: var(--md-sys-color-on-surface-variant);
+  pointer-events: none;
+  transition: all var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+}
+
+/* Label flotante cuando hay valor o foco */
+.md-select:has(.md-select-input:not(:placeholder-shown)) .md-select-label,
+.md-select-open .md-select-label,
+.md-select:has(.md-select-input:focus) .md-select-label {
+  top: var(--md-sys-measurement-space-50);
+  transform: translateY(0);
+  font-size: var(--md-sys-typescale-body-small-size);
+  color: var(--md-sys-color-primary);
+}
+
+/* Trailing icon (arrow) */
+.md-select-trailing-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-inline-start: var(--md-sys-measurement-space-100);
+  transition: transform var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+}
+
+.md-select-open .md-select-trailing-icon {
+  transform: rotate(0.5turn);
+}
+
+/* Leading icon */
+.md-select-leading-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-inline-end: var(--md-sys-measurement-space-100);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* Menu dropdown (posicionado debajo del ancla) */
+.md-select .md-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: var(--md-sys-measurement-space-50);
+}
+
+/* Disabled */
+.md-select:has(.md-select-input:disabled) {
+  cursor: not-allowed;
+  pointer-events: none;
+  opacity: var(--md-sys-state-disabled-state-layer-opacity);
+}
+
+/* Error */
+.md-select-error .md-select-outline {
+  border-color: var(--md-sys-color-error);
+}
+
+.md-select-error .md-select-label {
+  color: var(--md-sys-color-error);
+}
+
+.md-select-error .md-select-trailing-icon {
+  color: var(--md-sys-color-error);
+}

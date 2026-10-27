@@ -170,6 +170,21 @@
   --md-ref-container-width-switch-track: 52px;
   --md-ref-container-height-switch-handle-pressed: 28px;
 
+/* ------------------------------------------------------------------------
+     MENU — ANCHO MINIMO 112DP Y MAXIMO 280DP, ALTO MAXIMO 300DP
+     ------------------------------------------------------------------------
+     Menu (superficie flotante M3) aporta tres medidas que la escala de
+     espaciado no tiene: 112, 280 y 300 no son escalones oficiales.
+     "Medidas de este componente, no del espaciado."
+
+     Fuente (M3 Specs: menus/specs):
+        min-width: 112dp, max-width: 280dp, max-height: 300dp
+
+     ------------------------------------------------------------------------ */
+  --md-ref-container-width-menu-min: 112px;
+  --md-ref-container-width-menu-max: 280px;
+  --md-ref-container-height-menu-max: 300px;
+
   /* ------------------------------------------------------------------------
      CHECKBOX — CAJA DE 18DP
      ------------------------------------------------------------------------
