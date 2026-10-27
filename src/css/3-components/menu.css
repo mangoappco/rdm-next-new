@@ -37,7 +37,8 @@
 /* Visible: se muestra cuando el padre tiene .md-select-open o aria-expanded */
 .md-select-open > .md-menu,
 .md-select[aria-expanded="true"] > .md-menu {
-  display: block;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Items dentro del menu: heredan de list-item, ajustes minimos */
