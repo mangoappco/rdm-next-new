@@ -54,10 +54,9 @@
   --_select-bg: var(--md-text-field-surface, var(--md-sys-color-surface)); /* superficie que abre el notch (mismo hook que text-field) */
 
   position: relative;
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: var(--md-sys-measurement-menu-max-width);
   cursor: pointer;
   box-sizing: border-box;
 }
