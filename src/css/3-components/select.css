@@ -426,6 +426,32 @@
   margin-top: var(--md-sys-measurement-space-50); /* 4dp separación M3 */
 }
 
+/* --------------------------------------------------------------------------
+   HOVER CANÓNICO M3 EN OPCIONES DEL MENÚ (full-bleed, sin border-radius)
+   ------------------------------------------------------------------------ */
+.md-select .md-menu [role="option"] {
+  cursor: pointer;
+  position: relative;
+}
+.md-select .md-menu [role="option"]::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 0;
+  pointer-events: none;
+  background-color: transparent;
+  transition: background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+}
+.md-select .md-menu [role="option"]:hover::before {
+  background-color: var(--md-sys-color-on-surface);
+  opacity: var(--md-sys-state-hover-state-layer-opacity);
+}
+.md-select .md-menu [role="option"].md-list-item-selected:hover::before,
+.md-select .md-menu [role="option"][aria-selected="true"]:hover::before {
+  background-color: var(--md-sys-color-on-secondary-container);
+  opacity: var(--md-sys-state-hover-state-layer-opacity);
+}
+
 /* ACCESIBILIDAD: prefers-reduced-motion (calco) */
 @media (prefers-reduced-motion: reduce) {
   .md-select-outline,
