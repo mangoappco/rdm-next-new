@@ -160,10 +160,35 @@
   opacity: var(--md-sys-state-pressed-state-layer-opacity);
 }
 
-/* ANILLO DE FOCO: 3px/2px en secondary (coherente con Switch/Button/Card) */
+/* ANILLO DE FOCO: circular exterior de 3px en secondary, centrado en la
+   caja. M3 specs: el focus indicator envuelve el touch target / state layer
+   circular, no la caja cuadrada de 18dp. Se dibuja como ::before del box
+   con border-radius full y 44dp (40 + 4), para que el anillo circular
+   exterior encierre el halo circular y la caja interior. */
+.md-checkbox-box::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(var(--md-sys-measurement-checkbox-state-layer-size) + var(--md-sys-measurement-space-50));
+  height: calc(var(--md-sys-measurement-checkbox-state-layer-size) + var(--md-sys-measurement-space-50));
+  border-radius: var(--md-sys-shape-corner-full);
+  border: var(--md-sys-shape-stroke-extra-thick) solid transparent;
+  pointer-events: none;
+  box-sizing: border-box;
+  opacity: 0;
+  transition: opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+}
+
+.md-checkbox:has(.md-checkbox-input:focus-visible) .md-checkbox-box::before {
+  border-color: var(--md-sys-color-secondary);
+  opacity: 1;
+}
+
+/* Retirar el outline cuadrado rígido de la caja de 18dp */
 .md-checkbox-input:focus-visible + .md-checkbox-box {
-  outline: var(--md-sys-shape-stroke-extra-thick) solid var(--md-sys-color-secondary);
-  outline-offset: var(--md-sys-shape-stroke-thick);
+  outline: none;
 }
 
 /* ICONOS: 18dp, siempre en DOM, swap por opacity.
@@ -256,6 +281,11 @@
 
 /* State layer apagado en todos los disabled */
 .md-checkbox:has(.md-checkbox-input:disabled) .md-checkbox-box::after {
+  content: none;
+}
+
+/* Focus ring apagado en todos los disabled */
+.md-checkbox:has(.md-checkbox-input:disabled) .md-checkbox-box::before {
   content: none;
 }
 
