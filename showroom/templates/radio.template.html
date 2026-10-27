@@ -60,7 +60,7 @@
     <!-- PAR 1: Basic radio -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Basic radio</h3>
-      <p class="md-type-body-medium">Círculo exterior de 20x20dp con borde de 2dp: desmarcado tiene borde en outline y fondo transparente; marcado tiene borde y punto de 10dp en primary. Toda la conmutación la expresa :checked del radio input nativo, sin JavaScript.</p>
+      <p class="md-type-body-medium">Aro exterior de 20dp con borde de 2dp; variante marcada con punto concentrico de 10dp en primary.</p>
 
       <div class="sr-specimen sr-specimen-gap">
         <label class="md-radio">
@@ -97,7 +97,7 @@
     <!-- PAR 2: Radio group -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Radio group</h3>
-      <p class="md-type-body-medium">Grupo de tres opciones con el mismo atributo name, demostrando la exclusión mutua nativa: solo una puede estar seleccionada a la vez, sin JavaScript. El estado se gobierna por :checked del input nativo.</p>
+      <p class="md-type-body-medium">Grupo de opciones con name compartido que asegura exclusión mutua nativa vía :checked.</p>
 
       <div class="sr-specimen sr-specimen-gap">
         <label class="md-radio">
@@ -148,7 +148,7 @@
     <!-- PAR 3: Interactive states -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Interactive states</h3>
-      <p class="md-type-body-medium">Respuesta al puntero y al teclado: capa de estado circular de 40dp al 8% en hover y 10% en foco y presión; anillo de foco circular de 3px con offset de 2px en secondary. La capa de estado usa on-surface en desmarcado y primary en marcado.</p>
+      <p class="md-type-body-medium">Capa de estado de 40dp al 8% en hover, 10% en foco y anillo concéntrico de 44dp en secondary.</p>
 
       <div class="sr-specimen sr-specimen-gap">
         <label class="md-radio">
@@ -185,7 +185,7 @@
     <!-- PAR 4: Disabled states -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Disabled states</h3>
-      <p class="md-type-body-medium">Estado inactivo con disabled nativo: todo (aro, punto) se atenúa al 38% en on-surface. Sin eventos ni transiciones. Dos variantes: desmarcado y marcado.</p>
+      <p class="md-type-body-medium">Aro y punto atenuados al 38% en on-surface, conservando el contenedor interior transparente.</p>
 
       <div class="sr-specimen sr-specimen-gap">
         <label class="md-radio">
@@ -222,7 +222,7 @@
     <!-- PAR 5: Error states -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Error states</h3>
-      <p class="md-type-body-medium">Estado de validación fallida gobernado por la clase .md-radio-error o el pseudo-estado nativo :invalid. La variante desmarcada vira el aro a error, mientras que la marcada adopta aro y punto en error.</p>
+      <p class="md-type-body-medium">Validación fallida mediante .md-radio-error o :invalid, virando aro y punto a color error.</p>
 
       <div class="sr-specimen sr-specimen-gap">
         <label class="md-radio md-radio-error">
