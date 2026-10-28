@@ -61,7 +61,8 @@
   cursor: pointer;
   box-sizing: border-box;
   z-index: 0;
-  margin-block-end: var(--md-sys-measurement-space-200); /* 16dp calco text-field host */
+  margin: 0;
+  padding: 0;
   gap: var(--md-sys-measurement-space-50);              /* 4dp  calco text-field host */
 }
 
