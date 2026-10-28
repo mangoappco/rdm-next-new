@@ -1,10 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Select de RDM Next: selector M3 compuesto de Text Field ancla (56dp) + men├║ desplegable con ítems de 48dp ÔÇö todo CSS + JS mínimo sobre delegación global.">
-  <title>Select ÔÇö RDM ManGo! App</title>
+  <meta name="description" content="Select de RDM Next: selector M3 compuesto de Text Field ancla (56dp) + menú desplegable con ítems de 48dp — todo CSS + JS mínimo sobre delegación global.">
+  <title>Select — RDM ManGo! App</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
@@ -17,7 +17,7 @@
 <!--
   ESTA VISTA TIENE SEIS PARES. El Bloque 1 --Especificación y anatomía--
   cubre Anatomy (ancla Outlined en reposo con la flotación del label),
-  Filled variant, Icon slots, Open state (men├║ desplegado), Disabled
+  Filled variant, Icon slots, Open state (menú desplegado), Disabled
   state y Error state. No hay Bloque 2: las composiciones de ManGo! App
   (el POS de caja, la comanda de cocina, la carta, el modal de cobro)
   pertenecen a la futura Galería de Usos.
@@ -25,8 +25,8 @@
   LOS ACUERDOS DEL SHOWROOM
   -------------------------
   1. Jerarquía: h1 (componente) > h2 (bloque) > h3 (par). Los títulos de
-     bloque y par est├ín en ingl├®s; las descripciones en espa├▒ol breve.
-  2. REGLA 11: el texto de cada pre.sr-code desescapado es id├®ntico al
+     bloque y par están en inglés; las descripciones en español breve.
+  2. REGLA 11: el texto de cada pre.sr-code desescapado es idéntico al
      innerHTML de su .sr-specimen (normalizando solo el espacio).
   3. REGLA 6: sin atributos de estilo en línea ni bloques <style>.
   4. REGLA 9: iconos siempre con .md-icon, nunca material-symbols-*.
@@ -47,7 +47,7 @@
         <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
       </div>
       <h1 class="md-type-display-large">Select</h1>
-      <p class="md-type-body-large">Los selectores (Selects) permiten a las personas elegir una opción de una lista. ┬À <em>Seis pares</em></p>
+      <p class="md-type-body-large">Los selectores (Selects) permiten a las personas elegir una opción de una lista. · <em>Seis pares</em></p>
     </header>
     <!-- HEADER: fin -->
 
@@ -59,13 +59,13 @@
     <!-- Anatomy -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Anatomy</h3>
-      <p class="md-type-body-medium">Ancla Outlined de 56dp en reposo: label flotante CSS-only, outline de 1px como ├║nico portador del borde y flecha trailing de 24dp.</p>
+      <p class="md-type-body-medium">Ancla Outlined de 56dp en reposo: label flotante CSS-only, outline de 1px como único portador del borde y flecha trailing de 24dp.</p>
 
       <div class="sr-specimen">
         <div class="md-select md-select-outlined" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox">
           <div class="md-select-container">
-            <input type="text" class="md-select-input" id="select-anatomy" readonly value="" placeholder=" " aria-label="M├®todo de pago">
-            <label class="md-select-label" for="select-anatomy">M├®todo de pago</label>
+            <input type="text" class="md-select-input" id="select-anatomy" readonly value="" placeholder=" " aria-label="Método de pago">
+            <label class="md-select-label" for="select-anatomy">Método de pago</label>
             <span class="md-select-outline" aria-hidden="true"></span>
             <span class="md-select-trailing-icon" aria-hidden="true">
               <span class="md-icon">arrow_drop_down</span>
@@ -76,7 +76,7 @@
               <span class="md-list-item-headline">Efectivo</span>
             </div>
             <div class="md-list-item" role="option" aria-selected="false" data-value="tarjeta">
-              <span class="md-list-item-headline">Tarjeta D├®bito/Cr├®dito</span>
+              <span class="md-list-item-headline">Tarjeta Débito/Crédito</span>
             </div>
             <div class="md-list-item" role="option" aria-selected="false" data-value="transferencia">
               <span class="md-list-item-headline">Transferencia</span>
@@ -87,8 +87,8 @@
 
       <pre class="sr-code"><code>&lt;div class="md-select md-select-outlined" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox"&gt;
   &lt;div class="md-select-container"&gt;
-    &lt;input type="text" class="md-select-input" id="select-anatomy" readonly value="" placeholder=" " aria-label="M├®todo de pago"&gt;
-    &lt;label class="md-select-label" for="select-anatomy"&gt;M├®todo de pago&lt;/label&gt;
+    &lt;input type="text" class="md-select-input" id="select-anatomy" readonly value="" placeholder=" " aria-label="Método de pago"&gt;
+    &lt;label class="md-select-label" for="select-anatomy"&gt;Método de pago&lt;/label&gt;
     &lt;span class="md-select-outline" aria-hidden="true"&gt;&lt;/span&gt;
     &lt;span class="md-select-trailing-icon" aria-hidden="true"&gt;
       &lt;span class="md-icon"&gt;arrow_drop_down&lt;/span&gt;
@@ -99,7 +99,7 @@
       &lt;span class="md-list-item-headline"&gt;Efectivo&lt;/span&gt;
     &lt;/div&gt;
     &lt;div class="md-list-item" role="option" aria-selected="false" data-value="tarjeta"&gt;
-      &lt;span class="md-list-item-headline"&gt;Tarjeta D├®bito/Cr├®dito&lt;/span&gt;
+      &lt;span class="md-list-item-headline"&gt;Tarjeta Débito/Crédito&lt;/span&gt;
     &lt;/div&gt;
     &lt;div class="md-list-item" role="option" aria-selected="false" data-value="transferencia"&gt;
       &lt;span class="md-list-item-headline"&gt;Transferencia&lt;/span&gt;
@@ -217,8 +217,8 @@
             <span class="md-select-leading-icon" aria-hidden="true">
               <span class="md-icon">payments</span>
             </span>
-            <input type="text" class="md-select-input" id="select-icon-slots" readonly value="Efectivo" placeholder=" " aria-label="M├®todo de pago">
-            <label class="md-select-label" for="select-icon-slots">M├®todo de pago</label>
+            <input type="text" class="md-select-input" id="select-icon-slots" readonly value="Efectivo" placeholder=" " aria-label="Método de pago">
+            <label class="md-select-label" for="select-icon-slots">Método de pago</label>
             <span class="md-select-outline" aria-hidden="true"></span>
             <span class="md-select-trailing-icon" aria-hidden="true">
               <span class="md-icon">arrow_drop_down</span>
@@ -229,7 +229,7 @@
               <span class="md-list-item-headline">Efectivo</span>
             </div>
             <div class="md-list-item" role="option" aria-selected="false" data-value="tarjeta">
-              <span class="md-list-item-headline">Tarjeta D├®bito/Cr├®dito</span>
+              <span class="md-list-item-headline">Tarjeta Débito/Crédito</span>
             </div>
             <div class="md-list-item" role="option" aria-selected="false" data-value="transferencia">
               <span class="md-list-item-headline">Transferencia</span>
@@ -243,8 +243,8 @@
     &lt;span class="md-select-leading-icon" aria-hidden="true"&gt;
       &lt;span class="md-icon"&gt;payments&lt;/span&gt;
     &lt;/span&gt;
-    &lt;input type="text" class="md-select-input" id="select-icon-slots" readonly value="Efectivo" placeholder=" " aria-label="M├®todo de pago"&gt;
-    &lt;label class="md-select-label" for="select-icon-slots"&gt;M├®todo de pago&lt;/label&gt;
+    &lt;input type="text" class="md-select-input" id="select-icon-slots" readonly value="Efectivo" placeholder=" " aria-label="Método de pago"&gt;
+    &lt;label class="md-select-label" for="select-icon-slots"&gt;Método de pago&lt;/label&gt;
     &lt;span class="md-select-outline" aria-hidden="true"&gt;&lt;/span&gt;
     &lt;span class="md-select-trailing-icon" aria-hidden="true"&gt;
       &lt;span class="md-icon"&gt;arrow_drop_down&lt;/span&gt;
@@ -255,7 +255,7 @@
       &lt;span class="md-list-item-headline"&gt;Efectivo&lt;/span&gt;
     &lt;/div&gt;
     &lt;div class="md-list-item" role="option" aria-selected="false" data-value="tarjeta"&gt;
-      &lt;span class="md-list-item-headline"&gt;Tarjeta D├®bito/Cr├®dito&lt;/span&gt;
+      &lt;span class="md-list-item-headline"&gt;Tarjeta Débito/Crédito&lt;/span&gt;
     &lt;/div&gt;
     &lt;div class="md-list-item" role="option" aria-selected="false" data-value="transferencia"&gt;
       &lt;span class="md-list-item-headline"&gt;Transferencia&lt;/span&gt;
@@ -268,13 +268,13 @@
     <!-- Open state -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Open state</h3>
-      <p class="md-type-body-medium">Men├║ desplegado con elevación level2, ítems de 48dp, flecha rotada 0.5turn y outline engrosado en primary con label flotado.</p>
+      <p class="md-type-body-medium">Menú desplegado con elevación level2, ítems de 48dp, flecha rotada 0.5turn y outline engrosado en primary con label flotado.</p>
 
       <div class="sr-specimen">
         <div class="md-select md-select-outlined md-select-open" data-md-select role="combobox" aria-expanded="true" aria-haspopup="listbox">
           <div class="md-select-container">
-            <input type="text" class="md-select-input" id="select-open" readonly value="Efectivo" placeholder=" " aria-label="M├®todo de pago">
-            <label class="md-select-label" for="select-open">M├®todo de pago</label>
+            <input type="text" class="md-select-input" id="select-open" readonly value="Efectivo" placeholder=" " aria-label="Método de pago">
+            <label class="md-select-label" for="select-open">Método de pago</label>
             <span class="md-select-outline" aria-hidden="true"></span>
             <span class="md-select-trailing-icon" aria-hidden="true">
               <span class="md-icon">arrow_drop_down</span>
@@ -285,7 +285,7 @@
               <span class="md-list-item-headline">Efectivo</span>
             </div>
             <div class="md-list-item" role="option" aria-selected="false" data-value="tarjeta">
-              <span class="md-list-item-headline">Tarjeta D├®bito/Cr├®dito</span>
+              <span class="md-list-item-headline">Tarjeta Débito/Crédito</span>
             </div>
             <div class="md-list-item" role="option" aria-selected="false" data-value="transferencia">
               <span class="md-list-item-headline">Transferencia</span>
@@ -296,8 +296,8 @@
 
       <pre class="sr-code"><code>&lt;div class="md-select md-select-outlined md-select-open" data-md-select role="combobox" aria-expanded="true" aria-haspopup="listbox"&gt;
   &lt;div class="md-select-container"&gt;
-    &lt;input type="text" class="md-select-input" id="select-open" readonly value="Efectivo" placeholder=" " aria-label="M├®todo de pago"&gt;
-    &lt;label class="md-select-label" for="select-open"&gt;M├®todo de pago&lt;/label&gt;
+    &lt;input type="text" class="md-select-input" id="select-open" readonly value="Efectivo" placeholder=" " aria-label="Método de pago"&gt;
+    &lt;label class="md-select-label" for="select-open"&gt;Método de pago&lt;/label&gt;
     &lt;span class="md-select-outline" aria-hidden="true"&gt;&lt;/span&gt;
     &lt;span class="md-select-trailing-icon" aria-hidden="true"&gt;
       &lt;span class="md-icon"&gt;arrow_drop_down&lt;/span&gt;
@@ -308,7 +308,7 @@
       &lt;span class="md-list-item-headline"&gt;Efectivo&lt;/span&gt;
     &lt;/div&gt;
     &lt;div class="md-list-item" role="option" aria-selected="false" data-value="tarjeta"&gt;
-      &lt;span class="md-list-item-headline"&gt;Tarjeta D├®bito/Cr├®dito&lt;/span&gt;
+      &lt;span class="md-list-item-headline"&gt;Tarjeta Débito/Crédito&lt;/span&gt;
     &lt;/div&gt;
     &lt;div class="md-list-item" role="option" aria-selected="false" data-value="transferencia"&gt;
       &lt;span class="md-list-item-headline"&gt;Transferencia&lt;/span&gt;
@@ -326,8 +326,8 @@
       <div class="sr-specimen">
         <div class="md-select md-select-outlined" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox">
           <div class="md-select-container">
-            <input type="text" class="md-select-input" id="select-disabled" readonly value="Efectivo" placeholder=" " aria-label="M├®todo de pago" disabled>
-            <label class="md-select-label" for="select-disabled">M├®todo de pago</label>
+            <input type="text" class="md-select-input" id="select-disabled" readonly value="Efectivo" placeholder=" " aria-label="Método de pago" disabled>
+            <label class="md-select-label" for="select-disabled">Método de pago</label>
             <span class="md-select-outline" aria-hidden="true"></span>
             <span class="md-select-trailing-icon" aria-hidden="true">
               <span class="md-icon">arrow_drop_down</span>
@@ -338,8 +338,8 @@
 
       <pre class="sr-code"><code>&lt;div class="md-select md-select-outlined" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox"&gt;
   &lt;div class="md-select-container"&gt;
-    &lt;input type="text" class="md-select-input" id="select-disabled" readonly value="Efectivo" placeholder=" " aria-label="M├®todo de pago" disabled&gt;
-    &lt;label class="md-select-label" for="select-disabled"&gt;M├®todo de pago&lt;/label&gt;
+    &lt;input type="text" class="md-select-input" id="select-disabled" readonly value="Efectivo" placeholder=" " aria-label="Método de pago" disabled&gt;
+    &lt;label class="md-select-label" for="select-disabled"&gt;Método de pago&lt;/label&gt;
     &lt;span class="md-select-outline" aria-hidden="true"&gt;&lt;/span&gt;
     &lt;span class="md-select-trailing-icon" aria-hidden="true"&gt;
       &lt;span class="md-icon"&gt;arrow_drop_down&lt;/span&gt;
@@ -352,13 +352,13 @@
     <!-- Error state -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Error state</h3>
-      <p class="md-type-body-medium">Validación fallida: outline engrosado en error, label y flecha en color error. El men├║ queda disponible para corregir la selección vacía.</p>
+      <p class="md-type-body-medium">Validación fallida: outline engrosado en error, label y flecha en color error. El menú queda disponible para corregir la selección vacía.</p>
 
       <div class="sr-specimen">
         <div class="md-select md-select-outlined md-select-error" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox">
           <div class="md-select-container">
-            <input type="text" class="md-select-input" id="select-error" readonly value="" placeholder=" " aria-label="M├®todo de pago" aria-invalid="true">
-            <label class="md-select-label" for="select-error">M├®todo de pago</label>
+            <input type="text" class="md-select-input" id="select-error" readonly value="" placeholder=" " aria-label="Método de pago" aria-invalid="true">
+            <label class="md-select-label" for="select-error">Método de pago</label>
             <span class="md-select-outline" aria-hidden="true"></span>
             <span class="md-select-trailing-icon" aria-hidden="true">
               <span class="md-icon">arrow_drop_down</span>
@@ -369,7 +369,7 @@
               <span class="md-list-item-headline">Efectivo</span>
             </div>
             <div class="md-list-item" role="option" aria-selected="false" data-value="tarjeta">
-              <span class="md-list-item-headline">Tarjeta D├®bito/Cr├®dito</span>
+              <span class="md-list-item-headline">Tarjeta Débito/Crédito</span>
             </div>
             <div class="md-list-item" role="option" aria-selected="false" data-value="transferencia">
               <span class="md-list-item-headline">Transferencia</span>
@@ -380,8 +380,8 @@
 
       <pre class="sr-code"><code>&lt;div class="md-select md-select-outlined md-select-error" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox"&gt;
   &lt;div class="md-select-container"&gt;
-    &lt;input type="text" class="md-select-input" id="select-error" readonly value="" placeholder=" " aria-label="M├®todo de pago" aria-invalid="true"&gt;
-    &lt;label class="md-select-label" for="select-error"&gt;M├®todo de pago&lt;/label&gt;
+    &lt;input type="text" class="md-select-input" id="select-error" readonly value="" placeholder=" " aria-label="Método de pago" aria-invalid="true"&gt;
+    &lt;label class="md-select-label" for="select-error"&gt;Método de pago&lt;/label&gt;
     &lt;span class="md-select-outline" aria-hidden="true"&gt;&lt;/span&gt;
     &lt;span class="md-select-trailing-icon" aria-hidden="true"&gt;
       &lt;span class="md-icon"&gt;arrow_drop_down&lt;/span&gt;
@@ -392,7 +392,7 @@
       &lt;span class="md-list-item-headline"&gt;Efectivo&lt;/span&gt;
     &lt;/div&gt;
     &lt;div class="md-list-item" role="option" aria-selected="false" data-value="tarjeta"&gt;
-      &lt;span class="md-list-item-headline"&gt;Tarjeta D├®bito/Cr├®dito&lt;/span&gt;
+      &lt;span class="md-list-item-headline"&gt;Tarjeta Débito/Crédito&lt;/span&gt;
     &lt;/div&gt;
     &lt;div class="md-list-item" role="option" aria-selected="false" data-value="transferencia"&gt;
       &lt;span class="md-list-item-headline"&gt;Transferencia&lt;/span&gt;
@@ -406,4 +406,3 @@
   <!-- MAIN: fin -->
 </body>
 </html>
-
