@@ -488,6 +488,22 @@
   z-index: 1; /* Gana sobre labels de selects contiguos */
 }
 
+/* Leading icon en opciones del menú (calco M3 Icon slots / List Item) */
+.md-select .md-menu .md-list-item-leading {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--md-sys-measurement-icon-size); /* 24dp */
+  height: var(--md-sys-measurement-icon-size);
+  margin-inline-end: var(--md-sys-measurement-space-150); /* 12dp */
+  color: var(--_color-on-surface-variant);
+  flex-shrink: 0;
+}
+
+.md-select .md-menu .md-list-item.md-list-item-selected .md-list-item-leading {
+  color: var(--md-sys-color-on-secondary-container);
+}
+
 /* --------------------------------------------------------------------------
    HOVER CANÓNICO M3 EN OPCIONES DEL MENÚ (full-bleed, sin border-radius,
    sin transición para evitar parpadeo en recorrido rápido)

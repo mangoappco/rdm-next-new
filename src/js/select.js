@@ -1,16 +1,16 @@
-/* ==========================================================================
-   src/js/select.js — CONTROLADOR DE SELECT
+﻿/* ==========================================================================
+   src/js/select.js â€” CONTROLADOR DE SELECT
    ==========================================================================
 
    QUE HACE
    --------
-   Comportamiento del Select: abrir/cerrar menú, transferir selección,
-   navegación por teclado. Delegación global en document con atributos
+   Comportamiento del Select: abrir/cerrar menÃº, transferir selecciÃ³n,
+   navegaciÃ³n por teclado. DelegaciÃ³n global en document con atributos
    [data-md-select].
 
    PATRON
    ------
-   Una sola delegación en document para click y keydown. El gancho es el
+   Una sola delegaciÃ³n en document para click y keydown. El gancho es el
    atributo data-md-select en el contenedor .md-select.
 
    ========================================================================== */
@@ -28,7 +28,7 @@ export function initSelect() {
       return;
     }
 
-    // Si el clic fue en una opción, seleccionarla
+    // Si el clic fue en una opciÃ³n, seleccionarla
     const option = e.target.closest('[role="option"]');
     if (option && select.contains(option)) {
       const value = option.dataset.value || option.textContent.trim();
@@ -42,13 +42,20 @@ export function initSelect() {
       const hidden = select.querySelector('input[type="hidden"]');
       if (hidden) hidden.value = value;
 
+      // Sincronizar leading icon (calco M3 Icon slots)
+      const selectedIcon = option.dataset.icon;
+      const leadingIconSlot = select.querySelector('.md-select-leading-icon .md-icon');
+      if (selectedIcon && leadingIconSlot) {
+        leadingIconSlot.textContent = selectedIcon;
+      }
+
       // Actualizar aria-selected en todas las opciones
       select.querySelectorAll('[role="option"]').forEach(opt => {
         opt.setAttribute('aria-selected', opt === option ? 'true' : 'false');
         opt.classList.toggle('md-list-item-selected', opt === option);
       });
 
-      // Cerrar menú
+      // Cerrar menÃº
       select.classList.remove('md-select-open');
       select.setAttribute('aria-expanded', 'false');
       return;
@@ -73,7 +80,7 @@ export function initSelect() {
     }
   });
 
-  // Navegación por teclado
+  // NavegaciÃ³n por teclado
   document.addEventListener('keydown', (e) => {
     const select = e.target.closest('[data-md-select]');
     if (!select) return;
@@ -89,7 +96,7 @@ export function initSelect() {
           select.classList.add('md-select-open');
           select.setAttribute('aria-expanded', 'true');
         } else {
-          // Seleccionar opción enfocada
+          // Seleccionar opciÃ³n enfocada
           const focused = select.querySelector('[role="option"]:focus');
           if (focused) focused.click();
         }
@@ -119,8 +126,9 @@ export function initSelect() {
     }
   });
 
-  /* REGLA 13: registrar explícitamente los selectores de datos para que el
+  /* REGLA 13: registrar explÃ­citamente los selectores de datos para que el
      verificador los reconozca como atributos cableados por src/js/. */
   document.querySelector('[data-md-select]');
   document.querySelector('[data-value]');
+  document.querySelector('[data-icon]');
 }
