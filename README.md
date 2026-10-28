@@ -1007,7 +1007,7 @@ de dónde sale cada cosa, y el precio es que cada vista tiene que acordarse de e
 
 ## 11. Componentes
 
-El catálogo de M3 tiene decenas de componentes y aquí hay **once**. Se construyen uno a
+El catálogo de M3 tiene decenas de componentes y aquí hay **diecisiete**. Se construyen uno a
 uno, y ninguno se da por bueno sin medirlo en el navegador: `tools/verify-tokens.mjs`
 comprueba la arquitectura, no que el componente se vea bien.
 
@@ -1026,6 +1026,12 @@ El orden es el de `3-components/index.css`, que es el de carga y el de dependenc
 | List | `3-components/list.css` | 16 | 25 | `list.html`, 15 secciones |
 | Segmented Button | `3-components/segmented-button.css` | 6 | 18 | `segmented-button.html`, 9 secciones |
 | Chips | `3-components/chip.css` | 6 | 0 | `chips.html`, 11 secciones |
+| Text Field | `3-components/text-field.css` | 15 | 20 | `text-field.html`, 14 secciones |
+| Search | `3-components/search.css` | 12 | 8 | `search.html`, 5 secciones |
+| Switch | `3-components/switch.css` | 10 | 12 | `switch.html`, 4 secciones |
+| Checkbox | `3-components/checkbox.css` | 10 | 8 | `checkbox.html`, 5 secciones |
+| Radio Button | `3-components/radio.css` | 10 | 8 | `radio.html`, 5 secciones |
+| Select | `3-components/select.css` | 18 | 0 | `select.html`, 6 secciones |
 
 Las "clases" son las que expone el componente, sin contar las de `2-system-tokens` que compone para
 colocar la capa de estado: `button.css` nombra `.md-state-layer` y `.md-disabled` en sus

@@ -28,3 +28,31 @@ A partir de `list` (2026-10-21), cada vista del showroom se estructura en **dos 
 **El bloque 2 no repite la anatomía del 1: la combina.** Si una variación ya se enseñó y se midió en el laboratorio, aquí solo se combina con otras para formar una pieza real. Y hay una regla que no es de estilo sino de HTML, y que el bloque 2 hace visible: una fila con un control de acción no puede ser ella misma control —un `<button>` dentro de un `<button>` es contenido interactivo anidado—, así que esas filas son `<li>` estáticas y el control es la acción.
 
 En el marcado, el corte es un `<hr class="md-divider">` —el mismo mecanismo con el que `typography` separa sus familias de tipos—, el título de cada bloque es un `<h2>` y los pares van en `<h3>` debajo: el `h1` es el nombre del componente, y el esquema queda `h1 > h2 (bloque) > h3 (par)`. La apariencia de los pares no cambia, porque el tipo lo pone la clase y no la etiqueta.
+
+
+## 5. Directrices Consolidadas: Construcción de Select (2026-10-27/28)
+
+Durante la construcción del componente Select se consolidaron las siguientes directrices arquitectónicas, aplicables a todo el sistema:
+
+### 5.1 Principio de Host Atómico
+Los componentes de formulario (.md-text-field, .md-select, .md-button) **no deben poseer márgenes exteriores** (margin: 0) **ni paddings envolventes** (padding: 0) que deformen su caja o compliquen su reutilización en layouts externos. El ritmo y la separación vertical siempre los impone el contenedor padre mediante gap de layout (space-200 / 16dp) o clases auxiliares del showroom (.sr-specimen-gap). Un componente atómico debe ser puro: su box model solo contiene su contenido y su padding interno funcional.
+
+### 5.2 Anclaje de Menús (Exposed Dropdowns)
+En los selectores de formulario, el menú flotante (.md-menu) debe:
+- Acompañar el **100% del ancho del campo** (width: 100%; min-width: 100%; max-width: 100%), sobrescribiendo los límites de 112dp/280dp del menú genérico.
+- Posicionarse **estrictamente tras la cota de 56dp del ancla interactiva** (	op: calc(56dp + 4dp)), sobrevolando el supporting text y cualquier elemento contiguo.
+- Usar z-index: 1 dentro de su stacking context (el host eleva a z-index: 1 cuando está abierto).
+
+### 5.3 Preservación UTF-8
+Todas las herramientas de transformación de templates (	ools/escape-*.mjs y scripts de sincronización) deben forzar I/O en 'utf8' estricto:
+- s.readFileSync(path, 'utf8')
+- s.writeFileSync(path, content, 'utf8')
+- Nunca usar redirección de PowerShell (>, Out-File, Set-Content) sobre archivos con acentos, ya que re-codifican a Windows-1252.
+- Para correcciones de encoding, usar operaciones a nivel de bytes (Buffer) en Node.js.
+
+### 5.4 Supporting Text como Slot Anatómico
+El Supporting Text (.md-*-supporting-text) es un slot estructural estándar del componente de formulario. Debe estar presente en todos los pares demostrativos (no solo en Error), con:
+- margin-block-start: 4dp (space-50)
+- padding-inline: 16dp (space-200)
+- Color on-surface-variant en reposo, error en estado de error, opacidad 38% en disabled.
+- Enlace mediante ria-describedby en el input.

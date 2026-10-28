@@ -350,19 +350,41 @@ Mecanismo primario: clase `.md-radio-error`, con `:invalid` como fallback. Unsel
 
 ## Select - publicada
 
-Seis pares, cerrados el 2026-10-27 con la estructura alineada al patrón de text-field: **Anatomy** (ancla Outlined de 56dp en reposo, label flotante CSS-only), **Filled variant** (reposo vacío y seleccionado), **Icon slots** (leading icon de 24dp, label corrido a 52dp), **Open state** (menú desplegado con elevación level2 e ítems de 48dp), **Disabled state** (outline al 12%, contenido al 38%) y **Error state** (outline/label/flecha en error). Como en checkbox y radio, Disabled y Error viven en pares independientes — un par es un concepto atómico. Es una composición de dos componentes: ancla con anatomía de Text Field (56dp) + menú flotante (`.md-menu`) con ítems de List Item (48dp). El ancla de `select.css` es calco de `text-field.css` —notch del label, active indicator de filled, disabled fino por partes— con tres diferencias autorizadas: input display-only con `pointer-events: none`, flecha trailing que rota 0.5turn al abrir, y disparadores propios del flotado (`.md-select-open` / `[aria-expanded]`). JS mínimo en `src/js/select.js` con delegación global (`data-md-select`). Cero tokens nuevos (100% dogfooding). REGLA 13 con JS mínimo (igual que search/text-field). La vista es el QUINTO par byte-idéntico con su moldería —como abajo se anota—.
+Seis pares, cerrados el 2026-10-28 con la estructura alineada al patrón de text-field: **Anatomy** (ancla Outlined de 56dp en reposo, label flotante CSS-only), **Filled variant** (reposo vacío y seleccionado), **Icon slots** (leading icon de 24dp, label corrido a 52dp, sincronización dinámica de icono), **Open state** (menú desplegado con elevación level2 e ítems de 48dp), **Disabled state** (outline al 12%, contenido al 38%) y **Error state** (outline/label/flecha en error). Como en checkbox y radio, Disabled y Error viven en pares independientes — un par es un concepto atómico. Es una composición de dos componentes: ancla con anatomía de Text Field (56dp) + menú flotante (`.md-menu`) con ítems de List Item (48dp). El ancla de `select.css` es calco de `text-field.css` —notch del label, active indicator de filled, disabled fino por partes— con diferencias autorizadas: input display-only con `pointer-events: none`, flecha trailing que rota 0.5turn al abrir, disparadores propios del flotado (`.md-select-open` / `[aria-expanded]`), supporting text (4dp gap, 16dp indent), host atómico (`margin: 0; padding: 0`). JS mínimo en `src/js/select.js` con delegación global (`data-md-select`). Cero tokens nuevos (100% dogfooding). La vista es el QUINTO par byte-idéntico con su moldería.
 
 ### Componente Menu (`.md-menu`)
 
-Superficie flotante mínima creada como componente independiente: elevación level2, fondo `surface-container`, esquinas 4px, padding vertical 8dp, ancho min 112dp / max 280dp, z-index 1000. Reutilizable para futuros overflow menus.
+Superficie flotante mínima creada como componente independiente: elevación level2, fondo `surface-container`, esquinas 4px, padding vertical 8dp, ancho min 112dp / max 280dp. En contexto de Select: ancho 100% del campo, anclado a 56dp + 4dp, z-index 1. Reutilizable para futuros overflow menus.
 
 ### Controlador JS (`src/js/select.js`)
 
-Delegación global en `document` con `click` y `keydown`. Toggle de `.md-select-open` + `aria-expanded`. Selección de opción transfiere valor al input + hidden input, actualiza `aria-selected`. Cierre con Escape y clics externos. Navegación con ArrowDown/ArrowUp/Enter.
+Delegación global en `document` con `click` y `keydown`. Toggle de `.md-select-open` + `aria-expanded`. Selección de opción transfiere valor al input + hidden input (extrayendo solo el texto de `.md-list-item-headline`, no el glifo del icono), sincroniza el leading icon via `data-icon`, actualiza `aria-selected`. Cierre con Escape y clics externos. Navegación con ArrowDown/ArrowUp/Enter/Space.
 
 ### Disabled y Error
 
-Disabled fino por partes (calco de text-field): contenido al 38%, label atenuado con `rgb(from on-surface r g b / 38%)` sin opacidad de bloque, outlined al 12% de opacidad de borde y `pointer-events: none` en el host. Error con clase `.md-select-error`: outline 2px, label flotado y flecha en color error (prioridad sobre el flotado primary).
+Disabled fino por partes (calco de text-field): contenido al 38%, label atenuado con `rgb(from on-surface r g b / 38%)` sin opacidad de bloque, outlined al 12% de opacidad de borde y `pointer-events: none` en el host. Error con clase `.md-select-error`: outline 2px, label flotado y flecha en color error (prioridad sobre el flotado primary), supporting text en color error.
+
+### Archivos creados/modificados
+
+- `src/css/3-components/select.css` (ancla de 56dp, active indicator en base, notch outline, supporting text, estados, leading icon en menú, host atómico).
+- `src/css/3-components/menu.css` (superficie flotante de nivel 2, ancho 100%, opciones full-bleed de 48dp).
+- `src/js/select.js` (controlador de delegación global, transferencias al input y hidden input, sincronización de icono con `data-icon`, cierre en Escape y fuera de foco).
+- `showroom/templates/select.template.html` y `showroom/components/select.html` (6 pares canónicos M3).
+
+### Métricas de validación
+
+- `FALLOS: 4` (2 de baseline playwright-core + 2 de color-mix 8% autorizados).
+- REGLA 11: 0 fallos (paridad byte-idéntica entre molde y vista).
+- REGLA 13: 0 fallos (snippets autónomos con `main.css` + `main.js`).
+- Codificación: UTF-8 sin BOM (cero mojibake en el árbol completo de 124 archivos).
+
+### Decisión arquitectónica registrada
+
+Se acordó posponer la inclusión de casos de uso dentro de las vistas individuales de componentes. Todos los casos de uso prácticos para ManGo! App se consolidarán más adelante en una sección dedicada: **GALERÍA DE CASOS DE USO** (`showroom/gallery.html` o similar).
+
+### Próximo objetivo definido
+
+Abrir la familia de **Navegación** con el componente **Top App Bar** (`.md-top-app-bar`).
 
 ## Las dos mitades de una vista del showroom
 
