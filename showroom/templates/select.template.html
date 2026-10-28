@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Select de RDM Next: selector M3 compuesto de Text Field ancla (56dp) + men├║ desplegable con ├¡tems de 48dp ÔÇö todo CSS + JS m├¡nimo sobre delegaci├│n global.">
+  <meta name="description" content="Select de RDM Next: selector M3 compuesto de Text Field ancla (56dp) + men├║ desplegable con ítems de 48dp ÔÇö todo CSS + JS mínimo sobre delegación global.">
   <title>Select ÔÇö RDM ManGo! App</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,25 +15,25 @@
 </head>
 
 <!--
-  ESTA VISTA TIENE SEIS PARES. El Bloque 1 --Especificaci├│n y anatom├¡a--
-  cubre Anatomy (ancla Outlined en reposo con la flotaci├│n del label),
+  ESTA VISTA TIENE SEIS PARES. El Bloque 1 --Especificación y anatomía--
+  cubre Anatomy (ancla Outlined en reposo con la flotación del label),
   Filled variant, Icon slots, Open state (men├║ desplegado), Disabled
   state y Error state. No hay Bloque 2: las composiciones de ManGo! App
   (el POS de caja, la comanda de cocina, la carta, el modal de cobro)
-  pertenecen a la futura Galer├¡a de Usos.
+  pertenecen a la futura Galería de Usos.
 
   LOS ACUERDOS DEL SHOWROOM
   -------------------------
-  1. Jerarqu├¡a: h1 (componente) > h2 (bloque) > h3 (par). Los t├¡tulos de
+  1. Jerarquía: h1 (componente) > h2 (bloque) > h3 (par). Los títulos de
      bloque y par est├ín en ingl├®s; las descripciones en espa├▒ol breve.
   2. REGLA 11: el texto de cada pre.sr-code desescapado es id├®ntico al
      innerHTML de su .sr-specimen (normalizando solo el espacio).
-  3. REGLA 6: sin atributos de estilo en l├¡nea ni bloques <style>.
+  3. REGLA 6: sin atributos de estilo en línea ni bloques <style>.
   4. REGLA 9: iconos siempre con .md-icon, nunca material-symbols-*.
   5. REGLA 10: toda clase md-* del showroom existe en src/css/.
-  6. REGLA 13: cada snippet es aut├│nomo (solo clases del sistema).
+  6. REGLA 13: cada snippet es autónomo (solo clases del sistema).
   7. ARIA: combobox + listbox + option con aria-expanded y aria-selected.
-  8. Un par = un concepto at├│mico: como en text-field, checkbox y radio,
+  8. Un par = un concepto atómico: como en text-field, checkbox y radio,
      Disabled state y Error state viven en pares independientes.
 -->
 
@@ -47,14 +47,14 @@
         <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
       </div>
       <h1 class="md-type-display-large">Select</h1>
-      <p class="md-type-body-large">Los selectores (Selects) permiten a las personas elegir una opci├│n de una lista. ┬À <em>Seis pares</em></p>
+      <p class="md-type-body-large">Los selectores (Selects) permiten a las personas elegir una opción de una lista. ┬À <em>Seis pares</em></p>
     </header>
     <!-- HEADER: fin -->
 
     <hr class="md-divider">
 
-    <!-- BLOQUE 1: Especificaci├│n y anatom├¡a -->
-    <h2 class="md-type-headline-medium">Especificaci├│n y anatom├¡a</h2>
+    <!-- BLOQUE 1: Especificación y anatomía -->
+    <h2 class="md-type-headline-medium">Especificación y anatomía</h2>
 
     <!-- Anatomy -->
     <section class="sr-section">
@@ -112,13 +112,13 @@
     <!-- Filled variant -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Filled variant</h3>
-      <p class="md-type-body-medium">Variante con superficie surface-container-highest y l├¡nea inferior que engrosa y vira a primary al abrir. Reposo vac├¡o y seleccionado con valor.</p>
+      <p class="md-type-body-medium">Variante con superficie surface-container-highest y línea inferior que engrosa y vira a primary al abrir. Reposo vacío y seleccionado con valor.</p>
 
       <div class="sr-specimen sr-specimen-gap">
         <div class="md-select md-select-filled" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox">
           <div class="md-select-container">
-            <input type="text" class="md-select-input" id="select-filled-rest" readonly value="" placeholder=" " aria-label="Categor├¡a">
-            <label class="md-select-label" for="select-filled-rest">Categor├¡a</label>
+            <input type="text" class="md-select-input" id="select-filled-rest" readonly value="" placeholder=" " aria-label="Categoría">
+            <label class="md-select-label" for="select-filled-rest">Categoría</label>
             <span class="md-select-active-indicator" aria-hidden="true"></span>
             <span class="md-select-trailing-icon" aria-hidden="true">
               <span class="md-icon">arrow_drop_down</span>
@@ -139,8 +139,8 @@
 
         <div class="md-select md-select-filled" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox">
           <div class="md-select-container">
-            <input type="text" class="md-select-input" id="select-filled-selected" readonly value="Bebidas" placeholder=" " aria-label="Categor├¡a">
-            <label class="md-select-label" for="select-filled-selected">Categor├¡a</label>
+            <input type="text" class="md-select-input" id="select-filled-selected" readonly value="Bebidas" placeholder=" " aria-label="Categoría">
+            <label class="md-select-label" for="select-filled-selected">Categoría</label>
             <span class="md-select-active-indicator" aria-hidden="true"></span>
             <span class="md-select-trailing-icon" aria-hidden="true">
               <span class="md-icon">arrow_drop_down</span>
@@ -162,8 +162,8 @@
 
       <pre class="sr-code"><code>&lt;div class="md-select md-select-filled" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox"&gt;
   &lt;div class="md-select-container"&gt;
-    &lt;input type="text" class="md-select-input" id="select-filled-rest" readonly value="" placeholder=" " aria-label="Categor├¡a"&gt;
-    &lt;label class="md-select-label" for="select-filled-rest"&gt;Categor├¡a&lt;/label&gt;
+    &lt;input type="text" class="md-select-input" id="select-filled-rest" readonly value="" placeholder=" " aria-label="Categoría"&gt;
+    &lt;label class="md-select-label" for="select-filled-rest"&gt;Categoría&lt;/label&gt;
     &lt;span class="md-select-active-indicator" aria-hidden="true"&gt;&lt;/span&gt;
     &lt;span class="md-select-trailing-icon" aria-hidden="true"&gt;
       &lt;span class="md-icon"&gt;arrow_drop_down&lt;/span&gt;
@@ -184,8 +184,8 @@
 
 &lt;div class="md-select md-select-filled" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox"&gt;
   &lt;div class="md-select-container"&gt;
-    &lt;input type="text" class="md-select-input" id="select-filled-selected" readonly value="Bebidas" placeholder=" " aria-label="Categor├¡a"&gt;
-    &lt;label class="md-select-label" for="select-filled-selected"&gt;Categor├¡a&lt;/label&gt;
+    &lt;input type="text" class="md-select-input" id="select-filled-selected" readonly value="Bebidas" placeholder=" " aria-label="Categoría"&gt;
+    &lt;label class="md-select-label" for="select-filled-selected"&gt;Categoría&lt;/label&gt;
     &lt;span class="md-select-active-indicator" aria-hidden="true"&gt;&lt;/span&gt;
     &lt;span class="md-select-trailing-icon" aria-hidden="true"&gt;
       &lt;span class="md-icon"&gt;arrow_drop_down&lt;/span&gt;
@@ -268,7 +268,7 @@
     <!-- Open state -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Open state</h3>
-      <p class="md-type-body-medium">Men├║ desplegado con elevaci├│n level2, ├¡tems de 48dp, flecha rotada 0.5turn y outline engrosado en primary con label flotado.</p>
+      <p class="md-type-body-medium">Men├║ desplegado con elevación level2, ítems de 48dp, flecha rotada 0.5turn y outline engrosado en primary con label flotado.</p>
 
       <div class="sr-specimen">
         <div class="md-select md-select-outlined md-select-open" data-md-select role="combobox" aria-expanded="true" aria-haspopup="listbox">
@@ -352,7 +352,7 @@
     <!-- Error state -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Error state</h3>
-      <p class="md-type-body-medium">Validaci├│n fallida: outline engrosado en error, label y flecha en color error. El men├║ queda disponible para corregir la selecci├│n vac├¡a.</p>
+      <p class="md-type-body-medium">Validación fallida: outline engrosado en error, label y flecha en color error. El men├║ queda disponible para corregir la selección vacía.</p>
 
       <div class="sr-specimen">
         <div class="md-select md-select-outlined md-select-error" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox">
@@ -406,3 +406,4 @@
   <!-- MAIN: fin -->
 </body>
 </html>
+
