@@ -1,5 +1,5 @@
 /* ==========================================================================
-   2-system-tokens/state.css â€” TOKENS SEMANTICOS DE STATE LAYER (solo var())
+   2-system-tokens/state.css — TOKENS SEMANTICOS DE STATE LAYER (solo var())
    ==========================================================================
 
    QUE ES UN STATE LAYER
@@ -14,7 +14,7 @@
      - Tiene una opacidad FIJA para cada estado.
      - Usa el MISMO COLOR que el contenido del elemento.
      - Solo puede haber UNO a la vez: nunca hover y pressed simultaneos.
-     - Mide 40dp de tamaÃ±o, dentro de un area tactil de 48dp.
+     - Mide 40dp de tamaño, dentro de un area tactil de 48dp.
 
    ---------------------------------------------------------------------------
    LA REGLA QUE MAS IMPORTANTE Y QUE MAS SE OLVIDA
@@ -92,24 +92,24 @@
      Cada uno mapea a su valor crudo en 1-reference-tokens/opacity.css.
      --------------------------------------------------------------------- */
 
-  /* 8% â€” hover. El estado mas frecuente de la interfaz. */
+  /* 8% — hover. El estado mas frecuente de la interfaz. */
   --md-sys-state-hover-state-layer-opacity: var(--md-ref-opacity-8);
 
-  /* 10% â€” focus por teclado. Senala "estoy aqui" durante el recorrido con tab. */
+  /* 10% — focus por teclado. Senala "estoy aqui" durante el recorrido con tab. */
   --md-sys-state-focus-state-layer-opacity: var(--md-ref-opacity-10);
 
-  /* 10% â€” pressed. Mismo valor que focus: ambos responden a una intencion
+  /* 10% — pressed. Mismo valor que focus: ambos responden a una intencion
      activa del usuario. */
   --md-sys-state-pressed-state-layer-opacity: var(--md-ref-opacity-10);
 
-  /* 16% â€” dragged. El mas intenso de los tres de interaccion. */
+  /* 16% — dragged. El mas intenso de los tres de interaccion. */
   --md-sys-state-dragged-state-layer-opacity: var(--md-ref-opacity-16);
 
-  /* 38% â€” disabled. No es un state layer: es la opacidad del contenido
+  /* 38% — disabled. No es un state layer: es la opacidad del contenido
      inactivo. Ver la nota de 1-reference-tokens/opacity.css. */
   --md-sys-state-disabled-state-layer-opacity: var(--md-ref-opacity-38);
 
-  /* 10% â€” el CONTENEDOR deshabilitado. Es un valor distinto del 38% del
+  /* 10% — el CONTENEDOR deshabilitado. Es un valor distinto del 38% del
      contenido, y por eso necesita su propio rol.
 
      M3 lo separa asi porque un boton deshabilitado se dibuja en dos pasos:

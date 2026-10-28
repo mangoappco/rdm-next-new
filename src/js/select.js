@@ -1,16 +1,16 @@
-﻿/* ==========================================================================
-   src/js/select.js â€” CONTROLADOR DE SELECT
+/* ==========================================================================
+   src/js/select.js — CONTROLADOR DE SELECT
    ==========================================================================
 
    QUE HACE
    --------
-   Comportamiento del Select: abrir/cerrar menÃº, transferir selecciÃ³n,
-   navegaciÃ³n por teclado. DelegaciÃ³n global en document con atributos
+   Comportamiento del Select: abrir/cerrar menú, transferir selección,
+   navegación por teclado. Delegación global en document con atributos
    [data-md-select].
 
    PATRON
    ------
-   Una sola delegaciÃ³n en document para click y keydown. El gancho es el
+   Una sola delegación en document para click y keydown. El gancho es el
    atributo data-md-select en el contenedor .md-select.
 
    ========================================================================== */
@@ -28,7 +28,7 @@ export function initSelect() {
       return;
     }
 
-    // Si el clic fue en una opciÃ³n, seleccionarla
+    // Si el clic fue en una opción, seleccionarla
     const option = e.target.closest('[role="option"]');
     if (option && select.contains(option)) {
       const value = option.dataset.value || option.textContent.trim();
@@ -57,7 +57,7 @@ export function initSelect() {
         opt.classList.toggle('md-list-item-selected', opt === option);
       });
 
-      // Cerrar menÃº
+      // Cerrar menú
       select.classList.remove('md-select-open');
       select.setAttribute('aria-expanded', 'false');
       return;
@@ -82,7 +82,7 @@ export function initSelect() {
     }
   });
 
-  // NavegaciÃ³n por teclado
+  // Navegación por teclado
   document.addEventListener('keydown', (e) => {
     const select = e.target.closest('[data-md-select]');
     if (!select) return;
@@ -98,7 +98,7 @@ export function initSelect() {
           select.classList.add('md-select-open');
           select.setAttribute('aria-expanded', 'true');
         } else {
-          // Seleccionar opciÃ³n enfocada
+          // Seleccionar opción enfocada
           const focused = select.querySelector('[role="option"]:focus');
           if (focused) focused.click();
         }
@@ -128,7 +128,7 @@ export function initSelect() {
     }
   });
 
-  /* REGLA 13: registrar explÃ­citamente los selectores de datos para que el
+  /* REGLA 13: registrar explícitamente los selectores de datos para que el
      verificador los reconozca como atributos cableados por src/js/. */
   document.querySelector('[data-md-select]');
   document.querySelector('[data-value]');

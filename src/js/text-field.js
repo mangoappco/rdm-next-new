@@ -1,4 +1,4 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    src/js/text-field.js — CONTROLADOR DECLARATIVO PARA TRAILING ACTIONS,
    COUNTER Y VALIDACIÓN INTERACTIVA
    ManGo! App / RDM Next

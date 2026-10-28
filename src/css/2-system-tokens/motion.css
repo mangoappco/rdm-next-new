@@ -1,5 +1,5 @@
 /* ==========================================================================
-   2-system-tokens/motion.css â€” TOKENS SEMANTICOS DE MOVIMIENTO (solo var())
+   2-system-tokens/motion.css — TOKENS SEMANTICOS DE MOVIMIENTO (solo var())
    ==========================================================================
 
    QUE ES ESTE ARCHIVO
@@ -150,74 +150,74 @@
 
 :root {
   /* ==========================================================================
-     DURACIONES â€” 16 ROLES
+     DURACIONES — 16 ROLES
      Cada uno mapea a su valor crudo en 1-reference-tokens/time.css.
      ====================================================================== */
 
   /* --- SHORT: cambios de estado, respuesta inmediata --- */
 
-  /* 50ms â€” apenas perceptible. El limite inferior del sistema. */
+  /* 50ms — apenas perceptible. El limite inferior del sistema. */
   --md-sys-motion-duration-short1: var(--md-ref-time-duration-50);
 
-  /* 100ms â€” cambio de hover, focus o pressed. El mas usado. */
+  /* 100ms — cambio de hover, focus o pressed. El mas usado. */
   --md-sys-motion-duration-short2: var(--md-ref-time-duration-100);
 
-  /* 150ms â€” cambios de estado algo mas notorios. */
+  /* 150ms — cambios de estado algo mas notorios. */
   --md-sys-motion-duration-short3: var(--md-ref-time-duration-150);
 
-  /* 200ms â€” cambio de estado completo, como un ripple. */
+  /* 200ms — cambio de estado completo, como un ripple. */
   --md-sys-motion-duration-short4: var(--md-ref-time-duration-200);
 
   /* --- MEDIUM: elementos que entran o se mueven --- */
 
-  /* 250ms â€” inicio de la apertura de un panel. */
+  /* 250ms — inicio de la apertura de un panel. */
   --md-sys-motion-duration-medium1: var(--md-ref-time-duration-250);
 
-  /* 300ms â€” apertura de un dialogo o menu. */
+  /* 300ms — apertura de un dialogo o menu. */
   --md-sys-motion-duration-medium2: var(--md-ref-time-duration-300);
 
-  /* 350ms â€” transiciones de posicion intermedias. */
+  /* 350ms — transiciones de posicion intermedias. */
   --md-sys-motion-duration-medium3: var(--md-ref-time-duration-350);
 
-  /* 400ms â€” transiciones de posicion completas. */
+  /* 400ms — transiciones de posicion completas. */
   --md-sys-motion-duration-medium4: var(--md-ref-time-duration-400);
 
   /* --- LONG: superficies grandes --- */
 
-  /* 450ms â€” entrada de un drawer parcial. */
+  /* 450ms — entrada de un drawer parcial. */
   --md-sys-motion-duration-long1: var(--md-ref-time-duration-450);
 
-  /* 500ms â€” transiciones de superficie intermedia. */
+  /* 500ms — transiciones de superficie intermedia. */
   --md-sys-motion-duration-long2: var(--md-ref-time-duration-500);
 
-  /* 550ms â€” transiciones de superficie amplia. */
+  /* 550ms — transiciones de superficie amplia. */
   --md-sys-motion-duration-long3: var(--md-ref-time-duration-550);
 
-  /* 600ms â€” entrada de un drawer completo. */
+  /* 600ms — entrada de un drawer completo. */
   --md-sys-motion-duration-long4: var(--md-ref-time-duration-600);
 
   /* --- EXTRA LONG: movimiento de grandes superficies --- */
 
-  /* 700ms â€” sheet amplio con curva emphasized. */
+  /* 700ms — sheet amplio con curva emphasized. */
   --md-sys-motion-duration-extra-long1: var(--md-ref-time-duration-700);
 
-  /* 800ms â€” sheet a pantalla casi completa. */
+  /* 800ms — sheet a pantalla casi completa. */
   --md-sys-motion-duration-extra-long2: var(--md-ref-time-duration-800);
 
-  /* 900ms â€” transiciones de superficie maxima. */
+  /* 900ms — transiciones de superficie maxima. */
   --md-sys-motion-duration-extra-long3: var(--md-ref-time-duration-900);
 
-  /* 1000ms â€” el tope del sistema. Con emphasized, para terminar con suavidad. */
+  /* 1000ms — el tope del sistema. Con emphasized, para terminar con suavidad. */
   --md-sys-motion-duration-extra-long4: var(--md-ref-time-duration-1000);
 
   /* ==========================================================================
-     CURVAS â€” 10 ROLES
+     CURVAS — 10 ROLES
      --------------------------------------------------------------------------
      Cada cubic-bezier se compone de los cuatro puntos de control de
      1-reference-tokens/easing.css. Ningun numero se escribe aqui.
      ====================================================================== */
 
-  /* Standard â€” la curva por defecto del sistema */
+  /* Standard — la curva por defecto del sistema */
   --md-sys-motion-easing-standard: cubic-bezier(
     var(--md-ref-easing-standard-x0),
     var(--md-ref-easing-standard-y0),
@@ -225,7 +225,7 @@
     var(--md-ref-easing-standard-y1)
   );
 
-  /* Standard accelerate â€” algo SALE de la pantalla, termina rapido */
+  /* Standard accelerate — algo SALE de la pantalla, termina rapido */
   --md-sys-motion-easing-standard-accelerate: cubic-bezier(
     var(--md-ref-easing-standard-accelerate-x0),
     var(--md-ref-easing-standard-accelerate-y0),
@@ -233,7 +233,7 @@
     var(--md-ref-easing-standard-accelerate-y1)
   );
 
-  /* Standard decelerate â€” algo ENTRA en la pantalla, frena al final */
+  /* Standard decelerate — algo ENTRA en la pantalla, frena al final */
   --md-sys-motion-easing-standard-decelerate: cubic-bezier(
     var(--md-ref-easing-standard-decelerate-x0),
     var(--md-ref-easing-standard-decelerate-y0),
@@ -241,7 +241,7 @@
     var(--md-ref-easing-standard-decelerate-y1)
   );
 
-  /* Emphasized â€” transiciones con caracter, cola larga */
+  /* Emphasized — transiciones con caracter, cola larga */
   --md-sys-motion-easing-emphasized: cubic-bezier(
     var(--md-ref-easing-emphasized-x0),
     var(--md-ref-easing-emphasized-y0),
@@ -249,7 +249,7 @@
     var(--md-ref-easing-emphasized-y1)
   );
 
-  /* Emphasized accelerate â€” salida con caracter */
+  /* Emphasized accelerate — salida con caracter */
   --md-sys-motion-easing-emphasized-accelerate: cubic-bezier(
     var(--md-ref-easing-emphasized-accelerate-x0),
     var(--md-ref-easing-emphasized-accelerate-y0),
@@ -257,7 +257,7 @@
     var(--md-ref-easing-emphasized-accelerate-y1)
   );
 
-  /* Emphasized decelerate â€” entrada con caracter */
+  /* Emphasized decelerate — entrada con caracter */
   --md-sys-motion-easing-emphasized-decelerate: cubic-bezier(
     var(--md-ref-easing-emphasized-decelerate-x0),
     var(--md-ref-easing-emphasized-decelerate-y0),
@@ -265,7 +265,7 @@
     var(--md-ref-easing-emphasized-decelerate-y1)
   );
 
-  /* Legacy â€” la curva clasica de Android y Material 2 */
+  /* Legacy — la curva clasica de Android y Material 2 */
   --md-sys-motion-easing-legacy: cubic-bezier(
     var(--md-ref-easing-legacy-x0),
     var(--md-ref-easing-legacy-y0),

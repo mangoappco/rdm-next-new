@@ -1,5 +1,5 @@
 /* ==========================================================================
-   2-system-tokens/measurement.css â€” TOKENS SEMANTICOS DE MEDIDA (solo var())
+   2-system-tokens/measurement.css — TOKENS SEMANTICOS DE MEDIDA (solo var())
    ==========================================================================
 
    QUE ES ESTE ARCHIVO
@@ -720,7 +720,7 @@
      MEDIDAS DEL BOTON DE ICONO
      --------------------------------------------------------------------------
      M3 define el boton de icono como un COMPONENTE APARTE del boton, con sus
-     propias medidas. No es un boton sin etiqueta: los tamaÃ±os no coinciden.
+     propias medidas. No es un boton sin etiqueta: los tamaños no coinciden.
 
      Verificado en material-web-main, tokens/versions/latest/sass/:
 

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   2-system-tokens/shape.css â€” TOKENS SEMANTICOS DE FORMA (solo var())
+   2-system-tokens/shape.css — TOKENS SEMANTICOS DE FORMA (solo var())
    ==========================================================================
 
    QUE ES ESTE ARCHIVO
@@ -40,8 +40,8 @@
    abajo). En total este archivo define 15 roles de esquina: los 10 de la
    escala mas los 5 que redondean solo algunos lados.
 
-   A esos se suman 4 roles de grosor de trazo â€”--md-sys-shape-stroke-none,
-   -thin, -thick y -extra-thickâ€”, que viven en este archivo porque el stroke
+   A esos se suman 4 roles de grosor de trazo —--md-sys-shape-stroke-none,
+   -thin, -thick y -extra-thick—, que viven en este archivo porque el stroke
    es una forma, no un espaciado. En total: 19 roles.
 
    La cifra de grosor estaba en 1 cuando solo existia `thin`. El boton y el

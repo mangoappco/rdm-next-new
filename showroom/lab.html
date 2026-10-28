@@ -30,75 +30,116 @@
 
   <main>
 
-    <button type="button" class="md-button md-button-tonal" data-md-theme-toggle>
-      <span class="md-button-label">Tema: sistema</span>
-    </button>
-
-    <br>
     <br>
 
     <!-- ZONA DE PRUEBAS LIBRE: pegar el snippet aqui debajo -->
 
 
 
-    <label class="md-switch">
-  <input type="checkbox" class="md-switch-input" aria-label="Notificaciones desactivadas">
-  <span class="md-switch-track" aria-hidden="true">
-    <span class="md-switch-handle"></span>
-  </span>
-</label>
-
-<label class="md-switch">
-  <input type="checkbox" class="md-switch-input" checked aria-label="Notificaciones activadas">
-  <span class="md-switch-track" aria-hidden="true">
-    <span class="md-switch-handle"></span>
-  </span>
-</label>
-
-
-
-
-
-
-
-    <br>
-
-<label class="md-list-item md-list-item-two-line">
-  <div class="md-list-item-content">
-    <span class="md-list-item-headline">Modo cocina rápida</span>
-    <span class="md-list-item-supporting-text">Enviar comandas a preparación sin confirmación previa</span>
-  </div>
-  <div class="md-list-item-action">
-
-    <span class="md-switch">
-      <input type="checkbox" class="md-switch-input" aria-describedby="fast-kitchen-desc">
-      <span class="md-switch-track" aria-hidden="true">
-        <span class="md-switch-handle"></span>
-      </span>
+    <div class="md-select md-select-outlined" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox">
+  <div class="md-select-container">
+    <input type="text" class="md-select-input" id="select-anatomy" readonly value="" placeholder=" " aria-label="Método de pago" aria-describedby="select-anatomy-supporting">
+    <label class="md-select-label" for="select-anatomy">Método de pago</label>
+    <span class="md-select-outline" aria-hidden="true"></span>
+    <span class="md-select-trailing-icon" aria-hidden="true">
+      <span class="md-icon">arrow_drop_down</span>
     </span>
-
   </div>
-</label>
+  <span class="md-select-supporting-text" id="select-anatomy-supporting">Selecciona el medio de liquidación</span>
+  <div class="md-menu" role="listbox" aria-labelledby="select-anatomy">
+    <div class="md-list-item" role="option" aria-selected="false" data-value="efectivo">
+      <span class="md-list-item-headline">Efectivo</span>
+    </div>
+    <div class="md-list-item" role="option" aria-selected="false" data-value="tarjeta">
+      <span class="md-list-item-headline">Tarjeta Débito/Crédito</span>
+    </div>
+    <div class="md-list-item" role="option" aria-selected="false" data-value="transferencia">
+      <span class="md-list-item-headline">Transferencia</span>
+    </div>
+  </div>
+</div>
 
 
 
-<ul class="md-list">
-  <li>
-    <label class="md-list-item">
-      <div class="md-list-item-content">
-        <span class="md-list-item-headline">Activar plato</span>
-      </div>
-      <div class="md-list-item-action">
-        <span class="md-switch">
-          <input type="checkbox" class="md-switch-input" aria-label="Activar plato">
-          <span class="md-switch-track" aria-hidden="true">
-            <span class="md-switch-handle"></span>
-          </span>
-        </span>
-      </div>
-    </label>
-  </li>
-</ul>
+<div class="md-text-field md-text-field-outlined">
+  <div class="md-text-field-container">
+    <input type="text" class="md-text-field-input" id="tf-base" placeholder=" " aria-describedby="tf-base-supporting">
+    <label class="md-text-field-label" for="tf-base">Nombre del producto</label>
+    <span class="md-text-field-outline" aria-hidden="true"></span>
+  </div>
+  <span class="md-text-field-supporting-text" id="tf-base-supporting">Ingresa el nombre visible en el catálogo</span>
+</div>
+
+
+
+
+
+
+
+    <div class="md-select md-select-filled" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox">
+  <div class="md-select-container">
+    <input type="text" class="md-select-input" id="select-anatomy" readonly value="" placeholder=" " aria-label="Método de pago" aria-describedby="select-anatomy-supporting">
+    <label class="md-select-label" for="select-anatomy">Método de pago</label>
+    <span class="md-select-outline" aria-hidden="true"></span>
+    <span class="md-select-trailing-icon" aria-hidden="true">
+      <span class="md-icon">arrow_drop_down</span>
+    </span>
+  </div>
+  <span class="md-select-supporting-text" id="select-anatomy-supporting">Selecciona el medio de liquidación</span>
+  <div class="md-menu" role="listbox" aria-labelledby="select-anatomy">
+    <div class="md-list-item" role="option" aria-selected="false" data-value="efectivo">
+      <span class="md-list-item-headline">Efectivo</span>
+    </div>
+    <div class="md-list-item" role="option" aria-selected="false" data-value="tarjeta">
+      <span class="md-list-item-headline">Tarjeta Débito/Crédito</span>
+    </div>
+    <div class="md-list-item" role="option" aria-selected="false" data-value="transferencia">
+      <span class="md-list-item-headline">Transferencia</span>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="md-text-field md-text-field-filled">
+  <div class="md-text-field-container">
+    <input type="text" class="md-text-field-input" id="tf-base" placeholder=" " aria-describedby="tf-base-supporting">
+    <label class="md-text-field-label" for="tf-base">Nombre del producto</label>
+    <span class="md-text-field-outline" aria-hidden="true"></span>
+  </div>
+  <span class="md-text-field-supporting-text" id="tf-base-supporting">Ingresa el nombre visible en el catálogo</span>
+</div>
+
+
+<div class="md-select md-select-outlined" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox">
+  <div class="md-select-container">
+    <span class="md-select-leading-icon" aria-hidden="true">
+      <span class="md-icon">payments</span>
+    </span>
+    <input type="text" class="md-select-input" id="select-icon-slots" readonly value="Efectivo" placeholder=" " aria-label="MÃ©todo de pago" aria-describedby="select-icon-slots-supporting">
+    <label class="md-select-label" for="select-icon-slots">MÃ©todo de pago</label>
+    <span class="md-select-outline" aria-hidden="true"></span>
+    <span class="md-select-trailing-icon" aria-hidden="true">
+      <span class="md-icon">arrow_drop_down</span>
+    </span>
+  </div>
+  <span class="md-select-supporting-text" id="select-icon-slots-supporting">Selecciona el medio de liquidaciÃ³n</span>
+  <div class="md-menu" role="listbox" aria-labelledby="select-icon-slots">
+    <div class="md-list-item md-list-item-selected" role="option" aria-selected="true" data-value="efectivo" data-icon="payments">
+      <span class="md-icon md-list-item-leading" aria-hidden="true">payments</span>
+      <span class="md-list-item-headline">Efectivo</span>
+    </div>
+    <div class="md-list-item" role="option" aria-selected="false" data-value="tarjeta" data-icon="credit_card">
+      <span class="md-icon md-list-item-leading" aria-hidden="true">credit_card</span>
+      <span class="md-list-item-headline">Tarjeta Débito/Crédito</span>
+    </div>
+    <div class="md-list-item" role="option" aria-selected="false" data-value="transferencia" data-icon="account_balance">
+      <span class="md-icon md-list-item-leading" aria-hidden="true">account_balance</span>
+      <span class="md-list-item-headline">Transferencia</span>
+    </div>
+  </div>
+  </div>
+
 
 
 
@@ -118,6 +159,18 @@
       <!-- ZONA DE PRUEBAS CON ANCHO FIJO: hasta aqui -->
 
     </div>
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+
+    <button type="button" class="md-button md-button-tonal" data-md-theme-toggle>
+      <span class="md-button-label">Tema: sistema</span>
+    </button>
 
   </main>
 </body>

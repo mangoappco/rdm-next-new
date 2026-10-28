@@ -1,5 +1,5 @@
 /* ==========================================================================
-   2-system-tokens/elevation.css â€” TOKENS SEMANTICOS DE ELEVACION (solo var())
+   2-system-tokens/elevation.css — TOKENS SEMANTICOS DE ELEVACION (solo var())
    ==========================================================================
 
    QUE ES ESTE ARCHIVO
@@ -128,42 +128,42 @@
      extension.
      ====================================================================== */
 
-  /* Nivel 0 â€” sin elevacion. La sombra identidad. */
+  /* Nivel 0 — sin elevacion. La sombra identidad. */
   --md-sys-elevation-level0:
     var(--md-ref-shadow-key-0)
     rgb(var(--md-sys-color-shadow-rgb) / var(--md-ref-shadow-key-opacity)),
     var(--md-ref-shadow-ambient-0)
     rgb(var(--md-sys-color-shadow-rgb) / var(--md-ref-shadow-ambient-opacity));
 
-  /* Nivel 1 â€” apenas levantado. Botones elevated, tarjetas outlined. */
+  /* Nivel 1 — apenas levantado. Botones elevated, tarjetas outlined. */
   --md-sys-elevation-level1:
     var(--md-ref-shadow-key-1)
     rgb(var(--md-sys-color-shadow-rgb) / var(--md-ref-shadow-key-opacity)),
     var(--md-ref-shadow-ambient-1)
     rgb(var(--md-sys-color-shadow-rgb) / var(--md-ref-shadow-ambient-opacity));
 
-  /* Nivel 2 â€” levantado. Menus y popovers. */
+  /* Nivel 2 — levantado. Menus y popovers. */
   --md-sys-elevation-level2:
     var(--md-ref-shadow-key-2)
     rgb(var(--md-sys-color-shadow-rgb) / var(--md-ref-shadow-key-opacity)),
     var(--md-ref-shadow-ambient-2)
     rgb(var(--md-sys-color-shadow-rgb) / var(--md-ref-shadow-ambient-opacity));
 
-  /* Nivel 3 â€” flotante. Dialogos, snackbars, bottom sheets. */
+  /* Nivel 3 — flotante. Dialogos, snackbars, bottom sheets. */
   --md-sys-elevation-level3:
     var(--md-ref-shadow-key-3)
     rgb(var(--md-sys-color-shadow-rgb) / var(--md-ref-shadow-key-opacity)),
     var(--md-ref-shadow-ambient-3)
     rgb(var(--md-sys-color-shadow-rgb) / var(--md-ref-shadow-ambient-opacity));
 
-  /* Nivel 4 â€” muy flotante. Navigation drawer. */
+  /* Nivel 4 — muy flotante. Navigation drawer. */
   --md-sys-elevation-level4:
     var(--md-ref-shadow-key-4)
     rgb(var(--md-sys-color-shadow-rgb) / var(--md-ref-shadow-key-opacity)),
     var(--md-ref-shadow-ambient-4)
     rgb(var(--md-sys-color-shadow-rgb) / var(--md-ref-shadow-ambient-opacity));
 
-  /* Nivel 5 â€” maxima elevacion. */
+  /* Nivel 5 — maxima elevacion. */
   --md-sys-elevation-level5:
     var(--md-ref-shadow-key-5)
     rgb(var(--md-sys-color-shadow-rgb) / var(--md-ref-shadow-key-opacity)),
