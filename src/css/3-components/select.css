@@ -23,7 +23,8 @@
       ancla; el texto no roba el foco) y host con cursor pointer (spec M3).
    2. La flecha trailing rota 0.5turn cuando el menú abre.
    3. El disparador del flotado suma .md-select-open / [aria-expanded].
-   4. Sin supporting text ni counter (el menú de opciones los sustituye).
+   4. Supporting text bajo el ancla (espaciado y color de text-field.css);
+       el counter sigue sin existir (el menú de opciones lo sustituye).
    5. El host es inline-flex para el layout de pares del showroom y con
       max-width del menú (--md-sys-measurement-menu-max-width).
    6. El ancla NUNCA hereda el estado readonly de Par 10 de text-field:
@@ -314,6 +315,16 @@
   left: calc(var(--md-sys-measurement-space-150) + var(--md-sys-measurement-icon-size) + var(--md-sys-measurement-space-200));
 }
 
+/* Supporting text: body-small, 4dp bajo container (calco de text-field.css) */
+.md-select-supporting-text {
+  display: block;
+  margin-block-start: var(--md-sys-measurement-space-50); /* 4dp */
+  padding-inline: var(--md-sys-measurement-space-200);   /* 16dp alineado al input */
+  color: var(--_color-on-surface-variant);
+  font: var(--md-sys-typescale-body-small);
+  line-height: var(--md-sys-typescale-body-small-line-height);
+}
+
 /* Icon color states (calco) */
 .md-select:has(.md-select-input:focus) .md-select-leading-icon,
 .md-select:has(.md-select-input:focus) .md-select-trailing-icon {
@@ -328,6 +339,11 @@
 .md-select.md-select-error .md-select-outline {
   border-width: var(--_stroke-focus);
   border-color: var(--_color-error);
+}
+
+/* Error: supporting text vira a error (calco) */
+.md-select.md-select-error .md-select-supporting-text {
+  color: var(--_color-error);
 }
 
 /* Filled error: indicador 2px error */
@@ -383,7 +399,8 @@
 /* Opacidad del contenido 38% (state layer opacity): NUNCA en bloque */
 .md-select:has(.md-select-input:disabled) .md-select-input,
 .md-select:has(.md-select-input:disabled) .md-select-leading-icon,
-.md-select:has(.md-select-input:disabled) .md-select-trailing-icon {
+.md-select:has(.md-select-input:disabled) .md-select-trailing-icon,
+.md-select:has(.md-select-input:disabled) .md-select-supporting-text {
   opacity: var(--md-sys-state-disabled-state-layer-opacity); /* 0.38 */
 }
 

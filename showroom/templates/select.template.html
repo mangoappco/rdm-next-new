@@ -64,13 +64,14 @@
       <div class="sr-specimen">
         <div class="md-select md-select-outlined" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox">
           <div class="md-select-container">
-            <input type="text" class="md-select-input" id="select-anatomy" readonly value="" placeholder=" " aria-label="Método de pago">
+            <input type="text" class="md-select-input" id="select-anatomy" readonly value="" placeholder=" " aria-label="Método de pago" aria-describedby="select-anatomy-supporting">
             <label class="md-select-label" for="select-anatomy">Método de pago</label>
             <span class="md-select-outline" aria-hidden="true"></span>
             <span class="md-select-trailing-icon" aria-hidden="true">
               <span class="md-icon">arrow_drop_down</span>
             </span>
           </div>
+          <span class="md-select-supporting-text" id="select-anatomy-supporting">Selecciona el medio de liquidación</span>
           <div class="md-menu" role="listbox" aria-labelledby="select-anatomy">
             <div class="md-list-item" role="option" aria-selected="false" data-value="efectivo">
               <span class="md-list-item-headline">Efectivo</span>
@@ -87,13 +88,14 @@
 
       <pre class="sr-code"><code>&lt;div class="md-select md-select-outlined" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox"&gt;
   &lt;div class="md-select-container"&gt;
-    &lt;input type="text" class="md-select-input" id="select-anatomy" readonly value="" placeholder=" " aria-label="Método de pago"&gt;
+    &lt;input type="text" class="md-select-input" id="select-anatomy" readonly value="" placeholder=" " aria-label="Método de pago" aria-describedby="select-anatomy-supporting"&gt;
     &lt;label class="md-select-label" for="select-anatomy"&gt;Método de pago&lt;/label&gt;
     &lt;span class="md-select-outline" aria-hidden="true"&gt;&lt;/span&gt;
     &lt;span class="md-select-trailing-icon" aria-hidden="true"&gt;
       &lt;span class="md-icon"&gt;arrow_drop_down&lt;/span&gt;
     &lt;/span&gt;
   &lt;/div&gt;
+  &lt;span class="md-select-supporting-text" id="select-anatomy-supporting"&gt;Selecciona el medio de liquidación&lt;/span&gt;
   &lt;div class="md-menu" role="listbox" aria-labelledby="select-anatomy"&gt;
     &lt;div class="md-list-item" role="option" aria-selected="false" data-value="efectivo"&gt;
       &lt;span class="md-list-item-headline"&gt;Efectivo&lt;/span&gt;
@@ -117,13 +119,14 @@
       <div class="sr-specimen sr-specimen-gap">
         <div class="md-select md-select-filled" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox">
           <div class="md-select-container">
-            <input type="text" class="md-select-input" id="select-filled-rest" readonly value="" placeholder=" " aria-label="Categoría">
+            <input type="text" class="md-select-input" id="select-filled-rest" readonly value="" placeholder=" " aria-label="Categoría" aria-describedby="select-filled-rest-supporting">
             <label class="md-select-label" for="select-filled-rest">Categoría</label>
             <span class="md-select-active-indicator" aria-hidden="true"></span>
             <span class="md-select-trailing-icon" aria-hidden="true">
               <span class="md-icon">arrow_drop_down</span>
             </span>
           </div>
+          <span class="md-select-supporting-text" id="select-filled-rest-supporting">Categoría del catálogo gastronómico</span>
           <div class="md-menu" role="listbox" aria-labelledby="select-filled-rest">
             <div class="md-list-item" role="option" aria-selected="false" data-value="bebidas">
               <span class="md-list-item-headline">Bebidas</span>
@@ -139,13 +142,14 @@
 
         <div class="md-select md-select-filled" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox">
           <div class="md-select-container">
-            <input type="text" class="md-select-input" id="select-filled-selected" readonly value="Bebidas" placeholder=" " aria-label="Categoría">
+            <input type="text" class="md-select-input" id="select-filled-selected" readonly value="Bebidas" placeholder=" " aria-label="Categoría" aria-describedby="select-filled-selected-supporting">
             <label class="md-select-label" for="select-filled-selected">Categoría</label>
             <span class="md-select-active-indicator" aria-hidden="true"></span>
             <span class="md-select-trailing-icon" aria-hidden="true">
               <span class="md-icon">arrow_drop_down</span>
             </span>
           </div>
+          <span class="md-select-supporting-text" id="select-filled-selected-supporting">Categoría del catálogo gastronómico</span>
           <div class="md-menu" role="listbox" aria-labelledby="select-filled-selected">
             <div class="md-list-item md-list-item-selected" role="option" aria-selected="true" data-value="bebidas">
               <span class="md-list-item-headline">Bebidas</span>
@@ -162,13 +166,14 @@
 
       <pre class="sr-code"><code>&lt;div class="md-select md-select-filled" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox"&gt;
   &lt;div class="md-select-container"&gt;
-    &lt;input type="text" class="md-select-input" id="select-filled-rest" readonly value="" placeholder=" " aria-label="Categoría"&gt;
+    &lt;input type="text" class="md-select-input" id="select-filled-rest" readonly value="" placeholder=" " aria-label="Categoría" aria-describedby="select-filled-rest-supporting"&gt;
     &lt;label class="md-select-label" for="select-filled-rest"&gt;Categoría&lt;/label&gt;
     &lt;span class="md-select-active-indicator" aria-hidden="true"&gt;&lt;/span&gt;
     &lt;span class="md-select-trailing-icon" aria-hidden="true"&gt;
       &lt;span class="md-icon"&gt;arrow_drop_down&lt;/span&gt;
     &lt;/span&gt;
   &lt;/div&gt;
+  &lt;span class="md-select-supporting-text" id="select-filled-rest-supporting"&gt;Categoría del catálogo gastronómico&lt;/span&gt;
   &lt;div class="md-menu" role="listbox" aria-labelledby="select-filled-rest"&gt;
     &lt;div class="md-list-item" role="option" aria-selected="false" data-value="bebidas"&gt;
       &lt;span class="md-list-item-headline"&gt;Bebidas&lt;/span&gt;
@@ -184,13 +189,14 @@
 
 &lt;div class="md-select md-select-filled" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox"&gt;
   &lt;div class="md-select-container"&gt;
-    &lt;input type="text" class="md-select-input" id="select-filled-selected" readonly value="Bebidas" placeholder=" " aria-label="Categoría"&gt;
+    &lt;input type="text" class="md-select-input" id="select-filled-selected" readonly value="Bebidas" placeholder=" " aria-label="Categoría" aria-describedby="select-filled-selected-supporting"&gt;
     &lt;label class="md-select-label" for="select-filled-selected"&gt;Categoría&lt;/label&gt;
     &lt;span class="md-select-active-indicator" aria-hidden="true"&gt;&lt;/span&gt;
     &lt;span class="md-select-trailing-icon" aria-hidden="true"&gt;
       &lt;span class="md-icon"&gt;arrow_drop_down&lt;/span&gt;
     &lt;/span&gt;
   &lt;/div&gt;
+  &lt;span class="md-select-supporting-text" id="select-filled-selected-supporting"&gt;Categoría del catálogo gastronómico&lt;/span&gt;
   &lt;div class="md-menu" role="listbox" aria-labelledby="select-filled-selected"&gt;
     &lt;div class="md-list-item md-list-item-selected" role="option" aria-selected="true" data-value="bebidas"&gt;
       &lt;span class="md-list-item-headline"&gt;Bebidas&lt;/span&gt;
@@ -326,25 +332,27 @@
       <div class="sr-specimen">
         <div class="md-select md-select-outlined" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox">
           <div class="md-select-container">
-            <input type="text" class="md-select-input" id="select-disabled" readonly value="Efectivo" placeholder=" " aria-label="Método de pago" disabled>
+            <input type="text" class="md-select-input" id="select-disabled" readonly value="Efectivo" placeholder=" " aria-label="Método de pago" aria-describedby="select-disabled-supporting" disabled>
             <label class="md-select-label" for="select-disabled">Método de pago</label>
             <span class="md-select-outline" aria-hidden="true"></span>
             <span class="md-select-trailing-icon" aria-hidden="true">
               <span class="md-icon">arrow_drop_down</span>
             </span>
           </div>
+          <span class="md-select-supporting-text" id="select-disabled-supporting">Campo deshabilitado</span>
         </div>
       </div>
 
       <pre class="sr-code"><code>&lt;div class="md-select md-select-outlined" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox"&gt;
   &lt;div class="md-select-container"&gt;
-    &lt;input type="text" class="md-select-input" id="select-disabled" readonly value="Efectivo" placeholder=" " aria-label="Método de pago" disabled&gt;
+    &lt;input type="text" class="md-select-input" id="select-disabled" readonly value="Efectivo" placeholder=" " aria-label="Método de pago" aria-describedby="select-disabled-supporting" disabled&gt;
     &lt;label class="md-select-label" for="select-disabled"&gt;Método de pago&lt;/label&gt;
     &lt;span class="md-select-outline" aria-hidden="true"&gt;&lt;/span&gt;
     &lt;span class="md-select-trailing-icon" aria-hidden="true"&gt;
       &lt;span class="md-icon"&gt;arrow_drop_down&lt;/span&gt;
     &lt;/span&gt;
   &lt;/div&gt;
+  &lt;span class="md-select-supporting-text" id="select-disabled-supporting"&gt;Campo deshabilitado&lt;/span&gt;
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
@@ -357,13 +365,14 @@
       <div class="sr-specimen">
         <div class="md-select md-select-outlined md-select-error" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox">
           <div class="md-select-container">
-            <input type="text" class="md-select-input" id="select-error" readonly value="" placeholder=" " aria-label="Método de pago" aria-invalid="true">
+            <input type="text" class="md-select-input" id="select-error" readonly value="" placeholder=" " aria-label="Método de pago" aria-invalid="true" aria-describedby="select-error-supporting">
             <label class="md-select-label" for="select-error">Método de pago</label>
             <span class="md-select-outline" aria-hidden="true"></span>
             <span class="md-select-trailing-icon" aria-hidden="true">
               <span class="md-icon">arrow_drop_down</span>
             </span>
           </div>
+          <span class="md-select-supporting-text" id="select-error-supporting">Selecciona un método de pago obligatorio</span>
           <div class="md-menu" role="listbox" aria-labelledby="select-error">
             <div class="md-list-item" role="option" aria-selected="false" data-value="efectivo">
               <span class="md-list-item-headline">Efectivo</span>
@@ -380,13 +389,14 @@
 
       <pre class="sr-code"><code>&lt;div class="md-select md-select-outlined md-select-error" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox"&gt;
   &lt;div class="md-select-container"&gt;
-    &lt;input type="text" class="md-select-input" id="select-error" readonly value="" placeholder=" " aria-label="Método de pago" aria-invalid="true"&gt;
+    &lt;input type="text" class="md-select-input" id="select-error" readonly value="" placeholder=" " aria-label="Método de pago" aria-invalid="true" aria-describedby="select-error-supporting"&gt;
     &lt;label class="md-select-label" for="select-error"&gt;Método de pago&lt;/label&gt;
     &lt;span class="md-select-outline" aria-hidden="true"&gt;&lt;/span&gt;
     &lt;span class="md-select-trailing-icon" aria-hidden="true"&gt;
       &lt;span class="md-icon"&gt;arrow_drop_down&lt;/span&gt;
     &lt;/span&gt;
   &lt;/div&gt;
+  &lt;span class="md-select-supporting-text" id="select-error-supporting"&gt;Selecciona un método de pago obligatorio&lt;/span&gt;
   &lt;div class="md-menu" role="listbox" aria-labelledby="select-error"&gt;
     &lt;div class="md-list-item" role="option" aria-selected="false" data-value="efectivo"&gt;
       &lt;span class="md-list-item-headline"&gt;Efectivo&lt;/span&gt;
