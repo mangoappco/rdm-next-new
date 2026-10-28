@@ -61,8 +61,8 @@
   cursor: pointer;
   box-sizing: border-box;
   z-index: 0;
-  padding-bottom: var(--md-sys-measurement-space-200); /* 16dp calco text-field host */
-  gap: var(--md-sys-measurement-space-50);          /* 4dp  calco text-field host */
+  margin-block-end: var(--md-sys-measurement-space-200); /* 16dp calco text-field host */
+  gap: var(--md-sys-measurement-space-50);              /* 4dp  calco text-field host */
 }
 
 /* Contexto elevado cuando el menú está abierto: gana sobre labels de selects contiguos */

@@ -1,5 +1,5 @@
-/* ==========================================================================
-   showroom/assets/showroom.css — PLACEHOLDER (linea base del reinicio)
+﻿/* ==========================================================================
+   showroom/assets/showroom.css â€” PLACEHOLDER (linea base del reinicio)
    --------------------------------------------------------------------------
    Capa del chrome del showroom, declarada despues de las cinco capas de
    src/css/main.css. Hoy no hay vistas ni tablas que vestir: este archivo
@@ -218,7 +218,7 @@
      Lo mismo .md-segmented-button, y aqui el padding envenena la GEOMETRIA
      y no solo la comparacion copiable: su inline-grid declara block-size
      40dp, asi que con padding-block 16 dentro, la fila de segmentos nace
-     a +16 y desborda —el grupo se pinta pegado al borde inferior de su
+     a +16 y desborda â€”el grupo se pinta pegado al borde inferior de su
      escenario y arriba flota aire de mas (medido en pixeles reales del
      render: 40 arriba / 8 abajo, y los hijos viven 16px por debajo de la
      caja de su padre). El snippet queda limpio de padding; el showroom es
@@ -236,7 +236,7 @@
       del host (16dp de aire que el texto copiable no trae), revientando
       la geometria del calco de text-field entre specimen y app.
      --------------------------------------------------------------------- */
-  .sr-specimen:not(.sr-meter) > div:not(.sr-motion-dot):not(.md-divider-vertical):not(.md-button-group):not(.md-segmented-button):not(.md-row):not(.md-select) {
+  .sr-specimen:not(.sr-meter) > div:not(.sr-motion-dot):not(.md-divider-vertical):not(.md-button-group):not(.md-segmented-button):not(.md-row) {
     padding: var(--md-ref-spacing-200);
   }
 
