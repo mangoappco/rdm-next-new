@@ -52,7 +52,8 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-block-end: var(--md-sys-measurement-space-200); /* 16dp canónico M3 */
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
   gap: var(--md-sys-measurement-space-50);
 }
