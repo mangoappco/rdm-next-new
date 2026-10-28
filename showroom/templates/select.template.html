@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Select de RDM Next: selector M3 compuesto de Text Field ancla (56dp) + menÃº desplegable con Ã­tems de 48dp â€” todo CSS + JS mÃ­nimo sobre delegaciÃ³n global.">
+  <meta name="description" content="Select de RDM Next: selector M3 compuesto de Text Field ancla (56dp) + menú desplegable con ítems de 48dp â€” todo CSS + JS mínimo sobre delegación global.">
   <title>Select â€” RDM ManGo! App</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,25 +15,25 @@
 </head>
 
 <!--
-  ESTA VISTA TIENE SEIS PARES. El Bloque 1 --EspecificaciÃ³n y anatomÃ­a--
-  cubre Anatomy (ancla Outlined en reposo con la flotaciÃ³n del label),
-  Filled variant, Icon slots, Open state (menÃº desplegado), Disabled
+  ESTA VISTA TIENE SEIS PARES. El Bloque 1 --Especificación y anatomía--
+  cubre Anatomy (ancla Outlined en reposo con la flotación del label),
+  Filled variant, Icon slots, Open state (menú desplegado), Disabled
   state y Error state. No hay Bloque 2: las composiciones de ManGo! App
   (el POS de caja, la comanda de cocina, la carta, el modal de cobro)
-  pertenecen a la futura GalerÃ­a de Usos.
+  pertenecen a la futura Galería de Usos.
 
   LOS ACUERDOS DEL SHOWROOM
   -------------------------
-  1. JerarquÃ­a: h1 (componente) > h2 (bloque) > h3 (par). Los tÃ­tulos de
-     bloque y par estÃ¡n en inglÃ©s; las descripciones en espaÃ±ol breve.
-  2. REGLA 11: el texto de cada pre.sr-code desescapado es idÃ©ntico al
+  1. Jerarquía: h1 (componente) > h2 (bloque) > h3 (par). Los títulos de
+     bloque y par están en inglés; las descripciones en español breve.
+  2. REGLA 11: el texto de cada pre.sr-code desescapado es idéntico al
      innerHTML de su .sr-specimen (normalizando solo el espacio).
-  3. REGLA 6: sin atributos de estilo en lÃ­nea ni bloques <style>.
+  3. REGLA 6: sin atributos de estilo en línea ni bloques <style>.
   4. REGLA 9: iconos siempre con .md-icon, nunca material-symbols-*.
   5. REGLA 10: toda clase md-* del showroom existe en src/css/.
-  6. REGLA 13: cada snippet es autÃ³nomo (solo clases del sistema).
+  6. REGLA 13: cada snippet es autónomo (solo clases del sistema).
   7. ARIA: combobox + listbox + option con aria-expanded y aria-selected.
-  8. Un par = un concepto atÃ³mico: como en text-field, checkbox y radio,
+  8. Un par = un concepto atómico: como en text-field, checkbox y radio,
      Disabled state y Error state viven en pares independientes.
 -->
 
@@ -47,31 +47,31 @@
         <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
       </div>
       <h1 class="md-type-display-large">Select</h1>
-      <p class="md-type-body-large">Los selectores (Selects) permiten a las personas elegir una opciÃ³n de una lista. Â· <em>Seis pares</em></p>
+      <p class="md-type-body-large">Los selectores (Selects) permiten a las personas elegir una opción de una lista. Â· <em>Seis pares</em></p>
     </header>
     <!-- HEADER: fin -->
 
     <hr class="md-divider">
 
-    <!-- BLOQUE 1: EspecificaciÃ³n y anatomÃ­a -->
-    <h2 class="md-type-headline-medium">EspecificaciÃ³n y anatomÃ­a</h2>
+    <!-- BLOQUE 1: Especificación y anatomía -->
+    <h2 class="md-type-headline-medium">Especificación y anatomía</h2>
 
     <!-- Anatomy -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Anatomy</h3>
-      <p class="md-type-body-medium">Ancla Outlined de 56dp en reposo: label flotante CSS-only, outline de 1px como Ãºnico portador del borde y flecha trailing de 24dp.</p>
+      <p class="md-type-body-medium">Ancla Outlined de 56dp en reposo: label flotante CSS-only, outline de 1px como único portador del borde y flecha trailing de 24dp.</p>
 
       <div class="sr-specimen">
         <div class="md-select md-select-outlined" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox">
           <div class="md-select-container">
-            <input type="text" class="md-select-input" id="select-anatomy" readonly value="" placeholder=" " aria-label="MÃ©todo de pago" aria-describedby="select-anatomy-supporting">
-            <label class="md-select-label" for="select-anatomy">MÃ©todo de pago</label>
+            <input type="text" class="md-select-input" id="select-anatomy" readonly value="" placeholder=" " aria-label="Método de pago" aria-describedby="select-anatomy-supporting">
+            <label class="md-select-label" for="select-anatomy">Método de pago</label>
             <span class="md-select-outline" aria-hidden="true"></span>
             <span class="md-select-trailing-icon" aria-hidden="true">
               <span class="md-icon">arrow_drop_down</span>
             </span>
           </div>
-          <span class="md-select-supporting-text" id="select-anatomy-supporting">Selecciona el medio de liquidaciÃ³n</span>
+          <span class="md-select-supporting-text" id="select-anatomy-supporting">Selecciona el medio de liquidación</span>
           <div class="md-menu" role="listbox" aria-labelledby="select-anatomy">
             <div class="md-list-item" role="option" aria-selected="false" data-value="efectivo">
               <span class="md-list-item-headline">Efectivo</span>
@@ -88,14 +88,14 @@
 
       <pre class="sr-code"><code>&lt;div class="md-select md-select-outlined" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox"&gt;
   &lt;div class="md-select-container"&gt;
-    &lt;input type="text" class="md-select-input" id="select-anatomy" readonly value="" placeholder=" " aria-label="MÃ©todo de pago" aria-describedby="select-anatomy-supporting"&gt;
-    &lt;label class="md-select-label" for="select-anatomy"&gt;MÃ©todo de pago&lt;/label&gt;
+    &lt;input type="text" class="md-select-input" id="select-anatomy" readonly value="" placeholder=" " aria-label="Método de pago" aria-describedby="select-anatomy-supporting"&gt;
+    &lt;label class="md-select-label" for="select-anatomy"&gt;Método de pago&lt;/label&gt;
     &lt;span class="md-select-outline" aria-hidden="true"&gt;&lt;/span&gt;
     &lt;span class="md-select-trailing-icon" aria-hidden="true"&gt;
       &lt;span class="md-icon"&gt;arrow_drop_down&lt;/span&gt;
     &lt;/span&gt;
   &lt;/div&gt;
-  &lt;span class="md-select-supporting-text" id="select-anatomy-supporting"&gt;Selecciona el medio de liquidaciÃ³n&lt;/span&gt;
+  &lt;span class="md-select-supporting-text" id="select-anatomy-supporting"&gt;Selecciona el medio de liquidación&lt;/span&gt;
   &lt;div class="md-menu" role="listbox" aria-labelledby="select-anatomy"&gt;
     &lt;div class="md-list-item" role="option" aria-selected="false" data-value="efectivo"&gt;
       &lt;span class="md-list-item-headline"&gt;Efectivo&lt;/span&gt;
@@ -114,19 +114,19 @@
     <!-- Filled variant -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Filled variant</h3>
-      <p class="md-type-body-medium">Variante con superficie surface-container-highest y lÃ­nea inferior que engrosa y vira a primary al abrir. Reposo vacÃ­o y seleccionado con valor.</p>
+      <p class="md-type-body-medium">Variante con superficie surface-container-highest y línea inferior que engrosa y vira a primary al abrir. Reposo vacío y seleccionado con valor.</p>
 
       <div class="sr-specimen sr-specimen-gap">
         <div class="md-select md-select-filled" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox">
           <div class="md-select-container">
-            <input type="text" class="md-select-input" id="select-filled-rest" readonly value="" placeholder=" " aria-label="CategorÃ­a" aria-describedby="select-filled-rest-supporting">
-            <label class="md-select-label" for="select-filled-rest">CategorÃ­a</label>
+            <input type="text" class="md-select-input" id="select-filled-rest" readonly value="" placeholder=" " aria-label="Categoría" aria-describedby="select-filled-rest-supporting">
+            <label class="md-select-label" for="select-filled-rest">Categoría</label>
             <span class="md-select-active-indicator" aria-hidden="true"></span>
             <span class="md-select-trailing-icon" aria-hidden="true">
               <span class="md-icon">arrow_drop_down</span>
             </span>
           </div>
-          <span class="md-select-supporting-text" id="select-filled-rest-supporting">CategorÃ­a del catÃ¡logo gastronÃ³mico</span>
+          <span class="md-select-supporting-text" id="select-filled-rest-supporting">Categoría del catálogo gastronómico</span>
           <div class="md-menu" role="listbox" aria-labelledby="select-filled-rest">
             <div class="md-list-item" role="option" aria-selected="false" data-value="bebidas">
               <span class="md-list-item-headline">Bebidas</span>
@@ -142,14 +142,14 @@
 
         <div class="md-select md-select-filled" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox">
           <div class="md-select-container">
-            <input type="text" class="md-select-input" id="select-filled-selected" readonly value="Bebidas" placeholder=" " aria-label="CategorÃ­a" aria-describedby="select-filled-selected-supporting">
-            <label class="md-select-label" for="select-filled-selected">CategorÃ­a</label>
+            <input type="text" class="md-select-input" id="select-filled-selected" readonly value="Bebidas" placeholder=" " aria-label="Categoría" aria-describedby="select-filled-selected-supporting">
+            <label class="md-select-label" for="select-filled-selected">Categoría</label>
             <span class="md-select-active-indicator" aria-hidden="true"></span>
             <span class="md-select-trailing-icon" aria-hidden="true">
               <span class="md-icon">arrow_drop_down</span>
             </span>
           </div>
-          <span class="md-select-supporting-text" id="select-filled-selected-supporting">CategorÃ­a del catÃ¡logo gastronÃ³mico</span>
+          <span class="md-select-supporting-text" id="select-filled-selected-supporting">Categoría del catálogo gastronómico</span>
           <div class="md-menu" role="listbox" aria-labelledby="select-filled-selected">
             <div class="md-list-item md-list-item-selected" role="option" aria-selected="true" data-value="bebidas">
               <span class="md-list-item-headline">Bebidas</span>
@@ -166,14 +166,14 @@
 
       <pre class="sr-code"><code>&lt;div class="md-select md-select-filled" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox"&gt;
   &lt;div class="md-select-container"&gt;
-    &lt;input type="text" class="md-select-input" id="select-filled-rest" readonly value="" placeholder=" " aria-label="CategorÃ­a" aria-describedby="select-filled-rest-supporting"&gt;
-    &lt;label class="md-select-label" for="select-filled-rest"&gt;CategorÃ­a&lt;/label&gt;
+    &lt;input type="text" class="md-select-input" id="select-filled-rest" readonly value="" placeholder=" " aria-label="Categoría" aria-describedby="select-filled-rest-supporting"&gt;
+    &lt;label class="md-select-label" for="select-filled-rest"&gt;Categoría&lt;/label&gt;
     &lt;span class="md-select-active-indicator" aria-hidden="true"&gt;&lt;/span&gt;
     &lt;span class="md-select-trailing-icon" aria-hidden="true"&gt;
       &lt;span class="md-icon"&gt;arrow_drop_down&lt;/span&gt;
     &lt;/span&gt;
   &lt;/div&gt;
-  &lt;span class="md-select-supporting-text" id="select-filled-rest-supporting"&gt;CategorÃ­a del catÃ¡logo gastronÃ³mico&lt;/span&gt;
+  &lt;span class="md-select-supporting-text" id="select-filled-rest-supporting"&gt;Categoría del catálogo gastronómico&lt;/span&gt;
   &lt;div class="md-menu" role="listbox" aria-labelledby="select-filled-rest"&gt;
     &lt;div class="md-list-item" role="option" aria-selected="false" data-value="bebidas"&gt;
       &lt;span class="md-list-item-headline"&gt;Bebidas&lt;/span&gt;
@@ -189,14 +189,14 @@
 
 &lt;div class="md-select md-select-filled" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox"&gt;
   &lt;div class="md-select-container"&gt;
-    &lt;input type="text" class="md-select-input" id="select-filled-selected" readonly value="Bebidas" placeholder=" " aria-label="CategorÃ­a" aria-describedby="select-filled-selected-supporting"&gt;
-    &lt;label class="md-select-label" for="select-filled-selected"&gt;CategorÃ­a&lt;/label&gt;
+    &lt;input type="text" class="md-select-input" id="select-filled-selected" readonly value="Bebidas" placeholder=" " aria-label="Categoría" aria-describedby="select-filled-selected-supporting"&gt;
+    &lt;label class="md-select-label" for="select-filled-selected"&gt;Categoría&lt;/label&gt;
     &lt;span class="md-select-active-indicator" aria-hidden="true"&gt;&lt;/span&gt;
     &lt;span class="md-select-trailing-icon" aria-hidden="true"&gt;
       &lt;span class="md-icon"&gt;arrow_drop_down&lt;/span&gt;
     &lt;/span&gt;
   &lt;/div&gt;
-  &lt;span class="md-select-supporting-text" id="select-filled-selected-supporting"&gt;CategorÃ­a del catÃ¡logo gastronÃ³mico&lt;/span&gt;
+  &lt;span class="md-select-supporting-text" id="select-filled-selected-supporting"&gt;Categoría del catálogo gastronómico&lt;/span&gt;
   &lt;div class="md-menu" role="listbox" aria-labelledby="select-filled-selected"&gt;
     &lt;div class="md-list-item md-list-item-selected" role="option" aria-selected="true" data-value="bebidas"&gt;
       &lt;span class="md-list-item-headline"&gt;Bebidas&lt;/span&gt;
@@ -223,14 +223,14 @@
             <span class="md-select-leading-icon" aria-hidden="true">
               <span class="md-icon">payments</span>
             </span>
-            <input type="text" class="md-select-input" id="select-icon-slots" readonly value="Efectivo" placeholder=" " aria-label="MÃ©todo de pago" aria-describedby="select-icon-slots-supporting">
-            <label class="md-select-label" for="select-icon-slots">MÃ©todo de pago</label>
+            <input type="text" class="md-select-input" id="select-icon-slots" readonly value="Efectivo" placeholder=" " aria-label="Método de pago" aria-describedby="select-icon-slots-supporting">
+            <label class="md-select-label" for="select-icon-slots">Método de pago</label>
             <span class="md-select-outline" aria-hidden="true"></span>
             <span class="md-select-trailing-icon" aria-hidden="true">
               <span class="md-icon">arrow_drop_down</span>
             </span>
           </div>
-          <span class="md-select-supporting-text" id="select-icon-slots-supporting">Selecciona el medio de liquidaciÃ³n</span>
+          <span class="md-select-supporting-text" id="select-icon-slots-supporting">Selecciona el medio de liquidación</span>
           <div class="md-menu" role="listbox" aria-labelledby="select-icon-slots">
             <div class="md-list-item md-list-item-selected" role="option" aria-selected="true" data-value="efectivo" data-icon="payments">
               <span class="md-icon md-list-item-leading" aria-hidden="true">payments</span>
@@ -253,14 +253,14 @@
     &lt;span class="md-select-leading-icon" aria-hidden="true"&gt;
       &lt;span class="md-icon"&gt;payments&lt;/span&gt;
     &lt;/span&gt;
-    &lt;input type="text" class="md-select-input" id="select-icon-slots" readonly value="Efectivo" placeholder=" " aria-label="MÃ©todo de pago" aria-describedby="select-icon-slots-supporting"&gt;
-    &lt;label class="md-select-label" for="select-icon-slots"&gt;MÃ©todo de pago&lt;/label&gt;
+    &lt;input type="text" class="md-select-input" id="select-icon-slots" readonly value="Efectivo" placeholder=" " aria-label="Método de pago" aria-describedby="select-icon-slots-supporting"&gt;
+    &lt;label class="md-select-label" for="select-icon-slots"&gt;Método de pago&lt;/label&gt;
     &lt;span class="md-select-outline" aria-hidden="true"&gt;&lt;/span&gt;
     &lt;span class="md-select-trailing-icon" aria-hidden="true"&gt;
       &lt;span class="md-icon"&gt;arrow_drop_down&lt;/span&gt;
     &lt;/span&gt;
   &lt;/div&gt;
-  &lt;span class="md-select-supporting-text" id="select-icon-slots-supporting"&gt;Selecciona el medio de liquidaciÃ³n&lt;/span&gt;
+  &lt;span class="md-select-supporting-text" id="select-icon-slots-supporting"&gt;Selecciona el medio de liquidación&lt;/span&gt;
   &lt;div class="md-menu" role="listbox" aria-labelledby="select-icon-slots"&gt;
     &lt;div class="md-list-item md-list-item-selected" role="option" aria-selected="true" data-value="efectivo" data-icon="payments"&gt;
       &lt;span class="md-icon md-list-item-leading" aria-hidden="true"&gt;payments&lt;/span&gt;
@@ -282,19 +282,19 @@
     <!-- Open state -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Open state</h3>
-      <p class="md-type-body-medium">MenÃº desplegado con elevaciÃ³n level2, Ã­tems de 48dp, flecha rotada 0.5turn y outline engrosado en primary con label flotado.</p>
+      <p class="md-type-body-medium">Menú desplegado con elevación level2, ítems de 48dp, flecha rotada 0.5turn y outline engrosado en primary con label flotado.</p>
 
       <div class="sr-specimen">
         <div class="md-select md-select-outlined md-select-open" data-md-select role="combobox" aria-expanded="true" aria-haspopup="listbox">
           <div class="md-select-container">
-            <input type="text" class="md-select-input" id="select-open" readonly value="Efectivo" placeholder=" " aria-label="MÃ©todo de pago" aria-describedby="select-open-supporting">
-            <label class="md-select-label" for="select-open">MÃ©todo de pago</label>
+            <input type="text" class="md-select-input" id="select-open" readonly value="Efectivo" placeholder=" " aria-label="Método de pago" aria-describedby="select-open-supporting">
+            <label class="md-select-label" for="select-open">Método de pago</label>
             <span class="md-select-outline" aria-hidden="true"></span>
             <span class="md-select-trailing-icon" aria-hidden="true">
               <span class="md-icon">arrow_drop_down</span>
             </span>
           </div>
-          <span class="md-select-supporting-text" id="select-open-supporting">Selecciona el medio de liquidaciÃ³n</span>
+          <span class="md-select-supporting-text" id="select-open-supporting">Selecciona el medio de liquidación</span>
           <div class="md-menu" role="listbox" aria-labelledby="select-open">
             <div class="md-list-item md-list-item-selected" role="option" aria-selected="true" data-value="efectivo">
               <span class="md-list-item-headline">Efectivo</span>
@@ -311,14 +311,14 @@
 
       <pre class="sr-code"><code>&lt;div class="md-select md-select-outlined md-select-open" data-md-select role="combobox" aria-expanded="true" aria-haspopup="listbox"&gt;
   &lt;div class="md-select-container"&gt;
-    &lt;input type="text" class="md-select-input" id="select-open" readonly value="Efectivo" placeholder=" " aria-label="MÃ©todo de pago" aria-describedby="select-open-supporting"&gt;
-    &lt;label class="md-select-label" for="select-open"&gt;MÃ©todo de pago&lt;/label&gt;
+    &lt;input type="text" class="md-select-input" id="select-open" readonly value="Efectivo" placeholder=" " aria-label="Método de pago" aria-describedby="select-open-supporting"&gt;
+    &lt;label class="md-select-label" for="select-open"&gt;Método de pago&lt;/label&gt;
     &lt;span class="md-select-outline" aria-hidden="true"&gt;&lt;/span&gt;
     &lt;span class="md-select-trailing-icon" aria-hidden="true"&gt;
       &lt;span class="md-icon"&gt;arrow_drop_down&lt;/span&gt;
     &lt;/span&gt;
   &lt;/div&gt;
-  &lt;span class="md-select-supporting-text" id="select-open-supporting"&gt;Selecciona el medio de liquidaciÃ³n&lt;/span&gt;
+  &lt;span class="md-select-supporting-text" id="select-open-supporting"&gt;Selecciona el medio de liquidación&lt;/span&gt;
   &lt;div class="md-menu" role="listbox" aria-labelledby="select-open"&gt;
     &lt;div class="md-list-item md-list-item-selected" role="option" aria-selected="true" data-value="efectivo"&gt;
       &lt;span class="md-list-item-headline"&gt;Efectivo&lt;/span&gt;
@@ -342,8 +342,8 @@
       <div class="sr-specimen">
         <div class="md-select md-select-outlined" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox">
           <div class="md-select-container">
-            <input type="text" class="md-select-input" id="select-disabled" readonly value="Efectivo" placeholder=" " aria-label="MÃ©todo de pago" aria-describedby="select-disabled-supporting" disabled>
-            <label class="md-select-label" for="select-disabled">MÃ©todo de pago</label>
+            <input type="text" class="md-select-input" id="select-disabled" readonly value="Efectivo" placeholder=" " aria-label="Método de pago" aria-describedby="select-disabled-supporting" disabled>
+            <label class="md-select-label" for="select-disabled">Método de pago</label>
             <span class="md-select-outline" aria-hidden="true"></span>
             <span class="md-select-trailing-icon" aria-hidden="true">
               <span class="md-icon">arrow_drop_down</span>
@@ -355,8 +355,8 @@
 
       <pre class="sr-code"><code>&lt;div class="md-select md-select-outlined" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox"&gt;
   &lt;div class="md-select-container"&gt;
-    &lt;input type="text" class="md-select-input" id="select-disabled" readonly value="Efectivo" placeholder=" " aria-label="MÃ©todo de pago" aria-describedby="select-disabled-supporting" disabled&gt;
-    &lt;label class="md-select-label" for="select-disabled"&gt;MÃ©todo de pago&lt;/label&gt;
+    &lt;input type="text" class="md-select-input" id="select-disabled" readonly value="Efectivo" placeholder=" " aria-label="Método de pago" aria-describedby="select-disabled-supporting" disabled&gt;
+    &lt;label class="md-select-label" for="select-disabled"&gt;Método de pago&lt;/label&gt;
     &lt;span class="md-select-outline" aria-hidden="true"&gt;&lt;/span&gt;
     &lt;span class="md-select-trailing-icon" aria-hidden="true"&gt;
       &lt;span class="md-icon"&gt;arrow_drop_down&lt;/span&gt;
@@ -370,19 +370,19 @@
     <!-- Error state -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Error state</h3>
-      <p class="md-type-body-medium">ValidaciÃ³n fallida: outline engrosado en error, label y flecha en color error. El menÃº queda disponible para corregir la selecciÃ³n vacÃ­a.</p>
+      <p class="md-type-body-medium">Validación fallida: outline engrosado en error, label y flecha en color error. El menú queda disponible para corregir la selección vacía.</p>
 
       <div class="sr-specimen">
         <div class="md-select md-select-outlined md-select-error" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox">
           <div class="md-select-container">
-            <input type="text" class="md-select-input" id="select-error" readonly value="" placeholder=" " aria-label="MÃ©todo de pago" aria-invalid="true" aria-describedby="select-error-supporting">
-            <label class="md-select-label" for="select-error">MÃ©todo de pago</label>
+            <input type="text" class="md-select-input" id="select-error" readonly value="" placeholder=" " aria-label="Método de pago" aria-invalid="true" aria-describedby="select-error-supporting">
+            <label class="md-select-label" for="select-error">Método de pago</label>
             <span class="md-select-outline" aria-hidden="true"></span>
             <span class="md-select-trailing-icon" aria-hidden="true">
               <span class="md-icon">arrow_drop_down</span>
             </span>
           </div>
-          <span class="md-select-supporting-text" id="select-error-supporting">Selecciona un mÃ©todo de pago obligatorio</span>
+          <span class="md-select-supporting-text" id="select-error-supporting">Selecciona un método de pago obligatorio</span>
           <div class="md-menu" role="listbox" aria-labelledby="select-error">
             <div class="md-list-item" role="option" aria-selected="false" data-value="efectivo">
               <span class="md-list-item-headline">Efectivo</span>
@@ -399,14 +399,14 @@
 
       <pre class="sr-code"><code>&lt;div class="md-select md-select-outlined md-select-error" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox"&gt;
   &lt;div class="md-select-container"&gt;
-    &lt;input type="text" class="md-select-input" id="select-error" readonly value="" placeholder=" " aria-label="MÃ©todo de pago" aria-invalid="true" aria-describedby="select-error-supporting"&gt;
-    &lt;label class="md-select-label" for="select-error"&gt;MÃ©todo de pago&lt;/label&gt;
+    &lt;input type="text" class="md-select-input" id="select-error" readonly value="" placeholder=" " aria-label="Método de pago" aria-invalid="true" aria-describedby="select-error-supporting"&gt;
+    &lt;label class="md-select-label" for="select-error"&gt;Método de pago&lt;/label&gt;
     &lt;span class="md-select-outline" aria-hidden="true"&gt;&lt;/span&gt;
     &lt;span class="md-select-trailing-icon" aria-hidden="true"&gt;
       &lt;span class="md-icon"&gt;arrow_drop_down&lt;/span&gt;
     &lt;/span&gt;
   &lt;/div&gt;
-  &lt;span class="md-select-supporting-text" id="select-error-supporting"&gt;Selecciona un mÃ©todo de pago obligatorio&lt;/span&gt;
+  &lt;span class="md-select-supporting-text" id="select-error-supporting"&gt;Selecciona un método de pago obligatorio&lt;/span&gt;
   &lt;div class="md-menu" role="listbox" aria-labelledby="select-error"&gt;
     &lt;div class="md-list-item" role="option" aria-selected="false" data-value="efectivo"&gt;
       &lt;span class="md-list-item-headline"&gt;Efectivo&lt;/span&gt;

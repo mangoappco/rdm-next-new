@@ -32,7 +32,9 @@ export function initSelect() {
     const option = e.target.closest('[role="option"]');
     if (option && select.contains(option)) {
       const value = option.dataset.value || option.textContent.trim();
-      const label = option.textContent.trim();
+      // Extraer ÚNICAMENTE el texto del headline (sin el glifo del icono leading)
+      const headlineEl = option.querySelector('.md-list-item-headline');
+      const label = headlineEl ? headlineEl.textContent.trim() : (option.dataset.label || value);
 
       // Actualizar display input
       const input = select.querySelector('.md-select-input');
