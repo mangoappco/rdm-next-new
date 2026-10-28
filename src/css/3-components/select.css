@@ -473,10 +473,17 @@
 
 .md-select .md-menu {
   position: absolute;
-  top: 100%;
+  /* Anclado a la base del container interactivo de 56dp + 4dp de aire M3.
+     NO usar top: 100%, porque .md-select ahora incluye supporting text y
+     padding-bottom, lo que desplaza el menú al final de la tarjeta. */
+  top: calc(var(--md-sys-measurement-text-field-container-height) + var(--md-sys-measurement-space-50));
   left: 0;
   right: 0;
-  margin-top: var(--md-sys-measurement-space-50); /* 4dp separación M3 */
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin: 0;
   z-index: 1; /* Gana sobre labels de selects contiguos */
 }
 
