@@ -199,9 +199,25 @@
   border-end-end-radius: 0;
 }
 
-/* Ocultar cualquier outline perimetral residual en Filled (defensivo) */
-.md-select-filled .md-select-outline {
-  display: none;
+/* El elemento portador actúa como línea inferior activa (1px reposo) —
+   se aplica a ambos selectores por compatibilidad con el calco text-field
+   (que reutiliza .md-select-outline como indicador) y con el marcado
+   actual de select (que usa .md-select-active-indicator). */
+.md-select-filled .md-select-outline,
+.md-select-filled .md-select-active-indicator {
+  display: block;
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  top: auto;
+  height: var(--_stroke-rest); /* 1px reposo */
+  background-color: var(--_color-outline);
+  border: none;
+  border-radius: 0;
+  pointer-events: none;
+  transition:
+    height var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
+    background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
 }
 
 /* Active indicator: línea inferior activa para la variante Filled */
@@ -251,17 +267,20 @@
   opacity: var(--md-sys-state-hover-state-layer-opacity);
   pointer-events: none;
 }
-.md-select-filled:hover:not(.md-select-open):not(:has(.md-select-input:focus)):not(:has(.md-select-input:disabled)) .md-select-active-indicator {
+.md-select-filled:hover:not(.md-select-open):not(:has(.md-select-input:focus)):not(:has(.md-select-input:disabled)) .md-select-active-indicator,
+.md-select-filled:hover:not(.md-select-open):not(:has(.md-select-input:focus)):not(:has(.md-select-input:disabled)) .md-select-outline {
   height: var(--_stroke-focus); /* 2px */
   background-color: var(--_color-primary);
 }
 
 /* Filled focus / open: indicator 2px primary (calco + open propio del select) */
-.md-select-filled:has(.md-select-input:focus):not(:has(.md-select-input:disabled)) .md-select-active-indicator {
+.md-select-filled:has(.md-select-input:focus):not(:has(.md-select-input:disabled)) .md-select-active-indicator,
+.md-select-filled:has(.md-select-input:focus):not(:has(.md-select-input:disabled)) .md-select-outline {
   height: var(--_stroke-focus);
   background-color: var(--_color-primary);
 }
-.md-select-filled.md-select-open .md-select-active-indicator {
+.md-select-filled.md-select-open .md-select-active-indicator,
+.md-select-filled.md-select-open .md-select-outline {
   height: var(--_stroke-focus);
   background-color: var(--_color-primary);
 }
@@ -355,7 +374,8 @@
 }
 
 /* Filled error: indicador 2px error */
-.md-select-filled.md-select-error .md-select-active-indicator {
+.md-select-filled.md-select-error .md-select-active-indicator,
+.md-select-filled.md-select-error .md-select-outline {
   height: var(--_stroke-focus);
   background-color: var(--_color-error);
 }
@@ -367,7 +387,9 @@
   border-color: var(--_color-error);
 }
 .md-select-filled.md-select-error:has(.md-select-input:focus) .md-select-active-indicator,
-.md-select-filled.md-select-error.md-select-open .md-select-active-indicator {
+.md-select-filled.md-select-error:has(.md-select-input:focus) .md-select-outline,
+.md-select-filled.md-select-error.md-select-open .md-select-active-indicator,
+.md-select-filled.md-select-error.md-select-open .md-select-outline {
   height: var(--_stroke-focus);
   background-color: var(--_color-error);
 }
