@@ -189,13 +189,19 @@
    VARIANTES FILLED (calco de text-field.css Par 4)
    ------------------------------------------------------------------------ */
 
-/* Container: fondo surface-container-highest, esquinas asimétricas 4dp arriba / 0dp abajo */
+/* Container: fondo surface-container-highest, esquinas asimétricas 4dp arriba / 0dp abajo, SIN borde perimetral */
 .md-select-filled .md-select-container {
   background-color: var(--md-sys-color-surface-container-highest);
+  border: none;
   border-start-start-radius: var(--_corner);
   border-start-end-radius: var(--_corner);
   border-end-start-radius: 0;
   border-end-end-radius: 0;
+}
+
+/* Ocultar cualquier outline perimetral residual en Filled (defensivo) */
+.md-select-filled .md-select-outline {
+  display: none;
 }
 
 /* Active indicator: línea inferior activa para la variante Filled */
