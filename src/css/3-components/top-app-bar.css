@@ -371,22 +371,48 @@
    MODIFICADOR ORTOGONAL: Centered text alignment (M3 Expressive)
    ------------------------------------------------------------------------ */
 
-/* 1. Small centrado: grid simétrico 1fr auto 1fr */
-.md-top-app-bar--centered.md-top-app-bar-small {
+/* 1. Small centrado: grid simétrico 1fr auto 1fr con anclaje rígido de slots */
+.md-top-app-bar--centered.md-top-app-bar-small,
+.md-top-app-bar-center-aligned {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
+  padding-inline: var(--md-sys-measurement-space-100); /* 8dp */
+  box-sizing: border-box;
 }
 
-.md-top-app-bar--centered.md-top-app-bar-small .md-top-app-bar-content {
+.md-top-app-bar--centered.md-top-app-bar-small .md-top-app-bar-leading,
+.md-top-app-bar-center-aligned .md-top-app-bar-leading {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  justify-self: start;
+  margin: 0;
+}
+
+.md-top-app-bar--centered.md-top-app-bar-small .md-top-app-bar-content,
+.md-top-app-bar-center-aligned .md-top-app-bar-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
   text-align: center;
   justify-self: center;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
 }
 
-.md-top-app-bar--centered.md-top-app-bar-small .md-top-app-bar-trailing {
+.md-top-app-bar--centered.md-top-app-bar-small .md-top-app-bar-trailing,
+.md-top-app-bar-center-aligned .md-top-app-bar-trailing {
+  display: inline-flex;
+  align-items: center;
   justify-content: flex-end;
+  justify-self: end;
+  margin: 0;
 }
+
+/* 2. Medium y Large centrados: fila 2 centrada */
 .md-top-app-bar--centered.md-top-app-bar-medium .md-top-app-bar-content,
 .md-top-app-bar--centered.md-top-app-bar-large .md-top-app-bar-content {
   align-items: center;
