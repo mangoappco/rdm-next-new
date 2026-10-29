@@ -1,4 +1,4 @@
-/* ==========================================================================
+﻿/* ==========================================================================
    src/css/3-components/top-app-bar.css — TOP APP BAR (M3 Navegación)
    ==========================================================================
 
@@ -192,9 +192,10 @@
   justify-content: flex-end;
   align-items: flex-start;
   min-width: 0;
-  padding-inline-start: var(--md-sys-measurement-space-200); /* 16dp: keyline canónico */
-  padding-inline-end: var(--md-sys-measurement-space-200);
-  padding-block-end: var(--md-sys-measurement-space-250);   /* 20dp de resguardo inferior */
+  padding-inline: var(--md-sys-measurement-space-200); /* 16dp: keyline canonico */
+  padding-block-start: var(--md-sys-measurement-space-150); /* 12dp de aire superior */
+  padding-block-end: var(--md-sys-measurement-space-300);   /* 24dp de resguardo inferior */
+  gap: var(--md-sys-measurement-space-50); /* 4dp entre titular y subtitulo */
 }
 
 /* Tipografía M3 Expressive */
