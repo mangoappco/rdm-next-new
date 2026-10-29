@@ -156,11 +156,12 @@
   grid-template-areas:
     "leading . trailing"
     "content content content";
-  display: grid;
-  grid-template-rows: var(--md-sys-measurement-top-bar-height) 1fr; /* 64dp + restante */
+  grid-template-rows: var(--md-sys-measurement-space-700) auto; /* 56dp de fila superior */
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  min-height: var(--md-sys-measurement-top-bar-medium-height); /* 112dp */
+  min-height: calc(var(--md-sys-measurement-space-700) + var(--md-sys-measurement-space-700)); /* 112dp exactos */
+  padding-inline: var(--md-sys-measurement-space-100); /* 8dp */
+  padding-block-end: var(--md-sys-measurement-space-200); /* 16dp de resguardo final */
   box-sizing: border-box;
 }
 
@@ -184,17 +185,17 @@
   gap: var(--md-sys-measurement-space-50); /* 4dp */
 }
 
-/* Fila inferior: título + subtítulo en orden semántico */
+/* Fila inferior: título + subtítulo en orden semántico, flujo natural (sin flex-end) */
 .md-top-app-bar-medium .md-top-app-bar-content {
   grid-area: content;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: flex-start;
   min-width: 0;
-  padding-inline: var(--md-sys-measurement-space-100); /* 8dp (+ 8dp del padre = 16dp keyline exacto) */
-  padding-block-start: var(--md-sys-measurement-space-100); /* 8dp de aire superior */
-  padding-block-end: var(--md-sys-measurement-space-200);   /* 16dp de resguardo inferior */
+  margin: 0;
+  padding-inline: var(--md-sys-measurement-space-100); /* 8dp (+ 8dp padre = 16dp keyline exacto) */
+  padding-block: 0;
   gap: var(--md-sys-measurement-space-50); /* 4dp entre titular y subtitulo */
 }
 
