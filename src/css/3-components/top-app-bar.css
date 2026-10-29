@@ -101,39 +101,48 @@
    CENTER-ALIGNED VARIANT
    ------------------------------------------------------------------------ */
 
-/* Center-aligned: centrado geométrico absoluto.
-   El contenido se posiciona en el centro exacto del contenedor, independiente
-   de la cantidad de acciones en los slots laterales. */
+/* Center-aligned: CSS Grid de 3 columnas simétricas.
+   Columna 1 (Leading): 1fr alineado a la izquierda.
+   Columna 2 (Content): auto, centrado geométricamente.
+   Columna 3 (Trailing): 1fr alineado a la derecha.
+   Con este grid, el título queda en el 50% exacto del viewport
+   independientemente de la cantidad de acciones en los extremos. */
 .md-top-app-bar-center-aligned {
-  position: relative;
-  padding-inline: var(--md-sys-measurement-space-100); /* 8dp simétricos en ambos extremos */
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  height: var(--md-sys-measurement-top-bar-height);
+  padding-inline: var(--md-sys-measurement-space-100); /* 8dp simétricos */
+  box-sizing: border-box;
 }
 
+/* Columna izquierda: pegada al inicio */
+.md-top-app-bar-center-aligned .md-top-app-bar-leading {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 0;
+  min-width: var(--md-sys-measurement-space-600); /* 48dp = touch target */
+}
+
+/* Columna central: flujo normal, centrada geométrica y matemáticamente */
 .md-top-app-bar-center-aligned .md-top-app-bar-content {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  position: static;
+  transform: none;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   text-align: center;
-  max-width: calc(100% - 4 * var(--md-sys-measurement-space-600)); /* Protege colisión con los botones laterales (4 × 48dp) */
+  justify-content: center;
   min-width: 0;
 }
 
-/* Ancho mínimo igual en leading y trailing para centrado real.
-   margin: 0 para eliminar la asimetría del Par 1 (12dp leading / 16dp trailing). */
-.md-top-app-bar-center-aligned .md-top-app-bar-leading,
+/* Columna derecha: pegada al final */
 .md-top-app-bar-center-aligned .md-top-app-bar-trailing {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
   margin: 0;
   min-width: var(--md-sys-measurement-space-600); /* 48dp = touch target */
-  pointer-events: auto;
-}
-
-/* El contenido centrado no bloquea clicks en los márgenes */
-.md-top-app-bar-center-aligned .md-top-app-bar-content {
-  pointer-events: none;
-}
-
-.md-top-app-bar-center-aligned .md-top-app-bar-content > * {
-  pointer-events: auto;
+  gap: var(--md-sys-measurement-space-50); /* 4dp entre icon-buttons */
 }
