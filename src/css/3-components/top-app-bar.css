@@ -96,3 +96,19 @@
   gap: var(--md-sys-measurement-space-50); /* 4dp entre icon-buttons */
   margin-inline-start: var(--md-sys-measurement-space-200); /* 16dp de resguardo contra el texto */
 }
+
+/* --------------------------------------------------------------------------
+   CENTER-ALIGNED VARIANT
+   ------------------------------------------------------------------------ */
+
+/* Center-aligned: título y subtítulo centrados horizontalmente */
+.md-top-app-bar-center-aligned .md-top-app-bar-content {
+  align-items: center;
+  text-align: center;
+}
+
+/* Ancho mínimo igual en leading y trailing para centrado real */
+.md-top-app-bar-center-aligned .md-top-app-bar-leading,
+.md-top-app-bar-center-aligned .md-top-app-bar-trailing {
+  min-width: var(--md-sys-measurement-space-600); /* 48dp = touch target */
+}
