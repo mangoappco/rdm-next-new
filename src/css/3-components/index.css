@@ -32,6 +32,7 @@
 @import url("select.css");
 @import url("ripple.css");
 @import url("search.css");
+@import url("top-app-bar.css");
 
 /* list.css va al final, y no por orden alfabetico: no compone con ningun
    componente anterior, asi que su sitio es el final de la lista de construccion.

@@ -331,8 +331,8 @@
   --md-sys-measurement-list-item-thumbnail-size: var(--md-ref-spacing-700);
 
 
-  /* Alto de una barra de navegacion superior. */
-  --md-sys-measurement-top-bar-height: var(--md-ref-spacing-600);
+  /* Alto de una barra de navegacion superior (M3 Top App Bar small: 64dp). */
+  --md-sys-measurement-top-bar-height: var(--md-ref-spacing-800);
 
   /* Alto de una barra de navegacion inferior o rail. */
   --md-sys-measurement-navigation-bar-height: var(--md-ref-spacing-800);

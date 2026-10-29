@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Top App Bar de RDM Next: cabecera de navegación superior M3 con titular y subtítulo.">
+  <title>Top App Bar — RDM ManGo! App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+  <link rel="stylesheet" href="../../src/css/main.css?v=9">
+  <link rel="stylesheet" href="../assets/showroom.css">
+  <script type="module" src="../../src/js/main.js"></script>
+  <script src="../assets/showroom.js"></script>
+</head>
+
+<!--
+  ESTA VISTA TIENE UN PAR (Par 1 · Anatomy). Los pares restantes
+  (Center-aligned, Medium flexible, Large flexible, Scrolled state,
+  Contextual/Selection bar) se añadirán en pasos posteriores.
+-->
+
+<body>
+  <header class="sr-header">
+    <h1 class="md-type-headline-large">Top App Bar</h1>
+    <p class="md-type-body-large">Cabecera de navegación superior M3: 64dp, flat en reposo, con titular y subtítulo. <em>Un par</em></p>
+  </header>
+
+  <main class="sr-main">
+    <section class="sr-section">
+      <h2 class="md-type-headline-medium">Especificación y anatomía</h2>
+
+      <!-- Par 1 · Anatomy -->
+      <section class="sr-section">
+        <h3 class="md-type-title-large">Anatomy</h3>
+        <p class="md-type-body-medium">Small App Bar de 64dp en reposo: slot leading con icono de navegación, slot central con titular (title-large) y subtítulo (body-small), slot trailing con acciones.</p>
+
+        <div class="sr-specimen">
+          <header class="md-top-app-bar md-top-app-bar-small" role="banner">
+            <div class="md-top-app-bar-leading">
+              <button type="button" class="md-icon-button" aria-label="Menú">
+                <span class="md-icon" aria-hidden="true">menu</span>
+              </button>
+            </div>
+            <div class="md-top-app-bar-content">
+              <span class="md-top-app-bar-title">Método de pago</span>
+              <span class="md-top-app-bar-subtitle">Selecciona tu forma de liquidación</span>
+            </div>
+            <div class="md-top-app-bar-trailing">
+              <button type="button" class="md-icon-button" aria-label="Buscar">
+                <span class="md-icon" aria-hidden="true">search</span>
+              </button>
+              <button type="button" class="md-icon-button" aria-label="Más opciones">
+                <span class="md-icon" aria-hidden="true">more_vert</span>
+              </button>
+            </div>
+          </header>
+        </div>
+
+        <pre class="sr-code"><code>&lt;header class="md-top-app-bar md-top-app-bar-small" role="banner"&gt;
+  &lt;div class="md-top-app-bar-leading"&gt;
+    &lt;button type="button" class="md-icon-button" aria-label="Menú"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;menu&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="md-top-app-bar-content"&gt;
+    &lt;span class="md-top-app-bar-title"&gt;Método de pago&lt;/span&gt;
+    &lt;span class="md-top-app-bar-subtitle"&gt;Selecciona tu forma de liquidación&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class="md-top-app-bar-trailing"&gt;
+    &lt;button type="button" class="md-icon-button" aria-label="Buscar"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;search&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-icon-button" aria-label="Más opciones"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;more_vert&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/header&gt;</code></pre>
+        <button type="button" class="sr-copy" data-copy>Copiar</button>
+      </section>
+    </section>
+  </main>
+</body>
+</html>

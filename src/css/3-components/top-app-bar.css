@@ -1,0 +1,98 @@
+/* ==========================================================================
+   src/css/3-components/top-app-bar.css — TOP APP BAR (M3 Navegación)
+   ==========================================================================
+
+   QUE HACE
+   --------
+   Cabecera de navegación superior de Material Design 3: contenedor horizontal
+   de 64dp (variante small) con slot leading (icono de navegación), slot
+   central (título + subtítulo) y slot trailing (acciones). Calco de los
+   tokens de M3 para altura, espaciado, tipografía y color.
+
+   CERTIFICACIÓN DE CALCO
+   ----------------------
+   Host atómico: margin: 0; padding: 0; width: 100% (principio consolidado
+   en Select). Sin valores crudos (REGLA 1). 3-components solo lee
+   2-system-tokens (REGLA 2).
+
+   FUENTES
+   -------
+   - m3.material.io/components/top-app-bar/overview
+   - m3.material.io/components/top-app-bar/specs
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   HOST Y VARIANTE SMALL
+   ------------------------------------------------------------------------ */
+
+/* Host atómico: sin márgenes exteriores ni padding envolvente */
+.md-top-app-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+}
+
+/* Small variant: 64dp de altura */
+.md-top-app-bar-small {
+  height: var(--md-sys-measurement-top-bar-height); /* 64dp */
+  padding-inline-start: var(--md-sys-measurement-space-50); /* 4dp (resguardo touch target) */
+  padding-inline-end: var(--md-sys-measurement-space-100);   /* 8dp */
+}
+
+/* --------------------------------------------------------------------------
+   SLOTS
+   ------------------------------------------------------------------------ */
+
+/* Leading slot: icono de navegación */
+.md-top-app-bar-leading {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-inline-end: var(--md-sys-measurement-space-150); /* 12dp hacia el texto */
+}
+
+/* Content slot: contenedor vertical de título + subtítulo */
+.md-top-app-bar-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  min-width: 0; /* Permite text-overflow: ellipsis */
+}
+
+/* Título principal */
+.md-top-app-bar-title {
+  font: var(--md-sys-typescale-title-large);
+  line-height: var(--md-sys-typescale-title-large-line-height);
+  color: var(--md-sys-color-on-surface);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Subtítulo */
+.md-top-app-bar-subtitle {
+  font: var(--md-sys-typescale-body-small);
+  line-height: var(--md-sys-typescale-body-small-line-height);
+  color: var(--md-sys-color-on-surface-variant);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Trailing slot: grupo de acciones finales */
+.md-top-app-bar-trailing {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-shrink: 0;
+  gap: var(--md-sys-measurement-space-50); /* 4dp entre icon-buttons */
+  margin-inline-start: var(--md-sys-measurement-space-200); /* 16dp de resguardo contra el texto */
+}
