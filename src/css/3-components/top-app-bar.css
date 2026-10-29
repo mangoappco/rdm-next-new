@@ -366,3 +366,35 @@
 .md-avatar-text {
   display: block;
 }
+
+/* --------------------------------------------------------------------------
+   MODIFICADOR ORTOGONAL: Centered text alignment (M3 Expressive)
+   ------------------------------------------------------------------------ */
+
+/* 1. Small centrado: grid simétrico 1fr auto 1fr */
+.md-top-app-bar--centered.md-top-app-bar-small {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+}
+
+.md-top-app-bar--centered.md-top-app-bar-small .md-top-app-bar-content {
+  align-items: center;
+  text-align: center;
+  justify-self: center;
+}
+
+.md-top-app-bar--centered.md-top-app-bar-small .md-top-app-bar-trailing {
+  justify-content: flex-end;
+}
+.md-top-app-bar--centered.md-top-app-bar-medium .md-top-app-bar-content,
+.md-top-app-bar--centered.md-top-app-bar-large .md-top-app-bar-content {
+  align-items: center;
+  text-align: center;
+  padding-inline: 0;
+}
+
+/* 3. Search centrado */
+.md-top-app-bar--centered.md-top-app-bar-search .md-search-input {
+  text-align: center;
+}
