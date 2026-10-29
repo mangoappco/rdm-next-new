@@ -334,6 +334,9 @@
   /* Alto de una barra de navegacion superior (M3 Top App Bar small: 64dp). */
   --md-sys-measurement-top-bar-height: var(--md-ref-spacing-800);
 
+  /* Alto de una barra de navegacion superior Medium (M3 Expressive: 112dp). */
+  --md-sys-measurement-top-bar-medium-height: calc(var(--md-sys-measurement-top-bar-height) + var(--md-sys-measurement-space-600)); /* 64px + 48px = 112dp */
+
   /* Alto de una barra de navegacion inferior o rail. */
   --md-sys-measurement-navigation-bar-height: var(--md-ref-spacing-800);
 
