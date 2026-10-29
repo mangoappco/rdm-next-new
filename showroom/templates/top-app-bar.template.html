@@ -18,46 +18,66 @@
   ESTA VISTA TIENE UN PAR (Par 1 · Anatomy). Los pares restantes
   (Center-aligned, Medium flexible, Large flexible, Scrolled state,
   Contextual/Selection bar) se añadirán en pasos posteriores.
+
+  LOS ACUERDOS DEL SHOWROOM
+  -------------------------
+  1. Jerarquía: h1 (componente) > h2 (bloque) > h3 (par). Los títulos de
+     bloque y par están en inglés; las descripciones en español breve.
+  2. REGLA 11: el texto de cada pre.sr-code desescapado es idéntico al
+     innerHTML de su .sr-specimen (normalizando solo el espacio).
+  3. REGLA 6: sin atributos de estilo en línea ni bloques <style>.
+  4. REGLA 9: iconos siempre con .md-icon, nunca material-symbols-*.
+  5. REGLA 10: toda clase md-* del showroom existe en src/css/.
+  6. REGLA 13: cada snippet es autónomo (solo clases del sistema).
 -->
 
-<body>
-  <header class="sr-header">
-    <h1 class="md-type-headline-large">Top App Bar</h1>
-    <p class="md-type-body-large">Cabecera de navegación superior M3: 64dp, flat en reposo, con titular y subtítulo. <em>Un par</em></p>
-  </header>
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <main class="sr-page">
 
-  <main class="sr-main">
+    <!-- HEADER: inicio (barra + titulo + descripcion) -->
+    <header class="sr-header">
+      <div class="sr-bar">
+        <p class="md-type-body-medium"><a href="../index.html">RDM ManGo! App</a></p>
+        <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
+      </div>
+      <h1 class="md-type-display-large">Top App Bar</h1>
+      <p class="md-type-body-large">Cabecera de navegación superior M3: 64dp, flat en reposo, titular y subtítulo. <em>Un par</em></p>
+    </header>
+    <!-- HEADER: fin -->
+
+    <hr class="md-divider">
+
+    <!-- BLOQUE 1: Especificación y anatomía -->
+    <h2 class="md-type-headline-medium">Especificación y anatomía</h2>
+
+    <!-- Anatomy -->
     <section class="sr-section">
-      <h2 class="md-type-headline-medium">Especificación y anatomía</h2>
+      <h3 class="md-type-title-large">Anatomy</h3>
+      <p class="md-type-body-medium">Small App Bar de 64dp en reposo: slot leading con icono de navegación, slot central con titular (title-large) y subtítulo (body-small), slot trailing con acciones.</p>
 
-      <!-- Par 1 · Anatomy -->
-      <section class="sr-section">
-        <h3 class="md-type-title-large">Anatomy</h3>
-        <p class="md-type-body-medium">Small App Bar de 64dp en reposo: slot leading con icono de navegación, slot central con titular (title-large) y subtítulo (body-small), slot trailing con acciones.</p>
+      <div class="sr-specimen">
+        <header class="md-top-app-bar md-top-app-bar-small" role="banner">
+          <div class="md-top-app-bar-leading">
+            <button type="button" class="md-icon-button" aria-label="Menú">
+              <span class="md-icon" aria-hidden="true">menu</span>
+            </button>
+          </div>
+          <div class="md-top-app-bar-content">
+            <span class="md-top-app-bar-title">Método de pago</span>
+            <span class="md-top-app-bar-subtitle">Selecciona tu forma de liquidación</span>
+          </div>
+          <div class="md-top-app-bar-trailing">
+            <button type="button" class="md-icon-button" aria-label="Buscar">
+              <span class="md-icon" aria-hidden="true">search</span>
+            </button>
+            <button type="button" class="md-icon-button" aria-label="Más opciones">
+              <span class="md-icon" aria-hidden="true">more_vert</span>
+            </button>
+          </div>
+        </header>
+      </div>
 
-        <div class="sr-specimen">
-          <header class="md-top-app-bar md-top-app-bar-small" role="banner">
-            <div class="md-top-app-bar-leading">
-              <button type="button" class="md-icon-button" aria-label="Menú">
-                <span class="md-icon" aria-hidden="true">menu</span>
-              </button>
-            </div>
-            <div class="md-top-app-bar-content">
-              <span class="md-top-app-bar-title">Método de pago</span>
-              <span class="md-top-app-bar-subtitle">Selecciona tu forma de liquidación</span>
-            </div>
-            <div class="md-top-app-bar-trailing">
-              <button type="button" class="md-icon-button" aria-label="Buscar">
-                <span class="md-icon" aria-hidden="true">search</span>
-              </button>
-              <button type="button" class="md-icon-button" aria-label="Más opciones">
-                <span class="md-icon" aria-hidden="true">more_vert</span>
-              </button>
-            </div>
-          </header>
-        </div>
-
-        <pre class="sr-code"><code>&lt;header class="md-top-app-bar md-top-app-bar-small" role="banner"&gt;
+      <pre class="sr-code"><code>&lt;header class="md-top-app-bar md-top-app-bar-small" role="banner"&gt;
   &lt;div class="md-top-app-bar-leading"&gt;
     &lt;button type="button" class="md-icon-button" aria-label="Menú"&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;menu&lt;/span&gt;
@@ -76,8 +96,7 @@
     &lt;/button&gt;
   &lt;/div&gt;
 &lt;/header&gt;</code></pre>
-        <button type="button" class="sr-copy" data-copy>Copiar</button>
-      </section>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
   </main>
 </body>
