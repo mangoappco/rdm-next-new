@@ -271,7 +271,7 @@
   align-items: center;
   min-height: calc(var(--md-sys-measurement-top-bar-height) + var(--md-sys-measurement-space-100)); /* 72dp */
   padding-inline: var(--md-sys-measurement-space-100); /* 8dp */
-  gap: var(--md-sys-measurement-space-100); /* 8dp entre slots */
+  gap: var(--md-sys-measurement-space-50); /* 4dp entre slots (menú → pastilla → avatar) */
   box-sizing: border-box;
 }
 
@@ -282,6 +282,7 @@
   align-items: center;
   justify-content: flex-start;
   margin: 0;
+  padding: 0;
   min-width: var(--md-sys-measurement-space-600); /* 48dp */
 }
 
@@ -333,6 +334,7 @@
   align-items: center;
   justify-content: flex-end;
   margin: 0;
+  padding: 0;
   min-width: var(--md-sys-measurement-space-600); /* 48dp */
 }
 
