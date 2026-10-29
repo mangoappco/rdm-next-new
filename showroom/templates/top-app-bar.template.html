@@ -15,10 +15,9 @@
 </head>
 
 <!--
-  ESTA VISTA TIENE CINCO PARES. El Bloque 1 --Especificación y anatomía--
+  ESTA VISTA TIENE SEIS PARES. El Bloque 1 --Especificación y anatomía--
   cubre Anatomy (Small base en reposo), Center-aligned variant,
-  Medium flexible, Large flexible y Search app bar. Los pares restantes
-  (Contextual/Selection bar) se añadirán en pasos posteriores.
+  Medium flexible, Large flexible y Search app bar, más Contextual/Selection bar.
 
   LOS ACUERDOS DEL SHOWROOM
   -------------------------
@@ -42,7 +41,7 @@
         <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
       </div>
       <h1 class="md-type-display-large">Top App Bar</h1>
-      <p class="md-type-body-large">Cabecera de navegación superior M3: 64dp, flat en reposo, titular y subtítulo. <em>Cinco pares</em></p>
+      <p class="md-type-body-large">Cabecera de navegación superior M3: 64dp, flat en reposo, titular y subtítulo. <em>Seis pares</em></p>
     </header>
     <!-- HEADER: fin -->
 
@@ -100,62 +99,13 @@
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
 
-    <!-- Small centered (modificador ortogonal) -->
-    <section class="sr-section">
-      <h3 class="md-type-title-large">Small centered</h3>
-      <p class="md-type-body-medium">Small App Bar de 64dp con titular centrado mediante el modificador ortogonal .md-top-app-bar--centered. Distribución simétrica 1fr auto 1fr.</p>
-
-      <div class="sr-specimen">
-        <header class="md-top-app-bar md-top-app-bar-small md-top-app-bar--centered" role="banner">
-          <div class="md-top-app-bar-leading">
-            <button type="button" class="md-icon-button" aria-label="Menú">
-              <span class="md-icon" aria-hidden="true">arrow_back</span>
-            </button>
-          </div>
-          <div class="md-top-app-bar-content">
-            <span class="md-top-app-bar-title">Método de pago</span>
-            <span class="md-top-app-bar-subtitle">Selecciona tu forma de liquidación</span>
-          </div>
-          <div class="md-top-app-bar-trailing">
-            <button type="button" class="md-icon-button" aria-label="Buscar">
-              <span class="md-icon" aria-hidden="true">search</span>
-            </button>
-            <button type="button" class="md-icon-button" aria-label="Más opciones">
-              <span class="md-icon" aria-hidden="true">more_vert</span>
-            </button>
-          </div>
-        </header>
-      </div>
-
-      <pre class="sr-code"><code>&lt;header class="md-top-app-bar md-top-app-bar-small md-top-app-bar--centered" role="banner"&gt;
-  &lt;div class="md-top-app-bar-leading"&gt;
-    &lt;button type="button" class="md-icon-button" aria-label="Menú"&gt;
-      &lt;span class="md-icon" aria-hidden="true"&gt;arrow_back&lt;/span&gt;
-    &lt;/button&gt;
-  &lt;/div&gt;
-  &lt;div class="md-top-app-bar-content"&gt;
-    &lt;span class="md-top-app-bar-title"&gt;Método de pago&lt;/span&gt;
-    &lt;span class="md-top-app-bar-subtitle"&gt;Selecciona tu forma de liquidación&lt;/span&gt;
-  &lt;/div&gt;
-  &lt;div class="md-top-app-bar-trailing"&gt;
-    &lt;button type="button" class="md-icon-button" aria-label="Buscar"&gt;
-      &lt;span class="md-icon" aria-hidden="true"&gt;search&lt;/span&gt;
-    &lt;/button&gt;
-    &lt;button type="button" class="md-icon-button" aria-label="Más opciones"&gt;
-      &lt;span class="md-icon" aria-hidden="true"&gt;more_vert&lt;/span&gt;
-    &lt;/button&gt;
-  &lt;/div&gt;
-&lt;/header&gt;</code></pre>
-      <button type="button" class="sr-copy" data-copy>Copiar</button>
-    </section>
-
     <!-- Center-aligned variant -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Center-aligned variant</h3>
-      <p class="md-type-body-medium">Small App Bar de 64dp con título y subtítulo centrados horizontalmente. Slot leading a la izquierda y slot trailing a la derecha con ancho mínimo de 48dp para centrado real.</p>
+      <p class="md-type-body-medium">Small App Bar de 64dp con titular centrado mediante el modificador ortogonal .md-top-app-bar-centered (aplicable de manera transversal a Small, Medium flexible y Large flexible según M3 Expressive). Slot leading a la izquierda y slot trailing a la derecha con ancho mínimo de 48dp para centrado real.</p>
 
       <div class="sr-specimen">
-        <header class="md-top-app-bar md-top-app-bar-small md-top-app-bar-center-aligned" role="banner">
+        <header class="md-top-app-bar md-top-app-bar-small md-top-app-bar-centered" role="banner">
           <div class="md-top-app-bar-leading">
             <button type="button" class="md-icon-button" aria-label="Menú">
               <span class="md-icon" aria-hidden="true">arrow_back</span>
@@ -173,7 +123,7 @@
         </header>
       </div>
 
-      <pre class="sr-code"><code>&lt;header class="md-top-app-bar md-top-app-bar-small md-top-app-bar-center-aligned" role="banner"&gt;
+      <pre class="sr-code"><code>&lt;header class="md-top-app-bar md-top-app-bar-small md-top-app-bar-centered" role="banner"&gt;
   &lt;div class="md-top-app-bar-leading"&gt;
     &lt;button type="button" class="md-icon-button" aria-label="Menú"&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;arrow_back&lt;/span&gt;
@@ -223,61 +173,6 @@
       </div>
 
       <pre class="sr-code"><code>&lt;header class="md-top-app-bar md-top-app-bar-medium" role="banner"&gt;
-  &lt;div class="md-top-app-bar-leading"&gt;
-    &lt;button type="button" class="md-icon-button" aria-label="Menú"&gt;
-      &lt;span class="md-icon" aria-hidden="true"&gt;arrow_back&lt;/span&gt;
-    &lt;/button&gt;
-  &lt;/div&gt;
-  &lt;div class="md-top-app-bar-content"&gt;
-    &lt;span class="md-top-app-bar-title"&gt;Método de pago&lt;/span&gt;
-    &lt;span class="md-top-app-bar-subtitle"&gt;Selecciona tu forma de liquidación&lt;/span&gt;
-  &lt;/div&gt;
-  &lt;div class="md-top-app-bar-trailing"&gt;
-    &lt;button type="button" class="md-icon-button" aria-label="Buscar"&gt;
-      &lt;span class="md-icon" aria-hidden="true"&gt;search&lt;/span&gt;
-    &lt;/button&gt;
-    &lt;button type="button" class="md-icon-button" aria-label="Más opciones"&gt;
-      &lt;span class="md-icon" aria-hidden="true"&gt;more_vert&lt;/span&gt;
-    &lt;/button&gt;
-    &lt;button type="button" class="md-icon-button" aria-label="Notificaciones"&gt;
-      &lt;span class="md-icon" aria-hidden="true"&gt;notifications&lt;/span&gt;
-    &lt;/button&gt;
-  &lt;/div&gt;
-&lt;/header&gt;</code></pre>
-      <button type="button" class="sr-copy" data-copy>Copiar</button>
-    </section>
-
-    <!-- Medium flexible centered (modificador ortogonal) -->
-    <section class="sr-section">
-      <h3 class="md-type-title-large">Medium flexible centered</h3>
-      <p class="md-type-body-medium">Medium flexible con titular y subtítulo centrados en la fila inferior mediante el modificador ortogonal .md-top-app-bar--centered.</p>
-
-      <div class="sr-specimen">
-        <header class="md-top-app-bar md-top-app-bar-medium md-top-app-bar--centered" role="banner">
-          <div class="md-top-app-bar-leading">
-            <button type="button" class="md-icon-button" aria-label="Menú">
-              <span class="md-icon" aria-hidden="true">arrow_back</span>
-            </button>
-          </div>
-          <div class="md-top-app-bar-content">
-            <span class="md-top-app-bar-title">Método de pago</span>
-            <span class="md-top-app-bar-subtitle">Selecciona tu forma de liquidación</span>
-          </div>
-          <div class="md-top-app-bar-trailing">
-            <button type="button" class="md-icon-button" aria-label="Buscar">
-              <span class="md-icon" aria-hidden="true">search</span>
-            </button>
-            <button type="button" class="md-icon-button" aria-label="Más opciones">
-              <span class="md-icon" aria-hidden="true">more_vert</span>
-            </button>
-            <button type="button" class="md-icon-button" aria-label="Notificaciones">
-              <span class="md-icon" aria-hidden="true">notifications</span>
-            </button>
-          </div>
-        </header>
-      </div>
-
-      <pre class="sr-code"><code>&lt;header class="md-top-app-bar md-top-app-bar-medium md-top-app-bar--centered" role="banner"&gt;
   &lt;div class="md-top-app-bar-leading"&gt;
     &lt;button type="button" class="md-icon-button" aria-label="Menú"&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;arrow_back&lt;/span&gt;
@@ -357,61 +252,6 @@
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
 
-    <!-- Large flexible centered (modificador ortogonal) -->
-    <section class="sr-section">
-      <h3 class="md-type-title-large">Large flexible centered</h3>
-      <p class="md-type-body-medium">Large flexible con titular y subtítulo centrados en la fila inferior mediante el modificador ortogonal .md-top-app-bar--centered.</p>
-
-      <div class="sr-specimen">
-        <header class="md-top-app-bar md-top-app-bar-large md-top-app-bar--centered" role="banner">
-          <div class="md-top-app-bar-leading">
-            <button type="button" class="md-icon-button" aria-label="Menú">
-              <span class="md-icon" aria-hidden="true">arrow_back</span>
-            </button>
-          </div>
-          <div class="md-top-app-bar-content">
-            <span class="md-top-app-bar-title">Portada de proyecto</span>
-            <span class="md-top-app-bar-subtitle">Explora el catálogo completo de componentes M3</span>
-          </div>
-          <div class="md-top-app-bar-trailing">
-            <button type="button" class="md-icon-button" aria-label="Buscar">
-              <span class="md-icon" aria-hidden="true">search</span>
-            </button>
-            <button type="button" class="md-icon-button" aria-label="Más opciones">
-              <span class="md-icon" aria-hidden="true">more_vert</span>
-            </button>
-            <button type="button" class="md-icon-button" aria-label="Notificaciones">
-              <span class="md-icon" aria-hidden="true">notifications</span>
-            </button>
-          </div>
-        </header>
-      </div>
-
-      <pre class="sr-code"><code>&lt;header class="md-top-app-bar md-top-app-bar-large md-top-app-bar--centered" role="banner"&gt;
-  &lt;div class="md-top-app-bar-leading"&gt;
-    &lt;button type="button" class="md-icon-button" aria-label="Menú"&gt;
-      &lt;span class="md-icon" aria-hidden="true"&gt;arrow_back&lt;/span&gt;
-    &lt;/button&gt;
-  &lt;/div&gt;
-  &lt;div class="md-top-app-bar-content"&gt;
-    &lt;span class="md-top-app-bar-title"&gt;Portada de proyecto&lt;/span&gt;
-    &lt;span class="md-top-app-bar-subtitle"&gt;Explora el catálogo completo de componentes M3&lt;/span&gt;
-  &lt;/div&gt;
-  &lt;div class="md-top-app-bar-trailing"&gt;
-    &lt;button type="button" class="md-icon-button" aria-label="Buscar"&gt;
-      &lt;span class="md-icon" aria-hidden="true"&gt;search&lt;/span&gt;
-    &lt;/button&gt;
-    &lt;button type="button" class="md-icon-button" aria-label="Más opciones"&gt;
-      &lt;span class="md-icon" aria-hidden="true"&gt;more_vert&lt;/span&gt;
-    &lt;/button&gt;
-    &lt;button type="button" class="md-icon-button" aria-label="Notificaciones"&gt;
-      &lt;span class="md-icon" aria-hidden="true"&gt;notifications&lt;/span&gt;
-    &lt;/button&gt;
-  &lt;/div&gt;
-&lt;/header&gt;</code></pre>
-      <button type="button" class="sr-copy" data-copy>Copiar</button>
-    </section>
-
     <!-- Search app bar -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Search app bar</h3>
@@ -457,46 +297,54 @@
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
 
-    <!-- Search app bar centered (modificador ortogonal) -->
+    <!-- Contextual / Selection bar -->
     <section class="sr-section">
-      <h3 class="md-type-title-large">Search app bar centered</h3>
-      <p class="md-type-body-medium">Search app bar con el placeholder de búsqueda centrado mediante el modificador ortogonal .md-top-app-bar--centered.</p>
+      <h3 class="md-type-title-large">Contextual / Selection bar</h3>
+      <p class="md-type-body-medium">Cabecera de selección masiva con contador de ítems, botón cerrar y acciones de eliminación, compartir y más opciones.</p>
 
       <div class="sr-specimen">
-        <header class="md-top-app-bar md-top-app-bar-search md-top-app-bar--centered" role="banner">
+        <header class="md-top-app-bar md-top-app-bar-contextual" role="banner">
           <div class="md-top-app-bar-leading">
-            <button type="button" class="md-icon-button" aria-label="Menú principal">
-              <span class="md-icon" aria-hidden="true">menu</span>
+            <button type="button" class="md-icon-button" aria-label="Cerrar selección">
+              <span class="md-icon" aria-hidden="true">close</span>
             </button>
           </div>
           <div class="md-top-app-bar-content">
-            <div class="md-search-bar md-search-bar--embedded">
-              <input type="search" class="md-search-input" placeholder="Buscar en ManGo!..." aria-label="Buscar en ManGo!">
-            </div>
+            <span class="md-top-app-bar-title">3 seleccionados</span>
           </div>
           <div class="md-top-app-bar-trailing">
-            <div class="md-avatar md-avatar--small" aria-label="Perfil de usuario">
-              <span class="md-avatar-text">A</span>
-            </div>
+            <button type="button" class="md-icon-button" aria-label="Eliminar elementos seleccionados">
+              <span class="md-icon" aria-hidden="true">delete</span>
+            </button>
+            <button type="button" class="md-icon-button" aria-label="Compartir selección">
+              <span class="md-icon" aria-hidden="true">share</span>
+            </button>
+            <button type="button" class="md-icon-button" aria-label="Más opciones">
+              <span class="md-icon" aria-hidden="true">more_vert</span>
+            </button>
           </div>
         </header>
       </div>
 
-      <pre class="sr-code"><code>&lt;header class="md-top-app-bar md-top-app-bar-search md-top-app-bar--centered" role="banner"&gt;
+      <pre class="sr-code"><code>&lt;header class="md-top-app-bar md-top-app-bar-contextual" role="banner"&gt;
   &lt;div class="md-top-app-bar-leading"&gt;
-    &lt;button type="button" class="md-icon-button" aria-label="Menú principal"&gt;
-      &lt;span class="md-icon" aria-hidden="true"&gt;menu&lt;/span&gt;
+    &lt;button type="button" class="md-icon-button" aria-label="Cerrar selección"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;close&lt;/span&gt;
     &lt;/button&gt;
   &lt;/div&gt;
   &lt;div class="md-top-app-bar-content"&gt;
-    &lt;div class="md-search-bar md-search-bar--embedded"&gt;
-      &lt;input type="search" class="md-search-input" placeholder="Buscar en ManGo!..." aria-label="Buscar en ManGo!"&gt;
-    &lt;/div&gt;
+    &lt;span class="md-top-app-bar-title"&gt;3 seleccionados&lt;/span&gt;
   &lt;/div&gt;
   &lt;div class="md-top-app-bar-trailing"&gt;
-    &lt;div class="md-avatar md-avatar--small" aria-label="Perfil de usuario"&gt;
-      &lt;span class="md-avatar-text"&gt;A&lt;/span&gt;
-    &lt;/div&gt;
+    &lt;button type="button" class="md-icon-button" aria-label="Eliminar elementos seleccionados"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;delete&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-icon-button" aria-label="Compartir selección"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;share&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-icon-button" aria-label="Más opciones"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;more_vert&lt;/span&gt;
+    &lt;/button&gt;
   &lt;/div&gt;
 &lt;/header&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>

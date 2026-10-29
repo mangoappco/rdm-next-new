@@ -324,7 +324,7 @@
 }
 
 /* Input dentro de pastilla: texto centrado, sin bordes, transparente */
-.md-top-app-bar-search .md-search-input--centered {
+.md-top-app-bar-search .md-search-input-centered {
   width: 100%;
   text-align: center;
   border: none;
@@ -335,7 +335,7 @@
   color: var(--md-sys-color-on-surface);
 }
 
-.md-top-app-bar-search .md-search-input--centered::placeholder {
+.md-top-app-bar-search .md-search-input-centered::placeholder {
   color: var(--md-sys-color-on-surface-variant);
 }
 
@@ -372,7 +372,7 @@
    ------------------------------------------------------------------------ */
 
 /* 1. Small centrado: grid simétrico 1fr auto 1fr con anclaje rígido de slots */
-.md-top-app-bar--centered.md-top-app-bar-small,
+.md-top-app-bar-centered.md-top-app-bar-small,
 .md-top-app-bar-center-aligned {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
@@ -381,7 +381,7 @@
   box-sizing: border-box;
 }
 
-.md-top-app-bar--centered.md-top-app-bar-small .md-top-app-bar-leading,
+.md-top-app-bar-centered.md-top-app-bar-small .md-top-app-bar-leading,
 .md-top-app-bar-center-aligned .md-top-app-bar-leading {
   display: inline-flex;
   align-items: center;
@@ -390,7 +390,7 @@
   margin: 0;
 }
 
-.md-top-app-bar--centered.md-top-app-bar-small .md-top-app-bar-content,
+.md-top-app-bar-centered.md-top-app-bar-small .md-top-app-bar-content,
 .md-top-app-bar-center-aligned .md-top-app-bar-content {
   display: flex;
   flex-direction: column;
@@ -403,7 +403,7 @@
   padding: 0;
 }
 
-.md-top-app-bar--centered.md-top-app-bar-small .md-top-app-bar-trailing,
+.md-top-app-bar-centered.md-top-app-bar-small .md-top-app-bar-trailing,
 .md-top-app-bar-center-aligned .md-top-app-bar-trailing {
   display: inline-flex;
   align-items: center;
@@ -413,14 +413,62 @@
 }
 
 /* 2. Medium y Large centrados: fila 2 centrada */
-.md-top-app-bar--centered.md-top-app-bar-medium .md-top-app-bar-content,
-.md-top-app-bar--centered.md-top-app-bar-large .md-top-app-bar-content {
+.md-top-app-bar-centered.md-top-app-bar-medium .md-top-app-bar-content,
+.md-top-app-bar-centered.md-top-app-bar-large .md-top-app-bar-content {
   align-items: center;
   text-align: center;
   padding-inline: 0;
 }
 
-/* 3. Search centrado */
-.md-top-app-bar--centered.md-top-app-bar-search .md-search-input {
+/* 3. Search centrado (modificador ortogonal) */
+.md-top-app-bar-centered.md-top-app-bar-search .md-search-input {
   text-align: center;
+}
+
+/* Search input centrado como clase independiente (usado en Search app bar base) */
+.md-top-app-bar-search .md-search-input--centered {
+  text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   CONTEXTUAL / SELECTION APP BAR (M3 Canónico)
+   ------------------------------------------------------------------------ */
+.md-top-app-bar-contextual {
+  height: var(--md-sys-measurement-top-bar-height); /* 64dp */
+  background-color: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface);
+  padding-inline: var(--md-sys-measurement-space-100); /* 8dp */
+  gap: var(--md-sys-measurement-space-100);
+  display: flex;
+  align-items: center;
+}
+
+.md-top-app-bar-contextual .md-top-app-bar-leading {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  margin-inline-end: var(--md-sys-measurement-space-150); /* 12dp hacia el contador */
+}
+
+.md-top-app-bar-contextual .md-top-app-bar-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.md-top-app-bar-contextual .md-top-app-bar-title {
+  font: var(--md-sys-typescale-title-medium);
+  line-height: var(--md-sys-typescale-title-medium-line-height);
+  color: var(--md-sys-color-on-surface);
+}
+
+.md-top-app-bar-contextual .md-top-app-bar-trailing {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-shrink: 0;
+  gap: var(--md-sys-measurement-space-50); /* 4dp */
 }
