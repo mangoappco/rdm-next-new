@@ -166,7 +166,8 @@
 }
 
 /* Fila superior: navegación (col 1) y acciones (col 3) */
-.md-top-app-bar-medium .md-top-app-bar-leading {
+.md-top-app-bar-medium .md-top-app-bar-leading,
+.md-top-app-bar-large .md-top-app-bar-leading {
   grid-area: leading;
   display: inline-flex;
   align-items: center;
@@ -175,7 +176,8 @@
   min-width: var(--md-sys-measurement-space-600); /* 48dp */
 }
 
-.md-top-app-bar-medium .md-top-app-bar-trailing {
+.md-top-app-bar-medium .md-top-app-bar-trailing,
+.md-top-app-bar-large .md-top-app-bar-trailing {
   grid-area: trailing;
   display: inline-flex;
   align-items: center;
@@ -207,6 +209,49 @@
 }
 
 .md-top-app-bar-medium .md-top-app-bar-subtitle {
+  font: var(--md-sys-typescale-body-medium);
+  line-height: var(--md-sys-typescale-body-medium-line-height);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+/* --------------------------------------------------------------------------
+   LARGE FLEXIBLE VARIANT (M3 Expressive)
+   ------------------------------------------------------------------------ */
+.md-top-app-bar-large {
+  display: grid;
+  grid-template-areas:
+    "leading . trailing"
+    "content content content";
+  grid-template-rows: var(--md-sys-measurement-space-700) auto; /* 56dp fila superior */
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  min-height: var(--md-sys-measurement-top-bar-large-height); /* 152dp */
+  padding-inline: var(--md-sys-measurement-space-100); /* 8dp */
+  padding-block-end: var(--md-sys-measurement-space-300); /* 24dp resguardo inferior armónico */
+  box-sizing: border-box;
+}
+
+.md-top-app-bar-large .md-top-app-bar-content {
+  grid-area: content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  min-width: 0;
+  margin: 0;
+  padding-inline: var(--md-sys-measurement-space-100); /* 8dp (+ 8dp padre = 16dp keyline exacto) */
+  padding-block-start: var(--md-sys-measurement-space-150); /* 12dp aire hacia fila de iconos */
+  padding-block-end: 0;
+  gap: var(--md-sys-measurement-space-50); /* 4dp entre titular y subtítulo */
+}
+
+.md-top-app-bar-large .md-top-app-bar-title {
+  font: var(--md-sys-typescale-headline-medium);
+  line-height: var(--md-sys-typescale-headline-medium-line-height);
+  color: var(--md-sys-color-on-surface);
+}
+
+.md-top-app-bar-large .md-top-app-bar-subtitle {
   font: var(--md-sys-typescale-body-medium);
   line-height: var(--md-sys-typescale-body-medium-line-height);
   color: var(--md-sys-color-on-surface-variant);

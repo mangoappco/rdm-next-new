@@ -15,9 +15,9 @@
 </head>
 
 <!--
-  ESTA VISTA TIENE TRES PARES. El Bloque 1 --Especificación y anatomía--
-  cubre Anatomy (Small base en reposo), Center-aligned variant y
-  Medium flexible. Los pares restantes (Large flexible, Scrolled state,
+  ESTA VISTA TIENE CUATRO PARES. El Bloque 1 --Especificación y anatomía--
+  cubre Anatomy (Small base en reposo), Center-aligned variant,
+  Medium flexible y Large flexible. Los pares restantes (Scrolled state,
   Contextual/Selection bar) se añadirán en pasos posteriores.
 
   LOS ACUERDOS DEL SHOWROOM
@@ -42,7 +42,7 @@
         <button type="button" class="sr-toggle" data-theme-toggle>Tema: sistema</button>
       </div>
       <h1 class="md-type-display-large">Top App Bar</h1>
-      <p class="md-type-body-large">Cabecera de navegación superior M3: 64dp, flat en reposo, titular y subtítulo. <em>Tres pares</em></p>
+      <p class="md-type-body-large">Cabecera de navegación superior M3: 64dp, flat en reposo, titular y subtítulo. <em>Cuatro pares</em></p>
     </header>
     <!-- HEADER: fin -->
 
@@ -179,6 +179,55 @@
   &lt;div class="md-top-app-bar-content"&gt;
     &lt;span class="md-top-app-bar-title"&gt;Método de pago&lt;/span&gt;
     &lt;span class="md-top-app-bar-subtitle"&gt;Selecciona tu forma de liquidación&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class="md-top-app-bar-trailing"&gt;
+    &lt;button type="button" class="md-icon-button" aria-label="Buscar"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;search&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-icon-button" aria-label="Más opciones"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;more_vert&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/header&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- Large flexible -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Large flexible</h3>
+      <p class="md-type-body-medium">Cabecera de portada con titular prominente (headline-medium) y subtítulo. Fila superior de 56dp con acciones, fila inferior con mayor resguardo vertical.</p>
+
+      <div class="sr-specimen">
+        <header class="md-top-app-bar md-top-app-bar-large" role="banner">
+          <div class="md-top-app-bar-leading">
+            <button type="button" class="md-icon-button" aria-label="Menú">
+              <span class="md-icon" aria-hidden="true">arrow_back</span>
+            </button>
+          </div>
+          <div class="md-top-app-bar-content">
+            <span class="md-top-app-bar-title">Portada de proyecto</span>
+            <span class="md-top-app-bar-subtitle">Explora el catálogo completo de componentes M3</span>
+          </div>
+          <div class="md-top-app-bar-trailing">
+            <button type="button" class="md-icon-button" aria-label="Buscar">
+              <span class="md-icon" aria-hidden="true">search</span>
+            </button>
+            <button type="button" class="md-icon-button" aria-label="Más opciones">
+              <span class="md-icon" aria-hidden="true">more_vert</span>
+            </button>
+          </div>
+        </header>
+      </div>
+
+      <pre class="sr-code"><code>&lt;header class="md-top-app-bar md-top-app-bar-large" role="banner"&gt;
+  &lt;div class="md-top-app-bar-leading"&gt;
+    &lt;button type="button" class="md-icon-button" aria-label="Menú"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;arrow_back&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="md-top-app-bar-content"&gt;
+    &lt;span class="md-top-app-bar-title"&gt;Portada de proyecto&lt;/span&gt;
+    &lt;span class="md-top-app-bar-subtitle"&gt;Explora el catálogo completo de componentes M3&lt;/span&gt;
   &lt;/div&gt;
   &lt;div class="md-top-app-bar-trailing"&gt;
     &lt;button type="button" class="md-icon-button" aria-label="Buscar"&gt;

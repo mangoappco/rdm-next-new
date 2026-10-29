@@ -1144,6 +1144,7 @@
      -------------------------------------------------------------------------- */
   --md-sys-measurement-text-field-container-height-dense: var(--md-ref-spacing-600); /* 48dp */
   --md-sys-measurement-text-field-textarea-min-height: calc(var(--md-sys-measurement-text-field-container-height) + var(--md-sys-measurement-space-500)); /* 96dp */
+  --md-sys-measurement-top-bar-large-height: calc(var(--md-sys-measurement-top-bar-medium-height) + var(--md-sys-measurement-space-500)); /* 152dp */
 }
 
 /* Las clases utilitarias de esta familia se mudaron a 4-utilities/ en la auditoria M3:
