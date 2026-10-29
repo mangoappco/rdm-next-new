@@ -192,7 +192,7 @@
   justify-content: flex-end;
   align-items: flex-start;
   min-width: 0;
-  padding-inline: var(--md-sys-measurement-space-200); /* 16dp: keyline canonico */
+  padding-inline: var(--md-sys-measurement-space-100); /* 8dp (+ 8dp del padre = 16dp keyline exacto) */
   padding-block-start: var(--md-sys-measurement-space-150); /* 12dp de aire superior */
   padding-block-end: var(--md-sys-measurement-space-300);   /* 24dp de resguardo inferior */
   gap: var(--md-sys-measurement-space-50); /* 4dp entre titular y subtitulo */
