@@ -46,6 +46,17 @@
   gap: var(--md-sys-measurement-space-100); /* 8dp entre slots */
 }
 
+/* Leading slot Small: resguardo compacto hacia el titular (keyline 16px) */
+.md-top-app-bar-small .md-top-app-bar-leading {
+  margin-inline-end: var(--md-sys-measurement-space-100); /* 8dp netos hacia el titular */
+}
+
+/* Content slot Small: sin márgenes ni padding para que el titular arranque en 16px */
+.md-top-app-bar-small .md-top-app-bar-content {
+  margin: 0;
+  padding: 0;
+}
+
 /* --------------------------------------------------------------------------
    SLOTS
    ------------------------------------------------------------------------ */
