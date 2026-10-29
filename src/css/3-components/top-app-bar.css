@@ -101,14 +101,23 @@
    CENTER-ALIGNED VARIANT
    ------------------------------------------------------------------------ */
 
-/* Center-aligned: título y subtítulo centrados horizontalmente */
+/* Center-aligned: centrado geométrico absoluto.
+   El contenido se posiciona en el centro exacto del contenedor, independiente
+   de la cantidad de acciones en los slots laterales. */
 .md-top-app-bar-center-aligned {
+  position: relative;
   padding-inline: var(--md-sys-measurement-space-100); /* 8dp simétricos en ambos extremos */
 }
 
 .md-top-app-bar-center-aligned .md-top-app-bar-content {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   align-items: center;
   text-align: center;
+  max-width: calc(100% - 4 * var(--md-sys-measurement-space-600)); /* Protege colisión con los botones laterales (4 × 48dp) */
+  min-width: 0;
 }
 
 /* Ancho mínimo igual en leading y trailing para centrado real.
@@ -117,4 +126,14 @@
 .md-top-app-bar-center-aligned .md-top-app-bar-trailing {
   margin: 0;
   min-width: var(--md-sys-measurement-space-600); /* 48dp = touch target */
+  pointer-events: auto;
+}
+
+/* El contenido centrado no bloquea clicks en los márgenes */
+.md-top-app-bar-center-aligned .md-top-app-bar-content {
+  pointer-events: none;
+}
+
+.md-top-app-bar-center-aligned .md-top-app-bar-content > * {
+  pointer-events: auto;
 }
