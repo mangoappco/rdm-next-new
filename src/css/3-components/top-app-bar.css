@@ -227,7 +227,7 @@
   align-items: center;
   min-height: var(--md-sys-measurement-top-bar-large-height); /* 152dp */
   padding-inline: var(--md-sys-measurement-space-100); /* 8dp */
-  padding-block-end: var(--md-sys-measurement-space-300); /* 24dp resguardo inferior armónico */
+  padding-block-end: var(--md-sys-measurement-space-200); /* 16dp resguardo inferior armónico */
   box-sizing: border-box;
 }
 
@@ -240,7 +240,7 @@
   min-width: 0;
   margin: 0;
   padding-inline: var(--md-sys-measurement-space-100); /* 8dp (+ 8dp padre = 16dp keyline exacto) */
-  padding-block-start: var(--md-sys-measurement-space-250); /* 20dp aire vertical canónico hacia fila de iconos */
+  padding-block-start: var(--md-sys-measurement-space-100); /* 8dp aire hacia fila de iconos (absorbe line-height, ~14px reales a flecha) */
   padding-block-end: 0;
   gap: var(--md-sys-measurement-space-50); /* 4dp entre titular y subtítulo */
 }
