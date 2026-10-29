@@ -244,59 +244,43 @@
     <!-- Search app bar -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Search app bar</h3>
-      <p class="md-type-body-medium">Cabecera de navegación con barra de búsqueda embargada (dogfooding de .md-search-bar). Botón de menú a la izquierda, pastilla de búsqueda de ancho flexible en el centro y acciones a la derecha.</p>
+      <p class="md-type-body-medium">Cabecera de navegación con barra de búsqueda embargada (dogfooding de .md-search-bar). Botón de menú a la izquierda, pastilla limpia centrada en el centro y avatar de usuario a la derecha.</p>
 
       <div class="sr-specimen">
         <header class="md-top-app-bar md-top-app-bar-search" role="banner">
           <div class="md-top-app-bar-leading">
-            <button type="button" class="md-icon-button" aria-label="Menú">
+            <button type="button" class="md-icon-button" aria-label="Menú principal">
               <span class="md-icon" aria-hidden="true">menu</span>
             </button>
           </div>
           <div class="md-top-app-bar-content">
-            <div class="md-search md-search-bar">
-              <span class="md-search-leading" aria-hidden="true">
-                <span class="md-icon">search</span>
-              </span>
-              <input type="search" class="md-search-input" placeholder="Buscar en ManGo!..." aria-label="Buscar en ManGo!">
-              <div class="md-search-trailing">
-                <button type="button" class="md-icon-button" data-md-search-mic aria-label="Búsqueda por voz">
-                  <span class="md-icon" aria-hidden="true">mic</span>
-                </button>
-              </div>
+            <div class="md-search-bar md-search-bar--embedded">
+              <input type="search" class="md-search-input md-search-input--centered" placeholder="Buscar en ManGo!..." aria-label="Buscar en ManGo!">
             </div>
           </div>
           <div class="md-top-app-bar-trailing">
-            <button type="button" class="md-icon-button" aria-label="Más opciones">
-              <span class="md-icon" aria-hidden="true">more_vert</span>
-            </button>
+            <div class="md-avatar md-avatar--small" aria-label="Perfil de usuario">
+              <span class="md-avatar-text">A</span>
+            </div>
           </div>
         </header>
       </div>
 
       <pre class="sr-code"><code>&lt;header class="md-top-app-bar md-top-app-bar-search" role="banner"&gt;
   &lt;div class="md-top-app-bar-leading"&gt;
-    &lt;button type="button" class="md-icon-button" aria-label="Menú"&gt;
+    &lt;button type="button" class="md-icon-button" aria-label="Menú principal"&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;menu&lt;/span&gt;
     &lt;/button&gt;
   &lt;/div&gt;
   &lt;div class="md-top-app-bar-content"&gt;
-    &lt;div class="md-search md-search-bar"&gt;
-      &lt;span class="md-search-leading" aria-hidden="true"&gt;
-        &lt;span class="md-icon"&gt;search&lt;/span&gt;
-      &lt;/span&gt;
-      &lt;input type="search" class="md-search-input" placeholder="Buscar en ManGo!..." aria-label="Buscar en ManGo!"&gt;
-      &lt;div class="md-search-trailing"&gt;
-        &lt;button type="button" class="md-icon-button" data-md-search-mic aria-label="Búsqueda por voz"&gt;
-          &lt;span class="md-icon" aria-hidden="true"&gt;mic&lt;/span&gt;
-        &lt;/button&gt;
-      &lt;/div&gt;
+    &lt;div class="md-search-bar md-search-bar--embedded"&gt;
+      &lt;input type="search" class="md-search-input md-search-input--centered" placeholder="Buscar en ManGo!..." aria-label="Buscar en ManGo!"&gt;
     &lt;/div&gt;
   &lt;/div&gt;
   &lt;div class="md-top-app-bar-trailing"&gt;
-    &lt;button type="button" class="md-icon-button" aria-label="Más opciones"&gt;
-      &lt;span class="md-icon" aria-hidden="true"&gt;more_vert&lt;/span&gt;
-    &lt;/button&gt;
+    &lt;div class="md-avatar md-avatar--small" aria-label="Perfil de usuario"&gt;
+      &lt;span class="md-avatar-text"&gt;A&lt;/span&gt;
+    &lt;/div&gt;
   &lt;/div&gt;
 &lt;/header&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
