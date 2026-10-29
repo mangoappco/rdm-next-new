@@ -126,11 +126,16 @@ import { initTextField } from './text-field.js';
 import { initSearch } from './search.js';
 import { initSelect } from './select.js';
 import { initTheme } from './theme.js';
+import { initTopAppBar } from './top-app-bar.js?v=1';
 
 /* Se registra al cargar el script, no al hacer clic. Los specimens del
    showroom llevan `<dialog open>` a secas, que NO es modal, asi que ahi no
    hay nada que abrir: lo que se enseña es el dialog en su sitio. */
 registrar();
+
+/* Top App Bar: delegación global viva antes de que exista ningún
+   [data-md-top-app-bar-*] en la página. */
+initTopAppBar();
 
 /* El toggle, tambien al cargar y por la misma razon: la delegacion esta
    viva antes de que exista ningun button[aria-pressed] en la pagina. No se
