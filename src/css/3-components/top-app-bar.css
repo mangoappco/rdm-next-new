@@ -102,13 +102,19 @@
    ------------------------------------------------------------------------ */
 
 /* Center-aligned: título y subtítulo centrados horizontalmente */
+.md-top-app-bar-center-aligned {
+  padding-inline: var(--md-sys-measurement-space-100); /* 8dp simétricos en ambos extremos */
+}
+
 .md-top-app-bar-center-aligned .md-top-app-bar-content {
   align-items: center;
   text-align: center;
 }
 
-/* Ancho mínimo igual en leading y trailing para centrado real */
+/* Ancho mínimo igual en leading y trailing para centrado real.
+   margin: 0 para eliminar la asimetría del Par 1 (12dp leading / 16dp trailing). */
 .md-top-app-bar-center-aligned .md-top-app-bar-leading,
 .md-top-app-bar-center-aligned .md-top-app-bar-trailing {
+  margin: 0;
   min-width: var(--md-sys-measurement-space-600); /* 48dp = touch target */
 }
