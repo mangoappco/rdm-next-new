@@ -256,3 +256,52 @@
   line-height: var(--md-sys-typescale-body-medium-line-height);
   color: var(--md-sys-color-on-surface-variant);
 }
+
+/* --------------------------------------------------------------------------
+   SEARCH APP BAR VARIANT (M3 Expressive)
+   ------------------------------------------------------------------------ */
+
+/* Host: fila única 64dp con búsqueda embargada en el centro */
+.md-top-app-bar-search {
+  display: grid;
+  grid-template-areas:
+    "leading content trailing";
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: var(--md-sys-measurement-top-bar-height); /* 64dp */
+  align-items: center;
+  min-height: var(--md-sys-measurement-top-bar-height); /* 64dp */
+  padding-inline: var(--md-sys-measurement-space-100); /* 8dp */
+  box-sizing: border-box;
+}
+
+/* Slot leading: botón de navegación (menu) */
+.md-top-app-bar-search .md-top-app-bar-leading {
+  grid-area: leading;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 0;
+  min-width: var(--md-sys-measurement-space-600); /* 48dp */
+}
+
+/* Slot content: pastilla de búsqueda (.md-search-bar) ancha flexible */
+.md-top-app-bar-search .md-top-app-bar-content {
+  grid-area: content;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/* Slot trailing: acciones complementarias */
+.md-top-app-bar-search .md-top-app-bar-trailing {
+  grid-area: trailing;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin: 0;
+  min-width: var(--md-sys-measurement-space-600); /* 48dp */
+  gap: var(--md-sys-measurement-space-50); /* 4dp */
+}
