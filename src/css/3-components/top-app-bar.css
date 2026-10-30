@@ -460,7 +460,7 @@
   align-items: center;
   justify-content: flex-start;
   flex-shrink: 0;
-  margin-inline-end: var(--md-sys-measurement-space-150); /* 12dp hacia el contador */
+  margin-inline-end: var(--md-sys-measurement-space-100); /* 8dp netos hacia el contador */
 }
 
 .md-top-app-bar-contextual .md-top-app-bar-content {
@@ -469,6 +469,8 @@
   justify-content: center;
   flex: 1;
   min-width: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .md-top-app-bar-contextual .md-top-app-bar-title {
