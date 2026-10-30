@@ -126,7 +126,7 @@ import { initTextField } from './text-field.js';
 import { initSearch } from './search.js';
 import { initSelect } from './select.js';
 import { initTheme } from './theme.js';
-import { initTopAppBar } from './top-app-bar.js?v=1';
+import { initTopAppBar } from './top-app-bar.js?v=2';
 
 /* Se registra al cargar el script, no al hacer clic. Los specimens del
    showroom llevan `<dialog open>` a secas, que NO es modal, asi que ahi no

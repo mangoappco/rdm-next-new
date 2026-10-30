@@ -134,16 +134,27 @@ export function initTopAppBar() {
      3. CONTEXTUAL BAR — descarte del modo selección (botón close)
      ------------------------------------------------------------ */
   document.addEventListener('click', (event) => {
-    const closeBtn = event.target.closest('[data-md-selection-clear]');
-    if (!closeBtn) return;
+    /* Delegacion global: el clic suele caer en el <span class="md-icon">
+       interno, no en el <button>. closest() resuelve el disparador real; la
+       guardia Element cubre un clic sintetico con target document/window. */
+    const target = event.target instanceof Element ? event.target : null;
+    const clearBtn = target && target.closest('[data-md-selection-clear]');
+    if (!clearBtn) return;
 
-    const contextualBar = closeBtn.closest('.md-top-app-bar-contextual');
+    const contextualBar = clearBtn.closest('.md-top-app-bar-contextual');
     if (!contextualBar) return;
 
-    /* Evento personalizado para que la app reaccione (restaurar cabecera,
-       desmarcar checkboxes, etc.). El atributo ES la fuente de verdad. */
+    /* El ATRIBUTO es la fuente de verdad; el evento es la API de
+       suscripcion para la app. Se despacha en la barra (no en el boton):
+       escuchar en la barra, en el documento o en window. bubbles lo sube;
+       composed lo deja atravesar shadow roots; detail identifica el
+       disparador. */
     contextualBar.dispatchEvent(
-      new CustomEvent('md-top-app-bar:dismiss', { bubbles: true })
+      new CustomEvent('md-top-app-bar:dismiss', {
+        bubbles: true,
+        composed: true,
+        detail: { trigger: clearBtn }
+      })
     );
   });
 
