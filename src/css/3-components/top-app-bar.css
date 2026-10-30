@@ -185,21 +185,20 @@
   grid-template-rows: var(--md-sys-measurement-space-700) auto; /* 56dp de fila superior */
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  /* 112dp exactos: altura canonica explicita (NO min-height) para que el
-     colapso interpole 112 -> 64 con transicion; con auto/min-height salta */
-  height: calc(var(--md-sys-measurement-space-700) + var(--md-sys-measurement-space-700));
-  min-height: calc(var(--md-sys-measurement-space-700) + var(--md-sys-measurement-space-700));
+  /* COMPRESS EFFECT scroll-linked (canon Compose exitUntilCollapsed):
+     la altura avanza 1:1 con el scroll dentro del recorrido canon
+     (48dp: 112 -> 64). Scroll lento = compresion lenta; detener a
+     mitad congela la barra a mitad. Sin transicion: el scroll ES el
+     timing. Sin JS, la variable no existe y la barra queda expandida. */
+  height: calc(var(--md-sys-measurement-top-bar-medium-height) - var(--md-sys-measurement-top-bar-medium-collapse-delta) * min(1, var(--md-top-app-bar-collapse-progress, 0)));
+  min-height: var(--md-sys-measurement-top-bar-height); /* suelo canonico 64dp */
   padding-inline: var(--md-sys-measurement-space-100); /* 8dp */
   /* Sin resguardo inferior: fila superior 56dp + fila de titulo 56dp = 112dp canonico */
   padding-block-end: var(--md-sys-measurement-space-0);
   box-sizing: border-box;
   overflow: hidden;
-  /* COMPRESS EFFECT (canon M3): cambio espacial de altura con el par
-     Expressive spatial (curva 0.27, 1.06, 0.18, 1) a medium4 (400ms).
-     Color y sombra son effects: par canonico short4 + effects-default. */
-  transition: height var(--md-sys-motion-duration-medium4) var(--md-sys-motion-easing-spatial-default),
-              min-height var(--md-sys-motion-duration-medium4) var(--md-sys-motion-easing-spatial-default),
-              background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-effects-default),
+  /* Color y sombra son effects (no espaciales): par canonico short4 + effects-default */
+  transition: background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-effects-default),
               box-shadow var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-effects-default);
 }
 
@@ -282,18 +281,23 @@
   font: var(--md-sys-typescale-headline-small);
   line-height: var(--md-sys-typescale-headline-small-line-height);
   color: var(--md-sys-color-on-surface);
+  /* MORPH scroll-linked del titular (Fase 2, canon Expressive): rapidez
+     tipografica 24/32 -> 22/28 proporcional al mismo progreso del compress.
+     La delta vive en 2-system-tokens/typography.css. */
+  font-size: calc(var(--md-sys-typescale-headline-small-size) - var(--md-sys-measurement-top-bar-title-size-delta-medium) * min(1, var(--md-top-app-bar-collapse-progress, 0)));
+  line-height: calc(var(--md-sys-typescale-headline-small-line-height) - var(--md-sys-measurement-top-bar-title-line-height-delta-medium) * min(1, var(--md-top-app-bar-collapse-progress, 0)));
 }
 
 .md-top-app-bar-medium .md-top-app-bar-subtitle {
   font: var(--md-sys-typescale-body-medium);
   line-height: var(--md-sys-typescale-body-medium-line-height);
   color: var(--md-sys-color-on-surface-variant);
-  /* Cap para la cinemática de desvanecido del colapso (lh 20dp <= 24dp) */
-  max-height: var(--md-sys-measurement-space-300);
-  opacity: 1;
-  /* Par canonico de efectos: opacity/max-height son effects -> short4 + effects-default */
-  transition: opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-effects-default),
-              max-height var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-effects-default);
+  /* Desvanecimiento scroll-linked: se apaga con el mismo progreso que
+     comprime la barra (subtítulo a la mitad del recorrido esta a mitad
+     de opacidad). Sin transicion: el scroll ES el timing. */
+  max-height: calc((1 - var(--md-top-app-bar-collapse-progress, 0)) * var(--md-sys-measurement-space-300));
+  opacity: calc(1 - var(--md-top-app-bar-collapse-progress, 0));
+  overflow: hidden;
 }
 
 /* --------------------------------------------------------------------------
@@ -307,18 +311,17 @@
   grid-template-rows: var(--md-sys-measurement-space-700) auto; /* 56dp fila superior */
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  /* 152dp exactos: altura canonica explicita (NO solo min-height) para que
-     el colapso interpole 152 -> 64 con transicion */
-  height: var(--md-sys-measurement-top-bar-large-height);
-  min-height: var(--md-sys-measurement-top-bar-large-height);
+  /* COMPRESS EFFECT scroll-linked (canon Compose exitUntilCollapsed):
+     recorrido canon de 88dp (152 -> 64), altura 1:1 con el scroll.
+     Idem Medium: sin transicion espacial, el scroll ES el timing. */
+  height: calc(var(--md-sys-measurement-top-bar-large-height) - var(--md-sys-measurement-top-bar-large-collapse-delta) * min(1, var(--md-top-app-bar-collapse-progress, 0)));
+  min-height: var(--md-sys-measurement-top-bar-height); /* suelo canonico 64dp */
   padding-inline: var(--md-sys-measurement-space-100); /* 8dp */
   padding-block-end: var(--md-sys-measurement-space-200); /* 16dp resguardo inferior armónico */
   box-sizing: border-box;
   overflow: hidden;
-  /* COMPRESS EFFECT (canon M3): idem Medium — par spatial a medium4 (400ms) */
-  transition: height var(--md-sys-motion-duration-medium4) var(--md-sys-motion-easing-spatial-default),
-              min-height var(--md-sys-motion-duration-medium4) var(--md-sys-motion-easing-spatial-default),
-              background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-effects-default),
+  /* Color y sombra son effects (no espaciales): par canonico short4 + effects-default */
+  transition: background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-effects-default),
               box-shadow var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-effects-default);
 }
 
@@ -376,18 +379,20 @@
   font: var(--md-sys-typescale-headline-large);
   line-height: var(--md-sys-typescale-headline-large-line-height);
   color: var(--md-sys-color-on-surface);
+  /* MORPH scroll-linked del titular: rapidez tipografica 32/40 -> 22/28
+     proporcional al progreso del compress (deltas en 2-system-tokens) */
+  font-size: calc(var(--md-sys-typescale-headline-large-size) - var(--md-sys-measurement-top-bar-title-size-delta-large) * min(1, var(--md-top-app-bar-collapse-progress, 0)));
+  line-height: calc(var(--md-sys-typescale-headline-large-line-height) - var(--md-sys-measurement-top-bar-title-line-height-delta-large) * min(1, var(--md-top-app-bar-collapse-progress, 0)));
 }
 
 .md-top-app-bar-large .md-top-app-bar-subtitle {
   font: var(--md-sys-typescale-body-medium);
   line-height: var(--md-sys-typescale-body-medium-line-height);
   color: var(--md-sys-color-on-surface-variant);
-  /* Cap para la cinemática de desvanecido del colapso (lh 20dp <= 24dp) */
-  max-height: var(--md-sys-measurement-space-300);
-  opacity: 1;
-  /* Par canonico de efectos: opacity/max-height son effects -> short4 + effects-default */
-  transition: opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-effects-default),
-              max-height var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-effects-default);
+  /* Desvanecimiento scroll-linked, idem Medium */
+  max-height: calc((1 - var(--md-top-app-bar-collapse-progress, 0)) * var(--md-sys-measurement-space-300));
+  opacity: calc(1 - var(--md-top-app-bar-collapse-progress, 0));
+  overflow: hidden;
 }
 
 /* --------------------------------------------------------------------------

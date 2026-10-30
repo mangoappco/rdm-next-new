@@ -337,6 +337,12 @@
   /* Alto de una barra de navegacion superior Medium (M3 Expressive: 112dp). */
   --md-sys-measurement-top-bar-medium-height: calc(var(--md-sys-measurement-top-bar-height) + var(--md-sys-measurement-space-600)); /* 64px + 48px = 112dp */
 
+  /* Deltas de recorrido del compress effect (canon M3): cuantos pixeles de
+     scroll separan la variante flexible de su estado small. La altura al
+     scroll-linked la interpola 1:1 de expandida a small en ese recorrido. */
+  --md-sys-measurement-top-bar-medium-collapse-delta: calc(var(--md-sys-measurement-top-bar-medium-height) - var(--md-sys-measurement-top-bar-height)); /* 112dp - 64dp = 48dp */
+  --md-sys-measurement-top-bar-large-collapse-delta: calc(var(--md-sys-measurement-top-bar-large-height) - var(--md-sys-measurement-top-bar-height)); /* 152dp - 64dp = 88dp */
+
   /* Alto de una barra de navegacion inferior o rail. */
   --md-sys-measurement-navigation-bar-height: var(--md-ref-spacing-800);
 

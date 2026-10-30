@@ -260,6 +260,18 @@
   --md-sys-typescale-label-large: var(--md-ref-typeface-weight-medium) var(--md-ref-typescale-label-large-size)/var(--md-ref-typescale-label-large-line-height) var(--md-ref-typeface-plain);
   --md-sys-typescale-label-medium: var(--md-ref-typeface-weight-medium) var(--md-ref-typescale-label-medium-size)/var(--md-ref-typescale-label-medium-line-height) var(--md-ref-typeface-plain);
   --md-sys-typescale-label-small: var(--md-ref-typeface-weight-medium) var(--md-ref-typescale-label-small-size)/var(--md-ref-typescale-label-small-line-height) var(--md-ref-typeface-plain);
+
+  /* ==========================================================================
+     DELTAS DEL MORPH DEL TITULAR (compress effect del Top App Bar)
+     --------------------------------------------------------------------------
+     La compresion scroll-linked interpola el titular entre su tamanio
+     flexible (headline) y su tamanio de barra small (title-large). La
+     distancia de ese cambio vive en tokens, no en la capa 3.
+     ====================================================================== */
+  --md-sys-measurement-top-bar-title-size-delta-medium: calc(var(--md-ref-typescale-headline-small-size) - var(--md-ref-typescale-title-large-size)); /* 24px - 22px = 2px */
+  --md-sys-measurement-top-bar-title-line-height-delta-medium: calc(var(--md-ref-typescale-headline-small-line-height) - var(--md-ref-typescale-title-large-line-height)); /* 32px - 28px = 4px */
+  --md-sys-measurement-top-bar-title-size-delta-large: calc(var(--md-ref-typescale-headline-large-size) - var(--md-ref-typescale-title-large-size)); /* 32px - 22px = 10px */
+  --md-sys-measurement-top-bar-title-line-height-delta-large: calc(var(--md-ref-typescale-headline-large-line-height) - var(--md-ref-typescale-title-large-line-height)); /* 40px - 28px = 12px */
 }
 
 /* Las clases utilitarias de esta familia se mudaron a 4-utilities/ en la auditoria M3:

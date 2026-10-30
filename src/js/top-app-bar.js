@@ -7,56 +7,80 @@
 
    1. Scrolled state: conmutación de elevación (surface -> surface-container
       + elevation-level2) al hacer scroll en viewport o contenedor.
-   2. Collapsing: compactación progresiva de Medium/Large a Small al bajar.
+   2. Collapsing: COMPRESS EFFECT scroll-linked — la compresión de
+      Medium/Large, el desvanecimiento del subtítulo y el morph del
+      titular avanzan 1:1 con el scroll (canon Compose exitUntilCollapsed).
    3. Contextual bar: descarte del modo selección mediante botón close.
    ========================================================================== */
 
 export function initTopAppBar() {
   /* ------------------------------------------------------------
-     1. SCROLLED STATE — elevación al hacer scroll
+     1. SCROLL UNIFICADO — scrolled state + compress progress
+        Un solo listener (passive + capture) con throttling rAF:
+        el trabajo real ocurre como maximo una vez por frame.
      ------------------------------------------------------------ */
   const scrollBars = document.querySelectorAll('[data-md-top-app-bar-scroll]');
-
-  if (scrollBars.length > 0) {
-    const handleScroll = (event) => {
-      // Obtiene la posición de scroll de la ventana o del contenedor que disparó el evento
-      const target = event?.target === document ? (document.scrollingElement || document.documentElement) : (event?.target || window);
-      const scrollY = target.scrollTop !== undefined ? target.scrollTop : (window.scrollY || window.pageYOffset || 0);
-
-      const isScrolled = scrollY > 0;
-      scrollBars.forEach((bar) => {
-        bar.classList.toggle('md-top-app-bar-scrolled', isScrolled);
-      });
-    };
-
-    // Escuchar con capture: true para detectar scroll en window o en contenedores internos
-    window.addEventListener('scroll', handleScroll, { passive: true, capture: true });
-    handleScroll(); /* Chequeo inicial: barra ya scrolled al cargar */
-  }
-
-  /* ------------------------------------------------------------
-     2. COLLAPSING — COMPRESS EFFECT (canon M3, guidelines):
-        "medium flexible and large flexible app bars can transform
-        into small app bars. They should remain small until the page
-        is scrolled back to the top."
-        -> Colapsa al primer scroll (scrollY > 0) y SOLO se descolapsa
-        estrictamente en el tope (scrollY === 0), nunca en un umbral
-        intermedio.
-     ------------------------------------------------------------ */
   const collapseBars = document.querySelectorAll('[data-md-top-app-bar-collapse]');
 
-  if (collapseBars.length > 0) {
-    const handleCollapse = (event) => {
-      const target = event?.target === document ? (document.scrollingElement || document.documentElement) : (event?.target || window);
-      const scrollY = target.scrollTop !== undefined ? target.scrollTop : (window.scrollY || window.pageYOffset || 0);
+  if (scrollBars.length > 0 || collapseBars.length > 0) {
+    /* Delta del recorrido canon por variante: cuantos px de scroll separan
+       la variante flexible de Small (canon M3: medium 112dp - 64dp = 48dp,
+       large 152dp - 64dp = 88dp). Vive en tokens como
+       --md-sys-measurement-top-bar-{medium,large}-collapse-delta
+       (2-system-tokens/measurement.css); se replica aqui porque el valor
+       que alimenta la division es runtime y el token se compone de
+       var()+calc(), no de un numero parseable desde JS. */
+    const compressionDelta = (bar) =>
+      bar.classList.contains('md-top-app-bar-large') ? 88 : 48;
 
+    let ultimoTarget = null; /* origen del ultimo evento de scroll */
+    let frameProgramado = false; /* bandera rAF: 1 update por frame */
+
+    const update = () => {
+      frameProgramado = false;
+
+      /* Posicion del scroll: contenedor interno (ELEMENT_NODE) o viewport */
+      let y = 0;
+      if (ultimoTarget && ultimoTarget.nodeType === 1) {
+        y = ultimoTarget.scrollTop;
+      } else {
+        y = (document.scrollingElement || document.documentElement).scrollTop || window.scrollY || 0;
+      }
+      y = Math.max(0, y);
+
+      /* Scrolled state: par canon de effects (short4 + effects-default) */
+      scrollBars.forEach((bar) => {
+        bar.classList.toggle('md-top-app-bar-scrolled', y > 0);
+      });
+
+      /* COMPRESS EFFECT scroll-linked (canon Compose exitUntilCollapsed):
+         altura, desvanecimiento del subtitulo y morph del titular avanzan
+         1:1 con el scroll via --md-top-app-bar-collapse-progress (0 -> 1).
+         El scroll ES el timing: gesto lento = compresion lenta; detener a
+         mitad congela la barra a mitad. Sin JS, la variable no existe y la
+         barra queda expandida (degradacion graciosa). is-collapsed es solo
+         el estado estructural final (swap de grid) al completar el
+         recorrido, nunca intermedio -> no hay toggles en mitad de camino. */
       collapseBars.forEach((bar) => {
-        bar.classList.toggle('is-collapsed', scrollY > 0);
+        const delta = compressionDelta(bar);
+        const progreso = Math.min(1, y / delta);
+        bar.style.setProperty('--md-top-app-bar-collapse-progress', progreso.toFixed(3));
+        bar.classList.toggle('is-collapsed', y >= delta);
       });
     };
 
-    window.addEventListener('scroll', handleCollapse, { passive: true, capture: true });
-    handleCollapse(); /* Chequeo inicial */
+    const scheduleUpdate = (event) => {
+      if (event && event.target) ultimoTarget = event.target;
+      if (frameProgramado) return;
+      frameProgramado = true;
+      requestAnimationFrame(update);
+    };
+
+    /* capture: true para detectar scroll en window y en contenedores internos */
+    window.addEventListener('scroll', scheduleUpdate, { passive: true, capture: true });
+    window.addEventListener('resize', scheduleUpdate, { passive: true });
+
+    update(); /* Chequeo inicial: barra scrolled/colapsada si se carga a mitad de pagina */
   }
 
   /* ------------------------------------------------------------
