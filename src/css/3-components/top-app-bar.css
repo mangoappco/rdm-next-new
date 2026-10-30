@@ -38,6 +38,8 @@
   box-sizing: border-box;
   background-color: var(--md-sys-color-surface);
   color: var(--md-sys-color-on-surface);
+  transition: background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
+              box-shadow var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
 }
 
 /* Scrolled state: elevación tonal (surface-container + level2) */
