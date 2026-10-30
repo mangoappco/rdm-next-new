@@ -29,7 +29,10 @@
      la vista, por eso vive aqui y no en el sistema.
      --------------------------------------------------------------------- */
   body {
-    padding: var(--md-ref-spacing-200);
+    /* El Top App Bar global debe extenderse al ancho completo del viewport;
+       el padding del cuerpo se delega al .sr-page, que es el contenidor
+       del contenido del showroom (dogfooding: cabecera pegada al borde). */
+    padding: 0;
   }
 
   /* ------------------------------------------------------------------------
