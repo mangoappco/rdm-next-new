@@ -215,18 +215,40 @@
               padding var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
 }
 
-/* Estado colapsado: Medium -> Small (64dp) */
+/* Estado colapsado: Medium -> Small (64dp).
+   Canonico M3: el titulo NO desaparece — se reubica en la fila superior
+   (entre leading y trailing) con escala title-large; el subtitulo se
+   desvanece con transiciones. Sin display: none (no animable -> salto). */
 .md-top-app-bar-medium.is-collapsed {
   height: var(--md-sys-measurement-top-bar-height);
   min-height: var(--md-sys-measurement-top-bar-height);
   max-height: var(--md-sys-measurement-top-bar-height);
-  grid-template-rows: var(--md-sys-measurement-top-bar-height) var(--md-sys-measurement-space-0);
+  grid-template-areas: "leading content trailing";
+  grid-template-rows: var(--md-sys-measurement-top-bar-height);
+  grid-template-columns: auto 1fr auto; /* titulo a la izquierda, alineado como Small */
+  align-items: center;
   padding-block-end: 0;
   overflow: hidden;
 }
 
 .md-top-app-bar-medium.is-collapsed .md-top-app-bar-content {
-  display: none;
+  justify-content: center;
+  gap: var(--md-sys-measurement-space-0); /* sin aire residual del subtitulo apagado */
+  min-width: 0;
+}
+
+/* El titulo adapta la tipografia canonica de barra Small */
+.md-top-app-bar-medium.is-collapsed .md-top-app-bar-title {
+  font: var(--md-sys-typescale-title-large);
+  line-height: var(--md-sys-typescale-title-large-line-height);
+}
+
+/* El subtitulo se desvanece de forma cinematica continua */
+.md-top-app-bar-medium.is-collapsed .md-top-app-bar-subtitle {
+  max-height: var(--md-sys-measurement-space-0);
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
 }
 
 /* Fila superior: navegación (col 1) y acciones (col 3) */
@@ -262,6 +284,11 @@
   font: var(--md-sys-typescale-body-medium);
   line-height: var(--md-sys-typescale-body-medium-line-height);
   color: var(--md-sys-color-on-surface-variant);
+  /* Cap para la cinemática de desvanecido del colapso (lh 20dp <= 24dp) */
+  max-height: var(--md-sys-measurement-space-300);
+  opacity: 1;
+  transition: opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
+              max-height var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
 }
 
 /* --------------------------------------------------------------------------
@@ -306,18 +333,37 @@
               padding var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
 }
 
-/* Estado colapsado: Large -> Small (64dp) */
+/* Estado colapsado: Large -> Small (64dp). Canonico igual al de Medium. */
 .md-top-app-bar-large.is-collapsed {
   height: var(--md-sys-measurement-top-bar-height);
   min-height: var(--md-sys-measurement-top-bar-height);
   max-height: var(--md-sys-measurement-top-bar-height);
-  grid-template-rows: var(--md-sys-measurement-top-bar-height) var(--md-sys-measurement-space-0);
+  grid-template-areas: "leading content trailing";
+  grid-template-rows: var(--md-sys-measurement-top-bar-height);
+  grid-template-columns: auto 1fr auto; /* titulo a la izquierda, alineado como Small */
+  align-items: center;
   padding-block-end: 0;
   overflow: hidden;
 }
 
 .md-top-app-bar-large.is-collapsed .md-top-app-bar-content {
-  display: none;
+  justify-content: center;
+  gap: var(--md-sys-measurement-space-0); /* sin aire residual del subtitulo apagado */
+  min-width: 0;
+}
+
+/* El titulo adapta la tipografia canonica de barra Small */
+.md-top-app-bar-large.is-collapsed .md-top-app-bar-title {
+  font: var(--md-sys-typescale-title-large);
+  line-height: var(--md-sys-typescale-title-large-line-height);
+}
+
+/* El subtitulo se desvanece de forma cinematica continua */
+.md-top-app-bar-large.is-collapsed .md-top-app-bar-subtitle {
+  max-height: var(--md-sys-measurement-space-0);
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
 }
 
 .md-top-app-bar-large .md-top-app-bar-title {
@@ -330,6 +376,11 @@
   font: var(--md-sys-typescale-body-medium);
   line-height: var(--md-sys-typescale-body-medium-line-height);
   color: var(--md-sys-color-on-surface-variant);
+  /* Cap para la cinemática de desvanecido del colapso (lh 20dp <= 24dp) */
+  max-height: var(--md-sys-measurement-space-300);
+  opacity: 1;
+  transition: opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
+              max-height var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
 }
 
 /* --------------------------------------------------------------------------
