@@ -45,7 +45,7 @@
    ========================================================================== */
 
 const THEME_KEY = 'rdm-theme';
-const THEME_MODES = ['system', 'light', 'dark'];
+const THEME_MODES = ['system', 'dark', 'light'];
 const THEME_LABELS = {
   system: 'Tema: sistema',
   light: 'Tema: claro',

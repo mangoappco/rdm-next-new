@@ -130,15 +130,15 @@
   /* ----------------------------------------------------------------------
      TOGGLE DE TEMA (sin atributo -> sistema; light / dark -> eleccion)
      ----------------------------------------------------------------------
-     Cicla sistema -> claro -> oscuro -> sistema y lo guarda en
+     Cicla sistema -> oscuro -> claro -> sistema y lo guarda en
      localStorage para que todas las vistas compartan la eleccion. Se
      aplica al evaluar (el script va en el <head> sin defer) para pintar
      el tema guardado antes del primer pintado; el boton se cablea al
      cargar el DOM. */
   var THEME_KEY = 'showroom-theme';
-  var THEME_MODES = ['system', 'light', 'dark'];
-  var ICON_MAP = { system: 'brightness_6', light: 'dark_mode', dark: 'light_mode' };
-  var LABEL_MAP = { system: 'Tema: sistema', light: 'Tema: claro', dark: 'Tema: oscuro' };
+  var THEME_MODES = ['system', 'dark', 'light'];
+  var ICON_MAP = { system: 'brightness_auto', dark: 'dark_mode', light: 'light_mode' };
+  var LABEL_MAP = { system: 'Tema del sistema activo', dark: 'Tema oscuro activo', light: 'Tema claro activo' };
   var currentTheme = readTheme();
   applyTheme(currentTheme);
 

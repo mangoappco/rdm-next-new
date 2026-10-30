@@ -55,7 +55,7 @@
     flex-direction: column;
     gap: var(--md-ref-spacing-200);
     max-width: calc(var(--md-ref-spacing-900) * 10);
-    margin-inline: auto;
+    margin: var(--md-ref-spacing-200);
     padding: var(--md-ref-spacing-200);
     background-color: var(--md-sys-color-surface);
     color: var(--md-sys-color-on-surface);
@@ -63,15 +63,10 @@
     border-radius: var(--md-sys-shape-corner-large);
   }
 
-  /* Boton de texto minimo, igual que .sr-copy: color primary, sin relleno,
-     con el tipo de etiqueta del sistema. */
-  .sr-toggle {
-    padding: 0;
-    border: 0;
-    background: transparent;
-    color: var(--md-sys-color-primary);
-    font: var(--md-sys-typescale-label-large);
-    cursor: pointer;
+  @media (min-width: 720px) {
+    .sr-page {
+      margin-inline: auto;
+    }
   }
 
   /* ------------------------------------------------------------------------
