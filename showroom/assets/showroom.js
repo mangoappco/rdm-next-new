@@ -137,7 +137,8 @@
      cargar el DOM. */
   var THEME_KEY = 'showroom-theme';
   var THEME_MODES = ['system', 'light', 'dark'];
-  var THEME_LABELS = { system: 'Tema: sistema', light: 'Tema: claro', dark: 'Tema: oscuro' };
+  var ICON_MAP = { system: 'brightness_6', light: 'dark_mode', dark: 'light_mode' };
+  var LABEL_MAP = { system: 'Tema: sistema', light: 'Tema: claro', dark: 'Tema: oscuro' };
   var currentTheme = readTheme();
   applyTheme(currentTheme);
 
@@ -153,8 +154,12 @@
   function applyTheme(mode) {
     if (mode === 'system') document.documentElement.removeAttribute('data-theme');
     else document.documentElement.setAttribute('data-theme', mode);
-    var button = document.querySelector('[data-theme-toggle]');
-    if (button) button.textContent = THEME_LABELS[mode];
+    var btn = document.querySelector('[data-theme-toggle]');
+    if (!btn) return;
+    btn.setAttribute('aria-label', LABEL_MAP[mode]);
+    var iconSpan = btn.querySelector('.md-icon');
+    if (iconSpan) iconSpan.textContent = ICON_MAP[mode];
+    /* El texto del boton se mantiene en el aria-label; el glifo es la senal visual */
   }
 
   function wireThemeToggle() {
