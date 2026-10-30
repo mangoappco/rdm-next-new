@@ -35,6 +35,15 @@
     padding: 0;
   }
 
+  /* Aislar el contexto de apilamiento del contenido scrolleable para que
+     los z-index internos (Select, Text Field, labels, outlines) no puedan
+     superar al z-index: 1 de la Top App Bar. */
+  main,
+  .sr-page {
+    position: relative;
+    z-index: 0;
+  }
+
   /* ------------------------------------------------------------------------
      EL ENCABEZADO
      --------------------------------------------------------------------------
