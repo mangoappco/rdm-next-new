@@ -40,6 +40,14 @@
   color: var(--md-sys-color-on-surface);
 }
 
+/* Scrolled state: elevación tonal (surface-container + level2) */
+.md-top-app-bar.md-top-app-bar-scrolled {
+  background-color: var(--md-sys-color-surface-container);
+  box-shadow: var(--md-sys-elevation-level2);
+  transition: background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
+              box-shadow var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+}
+
 /* Small variant: 64dp de altura */
 .md-top-app-bar-small {
   height: var(--md-sys-measurement-top-bar-height); /* 64dp */

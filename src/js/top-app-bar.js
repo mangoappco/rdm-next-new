@@ -18,14 +18,19 @@ export function initTopAppBar() {
   const scrollBars = document.querySelectorAll('[data-md-top-app-bar-scroll]');
 
   if (scrollBars.length > 0) {
-    const handleScroll = () => {
-      const isScrolled = window.scrollY > 0;
+    const handleScroll = (event) => {
+      // Obtiene la posición de scroll de la ventana o del contenedor que disparó el evento
+      const target = event?.target === document ? (document.scrollingElement || document.documentElement) : (event?.target || window);
+      const scrollY = target.scrollTop !== undefined ? target.scrollTop : (window.scrollY || window.pageYOffset || 0);
+
+      const isScrolled = scrollY > 0;
       scrollBars.forEach((bar) => {
         bar.classList.toggle('md-top-app-bar-scrolled', isScrolled);
       });
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    // Escuchar con capture: true para detectar scroll en window o en contenedores internos
+    window.addEventListener('scroll', handleScroll, { passive: true, capture: true });
     handleScroll(); /* Chequeo inicial: barra ya scrolled al cargar */
   }
 
@@ -35,14 +40,17 @@ export function initTopAppBar() {
   const collapseBars = document.querySelectorAll('[data-md-top-app-bar-collapse]');
 
   if (collapseBars.length > 0) {
-    const handleCollapse = () => {
-      const isScrolled = window.scrollY > 56;
+    const handleCollapse = (event) => {
+      const target = event?.target === document ? (document.scrollingElement || document.documentElement) : (event?.target || window);
+      const scrollY = target.scrollTop !== undefined ? target.scrollTop : (window.scrollY || window.pageYOffset || 0);
+
+      const isScrolled = scrollY > 56;
       collapseBars.forEach((bar) => {
         bar.classList.toggle('is-collapsed', isScrolled);
       });
     };
 
-    window.addEventListener('scroll', handleCollapse, { passive: true });
+    window.addEventListener('scroll', handleCollapse, { passive: true, capture: true });
     handleCollapse(); /* Chequeo inicial */
   }
 
