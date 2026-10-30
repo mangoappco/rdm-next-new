@@ -187,7 +187,8 @@
   padding-inline: var(--md-sys-measurement-space-100); /* 8dp */
   padding-block-end: var(--md-sys-measurement-space-200); /* 16dp de resguardo final */
   box-sizing: border-box;
-  transition: min-height var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
+  transition: height var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
+              min-height var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
               background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
               box-shadow var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
 }
@@ -210,17 +211,16 @@
 
 /* Estado colapsado: Medium -> Small (64dp) */
 .md-top-app-bar-medium.is-collapsed {
-  min-height: var(--md-sys-measurement-top-bar-height); /* 64dp */
-  grid-template-rows: var(--md-sys-measurement-top-bar-height) 0fr;
+  height: var(--md-sys-measurement-top-bar-height);
+  min-height: var(--md-sys-measurement-top-bar-height);
+  max-height: var(--md-sys-measurement-top-bar-height);
+  grid-template-rows: var(--md-sys-measurement-top-bar-height) var(--md-sys-measurement-space-0);
   padding-block-end: 0;
+  overflow: hidden;
 }
 
 .md-top-app-bar-medium.is-collapsed .md-top-app-bar-content {
-  opacity: 0;
-  max-height: 0;
-  padding: 0;
-  overflow: hidden;
-  pointer-events: none;
+  display: none;
 }
 
 /* Fila superior: navegación (col 1) y acciones (col 3) */
@@ -273,7 +273,8 @@
   padding-inline: var(--md-sys-measurement-space-100); /* 8dp */
   padding-block-end: var(--md-sys-measurement-space-200); /* 16dp resguardo inferior armónico */
   box-sizing: border-box;
-  transition: min-height var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
+  transition: height var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
+              min-height var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
               background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
               box-shadow var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
 }
@@ -297,17 +298,16 @@
 
 /* Estado colapsado: Large -> Small (64dp) */
 .md-top-app-bar-large.is-collapsed {
-  min-height: var(--md-sys-measurement-top-bar-height); /* 64dp */
-  grid-template-rows: var(--md-sys-measurement-top-bar-height) 0fr;
+  height: var(--md-sys-measurement-top-bar-height);
+  min-height: var(--md-sys-measurement-top-bar-height);
+  max-height: var(--md-sys-measurement-top-bar-height);
+  grid-template-rows: var(--md-sys-measurement-top-bar-height) var(--md-sys-measurement-space-0);
   padding-block-end: 0;
+  overflow: hidden;
 }
 
 .md-top-app-bar-large.is-collapsed .md-top-app-bar-content {
-  opacity: 0;
-  max-height: 0;
-  padding: 0;
-  overflow: hidden;
-  pointer-events: none;
+  display: none;
 }
 
 .md-top-app-bar-large .md-top-app-bar-title {
