@@ -273,6 +273,9 @@
   justify-content: flex-start;
   margin: 0;
   min-width: var(--md-sys-measurement-space-600); /* 48dp */
+  /* MORPH DE SLOTS (canon M3 Expressive): de centro de fila 56dp (28) a
+     centro compacto 64dp (32) con el progreso — el swap aterriza igual */
+  transform: translateY(calc(var(--md-sys-measurement-top-bar-slots-morph-y) * var(--md-top-app-bar-collapse-progress, 0)));
 }
 
 .md-top-app-bar-medium .md-top-app-bar-trailing,
@@ -284,6 +287,16 @@
   margin: 0;
   min-width: var(--md-sys-measurement-space-600); /* 48dp */
   gap: var(--md-sys-measurement-space-50); /* 4dp */
+  transform: translateY(calc(var(--md-sys-measurement-top-bar-slots-morph-y) * var(--md-top-app-bar-collapse-progress, 0))); /* MORPH de slots, idem leading */
+}
+
+/* MORPH de slots completado (estado colapsado): reset — el native compacto
+   (centro 32) ya es el destino del desplazamiento en p=1 */
+.md-top-app-bar-medium.is-collapsed .md-top-app-bar-leading,
+.md-top-app-bar-medium.is-collapsed .md-top-app-bar-trailing,
+.md-top-app-bar-large.is-collapsed .md-top-app-bar-leading,
+.md-top-app-bar-large.is-collapsed .md-top-app-bar-trailing {
+  transform: none;
 }
 
 /* Tipografía M3 Expressive */

@@ -355,6 +355,12 @@
   --md-sys-measurement-top-bar-title-morph-y-medium: calc((var(--md-sys-measurement-top-bar-height) - var(--md-sys-typescale-title-large-line-height)) / 2 - var(--md-sys-measurement-space-700)); /* 18 - 56 = -38 (top compacto - top grande, fila 2 sin resguardo) */
   --md-sys-measurement-top-bar-title-morph-y-large: calc((var(--md-sys-measurement-top-bar-height) - var(--md-sys-typescale-title-large-line-height)) / 2 - var(--md-sys-measurement-space-700) - var(--md-sys-measurement-space-100)); /* 18 - 64 = -46 (top grande = 56 fila + 8 resguardo) */
 
+  /* MORPH DE LOS SLOTS (leading/trailing, mismo canon): en la fila de iconos
+     de 56dp van centrados (28dp); la barra compacta los centra en 64dp (32dp).
+     Delta = mitad de la diferencia de alturas. Sin el viaje, el swap de grid
+     los teletransporta 4px verticalmente en ambos sentidos. */
+  --md-sys-measurement-top-bar-slots-morph-y: calc((var(--md-sys-measurement-top-bar-height) - var(--md-sys-measurement-space-700)) / 2); /* (64 - 56) / 2 = +4 */
+
   /* Alto de una barra de navegacion inferior o rail. */
   --md-sys-measurement-navigation-bar-height: var(--md-ref-spacing-800);
 
