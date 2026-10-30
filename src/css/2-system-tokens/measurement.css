@@ -334,32 +334,38 @@
   /* Alto de una barra de navegacion superior (M3 Top App Bar small: 64dp). */
   --md-sys-measurement-top-bar-height: var(--md-ref-spacing-800);
 
-  /* Alto de una barra de navegacion superior Medium (M3 Expressive: 112dp). */
+  /* Alto de una barra de navegacion superior Medium flexible SIN subtitulo
+     (canon AndroidX: AppBarMediumFlexibleTokens.ContainerHeight = 112dp). */
   --md-sys-measurement-top-bar-medium-height: calc(var(--md-sys-measurement-top-bar-height) + var(--md-sys-measurement-space-600)); /* 64px + 48px = 112dp */
 
-  /* Deltas de recorrido del compress effect (canon M3): cuantos pixeles de
-     scroll separan la variante flexible de su estado small. La altura al
-     scroll-linked la interpola 1:1 de expandida a small en ese recorrido. */
+  /* Alto de la Medium flexible CON subtitulo: hug content canon
+     (AndroidX MediumFlexibleAppBarWithSubtitleExpandedHeight = 136dp, el
+     mismo valor que material-web). Construccion: banda de iconos 64 +
+     titular 36 + aire 4 + subtitulo 20 + aire 12 al borde. */
+  --md-sys-measurement-top-bar-medium-height-subtitle: calc(var(--md-sys-measurement-top-bar-height) + var(--md-sys-typescale-headline-medium-line-height) + var(--md-sys-measurement-space-50) + var(--md-sys-typescale-label-large-line-height) + var(--md-sys-measurement-space-150)); /* 64 + 36 + 4 + 20 + 12 = 136dp */
+
+  /* Alto de la Large flexible SIN subtitulo (AndroidX
+     LargeFlexibleAppBarWithoutSubtitleExpandedHeight = 120dp, material-web
+     idem): banda 64 + titular display-small 44 + aire 12. */
+  --md-sys-measurement-top-bar-large-height-subtitleless: calc(var(--md-sys-measurement-top-bar-height) + var(--md-sys-typescale-display-small-line-height) + var(--md-sys-measurement-space-150)); /* 64 + 44 + 12 = 120dp */
+
+  /* Deltas de recorrido del compress effect (canon Compose): cuantos pixeles
+     de scroll separan cada configuracion de su estado small (64dp). La
+     seleccion entre configuracion se resuelve en capa 3 con :has(). */
   --md-sys-measurement-top-bar-medium-collapse-delta: calc(var(--md-sys-measurement-top-bar-medium-height) - var(--md-sys-measurement-top-bar-height)); /* 112dp - 64dp = 48dp */
-  --md-sys-measurement-top-bar-large-collapse-delta: calc(var(--md-sys-measurement-top-bar-large-height) - var(--md-sys-measurement-top-bar-height)); /* 152dp - 64dp = 88dp */
+  --md-sys-measurement-top-bar-medium-collapse-delta-subtitle: calc(var(--md-sys-measurement-top-bar-medium-height-subtitle) - var(--md-sys-measurement-top-bar-height)); /* 136dp - 64dp = 72dp */
+  --md-sys-measurement-top-bar-large-collapse-delta: calc(var(--md-sys-measurement-top-bar-large-height) - var(--md-sys-measurement-top-bar-height)); /* 152dp - 64dp = 88dp (con subtitulo) */
+  --md-sys-measurement-top-bar-large-collapse-delta-subtitleless: calc(var(--md-sys-measurement-top-bar-large-height-subtitleless) - var(--md-sys-measurement-top-bar-height)); /* 120dp - 64dp = 56dp */
 
-  /* MORPH DEL TITULAR (compress effect canon M3 Expressive): desplazamiento
-     continuo del titulo (con el subtitulo anexo) desde su posicion grande
-     (fila 2, keyline 16) hasta su posicion compacta (fila superior, junto al
-     icono de navegacion), interpolado 1:1 con el mismo progreso del compress.
-     Sin esto, el swap de grid al completar el recorrido lo teletransportaria
-     (+48px en x; -38px medium / -46px large en y). Los objetivos derivan de
-     la geometria canon: y = top compacto ((64dp - title-large lh)/2 = 18dp);
-     x = ancho de la columna leading (space-600). */
+  /* MORPH DEL TITULAR (signature R2 sobre canon Compose): el titular compacto
+     viaja continuo de su anclaje canon (pegado al borde inferior de la banda
+     de 64dp, top 64) hasta su asiento compacto (centrado en 64dp, top 18),
+     y de keyline 16 a keyline 64 (tras la columna leading compacta). Con el
+     contenido anclado al TECHO de la zona (align-self start), el top nativo
+     del titular es 64 en TODA configuracion/variante -> un solo token y el
+     swap a .is-collapsed aterriza exacto (18). */
   --md-sys-measurement-top-bar-title-morph-x: var(--md-sys-measurement-space-600); /* 48dp = columna leading compacta */
-  --md-sys-measurement-top-bar-title-morph-y-medium: calc((var(--md-sys-measurement-top-bar-height) - var(--md-sys-typescale-title-large-line-height)) / 2 - var(--md-sys-measurement-space-700)); /* 18 - 56 = -38 (top compacto - top grande, fila 2 sin resguardo) */
-  --md-sys-measurement-top-bar-title-morph-y-large: calc((var(--md-sys-measurement-top-bar-height) - var(--md-sys-typescale-title-large-line-height)) / 2 - var(--md-sys-measurement-space-700) - var(--md-sys-measurement-space-100)); /* 18 - 64 = -46 (top grande = 56 fila + 8 resguardo) */
-
-  /* MORPH DE LOS SLOTS (leading/trailing, mismo canon): en la fila de iconos
-     de 56dp van centrados (28dp); la barra compacta los centra en 64dp (32dp).
-     Delta = mitad de la diferencia de alturas. Sin el viaje, el swap de grid
-     los teletransporta 4px verticalmente en ambos sentidos. */
-  --md-sys-measurement-top-bar-slots-morph-y: calc((var(--md-sys-measurement-top-bar-height) - var(--md-sys-measurement-space-700)) / 2); /* (64 - 56) / 2 = +4 */
+  --md-sys-measurement-top-bar-title-morph-y: calc((var(--md-sys-measurement-top-bar-height) - var(--md-sys-typescale-title-large-line-height)) / 2 - var(--md-sys-measurement-top-bar-height)); /* 18 - 64 = -46 */
 
   /* Alto de una barra de navegacion inferior o rail. */
   --md-sys-measurement-navigation-bar-height: var(--md-ref-spacing-800);
@@ -1169,7 +1175,11 @@
      -------------------------------------------------------------------------- */
   --md-sys-measurement-text-field-container-height-dense: var(--md-ref-spacing-600); /* 48dp */
   --md-sys-measurement-text-field-textarea-min-height: calc(var(--md-sys-measurement-text-field-container-height) + var(--md-sys-measurement-space-500)); /* 96dp */
-  --md-sys-measurement-top-bar-large-height: calc(var(--md-sys-measurement-top-bar-medium-height) + var(--md-sys-measurement-space-500)); /* 152dp */
+  /* Alto de la Large flexible CON subtitulo (canon AndroidX:
+     AppBarLargeFlexibleTokens.LargeContainerHeight = 152dp). Construccion:
+     banda de iconos 64 + titular display-small 44 + aire 4 + subtitulo
+     title-medium 24 + aire 16 al borde. */
+  --md-sys-measurement-top-bar-large-height: calc(var(--md-sys-measurement-top-bar-height) + var(--md-sys-typescale-display-small-line-height) + var(--md-sys-measurement-space-50) + var(--md-sys-typescale-title-medium-line-height) + var(--md-sys-measurement-space-200)); /* 64 + 44 + 4 + 24 + 16 = 152dp */
 }
 
 /* Las clases utilitarias de esta familia se mudaron a 4-utilities/ en la auditoria M3:

@@ -268,10 +268,10 @@
      flexible (headline) y su tamanio de barra small (title-large). La
      distancia de ese cambio vive en tokens, no en la capa 3.
      ====================================================================== */
-  --md-sys-measurement-top-bar-title-size-delta-medium: calc(var(--md-ref-typescale-headline-small-size) - var(--md-ref-typescale-title-large-size)); /* 24px - 22px = 2px */
-  --md-sys-measurement-top-bar-title-line-height-delta-medium: calc(var(--md-ref-typescale-headline-small-line-height) - var(--md-ref-typescale-title-large-line-height)); /* 32px - 28px = 4px */
-  --md-sys-measurement-top-bar-title-size-delta-large: calc(var(--md-ref-typescale-headline-large-size) - var(--md-ref-typescale-title-large-size)); /* 32px - 22px = 10px */
-  --md-sys-measurement-top-bar-title-line-height-delta-large: calc(var(--md-ref-typescale-headline-large-line-height) - var(--md-ref-typescale-title-large-line-height)); /* 40px - 28px = 12px */
+  --md-sys-measurement-top-bar-title-size-delta-medium: calc(var(--md-ref-typescale-headline-medium-size) - var(--md-ref-typescale-title-large-size)); /* 28px - 22px = 6px (canon AndroidX: AppBarMediumFlexibleTokens.TitleFont = HeadlineMedium) */
+  --md-sys-measurement-top-bar-title-line-height-delta-medium: calc(var(--md-ref-typescale-headline-medium-line-height) - var(--md-ref-typescale-title-large-line-height)); /* 36px - 28px = 8px */
+  --md-sys-measurement-top-bar-title-size-delta-large: calc(var(--md-ref-typescale-display-small-size) - var(--md-ref-typescale-title-large-size)); /* 36px - 22px = 14px (canon AndroidX: AppBarLargeFlexibleTokens.TitleFont = DisplaySmall) */
+  --md-sys-measurement-top-bar-title-line-height-delta-large: calc(var(--md-ref-typescale-display-small-line-height) - var(--md-ref-typescale-title-large-line-height)); /* 44px - 28px = 16px */
 }
 
 /* Las clases utilitarias de esta familia se mudaron a 4-utilities/ en la auditoria M3:

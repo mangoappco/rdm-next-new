@@ -24,15 +24,24 @@ export function initTopAppBar() {
   const collapseBars = document.querySelectorAll('[data-md-top-app-bar-collapse]');
 
   if (scrollBars.length > 0 || collapseBars.length > 0) {
-    /* Delta del recorrido canon por variante: cuantos px de scroll separan
-       la variante flexible de Small (canon M3: medium 112dp - 64dp = 48dp,
-       large 152dp - 64dp = 88dp). Vive en tokens como
-       --md-sys-measurement-top-bar-{medium,large}-collapse-delta
-       (2-system-tokens/measurement.css); se replica aqui porque el valor
-       que alimenta la division es runtime y el token se compone de
-       var()+calc(), no de un numero parseable desde JS. */
-    const compressionDelta = (bar) =>
-      bar.classList.contains('md-top-app-bar-large') ? 88 : 48;
+    /* Delta del recorrido canon por variante Y configuracion (canon AndroidX
+       TwoRowsTopAppBar, tokens 14_0_0 — hug content por subtitulo):
+         Medium sin subtitulo: 112 - 64 = 48dp
+         Medium con subtitulo: 136 - 64 = 72dp
+         Large sin subtitulo:  120 - 64 = 56dp
+         Large con subtitulo:  152 - 64 = 88dp
+       Concuerda con los tokens
+       --md-sys-measurement-top-bar-{medium,large}-collapse-delta* de
+       2-system-tokens/measurement.css; se replica aqui porque el valor que
+       alimenta la division es runtime y el token se compone de var()+calc(),
+       no de un numero parseable desde JS. */
+    const compressionDelta = (bar) => {
+      const conSubtitulo = !!bar.querySelector('.md-top-app-bar-subtitle');
+      if (bar.classList.contains('md-top-app-bar-large')) {
+        return conSubtitulo ? 88 : 56;
+      }
+      return conSubtitulo ? 72 : 48;
+    };
 
     let ultimoTarget = null; /* origen del ultimo evento de scroll */
     let rafId = 0; /* id del frame programado (0 = nada pendiente) */

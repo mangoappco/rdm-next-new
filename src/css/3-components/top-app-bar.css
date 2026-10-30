@@ -17,6 +17,8 @@
 
    FUENTES
    -------
+   - AndroidX AppBar.kt (androidx-main) — contrato canon de implementacion:
+     TwoRowsTopAppBar, placeTopAppBar y tokens AppBar*Tokens (14_0_0)
    - m3.material.io/components/top-app-bar/overview
    - m3.material.io/components/top-app-bar/specs
    ========================================================================== */
@@ -103,10 +105,10 @@
   text-overflow: ellipsis;
 }
 
-/* Subtítulo */
+/* Subtítulo (canon AndroidX: AppBarSmallTokens.SubtitleFont = LabelMedium) */
 .md-top-app-bar-subtitle {
-  font: var(--md-sys-typescale-body-small);
-  line-height: var(--md-sys-typescale-body-small-line-height);
+  font: var(--md-sys-typescale-label-medium);
+  line-height: var(--md-sys-typescale-label-medium-line-height);
   color: var(--md-sys-color-on-surface-variant);
   white-space: nowrap;
   overflow: hidden;
@@ -182,18 +184,20 @@
   grid-template-areas:
     "leading . trailing"
     "content content content";
-  grid-template-rows: var(--md-sys-measurement-space-700) auto; /* 56dp de fila superior */
+  grid-template-rows: var(--md-sys-measurement-top-bar-height) auto; /* banda de iconos FIJA 64dp canon (TwoRowsTopAppBar: scrolledOffset 0) + fila 2 solo titular */
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   /* COMPRESS EFFECT scroll-linked (canon Compose exitUntilCollapsed):
-     la altura avanza 1:1 con el scroll dentro del recorrido canon
-     (48dp: 112 -> 64). Scroll lento = compresion lenta; detener a
-     mitad congela la barra a mitad. Sin transicion: el scroll ES el
-     timing. Sin JS, la variable no existe y la barra queda expandida. */
+     la altura avanza 1:1 con el scroll dentro del recorrido canon.
+     Configuracion SIN subtitulo (112dp -> 64). Con subtitulo veo la
+     regla :has() a continuacion (136dp, hug content canon AndroidX).
+     Scroll lento = compresion lenta; detener a mitad congela la barra
+     a mitad. Sin transicion: el scroll ES el timing. Sin JS, la
+     variable no existe y la barra queda expandida. */
   height: calc(var(--md-sys-measurement-top-bar-medium-height) - var(--md-sys-measurement-top-bar-medium-collapse-delta) * min(1, var(--md-top-app-bar-collapse-progress, 0)));
   min-height: var(--md-sys-measurement-top-bar-height); /* suelo canonico 64dp */
   padding-inline: var(--md-sys-measurement-space-100); /* 8dp */
-  /* Sin resguardo inferior: fila superior 56dp + fila de titulo 56dp = 112dp canonico */
+  /* Sin resguardo inferior: los aires derivan de las alturas canon */
   padding-block-end: var(--md-sys-measurement-space-0);
   box-sizing: border-box;
   overflow: hidden;
@@ -202,24 +206,41 @@
               box-shadow var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-effects-default);
 }
 
+/* Configuracion CON subtitulo: hug content canon (AndroidX
+   MediumFlexibleAppBarWithSubtitleExpandedHeight = 136dp, recorrido 72dp).
+   Resuelto declarativamente con :has() — cero JS. La altura compacta la
+   fija .is-collapsed mas abajo (gana por orden). */
+.md-top-app-bar-medium:has(.md-top-app-bar-subtitle) {
+  height: calc(var(--md-sys-measurement-top-bar-medium-height-subtitle) - var(--md-sys-measurement-top-bar-medium-collapse-delta-subtitle) * min(1, var(--md-top-app-bar-collapse-progress, 0)));
+}
+
 .md-top-app-bar-medium .md-top-app-bar-content {
   grid-area: content;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* TITULAR ANCLADO AL TECHO de la fila 2 (canon derivado TwoRowsTopAppBar:
+     en expandido el top del titular = 64 SIEMPRE, todas las configuraciones
+     — este anclaje hace que el morph-y sea un solo token (-46) y que el
+     swap a .is-collapsed aterrice exacto en el asiento compacto). */
+  align-self: start;
+  justify-content: start;
   align-items: flex-start;
   min-width: 0;
   margin: 0;
   padding-inline: var(--md-sys-measurement-space-100); /* 8dp (+ 8dp padre = 16dp keyline exacto) */
   padding-block: 0;
-  gap: var(--md-sys-measurement-space-50); /* 4dp entre titular y subtitulo */
-  /* MORPH DEL TITULAR (canon M3 Expressive): el titulo viaja continuo de su
-     posicion grande (keyline 16, fila 2) a la compacta (x 64 / y 18) con el
-     mismo progreso del compress — el swap a .is-collapsed aterriza en la
-     posicion exacta, sin teletransporte. Interference con el grid: el item
-     es el unico con area content, su offset no desplaza slots. */
+  /* El aire entre titular y subtitulo se DESVANECE con el compress: en el
+     asiento compacto el item es solo el titular (28dp) y el aterrizaje del
+     morph debe ser uniforme para toda configuracion (con y sin subtitulo). */
+  gap: calc(var(--md-sys-measurement-space-50) * (1 - var(--md-top-app-bar-collapse-progress, 0)));
+  /* MORPH DEL TITULAR (signature R2 sobre canon Compose): el titular viaja
+     continuo de su anclaje canon (keyline 16, top 64) al asiento compacto
+     (x 64 / y 18) con el mismo progreso del compress — el swap a
+     .is-collapsed aterriza en la posicion exacta, sin teletransporte.
+     El morph-y es el token UNICO (-46). En el grid, el item tiene el area
+     content exclusiva: su offset no desplaza slots. */
   transform: translate(calc(var(--md-sys-measurement-top-bar-title-morph-x) * var(--md-top-app-bar-collapse-progress, 0)),
-                       calc(var(--md-sys-measurement-top-bar-title-morph-y-medium) * var(--md-top-app-bar-collapse-progress, 0)));
+                       calc(var(--md-sys-measurement-top-bar-title-morph-y) * var(--md-top-app-bar-collapse-progress, 0)));
 }
 
 /* Estado colapsado: Medium -> Small (64dp).
@@ -240,13 +261,16 @@
 
 .md-top-app-bar-medium.is-collapsed .md-top-app-bar-content {
   justify-content: center;
+  /* Reset del anclaje al techo: en compacto el contenido vuelve a centrarse
+     en la banda de 64dp (misma mecanica que el native Small) */
+  align-self: center;
   /* Sin resguardos verticales heredados: el titulo queda centrado
      geometricamente en los 64dp (centro del texto = centro de los iconos) */
   padding-block: var(--md-sys-measurement-space-0);
   gap: var(--md-sys-measurement-space-0); /* sin aire residual del subtitulo apagado */
   min-width: 0;
   /* MORPH completado: la geometria nativa compacta ya es el destino del
-     desplazamiento (top 18 coincide con morphe y_MEDIUM * p=1) -> reset */
+     desplazamiento (top 18 coincide con morph-y * p=1) -> reset */
   transform: none;
 }
 
@@ -264,7 +288,11 @@
   pointer-events: none;
 }
 
-/* Fila superior: navegación (col 1) y acciones (col 3) */
+/* Fila superior: navegación (col 1) y acciones (col 3).
+   CANON AndroidX (TwoRowsTopAppBar): esta fila es la propia barra compacta
+   desde el inicio — altura fija 64dp y scrolledOffset = 0 -> los iconos
+   quedan centrados en 32dp y NO se mueven durante el compress. Sin morph,
+   sin compensaciones: el swap de grid aterriza en la misma geometria. */
 .md-top-app-bar-medium .md-top-app-bar-leading,
 .md-top-app-bar-large .md-top-app-bar-leading {
   grid-area: leading;
@@ -273,9 +301,6 @@
   justify-content: flex-start;
   margin: 0;
   min-width: var(--md-sys-measurement-space-600); /* 48dp */
-  /* MORPH DE SLOTS (canon M3 Expressive): de centro de fila 56dp (28) a
-     centro compacto 64dp (32) con el progreso — el swap aterriza igual */
-  transform: translateY(calc(var(--md-sys-measurement-top-bar-slots-morph-y) * var(--md-top-app-bar-collapse-progress, 0)));
 }
 
 .md-top-app-bar-medium .md-top-app-bar-trailing,
@@ -287,33 +312,25 @@
   margin: 0;
   min-width: var(--md-sys-measurement-space-600); /* 48dp */
   gap: var(--md-sys-measurement-space-50); /* 4dp */
-  transform: translateY(calc(var(--md-sys-measurement-top-bar-slots-morph-y) * var(--md-top-app-bar-collapse-progress, 0))); /* MORPH de slots, idem leading */
 }
 
-/* MORPH de slots completado (estado colapsado): reset — el native compacto
-   (centro 32) ya es el destino del desplazamiento en p=1 */
-.md-top-app-bar-medium.is-collapsed .md-top-app-bar-leading,
-.md-top-app-bar-medium.is-collapsed .md-top-app-bar-trailing,
-.md-top-app-bar-large.is-collapsed .md-top-app-bar-leading,
-.md-top-app-bar-large.is-collapsed .md-top-app-bar-trailing {
-  transform: none;
-}
-
-/* Tipografía M3 Expressive */
+/* Tipografía M3 Expressive — canon AndroidX:
+   AppBarMediumFlexibleTokens.TitleFont = HeadlineMedium (28/36),
+   SubtitleFont = LabelLarge (14/20). */
 .md-top-app-bar-medium .md-top-app-bar-title {
-  font: var(--md-sys-typescale-headline-small);
-  line-height: var(--md-sys-typescale-headline-small-line-height);
+  font: var(--md-sys-typescale-headline-medium);
+  line-height: var(--md-sys-typescale-headline-medium-line-height);
   color: var(--md-sys-color-on-surface);
-  /* MORPH scroll-linked del titular (Fase 2, canon Expressive): rapidez
-     tipografica 24/32 -> 22/28 proporcional al mismo progreso del compress.
-     La delta vive en 2-system-tokens/typography.css. */
-  font-size: calc(var(--md-sys-typescale-headline-small-size) - var(--md-sys-measurement-top-bar-title-size-delta-medium) * min(1, var(--md-top-app-bar-collapse-progress, 0)));
-  line-height: calc(var(--md-sys-typescale-headline-small-line-height) - var(--md-sys-measurement-top-bar-title-line-height-delta-medium) * min(1, var(--md-top-app-bar-collapse-progress, 0)));
+  /* MORPH scroll-linked del titular: rapidez tipografica 28/36 -> 22/28
+     proporcional al mismo progreso del compress. La delta vive en
+     2-system-tokens/typography.css. */
+  font-size: calc(var(--md-sys-typescale-headline-medium-size) - var(--md-sys-measurement-top-bar-title-size-delta-medium) * min(1, var(--md-top-app-bar-collapse-progress, 0)));
+  line-height: calc(var(--md-sys-typescale-headline-medium-line-height) - var(--md-sys-measurement-top-bar-title-line-height-delta-medium) * min(1, var(--md-top-app-bar-collapse-progress, 0)));
 }
 
 .md-top-app-bar-medium .md-top-app-bar-subtitle {
-  font: var(--md-sys-typescale-body-medium);
-  line-height: var(--md-sys-typescale-body-medium-line-height);
+  font: var(--md-sys-typescale-label-large);
+  line-height: var(--md-sys-typescale-label-large-line-height);
   color: var(--md-sys-color-on-surface-variant);
   /* Desvanecimiento scroll-linked: se apaga con el mismo progreso que
      comprime la barra (subtítulo a la mitad del recorrido esta a mitad
@@ -331,16 +348,21 @@
   grid-template-areas:
     "leading . trailing"
     "content content content";
-  grid-template-rows: var(--md-sys-measurement-space-700) auto; /* 56dp fila superior */
+  grid-template-rows: var(--md-sys-measurement-top-bar-height) auto; /* banda de iconos FIJA 64dp canon (TwoRowsTopAppBar: scrolledOffset 0) + fila 2 solo titular */
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   /* COMPRESS EFFECT scroll-linked (canon Compose exitUntilCollapsed):
-     recorrido canon de 88dp (152 -> 64), altura 1:1 con el scroll.
-     Idem Medium: sin transicion espacial, el scroll ES el timing. */
-  height: calc(var(--md-sys-measurement-top-bar-large-height) - var(--md-sys-measurement-top-bar-large-collapse-delta) * min(1, var(--md-top-app-bar-collapse-progress, 0)));
+     configuracion SIN subtitulo (AndroidX
+     LargeFlexibleAppBarWithoutSubtitleExpandedHeight = 120dp -> 64,
+     recorrido 56dp). Con subtitulo veo la regla :has() a continuacion
+     (152dp, recorrido 88dp). Sin transicion espacial: el scroll ES el
+     timing. */
+  height: calc(var(--md-sys-measurement-top-bar-large-height-subtitleless) - var(--md-sys-measurement-top-bar-large-collapse-delta-subtitleless) * min(1, var(--md-top-app-bar-collapse-progress, 0)));
   min-height: var(--md-sys-measurement-top-bar-height); /* suelo canonico 64dp */
   padding-inline: var(--md-sys-measurement-space-100); /* 8dp */
-  padding-block-end: var(--md-sys-measurement-space-200); /* 16dp resguardo inferior armónico */
+  /* Sin resguardo inferior: el borde de la barra ES el borde de la zona
+     (canon); los aires derivan de las alturas canon por configuracion. */
+  padding-block-end: var(--md-sys-measurement-space-0);
   box-sizing: border-box;
   overflow: hidden;
   /* Color y sombra son effects (no espaciales): par canonico short4 + effects-default */
@@ -348,21 +370,34 @@
               box-shadow var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-effects-default);
 }
 
+/* Configuracion CON subtitulo: hug content canon (AndroidX
+   AppBarLargeFlexibleTokens.LargeContainerHeight = 152dp, recorrido 88dp).
+   Resuelto declarativamente con :has() — cero JS. La altura compacta la
+   fija .is-collapsed mas abajo (gana por orden). */
+.md-top-app-bar-large:has(.md-top-app-bar-subtitle) {
+  height: calc(var(--md-sys-measurement-top-bar-large-height) - var(--md-sys-measurement-top-bar-large-collapse-delta) * min(1, var(--md-top-app-bar-collapse-progress, 0)));
+}
+
 .md-top-app-bar-large .md-top-app-bar-content {
   grid-area: content;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* TITULAR ANCLADO AL TECHO de la fila 2 (mismo canon derivado que Medium:
+     top del titular = 64 en expandido; morph-y unico -46; swap exacto) */
+  align-self: start;
+  justify-content: start;
   align-items: flex-start;
   min-width: 0;
   margin: 0;
   padding-inline: var(--md-sys-measurement-space-100); /* 8dp (+ 8dp padre = 16dp keyline exacto) */
-  padding-block-start: var(--md-sys-measurement-space-100); /* 8dp aire hacia fila de iconos (absorbe line-height, ~14px reales a flecha) */
-  padding-block-end: 0;
-  gap: var(--md-sys-measurement-space-50); /* 4dp entre titular y subtítulo */
-  /* MORPH DEL TITULAR, idem Medium (delta y-large): keyline grande 64 -> 18 */
+  padding-block: var(--md-sys-measurement-space-0);
+  /* El aire entre titular y subtitulo se desvanece con el compress (item
+     compacto = solo titular) para un aterrizaje uniforme */
+  gap: calc(var(--md-sys-measurement-space-50) * (1 - var(--md-top-app-bar-collapse-progress, 0)));
+  /* MORPH DEL TITULAR, idem Medium con el token UNICO (keyline grande 16 /
+     top 64 -> asiento compacto x 64 / y 18) */
   transform: translate(calc(var(--md-sys-measurement-top-bar-title-morph-x) * var(--md-top-app-bar-collapse-progress, 0)),
-                       calc(var(--md-sys-measurement-top-bar-title-morph-y-large) * var(--md-top-app-bar-collapse-progress, 0)));
+                       calc(var(--md-sys-measurement-top-bar-title-morph-y) * var(--md-top-app-bar-collapse-progress, 0)));
 }
 
 /* Estado colapsado: Large -> Small (64dp). Canonico igual al de Medium. */
@@ -380,6 +415,9 @@
 
 .md-top-app-bar-large.is-collapsed .md-top-app-bar-content {
   justify-content: center;
+  /* Reset del anclaje al techo: en compacto el contenido vuelve a centrarse
+     en la banda de 64dp (misma mecanica que el native Small) */
+  align-self: center;
   /* Sin resguardos verticales heredados: el titulo queda centrado
      geometricamente en los 64dp (centro del texto = centro de los iconos) */
   padding-block: var(--md-sys-measurement-space-0);
@@ -403,19 +441,22 @@
   pointer-events: none;
 }
 
+/* Tipografía M3 Expressive — canon AndroidX:
+   AppBarLargeFlexibleTokens.TitleFont = DisplaySmall (36/44),
+   SubtitleFont = TitleMedium (16/24). */
 .md-top-app-bar-large .md-top-app-bar-title {
-  font: var(--md-sys-typescale-headline-large);
-  line-height: var(--md-sys-typescale-headline-large-line-height);
+  font: var(--md-sys-typescale-display-small);
+  line-height: var(--md-sys-typescale-display-small-line-height);
   color: var(--md-sys-color-on-surface);
-  /* MORPH scroll-linked del titular: rapidez tipografica 32/40 -> 22/28
+  /* MORPH scroll-linked del titular: rapidez tipografica 36/44 -> 22/28
      proporcional al progreso del compress (deltas en 2-system-tokens) */
-  font-size: calc(var(--md-sys-typescale-headline-large-size) - var(--md-sys-measurement-top-bar-title-size-delta-large) * min(1, var(--md-top-app-bar-collapse-progress, 0)));
-  line-height: calc(var(--md-sys-typescale-headline-large-line-height) - var(--md-sys-measurement-top-bar-title-line-height-delta-large) * min(1, var(--md-top-app-bar-collapse-progress, 0)));
+  font-size: calc(var(--md-sys-typescale-display-small-size) - var(--md-sys-measurement-top-bar-title-size-delta-large) * min(1, var(--md-top-app-bar-collapse-progress, 0)));
+  line-height: calc(var(--md-sys-typescale-display-small-line-height) - var(--md-sys-measurement-top-bar-title-line-height-delta-large) * min(1, var(--md-top-app-bar-collapse-progress, 0)));
 }
 
 .md-top-app-bar-large .md-top-app-bar-subtitle {
-  font: var(--md-sys-typescale-body-medium);
-  line-height: var(--md-sys-typescale-body-medium-line-height);
+  font: var(--md-sys-typescale-title-medium);
+  line-height: var(--md-sys-typescale-title-medium-line-height);
   color: var(--md-sys-color-on-surface-variant);
   /* Desvanecimiento scroll-linked, idem Medium */
   max-height: calc((1 - var(--md-top-app-bar-collapse-progress, 0)) * var(--md-sys-measurement-space-300));
@@ -575,13 +616,14 @@
 }
 
 /* MORPH del titular en centrados: sin desplazamiento x (la columna
-   simetrica ya ancla el mismo centro en ambos estados), solo desliza en y.
-   Guardia :not(.is-collapsed): en colapsado manda el reset del estado base. */
+   simetrica ya ancla el mismo centro en ambos estados), solo desliza en y
+   con el token UNICO (-46). Guardia :not(.is-collapsed): en colapsado
+   manda el reset del estado base. */
 .md-top-app-bar-centered.md-top-app-bar-medium:not(.is-collapsed) .md-top-app-bar-content {
-  transform: translateY(calc(var(--md-sys-measurement-top-bar-title-morph-y-medium) * var(--md-top-app-bar-collapse-progress, 0)));
+  transform: translateY(calc(var(--md-sys-measurement-top-bar-title-morph-y) * var(--md-top-app-bar-collapse-progress, 0)));
 }
 .md-top-app-bar-centered.md-top-app-bar-large:not(.is-collapsed) .md-top-app-bar-content {
-  transform: translateY(calc(var(--md-sys-measurement-top-bar-title-morph-y-large) * var(--md-top-app-bar-collapse-progress, 0)));
+  transform: translateY(calc(var(--md-sys-measurement-top-bar-title-morph-y) * var(--md-top-app-bar-collapse-progress, 0)));
 }
 
 /* 3. Search centrado (modificador ortogonal) */
