@@ -7,9 +7,10 @@
 
    1. Scrolled state: conmutación de elevación (surface -> surface-container
       + elevation-level2) al hacer scroll en viewport o contenedor.
-   2. Collapsing: COMPRESS EFFECT scroll-linked — la compresión de
-      Medium/Large, el desvanecimiento del subtítulo y el morph del
-      titular avanzan 1:1 con el scroll (canon Compose exitUntilCollapsed).
+   2. Collapsing: COMPRESS EFFECT scroll-linked con inercia — la
+      compresión de Medium/Large, el desvanecimiento del subtítulo y el
+      morph del titular siguen al scroll con fricción
+      (canon Compose exitUntilCollapsed).
    3. Contextual bar: descarte del modo selección mediante botón close.
    ========================================================================== */
 
@@ -34,10 +35,24 @@ export function initTopAppBar() {
       bar.classList.contains('md-top-app-bar-large') ? 88 : 48;
 
     let ultimoTarget = null; /* origen del ultimo evento de scroll */
-    let frameProgramado = false; /* bandera rAF: 1 update por frame */
+    let rafId = 0; /* id del frame programado (0 = nada pendiente) */
+    let tPrev = 0; /* timestamp del frame anterior, para dt real */
+    /* Progreso efectivo por barra: el objetivo lo fija el scroll, el
+       valor pintado lo persigue con inercia (WeakMap barra -> 0..1). */
+    const progresoActual = new WeakMap();
+
+    /* Constante de friccion (ms): constante de tiempo de la decaida
+       exponencial. 60ms equivale a asentarse al 99.9% en ~415ms — el
+       recorrido canon de medium4 (400ms). El scroll ES el destino; el
+       gesto rapido deja de ser un teletransporte brutal y la barra
+       responde con la curva de desaceleracion Expressive. */
+    const FRICCION_MS = 60;
 
     const update = () => {
-      frameProgramado = false;
+      rafId = 0;
+      const ahora = performance.now();
+      const dt = tPrev ? Math.min(48, ahora - tPrev) : 16.7; /* cap: pestaña dormida no salta */
+      tPrev = ahora;
 
       /* Posicion del scroll: contenedor interno (ELEMENT_NODE) o viewport */
       let y = 0;
@@ -53,27 +68,50 @@ export function initTopAppBar() {
         bar.classList.toggle('md-top-app-bar-scrolled', y > 0);
       });
 
-      /* COMPRESS EFFECT scroll-linked (canon Compose exitUntilCollapsed):
-         altura, desvanecimiento del subtitulo y morph del titular avanzan
-         1:1 con el scroll via --md-top-app-bar-collapse-progress (0 -> 1).
-         El scroll ES el timing: gesto lento = compresion lenta; detener a
-         mitad congela la barra a mitad. Sin JS, la variable no existe y la
-         barra queda expandida (degradacion graciosa). is-collapsed es solo
-         el estado estructural final (swap de grid) al completar el
-         recorrido, nunca intermedio -> no hay toggles en mitad de camino. */
+      /* COMPRESS EFFECT con inercia (canon Compose exitUntilCollapsed):
+         la altura, el desvanecimiento del subtitulo y el morph del titular
+         avanzan 1:1 con el scroll — pero via progreso con friccion, no con
+         transicion temporal. Gesto lento = sigue al dedo; detener a mitad
+         = se asienta y se congela; soltar rapido al top = expansion
+         pedalada. La variable vive en la barra (0 -> 1); sin JS la barra
+         queda expandida (fallback 0 en el CSS). is-collapsed es solo el
+         estado estructural final (swap de grid al completar el recorrido),
+         nunca intermedio -> no hay toggles en mitad de camino. */
+      let enMovimiento = false;
+
       collapseBars.forEach((bar) => {
         const delta = compressionDelta(bar);
-        const progreso = Math.min(1, y / delta);
-        bar.style.setProperty('--md-top-app-bar-collapse-progress', progreso.toFixed(3));
-        bar.classList.toggle('is-collapsed', y >= delta);
+        const objetivo = Math.min(1, y / delta);
+        let actual = progresoActual.get(bar) || 0;
+
+        /* Persecucion friccional: el deficit respecto al objetivo decae
+           exponencialmente con el tiempo real (independiente del frame rate). */
+        actual += (objetivo - actual) * (1 - Math.exp(-dt / FRICCION_MS));
+
+        /* Snap al objetivo por debajo del umbral perceptible; mientras
+           difieran, la barra sigue viva un frame mas (rAF continuo). */
+        if (Math.abs(objetivo - actual) < 0.001) {
+          actual = objetivo;
+        } else {
+          enMovimiento = true;
+        }
+
+        progresoActual.set(bar, actual);
+        bar.style.setProperty('--md-top-app-bar-collapse-progress', actual.toFixed(3));
+        bar.classList.toggle('is-collapsed', actual >= 1);
       });
+
+      if (enMovimiento) {
+        rafId = requestAnimationFrame(update);
+      }
     };
 
     const scheduleUpdate = (event) => {
       if (event && event.target) ultimoTarget = event.target;
-      if (frameProgramado) return;
-      frameProgramado = true;
-      requestAnimationFrame(update);
+      if (!rafId) {
+        tPrev = 0; /* reactivando tras reposo: dt limpio de un frame, no el Hueco acumulado */
+        rafId = requestAnimationFrame(update);
+      }
     };
 
     /* capture: true para detectar scroll en window y en contenedores internos */
