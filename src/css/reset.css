@@ -106,6 +106,14 @@
     padding: 0;
     min-height: 100vh;
 
+    /* overflow-anchor desactiva el scroll anchoring del navegador: los Top
+       App Bar sticky colapsan animando su altura en el flujo; ese layout
+       shift disparaba la compensacion de scrollY de Chrome en cada frame,
+       cruza el umbral collapse y genera un bucle expandir/colapsar
+       (parpadeo). Sin anchoring, el scrollY queda estable y la animacion
+       corre una sola vez. */
+    overflow-anchor: none;
+
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
   }

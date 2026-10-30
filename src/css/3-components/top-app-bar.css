@@ -38,17 +38,15 @@
   box-sizing: border-box;
   background-color: var(--md-sys-color-surface);
   color: var(--md-sys-color-on-surface);
-  transition: background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
-              box-shadow var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+  transition: background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
 }
 
-/* Scrolled state: elevación tonal (surface-container + level2).
-   Sin transition aquí: la declararia pisaria la lista completa de las
-   variantes Medium/Large (especificidad 0,2,0 > 0,1,0) y el colapso
-   saltaria sin animar. La transicion vive en el host y en cada variante. */
+/* Scrolled state: relleno tonal para separarse del contenido.
+   Canon M3 (m3.material.io/components/top-app-bar/overview): "On scroll, no
+   drop shadow — a color fill overlay separates the app bar from the content".
+   La sombra era el patron M2; en M3 solo cambia el color a surface-container. */
 .md-top-app-bar.md-top-app-bar-scrolled {
   background-color: var(--md-sys-color-surface-container);
-  box-shadow: var(--md-sys-elevation-level2);
 }
 
 /* Small variant: 64dp de altura */
@@ -195,8 +193,7 @@
   overflow: hidden;
   transition: height var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
               min-height var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
-              background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
-              box-shadow var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+              background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
 }
 
 .md-top-app-bar-medium .md-top-app-bar-content {
@@ -233,6 +230,9 @@
 
 .md-top-app-bar-medium.is-collapsed .md-top-app-bar-content {
   justify-content: center;
+  /* Sin resguardos verticales heredados: el titulo queda centrado
+     geometricamente en los 64dp (centro del texto = centro de los iconos) */
+  padding-block: var(--md-sys-measurement-space-0);
   gap: var(--md-sys-measurement-space-0); /* sin aire residual del subtitulo apagado */
   min-width: 0;
 }
@@ -312,8 +312,7 @@
   overflow: hidden;
   transition: height var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
               min-height var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
-              background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
-              box-shadow var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+              background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
 }
 
 .md-top-app-bar-large .md-top-app-bar-content {
@@ -348,6 +347,9 @@
 
 .md-top-app-bar-large.is-collapsed .md-top-app-bar-content {
   justify-content: center;
+  /* Sin resguardos verticales heredados: el titulo queda centrado
+     geometricamente en los 64dp (centro del texto = centro de los iconos) */
+  padding-block: var(--md-sys-measurement-space-0);
   gap: var(--md-sys-measurement-space-0); /* sin aire residual del subtitulo apagado */
   min-width: 0;
 }
