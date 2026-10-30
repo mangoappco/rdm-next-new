@@ -27,7 +27,9 @@
 
 /* Host atómico: sin márgenes exteriores ni padding envolvente */
 .md-top-app-bar {
-  position: relative;
+  position: sticky;
+  top: var(--md-sys-measurement-space-0);
+  z-index: 1;
   display: flex;
   align-items: center;
   width: 100%;

@@ -1138,6 +1138,7 @@
   --md-sys-measurement-space-500: var(--md-ref-spacing-500); /* 40dp */
   --md-sys-measurement-space-600: var(--md-ref-spacing-600); /* 48dp */
   --md-sys-measurement-space-700: var(--md-ref-spacing-700); /* 56dp */
+  --md-sys-measurement-space-0: var(--md-ref-spacing-0); /* 0dp */
 
   /* --------------------------------------------------------------------------
      TEXT FIELD -- Altura de contenedor densa y multilínea

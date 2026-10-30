@@ -11,162 +11,46 @@
   <script type="module" src="../src/js/main.js"></script>
 </head>
 
-<!--
-  LABORATORIO: página de pruebas del cuaderno, versionada desde el
-  2026-10-26 (sin specimens ni snippets que el verificador compare); sí
-  viaja en el repo, pero no es parte del catálogo. Consume UNICAMENTE
-  main.css y main.js: lo que aquí rinda, rinde en ManGo! App.
+<body class="md-bg-primary-container md-text-on-background md-type-body-medium">
 
-  Con main.js se puede comprobar también lo que el CSS no dice: un snippet
-  con `data-toggle` o con un `<dialog>` necesita el comportamiento, y aquí
-  se ve si funciona o si depende de algo que no se distribuye.
-
-  Dinámica: pegar el snippet bajo ZONA DE PRUEBAS, recargar, mirar y medir
-  en DevTools. Nada de estilos ni clases sr-*: si algo no se ve aquí, el
-  snippet depende del chrome y hay que corregirlo, no la página.
--->
-
-<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <!-- ==================================================================== -->
+  <!-- 1. PRUEBA SCROLLED STATE (Par 1 Small con data-md-top-app-bar-scroll) -->
+  <!-- ==================================================================== -->
+  <header class="md-top-app-bar md-top-app-bar-contextual" role="banner">
+  <div class="md-top-app-bar-leading">
+    <button type="button" class="md-icon-button" data-md-selection-clear aria-label="Cerrar selección">
+      <span class="md-icon" aria-hidden="true">close</span>
+    </button>
+  </div>
+  <div class="md-top-app-bar-content">
+    <span class="md-top-app-bar-title">3 seleccionados</span>
+  </div>
+  <div class="md-top-app-bar-trailing">
+    <button type="button" class="md-icon-button" aria-label="Eliminar elementos seleccionados">
+      <span class="md-icon" aria-hidden="true">delete</span>
+    </button>
+    <button type="button" class="md-icon-button" aria-label="Compartir selección">
+      <span class="md-icon" aria-hidden="true">share</span>
+    </button>
+    <button type="button" class="md-icon-button" aria-label="Más opciones">
+      <span class="md-icon" aria-hidden="true">more_vert</span>
+    </button>
+  </div>
+</header>
 
   <main>
 
-    <br>
-
-    <!-- ZONA DE PRUEBAS LIBRE: pegar el snippet aqui debajo -->
-
-
-
-    <div class="md-select md-select-outlined" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox">
-  <div class="md-select-container">
-    <input type="text" class="md-select-input" id="select-anatomy" readonly value="" placeholder=" " aria-label="Método de pago" aria-describedby="select-anatomy-supporting">
-    <label class="md-select-label" for="select-anatomy">Método de pago</label>
-    <span class="md-select-outline" aria-hidden="true"></span>
-    <span class="md-select-trailing-icon" aria-hidden="true">
-      <span class="md-icon">arrow_drop_down</span>
-    </span>
-  </div>
-  <span class="md-select-supporting-text" id="select-anatomy-supporting">Selecciona el medio de liquidación</span>
-  <div class="md-menu" role="listbox" aria-labelledby="select-anatomy">
-    <div class="md-list-item" role="option" aria-selected="false" data-value="efectivo">
-      <span class="md-list-item-headline">Efectivo</span>
-    </div>
-    <div class="md-list-item" role="option" aria-selected="false" data-value="tarjeta">
-      <span class="md-list-item-headline">Tarjeta Débito/Crédito</span>
-    </div>
-    <div class="md-list-item" role="option" aria-selected="false" data-value="transferencia">
-      <span class="md-list-item-headline">Transferencia</span>
-    </div>
-  </div>
-</div>
-
-
-
-<div class="md-text-field md-text-field-outlined">
-  <div class="md-text-field-container">
-    <input type="text" class="md-text-field-input" id="tf-base" placeholder=" " aria-describedby="tf-base-supporting">
-    <label class="md-text-field-label" for="tf-base">Nombre del producto</label>
-    <span class="md-text-field-outline" aria-hidden="true"></span>
-  </div>
-  <span class="md-text-field-supporting-text" id="tf-base-supporting">Ingresa el nombre visible en el catálogo</span>
-</div>
 
 
 
 
-
-
-
-    <div class="md-select md-select-filled" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox">
-  <div class="md-select-container">
-    <input type="text" class="md-select-input" id="select-anatomy" readonly value="" placeholder=" " aria-label="Método de pago" aria-describedby="select-anatomy-supporting">
-    <label class="md-select-label" for="select-anatomy">Método de pago</label>
-    <span class="md-select-outline" aria-hidden="true"></span>
-    <span class="md-select-trailing-icon" aria-hidden="true">
-      <span class="md-icon">arrow_drop_down</span>
-    </span>
-  </div>
-  <span class="md-select-supporting-text" id="select-anatomy-supporting">Selecciona el medio de liquidación</span>
-  <div class="md-menu" role="listbox" aria-labelledby="select-anatomy">
-    <div class="md-list-item" role="option" aria-selected="false" data-value="efectivo">
-      <span class="md-list-item-headline">Efectivo</span>
-    </div>
-    <div class="md-list-item" role="option" aria-selected="false" data-value="tarjeta">
-      <span class="md-list-item-headline">Tarjeta Débito/Crédito</span>
-    </div>
-    <div class="md-list-item" role="option" aria-selected="false" data-value="transferencia">
-      <span class="md-list-item-headline">Transferencia</span>
-    </div>
-  </div>
-</div>
-
-
-
-<div class="md-text-field md-text-field-filled">
-  <div class="md-text-field-container">
-    <input type="text" class="md-text-field-input" id="tf-base" placeholder=" " aria-describedby="tf-base-supporting">
-    <label class="md-text-field-label" for="tf-base">Nombre del producto</label>
-    <span class="md-text-field-outline" aria-hidden="true"></span>
-  </div>
-  <span class="md-text-field-supporting-text" id="tf-base-supporting">Ingresa el nombre visible en el catálogo</span>
-</div>
-
-
-<div class="md-select md-select-outlined" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox">
-  <div class="md-select-container">
-    <span class="md-select-leading-icon" aria-hidden="true">
-      <span class="md-icon">payments</span>
-    </span>
-    <input type="text" class="md-select-input" id="select-icon-slots" readonly value="Efectivo" placeholder=" " aria-label="MÃ©todo de pago" aria-describedby="select-icon-slots-supporting">
-    <label class="md-select-label" for="select-icon-slots">MÃ©todo de pago</label>
-    <span class="md-select-outline" aria-hidden="true"></span>
-    <span class="md-select-trailing-icon" aria-hidden="true">
-      <span class="md-icon">arrow_drop_down</span>
-    </span>
-  </div>
-  <span class="md-select-supporting-text" id="select-icon-slots-supporting">Selecciona el medio de liquidaciÃ³n</span>
-  <div class="md-menu" role="listbox" aria-labelledby="select-icon-slots">
-    <div class="md-list-item md-list-item-selected" role="option" aria-selected="true" data-value="efectivo" data-icon="payments">
-      <span class="md-icon md-list-item-leading" aria-hidden="true">payments</span>
-      <span class="md-list-item-headline">Efectivo</span>
-    </div>
-    <div class="md-list-item" role="option" aria-selected="false" data-value="tarjeta" data-icon="credit_card">
-      <span class="md-icon md-list-item-leading" aria-hidden="true">credit_card</span>
-      <span class="md-list-item-headline">Tarjeta Débito/Crédito</span>
-    </div>
-    <div class="md-list-item" role="option" aria-selected="false" data-value="transferencia" data-icon="account_balance">
-      <span class="md-icon md-list-item-leading" aria-hidden="true">account_balance</span>
-      <span class="md-list-item-headline">Transferencia</span>
-    </div>
-  </div>
-  </div>
-
-
-
-
-
-
-    <!-- ZONA DE PRUEBAS LIBRE: hasta aqui -->
-
-
-    <div class="sr-lab-canvas">
-
-      <!-- ZONA DE PRUEBAS CON ANCHO FIJO: pegar el snippet aqui debajo -->
-
-
-
-
-
-      <!-- ZONA DE PRUEBAS CON ANCHO FIJO: hasta aqui -->
-
-    </div>
-
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-
+    <!-- Relleno de altura para activar el scroll real del navegador -->
+    <div class="lab-spacer">Fila de contenido 1</div>
+    <div class="lab-spacer">Fila de contenido 2</div>
+    <div class="lab-spacer">Fila de contenido 3</div>
+    <div class="lab-spacer">Fila de contenido 4</div>
+    <div class="lab-spacer">Fila de contenido 5</div>
+    <div class="lab-spacer">Fila de contenido 6</div>
 
     <button type="button" class="md-button md-button-tonal" data-md-theme-toggle>
       <span class="md-button-label">Tema: sistema</span>
