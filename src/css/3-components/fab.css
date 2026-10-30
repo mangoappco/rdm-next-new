@@ -518,10 +518,11 @@
    16dp, se toca un sitio.
    ------------------------------------------------------------------------ */
 
-.md-fab-anchored {
-  position: absolute;
-  inset-block-end: var(--md-sys-measurement-inset);
-  inset-inline-end: var(--md-sys-measurement-inset);
+.md-fab.md-fab-anchored {
+  position: fixed;
+  bottom: var(--md-sys-measurement-space-200);
+  right: var(--md-sys-measurement-space-200);
+  z-index: 1;
 }
 
 /* ---------------------------------------------------------------------------
