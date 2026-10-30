@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Tabs de RDM Next: pestañas de navegación entre subpaneles dentro de un mismo contexto, con indicador activo en la base.">
+  <title>Tabs - RDM ManGo! App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+  <link rel="stylesheet" href="../../src/css/main.css">
+  <link rel="stylesheet" href="../assets/showroom.css">
+  <script type="module" src="../../src/js/main.js"></script>
+  <script src="../assets/showroom.js"></script>
+</head>
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <!-- CABECERA INSTITUCIONAL DEL SHOWROOM (DOGFOODING) -->
+  <header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll role="banner" aria-label="Cabecera institucional del showroom">
+    <div class="md-top-app-bar-leading">
+      <a href="../index.html" class="md-icon-button" aria-label="Volver al catálogo">
+        <span class="md-icon" aria-hidden="true">arrow_back</span>
+      </a>
+    </div>
+    <div class="md-top-app-bar-content">
+      <span class="md-top-app-bar-title">Tabs</span>
+      <span class="md-top-app-bar-subtitle">RDM Next · ManGo! App</span>
+    </div>
+    <div class="md-top-app-bar-trailing">
+      <button type="button" class="md-icon-button" data-theme-toggle aria-label="Tema del sistema activo">
+        <span class="md-icon" aria-hidden="true">brightness_auto</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="sr-page">
+
+    <!-- HEADER: inicio -->
+    <header class="sr-header">
+      <h1 class="md-type-display-large">Tabs</h1>
+      <p class="md-type-body-large">Las pestañas permiten navegar entre subpaneles dentro de un mismo contexto, con un indicador activo en la base.</p>
+    </header>
+    <!-- HEADER: fin -->
+
+    <hr class="md-divider">
+
+    <!-- BLOQUE 1: la clase base y su anatomía, primary, solo texto. -->
+    <h2 class="md-type-headline-medium">Clase base y anatomía</h2>
+
+    <!-- PAREJA: primary tabs, solo texto (h3 + prosa + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Primary tabs · solo texto</h3>
+      <p class="md-type-body-medium">El contenedor de 48dp con divisor base inferior y tres pestañas de igual ancho; el indicador de 3dp se pinta bajo la pestaña activa, gobernada por aria-selected.</p>
+      <div class="sr-specimen">
+        <div class="md-tabs md-tabs-primary" role="tablist" aria-label="Categorías de la carta">
+          <button type="button" class="md-tab" role="tab" aria-selected="true" tabindex="0">
+            <span class="md-tab-label">Bebidas</span>
+          </button>
+          <button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1">
+            <span class="md-tab-label">Postres</span>
+          </button>
+          <button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1">
+            <span class="md-tab-label">Fuertes</span>
+          </button>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-tabs md-tabs-primary" role="tablist" aria-label="Categorías de la carta"&gt;
+  &lt;button type="button" class="md-tab" role="tab" aria-selected="true" tabindex="0"&gt;
+    &lt;span class="md-tab-label"&gt;Bebidas&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1"&gt;
+    &lt;span class="md-tab-label"&gt;Postres&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1"&gt;
+    &lt;span class="md-tab-label"&gt;Fuertes&lt;/span&gt;
+  &lt;/button&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: primary tabs con icono apilado (h3 + prosa + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Primary tabs con icono apilado</h3>
+      <p class="md-type-body-medium">Pestañas de 64dp con icono de 24dp apilado sobre la etiqueta tipográfica; el indicador activo de 3dp permanece anclado al ras del divisor base inferior.</p>
+      <div class="sr-specimen">
+        <div class="md-tabs md-tabs-primary" role="tablist" aria-label="Categorías del menú">
+          <button type="button" class="md-tab" role="tab" aria-selected="true" tabindex="0">
+            <span class="md-icon" aria-hidden="true">local_bar</span>
+            <span class="md-tab-label">Bebidas</span>
+          </button>
+          <button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1">
+            <span class="md-icon" aria-hidden="true">icecream</span>
+            <span class="md-tab-label">Postres</span>
+          </button>
+          <button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1">
+            <span class="md-icon" aria-hidden="true">restaurant</span>
+            <span class="md-tab-label">Fuertes</span>
+          </button>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-tabs md-tabs-primary" role="tablist" aria-label="Categorías del menú"&gt;
+  &lt;button type="button" class="md-tab" role="tab" aria-selected="true" tabindex="0"&gt;
+    &lt;span class="md-icon" aria-hidden="true"&gt;local_bar&lt;/span&gt;
+    &lt;span class="md-tab-label"&gt;Bebidas&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1"&gt;
+    &lt;span class="md-icon" aria-hidden="true"&gt;icecream&lt;/span&gt;
+    &lt;span class="md-tab-label"&gt;Postres&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1"&gt;
+    &lt;span class="md-icon" aria-hidden="true"&gt;restaurant&lt;/span&gt;
+    &lt;span class="md-tab-label"&gt;Fuertes&lt;/span&gt;
+  &lt;/button&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+  </main>
+  <!-- MAIN: fin -->
+</body>
+</html>

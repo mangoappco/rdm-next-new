@@ -372,6 +372,8 @@
 
   /* Alto de un tab. */
   --md-sys-measurement-tab-height: var(--md-ref-spacing-600);
+  /* Altura de tab primario con icono apilado (64dp). */
+  --md-sys-measurement-tab-stacked-height: var(--md-ref-spacing-800);
 
   /* ==========================================================================
      MEDIDAS DEL BOTON

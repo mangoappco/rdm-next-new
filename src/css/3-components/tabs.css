@@ -1,0 +1,160 @@
+/* ==========================================================================
+   src/css/3-components/tabs.css — TABS (M3 Navegacion)
+   ==========================================================================
+
+   QUE ES ESTE ARCHIVO
+   -------------------
+   Capa 3. Pestanas de navegacion entre subpaneles dentro de un mismo
+   contexto: contenedor horizontal con indicador activo en la base.
+
+   PAR 1 (este archivo, hoy): Primary Tabs, solo texto.
+   Pares posteriores anadiran: icono apilado (64dp), Secondary Tabs,
+   estados completos, etc.
+
+   CONSTRUCCION
+   ------------
+   - Host .md-tabs (primary por defecto) y .md-tabs-primary (alias explicito).
+   - Pestaña .md-tab: inline-flex centrado, estado activo gobernado por
+     aria-selected="true" (sin clase cosmética).
+   - Indicador activo: pseudoelemento ::after de 3dp, radio full en la
+     parte superior, inset sutil respecto al contenido.
+   - Divisor base inferior: 1px en outline-variant a lo largo de la fila.
+
+   REGLAS ACTIVAS: REGLA 1 (cero crudos), REGLA 2 (Capa 3 no lee Capa 1),
+   REGLA 6 (cero inline styles), REGLA 11 (paridad byte a byte) y REGLA 13.
+
+   FUENTES
+   -------
+   - m3.material.io/components/tabs/overview
+   - m3.material.io/components/tabs/specs
+   - m3.material.io/components/tabs/accessibility
+   - material-web/labs/gb/components/tabs (tokens y receta)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   HOST DEL TABLIST (Primary por defecto)
+   ------------------------------------------------------------------------ */
+.md-tabs,
+.md-tabs-primary {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  align-items: stretch;
+  min-block-size: var(--md-sys-measurement-tab-height); /* 48dp */
+  background-color: var(--md-sys-color-surface);
+  border-block-end: var(--md-sys-shape-stroke-thin) solid var(--md-sys-color-outline-variant);
+  overflow-inline: auto;
+  overflow-block: hidden;
+  box-sizing: border-box;
+}
+
+/* --------------------------------------------------------------------------
+   PESTAÑA
+   ------------------------------------------------------------------------ */
+.md-tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  min-block-size: calc(var(--md-sys-measurement-tab-height) - var(--md-sys-shape-stroke-thin));
+  padding-inline: var(--md-sys-measurement-space-200); /* 16dp */
+  padding-block: 0;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  color: var(--md-sys-color-on-surface-variant);
+  font: var(--md-sys-typescale-title-small);
+  letter-spacing: var(--md-sys-typescale-title-small-tracking);
+  outline: none;
+  box-sizing: border-box;
+}
+
+/* Modificador para tabs fijos de ancho equitativo repartido (ej. móviles) */
+.md-tabs-fixed .md-tab {
+  flex: 1 1 0%;
+  min-inline-size: 0;
+}
+
+/* Tab con icono apilado verticalmente (64dp) */
+.md-tab.md-tab-stacked,
+.md-tab:has(.md-icon):has(.md-tab-label) {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-block-size: calc(var(--md-sys-measurement-tab-stacked-height) - var(--md-sys-shape-stroke-thin));
+  gap: var(--md-sys-measurement-space-50); /* 4dp entre icono y texto */
+  padding-block: var(--md-sys-measurement-space-100); /* 8dp */
+}
+
+/* Ajuste del glifo de 24dp */
+.md-tab .md-icon {
+  font-size: var(--md-sys-measurement-icon-size); /* 24dp */
+  inline-size: var(--md-sys-measurement-icon-size);
+  block-size: var(--md-sys-measurement-icon-size);
+  color: inherit;
+}
+
+/* Estado activo: gobernado por aria-selected (WAI-ARIA), sin clase cosmética */
+.md-tab[aria-selected="true"] {
+  color: var(--md-sys-color-primary);
+}
+
+/* Ranura de etiqueta: aloja el texto centrado.
+   M3: Active indicator minimum length 24dp. */
+.md-tab-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: var(--md-sys-measurement-space-300); /* 24dp */
+}
+
+/* En tabs simples (solo texto), la etiqueta llena la altura para centrado */
+.md-tab:not(:has(.md-icon)) .md-tab-label {
+  block-size: 100%;
+}
+
+/* Indicador activo (Primary Tab):
+   - Centrado coaxial estricto sobre el eje horizontal del tab (left: 50%, transform: translateX(-50%))
+   - Anclado a la arista inferior (bottom: 0) coincidiendo sobre el divisor de 1dp
+   - Altura: 3dp
+   - Esquinas superiores redondeadas full (3, 3, 0, 0)
+   - El ancho abraza el contenido con 2dp de respiro lateral (min 24dp, max-width basado en label) */
+.md-tab[aria-selected="true"]::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  inline-size: calc(100% - (2 * var(--md-sys-measurement-space-200)) + (2 * var(--md-sys-measurement-space-25)));
+  min-inline-size: var(--md-sys-measurement-space-300); /* 24dp mínimo */
+  max-inline-size: max-content;
+  block-size: var(--md-sys-shape-stroke-extra-thick); /* 3dp */
+  background-color: var(--md-sys-color-primary);
+  border-start-start-radius: var(--md-sys-shape-corner-full);
+  border-start-end-radius: var(--md-sys-shape-corner-full);
+  pointer-events: none;
+}
+
+/* Estados interactivos (minimalistas para el Par 1) */
+.md-tab:hover:not([aria-selected="true"]) {
+  color: var(--md-sys-color-on-surface);
+}
+
+.md-tab:active:not([aria-selected="true"]) {
+  color: var(--md-sys-color-on-surface);
+}
+
+.md-tab:focus-visible {
+  outline: var(--md-sys-shape-stroke-extra-thick) solid var(--md-sys-color-secondary);
+  outline-offset: var(--md-sys-shape-stroke-thick);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .md-tab[aria-selected="true"] .md-tab-label::after {
+    transition: none;
+  }
+}
