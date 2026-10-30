@@ -485,7 +485,7 @@
   max-width: 100%;
   box-sizing: border-box;
   margin: 0;
-  z-index: 1; /* Gana sobre labels de selects contiguos */
+  z-index: 0; /* Por debajo de la Top App Bar (z-index: 1) */
 }
 
 /* Leading icon en opciones del menú (calco M3 Icon slots / List Item) */

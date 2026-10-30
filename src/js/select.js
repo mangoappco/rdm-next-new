@@ -16,6 +16,15 @@
    ========================================================================== */
 
 export function initSelect() {
+  // Cierre automatico al hacer scroll (M3: un menu desplegado no debe
+  // flotar desfasado mientras el contenido se mueve).
+  const closeAllSelects = () => {
+    document.querySelectorAll('.md-select-open').forEach(s => {
+      s.classList.remove('md-select-open');
+      s.setAttribute('aria-expanded', 'false');
+    });
+  };
+
   // Toggle al hacer clic en el contenedor
   document.addEventListener('click', (e) => {
     const select = e.target.closest('[data-md-select]');
@@ -25,6 +34,7 @@ export function initSelect() {
         s.classList.remove('md-select-open');
         s.setAttribute('aria-expanded', 'false');
       });
+      window.removeEventListener('scroll', closeAllSelects);
       return;
     }
 
@@ -60,6 +70,7 @@ export function initSelect() {
       // Cerrar menú
       select.classList.remove('md-select-open');
       select.setAttribute('aria-expanded', 'false');
+      window.removeEventListener('scroll', closeAllSelects);
       return;
     }
 
@@ -76,9 +87,11 @@ export function initSelect() {
     if (isOpen) {
       select.classList.remove('md-select-open');
       select.setAttribute('aria-expanded', 'false');
+      window.removeEventListener('scroll', closeAllSelects);
     } else {
       select.classList.add('md-select-open');
       select.setAttribute('aria-expanded', 'true');
+      window.addEventListener('scroll', closeAllSelects, { passive: true, once: true });
     }
   });
 
@@ -97,6 +110,7 @@ export function initSelect() {
         if (!select.classList.contains('md-select-open')) {
           select.classList.add('md-select-open');
           select.setAttribute('aria-expanded', 'true');
+          window.addEventListener('scroll', closeAllSelects, { passive: true, once: true });
         } else {
           // Seleccionar opción enfocada
           const focused = select.querySelector('[role="option"]:focus');
@@ -107,12 +121,14 @@ export function initSelect() {
         e.preventDefault();
         select.classList.remove('md-select-open');
         select.setAttribute('aria-expanded', 'false');
+        window.removeEventListener('scroll', closeAllSelects);
         break;
       case 'ArrowDown':
         e.preventDefault();
         if (!select.classList.contains('md-select-open')) {
           select.classList.add('md-select-open');
           select.setAttribute('aria-expanded', 'true');
+          window.addEventListener('scroll', closeAllSelects, { passive: true, once: true });
         } else {
           const next = current < options.length - 1 ? current + 1 : 0;
           options[next]?.focus();
