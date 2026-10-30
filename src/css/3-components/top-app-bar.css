@@ -38,15 +38,18 @@
   box-sizing: border-box;
   background-color: var(--md-sys-color-surface);
   color: var(--md-sys-color-on-surface);
-  transition: background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+  /* Canon del par de efectos: color y sombra son "effects" (no espaciales)
+     -> short4 (200ms) + effects-default, el par documentado en motion.css */
+  transition: background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-effects-default),
+              box-shadow var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-effects-default);
 }
 
-/* Scrolled state: relleno tonal para separarse del contenido.
-   Canon M3 (m3.material.io/components/top-app-bar/overview): "On scroll, no
-   drop shadow — a color fill overlay separates the app bar from the content".
-   La sombra era el patron M2; en M3 solo cambia el color a surface-container. */
+/* Scrolled state: relleno tonal + sombra level 2 para separarse del contenido.
+   Canon de implementacion (material-web, md.comp.app-bar.on-scroll):
+   container.color = surface-container Y container.elevation = shadow-2. */
 .md-top-app-bar.md-top-app-bar-scrolled {
   background-color: var(--md-sys-color-surface-container);
+  box-shadow: var(--md-sys-elevation-level2);
 }
 
 /* Small variant: 64dp de altura */
@@ -191,9 +194,13 @@
   padding-block-end: var(--md-sys-measurement-space-0);
   box-sizing: border-box;
   overflow: hidden;
-  transition: height var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
-              min-height var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
-              background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+  /* COMPRESS EFFECT (canon M3): cambio espacial de altura con el par
+     Expressive spatial (curva 0.27, 1.06, 0.18, 1) a medium4 (400ms).
+     Color y sombra son effects: par canonico short4 + effects-default. */
+  transition: height var(--md-sys-motion-duration-medium4) var(--md-sys-motion-easing-spatial-default),
+              min-height var(--md-sys-motion-duration-medium4) var(--md-sys-motion-easing-spatial-default),
+              background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-effects-default),
+              box-shadow var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-effects-default);
 }
 
 .md-top-app-bar-medium .md-top-app-bar-content {
@@ -207,9 +214,6 @@
   padding-inline: var(--md-sys-measurement-space-100); /* 8dp (+ 8dp padre = 16dp keyline exacto) */
   padding-block: 0;
   gap: var(--md-sys-measurement-space-50); /* 4dp entre titular y subtitulo */
-  transition: opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
-              max-height var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
-              padding var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
 }
 
 /* Estado colapsado: Medium -> Small (64dp).
@@ -287,8 +291,9 @@
   /* Cap para la cinemática de desvanecido del colapso (lh 20dp <= 24dp) */
   max-height: var(--md-sys-measurement-space-300);
   opacity: 1;
-  transition: opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
-              max-height var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+  /* Par canonico de efectos: opacity/max-height son effects -> short4 + effects-default */
+  transition: opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-effects-default),
+              max-height var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-effects-default);
 }
 
 /* --------------------------------------------------------------------------
@@ -310,9 +315,11 @@
   padding-block-end: var(--md-sys-measurement-space-200); /* 16dp resguardo inferior armónico */
   box-sizing: border-box;
   overflow: hidden;
-  transition: height var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
-              min-height var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
-              background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+  /* COMPRESS EFFECT (canon M3): idem Medium — par spatial a medium4 (400ms) */
+  transition: height var(--md-sys-motion-duration-medium4) var(--md-sys-motion-easing-spatial-default),
+              min-height var(--md-sys-motion-duration-medium4) var(--md-sys-motion-easing-spatial-default),
+              background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-effects-default),
+              box-shadow var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-effects-default);
 }
 
 .md-top-app-bar-large .md-top-app-bar-content {
@@ -327,9 +334,6 @@
   padding-block-start: var(--md-sys-measurement-space-100); /* 8dp aire hacia fila de iconos (absorbe line-height, ~14px reales a flecha) */
   padding-block-end: 0;
   gap: var(--md-sys-measurement-space-50); /* 4dp entre titular y subtítulo */
-  transition: opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
-              max-height var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
-              padding var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
 }
 
 /* Estado colapsado: Large -> Small (64dp). Canonico igual al de Medium. */
@@ -381,8 +385,9 @@
   /* Cap para la cinemática de desvanecido del colapso (lh 20dp <= 24dp) */
   max-height: var(--md-sys-measurement-space-300);
   opacity: 1;
-  transition: opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
-              max-height var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+  /* Par canonico de efectos: opacity/max-height son effects -> short4 + effects-default */
+  transition: opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-effects-default),
+              max-height var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-effects-default);
 }
 
 /* --------------------------------------------------------------------------

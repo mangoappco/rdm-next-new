@@ -35,7 +35,13 @@ export function initTopAppBar() {
   }
 
   /* ------------------------------------------------------------
-     2. COLLAPSING — Medium/Large -> Small al bajar
+     2. COLLAPSING — COMPRESS EFFECT (canon M3, guidelines):
+        "medium flexible and large flexible app bars can transform
+        into small app bars. They should remain small until the page
+        is scrolled back to the top."
+        -> Colapsa al primer scroll (scrollY > 0) y SOLO se descolapsa
+        estrictamente en el tope (scrollY === 0), nunca en un umbral
+        intermedio.
      ------------------------------------------------------------ */
   const collapseBars = document.querySelectorAll('[data-md-top-app-bar-collapse]');
 
@@ -44,9 +50,8 @@ export function initTopAppBar() {
       const target = event?.target === document ? (document.scrollingElement || document.documentElement) : (event?.target || window);
       const scrollY = target.scrollTop !== undefined ? target.scrollTop : (window.scrollY || window.pageYOffset || 0);
 
-      const isScrolled = scrollY > 56;
       collapseBars.forEach((bar) => {
-        bar.classList.toggle('is-collapsed', isScrolled);
+        bar.classList.toggle('is-collapsed', scrollY > 0);
       });
     };
 
