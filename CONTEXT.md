@@ -18,7 +18,7 @@ Solo prohibiciones verbales. Las reglas de showroom, de capas y de ciclo no se c
 
 ## Componentes creados
 
-Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **17 componentes y 26 vistas** (17 de componente + 9 de tokens), las 26 enlazadas en `showroom/index.html`. El orden es el de `index.css`:
+Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **18 componentes y 27 vistas** (18 de componente + 9 de tokens), las 27 enlazadas en `showroom/index.html`. El orden es el de `index.css`:
 
 | Componente | Hoja | Vista |
 | --- | --- | --- |
@@ -39,10 +39,11 @@ Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **17 compo
 | Checkbox | `checkbox.css` | `checkbox.html` |
 | Radio Button | `radio.css` | `radio.html` |
 | Select | `select.css` | `select.html` |
+| Top App Bar | `top-app-bar.css` | `top-app-bar.html` |
 
 Cada componente tiene además su molde en `showroom/templates/<nombre>.template.html`.
 
-**Hoy CINCO pares molde/vista rinden byte-idénticos: `search`, `switch`, `checkbox`, `radio` y `select`** —verificados por hash el 2026-10-27; los moldes de `fab`, `fab-extended`, `card`, `dialog`, `list` y `segmented-button`, que sí lo fueron a su día (rumbo del 2026-10-13), se quedaron atrás de su vista. Las demás vistas difieren de su molde por el puntero de dos líneas de la convención antigua o por el desfase del molde anotado en deuda. `chips` no tiene molde propio y `typography.html` apunta a `component.template.html`.
+**Hoy SEIS pares molde/vista rinden byte-idénticos: `search`, `switch`, `checkbox`, `radio`, `select` y `top-app-bar`** —verificados por hash el 2026-10-29 (los cinco primeros el 2026-10-27); los moldes de `fab`, `fab-extended`, `card`, `dialog`, `list` y `segmented-button`, que sí lo fueron a su día (rumbo del 2026-10-13), se quedaron atrás de su vista. Las demás vistas difieren de su molde por el puntero de dos líneas de la convención antigua o por el desfase del molde anotado en deuda. `chips` no tiene molde propio y `typography.html` apunta a `component.template.html`.
 
 ## FAB — la base NO es el `md-fab-medium`
 
@@ -382,9 +383,28 @@ Disabled fino por partes (calco de text-field): contenido al 38%, label atenuado
 
 Se acordó posponer la inclusión de casos de uso dentro de las vistas individuales de componentes. Todos los casos de uso prácticos para ManGo! App se consolidarán más adelante en una sección dedicada: **GALERÍA DE CASOS DE USO** (`showroom/gallery.html` o similar).
 
-### Próximo objetivo definido
+## Top App Bar - publicada
 
-Abrir la familia de **Navegación** con el componente **Top App Bar** (`.md-top-app-bar`).
+Seis pares, cerrados el 2026-10-29. Abre la familia de **Navegación** y es el primer componente cuya geometría no se copia de las guidelines sino del **contrato de implementación de AndroidX**: `androidx/androidx@androidx-main` → `compose/material3/material3/src/commonMain/kotlin/androidx/compose/material3/AppBar.kt` (`TwoRowsTopAppBar`, `placeTopAppBar`) y los tokens generados `AppBar{Small,Medium,MediumFlexible,Large,LargeFlexible}Tokens.kt` (`VERSION: 14_0_0`), leídos en vivo por `raw.githubusercontent.com`.
+
+### La corrección que abrió el componente
+
+La primera versión tomaba la fila de iconos como una banda de 56dp que se comprimía con el resto, y los iconos viajaban de centro 28 a centro 32 para no saltar en el swap (commit `c446486`). La fuente reveló que la premisa estaba viciada: en Compose el row de iconos **es la barra compacta desde el estado expandido** —`height = collapsedHeight` y `scrolledOffset = { 0f }`—, y los iconos se centran en `(contentHeight − iconHeight) / 2` de esa banda fija. **Los iconos no se mueven nunca.** Lo único que se contrae es el row 2 (título). El canon oficial duplica el título (grande anclado al fondo que se desvanece + pequeño en la banda con `CubicBezierEasing(.8, 0, .8, .15)`); ese crossfade se descartó porque exige doble marcado y rompe la anatomía de un solo título (REGLA 11).
+
+### Arquitectura R2 (autorizada)
+
+- **Banda de iconos FIJA en 64dp** (`grid-template-rows: 64dp auto`, vía token); leading/trailing centrados en 32dp y estáticos. Se eliminó el morph de slots y su token.
+- **Alturas hug content por subtítulo**, declarativas con `:has(.md-top-app-bar-subtitle)`: Medium **112dp** sin / **136dp** con; Large **120dp** sin / **152dp** con. Los deltas de recorrido son 48/72 y 56/88, también como tokens (`measurement.css`).
+- **Tipografía flexible Expressive**: Medium título **HeadlineMedium (28/36)** y subtítulo **LabelLarge (14/20)**; Large título **DisplaySmall (36/44)** y subtítulo **TitleMedium (16/24)**; Small subtítulo **LabelMedium**. El colapso interpola a TitleLarge (22/28) con deltas en `2-system-tokens/typography.css`.
+- **Un solo título en el HTML** (REGLA 11 intacta): el signature morph lleva el titular del techo de la zona (top 64, `align-self: start`) al asiento compacto (x 64 / y 18) con el token único `title-morph-y` (−46); el `gap` se desvanece con el progreso y `.is-collapsed` resetea transform y anclaje. El swap aterriza en el native compacto.
+- **Física de inercia friccional**: el progreso persigue al scroll con decaimiento exponencial (`FRICCION_MS = 60`, ~99.9% en 415ms ≈ medium4). El scroll es el destino; el gesto rápido deja de ser un teletransporte y la barra se asienta con la curva Expressive. El JS deriva el delta en runtime por variante y presencia de subtítulo.
+
+### Métricas de validación
+
+- Playwright sobre las dos variantes con subtítulo: mapeo lineal 136/152 → 64 exacto, congelado a mitad, umbral de `.is-collapsed`, salto de swap 0.64px (titular, redondeo de glifos) y **0.00px (iconos)**, relleno tonal + sombra level-2, cero oscilación y cero errores de página.
+- Configuraciones sin subtítulo verificadas clonando specimens: 112/120 en reposo y mids 88/92.
+- `FALLOS: 2` (los dos de REGLA 1 en `select.css`, `color-mix` 8% autorizados).
+- Vista y molde byte-idénticos (hash `9178e7a92f1e`).
 
 ## Las dos mitades de una vista del showroom
 
@@ -399,7 +419,7 @@ En el marcado, el corte es un `<hr class="md-divider">` —el mismo mecanismo co
 
 ## Siguiente tarea
 
-**Select completado (6 pares, estructura al patrón text-field), y Radio Button sigue cerrado en los suyos (5 pares) + Checkbox (5 pares) + Switch (4 pares) + Search (5 pares).** En los cinco mandó lo mismo: el componente termina en sus pares de especificación y nada de composiciones de negocio en la vista — el Par 6 de M3 que Search no tomó (Top bar con avatar) y las pantallas reales (POS, KDS, carta, modal de cobro) van a la **Galería de Usos**, que se abrirá cuando el catálogo acabe de cerrarse. Verificador en verde (EXIT_CODE=0 con las excepciones de siempre).
+**Top App Bar completada (6 pares) el 2026-10-29, tras Select (6), Radio Button (5), Checkbox (5), Switch (4) y Search (5).** En todos mandó lo mismo: el componente termina en sus pares de especificación y nada de composiciones de negocio en la vista — el Par 6 de M3 que Search no tomó (Top bar con avatar) y las pantallas reales (POS, KDS, carta, modal de cobro) van a la **Galería de Usos**, que se abrirá cuando el catálogo acabe de cerrarse. Verificador en `FALLOS: 2` (las excepciones de siempre).
 
 Lo que queda por delante no es un componente nuevo sino la **deuda conocida** de más abajo, que es lo que de verdad está pendiente:
 
@@ -449,6 +469,7 @@ No hay copia local. Se leen por GitHub, en `https://github.com/material-componen
 | --- | --- | --- |
 | `material-web` | Material Design Web Components, activo | **valores de token y recetas**: `tokens/versions/latest/sass/_md-comp-*.scss` |
 | `@material/web` en npm | el mismo material-web, empaquetado | **el SCSS del dialog**. Ya no está en el repo de GitHub, pero sí en el paquete |
+| `androidx/androidx` (rama `androidx-main`) | el código de Compose Material3, fuente viva | **contrato de implementación**: `AppBar.kt` y los tokens generados `AppBar*Tokens.kt`. La geometría se audita aquí, no en las guidelines |
 | `material-components-android` | la implementación de referencia de M3 | **prosa**: `docs/components/<Nombre>.md`, uno por componente |
 | `material-components-web` | MDC Web, la librería *anterior* a M3 | **nada**. El nombre parece autoritativo y no es M3 |
 | `material-components-ios`, `-flutter`, `material-components` | mantenimiento o parados | nada |
@@ -459,10 +480,11 @@ Sin checkout:
 https://api.github.com/repos/material-components/material-web/git/trees/main?recursive=1
 https://raw.githubusercontent.com/material-components/material-web/main/<ruta>
 https://raw.githubusercontent.com/material-components/material-components-android/master/<ruta>
+https://raw.githubusercontent.com/androidx/androidx/androidx-main/<ruta>
 https://unpkg.com/@material/web@<version>/<ruta>
 ```
 
-La rama por defecto de Android es `master`, no `main`.
+La rama por defecto de Android es `master`, no `main`. **En `androidx/androidx` es `androidx-main`**, y `aosp-mirror/platform_frameworks_support` devuelve 404 para `AppBar.kt`: la fuente viva de Compose está en el repo de AndroidX.
 
 ### El dialog solo se lee en npm
 

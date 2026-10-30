@@ -56,3 +56,31 @@ El Supporting Text (.md-*-supporting-text) es un slot estructural estándar del 
 - padding-inline: 16dp (space-200)
 - Color on-surface-variant en reposo, error en estado de error, opacidad 38% en disabled.
 - Enlace mediante ria-describedby en el input.
+## 6. Directrices Consolidadas: Top App Bar (2026-10-29)
+
+### 6.1 El código fuente vence a la guideline
+
+La primera versión del Top App Bar se construyó leyendo las guidelines visuales: una banda de iconos de 56dp que se comprimía junto con la barra, con un morph de los slots para que no saltaran al colapsar. La fuente viva de Compose (`androidx/androidx@androidx-main` → `AppBar.kt`, `TwoRowsTopAppBar` y `placeTopAppBar`) demostró que la premisa era falsa: la banda de iconos **es la propia barra compacta desde el estado expandido** (`height = collapsedHeight`, `scrolledOffset = 0f`) y los iconos se centran siempre en `(contentHeight − iconHeight) / 2` de esa banda fija.
+
+Queda como criterio del sistema: **para geometría, movimiento y estados, la fuente contractual es el código de implementación de AndroidX**, no la lectura de alto nivel de las guidelines. La documentación visual sirve para el propósito del componente; el código, para sus números.
+
+### 6.2 Arquitectura R2: banda fija y alturas hug content
+
+La corrección autorizada (R2) preserva la anatomía de un solo título —REGLA 11 intacta— y adopta del canon lo estructural:
+
+- **Banda de iconos fija de 64dp**; leading y trailing centrados en 32dp y estáticos. Sin morph de slots, sin compensaciones.
+- **Alturas adaptativas** resueltas declarativamente con `:has(.md-top-app-bar-subtitle)`: Medium 112dp sin subtítulo / 136dp con subtítulo; Large 120dp / 152dp. Los recorridos del compress (48/72 y 56/88) viven como tokens.
+- **Tipografía flexible Expressive**: HeadlineMedium + LabelLarge en Medium; DisplaySmall + TitleMedium en Large; LabelMedium en Small. El colapso interpola de forma continua hasta TitleLarge.
+- **Un solo titular en el HTML**: el signature morph viaja del techo de la zona (top 64) al asiento compacto (x 64 / y 18) con un token único de desplazamiento (−46dp), el aire del stack se desvanece con el progreso y el swap estructural resetea transform y anclaje para aterrizar en el nativo.
+
+Se descartó el crossfade de dos títulos del canon oficial (grande que se desvanece + pequeño que aparece) porque exige duplicar el marcado y rompe la regla de un solo bloque semántico de título/subtítulo.
+
+### 6.3 Física de inercia friccional
+
+El progreso del compress no se asigna directo desde el scroll: lo persigue con un decaimiento exponencial dependiente del tiempo real (`FRICCION_MS = 60`, asentamiento al 99.9% en ~415ms, el recorrido canon de medium4). El scroll sigue siendo el destino —detener a mitad congela la barra a mitad—, pero un gesto rápido ya no teletransporta la geometría: la barra se asienta con la curva de desaceleración Expressive. `compressionDelta()` se deriva en runtime por variante y presencia de subtítulo.
+
+### 6.4 Protocolo de verificación de componentes con scroll
+
+Un componente con compress no se certifica con capturas. Se mide con Playwright en el navegador real y se afirman, en cada punto del recorrido: la altura contra el mapeo lineal, la opacidad del subtítulo, el tamaño tipográfico interpolado, la posición del titular, la **inmutabilidad de los iconos** y el salto residual del swap estructural (≤1px por redondeo de glifos). Además: congelado a mitad, umbral de la clase colapsada, relleno tonal + sombra del estado scrolled, cero oscilación de clases y cero errores de página. Las configuraciones sin subtítulo se verifican clonando el espécimen y midiendo la altura en reposo.
+
+El resultado del cierre: 0 fallos en Medium y Large, iconos en 32/32 con desvío 0.00px, swap del titular a 0.64px, y el verificador de tokens en el baseline `FALLOS: 2`.

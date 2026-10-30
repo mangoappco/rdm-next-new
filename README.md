@@ -1007,7 +1007,7 @@ de dónde sale cada cosa, y el precio es que cada vista tiene que acordarse de e
 
 ## 11. Componentes
 
-El catálogo de M3 tiene decenas de componentes y aquí hay **diecisiete**. Se construyen uno a
+El catálogo de M3 tiene decenas de componentes y aquí hay **dieciocho**. Se construyen uno a
 uno, y ninguno se da por bueno sin medirlo en el navegador: `tools/verify-tokens.mjs`
 comprueba la arquitectura, no que el componente se vea bien.
 
@@ -1032,6 +1032,7 @@ El orden es el de `3-components/index.css`, que es el de carga y el de dependenc
 | Checkbox | `3-components/checkbox.css` | 10 | 8 | `checkbox.html`, 5 secciones |
 | Radio Button | `3-components/radio.css` | 10 | 8 | `radio.html`, 5 secciones |
 | Select | `3-components/select.css` | 18 | 0 | `select.html`, 6 secciones |
+| Top App Bar | `3-components/top-app-bar.css` | 13 | 0 | `top-app-bar.html`, 6 secciones |
 
 Las "clases" son las que expone el componente, sin contar las de `2-system-tokens` que compone para
 colocar la capa de estado: `button.css` nombra `.md-state-layer` y `.md-disabled` en sus
@@ -1321,6 +1322,39 @@ publica ninguno.
 publican; y el icono, que M3 sí tiene tokens pero es el icono que el autor pone *dentro* de
 la card, no algo que la card posea.
 
+### Top App Bar
+
+`src/css/3-components/top-app-bar.css`, con `src/js/top-app-bar.js`. Es la cabecera de
+navegación de M3 y el primer componente cuya geometría se audita contra el **código de
+AndroidX** y no contra las guidelines: `androidx/androidx@androidx-main` →
+`compose/material3/material3/src/commonMain/kotlin/androidx/compose/material3/AppBar.kt`
+(`TwoRowsTopAppBar`, `placeTopAppBar`) y los tokens generados `AppBar*Tokens.kt` (14_0_0).
+Las guidelines mostraban una banda de 56dp que se comprime con los iconos dentro; el
+contrato muestra que la banda de iconos **es la barra compacta desde el inicio**
+(`height = collapsedHeight`, `scrolledOffset = 0f`) y que solo se contrae el row del
+título. Ese fue el error de la primera versión, corregido en `1937ac5`.
+
+Seis pares en la vista: Small, Small centrada, Medium flexible, Large flexible, Search y
+contextual/selection. La arquitectura R2 certificada:
+
+- **Banda de iconos fija en 64dp** con leading/trailing clavados en 32dp: los iconos no se
+  mueven durante el compress. El morph de slots de la primera versión se eliminó.
+- **Alturas hug content** por presencia de subtítulo, con `:has()`: Medium 112/136dp,
+  Large 120/152dp; deltas de recorrido 48/72 y 56/88 derivados en tokens.
+- **Tipografía flexible Expressive**: HeadlineMedium + LabelLarge (Medium), DisplaySmall +
+  TitleMedium (Large); al colapsar interpolan a TitleLarge (22/28). Small usa TitleLarge +
+  LabelMedium.
+- **Un solo título en el HTML** (REGLA 11 intacta). El signature morph lo lleva del techo
+  de la zona (top 64) al asiento compacto (x 64 / y 18) con el token único
+  `title-morph-y` (−46); el `gap` se desvanece y el swap resetea transform y anclaje.
+- **Inercia friccional** en el JS: el progreso persigue al scroll con decaimiento
+  exponencial (`FRICCION_MS = 60`), en vez de teletransportarse. `compressionDelta()` se
+  deriva en runtime por variante y subtítulo.
+
+Medido con Playwright: mapeo lineal 136/152 → 64 exacto, swap sin salto (0.64px el título
+por redondeo de glifos, 0.00px los iconos), freeze a mitad, umbral de `.is-collapsed`,
+relleno tonal + sombra level-2 y cero oscilación. Vista y molde byte-idénticos.
+
 ### Las vistas que no son componentes
 
 Nueve vistas del showroom documentan familias de `1-reference-tokens/` y
@@ -1556,6 +1590,10 @@ librería, y no de la documentación.
   `https://m3.material.io/styles/icons/designing-icons`,
   `https://m3.material.io/styles/icons/applying-icons`
 - Material Web (referencia de implementación): `https://material-web.dev`
+- Contrato de implementación de Compose Material3: `androidx/androidx` (rama `androidx-main`) →
+  `compose/material3/material3/src/commonMain/kotlin/androidx/compose/material3/AppBar.kt` y
+  los tokens generados `tokens/AppBar*Tokens.kt`. La geometría de un componente interactivo
+  se audita contra este código, no solo contra las guidelines
 - Clases `.md-typescale-*` de Google: `material-components/material-web` → `typography/_typescale.scss`
   (el mixin `typescale.styles()` las genera; es la fuente de la columna "oficial" de la
   tabla de prefijos de arriba)
