@@ -63,25 +63,6 @@
     border-radius: var(--md-sys-shape-corner-large);
   }
 
-  /* ------------------------------------------------------------------------
-     LA BARRA (volver + tema)
-     --------------------------------------------------------------------------
-     Fila con el enlace al indice a la izquierda y el toggle de tema a la
-     derecha, enfrentados. Sin gap propio: el aire lo pone el gap del
-     .sr-header al que pertenece.
-     --------------------------------------------------------------------- */
-  .sr-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  /* Hijo unico a la derecha: el indice no tiene enlace de vuelta, asi que
-     su barra viaja solo con el toggle. */
-  .sr-bar > :only-child {
-    margin-inline-start: auto;
-  }
-
   /* Boton de texto minimo, igual que .sr-copy: color primary, sin relleno,
      con el tipo de etiqueta del sistema. */
   .sr-toggle {
