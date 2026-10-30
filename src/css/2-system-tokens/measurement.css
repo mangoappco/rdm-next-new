@@ -343,6 +343,18 @@
   --md-sys-measurement-top-bar-medium-collapse-delta: calc(var(--md-sys-measurement-top-bar-medium-height) - var(--md-sys-measurement-top-bar-height)); /* 112dp - 64dp = 48dp */
   --md-sys-measurement-top-bar-large-collapse-delta: calc(var(--md-sys-measurement-top-bar-large-height) - var(--md-sys-measurement-top-bar-height)); /* 152dp - 64dp = 88dp */
 
+  /* MORPH DEL TITULAR (compress effect canon M3 Expressive): desplazamiento
+     continuo del titulo (con el subtitulo anexo) desde su posicion grande
+     (fila 2, keyline 16) hasta su posicion compacta (fila superior, junto al
+     icono de navegacion), interpolado 1:1 con el mismo progreso del compress.
+     Sin esto, el swap de grid al completar el recorrido lo teletransportaria
+     (+48px en x; -38px medium / -46px large en y). Los objetivos derivan de
+     la geometria canon: y = top compacto ((64dp - title-large lh)/2 = 18dp);
+     x = ancho de la columna leading (space-600). */
+  --md-sys-measurement-top-bar-title-morph-x: var(--md-sys-measurement-space-600); /* 48dp = columna leading compacta */
+  --md-sys-measurement-top-bar-title-morph-y-medium: calc((var(--md-sys-measurement-top-bar-height) - var(--md-sys-typescale-title-large-line-height)) / 2 - var(--md-sys-measurement-space-700)); /* 18 - 56 = -38 (top compacto - top grande, fila 2 sin resguardo) */
+  --md-sys-measurement-top-bar-title-morph-y-large: calc((var(--md-sys-measurement-top-bar-height) - var(--md-sys-typescale-title-large-line-height)) / 2 - var(--md-sys-measurement-space-700) - var(--md-sys-measurement-space-100)); /* 18 - 64 = -46 (top grande = 56 fila + 8 resguardo) */
+
   /* Alto de una barra de navegacion inferior o rail. */
   --md-sys-measurement-navigation-bar-height: var(--md-ref-spacing-800);
 

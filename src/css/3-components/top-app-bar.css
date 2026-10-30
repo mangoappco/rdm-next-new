@@ -213,6 +213,13 @@
   padding-inline: var(--md-sys-measurement-space-100); /* 8dp (+ 8dp padre = 16dp keyline exacto) */
   padding-block: 0;
   gap: var(--md-sys-measurement-space-50); /* 4dp entre titular y subtitulo */
+  /* MORPH DEL TITULAR (canon M3 Expressive): el titulo viaja continuo de su
+     posicion grande (keyline 16, fila 2) a la compacta (x 64 / y 18) con el
+     mismo progreso del compress — el swap a .is-collapsed aterriza en la
+     posicion exacta, sin teletransporte. Interference con el grid: el item
+     es el unico con area content, su offset no desplaza slots. */
+  transform: translate(calc(var(--md-sys-measurement-top-bar-title-morph-x) * var(--md-top-app-bar-collapse-progress, 0)),
+                       calc(var(--md-sys-measurement-top-bar-title-morph-y-medium) * var(--md-top-app-bar-collapse-progress, 0)));
 }
 
 /* Estado colapsado: Medium -> Small (64dp).
@@ -238,6 +245,9 @@
   padding-block: var(--md-sys-measurement-space-0);
   gap: var(--md-sys-measurement-space-0); /* sin aire residual del subtitulo apagado */
   min-width: 0;
+  /* MORPH completado: la geometria nativa compacta ya es el destino del
+     desplazamiento (top 18 coincide con morphe y_MEDIUM * p=1) -> reset */
+  transform: none;
 }
 
 /* El titulo adapta la tipografia canonica de barra Small */
@@ -337,6 +347,9 @@
   padding-block-start: var(--md-sys-measurement-space-100); /* 8dp aire hacia fila de iconos (absorbe line-height, ~14px reales a flecha) */
   padding-block-end: 0;
   gap: var(--md-sys-measurement-space-50); /* 4dp entre titular y subtítulo */
+  /* MORPH DEL TITULAR, idem Medium (delta y-large): keyline grande 64 -> 18 */
+  transform: translate(calc(var(--md-sys-measurement-top-bar-title-morph-x) * var(--md-top-app-bar-collapse-progress, 0)),
+                       calc(var(--md-sys-measurement-top-bar-title-morph-y-large) * var(--md-top-app-bar-collapse-progress, 0)));
 }
 
 /* Estado colapsado: Large -> Small (64dp). Canonico igual al de Medium. */
@@ -359,6 +372,8 @@
   padding-block: var(--md-sys-measurement-space-0);
   gap: var(--md-sys-measurement-space-0); /* sin aire residual del subtitulo apagado */
   min-width: 0;
+  /* MORPH completado: idem Medium — reset, el native ya es el destino */
+  transform: none;
 }
 
 /* El titulo adapta la tipografia canonica de barra Small */
@@ -544,6 +559,16 @@
   align-items: center;
   text-align: center;
   padding-inline: 0;
+}
+
+/* MORPH del titular en centrados: sin desplazamiento x (la columna
+   simetrica ya ancla el mismo centro en ambos estados), solo desliza en y.
+   Guardia :not(.is-collapsed): en colapsado manda el reset del estado base. */
+.md-top-app-bar-centered.md-top-app-bar-medium:not(.is-collapsed) .md-top-app-bar-content {
+  transform: translateY(calc(var(--md-sys-measurement-top-bar-title-morph-y-medium) * var(--md-top-app-bar-collapse-progress, 0)));
+}
+.md-top-app-bar-centered.md-top-app-bar-large:not(.is-collapsed) .md-top-app-bar-content {
+  transform: translateY(calc(var(--md-sys-measurement-top-bar-title-morph-y-large) * var(--md-top-app-bar-collapse-progress, 0)));
 }
 
 /* 3. Search centrado (modificador ortogonal) */
