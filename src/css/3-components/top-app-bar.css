@@ -42,12 +42,13 @@
               box-shadow var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
 }
 
-/* Scrolled state: elevación tonal (surface-container + level2) */
+/* Scrolled state: elevación tonal (surface-container + level2).
+   Sin transition aquí: la declararia pisaria la lista completa de las
+   variantes Medium/Large (especificidad 0,2,0 > 0,1,0) y el colapso
+   saltaria sin animar. La transicion vive en el host y en cada variante. */
 .md-top-app-bar.md-top-app-bar-scrolled {
   background-color: var(--md-sys-color-surface-container);
   box-shadow: var(--md-sys-elevation-level2);
-  transition: background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
-              box-shadow var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
 }
 
 /* Small variant: 64dp de altura */
@@ -183,10 +184,15 @@
   grid-template-rows: var(--md-sys-measurement-space-700) auto; /* 56dp de fila superior */
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  min-height: calc(var(--md-sys-measurement-space-700) + var(--md-sys-measurement-space-700)); /* 112dp exactos */
+  /* 112dp exactos: altura canonica explicita (NO min-height) para que el
+     colapso interpole 112 -> 64 con transicion; con auto/min-height salta */
+  height: calc(var(--md-sys-measurement-space-700) + var(--md-sys-measurement-space-700));
+  min-height: calc(var(--md-sys-measurement-space-700) + var(--md-sys-measurement-space-700));
   padding-inline: var(--md-sys-measurement-space-100); /* 8dp */
-  padding-block-end: var(--md-sys-measurement-space-200); /* 16dp de resguardo final */
+  /* Sin resguardo inferior: fila superior 56dp + fila de titulo 56dp = 112dp canonico */
+  padding-block-end: var(--md-sys-measurement-space-0);
   box-sizing: border-box;
+  overflow: hidden;
   transition: height var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
               min-height var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
               background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
@@ -269,10 +275,14 @@
   grid-template-rows: var(--md-sys-measurement-space-700) auto; /* 56dp fila superior */
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  min-height: var(--md-sys-measurement-top-bar-large-height); /* 152dp */
+  /* 152dp exactos: altura canonica explicita (NO solo min-height) para que
+     el colapso interpole 152 -> 64 con transicion */
+  height: var(--md-sys-measurement-top-bar-large-height);
+  min-height: var(--md-sys-measurement-top-bar-large-height);
   padding-inline: var(--md-sys-measurement-space-100); /* 8dp */
   padding-block-end: var(--md-sys-measurement-space-200); /* 16dp resguardo inferior armónico */
   box-sizing: border-box;
+  overflow: hidden;
   transition: height var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
               min-height var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
               background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
