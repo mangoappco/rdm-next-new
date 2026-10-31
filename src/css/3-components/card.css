@@ -623,6 +623,10 @@
 
 .md-card:is(a[href], button, [tabindex]):not(:disabled) {
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
 }
 
 /* ---------------------------------------------------------------------------
