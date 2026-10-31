@@ -58,6 +58,10 @@
   box-shadow: none;
 }
 
+.md-app-header .md-tabs .md-tab:first-child {
+  margin-inline-start: var(--md-sys-measurement-space-100); /* 8dp (+ 8dp tab padding = 16dp keyline con el icono de la cabecera) */
+}
+
 .md-tabs,
 .md-tabs-primary {
   display: flex;

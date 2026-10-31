@@ -57,6 +57,7 @@
 /* Small variant: 64dp de altura */
 .md-top-app-bar-small {
   height: var(--md-sys-measurement-top-bar-height); /* 64dp */
+  min-block-size: var(--md-sys-measurement-top-bar-height); /* 64dp */
   padding-inline-start: var(--md-sys-measurement-space-100); /* 8dp unificado keyline */
   padding-inline-end: var(--md-sys-measurement-space-100);   /* 8dp unificado keyline */
   gap: var(--md-sys-measurement-space-100); /* 8dp entre slots */
