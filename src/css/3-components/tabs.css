@@ -38,8 +38,24 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  position: sticky;
+  top: var(--md-sys-measurement-space-0);
+  z-index: 1;
   background-color: var(--md-sys-color-surface);
   box-sizing: border-box;
+  transition: background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-effects-default),
+              box-shadow var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-effects-default);
+}
+
+.md-app-header.md-top-app-bar-scrolled {
+  background-color: var(--md-sys-color-surface-container);
+  box-shadow: var(--md-sys-elevation-level2);
+}
+
+.md-app-header .md-top-app-bar,
+.md-app-header .md-tabs {
+  background-color: transparent;
+  box-shadow: none;
 }
 
 .md-tabs,
