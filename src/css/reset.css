@@ -233,11 +233,53 @@
      (.md-button, .md-icon-button, .md-divider); globalizarlo elimina la
      repeticion sin cambiarles el comportamiento.
      --------------------------------------------------------------------- */
+  /* ------------------------------------------------------------------------
+     NORMALIZACIÓN TÁCTIL Y BOX-SIZING UNIVERSAL
+     ------------------------------------------------------------------------
+     1. box-sizing border-box universal.
+     2. Anulación global del destello azul/gris de WebKit/Blink en todo el DOM.
+     --------------------------------------------------------------------- */
   *,
   *::before,
   *::after {
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
+  }
+
+  /* ------------------------------------------------------------------------
+     CONTROLES INTERACTIVOS: RESPUESTA TÁCTIL INMEDIATA Y CERO COPIADO ACCIDENTAL
+     ------------------------------------------------------------------------
+     - touch-action: manipulation suprime el retardo táctil nativo de 300ms.
+     - user-select: none previene menús contextuales en toques prolongados.
+     --------------------------------------------------------------------- */
+  button,
+  a,
+  select,
+  summary,
+  [role="button"],
+  [role="tab"],
+  [role="option"],
+  [role="menuitem"],
+  [role="checkbox"],
+  [role="switch"],
+  [tabindex]:not([tabindex="-1"]) {
+    touch-action: manipulation;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  /* ------------------------------------------------------------------------
+     ENTRADAS DE TEXTO: SELECCIÓN Y EDICIÓN GARANTIZADAS
+     ------------------------------------------------------------------------
+     Garantía absoluta: campos de formulario siempre permiten seleccionar,
+     escribir y posicionar el cursor con total normalidad.
+     --------------------------------------------------------------------- */
+  input,
+  textarea,
+  [contenteditable="true"] {
+    touch-action: manipulation;
+    -webkit-user-select: text;
+    user-select: text;
   }
 
   /* ------------------------------------------------------------------------

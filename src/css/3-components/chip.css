@@ -62,10 +62,6 @@
   background-color: var(--md-sys-color-surface);
   color: var(--md-sys-color-on-surface);
   cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  -webkit-user-select: none;
-  user-select: none;
-  touch-action: manipulation;
   position: relative;   /* ancla el state layer (::after) dentro del chip */
   overflow: hidden;     /* el state layer respeta las esquinas de 8dp */
   font-family: var(--md-sys-typescale-label-large-font);
