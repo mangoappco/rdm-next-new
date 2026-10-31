@@ -34,18 +34,41 @@
 /* --------------------------------------------------------------------------
    HOST DEL TABLIST (Primary por defecto)
    ------------------------------------------------------------------------ */
+.md-app-header {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: var(--md-sys-color-surface);
+  box-sizing: border-box;
+}
+
 .md-tabs,
 .md-tabs-primary {
   display: flex;
   flex-direction: row;
   position: relative;
   align-items: stretch;
+  inline-size: 100%;
+  max-inline-size: 100%;
   min-block-size: var(--md-sys-measurement-tab-height); /* 48dp */
   background-color: var(--md-sys-color-surface);
   border-block-end: var(--md-sys-shape-stroke-thin) solid var(--md-sys-color-outline-variant);
   overflow-inline: auto;
   overflow-block: hidden;
   box-sizing: border-box;
+}
+
+/* Modificador explícito para scrollable tabs con desplazamiento suave y barra limpia */
+.md-tabs-scrollable {
+  overflow-inline: auto;
+  overflow-block: hidden;
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* Firefox */
+  -webkit-overflow-scrolling: touch;
+}
+
+.md-tabs-scrollable::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
 }
 
 /* --------------------------------------------------------------------------
@@ -57,6 +80,8 @@
   align-items: center;
   justify-content: center;
   flex: 0 0 auto;
+  min-inline-size: var(--md-sys-measurement-tab-min-width); /* 90dp */
+  max-inline-size: var(--md-sys-measurement-tab-max-width); /* 264dp */
   min-block-size: calc(var(--md-sys-measurement-tab-height) - var(--md-sys-shape-stroke-thin));
   padding-inline: var(--md-sys-measurement-space-200); /* 16dp */
   padding-block: 0;
@@ -70,6 +95,7 @@
   letter-spacing: var(--md-sys-typescale-title-small-tracking);
   outline: none;
   box-sizing: border-box;
+  overflow: hidden; /* Confinar la capa de estado (state layer) a los límites del tab */
 }
 
 /* Modificador para tabs fijos de ancho equitativo repartido (ej. móviles) */
@@ -102,13 +128,22 @@
   color: var(--md-sys-color-primary);
 }
 
-/* Ranura de etiqueta: aloja el texto centrado.
+/* En M3 el glifo relleno marca SELECCIÓN (aria-selected="true"), no hover */
+.md-tab[aria-selected="true"] .md-icon {
+  --md-sys-icon-fill: var(--md-sys-icon-fill-full);
+}
+
+/* Ranura de etiqueta: aloja el texto centrado con elipsis ante títulos largos.
    M3: Active indicator minimum length 24dp. */
 .md-tab-label {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-inline-size: var(--md-sys-measurement-space-300); /* 24dp */
+  max-inline-size: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* En tabs simples (solo texto), la etiqueta llena la altura para centrado */
@@ -138,18 +173,76 @@
   pointer-events: none;
 }
 
-/* Estados interactivos (minimalistas para el Par 1) */
-.md-tab:hover:not([aria-selected="true"]) {
-  color: var(--md-sys-color-on-surface);
+/* --------------------------------------------------------------------------
+   SECONDARY TABS (.md-tabs-secondary)
+   ------------------------------------------------------------------------ */
+.md-tabs-secondary {
+  /* Mantiene min-block-size de 48dp y divisor inferior continuo */
+  min-block-size: var(--md-sys-measurement-tab-height);
 }
 
-.md-tab:active:not([aria-selected="true"]) {
-  color: var(--md-sys-color-on-surface);
+/* Indicador activo Secondary: full-width (100%), 2dp de altura, esquinas rectas */
+.md-tabs-secondary .md-tab[aria-selected="true"]::after {
+  left: 0;
+  right: 0;
+  transform: none;
+  inline-size: 100%;
+  max-inline-size: 100%;
+  min-inline-size: 100%;
+  block-size: var(--md-sys-shape-stroke-thick); /* 2dp */
+  border-start-start-radius: 0;
+  border-start-end-radius: 0;
+}
+
+/* ==========================================================================
+   STATE LAYER CANÓNICO M3 (Hover, Focus, Pressed)
+   ========================================================================== */
+
+/* Capa de estado base confinada al área del botón */
+.md-tab::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: transparent;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+}
+
+/* Hover en pestaña inactiva: 8% on-surface */
+.md-tab:hover:not(:disabled):not([aria-disabled="true"])::before {
+  background-color: var(--md-sys-color-on-surface);
+  opacity: var(--md-sys-state-hover-state-layer-opacity);
+}
+
+/* Hover en pestaña activa: 8% primary */
+.md-tab[aria-selected="true"]:hover:not(:disabled):not([aria-disabled="true"])::before {
+  background-color: var(--md-sys-color-primary);
+  opacity: var(--md-sys-state-hover-state-layer-opacity);
+}
+
+/* Pressed / Active (clic sostenido): 10% state layer */
+.md-tab:active:not(:disabled):not([aria-disabled="true"])::before {
+  opacity: var(--md-sys-state-pressed-state-layer-opacity);
 }
 
 .md-tab:focus-visible {
   outline: var(--md-sys-shape-stroke-extra-thick) solid var(--md-sys-color-secondary);
   outline-offset: var(--md-sys-shape-stroke-thick);
+}
+
+/* Estado deshabilitado (Disabled gana) */
+.md-tab:disabled,
+.md-tab[aria-disabled="true"] {
+  cursor: not-allowed;
+  pointer-events: none;
+  color: var(--md-sys-color-on-surface);
+  opacity: var(--md-sys-state-disabled-state-layer-opacity);
+}
+
+.md-tab:disabled::after,
+.md-tab[aria-disabled="true"]::after {
+  opacity: var(--md-sys-state-disabled-state-layer-opacity);
 }
 
 /* Reduced motion */

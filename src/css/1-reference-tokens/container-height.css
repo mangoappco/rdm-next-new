@@ -234,6 +234,8 @@
      el 64px a secas. Por eso aqui solo esta el numero.
      ------------------------------------------------------------------------ */
   --md-ref-container-width-button-min: 64px;
+  --md-ref-container-width-tab-min: 90px;
+  --md-ref-container-width-tab-max: 264px;
 
   /* ------------------------------------------------------------------------
      LOS LIMITES DE ANCHO DEL DIALOG

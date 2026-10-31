@@ -374,6 +374,9 @@
   --md-sys-measurement-tab-height: var(--md-ref-spacing-600);
   /* Altura de tab primario con icono apilado (64dp). */
   --md-sys-measurement-tab-stacked-height: var(--md-ref-spacing-800);
+  /* Límites de anchura de un tab (M3 specs: 90dp min, 264dp max). */
+  --md-sys-measurement-tab-min-width: var(--md-ref-container-width-tab-min);
+  --md-sys-measurement-tab-max-width: var(--md-ref-container-width-tab-max);
 
   /* ==========================================================================
      MEDIDAS DEL BOTON

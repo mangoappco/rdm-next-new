@@ -127,6 +127,7 @@ import { initSearch } from './search.js';
 import { initSelect } from './select.js';
 import { initTheme } from './theme.js';
 import { initTopAppBar } from './top-app-bar.js?v=2';
+import { initTabs } from './tabs.js';
 
 /* Se registra al cargar el script, no al hacer clic. Los specimens del
    showroom llevan `<dialog open>` a secas, que NO es modal, asi que ahi no
@@ -178,6 +179,10 @@ initSelect();
    [data-md-theme-toggle] si la pagina lo trae. Distinto gancho y llave
    que el conmutador del chrome (showroom.js): no se pisan. */
 initTheme();
+
+/* Tabs: gestión de teclado (WAI-ARIA roving tabindex), selección activa y
+   conversión de rueda de ratón (wheel) para scroll horizontal fluido. */
+initTabs();
 
 /* Y aqui iran los que lo necesiten:
      import { registrar as registrarFabMenu } from './fab-menu.js';

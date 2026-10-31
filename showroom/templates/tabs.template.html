@@ -116,6 +116,222 @@
     </section>
     <!-- PAREJA: hasta aqui -->
 
+    <!-- PAREJA: secondary tabs (h3 + prosa + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Secondary tabs</h3>
+      <p class="md-type-body-medium">Pestañas secundarias de 48dp para subpaneles y vistas anidadas; el indicador activo mide 2dp de grosor y abarca el ancho completo de la pestaña con esquinas rectas.</p>
+      <div class="sr-specimen">
+        <div class="md-tabs md-tabs-secondary" role="tablist" aria-label="Detalle de comanda">
+          <button type="button" class="md-tab" role="tab" aria-selected="true" tabindex="0">
+            <span class="md-tab-label">Detalle</span>
+          </button>
+          <button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1">
+            <span class="md-tab-label">Modificadores</span>
+          </button>
+          <button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1">
+            <span class="md-tab-label">Historial</span>
+          </button>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-tabs md-tabs-secondary" role="tablist" aria-label="Detalle de comanda"&gt;
+  &lt;button type="button" class="md-tab" role="tab" aria-selected="true" tabindex="0"&gt;
+    &lt;span class="md-tab-label"&gt;Detalle&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1"&gt;
+    &lt;span class="md-tab-label"&gt;Modificadores&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1"&gt;
+    &lt;span class="md-tab-label"&gt;Historial&lt;/span&gt;
+  &lt;/button&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: scrolling tabs (h3 + prosa + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Scrolling tabs</h3>
+      <p class="md-type-body-medium">Navegación horizontal desplazable cuando la cantidad de pestañas excede el ancho disponible del contenedor, manteniendo intactos los anchos de celda y la línea divisoria continua.</p>
+      <div class="sr-specimen">
+        <div class="md-tabs md-tabs-primary md-tabs-scrollable" role="tablist" aria-label="Categorías completas de la carta">
+          <button type="button" class="md-tab" role="tab" aria-selected="true" tabindex="0">
+            <span class="md-tab-label">Entradas</span>
+          </button>
+          <button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1">
+            <span class="md-tab-label">Platos fuertes</span>
+          </button>
+          <button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1">
+            <span class="md-tab-label">Bebidas</span>
+          </button>
+          <button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1">
+            <span class="md-tab-label">Postres</span>
+          </button>
+          <button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1">
+            <span class="md-tab-label">Licores</span>
+          </button>
+          <button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1">
+            <span class="md-tab-label">Adicionales</span>
+          </button>
+          <button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1">
+            <span class="md-tab-label">Combos</span>
+          </button>
+          <button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1">
+            <span class="md-tab-label">Infantiles</span>
+          </button>
+          <button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1">
+            <span class="md-tab-label">Promociones</span>
+          </button>
+          <button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1">
+            <span class="md-tab-label">Cafetería</span>
+          </button>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-tabs md-tabs-primary md-tabs-scrollable" role="tablist" aria-label="Categorías completas de la carta"&gt;
+  &lt;button type="button" class="md-tab" role="tab" aria-selected="true" tabindex="0"&gt;
+    &lt;span class="md-tab-label"&gt;Entradas&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1"&gt;
+    &lt;span class="md-tab-label"&gt;Platos fuertes&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1"&gt;
+    &lt;span class="md-tab-label"&gt;Bebidas&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1"&gt;
+    &lt;span class="md-tab-label"&gt;Postres&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1"&gt;
+    &lt;span class="md-tab-label"&gt;Licores&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1"&gt;
+    &lt;span class="md-tab-label"&gt;Adicionales&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1"&gt;
+    &lt;span class="md-tab-label"&gt;Combos&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1"&gt;
+    &lt;span class="md-tab-label"&gt;Infantiles&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1"&gt;
+    &lt;span class="md-tab-label"&gt;Promociones&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1"&gt;
+    &lt;span class="md-tab-label"&gt;Cafetería&lt;/span&gt;
+  &lt;/button&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: estados interactivos y deshabilitado (h3 + prosa + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Estados interactivos y deshabilitado</h3>
+      <p class="md-type-body-medium">Pestañas en reposo, activa y bloqueada por política de acceso; el estado deshabilitado atenúa el contenido al 38% de opacidad y anula los eventos de puntero.</p>
+      <div class="sr-specimen">
+        <div class="md-tabs md-tabs-primary" role="tablist" aria-label="Zonas del restaurante">
+          <button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1">
+            <span class="md-tab-label">Salón</span>
+          </button>
+          <button type="button" class="md-tab" role="tab" aria-selected="true" tabindex="0">
+            <span class="md-tab-label">Terraza</span>
+          </button>
+          <button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1" disabled aria-disabled="true">
+            <span class="md-tab-label">VIP (Cerrada)</span>
+          </button>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-tabs md-tabs-primary" role="tablist" aria-label="Zonas del restaurante"&gt;
+  &lt;button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1"&gt;
+    &lt;span class="md-tab-label"&gt;Salón&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-tab" role="tab" aria-selected="true" tabindex="0"&gt;
+    &lt;span class="md-tab-label"&gt;Terraza&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1" disabled aria-disabled="true"&gt;
+    &lt;span class="md-tab-label"&gt;VIP (Cerrada)&lt;/span&gt;
+  &lt;/button&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
+    <!-- PAREJA: integracion con top app bar (h3 + prosa + specimen + pre + boton). -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Integración con Top App Bar</h3>
+      <p class="md-type-body-medium">Estructura de techo unificada que fusiona la cabecera superior y las pestañas primarias sobre una misma superficie tonal, con divisor inferior único al pie de las pestañas.</p>
+      <div class="sr-specimen">
+        <header class="md-app-header" role="banner">
+          <div class="md-top-app-bar md-top-app-bar-small">
+            <div class="md-top-app-bar-leading">
+              <button type="button" class="md-icon-button" aria-label="Abrir menú principal">
+                <span class="md-icon" aria-hidden="true">menu</span>
+              </button>
+            </div>
+            <div class="md-top-app-bar-content">
+              <span class="md-top-app-bar-title">Gestión de mesas</span>
+            </div>
+            <div class="md-top-app-bar-trailing">
+              <button type="button" class="md-icon-button" aria-label="Buscar mesa">
+                <span class="md-icon" aria-hidden="true">search</span>
+              </button>
+              <button type="button" class="md-icon-button" aria-label="Más opciones">
+                <span class="md-icon" aria-hidden="true">more_vert</span>
+              </button>
+            </div>
+          </div>
+          <div class="md-tabs md-tabs-primary" role="tablist" aria-label="Filtro de mesas">
+            <button type="button" class="md-tab" role="tab" aria-selected="true" tabindex="0">
+              <span class="md-tab-label">Todas</span>
+            </button>
+            <button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1">
+              <span class="md-tab-label">Ocupadas</span>
+            </button>
+            <button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1">
+              <span class="md-tab-label">Disponibles</span>
+            </button>
+            <button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1">
+              <span class="md-tab-label">Por cobrar</span>
+            </button>
+          </div>
+        </header>
+      </div>
+      <pre class="sr-code"><code>&lt;header class="md-app-header" role="banner"&gt;
+  &lt;div class="md-top-app-bar md-top-app-bar-small"&gt;
+    &lt;div class="md-top-app-bar-leading"&gt;
+      &lt;button type="button" class="md-icon-button" aria-label="Abrir menú principal"&gt;
+        &lt;span class="md-icon" aria-hidden="true"&gt;menu&lt;/span&gt;
+      &lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class="md-top-app-bar-content"&gt;
+      &lt;span class="md-top-app-bar-title"&gt;Gestión de mesas&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class="md-top-app-bar-trailing"&gt;
+      &lt;button type="button" class="md-icon-button" aria-label="Buscar mesa"&gt;
+        &lt;span class="md-icon" aria-hidden="true"&gt;search&lt;/span&gt;
+      &lt;/button&gt;
+      &lt;button type="button" class="md-icon-button" aria-label="Más opciones"&gt;
+        &lt;span class="md-icon" aria-hidden="true"&gt;more_vert&lt;/span&gt;
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="md-tabs md-tabs-primary" role="tablist" aria-label="Filtro de mesas"&gt;
+    &lt;button type="button" class="md-tab" role="tab" aria-selected="true" tabindex="0"&gt;
+      &lt;span class="md-tab-label"&gt;Todas&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1"&gt;
+      &lt;span class="md-tab-label"&gt;Ocupadas&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1"&gt;
+      &lt;span class="md-tab-label"&gt;Disponibles&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1"&gt;
+      &lt;span class="md-tab-label"&gt;Por cobrar&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/header&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA: hasta aqui -->
+
   </main>
   <!-- MAIN: fin -->
 </body>
