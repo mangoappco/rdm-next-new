@@ -278,8 +278,10 @@
 
   color: var(--md-comp-icon-button-icon-color);
   cursor: pointer;
-  user-select: none;
   -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
 
   /* El subrayado SOLO aparece cuando el control se usa como <a>. El glifo
      de Material Symbols es texto, asi que el navegador le dibuja el

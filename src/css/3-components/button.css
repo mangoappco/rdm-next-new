@@ -403,8 +403,10 @@
   letter-spacing: var(--md-comp-button-label-text-tracking);
   color: var(--md-comp-button-label-color);
   cursor: pointer;
-  user-select: none;
   -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
 
   /* El subrayado se quita aqui y no en el reset por la misma razon que en el
      icon-button: el glifo de Material Symbols es texto, asi que el navegador

@@ -108,7 +108,10 @@
   border: none;
   background-color: transparent;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
   user-select: none;
+  touch-action: manipulation;
   white-space: nowrap;
   color: var(--md-sys-color-on-surface-variant);
   font: var(--md-sys-typescale-title-small);
