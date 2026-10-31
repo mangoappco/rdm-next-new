@@ -664,6 +664,10 @@
 
 .md-list-item:not(:disabled):is(a[href], button, [role='button']) {
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
 }
 
 .md-list-item:is(a[href], button, [role='button']):hover::after {
