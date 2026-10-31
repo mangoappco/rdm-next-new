@@ -136,6 +136,12 @@
 }
 
 /* Ajuste del glifo de 24dp */
+.md-tab-label,
+.md-tab .md-icon {
+  position: relative;
+  z-index: 1;
+}
+
 .md-tab .md-icon {
   font-size: var(--md-sys-measurement-icon-size); /* 24dp */
   inline-size: var(--md-sys-measurement-icon-size);
@@ -226,38 +232,22 @@
   background-color: transparent;
   opacity: 0;
   pointer-events: none;
-  transform: scale(0.96);
-  transition: opacity var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
-              transform var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+  transition: opacity var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
 }
 
 /* Hover en pestaña inactiva: 8% on-surface */
 .md-tab:hover:not(:disabled):not([aria-disabled="true"])::before {
   background-color: var(--md-sys-color-on-surface);
   opacity: var(--md-sys-state-hover-state-layer-opacity);
-  transform: scale(1);
 }
 
 /* Hover en pestaña activa: 8% primary */
 .md-tab[aria-selected="true"]:hover:not(:disabled):not([aria-disabled="true"])::before {
   background-color: var(--md-sys-color-primary);
   opacity: var(--md-sys-state-hover-state-layer-opacity);
-  transform: scale(1);
 }
 
-/* Pressed / Active (clic sostenido): respuesta táctil en pestaña inactiva */
-.md-tab:active:not(:disabled):not([aria-disabled="true"])::before {
-  background-color: var(--md-sys-color-on-surface);
-  opacity: var(--md-sys-state-pressed-state-layer-opacity);
-  transform: scale(1);
-}
-
-/* Pressed / Active (clic sostenido): respuesta táctil en pestaña activa */
-.md-tab[aria-selected="true"]:active:not(:disabled):not([aria-disabled="true"])::before {
-  background-color: var(--md-sys-color-primary);
-  opacity: var(--md-sys-state-pressed-state-layer-opacity);
-  transform: scale(1);
-}
+/* Pressed / Ripple: gobernado dinámicamente por src/js/ripple.js */
 
 .md-tab:focus-visible {
   outline: var(--md-sys-shape-stroke-extra-thick) solid var(--md-sys-color-secondary);

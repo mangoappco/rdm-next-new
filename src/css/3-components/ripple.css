@@ -12,6 +12,7 @@ a.md-list-item,
 button.md-card,
 a.md-card,
 .md-card[tabindex],
+.md-tab,
 [data-ripple],
 .md-button-group > .md-button,
 .md-button-group > .md-icon-button {

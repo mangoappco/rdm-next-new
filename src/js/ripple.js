@@ -18,6 +18,7 @@ const SELECTOR = [
   'button.md-card',
   'a.md-card',
   '.md-card[tabindex]',
+  '.md-tab',
   '[data-ripple]'
 ].join(', ');
 
