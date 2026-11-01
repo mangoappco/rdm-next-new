@@ -407,6 +407,28 @@ La primera versión tomaba la fila de iconos como una banda de 56dp que se compr
 - `FALLOS: 2` (los dos de REGLA 1 en `select.css`, `color-mix` 8% autorizados).
 - Vista y molde byte-idénticos (hash `9178e7a92f1e`).
 
+## Text Field - pares numéricos de ManGo! App (publicados 2026-11-01)
+
+Dos pares Nuevos en el Bloque 2 de la vista, la extensión numérica que el POS necesita. La vista cierra con **16 secciones y 16 pares** (QUINCE pares → DIECISÉIS en el comentario de cabecera de template y vista).
+
+- **Number formatting (par 15)**: enteros con formateo en vivo es-CO (`1200000` → `1.200.000`) sobre el esqueleto del par prefix/suffix (`$`/`COP`): `type="text"` + `inputmode="numeric"`, label «Total del día», `value="1.200.000"`, IDs `tf-numeric-*`. `type="number"` no puede exhibir agrupación (y en es-CO el punto es decimal): la decisión quedo en text + inputmode.
+- **Prominent numeric input (par 16)**: el mismo esqueleto con dogfooding del rol **`.md-type-title-large` (22px/28px)** en prefix, input y suffix (IDs `tf-numeric-prominent-*`, label «Total a cobrar»). La escala calibró de `headline-small` → `title-large`: `utilities` (Capa 4) gana a `comp` (Capa 3) por la doctrina `@layer` de `main.css` — cero clases ad-hoc, cero CSS nuevo.
+
+### El contrato `data-md-text-field-number`
+
+- **Gancho**: atributo sobre el `<input>`; la delegación global de `src/js/text-field.js` (mismo dueño del namespace, sin archivo nuevo) formatea en vivo: solo dígitos ASCII, ceros iniciales colapsados (`0045` → `45`, `000` → `0`), tope de 15 dígitos, preservación de caret por conteo de dígitos, y backspace/delete sobre separador interceptado en `beforeinput` (cae el punto Y el dígito pegado — sin el no-op visual).
+- **El espejo**: `data-md-text-field-value` en el input lleva el entero limpio (`1200000`) y aparece con la PRIMERA tecla, NO al cargar — el specimen queda idéntico a su snippet hasta la interacción (mismo criterio que el roving de segmented-button; el verificador REGLA 11 compara contra el disco y no ve mutaciones runtime).
+- **Caché**: `main.js` importa `./text-field.js?v=1` (primer bump del controlador; pozo de módulos de sesión del 2026-10). Al volver a tocar el controlador, subir el `?v` del import — las vistas de text-field no llevan buster en el `<script>` de página.
+
+### Primera calibración de utilidades tipográficas sobre un componente
+
+Es el primer par que monta una clase de Capa 4 sobre la receta de Capa 3 dentro de un componente (el `font:` shorthand del input pierde contra la utilidad). Geometría de Filled medida con `title-large`: caja de input de 60px (24dp + 28px + 8dp canónicos), sobresale 4dp por la tapa, transparente, glifos íntegros; el anclaje inferior (`align-self: flex-end` + 8dp) ya era canon en `text-field.css:880-888` — una revisión externa lo propuso como arregló y se refutó con medición (`align-self` computado, bottom al fondo, delta 0). La afinidad de afijos `active-indicator` es del SELECT (`.md-select-active-indicator`); en text-field la línea de Filled REUSE `.md-text-field-outline` con mutación ortogonal documentada en `text-field.css:382`.
+
+### Validación y puntos ciegos
+
+- Verificador `node tools/verify-tokens.mjs` (envoltura `verify-tokens.ps1`): **baseline FALLOS: 2**, los dos REGLA 1 en `select.css:448` y `:453` (`color-mix` con % crudo), PREEXISTENTES a este ciclo — no del text-field. REGLA 11 y REGLA 13 pasan con los dos pares nuevos.
+- Probado en Chrome (Danny, Windows): tecleo, paste basura e decimal, cap, caret a mitad, borrado en los dos sentidos, espejo en vivo y counter del teléfono (regresión). La pestaña del Chrome del arnés sigue sirviendo igual, por `http://localhost/proyectos/rdm-next-new/`.
+
 ## Las dos mitades de una vista del showroom
 
 A partir del `list` (2026-10-21), cada vista del showroom se estructura en dos bloques, y el corte se marca con un divisor:
@@ -419,6 +441,8 @@ A partir del `list` (2026-10-21), cada vista del showroom se estructura en dos b
 En el marcado, el corte es un `<hr class="md-divider">` —el mismo mecanismo con el que la vista de typography separa sus familias de tipos—, el título de cada bloque es un `<h2>` y los pares van en `<h3>` debajo: el h1 es el nombre del componente, y el esquema queda h1 > h2 (bloque) > h3 (par). La apariencia de los pares no cambia, porque el tipo lo pone la clase y no la etiqueta; y el aire entre pares lo sigue poniendo el gap de `.sr-section`.
 
 ## Siguiente tarea
+
+**Text Field cerró su extensión numérica de ManGo! el 2026-11-01 (pares 15 y 16, arriba).** El componente llega a 16 pares en cuatro bloques y es el primero que monta utilidades tipográficas de Capa 4 dentro de su receta. En la cola: **Badge** (familia Comunicación, componente nuevo: hoja, template y quizás controlador si lleva contador vivo) o **pares nuevos de Checkbox** (Selección). El resto de esta sección sigue vigente.
 
 **Top App Bar completada (6 pares) el 2026-10-29, tras Select (6), Radio Button (5), Checkbox (5), Switch (4) y Search (5).** En todos mandó lo mismo: el componente termina en sus pares de especificación y nada de composiciones de negocio en la vista — el Par 6 de M3 que Search no tomó (Top bar con avatar) y las pantallas reales (POS, KDS, carta, modal de cobro) van a la **Galería de Usos**, que se abrirá cuando el catálogo acabe de cerrarse. Verificador en `FALLOS: 2` (las excepciones de siempre).
 
