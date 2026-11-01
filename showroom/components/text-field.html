@@ -15,12 +15,13 @@
 </head>
 
 <!--
-  ESTA VISTA TIENE CATORCE PARES EN CUATRO BLOQUES. El Bloque 1
+  ESTA VISTA TIENE DIECISÉIS PARES EN CUATRO BLOQUES. El Bloque 1
   --Especificación, anatomía y superficies-- abre con la clase base, sigue
   con iconos leading/trailing, la variante Filled, el estado disabled, la
   variante dense y el textarea. El Bloque 2 --Affix y acciones-- cubre
-  prefix/suffix y trailing actions (clear + toggle password). El Bloque 3
-  --Estados-- cubre readonly. El Bloque 4 --Validación interactiva-- cubre
+  prefix/suffix, el formateo numérico en vivo (base y prominente) y
+  trailing actions (clear + toggle password). El Bloque 3 --Estados-- cubre
+  readonly. El Bloque 4 --Validación interactiva-- cubre
   la validación en vivo con counter, rango numérico, patrón teléfono,
   precio con prefix/suffix y URL en Filled.
 
@@ -385,6 +386,108 @@
     &lt;span class="md-text-field-outline" aria-hidden="true"&gt;&lt;/span&gt;
   &lt;/div&gt;
   &lt;span class="md-text-field-supporting-text" id="tf-prefix-filled-supporting"&gt;Precio en pesos colombianos&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- Number formatting -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Number formatting</h3>
+      <p class="md-type-body-medium">Enteros con formateo en vivo (es-CO): 1200000 se agrupa 1.200.000. Espejo data-md-text-field-value con el entero limpio desde la primera tecla.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <div class="md-text-field md-text-field-outlined">
+          <div class="md-text-field-container">
+            <span class="md-text-field-prefix" aria-hidden="true">$</span>
+            <input type="text" class="md-text-field-input" id="tf-numeric-outlined" placeholder=" " inputmode="numeric" data-md-text-field-number aria-describedby="tf-numeric-outlined-supporting" value="1.200.000">
+            <span class="md-text-field-suffix" aria-hidden="true">COP</span>
+            <label class="md-text-field-label" for="tf-numeric-outlined">Total del día</label>
+            <span class="md-text-field-outline" aria-hidden="true"></span>
+          </div>
+          <span class="md-text-field-supporting-text" id="tf-numeric-outlined-supporting">Total en pesos colombianos</span>
+        </div>
+
+        <div class="md-text-field md-text-field-filled">
+          <div class="md-text-field-container">
+            <span class="md-text-field-prefix" aria-hidden="true">$</span>
+            <input type="text" class="md-text-field-input" id="tf-numeric-filled" placeholder=" " inputmode="numeric" data-md-text-field-number aria-describedby="tf-numeric-filled-supporting" value="1.200.000">
+            <span class="md-text-field-suffix" aria-hidden="true">COP</span>
+            <label class="md-text-field-label" for="tf-numeric-filled">Total del día</label>
+            <span class="md-text-field-outline" aria-hidden="true"></span>
+          </div>
+          <span class="md-text-field-supporting-text" id="tf-numeric-filled-supporting">Total en pesos colombianos</span>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-text-field md-text-field-outlined"&gt;
+  &lt;div class="md-text-field-container"&gt;
+    &lt;span class="md-text-field-prefix" aria-hidden="true"&gt;$&lt;/span&gt;
+    &lt;input type="text" class="md-text-field-input" id="tf-numeric-outlined" placeholder=" " inputmode="numeric" data-md-text-field-number aria-describedby="tf-numeric-outlined-supporting" value="1.200.000"&gt;
+    &lt;span class="md-text-field-suffix" aria-hidden="true"&gt;COP&lt;/span&gt;
+    &lt;label class="md-text-field-label" for="tf-numeric-outlined"&gt;Total del día&lt;/label&gt;
+    &lt;span class="md-text-field-outline" aria-hidden="true"&gt;&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;span class="md-text-field-supporting-text" id="tf-numeric-outlined-supporting"&gt;Total en pesos colombianos&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;div class="md-text-field md-text-field-filled"&gt;
+  &lt;div class="md-text-field-container"&gt;
+    &lt;span class="md-text-field-prefix" aria-hidden="true"&gt;$&lt;/span&gt;
+    &lt;input type="text" class="md-text-field-input" id="tf-numeric-filled" placeholder=" " inputmode="numeric" data-md-text-field-number aria-describedby="tf-numeric-filled-supporting" value="1.200.000"&gt;
+    &lt;span class="md-text-field-suffix" aria-hidden="true"&gt;COP&lt;/span&gt;
+    &lt;label class="md-text-field-label" for="tf-numeric-filled"&gt;Total del día&lt;/label&gt;
+    &lt;span class="md-text-field-outline" aria-hidden="true"&gt;&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;span class="md-text-field-supporting-text" id="tf-numeric-filled-supporting"&gt;Total en pesos colombianos&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- Prominent numeric input -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Prominent numeric input</h3>
+      <p class="md-type-body-medium">Monto destacado: .md-type-title-large (22px/28px) en input, prefix y suffix. Dogfooding de Capa 4: la utilidad gana a la receta del componente.</p>
+      <div class="sr-specimen sr-specimen-gap">
+        <div class="md-text-field md-text-field-outlined">
+          <div class="md-text-field-container">
+            <span class="md-text-field-prefix md-type-title-large" aria-hidden="true">$</span>
+            <input type="text" class="md-text-field-input md-type-title-large" id="tf-numeric-prominent-outlined" placeholder=" " inputmode="numeric" data-md-text-field-number aria-describedby="tf-numeric-prominent-outlined-supporting" value="1.200.000">
+            <span class="md-text-field-suffix md-type-title-large" aria-hidden="true">COP</span>
+            <label class="md-text-field-label" for="tf-numeric-prominent-outlined">Total a cobrar</label>
+            <span class="md-text-field-outline" aria-hidden="true"></span>
+          </div>
+          <span class="md-text-field-supporting-text" id="tf-numeric-prominent-outlined-supporting">Monto liquidado con impuestos</span>
+        </div>
+
+        <div class="md-text-field md-text-field-filled">
+          <div class="md-text-field-container">
+            <span class="md-text-field-prefix md-type-title-large" aria-hidden="true">$</span>
+            <input type="text" class="md-text-field-input md-type-title-large" id="tf-numeric-prominent-filled" placeholder=" " inputmode="numeric" data-md-text-field-number aria-describedby="tf-numeric-prominent-filled-supporting" value="1.200.000">
+            <span class="md-text-field-suffix md-type-title-large" aria-hidden="true">COP</span>
+            <label class="md-text-field-label" for="tf-numeric-prominent-filled">Total a cobrar</label>
+            <span class="md-text-field-outline" aria-hidden="true"></span>
+          </div>
+          <span class="md-text-field-supporting-text" id="tf-numeric-prominent-filled-supporting">Monto liquidado con impuestos</span>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-text-field md-text-field-outlined"&gt;
+  &lt;div class="md-text-field-container"&gt;
+    &lt;span class="md-text-field-prefix md-type-title-large" aria-hidden="true"&gt;$&lt;/span&gt;
+    &lt;input type="text" class="md-text-field-input md-type-title-large" id="tf-numeric-prominent-outlined" placeholder=" " inputmode="numeric" data-md-text-field-number aria-describedby="tf-numeric-prominent-outlined-supporting" value="1.200.000"&gt;
+    &lt;span class="md-text-field-suffix md-type-title-large" aria-hidden="true"&gt;COP&lt;/span&gt;
+    &lt;label class="md-text-field-label" for="tf-numeric-prominent-outlined"&gt;Total a cobrar&lt;/label&gt;
+    &lt;span class="md-text-field-outline" aria-hidden="true"&gt;&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;span class="md-text-field-supporting-text" id="tf-numeric-prominent-outlined-supporting"&gt;Monto liquidado con impuestos&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;div class="md-text-field md-text-field-filled"&gt;
+  &lt;div class="md-text-field-container"&gt;
+    &lt;span class="md-text-field-prefix md-type-title-large" aria-hidden="true"&gt;$&lt;/span&gt;
+    &lt;input type="text" class="md-text-field-input md-type-title-large" id="tf-numeric-prominent-filled" placeholder=" " inputmode="numeric" data-md-text-field-number aria-describedby="tf-numeric-prominent-filled-supporting" value="1.200.000"&gt;
+    &lt;span class="md-text-field-suffix md-type-title-large" aria-hidden="true"&gt;COP&lt;/span&gt;
+    &lt;label class="md-text-field-label" for="tf-numeric-prominent-filled"&gt;Total a cobrar&lt;/label&gt;
+    &lt;span class="md-text-field-outline" aria-hidden="true"&gt;&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;span class="md-text-field-supporting-text" id="tf-numeric-prominent-filled-supporting"&gt;Monto liquidado con impuestos&lt;/span&gt;
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>

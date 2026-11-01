@@ -116,13 +116,13 @@ import { registrar } from './dialog.js';
    pese a `Cache-Control: no-store`; pozo del showroom de 2026-10). La
    version del import TIENE que ir a la par con el buster del <script>:
    al publicar una version N+1, cambia `?v=N` aqui y en los templates.
-   Los demas imports no se tocaron este ciclo: solo toggle.js cambio. */
+   Los demas imports siguen: text-field.js estreno ?v=1 este ciclo (formateo numerico en vivo) y toggle.js conserva su ?v=59. */
 import { registrar as registrarToggle } from './toggle.js?v=59';
 import { registrar as registrarSegmented } from './segmented-button.js';
 import { registrar as registrarChipFilter } from './chip-filter.js';
 import { registrar as registrarChipInput } from './chip-input.js';
 import { registrar as registrarRipple } from './ripple.js';
-import { initTextField } from './text-field.js';
+import { initTextField } from './text-field.js?v=1';
 import { initSearch } from './search.js';
 import { initSelect } from './select.js';
 import { initTheme } from './theme.js';
