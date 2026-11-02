@@ -292,6 +292,33 @@
 }
 
 /* ---------------------------------------------------------------------------
+   EL CONTRATO DE ANFITRION DE BADGE (2026-11-02)
+   ---------------------------------------------------------------------------
+   Cuando el boton hospeda un badge, overflow: hidden motilaria al badge:
+   sobre el boton circular (radio 20 en small) recorta en ARCO la parte del
+   badge que cae fuera (el centro del badge ancla en la esquina del glifo, a
+   mitad hacia dentro y mitad hacia fuera), y del dot de 6dp quedaba un
+   fragmento a sur de la silueta; de la pastilla de 16dp, un "aleta
+   mutilada". Diagnóstico en el ciclo badge del 2026-11-02: el flujo
+   flotante NO era culpa del translate(50%, -50%) que es canon, sino de
+   este recorte circular.
+
+   M3: un anfitrion NUNCA recorta a su badge (m3.material.io/components/
+   badges/specs). El overflow: hidden existe en este componente para
+   confinar la onda, y la onda MISMA se contiene: `.md-ripple-wave` lleva su
+   radio y `contain: paint`, y la capa de estado es su pseudo `::after`
+   con `inset: 0` y `radius inherit`. Soltar overflow no saca nada del
+   boton.
+
+   Se forja con :has() para no abrir foco a todos: SOLO el anfitrión de un
+   badge la abre (el par 1 del badge y el 4 del top-app-bar; el 5 de tabs
+   ya era visible y el 6, adjacent fuera del anfitrion).
+   ------------------------------------------------------------------------ */
+.md-icon-button:has(.md-badge-anchor) {
+  overflow: visible;
+}
+
+/* ---------------------------------------------------------------------------
    EL ICONO
    ---------------------------------------------------------------------------
    Un icono de Material Symbols es texto: se escala con font-size. Aqui se
