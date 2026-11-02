@@ -304,11 +304,11 @@
    este recorte circular.
 
    M3: un anfitrion NUNCA recorta a su badge (m3.material.io/components/
-   badges/specs). El overflow: hidden existe en este componente para
-   confinar la onda, y la onda MISMA se contiene: `.md-ripple-wave` lleva su
-   radio y `contain: paint`, y la capa de estado es su pseudo `::after`
-   con `inset: 0` y `radius inherit`. Soltar overflow no saca nada del
-   boton.
+   badges/specs). El overflow: hidden existe para confinar la onda, eso
+   NO se disuelve con el anfitrion: la confina SU SUBCAPA,
+   .md-icon-button-touch (inset 0 + radius inherit + overflow hidden,
+   mas abajo; el target de 48dp se muda a ::before). Soltar overflow
+   aqui no saca nada del boton.
 
    Se forja con :has() para no abrir foco a todos: SOLO el anfitrión de un
    badge la abre (el par 1 del badge y el 4 del top-app-bar; el 5 de tabs
@@ -470,13 +470,41 @@
 }
 
 /* ---------------------------------------------------------------------------
-   LA SUPERFICIE DE TOQUE
+   LA SUPERFICIE DE TOQUE: DOS ROLES REPARTIDOS (2026-11-02)
    ---------------------------------------------------------------------------
-   Receta de iconbutton de M3 (distinta de la de button): crece en LOS DOS
-   ejes, porque el contenedor es estrecho en los dos (32 o 40dp).
+   Receta de iconbutton de M3 (distinta de la de button). Desde la
+   correccion del confinamiento del ripple lleva DOS papeles:
+
+   a) EL RECORTE DEL RIPPLE — .md-icon-button-touch: caja EXACTA del boton
+      (inset: 0) con border-radius: inherit y overflow: hidden. Cuando el
+      anfitrion abre overflow: visible (contrato de anfitrion de badge,
+      arriba), la onda crece DESDE el punto de pulsacion hasta los bordes
+      del boton; su diametro puede superar el circulo de 40dp y se derramaria
+      por fuera. Un anfitrion no recorta a su badge, pero NINGUN motivo
+      justifica que recorte mal a la onda: esta subcapa hereda la forma del
+      anfitrion y deja la onda confinada al circulo optico — la misma ley que
+      la capa de estado ::after (inset 0 + radius inherit). El badge nunca
+      esta dentro del touch: vive en .md-badge-anchor, hermano ANTERIOR.
+
+   b) EL TARGET TACTIL DE 48dp — .md-icon-button::before: el span de toque
+      ya no sobresale (es el RECORTE), asi que el target de touch-target
+      sigue vivo en el pseudo del boton, centrado, con los MISMOS dos ejes
+      max(touch target size, 100%). Los pseudos son areas de hit-testing del
+      anfitrion: las pulsaciones en la periferia de 48dp siguen llegando al
+      componente (el elemento originante es el objetivo del evento, igual
+      que llegaban via el span).
    ------------------------------------------------------------------------ */
 
 .md-icon-button-touch {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.md-icon-button::before {
+  content: '';
   position: absolute;
   top: 50%;
   left: 50%;

@@ -3,6 +3,9 @@
    ==========================================================================
    Delegación en document para superficies interactivas M3. Cinética
    canónica @material/web con WAAPI. Sin alterar marcado semántico.
+   En icon-button la onda se inyecta en .md-icon-button-touch (subcapa
+   de recorte exacta al botón); el anfitrión abre overflow: visible
+   solo cuando porta badge y delega el confinamiento a esa subcapa.
    ========================================================================== */
 
 const SELECTOR = [
@@ -83,7 +86,18 @@ function createWave(el, x, y, fromKeyboard) {
   wave.style.height = diameter + 'px';
   wave.style.left = (cx - radius) + 'px';
   wave.style.top = (cy - radius) + 'px';
-  el.appendChild(wave);
+  /* CONFINAMIENTO (2026-11-02): en el icon-button la onda NO se inyecta en
+     el anfitrion sino en su subcapa de recorte .md-icon-button-touch (caja
+     exacta del boton con overflow: hidden + radius inherit). El diametro de
+     la onda supera al circulo de 40dp — un anfitrion de badge abre
+     overflow: visible para dejar respirar al badge y confiar el recorte a
+     la subcapa. El fallback (el anfitrion) cubre los icon-button sin touch
+     y el resto de componentes, donde el anfitrion sigue recortando. Las
+     coordenadas no cambian: el touch con inset: 0 comparte caja con el
+     boton. */
+  const touch = el.querySelector(':scope > .md-icon-button-touch');
+  const host = touch || el;
+  host.appendChild(wave);
   return wave;
 }
 
