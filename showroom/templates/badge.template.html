@@ -269,7 +269,7 @@
     <!-- PAR 6: List item status -->
     <section class="sr-section">
       <h3 class="md-type-title-large">List item status</h3>
-      <p class="md-type-body-medium">La pastilla de pendientes anclada al chevron del slot trailing en una fila del KDS: el conteo se verbaliza en el texto de apoyo del ítem, el badge visual va aria-hidden.</p>
+      <p class="md-type-body-medium">La pastilla de pendientes como hermana anterior al chevron en una fila del KDS: el affordance de navegación queda íntegro y el conteo se verbaliza en el texto de apoyo del ítem, con el badge visual en aria-hidden.</p>
 
       <div class="sr-specimen">
         <ul class="md-list">
@@ -281,11 +281,9 @@
               <span class="md-list-item-headline">Mesa 4 · Comanda</span>
               <span class="md-list-item-supporting-text">En cocina · 3 platos pendientes</span>
             </div>
+            <span class="md-badge md-badge-large md-badge-adjacent" aria-hidden="true">3</span>
             <span class="md-list-item-trailing">
-              <span class="md-badge-anchor">
-                <span class="md-icon" aria-hidden="true">chevron_right</span>
-                <span class="md-badge md-badge-large" aria-hidden="true">3</span>
-              </span>
+              <span class="md-icon" aria-hidden="true">chevron_right</span>
             </span>
           </li>
         </ul>
@@ -300,11 +298,9 @@
       &lt;span class="md-list-item-headline"&gt;Mesa 4 · Comanda&lt;/span&gt;
       &lt;span class="md-list-item-supporting-text"&gt;En cocina · 3 platos pendientes&lt;/span&gt;
     &lt;/div&gt;
+    &lt;span class="md-badge md-badge-large md-badge-adjacent" aria-hidden="true"&gt;3&lt;/span&gt;
     &lt;span class="md-list-item-trailing"&gt;
-      &lt;span class="md-badge-anchor"&gt;
-        &lt;span class="md-icon" aria-hidden="true"&gt;chevron_right&lt;/span&gt;
-        &lt;span class="md-badge md-badge-large" aria-hidden="true"&gt;3&lt;/span&gt;
-      &lt;/span&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;chevron_right&lt;/span&gt;
     &lt;/span&gt;
   &lt;/li&gt;
 &lt;/ul&gt;</code></pre>

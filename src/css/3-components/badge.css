@@ -96,3 +96,23 @@
   height: var(--md-sys-measurement-space-200);
   padding-inline: var(--md-sys-measurement-space-50);
 }
+
+/* ADYACENTE: la variante EN FLUJO, para slots de flex que la reciben como
+   hija directa (la fila de list.css es un flex con gap de 12dp, y su
+   doctrina es "cada accesorio en su propia ranura").
+
+   POR QUE HACE FALTA. La base de este archivo es position: absolute con
+   translate(50%, -50%): esa es la naturaleza del badge ANCLADO. Pero una
+   pastilla suelta en el flujo tiene otra anatomia: sale del layout
+   absoluto, vota la esquina del ancla y vive donde el padre la posicione,
+   con el gap del flex separandola de los vecinos. Una correccion de
+   auditoria (2026-11-02) marco el caso canon: un badge NUNCA encima de un
+   chevron --el affordance de navegacion queda integro, y la pastilla entra
+   a la fila como hermana anterior al slot trailing. La fila la centra con
+   align-items y la separa con gap. Sin esta variante, un .md-badge sin
+   ancla se escaparia de la ranura: absolute se ancla al primer pariente
+   posicionado que encuentre. */
+.md-badge-adjacent {
+  position: static;
+  transform: none;
+}
