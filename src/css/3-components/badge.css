@@ -26,8 +26,6 @@
    del dibujo. Un badge nunca flota en el vacío.
    Toda la accesibilidad vive en aria-label del anfitrión; el badge visual
    es aria-hidden (no duplicar).
-   Toda la accesibilidad vive en aria-label del anfitrion; el badge visual
-   es aria-hidden (no duplicar).
 
    FUENTES
    -------
@@ -59,9 +57,9 @@
    ========================================================================== */
 
 /* EL ANCLA: envoltorio alrededor del GLIFO, no del anfitrion. Position
-   relative solo existe para dar sitió al badge absoluto; el display es
+   relative solo existe para dar sitio al badge absoluto; el display es
    inline-flex y NO fija width/height: la caja la define el icono
-   (."md-icon" declara su font-size con el rol de icono del sistema), así
+   (.md-icon declara su font-size con el rol de icono del sistema), así
    que el ancla encoge exactamente al tamaño del dibujo (24dp en las
    variantes del showroom). Alinear o medir de más apartaría el badge del
    glifo, que es el defecto que esta hoja corrige (canon BadgedBox M3). */
@@ -88,8 +86,22 @@
 }
 
 /* DOT: 6x6dp, binario. Sin texto jamás: nombrar el estado en el
-   aria-label del anfitrión. */
+   aria-label del anfitrión.
+
+   LA MORIDA ÓPTICA (decisión sellada 2026-11-02, Opción B): la base
+   ancla su centro en la esquina de CAJA del glifo con translate(50%,
+   -50%), pero la caja de 24dp de Material Symbols leva 3-5dp internos
+   SIN tinta (medido por canvas: el talud de "notifications" muere en
+   x=17; "mail" tiene 3dp de aire arriba). Un dot mecánico en la esquina
+   flota en ese hueco. Aquí se apoya en la TINTA: top de 2dp (space-25)
+   y right de 4dp (space-50) ponen el centro del dot en (17,5), justo
+   sobre el talud del glifo. Sin transform: vive DENTRO de la caja,
+   como pide la spec ("anchor badges inside the icon bounding box")
+   y pega con el dibujo real, no con la caja virtual. */
 .md-badge-small {
+  top: var(--md-sys-measurement-space-25);
+  right: var(--md-sys-measurement-space-50);
+  transform: none;
   width: var(--md-sys-measurement-space-75);
   height: var(--md-sys-measurement-space-75);
 }
