@@ -15,11 +15,11 @@
 </head>
 
 <!--
-  ESTA VISTA TIENE SEIS PARES EN DOS BLOQUES. El Bloque 1 --Especificacion
+  ESTA VISTA TIENE CINCO PARES EN DOS BLOQUES. El Bloque 1 --Especificacion
   tecnica y anatomia-- cubre Small dot badge, Large badge single digit y
   Large badge growth & overflow. El Bloque 2 --Casos de uso ManGo! App--
-  dogfoodea los tres anfitriones naturales de la casa: Top App Bar alerts,
-  Tabs with counts y List item status. El badge esta autorizado a tener
+  dogfoodea los dos anfitriones naturales de la casa: Top App Bar alerts
+  y List item status. El badge esta autorizado a tener
   Bloque 2 (a diferencia del switch) porque su anclaje SOLO se demuestra
   componiendo con anfitriones reales: un badge solo pesa falsamente igual.
 
@@ -35,7 +35,7 @@
   6. REGLA 13: cada snippet es autonomo (solo clases del sistema).
   7. ARIA: el badge visual es decorativo y lleva aria-hidden="true"; el
      conteo y la novedad se verbalizan en el aria-label del anfitrión.
-  8. CERO JavaScript de componente: los seis pares son estáticos, sin
+  8. CERO JavaScript de componente: los cinco pares son estáticos, sin
      data-* ni sentinels que registrar (REGLA 13 vacía por diseño).
 -->
 
@@ -224,52 +224,7 @@
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
 
-    <!-- PAR 5: Tabs with counts -->
-    <section class="sr-section">
-      <h3 class="md-type-title-large">Tabs with counts</h3>
-      <p class="md-type-body-medium">Pestañas de la comanda cuantificadas: Pedidos 12 y Por cobrar 3. El ancla envuelve al label del tab, no al button: el tablist de ARIA solo admite tabs como hijos directos.</p>
-
-      <div class="sr-specimen">
-        <div class="md-tabs md-tabs-primary" role="tablist" aria-label="Comandas del turno">
-          <button type="button" class="md-tab" role="tab" aria-selected="true" tabindex="0" aria-label="Pedidos, 12 abiertos">
-            <span class="md-badge-anchor">
-              <span class="md-tab-label">Pedidos</span>
-              <span class="md-badge md-badge-large" aria-hidden="true">12</span>
-            </span>
-          </button>
-          <button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1" aria-label="Por cobrar, 3 pendientes">
-            <span class="md-badge-anchor">
-              <span class="md-tab-label">Por cobrar</span>
-              <span class="md-badge md-badge-large" aria-hidden="true">3</span>
-            </span>
-          </button>
-          <button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1">
-            <span class="md-tab-label">Servidos</span>
-          </button>
-        </div>
-      </div>
-
-      <pre class="sr-code"><code>&lt;div class="md-tabs md-tabs-primary" role="tablist" aria-label="Comandas del turno"&gt;
-  &lt;button type="button" class="md-tab" role="tab" aria-selected="true" tabindex="0" aria-label="Pedidos, 12 abiertos"&gt;
-    &lt;span class="md-badge-anchor"&gt;
-      &lt;span class="md-tab-label"&gt;Pedidos&lt;/span&gt;
-      &lt;span class="md-badge md-badge-large" aria-hidden="true"&gt;12&lt;/span&gt;
-    &lt;/span&gt;
-  &lt;/button&gt;
-  &lt;button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1" aria-label="Por cobrar, 3 pendientes"&gt;
-    &lt;span class="md-badge-anchor"&gt;
-      &lt;span class="md-tab-label"&gt;Por cobrar&lt;/span&gt;
-      &lt;span class="md-badge md-badge-large" aria-hidden="true"&gt;3&lt;/span&gt;
-    &lt;/span&gt;
-  &lt;/button&gt;
-  &lt;button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1"&gt;
-    &lt;span class="md-tab-label"&gt;Servidos&lt;/span&gt;
-  &lt;/button&gt;
-&lt;/div&gt;</code></pre>
-      <button type="button" class="sr-copy" data-copy>Copiar</button>
-    </section>
-
-    <!-- PAR 6: List item status -->
+    <!-- PAR 5: List item status -->
     <section class="sr-section">
       <h3 class="md-type-title-large">List item status</h3>
       <p class="md-type-body-medium">La pastilla de pendientes como hermana anterior al chevron en una fila del KDS: el affordance de navegación queda íntegro y el conteo se verbaliza en el texto de apoyo del ítem, con el badge visual en aria-hidden.</p>
