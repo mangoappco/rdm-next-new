@@ -72,91 +72,91 @@
     <!-- PAR 1: Small dot badge -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Small dot badge</h3>
-      <p class="md-type-body-medium">Dot de 6x6dp circular, error, anclado a la esquina del anfitrión con translate(50%, -50%). Alerta binaria sin cuantificar: la novedad se nombra en el aria-label del anfitrión.</p>
+      <p class="md-type-body-medium">Dot de 6x6dp circular, error, anclado a la esquina superior derecha del glifo con translate(50%, -50%): el ancla envuelve al icono dentro del anfitrión (canon BadgedBox de M3), no a su caja. La novedad se nombra en el aria-label del anfitrión.</p>
 
       <div class="sr-specimen sr-specimen-gap">
-        <span class="md-badge-anchor">
-          <button type="button" class="md-icon-button" aria-label="Novedades de cocina">
+        <button type="button" class="md-icon-button" aria-label="Novedades de cocina">
+          <span class="md-badge-anchor">
             <span class="md-icon-button-icon md-icon" aria-hidden="true">notifications</span>
-            <span class="md-icon-button-touch"></span>
-          </button>
-          <span class="md-badge md-badge-small" aria-hidden="true"></span>
-        </span>
+            <span class="md-badge md-badge-small" aria-hidden="true"></span>
+          </span>
+          <span class="md-icon-button-touch"></span>
+        </button>
       </div>
 
-      <pre class="sr-code"><code>&lt;span class="md-badge-anchor"&gt;
-  &lt;button type="button" class="md-icon-button" aria-label="Novedades de cocina"&gt;
+      <pre class="sr-code"><code>&lt;button type="button" class="md-icon-button" aria-label="Novedades de cocina"&gt;
+  &lt;span class="md-badge-anchor"&gt;
     &lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;notifications&lt;/span&gt;
-    &lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;
-  &lt;/button&gt;
-  &lt;span class="md-badge md-badge-small" aria-hidden="true"&gt;&lt;/span&gt;
-&lt;/span&gt;</code></pre>
+    &lt;span class="md-badge md-badge-small" aria-hidden="true"&gt;&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;
+&lt;/button&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
 
     <!-- PAR 2: Large badge single digit -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Large badge single digit</h3>
-      <p class="md-type-body-medium">Pastilla de 16dp con tipografía label-small cuantificando. El ancho puede crecer, pero un dígito cabe justo: el conteo vive en el aria-label del anfitrión, el badge visual es decorativo.</p>
+      <p class="md-type-body-medium">Pastilla de 16dp sobre el hombro superior derecho del glifo, con tipografía label-small cuantificando: el ancla envuelve al icono dentro del anfitrión, donde el número muerde la silueta. El conteo vive en el aria-label del anfitrión, el badge visual es decorativo.</p>
 
       <div class="sr-specimen sr-specimen-gap">
-        <span class="md-badge-anchor">
-          <button type="button" class="md-icon-button" aria-label="Mensajes, 3 sin leer">
+        <button type="button" class="md-icon-button" aria-label="Mensajes, 3 sin leer">
+          <span class="md-badge-anchor">
             <span class="md-icon-button-icon md-icon" aria-hidden="true">mail</span>
-            <span class="md-icon-button-touch"></span>
-          </button>
-          <span class="md-badge md-badge-large" aria-hidden="true">3</span>
-        </span>
+            <span class="md-badge md-badge-large" aria-hidden="true">3</span>
+          </span>
+          <span class="md-icon-button-touch"></span>
+        </button>
       </div>
 
-      <pre class="sr-code"><code>&lt;span class="md-badge-anchor"&gt;
-  &lt;button type="button" class="md-icon-button" aria-label="Mensajes, 3 sin leer"&gt;
+      <pre class="sr-code"><code>&lt;button type="button" class="md-icon-button" aria-label="Mensajes, 3 sin leer"&gt;
+  &lt;span class="md-badge-anchor"&gt;
     &lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;mail&lt;/span&gt;
-    &lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;
-  &lt;/button&gt;
-  &lt;span class="md-badge md-badge-large" aria-hidden="true"&gt;3&lt;/span&gt;
-&lt;/span&gt;</code></pre>
+    &lt;span class="md-badge md-badge-large" aria-hidden="true"&gt;3&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;
+&lt;/button&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
 
     <!-- PAR 3: Large badge growth & overflow -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Large badge growth &amp; overflow</h3>
-      <p class="md-type-body-medium">El ancho de la pastilla crece con el contenido por el padding lateral de 4dp: del dígito compacto (12) al tope canónico 999+, con la misma clase large.</p>
+      <p class="md-type-body-medium">El ancho de la pastilla crece con el contenido por el padding lateral de 4dp: del dígito compacto (12) al tope canónico 999+, con la misma clase large y ambos dormidos sobre la esquina del glifo.</p>
 
       <div class="sr-specimen sr-specimen-gap">
-        <span class="md-badge-anchor">
-          <button type="button" class="md-icon-button" aria-label="Notificaciones, 12 pendientes">
+        <button type="button" class="md-icon-button" aria-label="Notificaciones, 12 pendientes">
+          <span class="md-badge-anchor">
             <span class="md-icon-button-icon md-icon" aria-hidden="true">notifications</span>
-            <span class="md-icon-button-touch"></span>
-          </button>
-          <span class="md-badge md-badge-large" aria-hidden="true">12</span>
-        </span>
+            <span class="md-badge md-badge-large" aria-hidden="true">12</span>
+          </span>
+          <span class="md-icon-button-touch"></span>
+        </button>
 
-        <span class="md-badge-anchor">
-          <button type="button" class="md-icon-button" aria-label="Notificaciones, más de 999">
+        <button type="button" class="md-icon-button" aria-label="Notificaciones, más de 999">
+          <span class="md-badge-anchor">
             <span class="md-icon-button-icon md-icon" aria-hidden="true">notifications</span>
-            <span class="md-icon-button-touch"></span>
-          </button>
-          <span class="md-badge md-badge-large" aria-hidden="true">999+</span>
-        </span>
+            <span class="md-badge md-badge-large" aria-hidden="true">999+</span>
+          </span>
+          <span class="md-icon-button-touch"></span>
+        </button>
       </div>
 
-      <pre class="sr-code"><code>&lt;span class="md-badge-anchor"&gt;
-  &lt;button type="button" class="md-icon-button" aria-label="Notificaciones, 12 pendientes"&gt;
+      <pre class="sr-code"><code>&lt;button type="button" class="md-icon-button" aria-label="Notificaciones, 12 pendientes"&gt;
+  &lt;span class="md-badge-anchor"&gt;
     &lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;notifications&lt;/span&gt;
-    &lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;
-  &lt;/button&gt;
-  &lt;span class="md-badge md-badge-large" aria-hidden="true"&gt;12&lt;/span&gt;
-&lt;/span&gt;
+    &lt;span class="md-badge md-badge-large" aria-hidden="true"&gt;12&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;
+&lt;/button&gt;
 
-&lt;span class="md-badge-anchor"&gt;
-  &lt;button type="button" class="md-icon-button" aria-label="Notificaciones, más de 999"&gt;
+&lt;button type="button" class="md-icon-button" aria-label="Notificaciones, más de 999"&gt;
+  &lt;span class="md-badge-anchor"&gt;
     &lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;notifications&lt;/span&gt;
-    &lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;
-  &lt;/button&gt;
-  &lt;span class="md-badge md-badge-large" aria-hidden="true"&gt;999+&lt;/span&gt;
-&lt;/span&gt;</code></pre>
+    &lt;span class="md-badge md-badge-large" aria-hidden="true"&gt;999+&lt;/span&gt;
+  &lt;/span&gt;
+  &lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;
+&lt;/button&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
 
@@ -166,7 +166,7 @@
     <!-- PAR 4: Top App Bar alerts -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Top App Bar alerts</h3>
-      <p class="md-type-body-medium">La campana del turno de cocina con dot de novedades en el trailing. Dogfooding de dos componentes: el ancla envuelve al icon button SIN modificar la receta del Top App Bar.</p>
+      <p class="md-type-body-medium">La campana del turno de cocina con dot de novedades dormido sobre el glifo: el ancla envuelve al icono dentro del anfitrión. Dogfooding de dos componentes SIN modificar la receta del Top App Bar.</p>
 
       <div class="sr-specimen">
         <header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll role="banner">
@@ -180,12 +180,12 @@
             <span class="md-top-app-bar-subtitle">3 comandas activas</span>
           </div>
           <div class="md-top-app-bar-trailing">
-            <span class="md-badge-anchor">
-              <button type="button" class="md-icon-button" aria-label="Novedades en cocina">
+            <button type="button" class="md-icon-button" aria-label="Novedades en cocina">
+              <span class="md-badge-anchor">
                 <span class="md-icon" aria-hidden="true">notifications</span>
-              </button>
-              <span class="md-badge md-badge-small" aria-hidden="true"></span>
-            </span>
+                <span class="md-badge md-badge-small" aria-hidden="true"></span>
+              </span>
+            </button>
             <button type="button" class="md-icon-button" aria-label="Más opciones">
               <span class="md-icon" aria-hidden="true">more_vert</span>
             </button>
@@ -204,12 +204,12 @@
     &lt;span class="md-top-app-bar-subtitle"&gt;3 comandas activas&lt;/span&gt;
   &lt;/div&gt;
   &lt;div class="md-top-app-bar-trailing"&gt;
-    &lt;span class="md-badge-anchor"&gt;
-      &lt;button type="button" class="md-icon-button" aria-label="Novedades en cocina"&gt;
+    &lt;button type="button" class="md-icon-button" aria-label="Novedades en cocina"&gt;
+      &lt;span class="md-badge-anchor"&gt;
         &lt;span class="md-icon" aria-hidden="true"&gt;notifications&lt;/span&gt;
-      &lt;/button&gt;
-      &lt;span class="md-badge md-badge-small" aria-hidden="true"&gt;&lt;/span&gt;
-    &lt;/span&gt;
+        &lt;span class="md-badge md-badge-small" aria-hidden="true"&gt;&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/button&gt;
     &lt;button type="button" class="md-icon-button" aria-label="Más opciones"&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;more_vert&lt;/span&gt;
     &lt;/button&gt;

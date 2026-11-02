@@ -11,21 +11,23 @@
 
    LA ANATOMIA
    -----------
-     <span class="md-badge-anchor">                    el ancla no invasiva
-       <button class="md-icon-button"
-               aria-label="Notificaciones, 3 sin leer">  el anfitrión porta
-         <span class="md-icon" aria-hidden="true">     la semántica COMPLETA
-           notifications
-         </span>
-       </button>
-       <span class="md-badge md-badge-large"           el badge visual es
-             aria-hidden="true">3</span>               decorativo: aria-hidden
-     </span>
+     <button class="md-icon-button" aria-label="Novedades, 3 sin leer">
+       <span class="md-badge-anchor">                    el ancla: envuelve
+         <span class="md-icon-button-icon md-icon"       AL GLIFO, no al
+               aria-hidden="true">notifications</span>   anfitrion (canon
+         <span class="md-badge md-badge-large"           BadgedBox de M3)
+               aria-hidden="true">3</span>
+       </span>
+     </button>
 
-   El ancla es un envoltorio con position: relative; los anfitriones NO se
-   modifican (badge.css no toca icon-button.css ni tabs.css ni list.css).
-   El badge es un hermano absoluto posterior al anfitrión, así que pinta
-   encima sin z-index.
+   El ancla vive DENTRO del anfitrión y su caja la define el propio icono
+   (24dp): el badge descansa en la esquina superior derecha del glifo, no en
+   la de la caja del botón (40/48dp), donde flotaría en el vacío a 8-12dp
+   del dibujo. Un badge nunca flota en el vacío.
+   Toda la accesibilidad vive en aria-label del anfitrión; el badge visual
+   es aria-hidden (no duplicar).
+   Toda la accesibilidad vive en aria-label del anfitrion; el badge visual
+   es aria-hidden (no duplicar).
 
    FUENTES
    -------
@@ -56,9 +58,13 @@
      estáticos (REGLA 13 vacía por diseño, como switch).
    ========================================================================== */
 
-/* EL ANCLA: envoltorio no invasivo. Position relative solo existe para
-   dar sitió al badge absoluto; display inline-flex para alinear el badge
-   con la línea del anfitrión que envuelve. */
+/* EL ANCLA: envoltorio alrededor del GLIFO, no del anfitrion. Position
+   relative solo existe para dar sitió al badge absoluto; el display es
+   inline-flex y NO fija width/height: la caja la define el icono
+   (."md-icon" declara su font-size con el rol de icono del sistema), así
+   que el ancla encoge exactamente al tamaño del dibujo (24dp en las
+   variantes del showroom). Alinear o medir de más apartaría el badge del
+   glifo, que es el defecto que esta hoja corrige (canon BadgedBox M3). */
 .md-badge-anchor {
   position: relative;
   display: inline-flex;
