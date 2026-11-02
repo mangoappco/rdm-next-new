@@ -34,6 +34,11 @@
 @import url("search.css");
 @import url("top-app-bar.css");
 @import url("tabs.css");
+@import url("badge.css");
+
+/* badge.css entra al final de la lista de construccion: es un indicador no
+   interactivo, no compone con ningun hermano anterior y carece de tokens
+   propios (Capa 2 intacta). */
 
 /* list.css va al final, y no por orden alfabetico: no compone con ningun
    componente anterior, asi que su sitio es el final de la lista de construccion.

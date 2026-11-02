@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Badge de RDM Next: indicador M3 de error anclado a un anfitrión — dot de 6dp binario y pastilla de 16dp con label-small, cero estados interactivos y cero JavaScript.">
+  <title>Badge — RDM ManGo! App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+  <link rel="stylesheet" href="../../src/css/main.css?v=64">
+  <link rel="stylesheet" href="../assets/showroom.css">
+  <script type="module" src="../../src/js/main.js"></script>
+  <script src="../assets/showroom.js"></script>
+</head>
+
+<!--
+  ESTA VISTA TIENE SEIS PARES EN DOS BLOQUES. El Bloque 1 --Especificacion
+  tecnica y anatomia-- cubre Small dot badge, Large badge single digit y
+  Large badge growth & overflow. El Bloque 2 --Casos de uso ManGo! App--
+  dogfoodea los tres anfitriones naturales de la casa: Top App Bar alerts,
+  Tabs with counts y List item status. El badge esta autorizado a tener
+  Bloque 2 (a diferencia del switch) porque su anclaje SOLO se demuestra
+  componiendo con anfitriones reales: un badge solo pesa falsamente igual.
+
+  LOS ACUERDOS DEL SHOWROOM
+  -------------------------
+  1. Jerarquia: h1 (componente) > h2 (bloque) > h3 (par). Los titulos de
+     bloque y par estan en ingles; las descripciones en espanol breve.
+  2. REGLA 11: el texto de cada pre.sr-code desescapado es identico al
+     innerHTML de su .sr-specimen (normalizando solo el espacio).
+  3. REGLA 6: sin atributos de estilo en linea ni bloques <style>.
+  4. REGLA 9: iconos siempre con .md-icon, nunca material-symbols-*.
+  5. REGLA 10: toda clase md-* del showroom existe en src/css/.
+  6. REGLA 13: cada snippet es autonomo (solo clases del sistema).
+  7. ARIA: el badge visual es decorativo y lleva aria-hidden="true"; el
+     conteo y la novedad se verbalizan en el aria-label del anfitrión.
+  8. CERO JavaScript de componente: los seis pares son estáticos, sin
+     data-* ni sentinels que registrar (REGLA 13 vacía por diseño).
+-->
+
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll role="banner" aria-label="Cabecera institucional del showroom">
+      <div class="md-top-app-bar-leading">
+        <a href="../index.html" class="md-icon-button" aria-label="Volver al catálogo">
+          <span class="md-icon" aria-hidden="true">arrow_back</span>
+        </a>
+      </div>
+      <div class="md-top-app-bar-content">
+        <span class="md-top-app-bar-title">Badge</span>
+        <span class="md-top-app-bar-subtitle">RDM Next · ManGo! App</span>
+      </div>
+      <div class="md-top-app-bar-trailing">
+        <button type="button" class="md-icon-button" data-theme-toggle aria-label="Tema del sistema activo"><span class="md-icon" aria-hidden="true">brightness_auto</span></button>
+      </div>
+    </header>
+
+  <main class="sr-page">
+
+    <header class="sr-header">
+      <h1 class="md-type-display-large">Badge</h1>
+      <p class="md-type-body-large">El badge es un indicador no interactivo: notifica actividad (dot) o cuantifica pendientes (pastilla) sobre el componente anfitrión.</p>
+    </header>
+
+
+
+    <hr class="md-divider">
+
+    <!-- BLOQUE 1: Especificacion tecnica y anatomia -->
+    <h2 class="md-type-headline-medium">Especificación técnica y anatomía</h2>
+
+    <!-- PAR 1: Small dot badge -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Small dot badge</h3>
+      <p class="md-type-body-medium">Dot de 6x6dp circular, error, anclado a la esquina del anfitrión con translate(50%, -50%). Alerta binaria sin cuantificar: la novedad se nombra en el aria-label del anfitrión.</p>
+
+      <div class="sr-specimen sr-specimen-gap">
+        <span class="md-badge-anchor">
+          <button type="button" class="md-icon-button" aria-label="Novedades de cocina">
+            <span class="md-icon-button-icon md-icon" aria-hidden="true">notifications</span>
+            <span class="md-icon-button-touch"></span>
+          </button>
+          <span class="md-badge md-badge-small" aria-hidden="true"></span>
+        </span>
+      </div>
+
+      <pre class="sr-code"><code>&lt;span class="md-badge-anchor"&gt;
+  &lt;button type="button" class="md-icon-button" aria-label="Novedades de cocina"&gt;
+    &lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;notifications&lt;/span&gt;
+    &lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;span class="md-badge md-badge-small" aria-hidden="true"&gt;&lt;/span&gt;
+&lt;/span&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- PAR 2: Large badge single digit -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Large badge single digit</h3>
+      <p class="md-type-body-medium">Pastilla de 16dp con tipografía label-small cuantificando. El ancho puede crecer, pero un dígito cabe justo: el conteo vive en el aria-label del anfitrión, el badge visual es decorativo.</p>
+
+      <div class="sr-specimen sr-specimen-gap">
+        <span class="md-badge-anchor">
+          <button type="button" class="md-icon-button" aria-label="Mensajes, 3 sin leer">
+            <span class="md-icon-button-icon md-icon" aria-hidden="true">mail</span>
+            <span class="md-icon-button-touch"></span>
+          </button>
+          <span class="md-badge md-badge-large" aria-hidden="true">3</span>
+        </span>
+      </div>
+
+      <pre class="sr-code"><code>&lt;span class="md-badge-anchor"&gt;
+  &lt;button type="button" class="md-icon-button" aria-label="Mensajes, 3 sin leer"&gt;
+    &lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;mail&lt;/span&gt;
+    &lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;span class="md-badge md-badge-large" aria-hidden="true"&gt;3&lt;/span&gt;
+&lt;/span&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- PAR 3: Large badge growth & overflow -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Large badge growth &amp; overflow</h3>
+      <p class="md-type-body-medium">El ancho de la pastilla crece con el contenido por el padding lateral de 4dp: del dígito compacto (12) al tope canónico 999+, con la misma clase large.</p>
+
+      <div class="sr-specimen sr-specimen-gap">
+        <span class="md-badge-anchor">
+          <button type="button" class="md-icon-button" aria-label="Notificaciones, 12 pendientes">
+            <span class="md-icon-button-icon md-icon" aria-hidden="true">notifications</span>
+            <span class="md-icon-button-touch"></span>
+          </button>
+          <span class="md-badge md-badge-large" aria-hidden="true">12</span>
+        </span>
+
+        <span class="md-badge-anchor">
+          <button type="button" class="md-icon-button" aria-label="Notificaciones, más de 999">
+            <span class="md-icon-button-icon md-icon" aria-hidden="true">notifications</span>
+            <span class="md-icon-button-touch"></span>
+          </button>
+          <span class="md-badge md-badge-large" aria-hidden="true">999+</span>
+        </span>
+      </div>
+
+      <pre class="sr-code"><code>&lt;span class="md-badge-anchor"&gt;
+  &lt;button type="button" class="md-icon-button" aria-label="Notificaciones, 12 pendientes"&gt;
+    &lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;notifications&lt;/span&gt;
+    &lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;span class="md-badge md-badge-large" aria-hidden="true"&gt;12&lt;/span&gt;
+&lt;/span&gt;
+
+&lt;span class="md-badge-anchor"&gt;
+  &lt;button type="button" class="md-icon-button" aria-label="Notificaciones, más de 999"&gt;
+    &lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;notifications&lt;/span&gt;
+    &lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;span class="md-badge md-badge-large" aria-hidden="true"&gt;999+&lt;/span&gt;
+&lt;/span&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- BLOQUE 2: Casos de uso ManGo! App -->
+    <h2 class="md-type-headline-medium">Casos de uso ManGo! App</h2>
+
+    <!-- PAR 4: Top App Bar alerts -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Top App Bar alerts</h3>
+      <p class="md-type-body-medium">La campana del turno de cocina con dot de novedades en el trailing. Dogfooding de dos componentes: el ancla envuelve al icon button SIN modificar la receta del Top App Bar.</p>
+
+      <div class="sr-specimen">
+        <header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll role="banner">
+          <div class="md-top-app-bar-leading">
+            <button type="button" class="md-icon-button" aria-label="Menú">
+              <span class="md-icon" aria-hidden="true">menu</span>
+            </button>
+          </div>
+          <div class="md-top-app-bar-content">
+            <span class="md-top-app-bar-title">Turno cocina</span>
+            <span class="md-top-app-bar-subtitle">3 comandas activas</span>
+          </div>
+          <div class="md-top-app-bar-trailing">
+            <span class="md-badge-anchor">
+              <button type="button" class="md-icon-button" aria-label="Novedades en cocina">
+                <span class="md-icon" aria-hidden="true">notifications</span>
+              </button>
+              <span class="md-badge md-badge-small" aria-hidden="true"></span>
+            </span>
+            <button type="button" class="md-icon-button" aria-label="Más opciones">
+              <span class="md-icon" aria-hidden="true">more_vert</span>
+            </button>
+          </div>
+        </header>
+      </div>
+
+      <pre class="sr-code"><code>&lt;header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll role="banner"&gt;
+  &lt;div class="md-top-app-bar-leading"&gt;
+    &lt;button type="button" class="md-icon-button" aria-label="Menú"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;menu&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="md-top-app-bar-content"&gt;
+    &lt;span class="md-top-app-bar-title"&gt;Turno cocina&lt;/span&gt;
+    &lt;span class="md-top-app-bar-subtitle"&gt;3 comandas activas&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class="md-top-app-bar-trailing"&gt;
+    &lt;span class="md-badge-anchor"&gt;
+      &lt;button type="button" class="md-icon-button" aria-label="Novedades en cocina"&gt;
+        &lt;span class="md-icon" aria-hidden="true"&gt;notifications&lt;/span&gt;
+      &lt;/button&gt;
+      &lt;span class="md-badge md-badge-small" aria-hidden="true"&gt;&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;button type="button" class="md-icon-button" aria-label="Más opciones"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;more_vert&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/header&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- PAR 5: Tabs with counts -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Tabs with counts</h3>
+      <p class="md-type-body-medium">Pestañas de la comanda cuantificadas: Pedidos 12 y Por cobrar 3. El ancla envuelve al label del tab, no al button: el tablist de ARIA solo admite tabs como hijos directos.</p>
+
+      <div class="sr-specimen">
+        <div class="md-tabs md-tabs-primary" role="tablist" aria-label="Comandas del turno">
+          <button type="button" class="md-tab" role="tab" aria-selected="true" tabindex="0" aria-label="Pedidos, 12 abiertos">
+            <span class="md-badge-anchor">
+              <span class="md-tab-label">Pedidos</span>
+              <span class="md-badge md-badge-large" aria-hidden="true">12</span>
+            </span>
+          </button>
+          <button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1" aria-label="Por cobrar, 3 pendientes">
+            <span class="md-badge-anchor">
+              <span class="md-tab-label">Por cobrar</span>
+              <span class="md-badge md-badge-large" aria-hidden="true">3</span>
+            </span>
+          </button>
+          <button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1">
+            <span class="md-tab-label">Servidos</span>
+          </button>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;div class="md-tabs md-tabs-primary" role="tablist" aria-label="Comandas del turno"&gt;
+  &lt;button type="button" class="md-tab" role="tab" aria-selected="true" tabindex="0" aria-label="Pedidos, 12 abiertos"&gt;
+    &lt;span class="md-badge-anchor"&gt;
+      &lt;span class="md-tab-label"&gt;Pedidos&lt;/span&gt;
+      &lt;span class="md-badge md-badge-large" aria-hidden="true"&gt;12&lt;/span&gt;
+    &lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1" aria-label="Por cobrar, 3 pendientes"&gt;
+    &lt;span class="md-badge-anchor"&gt;
+      &lt;span class="md-tab-label"&gt;Por cobrar&lt;/span&gt;
+      &lt;span class="md-badge md-badge-large" aria-hidden="true"&gt;3&lt;/span&gt;
+    &lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-tab" role="tab" aria-selected="false" tabindex="-1"&gt;
+    &lt;span class="md-tab-label"&gt;Servidos&lt;/span&gt;
+  &lt;/button&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- PAR 6: List item status -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">List item status</h3>
+      <p class="md-type-body-medium">La pastilla de pendientes anclada al chevron del slot trailing en una fila del KDS: el conteo se verbaliza en el texto de apoyo del ítem, el badge visual va aria-hidden.</p>
+
+      <div class="sr-specimen">
+        <ul class="md-list">
+          <li class="md-list-item md-list-item-two-line">
+            <span class="md-list-item-leading">
+              <span class="md-icon" aria-hidden="true">soup_kitchen</span>
+            </span>
+            <div class="md-list-item-content">
+              <span class="md-list-item-headline">Mesa 4 · Comanda</span>
+              <span class="md-list-item-supporting-text">En cocina · 3 platos pendientes</span>
+            </div>
+            <span class="md-list-item-trailing">
+              <span class="md-badge-anchor">
+                <span class="md-icon" aria-hidden="true">chevron_right</span>
+                <span class="md-badge md-badge-large" aria-hidden="true">3</span>
+              </span>
+            </span>
+          </li>
+        </ul>
+      </div>
+
+      <pre class="sr-code"><code>&lt;ul class="md-list"&gt;
+  &lt;li class="md-list-item md-list-item-two-line"&gt;
+    &lt;span class="md-list-item-leading"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;soup_kitchen&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;div class="md-list-item-content"&gt;
+      &lt;span class="md-list-item-headline"&gt;Mesa 4 · Comanda&lt;/span&gt;
+      &lt;span class="md-list-item-supporting-text"&gt;En cocina · 3 platos pendientes&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;span class="md-list-item-trailing"&gt;
+      &lt;span class="md-badge-anchor"&gt;
+        &lt;span class="md-icon" aria-hidden="true"&gt;chevron_right&lt;/span&gt;
+        &lt;span class="md-badge md-badge-large" aria-hidden="true"&gt;3&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/span&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+  </main>
+  <!-- MAIN: fin -->
+</body>
+</html>

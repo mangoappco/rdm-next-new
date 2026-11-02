@@ -1,0 +1,98 @@
+/* ==========================================================================
+   src/css/3-components/badge.css — BADGE (M3 Comunicación)
+   ==========================================================================
+
+   QUE HACE
+   --------
+   El badge es un indicador NO interactivo que vive anclado a un componente
+   anfitrión (icon button, tab, ítem de lista): notifica la existencia de
+   contenido nuevo (dot de 6dp, alerta binaria) o cuantifica pendientes
+   (pastilla de 16dp con label-small). Un badge nunca flota en el vacío.
+
+   LA ANATOMIA
+   -----------
+     <span class="md-badge-anchor">                    el ancla no invasiva
+       <button class="md-icon-button"
+               aria-label="Notificaciones, 3 sin leer">  el anfitrión porta
+         <span class="md-icon" aria-hidden="true">     la semántica COMPLETA
+           notifications
+         </span>
+       </button>
+       <span class="md-badge md-badge-large"           el badge visual es
+             aria-hidden="true">3</span>               decorativo: aria-hidden
+     </span>
+
+   El ancla es un envoltorio con position: relative; los anfitriones NO se
+   modifican (badge.css no toca icon-button.css ni tabs.css ni list.css).
+   El badge es un hermano absoluto posterior al anfitrión, así que pinta
+   encima sin z-index.
+
+   FUENTES
+   -------
+   - m3.material.io/components/badges/overview, /specs, /accessibility
+   - `badge/internal/_each.scss` + `tokens/.../_md-comp-badge.scss` del
+     oráculo @material/web: dot 6x6, pastilla 16dp de alto con min-width
+     de 16dp y padding de 4dp, tipografía label-small.
+
+   LAS CINCO DECISIONES SELLADAS (2026-11-02)
+   ------------------------------------------
+   1. corner-full en las DOS variantes. La pauta de mano pedía corner-small
+     (8dp) para la pastilla: es el mismo visual (con 16dp de alto, el radio
+     de 9999px se recorta exactamente a la mitad: 8dp) pero el rol equivocado
+     del sistema. corner-full es el token de la pastilla documentado en
+     `corner.css` ("Pastilla, circulo"), y escala si la pastilla crece.
+   2. SOLO error/on-error. M3 canónico no define variantes de color del
+     badge: el catálogo es fielmente error-only. Las variantes primary o
+     secondary quedan pendientes de que ManGo! las necesite de verdad, y si
+     nacen, se documentan como extensión de la casa (como measurement.css).
+   3. Tope canon del contador: 999+ (spec M3, hasta 3 dígitos). La pauta de
+     mano pedía 99+; el texto es estático en la CSS pura, así que el cap es
+     decisión de CONTENIDO del spotlight, no de receta.
+   4. Sin estado interactivo: el badge NO es un control. Ni state layer, ni
+     focus, ni hover, ni disabled. La interacción la maneja el anfitrión.
+   5. CERO minting en Capa 2: space-50 (4dp), space-75 (6dp) y space-200
+     (16dp) ya vivían en `2-system-tokens/measurement.css` como alias de la
+     escala de spacing. Y cero JavaScript de componente: los especímenes son
+     estáticos (REGLA 13 vacía por diseño, como switch).
+   ========================================================================== */
+
+/* EL ANCLA: envoltorio no invasivo. Position relative solo existe para
+   dar sitió al badge absoluto; display inline-flex para alinear el badge
+   con la línea del anfitrión que envuelve. */
+.md-badge-anchor {
+  position: relative;
+  display: inline-flex;
+}
+
+/* BASE: la geometría de anclaje y la piel de error viven en la base; las
+   dos variantes solo fijan tamaño y, si hacen falta, texto. */
+.md-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  border-radius: var(--md-sys-shape-corner-full);
+  background: var(--md-sys-color-error);
+  color: var(--md-sys-color-on-error);
+  font: var(--md-sys-typescale-label-small);
+}
+
+/* DOT: 6x6dp, binario. Sin texto jamás: nombrar el estado en el
+   aria-label del anfitrión. */
+.md-badge-small {
+  width: var(--md-sys-measurement-space-75);
+  height: var(--md-sys-measurement-space-75);
+}
+
+/* PASTILLA: altura fija de 16dp; el ancho crece con el contenido. El
+   padding-inline de 4dp es lo que permite del 12 compacto al 999+ sin
+   clases extra: una pastilla, y el texto manda. */
+.md-badge-large {
+  min-inline-size: var(--md-sys-measurement-space-200);
+  height: var(--md-sys-measurement-space-200);
+  padding-inline: var(--md-sys-measurement-space-50);
+}

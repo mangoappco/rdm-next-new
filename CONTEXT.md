@@ -18,7 +18,7 @@ Solo prohibiciones verbales. Las reglas de showroom, de capas y de ciclo no se c
 
 ## Componentes creados
 
-Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **19 componentes y 28 vistas** (19 de componente + 9 de tokens), las 28 enlazadas en `showroom/index.html`. El orden es el de `index.css`:
+Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **20 componentes y 29 vistas** (20 de componente + 9 de tokens), las 29 enlazadas en `showroom/index.html`. El orden es el de `index.css`:
 
 | Componente | Hoja | Vista |
 | --- | --- | --- |
@@ -41,6 +41,7 @@ Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **19 compo
 | Select | `select.css` | `select.html` |
 | Top App Bar | `top-app-bar.css` | `top-app-bar.html` |
 | Tabs | `tabs.css` | `tabs.html` |
+| Badge | `badge.css` | `badge.html` |
 
 Cada componente tiene además su molde en `showroom/templates/<nombre>.template.html`.
 
@@ -407,6 +408,20 @@ La primera versión tomaba la fila de iconos como una banda de 56dp que se compr
 - `FALLOS: 2` (los dos de REGLA 1 en `select.css`, `color-mix` 8% autorizados).
 - Vista y molde byte-idénticos (hash `9178e7a92f1e`).
 
+## Badge - publicada (2026-11-02)
+
+Primer componente de la familia **Comunicación** además de Dialog, con **6 pares en dos bloques**: Bloque 1 (Small dot badge, Large badge single digit, Large badge growth & overflow) y **el primer Bloque 2 per Rosie desde Text Field**: los anfitriones dogfooddeados reales del POS (Top App Bar alerts, Tabs with counts, List item status del KDS). El badge ESTA autorizado a tener Bloque 2 (a diferencia del switch) porque su única demostración de valor es el anclaje a un anfitrión real.
+
+- **Anatomía**: `.md-badge-anchor` (envoltorio no invasivo con `position: relative`) → anfitrión sin tocar (icon-button/tabs/list) → `.md-badge md-badge-small` (dot 6×6dp) o `.md-badge-large` (pastilla 16dp con min-inline-size 16dp y `padding-inline: 4dp` para el crecimiento). El badge es hermano absoluto posterior al anfitrión y pinta encima sin z-index.
+- **MERGE tokens**: cualquier row minting existe — `space-75` (6), `space-200` (16), `space-50` (4) ya vivían en `measurement.css:1165-1169`; `corner-full`, `error`, `on-error` y el shorthand `var(--md-sys-typescale-label-small)` (11px/16px, peso medio) de Capa 1-2. Cero JavaScript: los 6 pares son estáticos (REGLA 13 vacía por diseño).
+- **Las tres decisiones selladas del 2026-11-02**: (1) `corner-full` en AMBAS variantes — la pauta pedía corner-small (8dp), que es el mismo visual con 16dp de alto (9999px se recorta a la mitad) pero el rol equivocado del token; (2) ONLY error/on-error — el par de variantes semánticas (primary/secondary) de la pauta se eliminó porque M3 no lo define (catálogo fielmente canon); (3) tope canon del contador `999+` (la paría pedía 99+). Documentado en `badge.css` como contrato del archivo.
+- **ARIA**: el badge visual SIEMPRE `aria-hidden="true"`; el conteo y la novedad se verbalizan en el `aria-label` del ANFITRIÓN (icon button, tab con aria-label, o supporting-text del ítem de lista). En Tabs el ancla envuelve al `md-tab-label` (no al button): el tablist de ARIA solo admite tabs como hijos directos. Los textos de los snippets mantienen icons con clase base `md-icon-button-icon` + `md-icon-button-touch` cuando son icon-button anatomía completa.
+
+### Las dos calibraciones del día
+
+- **La pauta primero, el código después**: las tres desviaciones del documento de mano (corner-small, variantes de color, cap 99+) se refutaron contra el sistema ANTES de escribir CSS, con las 3 question tool del 2026-11-02. El patrón de siempre: la auditoría externa trae la geografía M3 correcta pero los nombres del cuenta del sistema hay que validarlos contra `corner.css` y `measurement.css` en cada fila.
+- **El falso pozoo de caché**: el badge no cargaba en el navegador y una auditoría diagnosticó "caché de sub-recursos en cascada (@import)" y propuso `?v` en el import de `main.css`. El verificador lo tumba REGLA 5 (los `@import` se comparan contra disco y `index.css?v=63` no es archivo; el `.htaccess` ya manda `no-store` para css/html/js). La causa real: la edición del `index.css` había entrado el COMENTARIO del import pero NO la línea `@import url("badge.css")`. Lección bilingüe: (a) el verificador es el gran determinista contra teorías de navegador — ejecútalo ANTES de navegar; (b) cuando muevas un import a la proximidad de un comentario, revisa el diff de git contra disk para ver qué línea cayó. Las vistas de badge actualmente llevan `main.css?v=64` (la cascada de vBusters que se medio generó es inerte, compatible y no canon del repo).
+
 ## Text Field - pares numéricos de ManGo! App (publicados 2026-11-01)
 
 Dos pares Nuevos en el Bloque 2 de la vista, la extensión numérica que el POS necesita. La vista cierra con **16 secciones y 16 pares** (QUINCE pares → DIECISÉIS en el comentario de cabecera de template y vista).
@@ -442,7 +457,7 @@ En el marcado, el corte es un `<hr class="md-divider">` —el mismo mecanismo co
 
 ## Siguiente tarea
 
-**Text Field cerró su extensión numérica de ManGo! el 2026-11-01 (pares 15 y 16, arriba).** El componente llega a 16 pares en cuatro bloques y es el primero que monta utilidades tipográficas de Capa 4 dentro de su receta. En la cola: **Badge** (familia Comunicación, componente nuevo: hoja, template y quizás controlador si lleva contador vivo) o **pares nuevos de Checkbox** (Selección). El resto de esta sección sigue vigente.
+**Badge publicada (20 componentes) el 2026-11-02 (arriba): 6 pares, Bloque 2 de anfitriones incluido.** **Text Field cerró su extensión numérica de ManGo! el 2026-11-01 (pares 15 y 16, dos secciones abajo).** En la cola: **pares nuevos de Checkbox** (Selección). El resto de esta sección sigue vigente.
 
 **Top App Bar completada (6 pares) el 2026-10-29, tras Select (6), Radio Button (5), Checkbox (5), Switch (4) y Search (5).** En todos mandó lo mismo: el componente termina en sus pares de especificación y nada de composiciones de negocio en la vista — el Par 6 de M3 que Search no tomó (Top bar con avatar) y las pantallas reales (POS, KDS, carta, modal de cobro) van a la **Galería de Usos**, que se abrirá cuando el catálogo acabe de cerrarse. Verificador en `FALLOS: 2` (las excepciones de siempre).
 
