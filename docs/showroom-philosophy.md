@@ -84,3 +84,26 @@ El progreso del compress no se asigna directo desde el scroll: lo persigue con u
 Un componente con compress no se certifica con capturas. Se mide con Playwright en el navegador real y se afirman, en cada punto del recorrido: la altura contra el mapeo lineal, la opacidad del subtítulo, el tamaño tipográfico interpolado, la posición del titular, la **inmutabilidad de los iconos** y el salto residual del swap estructural (≤1px por redondeo de glifos). Además: congelado a mitad, umbral de la clase colapsada, relleno tonal + sombra del estado scrolled, cero oscilación de clases y cero errores de página. Las configuraciones sin subtítulo se verifican clonando el espécimen y midiendo la altura en reposo.
 
 El resultado del cierre: 0 fallos en Medium y Large, iconos en 32/32 con desvío 0.00px, swap del titular a 0.64px, y el verificador de tokens en el baseline `FALLOS: 2`.
+
+## 7. Directrices Consolidadas: Snackbar (2026-11-03)
+
+### 7.1 Geometría Canónica y Prevención de Inflación de Altura
+El Snackbar de M3 establece alturas rigurosas de **48px** (1 línea) y **68px** (2 líneas).
+Cuando un Snackbar incluye botones de acción (`.md-snackbar-action`) o de cierre (`.md-snackbar-close`), la altura del botón (36dp / `space-450`) no puede acumularse sobre el padding estándar de 14dp (`space-175`), ya que inflaría la caja a más de 64-68px.
+- En reposo sin acciones: `padding-block: var(--md-sys-measurement-space-175)` (14px). Total: $20\text{px} + 14\text{px} + 14\text{px} = 48\text{px}$.
+- En presencia de acciones: el contenedor reduce su relleno a `padding-block: var(--md-sys-measurement-space-50)` (4px). Total: $36\text{px} + 4\text{px} + 4\text{px} = 48\text{px}$.
+- En multilínea (2 líneas): `padding-block: var(--md-sys-measurement-space-150)` (12px). Total: $40\text{px} + 12\text{px} + 12\text{px} = 68\text{px}$.
+
+### 7.2 Ripple y Estados de Interacción en Superficie Inversa
+La acción `.md-snackbar-action` es un *Text Button* sobre superficie oscura (`inverse-surface`).
+- **Reposo:** `background-color: transparent` absoluto. Solo el texto flota en `var(--md-sys-color-inverse-primary)`. Cero residuo o pastilla visible.
+- **Hover:** State layer sutil al 8% (`--md-sys-state-hover-state-layer-opacity`) en forma de cápsula (`border-radius: var(--md-sys-shape-corner-full)`).
+- **Pressed (Ripple):** El motor universal `ripple.js` captura `.md-snackbar-action` y confina la onda al 12% con `overflow: hidden` y `border-radius: 9999px`.
+- **Foco por teclado:** Anillo accesible con `outline: var(--md-sys-shape-stroke-thin) solid` y `outline-offset`.
+
+### 7.3 Cinemática Asimétrica M3
+El componente implementa transición asimétrica declarativa con tokens de sistema:
+- **Entrada (Activo):** Desaceleración enfática `emphasized-decelerate` (300ms, `medium2`) con ascenso de 16px (`translateY(16px)` a 0).
+- **Salida (Reposo):** Aceleración enfática `emphasized-accelerate` (150ms, `short3`) con desvanecimiento inmediato.
+- **Ergonomía:** Auto-dismiss temporizado a 4.000ms que congela el cronómetro al pasar el puntero (`mouseover`) o enfocar por teclado (`focusin`).
+

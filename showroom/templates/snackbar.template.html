@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Snackbar de RDM Next: mensaje transitorio de retroalimentación en superficie inversa con esquinas de 4dp, elevación level3 y acción opcional.">
+  <title>Snackbar — RDM ManGo! App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+  <link rel="stylesheet" href="../../src/css/main.css?v=65">
+  <link rel="stylesheet" href="../assets/showroom.css">
+  <script type="module" src="../../src/js/main.js"></script>
+  <script src="../assets/showroom.js"></script>
+</head>
+
+<!--
+  ESTA VISTA TIENE CINCO PARES EN DOS BLOQUES.
+  El Bloque 1 --Technical Specification & Canonical Anatomy-- cubre:
+  1. Single-line Snackbar (Basic)
+  2. Single-line with Action
+  3. Multi-line with Action & Dismiss Icon
+
+  El Bloque 2 --ManGo! App Use Cases-- cubre:
+  4. Kitchen Alert / Hardware Exception
+  5. Floating Layer & Viewport Docking
+
+  LOS ACUERDOS DEL SHOWROOM
+  -------------------------
+  1. Jerarquia: h1 (componente) > h2 (bloque) > h3 (par).
+  2. REGLA 11: el texto de cada pre.sr-code desescapado es identico al
+     innerHTML de su .sr-specimen (normalizando solo el espacio).
+  3. REGLA 6: sin atributos de estilo en linea ni bloques <style>.
+  4. REGLA 9: iconos siempre con .md-icon, nunca material-symbols-*.
+  5. REGLA 10: toda clase md-* del showroom existe en src/css/.
+  6. REGLA 13: cada snippet es autonomo (solo clases del sistema).
+  7. ARIA: contenedor con role="status" y aria-live="polite".
+-->
+
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <!-- CABECERA INSTITUCIONAL DEL SHOWROOM (DOGFOODING) -->
+  <header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll role="banner" aria-label="Cabecera institucional del showroom">
+    <div class="md-top-app-bar-leading">
+      <a href="../index.html" class="md-icon-button" aria-label="Volver al catálogo">
+        <span class="md-icon" aria-hidden="true">arrow_back</span>
+      </a>
+    </div>
+    <div class="md-top-app-bar-content">
+      <span class="md-top-app-bar-title">Snackbar</span>
+      <span class="md-top-app-bar-subtitle">RDM Next — ManGo! App</span>
+    </div>
+    <div class="md-top-app-bar-trailing">
+      <button type="button" class="md-icon-button" data-theme-toggle aria-label="Tema del sistema activo">
+        <span class="md-icon" aria-hidden="true">brightness_auto</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="sr-page">
+
+    <!-- HEADER: inicio (barra + titulo + descripcion) -->
+    <header class="sr-header">
+      <h1 class="md-type-display-large">Snackbar</h1>
+      <p class="md-type-body-large">El snackbar informa sobre una operación o el resultado de una acción de bajo impacto sin bloquear la navegación.</p>
+    </header>
+    <!-- HEADER: fin -->
+
+    <hr class="md-divider">
+
+    <!-- ====================================================================
+         BLOQUE 1: TECHNICAL SPECIFICATION & CANONICAL ANATOMY
+         ==================================================================== -->
+    <section class="sr-section">
+      <h2 class="md-type-headline-medium">Technical Specification &amp; Canonical Anatomy</h2>
+      <p class="md-type-body-medium">Anatomía base en superficie inversa (inverse-surface), esquinas de 4dp y elevación Level 3 según la norma oficial M3.</p>
+    </section>
+
+    <!-- PAR 1: Single-line Snackbar (Basic) -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Single-line Snackbar</h3>
+      <p class="md-type-body-medium">Contenedor de 48dp de alto con mensaje conciso de una línea en body-medium sin acciones adicionales.</p>
+
+      <div class="sr-specimen">
+        <aside class="md-snackbar" role="status" aria-live="polite">
+          <span class="md-snackbar-label">Comanda #104 guardada</span>
+        </aside>
+      </div>
+
+      <pre class="sr-code"><code>&lt;aside class="md-snackbar" role="status" aria-live="polite"&gt;
+  &lt;span class="md-snackbar-label"&gt;Comanda #104 guardada&lt;/span&gt;
+&lt;/aside&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- PAR 2: Single-line with Action -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Single-line with Action</h3>
+      <p class="md-type-body-medium">Mensaje breve acompañado de un botón de acción en color inverse-primary con tipografía label-large.</p>
+
+      <div class="sr-specimen">
+        <aside class="md-snackbar" role="status" aria-live="polite">
+          <span class="md-snackbar-label">Mesa 5 liberada</span>
+          <div class="md-snackbar-actions">
+            <button type="button" class="md-snackbar-action">Deshacer</button>
+          </div>
+        </aside>
+      </div>
+
+      <pre class="sr-code"><code>&lt;aside class="md-snackbar" role="status" aria-live="polite"&gt;
+  &lt;span class="md-snackbar-label"&gt;Mesa 5 liberada&lt;/span&gt;
+  &lt;div class="md-snackbar-actions"&gt;
+    &lt;button type="button" class="md-snackbar-action"&gt;Deshacer&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/aside&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- PAR 3: Multi-line with Action & Dismiss Icon -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Multi-line with Action &amp; Dismiss Icon</h3>
+      <p class="md-type-body-medium">Contenedor de dos líneas (68dp) que combina acción textual y botón de cierre explícito con glifo close.</p>
+
+      <div class="sr-specimen">
+        <aside class="md-snackbar md-snackbar-multiline" role="status" aria-live="polite">
+          <span class="md-snackbar-label">Se enviaron 4 órdenes a cocina con observaciones especiales de preparación</span>
+          <div class="md-snackbar-actions">
+            <button type="button" class="md-snackbar-action">Ver comanda</button>
+            <button type="button" class="md-icon-button md-snackbar-close" aria-label="Cerrar aviso">
+              <span class="md-icon-button-icon md-icon" aria-hidden="true">close</span>
+              <span class="md-icon-button-touch"></span>
+            </button>
+          </div>
+        </aside>
+      </div>
+
+      <pre class="sr-code"><code>&lt;aside class="md-snackbar md-snackbar-multiline" role="status" aria-live="polite"&gt;
+  &lt;span class="md-snackbar-label"&gt;Se enviaron 4 órdenes a cocina con observaciones especiales de preparación&lt;/span&gt;
+  &lt;div class="md-snackbar-actions"&gt;
+    &lt;button type="button" class="md-snackbar-action"&gt;Ver comanda&lt;/button&gt;
+    &lt;button type="button" class="md-icon-button md-snackbar-close" aria-label="Cerrar aviso"&gt;
+      &lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;close&lt;/span&gt;
+      &lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/aside&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <hr class="md-divider">
+
+    <!-- ====================================================================
+         BLOQUE 2: MANGO! APP USE CASES
+         ==================================================================== -->
+    <section class="sr-section">
+      <h2 class="md-type-headline-medium">ManGo! App Use Cases</h2>
+      <p class="md-type-body-medium">Patrones de retroalimentación contextuales integrados en flujos de restaurante, comanda y punto de venta.</p>
+    </section>
+
+    <!-- PAR 4: Kitchen Alert / Hardware Exception -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Kitchen Alert Exception</h3>
+      <p class="md-type-body-medium">Aviso de fallo transitorio en dispositivo de cocina con acción inmediata de recuperación operativa.</p>
+
+      <div class="sr-specimen">
+        <aside class="md-snackbar" role="status" aria-live="polite">
+          <span class="md-snackbar-label">Impresora térmica de cocina sin conexión</span>
+          <div class="md-snackbar-actions">
+            <button type="button" class="md-snackbar-action">Reintentar</button>
+            <button type="button" class="md-icon-button md-snackbar-close" aria-label="Cerrar aviso">
+              <span class="md-icon-button-icon md-icon" aria-hidden="true">close</span>
+              <span class="md-icon-button-touch"></span>
+            </button>
+          </div>
+        </aside>
+      </div>
+
+      <pre class="sr-code"><code>&lt;aside class="md-snackbar" role="status" aria-live="polite"&gt;
+  &lt;span class="md-snackbar-label"&gt;Impresora térmica de cocina sin conexión&lt;/span&gt;
+  &lt;div class="md-snackbar-actions"&gt;
+    &lt;button type="button" class="md-snackbar-action"&gt;Reintentar&lt;/button&gt;
+    &lt;button type="button" class="md-icon-button md-snackbar-close" aria-label="Cerrar aviso"&gt;
+      &lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;close&lt;/span&gt;
+      &lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/aside&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- PAR 5: Floating Layer & Viewport Docking -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Floating Layer &amp; Viewport Docking</h3>
+      <p class="md-type-body-medium">Playground interactivo de ciclo de vida: entrada fluida con desaceleración enfática (300ms), temporizador pausable por hover/focus y salida acelerada (150ms).</p>
+
+      <div class="sr-specimen sr-specimen-gap">
+        <button type="button" class="md-button md-button-filled" data-trigger-snackbar="demo-snackbar">
+          <span class="md-button-label">Disparar aviso (4s)</span>
+        </button>
+
+        <div class="md-snackbar-container">
+          <aside class="md-snackbar" id="demo-snackbar" role="status" aria-live="polite">
+            <span class="md-snackbar-label">Factura electrónica #9082 enviada a la DIAN</span>
+            <div class="md-snackbar-actions">
+              <button type="button" class="md-snackbar-action" data-close-snackbar>Ver PDF</button>
+              <button type="button" class="md-icon-button md-snackbar-close" data-close-snackbar aria-label="Cerrar aviso">
+                <span class="md-icon-button-icon md-icon" aria-hidden="true">close</span>
+                <span class="md-icon-button-touch"></span>
+              </button>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;button type="button" class="md-button md-button-filled" data-trigger-snackbar="demo-snackbar"&gt;
+  &lt;span class="md-button-label"&gt;Disparar aviso (4s)&lt;/span&gt;
+&lt;/button&gt;
+
+&lt;div class="md-snackbar-container"&gt;
+  &lt;aside class="md-snackbar" id="demo-snackbar" role="status" aria-live="polite"&gt;
+    &lt;span class="md-snackbar-label"&gt;Factura electrónica #9082 enviada a la DIAN&lt;/span&gt;
+    &lt;div class="md-snackbar-actions"&gt;
+      &lt;button type="button" class="md-snackbar-action" data-close-snackbar&gt;Ver PDF&lt;/button&gt;
+      &lt;button type="button" class="md-icon-button md-snackbar-close" data-close-snackbar aria-label="Cerrar aviso"&gt;
+        &lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;close&lt;/span&gt;
+        &lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/aside&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+  </main>
+  <!-- MAIN: fin -->
+</body>
+</html>

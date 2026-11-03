@@ -359,4 +359,17 @@
      ------------------------------------------------------------------------ */
   --md-ref-container-height-list-two-line: 72px;
   --md-ref-container-height-list-three-line: 88px;
+
+  /* ------------------------------------------------------------------------
+     SNACKBAR: COTAS DE ANCHO Y ALTURA MULTILINEA (M3 specs)
+     ------------------------------------------------------------------------
+     M3 publica para el Snackbar:
+       - Altura 1 linea: 48dp (Space 600)
+       - Altura 2 lineas: 68dp (no existe en escala ni en container-height)
+       - Ancho minimo: 344dp
+       - Ancho maximo: 672dp
+     ------------------------------------------------------------------------ */
+  --md-ref-container-width-snackbar-min: 344px;
+  --md-ref-container-width-snackbar-max: 672px;
+  --md-ref-container-height-snackbar-two-line: 68px;
 }

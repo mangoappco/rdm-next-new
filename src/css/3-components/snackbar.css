@@ -1,0 +1,224 @@
+/* ==========================================================================
+   src/css/3-components/snackbar.css — SNACKBAR (M3 Comunicación)
+   ==========================================================================
+
+   QUE HACE
+   --------
+   El snackbar informa brevemente sobre una operación en segundo plano o el
+   resultado de una acción sin bloquear la navegación del usuario. En M3
+   vive en la superficie inversa (inverse-surface) con texto en
+   inverse-on-surface y una acción opcional en inverse-primary.
+
+   ANATOMIA DEL MARCADO CANONICO
+   -----------------------------
+     <aside class="md-snackbar" role="status" aria-live="polite">
+       <span class="md-snackbar-label">Comanda #104 guardada</span>
+       <div class="md-snackbar-actions">
+         <button type="button" class="md-snackbar-action">Deshacer</button>
+         <button type="button" class="md-icon-button md-snackbar-close" aria-label="Cerrar aviso">
+           <span class="md-icon-button-icon md-icon" aria-hidden="true">close</span>
+           <span class="md-icon-button-touch"></span>
+         </button>
+       </div>
+     </aside>
+
+   FUENTES Y DECISIONES (M3 Specs & Guidelines)
+   --------------------------------------------
+   - Contenedor: fondo `inverse-surface`, esquinas `corner-extra-small` (4dp).
+   - Elevación: `level3`.
+   - Dimensiones:
+       Altura 1 línea: 48dp (`--md-sys-measurement-snackbar-min-height` / space-600)
+       Altura 2 líneas: 68dp (`--md-sys-measurement-snackbar-two-line-min-height`)
+       Ancho mínimo: 344dp (`--md-sys-measurement-snackbar-min-width`)
+       Ancho máximo: 672dp (`--md-sys-measurement-snackbar-max-width`)
+   - Espaciado:
+       Padding horizontal: 16dp (`--md-sys-measurement-space-200`)
+       Padding vertical: 14dp (`--md-sys-measurement-space-175`)
+       Gap entre label y acciones: 8dp (`--md-sys-measurement-space-100`)
+   - Tipografía: `body-medium` en `inverse-on-surface`.
+   - Acción de texto: `label-large` en `inverse-primary`, sin fondo ni borde.
+   - Cierre: icono `close` (24dp) en `inverse-on-surface`.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   EL HOST FLOTANTE (Anclaje en viewport o layout de vista)
+   -------------------------------------------------------------------------- */
+.md-snackbar-container {
+  position: fixed;
+  inset-inline-start: 50%;
+  inset-block-end: var(--md-sys-measurement-space-200);
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--md-sys-measurement-space-100);
+  z-index: 1;
+  pointer-events: none;
+  inline-size: calc(100% - (var(--md-sys-measurement-space-200) * 2));
+  max-inline-size: var(--md-sys-measurement-snackbar-max-width);
+}
+
+/* --------------------------------------------------------------------------
+   EL SNACKBAR (Base de 1 línea)
+   -------------------------------------------------------------------------- */
+.md-snackbar {
+  /* Variables locales de componente mapeadas a Capa 2 */
+  --md-comp-snackbar-container-color: var(--md-sys-color-inverse-surface);
+  --md-comp-snackbar-label-color: var(--md-sys-color-inverse-on-surface);
+  --md-comp-snackbar-action-color: var(--md-sys-color-inverse-primary);
+  --md-comp-snackbar-shape: var(--md-sys-shape-corner-extra-small);
+  --md-comp-snackbar-elevation: var(--md-sys-elevation-level3);
+
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--md-sys-measurement-space-100);
+  min-inline-size: var(--md-sys-measurement-snackbar-min-width);
+  max-inline-size: var(--md-sys-measurement-snackbar-max-width);
+  min-block-size: var(--md-sys-measurement-snackbar-min-height);
+  padding-block: var(--md-sys-measurement-space-50);
+  padding-inline: var(--md-sys-measurement-space-200);
+
+  background-color: var(--md-comp-snackbar-container-color);
+  color: var(--md-comp-snackbar-label-color);
+  border-radius: var(--md-comp-snackbar-shape);
+  box-shadow: var(--md-comp-snackbar-elevation);
+  pointer-events: auto;
+  position: relative;
+  overflow: visible;
+}
+
+/* Cuando NO tiene acciones (Par 1 puro), el padding absorbe 14dp (space-175)
+   para que 20px (line-height) + 14px + 14px = 48px exactos */
+.md-snackbar:not(:has(.md-snackbar-actions)) {
+  padding-block: var(--md-sys-measurement-space-175);
+}
+
+/* --------------------------------------------------------------------------
+   VARIANTE MULTILINEA (2 líneas: 68px exactos)
+   -------------------------------------------------------------------------- */
+.md-snackbar-multiline {
+  min-block-size: var(--md-sys-measurement-snackbar-two-line-min-height);
+  padding-block: var(--md-sys-measurement-space-150);
+  align-items: center;
+}
+
+/* --------------------------------------------------------------------------
+   LABEL / CONTENIDO TEXTUAL
+   -------------------------------------------------------------------------- */
+.md-snackbar-label {
+  flex: 1 1 auto;
+  font: var(--md-sys-typescale-body-medium);
+  letter-spacing: var(--md-sys-typescale-body-medium-tracking);
+  color: var(--md-comp-snackbar-label-color);
+  margin: var(--md-sys-measurement-space-0);
+  word-break: break-word;
+}
+
+/* --------------------------------------------------------------------------
+   ACCIONES (Botón de acción y botón de cierre)
+   -------------------------------------------------------------------------- */
+.md-snackbar-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--md-sys-measurement-space-100);
+  flex-shrink: 0;
+  margin-inline-start: auto;
+}
+
+/* --------------------------------------------------------------------------
+   BOTON DE ACCION (Texto en inverse-primary: compacto 36px con ripple)
+   -------------------------------------------------------------------------- */
+.md-snackbar-action {
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden; /* Confinamiento estricto de la onda dentro del botón */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  block-size: var(--md-sys-measurement-space-450);
+  padding-inline: var(--md-sys-measurement-space-100);
+  padding-block: var(--md-sys-measurement-space-0);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--md-sys-shape-corner-full);
+  color: var(--md-comp-snackbar-action-color);
+  font: var(--md-sys-typescale-label-large);
+  letter-spacing: var(--md-sys-typescale-label-large-tracking);
+  text-decoration: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.md-snackbar-action::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-color: currentColor;
+  opacity: 0;
+  transition: opacity var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+  pointer-events: none;
+}
+
+.md-snackbar-action:hover::before {
+  opacity: var(--md-sys-state-hover-state-layer-opacity);
+}
+
+.md-snackbar-action:focus-visible::before {
+  opacity: var(--md-sys-state-focus-state-layer-opacity);
+}
+
+.md-snackbar-action:focus-visible {
+  outline: var(--md-sys-shape-stroke-thin) solid var(--md-comp-snackbar-action-color);
+  outline-offset: var(--md-sys-measurement-space-25);
+}
+
+/* --------------------------------------------------------------------------
+   BOTON DE CIERRE (Icon-button compacto de 36px en inverse-on-surface)
+   -------------------------------------------------------------------------- */
+.md-snackbar-close.md-icon-button {
+  --md-comp-icon-button-icon-color: var(--md-comp-snackbar-label-color);
+  --md-comp-icon-button-width: var(--md-sys-measurement-space-450);
+  --md-comp-icon-button-height: var(--md-sys-measurement-space-450);
+  inline-size: var(--md-sys-measurement-space-450);
+  block-size: var(--md-sys-measurement-space-450);
+  color: var(--md-comp-snackbar-label-color);
+}
+
+/* ==========================================================================
+   FISICA DE MOVIMIENTO CANONICA M3 PARA SNACKBAR
+   ========================================================================== */
+
+/* Estado en reposo del snackbar dentro del host animado */
+.md-snackbar-container .md-snackbar {
+  opacity: 0;
+  transform: translateY(var(--md-sys-measurement-space-200)); /* 16px abajo */
+  pointer-events: none;
+  visibility: hidden;
+  transition-property: transform, opacity, visibility;
+  transition-duration: var(--md-sys-motion-duration-short3);
+  transition-timing-function: var(--md-sys-motion-easing-emphasized-accelerate);
+}
+
+/* Estado activo/visible (Entrada fluida desacelerada: 300ms) */
+.md-snackbar-container .md-snackbar.md-snackbar-visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  visibility: visible;
+  transition-property: transform, opacity, visibility;
+  transition-duration: var(--md-sys-motion-duration-medium2);
+  transition-timing-function: var(--md-sys-motion-easing-emphasized-decelerate);
+}
+
+/* Accesibilidad WCAG / M3 (prefers-reduced-motion) */
+@media (prefers-reduced-motion: reduce) {
+  .md-snackbar-container .md-snackbar,
+  .md-snackbar-container .md-snackbar.md-snackbar-visible {
+    transform: none;
+    transition: none;
+  }
+}

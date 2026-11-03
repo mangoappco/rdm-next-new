@@ -15,6 +15,7 @@ const SELECTOR = [
   '.md-chip',
   '.md-chip-close',
   '.md-segmented-button-item',
+  '.md-snackbar-action',
   'button.md-list-item',
   'a.md-list-item',
   '.md-list-item[tabindex]',

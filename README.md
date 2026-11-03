@@ -1007,7 +1007,7 @@ de dónde sale cada cosa, y el precio es que cada vista tiene que acordarse de e
 
 ## 11. Componentes
 
-El catálogo de M3 tiene decenas de componentes y aquí hay **dieciocho**. Se construyen uno a
+El catálogo de M3 tiene decenas de componentes y aquí hay **veintiuno**. Se construyen uno a
 uno, y ninguno se da por bueno sin medirlo en el navegador: `tools/verify-tokens.mjs`
 comprueba la arquitectura, no que el componente se vea bien.
 

@@ -223,9 +223,16 @@
       select es div directo del escenario y este padding le entra DENTRO
       del host (16dp de aire que el texto copiable no trae), revientando
       la geometria del calco de text-field entre specimen y app.
+
+      Y AHORA .md-snackbar-container: el host de viewport es div directo
+      y este padding engordaba la caja y creaba asimetria vertical.
      --------------------------------------------------------------------- */
-  .sr-specimen:not(.sr-meter) > div:not(.sr-motion-dot):not(.md-divider-vertical):not(.md-button-group):not(.md-segmented-button):not(.md-row):not(.md-select):not(.md-text-field):not(.md-tabs) {
+  .sr-specimen:not(.sr-meter) > div:not(.sr-motion-dot):not(.md-divider-vertical):not(.md-button-group):not(.md-segmented-button):not(.md-row):not(.md-select):not(.md-text-field):not(.md-tabs):not(.md-snackbar-container) {
     padding: var(--md-ref-spacing-200);
+  }
+
+  .sr-specimen > .md-snackbar-container {
+    inset-block-end: var(--md-ref-spacing-0);
   }
 
   /* ------------------------------------------------------------------------

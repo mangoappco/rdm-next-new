@@ -128,6 +128,7 @@ import { initSelect } from './select.js';
 import { initTheme } from './theme.js';
 import { initTopAppBar } from './top-app-bar.js?v=2';
 import { initTabs } from './tabs.js';
+import { initSnackbar } from './snackbar.js';
 
 /* Se registra al cargar el script, no al hacer clic. Los specimens del
    showroom llevan `<dialog open>` a secas, que NO es modal, asi que ahi no
@@ -183,6 +184,10 @@ initTheme();
 /* Tabs: gestión de teclado (WAI-ARIA roving tabindex), selección activa y
    conversión de rueda de ratón (wheel) para scroll horizontal fluido. */
 initTabs();
+
+/* Snackbar: gestión de cierre declarativo [data-close-snackbar], apertura [data-open-snackbar]
+   y temporizador con pausa por hover y focus. */
+initSnackbar();
 
 /* Y aqui iran los que lo necesiten:
      import { registrar as registrarFabMenu } from './fab-menu.js';
