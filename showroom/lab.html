@@ -81,45 +81,45 @@
 
     <p class="md-type-display-large">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consectetur pariatur, unde quaerat recusandae enim ab esse rerum eum minus aperiam dolorem maxime voluptatem laudantium. Quia aliquid at vel nulla asperiores.</p>
 
-
-
-    <!-- Extended FAB a 96dp sobre Navigation Bar -->
-    <button type="button" class="md-fab md-fab-extended md-fab-over-nav" id="demo-fab">
-      <span class="md-icon" aria-hidden="true">add</span>Nuevo pedido<span class="md-fab-touch"></span>
-    </button>
-
-    <!-- Navigation Bar a 0dp (80dp altura) -->
-    <nav class="md-navigation-bar md-navigation-bar-docked" id="demo-nav" role="tablist" aria-label="Navegación conmutada">
-  <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="true" tabindex="0">
-    <span class="md-navigation-bar-indicator">
-      <span class="md-navigation-bar-icon md-icon" aria-hidden="true">home</span>
-    </span>
-    <span class="md-navigation-bar-label">Inicio</span>
-  </button>
-  <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1">
-    <span class="md-navigation-bar-indicator">
-      <span class="md-navigation-bar-icon md-icon" aria-hidden="true">restaurant_menu</span>
-    </span>
-    <span class="md-navigation-bar-label">Menú</span>
-  </button>
-  <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1">
-    <span class="md-navigation-bar-indicator">
-      <span class="md-navigation-bar-icon md-icon" aria-hidden="true">history</span>
-    </span>
-    <span class="md-navigation-bar-label">Historial</span>
-  </button>
-  <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1">
-    <span class="md-navigation-bar-indicator">
-      <span class="md-navigation-bar-icon md-icon" aria-hidden="true">person</span>
-    </span>
-    <span class="md-navigation-bar-label">Perfil</span>
-  </button>
-</nav>
-
-
-
-
-
+    <div class="md-card md-card-outlined" id="ultimo-elemento">
+      <div class="md-card-content">
+        <span class="md-type-title-medium">Última tarjeta del contenido</span>
+        <p class="md-type-body-medium">Este elemento comprueba que el scaffold garantiza los 96dp de respiro inferior para nunca quedar oculto detrás de la Navigation Bar.</p>
+      </div>
+    </div>
   </main>
+
+  <!-- Extended FAB a 96dp sobre Navigation Bar -->
+  <button type="button" class="md-fab md-fab-extended md-fab-over-nav" id="demo-fab">
+    <span class="md-icon" aria-hidden="true">add</span>Nuevo pedido<span class="md-fab-touch"></span>
+  </button>
+
+  <!-- Navigation Bar a 0dp (80dp altura) -->
+  <nav class="md-navigation-bar md-navigation-bar-fixed" id="demo-nav" role="tablist" aria-label="Navegación conmutada">
+    <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="true" tabindex="0">
+      <span class="md-navigation-bar-indicator">
+        <span class="md-navigation-bar-icon md-icon" aria-hidden="true">home</span>
+      </span>
+      <span class="md-navigation-bar-label">Inicio</span>
+    </button>
+    <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1">
+      <span class="md-navigation-bar-indicator">
+        <span class="md-navigation-bar-icon md-icon" aria-hidden="true">restaurant_menu</span>
+      </span>
+      <span class="md-navigation-bar-label">Menú</span>
+    </button>
+    <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1">
+      <span class="md-navigation-bar-indicator">
+        <span class="md-navigation-bar-icon md-icon" aria-hidden="true">history</span>
+      </span>
+      <span class="md-navigation-bar-label">Historial</span>
+    </button>
+    <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1">
+      <span class="md-navigation-bar-indicator">
+        <span class="md-navigation-bar-icon md-icon" aria-hidden="true">person</span>
+      </span>
+      <span class="md-navigation-bar-label">Perfil</span>
+    </button>
+  </nav>
 </body>
 </html>

@@ -90,4 +90,13 @@ export function initNavigationBar() {
       targetItem.click();
     }
   });
+
+  // 3. Autodetección de Scaffold: inyectar clase de holgura al <main> si hay Navigation Bar fija
+  const fixedNav = document.querySelector('.md-navigation-bar-fixed, body > .md-navigation-bar, body > .md-navigation-bar-docked');
+  if (fixedNav) {
+    const main = document.querySelector('main, .md-main-content');
+    if (main && !main.classList.contains('md-has-navigation-bar')) {
+      main.classList.add('md-has-navigation-bar');
+    }
+  }
 }

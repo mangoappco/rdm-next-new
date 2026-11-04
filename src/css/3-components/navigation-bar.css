@@ -226,6 +226,20 @@
   z-index: 1;
 }
 
+/* --------------------------------------------------------------------------
+   SCAFFOLD DE LAYOUT: Holgura de seguridad inferior (Clearance Spacer)
+   ------------------------------------------------------------------------
+   Cuando una vista móvil tiene Navigation Bar fija al fondo (80dp), el
+   contenedor de scroll (`<main>` o `.md-has-navigation-bar`) debe incorporar
+   un respiro inferior de 96dp (80dp de barra + 16dp de gap canónico M3) para
+   que los últimos elementos nunca queden ocultos detrás de la barra.
+   ------------------------------------------------------------------------ */
+.md-has-navigation-bar,
+main:has(~ .md-navigation-bar.md-navigation-bar-fixed),
+main:has(~ * .md-navigation-bar.md-navigation-bar-fixed) {
+  padding-block-end: calc(var(--md-sys-measurement-navigation-bar-height) + var(--md-sys-measurement-space-200));
+}
+
 /* ==========================================================================
    STATE LAYER CANÓNICO M3 (Hover, Focus, Pressed)
    ========================================================================== */
