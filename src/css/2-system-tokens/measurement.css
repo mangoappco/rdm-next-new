@@ -395,8 +395,9 @@
   --md-sys-measurement-navigation-bar-horizontal-indicator-height: var(--md-sys-measurement-space-500); /* 40dp */
   --md-sys-measurement-navigation-bar-horizontal-indicator-max-width: var(--md-ref-container-height-dialog-min); /* 140dp */
 
-  /* Navigation Rail: ancho fijo de 80dp y pastilla activa de 56x32dp (M3 specs). */
+  /* Navigation Rail: ancho fijo colapsado de 80dp, ancho expandido de 280dp (M3 Expressive) y pastilla de 56x32dp. */
   --md-sys-measurement-navigation-rail-width: var(--md-ref-container-width-navigation-rail); /* 80dp */
+  --md-sys-measurement-navigation-rail-expanded-width: var(--md-ref-container-width-menu-max); /* 280dp (M3 Expressive) */
   --md-sys-measurement-navigation-rail-indicator-width: var(--md-sys-measurement-space-700); /* 56dp */
   --md-sys-measurement-navigation-rail-indicator-height: var(--md-sys-measurement-space-400); /* 32dp */
 

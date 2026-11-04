@@ -51,6 +51,7 @@
   padding-block: var(--md-sys-measurement-space-150); /* 12dp arriba y abajo */
   gap: var(--md-sys-measurement-space-150);
   position: relative;
+  transition: inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-spatial-default);
 }
 
 /* --------------------------------------------------------------------------
@@ -170,6 +171,7 @@
 
 .md-navigation-rail-item[aria-selected="true"] .md-navigation-rail-label {
   font-weight: var(--md-sys-typescale-label-medium-weight-prominent);
+  color: var(--md-sys-color-secondary); /* M3 Expressive: etiqueta activa en secondary para destacar del reposo inactivo */
 }
 
 /* --------------------------------------------------------------------------
@@ -208,7 +210,108 @@
   opacity: var(--md-sys-state-disabled-state-layer-opacity);
 }
 
+/* --------------------------------------------------------------------------
+   VARIANTE EXPANDIDA (M3 Expressive: Expanded Navigation Rail)
+   --------------------------------------------------------------------------
+   Sustituye formalmente al Navigation Drawer con ancho de 280dp.
+   Los destinos conmutan a fila horizontal con el glifo a la izquierda y la
+   etiqueta a la derecha; el propio item actúa como pastilla activa con
+   forma corner-full y altura táctil de 56dp.
+   ------------------------------------------------------------------------ */
+.md-navigation-rail-expanded {
+  inline-size: var(--md-sys-measurement-navigation-rail-expanded-width); /* 280dp */
+  min-inline-size: var(--md-sys-measurement-navigation-rail-expanded-width);
+  padding-inline: var(--md-sys-measurement-space-150); /* 12dp en los flancos */
+  align-items: stretch;
+}
+
+.md-navigation-rail-expanded .md-navigation-rail-header {
+  align-items: flex-start;
+  padding-inline-start: var(--md-sys-measurement-space-50); /* 4dp de compensación visual */
+}
+
+.md-navigation-rail-expanded .md-navigation-rail-content {
+  gap: var(--md-sys-measurement-space-50); /* 4dp entre destinos en lista expandida */
+}
+
+.md-navigation-rail-expanded .md-navigation-rail-item {
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--md-sys-measurement-space-150); /* 12dp entre indicador de icono y texto */
+  block-size: var(--md-sys-measurement-space-700); /* 56dp cota canónica */
+  min-block-size: var(--md-sys-measurement-space-700);
+  border-radius: var(--md-sys-shape-corner-full);
+  padding-inline: var(--md-sys-measurement-space-200); /* 16dp lateral */
+  transition: background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+  position: relative;
+}
+
+.md-navigation-rail-expanded .md-navigation-rail-item .md-navigation-rail-indicator {
+  /* En modo expandido el icono no requiere pastilla independiente: el propio item es la pastilla */
+  inline-size: var(--md-sys-measurement-icon-size); /* 24dp */
+  block-size: var(--md-sys-measurement-icon-size);
+  background-color: transparent !important;
+}
+
+.md-navigation-rail-expanded .md-navigation-rail-item .md-navigation-rail-label {
+  margin-block-start: var(--md-sys-measurement-space-0); /* Sin offset vertical en fila */
+  font: var(--md-sys-typescale-label-large);
+  letter-spacing: var(--md-sys-typescale-label-large-tracking);
+}
+
+/* Estado activo en modo expandido: el fondo secondary-container tiñe todo el item */
+.md-navigation-rail-expanded .md-navigation-rail-item[aria-selected="true"] {
+  background-color: var(--md-sys-color-secondary-container);
+}
+
+.md-navigation-rail-expanded .md-navigation-rail-item[aria-selected="true"] .md-navigation-rail-icon {
+  color: var(--md-sys-color-on-secondary-container);
+  --md-sys-icon-fill: var(--md-sys-icon-fill-full);
+}
+
+.md-navigation-rail-expanded .md-navigation-rail-item[aria-selected="true"] .md-navigation-rail-label {
+  color: var(--md-sys-color-on-secondary-container);
+  font-weight: var(--md-sys-typescale-label-large-weight-prominent);
+}
+
+/* State layers para el item extendido */
+.md-navigation-rail-expanded .md-navigation-rail-item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-color: transparent;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+}
+
+.md-navigation-rail-expanded .md-navigation-rail-item:hover:not(:disabled):not([aria-disabled="true"]):not([aria-selected="true"])::before {
+  background-color: var(--md-sys-color-on-surface);
+  opacity: var(--md-sys-state-hover-state-layer-opacity);
+}
+
+.md-navigation-rail-expanded .md-navigation-rail-item[aria-selected="true"]:hover:not(:disabled):not([aria-disabled="true"])::before {
+  background-color: var(--md-sys-color-on-secondary-container);
+  opacity: var(--md-sys-state-hover-state-layer-opacity);
+}
+
+.md-navigation-rail-expanded .md-navigation-rail-item:active:not(:disabled):not([aria-disabled="true"]):not([aria-selected="true"])::before {
+  background-color: var(--md-sys-color-on-surface);
+  opacity: var(--md-sys-state-pressed-state-layer-opacity);
+}
+
+.md-navigation-rail-expanded .md-navigation-rail-item[aria-selected="true"]:active:not(:disabled):not([aria-disabled="true"])::before {
+  background-color: var(--md-sys-color-on-secondary-container);
+  opacity: var(--md-sys-state-pressed-state-layer-opacity);
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .md-navigation-rail {
+    transition: none;
+  }
   .md-navigation-rail-indicator,
   .md-navigation-rail-label,
   .md-navigation-rail-indicator::before {
