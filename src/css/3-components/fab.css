@@ -497,11 +497,13 @@
    ---------------------------------------------------------------------------
    M3 prohibe la muesca del M2 (cradle): el FAB NO perfora ni se incrusta en
    la Navigation Bar; flota por encima en Y y en Z. Su borde inferior debe
-   quedar a 16dp del TECHO de la barra de 80dp: 80 + 16 = 96dp de cota del
-   fondo. `_md-comp-fab.scss` y `_md-comp-navigation-bar.scss` de v34.0.21
-   dan las dos cotas; el offset lo compone este archivo sin token nuevo.
+   quedar a 16dp del TECHO de la barra:
+   - Sobre Navigation Bar estándar (80dp): 80 + 16 = 96dp de cota del fondo.
+   - Sobre Navigation Bar horizontal (64dp): 64 + 16 = 80dp de cota del fondo.
 
-   Ambos selectores (.md-fab-over-nav y .md-fab-over-nav-fixed) son fixed a 96dp.
+   Ambos selectores (.md-fab-over-nav y .md-fab-over-nav-fixed) son fixed.
+   El selector relacional :has() adapta la cota automáticamente en 100% CSS puro
+   sin requerir intervención de JavaScript ni recálculos en runtime.
    ------------------------------------------------------------------------ */
 
 .md-fab.md-fab-over-nav,
@@ -509,9 +511,19 @@
 .md-fab.md-fab-over-nav-fixed,
 .md-fab-extended.md-fab-over-nav-fixed {
   position: fixed;
-  bottom: calc(var(--md-sys-measurement-navigation-bar-height) + var(--md-sys-measurement-space-200));
+  bottom: calc(var(--md-sys-measurement-navigation-bar-height) + var(--md-sys-measurement-space-200)); /* 96dp */
   right: var(--md-sys-measurement-space-200);
   z-index: 1;
+}
+
+/* Convivencia automática con Navigation Bar Horizontal (64dp + 16dp = 80dp) en 100% CSS puro */
+body:has(.md-navigation-bar-horizontal) .md-fab.md-fab-over-nav,
+body:has(.md-navigation-bar-horizontal) .md-fab-extended.md-fab-over-nav,
+body:has(.md-navigation-bar-horizontal) .md-fab.md-fab-over-nav-fixed,
+body:has(.md-navigation-bar-horizontal) .md-fab-extended.md-fab-over-nav-fixed,
+body:has(.md-navigation-bar-horizontal.md-navigation-bar-fixed) .md-fab.md-fab-fixed,
+body:has(.md-navigation-bar-horizontal.md-navigation-bar-fixed) .md-fab-extended.md-fab-fixed {
+  bottom: calc(var(--md-sys-measurement-navigation-bar-horizontal-height) + var(--md-sys-measurement-space-200)); /* 80dp */
 }
 
 /* ---------------------------------------------------------------------------
