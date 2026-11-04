@@ -517,19 +517,24 @@
 }
 
 /* Convivencia automática con Navigation Bar Horizontal (64dp + 16dp = 80dp) en 100% CSS puro.
-   En el Showroom, cada espécimen está aislado dentro de su propio contenedor (.sr-specimen),
-   mientras que en páginas de producción (lab.html, app) el FAB convive a nivel de documento.
-   La exclusión :not(.sr-specimen:has(.md-navigation-bar:not(.md-navigation-bar-horizontal))) asegura
-   que los especímenes del Showroom con barra vertical estándar jamás sean contaminados. */
-.sr-specimen:has(.md-navigation-bar-horizontal) .md-fab.md-fab-over-nav,
-.sr-specimen:has(.md-navigation-bar-horizontal) .md-fab-extended.md-fab-over-nav,
-body:not(:has(.sr-specimen)):has(.md-navigation-bar-horizontal) .md-fab.md-fab-over-nav,
-body:not(:has(.sr-specimen)):has(.md-navigation-bar-horizontal) .md-fab-extended.md-fab-over-nav,
-body:not(:has(.sr-specimen)):has(.md-navigation-bar-horizontal) .md-fab.md-fab-over-nav-fixed,
-body:not(:has(.sr-specimen)):has(.md-navigation-bar-horizontal) .md-fab-extended.md-fab-over-nav-fixed,
-body:not(:has(.sr-specimen)):has(.md-navigation-bar-horizontal) .md-fab.md-fab-fixed,
-body:not(:has(.sr-specimen)):has(.md-navigation-bar-horizontal) .md-fab-extended.md-fab-fixed {
+   Acotada para que conviva limpiamente tanto en producción (body) como en escenarios
+   locales del Showroom (.sr-specimen, .sr-specimen-tall, .sr-specimen-dock). */
+:is(body, .sr-specimen, .sr-specimen-tall, .sr-specimen-dock):has(.md-navigation-bar-horizontal) .md-fab.md-fab-over-nav,
+:is(body, .sr-specimen, .sr-specimen-tall, .sr-specimen-dock):has(.md-navigation-bar-horizontal) .md-fab-extended.md-fab-over-nav,
+:is(body, .sr-specimen, .sr-specimen-tall, .sr-specimen-dock):has(.md-navigation-bar-horizontal) .md-fab.md-fab-over-nav-fixed,
+:is(body, .sr-specimen, .sr-specimen-tall, .sr-specimen-dock):has(.md-navigation-bar-horizontal) .md-fab-extended.md-fab-over-nav-fixed,
+:is(body, .sr-specimen, .sr-specimen-tall, .sr-specimen-dock):has(.md-navigation-bar-horizontal) .md-fab.md-fab-fixed,
+:is(body, .sr-specimen, .sr-specimen-tall, .sr-specimen-dock):has(.md-navigation-bar-horizontal) .md-fab-extended.md-fab-fixed {
   bottom: calc(var(--md-sys-measurement-navigation-bar-horizontal-height) + var(--md-sys-measurement-space-200)); /* 80dp */
+}
+
+/* Cuando el espécimen local o el contenedor de la pantalla contiene la barra vertical base,
+   mantiene incondicionalmente la cota canónica de 96dp (16dp libres sobre la barra de 80dp) */
+:is(.sr-specimen, .sr-specimen-tall, .sr-specimen-dock):has(.md-navigation-bar:not(.md-navigation-bar-horizontal)) .md-fab.md-fab-over-nav,
+:is(.sr-specimen, .sr-specimen-tall, .sr-specimen-dock):has(.md-navigation-bar:not(.md-navigation-bar-horizontal)) .md-fab-extended.md-fab-over-nav,
+:is(.sr-specimen, .sr-specimen-tall, .sr-specimen-dock):has(.md-navigation-bar:not(.md-navigation-bar-horizontal)) .md-fab.md-fab-over-nav-fixed,
+:is(.sr-specimen, .sr-specimen-tall, .sr-specimen-dock):has(.md-navigation-bar:not(.md-navigation-bar-horizontal)) .md-fab-extended.md-fab-over-nav-fixed {
+  bottom: calc(var(--md-sys-measurement-navigation-bar-height) + var(--md-sys-measurement-space-200)); /* 96dp */
 }
 
 /* ---------------------------------------------------------------------------
