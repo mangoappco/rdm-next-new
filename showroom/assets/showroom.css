@@ -182,6 +182,21 @@
     overflow: hidden;
   }
 
+  /* ESCENARIO PARA NAVIGATION RAIL
+     --------------------------------------------------------------------------
+     Escenario contenedor vertical de 432px de altura para evaluar la barra
+     lateral en condiciones realistas de tablet/POS. Ancla el rail a la
+     izquierda y alinea arriba para reflejar fielmente el layout M3.
+     --------------------------------------------------------------------- */
+  .sr-specimen-rail {
+    min-height: calc(var(--md-ref-spacing-900) * 6); /* 432px */
+    display: flex;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding: var(--md-ref-spacing-0);
+    overflow: hidden;
+  }
+
   /* Caja con capa en escenario simple: mismo contrato (la caja aporta el
      contexto, el span el tinte), sin altura minima. Generaliza el relative
      a todo div directo de escenario: sin hijos posicionados es inocuo. */
