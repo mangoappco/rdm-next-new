@@ -192,9 +192,9 @@
     min-height: calc(var(--md-ref-spacing-900) * 6); /* 432px */
     display: flex;
     flex-direction: row;
-    align-items: stretch;
+    align-items: stretch !important;
     justify-content: flex-start;
-    padding: var(--md-ref-spacing-0);
+    padding: var(--md-ref-spacing-0) !important;
     overflow: hidden;
   }
 
