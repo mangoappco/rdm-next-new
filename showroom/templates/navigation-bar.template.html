@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Navigation Bar de RDM Next: barra inferior de navegación primaria de 80dp con pastilla de active indicator de 64×32dp y de 3 a 5 destinos repartidos en flex.">
+  <title>Navigation Bar — RDM ManGo! App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+  <link rel="stylesheet" href="../../src/css/main.css?v=66">
+  <link rel="stylesheet" href="../assets/showroom.css">
+  <script type="module" src="../../src/js/main.js"></script>
+  <script src="../assets/showroom.js"></script>
+</head>
+
+<!--
+  ESTA VISTA TIENE OCHO PARES ATOMICOS EN UN SOLO BLOQUE (especificacion y
+  anatomia): un especimen evalua UNA sola configuracion estructural a la
+  vez. CERO casos de uso ManGo! App: la aplicacion al negocio
+  (comandero, KDS, mesas) queda reservada para la Galeria de Usos Reales
+  (showroom/gallery.html), la misma regla de arquitectura que Top App Bar.
+  1. Base anatomy & states (3 destinos: 1 activo, 2 inactivos en reposo)
+  2. Canonical badges (dogfooding de .md-badge-anchor con conteo y dot)
+  3. Mode Labeled (rotulacion permanente de todos los destinos)
+  4. Mode Selected-only (.md-navigation-bar-selected-label)
+  5. Four-destination scale (reparto flex: 1 en el rango 4)
+  6. Five-destination scale (limite maximo canonico de M3)
+  7. Disabled states (bloqueo al 38% con contraste habilitado)
+  8. Viewport docking & interactive switching (playground, cierre
+     interactivo: convivencia canon M3 con un Extended FAB flotando a
+     96dp del fondo sobre la barra acoplada, sin muesca M2; el
+     modificador de convivencia es .md-fab-over-nav en fab.css y el
+     escenario del espécimen es .sr-specimen-dock)
+
+  LOS ACUERDOS DEL SHOWROOM
+  -------------------------
+  1. Jerarquia: h1 (componente) > h2 (bloque) > h3 (par).
+  2. REGLA 11: el texto de cada pre.sr-code desescapado es identico al
+     innerHTML de su .sr-specimen (normalizando solo el espacio).
+  3. REGLA 6: sin atributos de estilo en linea ni bloques <style>.
+  4. REGLA 9: iconos siempre con .md-icon, nunca material-symbols-*.
+  5. REGLA 10: toda clase md-* del showroom existe en src/css/.
+  6. REGLA 13: cada snippet es autonomo (solo clases del sistema).
+  7. ARIA: nav con role="tablist" (W3C: aria-selected solo es valido en
+     role="tab"); items con role="tab", aria-selected y roving tabindex;
+     badges aria-hidden anuncian via aria-label del item anfitrion
+     (REGLA de M3: el badge nunca duplica texto).
+-->
+
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <!-- CABECERA INSTITUCIONAL DEL SHOWROOM (DOGFOODING) -->
+  <header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll role="banner" aria-label="Cabecera institucional del showroom">
+    <div class="md-top-app-bar-leading">
+      <a href="../index.html" class="md-icon-button" aria-label="Volver al catálogo">
+        <span class="md-icon" aria-hidden="true">arrow_back</span>
+      </a>
+    </div>
+    <div class="md-top-app-bar-content">
+      <span class="md-top-app-bar-title">Navigation Bar</span>
+      <span class="md-top-app-bar-subtitle">RDM Next · ManGo! App</span>
+    </div>
+    <div class="md-top-app-bar-trailing">
+      <button type="button" class="md-icon-button" data-theme-toggle aria-label="Tema del sistema activo"><span class="md-icon" aria-hidden="true">brightness_auto</span></button>
+    </div>
+  </header>
+
+  <main class="sr-page">
+
+    <!-- HEADER: inicio (barra + titulo + descripcion) -->
+    <header class="sr-header">
+      <h1 class="md-type-display-large">Navigation Bar</h1>
+      <p class="md-type-body-large">Barra inferior de navegación primaria de 80dp: reparte de 3 a 5 destinos en flex y señala el activo con la pastilla del active indicator.</p>
+    </header>
+    <!-- HEADER: fin -->
+
+    <hr class="md-divider">
+
+    <!-- ====================================================================
+         BLOQUE UNICO: ESPECIFICACION TECNICA Y ANATOMIA
+         ==================================================================== -->
+    <h2 class="md-type-headline-medium">Especificación y anatomía</h2>
+
+    <!-- PAR 1: Base anatomy & states -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Base anatomy &amp; states</h3>
+      <p class="md-type-body-medium">Anatomía base en reposo de 80dp: el destino activo enciende la pastilla de 64×32dp y los inactivos la dejan transparente.</p>
+
+      <div class="sr-specimen">
+        <nav class="md-navigation-bar" role="tablist" aria-label="Navegación principal">
+          <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="true" tabindex="0">
+            <span class="md-navigation-bar-indicator">
+              <span class="md-navigation-bar-icon md-icon" aria-hidden="true">home</span>
+            </span>
+            <span class="md-navigation-bar-label">Inicio</span>
+          </button>
+          <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1">
+            <span class="md-navigation-bar-indicator">
+              <span class="md-navigation-bar-icon md-icon" aria-hidden="true">search</span>
+            </span>
+            <span class="md-navigation-bar-label">Explorar</span>
+          </button>
+          <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1">
+            <span class="md-navigation-bar-indicator">
+              <span class="md-navigation-bar-icon md-icon" aria-hidden="true">settings</span>
+            </span>
+            <span class="md-navigation-bar-label">Ajustes</span>
+          </button>
+        </nav>
+      </div>
+
+      <pre class="sr-code"><code>&lt;nav class="md-navigation-bar" role="tablist" aria-label="Navegación principal"&gt;
+  &lt;button type="button" class="md-navigation-bar-item" role="tab" aria-selected="true" tabindex="0"&gt;
+    &lt;span class="md-navigation-bar-indicator"&gt;
+      &lt;span class="md-navigation-bar-icon md-icon" aria-hidden="true"&gt;home&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;span class="md-navigation-bar-label"&gt;Inicio&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1"&gt;
+    &lt;span class="md-navigation-bar-indicator"&gt;
+      &lt;span class="md-navigation-bar-icon md-icon" aria-hidden="true"&gt;search&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;span class="md-navigation-bar-label"&gt;Explorar&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1"&gt;
+    &lt;span class="md-navigation-bar-indicator"&gt;
+      &lt;span class="md-navigation-bar-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;span class="md-navigation-bar-label"&gt;Ajustes&lt;/span&gt;
+  &lt;/button&gt;
+&lt;/nav&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- PAR 2: Canonical badges -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Canonical badges</h3>
+      <p class="md-type-body-medium">Pastilla de conteo y small dot anclados al glifo con .md-badge-anchor; el anfitrión los anuncia en su aria-label.</p>
+
+      <div class="sr-specimen">
+        <nav class="md-navigation-bar" role="tablist" aria-label="Navegación con conteos">
+          <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="true" tabindex="0">
+            <span class="md-navigation-bar-indicator">
+              <span class="md-navigation-bar-icon md-icon" aria-hidden="true">inbox</span>
+            </span>
+            <span class="md-navigation-bar-label">Recibidos</span>
+          </button>
+          <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" aria-label="Mensajes, 12 sin leer" tabindex="-1">
+            <span class="md-navigation-bar-indicator">
+              <span class="md-badge-anchor">
+                <span class="md-navigation-bar-icon md-icon" aria-hidden="true">mail</span>
+                <span class="md-badge md-badge-large" aria-hidden="true">12</span>
+              </span>
+            </span>
+            <span class="md-navigation-bar-label">Mensajes</span>
+          </button>
+          <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" aria-label="Alertas, nuevas notificaciones" tabindex="-1">
+            <span class="md-navigation-bar-indicator">
+              <span class="md-badge-anchor">
+                <span class="md-navigation-bar-icon md-icon" aria-hidden="true">notifications</span>
+                <span class="md-badge md-badge-small" aria-hidden="true"></span>
+              </span>
+            </span>
+            <span class="md-navigation-bar-label">Alertas</span>
+          </button>
+        </nav>
+      </div>
+
+      <pre class="sr-code"><code>&lt;nav class="md-navigation-bar" role="tablist" aria-label="Navegación con conteos"&gt;
+  &lt;button type="button" class="md-navigation-bar-item" role="tab" aria-selected="true" tabindex="0"&gt;
+    &lt;span class="md-navigation-bar-indicator"&gt;
+      &lt;span class="md-navigation-bar-icon md-icon" aria-hidden="true"&gt;inbox&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;span class="md-navigation-bar-label"&gt;Recibidos&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" aria-label="Mensajes, 12 sin leer" tabindex="-1"&gt;
+    &lt;span class="md-navigation-bar-indicator"&gt;
+      &lt;span class="md-badge-anchor"&gt;
+        &lt;span class="md-navigation-bar-icon md-icon" aria-hidden="true"&gt;mail&lt;/span&gt;
+        &lt;span class="md-badge md-badge-large" aria-hidden="true"&gt;12&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/span&gt;
+    &lt;span class="md-navigation-bar-label"&gt;Mensajes&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" aria-label="Alertas, nuevas notificaciones" tabindex="-1"&gt;
+    &lt;span class="md-navigation-bar-indicator"&gt;
+      &lt;span class="md-badge-anchor"&gt;
+        &lt;span class="md-navigation-bar-icon md-icon" aria-hidden="true"&gt;notifications&lt;/span&gt;
+        &lt;span class="md-badge md-badge-small" aria-hidden="true"&gt;&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/span&gt;
+    &lt;span class="md-navigation-bar-label"&gt;Alertas&lt;/span&gt;
+  &lt;/button&gt;
+&lt;/nav&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- PAR 3: Mode Labeled -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Mode Labeled</h3>
+      <p class="md-type-body-medium">Rotulación permanente canónica: todos los destinos muestran su etiqueta tanto en activo como en reposo.</p>
+
+      <div class="sr-specimen">
+        <nav class="md-navigation-bar" role="tablist" aria-label="Navegación con etiquetas permanentes">
+          <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="true" tabindex="0">
+            <span class="md-navigation-bar-indicator">
+              <span class="md-navigation-bar-icon md-icon" aria-hidden="true">dashboard</span>
+            </span>
+            <span class="md-navigation-bar-label">Tablero</span>
+          </button>
+          <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1">
+            <span class="md-navigation-bar-indicator">
+              <span class="md-navigation-bar-icon md-icon" aria-hidden="true">receipt_long</span>
+            </span>
+            <span class="md-navigation-bar-label">Facturas</span>
+          </button>
+          <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1">
+            <span class="md-navigation-bar-indicator">
+              <span class="md-navigation-bar-icon md-icon" aria-hidden="true">inventory_2</span>
+            </span>
+            <span class="md-navigation-bar-label">Almacén</span>
+          </button>
+        </nav>
+      </div>
+
+      <pre class="sr-code"><code>&lt;nav class="md-navigation-bar" role="tablist" aria-label="Navegación con etiquetas permanentes"&gt;
+  &lt;button type="button" class="md-navigation-bar-item" role="tab" aria-selected="true" tabindex="0"&gt;
+    &lt;span class="md-navigation-bar-indicator"&gt;
+      &lt;span class="md-navigation-bar-icon md-icon" aria-hidden="true"&gt;dashboard&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;span class="md-navigation-bar-label"&gt;Tablero&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1"&gt;
+    &lt;span class="md-navigation-bar-indicator"&gt;
+      &lt;span class="md-navigation-bar-icon md-icon" aria-hidden="true"&gt;receipt_long&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;span class="md-navigation-bar-label"&gt;Facturas&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1"&gt;
+    &lt;span class="md-navigation-bar-indicator"&gt;
+      &lt;span class="md-navigation-bar-icon md-icon" aria-hidden="true"&gt;inventory_2&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;span class="md-navigation-bar-label"&gt;Almacén&lt;/span&gt;
+  &lt;/button&gt;
+&lt;/nav&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- PAR 4: Mode Selected-only -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Mode Selected-only</h3>
+      <p class="md-type-body-medium">Variante compacta con .md-navigation-bar-selected-label: la etiqueta solo se despliega en el destino seleccionado.</p>
+
+      <div class="sr-specimen">
+        <nav class="md-navigation-bar md-navigation-bar-selected-label" role="tablist" aria-label="Navegación con etiqueta solo activa">
+          <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="true" tabindex="0">
+            <span class="md-navigation-bar-indicator">
+              <span class="md-navigation-bar-icon md-icon" aria-hidden="true">dashboard</span>
+            </span>
+            <span class="md-navigation-bar-label">Tablero</span>
+          </button>
+          <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1">
+            <span class="md-navigation-bar-indicator">
+              <span class="md-navigation-bar-icon md-icon" aria-hidden="true">receipt_long</span>
+            </span>
+            <span class="md-navigation-bar-label">Facturas</span>
+          </button>
+          <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1">
+            <span class="md-navigation-bar-indicator">
+              <span class="md-navigation-bar-icon md-icon" aria-hidden="true">inventory_2</span>
+            </span>
+            <span class="md-navigation-bar-label">Almacén</span>
+          </button>
+        </nav>
+      </div>
+
+      <pre class="sr-code"><code>&lt;nav class="md-navigation-bar md-navigation-bar-selected-label" role="tablist" aria-label="Navegación con etiqueta solo activa"&gt;
+  &lt;button type="button" class="md-navigation-bar-item" role="tab" aria-selected="true" tabindex="0"&gt;
+    &lt;span class="md-navigation-bar-indicator"&gt;
+      &lt;span class="md-navigation-bar-icon md-icon" aria-hidden="true"&gt;dashboard&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;span class="md-navigation-bar-label"&gt;Tablero&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1"&gt;
+    &lt;span class="md-navigation-bar-indicator"&gt;
+      &lt;span class="md-navigation-bar-icon md-icon" aria-hidden="true"&gt;receipt_long&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;span class="md-navigation-bar-label"&gt;Facturas&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1"&gt;
+    &lt;span class="md-navigation-bar-indicator"&gt;
+      &lt;span class="md-navigation-bar-icon md-icon" aria-hidden="true"&gt;inventory_2&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;span class="md-navigation-bar-label"&gt;Almacén&lt;/span&gt;
+  &lt;/button&gt;
+&lt;/nav&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- PAR 5: Four-destination scale -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Four-destination scale</h3>
+      <p class="md-type-body-medium">Distribución simétrica intrínseca mediante flex: 1 sobre cuatro destinos canónicos de primer nivel.</p>
+
+      <div class="sr-specimen">
+        <nav class="md-navigation-bar" role="tablist" aria-label="Navegación de cuatro destinos">
+          <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="true" tabindex="0">
+            <span class="md-navigation-bar-indicator">
+              <span class="md-navigation-bar-icon md-icon" aria-hidden="true">home</span>
+            </span>
+            <span class="md-navigation-bar-label">Inicio</span>
+          </button>
+          <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1">
+            <span class="md-navigation-bar-indicator">
+              <span class="md-navigation-bar-icon md-icon" aria-hidden="true">search</span>
+            </span>
+            <span class="md-navigation-bar-label">Buscar</span>
+          </button>
+          <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1">
+            <span class="md-navigation-bar-indicator">
+              <span class="md-navigation-bar-icon md-icon" aria-hidden="true">favorite</span>
+            </span>
+            <span class="md-navigation-bar-label">Favoritos</span>
+          </button>
+          <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1">
+            <span class="md-navigation-bar-indicator">
+              <span class="md-navigation-bar-icon md-icon" aria-hidden="true">person</span>
+            </span>
+            <span class="md-navigation-bar-label">Perfil</span>
+          </button>
+        </nav>
+      </div>
+
+      <pre class="sr-code"><code>&lt;nav class="md-navigation-bar" role="tablist" aria-label="Navegación de cuatro destinos"&gt;
+  &lt;button type="button" class="md-navigation-bar-item" role="tab" aria-selected="true" tabindex="0"&gt;
+    &lt;span class="md-navigation-bar-indicator"&gt;
+      &lt;span class="md-navigation-bar-icon md-icon" aria-hidden="true"&gt;home&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;span class="md-navigation-bar-label"&gt;Inicio&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1"&gt;
+    &lt;span class="md-navigation-bar-indicator"&gt;
+      &lt;span class="md-navigation-bar-icon md-icon" aria-hidden="true"&gt;search&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;span class="md-navigation-bar-label"&gt;Buscar&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1"&gt;
+    &lt;span class="md-navigation-bar-indicator"&gt;
+      &lt;span class="md-navigation-bar-icon md-icon" aria-hidden="true"&gt;favorite&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;span class="md-navigation-bar-label"&gt;Favoritos&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1"&gt;
+    &lt;span class="md-navigation-bar-indicator"&gt;
+      &lt;span class="md-navigation-bar-icon md-icon" aria-hidden="true"&gt;person&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;span class="md-navigation-bar-label"&gt;Perfil&lt;/span&gt;
+  &lt;/button&gt;
+&lt;/nav&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- PAR 6: Five-destination scale -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Five-destination scale</h3>
+      <p class="md-type-body-medium">Límite máximo oficial de Material Design 3 con cinco destinos distribuidos uniformemente sin colisiones de área táctil.</p>
+
+      <div class="sr-specimen">
+        <nav class="md-navigation-bar" role="tablist" aria-label="Navegación de cinco destinos">
+          <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="true" tabindex="0">
+            <span class="md-navigation-bar-indicator">
+              <span class="md-navigation-bar-icon md-icon" aria-hidden="true">home</span>
+            </span>
+            <span class="md-navigation-bar-label">Inicio</span>
+          </button>
+          <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1">
+            <span class="md-navigation-bar-indicator">
+              <span class="md-navigation-bar-icon md-icon" aria-hidden="true">search</span>
+            </span>
+            <span class="md-navigation-bar-label">Buscar</span>
+          </button>
+          <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1">
+            <span class="md-navigation-bar-indicator">
+              <span class="md-navigation-bar-icon md-icon" aria-hidden="true">favorite</span>
+            </span>
+            <span class="md-navigation-bar-label">Favoritos</span>
+          </button>
+          <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1">
+            <span class="md-navigation-bar-indicator">
+              <span class="md-navigation-bar-icon md-icon" aria-hidden="true">person</span>
+            </span>
+            <span class="md-navigation-bar-label">Perfil</span>
+          </button>
+          <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1">
+            <span class="md-navigation-bar-indicator">
+              <span class="md-navigation-bar-icon md-icon" aria-hidden="true">settings</span>
+            </span>
+            <span class="md-navigation-bar-label">Ajustes</span>
+          </button>
+        </nav>
+      </div>
+
+      <pre class="sr-code"><code>&lt;nav class="md-navigation-bar" role="tablist" aria-label="Navegación de cinco destinos"&gt;
+  &lt;button type="button" class="md-navigation-bar-item" role="tab" aria-selected="true" tabindex="0"&gt;
+    &lt;span class="md-navigation-bar-indicator"&gt;
+      &lt;span class="md-navigation-bar-icon md-icon" aria-hidden="true"&gt;home&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;span class="md-navigation-bar-label"&gt;Inicio&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1"&gt;
+    &lt;span class="md-navigation-bar-indicator"&gt;
+      &lt;span class="md-navigation-bar-icon md-icon" aria-hidden="true"&gt;search&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;span class="md-navigation-bar-label"&gt;Buscar&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1"&gt;
+    &lt;span class="md-navigation-bar-indicator"&gt;
+      &lt;span class="md-navigation-bar-icon md-icon" aria-hidden="true"&gt;favorite&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;span class="md-navigation-bar-label"&gt;Favoritos&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1"&gt;
+    &lt;span class="md-navigation-bar-indicator"&gt;
+      &lt;span class="md-navigation-bar-icon md-icon" aria-hidden="true"&gt;person&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;span class="md-navigation-bar-label"&gt;Perfil&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1"&gt;
+    &lt;span class="md-navigation-bar-indicator"&gt;
+      &lt;span class="md-navigation-bar-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;span class="md-navigation-bar-label"&gt;Ajustes&lt;/span&gt;
+  &lt;/button&gt;
+&lt;/nav&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- PAR 7: Disabled states -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Disabled states</h3>
+      <p class="md-type-body-medium">Destinos bloqueados con pointer-events: none y atenuación canónica al 38% sobre el contenido — activo deshabilitado, inactivo deshabilitado y uno habilitado de contraste.</p>
+
+      <div class="sr-specimen">
+        <nav class="md-navigation-bar" role="tablist" aria-label="Navegación con destinos deshabilitados">
+          <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="true" tabindex="-1" disabled aria-disabled="true">
+            <span class="md-navigation-bar-indicator">
+              <span class="md-navigation-bar-icon md-icon" aria-hidden="true">home</span>
+            </span>
+            <span class="md-navigation-bar-label">Inicio</span>
+          </button>
+          <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1" disabled aria-disabled="true">
+            <span class="md-navigation-bar-indicator">
+              <span class="md-navigation-bar-icon md-icon" aria-hidden="true">search</span>
+            </span>
+            <span class="md-navigation-bar-label">Buscar</span>
+          </button>
+          <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="0">
+            <span class="md-navigation-bar-indicator">
+              <span class="md-navigation-bar-icon md-icon" aria-hidden="true">settings</span>
+            </span>
+            <span class="md-navigation-bar-label">Ajustes</span>
+          </button>
+        </nav>
+      </div>
+
+      <pre class="sr-code"><code>&lt;nav class="md-navigation-bar" role="tablist" aria-label="Navegación con destinos deshabilitados"&gt;
+  &lt;button type="button" class="md-navigation-bar-item" role="tab" aria-selected="true" tabindex="-1" disabled aria-disabled="true"&gt;
+    &lt;span class="md-navigation-bar-indicator"&gt;
+      &lt;span class="md-navigation-bar-icon md-icon" aria-hidden="true"&gt;home&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;span class="md-navigation-bar-label"&gt;Inicio&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1" disabled aria-disabled="true"&gt;
+    &lt;span class="md-navigation-bar-indicator"&gt;
+      &lt;span class="md-navigation-bar-icon md-icon" aria-hidden="true"&gt;search&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;span class="md-navigation-bar-label"&gt;Buscar&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="0"&gt;
+    &lt;span class="md-navigation-bar-indicator"&gt;
+      &lt;span class="md-navigation-bar-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;span class="md-navigation-bar-label"&gt;Ajustes&lt;/span&gt;
+  &lt;/button&gt;
+&lt;/nav&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- PAR 8: Viewport docking & interactive switching -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Viewport docking &amp; interactive switching</h3>
+      <p class="md-type-body-medium">Playground de cierre: el Extended FAB flota a 96dp sobre la barra acoplada (.md-fab-over-nav, canon M3 sin muesca) y el teclado con el evento md-navigation-bar:change conmutan la selección.</p>
+
+      <div class="sr-specimen sr-specimen-dock">
+        <button type="button" class="md-fab md-fab-extended md-fab-over-nav"><span class="md-icon" aria-hidden="true">add</span>Nuevo pedido<span class="md-fab-touch"></span></button>
+        <nav class="md-navigation-bar md-navigation-bar-docked" role="tablist" aria-label="Navegación conmutada">
+          <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="true" tabindex="0">
+            <span class="md-navigation-bar-indicator">
+              <span class="md-navigation-bar-icon md-icon" aria-hidden="true">home</span>
+            </span>
+            <span class="md-navigation-bar-label">Inicio</span>
+          </button>
+          <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1">
+            <span class="md-navigation-bar-indicator">
+              <span class="md-navigation-bar-icon md-icon" aria-hidden="true">restaurant_menu</span>
+            </span>
+            <span class="md-navigation-bar-label">Menú</span>
+          </button>
+          <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1">
+            <span class="md-navigation-bar-indicator">
+              <span class="md-navigation-bar-icon md-icon" aria-hidden="true">history</span>
+            </span>
+            <span class="md-navigation-bar-label">Historial</span>
+          </button>
+          <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1">
+            <span class="md-navigation-bar-indicator">
+              <span class="md-navigation-bar-icon md-icon" aria-hidden="true">person</span>
+            </span>
+            <span class="md-navigation-bar-label">Perfil</span>
+          </button>
+        </nav>
+      </div>
+
+      <pre class="sr-code"><code>&lt;button type="button" class="md-fab md-fab-extended md-fab-over-nav"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;add&lt;/span&gt;Nuevo pedido&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+&lt;nav class="md-navigation-bar md-navigation-bar-docked" role="tablist" aria-label="Navegación conmutada"&gt;
+  &lt;button type="button" class="md-navigation-bar-item" role="tab" aria-selected="true" tabindex="0"&gt;
+    &lt;span class="md-navigation-bar-indicator"&gt;
+      &lt;span class="md-navigation-bar-icon md-icon" aria-hidden="true"&gt;home&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;span class="md-navigation-bar-label"&gt;Inicio&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1"&gt;
+    &lt;span class="md-navigation-bar-indicator"&gt;
+      &lt;span class="md-navigation-bar-icon md-icon" aria-hidden="true"&gt;restaurant_menu&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;span class="md-navigation-bar-label"&gt;Menú&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1"&gt;
+    &lt;span class="md-navigation-bar-indicator"&gt;
+      &lt;span class="md-navigation-bar-icon md-icon" aria-hidden="true"&gt;history&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;span class="md-navigation-bar-label"&gt;Historial&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1"&gt;
+    &lt;span class="md-navigation-bar-indicator"&gt;
+      &lt;span class="md-navigation-bar-icon md-icon" aria-hidden="true"&gt;person&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;span class="md-navigation-bar-label"&gt;Perfil&lt;/span&gt;
+  &lt;/button&gt;
+&lt;/nav&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+  </main>
+  <!-- MAIN: fin -->
+</body>
+</html>

@@ -1,0 +1,278 @@
+/* ==========================================================================
+   src/css/3-components/navigation-bar.css — NAVIGATION BAR (M3 Navegacion)
+   ==========================================================================
+
+   QUE ES ESTE ARCHIVO
+   -------------------
+   Capa 3. Barra de navegacion primaria de movil y tablet: anclada al borde
+   inferior de la pantalla, de 3 a 5 destinos repartidos en flex:1, con la
+   pastilla del Active Indicator senalando el destino activo. Es el hermano
+   inferior de la familia de navegacion: top-app-bar arriba, tabs dentro de
+   un contexto, navigation bar a traves de carpetas de primer nivel.
+
+   ANATOMIA
+   --------
+     <nav class="md-navigation-bar" aria-label="Navegación principal">
+       <button class="md-navigation-bar-item" aria-selected="true" tabindex="0">
+         <span class="md-navigation-bar-indicator">
+           <span class="md-badge-anchor">                   el ancla: badge y
+             <span class="md-navigation-bar-icon md-icon"   glifo (24dp) son
+                   aria-hidden="true">home</span>           OPCIONALES
+             <span class="md-badge md-badge-large"
+                   aria-hidden="true">12</span>
+           </span>
+         </span>
+         <span class="md-navigation-bar-label">Inicio</span>
+       </button>
+     </nav>
+
+   La selección la gobierna aria-selected="true" (sin clase cosmética), con
+   roving tabindex 0/-1 manejado por src/js/navigation-bar.js.
+
+   CONSTRUCCION
+   ------------
+   - Host .md-navigation-bar: 80dp de alto, surface-container, elevación
+     level2, destinos en flex:1 de distribucion simetrica.
+   - Item .md-navigation-bar-item: columna centrada. Padding vertical 8dp
+     arriba y 12dp abajo, canonico de material-web. La pastilla vive SIEMPRE
+     en el DOM y es el fondo del slot: transparente cuando el item esta
+     inactivo, secondary-container cuando esta activo. Como el slot se
+     centra en el item, el glifo no cambia de sitio al crecer de 32 a 64.
+   - Indicador: 64x32dp en corner-full, fondo secondary-container, glifo de
+     24dp en on-secondary-container (base rellena del icono por eleccion
+     local). Inactivo: slot igual sin fondo, glifo en on-surface-variant.
+   - Etiqueta label-medium: activa en on-surface con peso prominente
+     (canon $active-label-text-weight), inactiva en on-surface-variant.
+     Gap vertical de 4dp desde la pastilla. Modo selected-only (etiqueta
+     solo en el activo) con .md-navigation-bar-selected-label en el host,
+     que colapsa el texto de los inactivos a block-size 0 + opacity 0.
+   - La capa de estado y la onda del ripple quedan confinadas al item
+     (overflow: hidden), color de estado on-surface en activo e inactivo:
+     el canon v34.0.21 manda el mismo color para los dos.
+
+   BADGE: los glifos portan .md-badge-anchor (patron canonico de BadgedBox).
+     El ancla la define el glifo de 24dp, y su pastilla o dot puede salir 4dp
+     de la 24dp sin recortarse: el badge vive DENTRO del area del item, que
+     es quien tiene overflow: hidden.
+
+   DECISIONES SELLADAS (2026-11-04)
+   --------------------------------
+   1. Un solo elemento para pastilla y slot: en material-web son dos
+      (__active-indicator absolute + __icon-content sincronizado); aqui son
+      uno porque CSS plano no repite dos cajas para pintar la misma
+      geometria: el slot mide 64x32 y la pastilla es su fondo.
+   2. Elevacion Level 2 canonica ($container-elevation de v34.0.21). M3 la
+      publica con surface-container: la sombra acompana al tono, no lo
+      reemplaza.
+   3. El ancho de la pastilla inactiva es la MITAD del indicador
+     (calc(width / 2) = 32dp), replica del arranque canonico de
+      material-web que anima la pastilla creciendo de 32 a 64 al
+      seleccionar. No es un token nuevo: se compone del rol del ancho.
+   4. FILL del icono activo: patron local de tabs.css (el glifo relleno
+      marca SELECCION). El canon web cambia entre dos glifos distintos
+      (outline/filled); con CSS plano el fill variable logra el mismo
+      efecto sin duplicar el markup.
+   5. Autoscritura prohibida en el host: el docking es del layout de la
+      pagina (canon M3 y material-web). Para quien lo quiera listo existe
+      el modificador .md-navigation-bar-docked, a la imagen de
+      .md-fab-anchored — arriba en este archivo.
+
+   REGLAS ACTIVAS: REGLA 1 (cero crudos), REGLA 2 (Capa 3 no lee Capa 1),
+   REGLA 6 (cero inline styles) y REGLA 13.
+
+   FUENTES
+   -------
+   - material-web v34.0.21, tokens/versions/latest/sass/
+     _md-comp-navigation-bar.scss (todas las cotas y roles de color)
+   - material-web labs/navigationbar/internal/_navigation-bar.scss y
+     labs/navigationtab/internal/_navigation-tab.scss (la receta: padding
+     vertical, altura de texto 16dp, hueco de 4dp, growth de la pastilla)
+   - m3.material.io/components/navigation-bar/{specs, guidelines,
+     accessibility} (nomenclatura y anatomia)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   HOST: la barra de 80dp, destinos repartidos simetricamente
+   ------------------------------------------------------------------------ */
+.md-navigation-bar {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  align-items: stretch;
+  inline-size: 100%;
+  block-size: var(--md-sys-measurement-navigation-bar-height); /* 80dp */
+  background-color: var(--md-sys-color-surface-container);
+  box-shadow: var(--md-sys-elevation-level2);
+  box-sizing: border-box;
+}
+
+/* --------------------------------------------------------------------------
+   DESTINO
+   ------------------------------------------------------------------------ */
+.md-navigation-bar-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 0%; /* Canon: 3 a 5 destinos, reparto simetrico de flex:1 */
+  inline-size: 100%;
+  min-inline-size: var(--md-sys-measurement-touch-target); /* 48dp */
+  min-block-size: var(--md-sys-measurement-touch-target);
+  padding: var(--md-sys-measurement-space-100) 0 var(--md-sys-measurement-space-150); /* 8dp arriba, 12dp abajo (canon material-web) */
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  text-align: center;
+  color: var(--md-sys-color-on-surface-variant);
+  font: var(--md-sys-typescale-label-medium);
+  letter-spacing: var(--md-sys-typescale-label-medium-tracking);
+  outline: none;
+  box-sizing: border-box;
+  overflow: hidden; /* confina la capa de estado y la onda del ripple */
+  white-space: nowrap;
+}
+
+/* Slot del Active Indicator: mide 64x32 en los dos estados, la unica
+   caja de la geometria canonica; el fondo transparente lo apaga y el ancho
+   de arranque (mitad, 32dp) guarda el crecimiento canonico de la pastilla. */
+.md-navigation-bar-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  inline-size: calc(var(--md-sys-measurement-navigation-bar-indicator-width) / 2); /* 32dp de arranque canonico */
+  block-size: var(--md-sys-measurement-navigation-bar-indicator-height); /* 32dp */
+  border-radius: var(--md-sys-shape-corner-full);
+  background-color: transparent;
+  transition: inline-size var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
+              background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+}
+
+/* Glifo de 24dp, centrado en el slot 64x32 */
+.md-navigation-bar-icon {
+  font-size: var(--md-sys-measurement-icon-size); /* 24dp */
+  inline-size: var(--md-sys-measurement-icon-size);
+  block-size: var(--md-sys-measurement-icon-size);
+  color: inherit;
+}
+
+/* Etiqueta: 16dp de alto fijos (label-medium line-height), 4dp bajo la
+   pastilla, con elipsis ante destinos largos */
+.md-navigation-bar-label {
+  position: relative;
+  z-index: 1;
+  margin-block-start: var(--md-sys-measurement-space-50); /* 4dp bajo la pastilla */
+  block-size: var(--md-sys-typescale-label-medium-line-height); /* 16dp canon */
+  max-inline-size: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: opacity var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
+              block-size var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+}
+
+/* Estado activo: gobernado por aria-selected (WAI-ARIA), sin clase cosmética.
+   Fondo de la pastilla y crecimiento 32 -> 64 con la transicion canonica. */
+.md-navigation-bar-item[aria-selected="true"] .md-navigation-bar-indicator {
+  inline-size: var(--md-sys-measurement-navigation-bar-indicator-width); /* 64dp */
+  background-color: var(--md-sys-color-secondary-container);
+}
+
+.md-navigation-bar-item[aria-selected="true"] {
+  color: var(--md-sys-color-on-surface); /* etiqueta activa */
+}
+
+.md-navigation-bar-item[aria-selected="true"] .md-navigation-bar-icon {
+  color: var(--md-sys-color-on-secondary-container);
+  --md-sys-icon-fill: var(--md-sys-icon-fill-full); /* El glifo relleno marca SELECCION (patron local de tabs.css) */
+}
+
+.md-navigation-bar-item[aria-selected="true"] .md-navigation-bar-label {
+  font-weight: var(--md-sys-typescale-label-medium-weight-prominent); /* canon $active-label-text-weight */
+}
+
+/* --------------------------------------------------------------------------
+   MODO SELECTED-ONLY: etiqueta solo en el destino activo
+   ------------------------------------------------------------------------
+   Modo canon de M3 ("labeled on selected") frente al default todas
+   visibles ("always show"). Colapsar a block-size 0 + opacity 0 deja que
+   las transiciones de la regla base hagan el resto: las mismas 100ms con
+   la curva standard que material-web pone en el swap de la etiqueta.
+   ------------------------------------------------------------------------ */
+.md-navigation-bar-selected-label
+  .md-navigation-bar-item:not([aria-selected="true"])
+  .md-navigation-bar-label {
+  block-size: 0;
+  opacity: 0;
+}
+
+/* --------------------------------------------------------------------------
+   MODIFICADORES DE ANCLAJE: Decision del layout de pagina
+   ------------------------------------------------------------------------
+   - .md-navigation-bar-docked / .md-navigation-bar-fixed: Acoplamiento
+     al borde inferior (position: fixed, inset-inline: 0, z-index: 1).
+     Autosuficiente para cualquier vista consumiendo solo main.css. En el
+     Showroom, .sr-specimen-dock confina el containing block con transform: translateZ(0).
+   ------------------------------------------------------------------------ */
+.md-navigation-bar.md-navigation-bar-docked,
+.md-navigation-bar.md-navigation-bar-fixed {
+  position: fixed;
+  bottom: 0;
+  inset-inline: 0;
+  inset-block-end: 0;
+  width: 100%;
+  z-index: 1;
+}
+
+/* ==========================================================================
+   STATE LAYER CANÓNICO M3 (Hover, Focus, Pressed)
+   ========================================================================== */
+
+/* Capa de estado base confinada al area del item. Canon de v34.0.21: el
+   color de estado es on-surface para activo e inactivo por igual
+   ($active-hover-state-layer-color y $inactive-hover-state-layer-color). */
+.md-navigation-bar-item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: transparent;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+}
+
+/* Hover: 8% on-surface */
+.md-navigation-bar-item:hover:not(:disabled):not([aria-disabled="true"])::before {
+  background-color: var(--md-sys-color-on-surface);
+  opacity: var(--md-sys-state-hover-state-layer-opacity);
+}
+
+/* Pressed / Ripple: gobernado dinamicamente por src/js/ripple.js */
+
+/* Foco de teclado: canon $focus-indicator-color = secondary. El anillo de
+   tabs se compone de los mismos tokens: thickness extra-thick + offset thin. */
+.md-navigation-bar-item:focus-visible {
+  outline: var(--md-sys-shape-stroke-extra-thick) solid var(--md-sys-color-secondary);
+  outline-offset: var(--md-sys-shape-stroke-thick);
+}
+
+/* Estado deshabilitado (Disabled gana) */
+.md-navigation-bar-item:disabled,
+.md-navigation-bar-item[aria-disabled="true"] {
+  cursor: not-allowed;
+  pointer-events: none;
+  color: var(--md-sys-color-on-surface);
+  opacity: var(--md-sys-state-disabled-state-layer-opacity);
+}
+
+/* Reduced motion: la pastilla y la etiqueta dejan de animar, los estados
+   siguen visibles */
+@media (prefers-reduced-motion: reduce) {
+  .md-navigation-bar-indicator,
+  .md-navigation-bar-label,
+  .md-navigation-bar-item::before {
+    transition: none;
+  }
+}

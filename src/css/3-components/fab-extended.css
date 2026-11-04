@@ -149,6 +149,15 @@
    (Comprobado en siete variantes; `branded` no declara `icon-color` y no
    admite comparacion, y ademas esta fuera de alcance.)
 
+   REFUTACION AUDITADA (2026-11-04): una auditoria contra m3.material.io
+  pidio envolver el texto del Extended FAB en `.md-fab-label` para poder
+   gobernar el colapso cinematico (Extended -> regular al scroll). La
+   decision fue mantener el texto al vuelo: el colapso esta PENDIENTE de
+   implementar, y si el dia que llegue la animacion necesita contenedor
+   se revisa entonces CON medicion; hasta ahi, envolver el node es la
+   misma clase inerte que se retiro del glifo. La convivencia con
+   Navigation Bar (`.md-fab-over-nav`) usa esta anatomia al vuelo.
+
    El glifo, por su parte, esta protegido sin que tengamos que hacer nada:
    `.md-icon` declara font-family, font-size, font-weight, line-height y
    letter-spacing en 4-utilities, la capa mas fuerte del sistema, y el

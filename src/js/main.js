@@ -128,6 +128,7 @@ import { initSelect } from './select.js';
 import { initTheme } from './theme.js';
 import { initTopAppBar } from './top-app-bar.js?v=2';
 import { initTabs } from './tabs.js';
+import { initNavigationBar } from './navigation-bar.js';
 import { initSnackbar } from './snackbar.js';
 
 /* Se registra al cargar el script, no al hacer clic. Los specimens del
@@ -184,6 +185,12 @@ initTheme();
 /* Tabs: gestión de teclado (WAI-ARIA roving tabindex), selección activa y
    conversión de rueda de ratón (wheel) para scroll horizontal fluido. */
 initTabs();
+
+/* Navigation Bar: la faja inferior comparte patrón con tabs (delegación de
+   clic con aria-selected + roving tabindex, teclado WAI-ARIA y evento
+   'md-navigation-bar:change'). Delegación global viva antes de que exista
+   ningún .md-navigation-bar en la página. */
+initNavigationBar();
 
 /* Snackbar: gestión de cierre declarativo [data-close-snackbar], apertura [data-open-snackbar]
    y temporizador con pausa por hover y focus. */

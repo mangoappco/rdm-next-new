@@ -35,7 +35,12 @@
 @import url("top-app-bar.css");
 @import url("tabs.css");
 @import url("badge.css");
+@import url("navigation-bar.css");
 @import url("snackbar.css");
+
+/* navigation-bar.css no compone con ningun hermano anterior: sus clases
+   son propias (.md-navigation-bar-*), solo consume tokens de Capa 2 y el
+   orden dentro de la lista no altera la cascada. */
 
 /* badge.css entra al final de la lista de construccion: es un indicador no
    interactivo, no compone con ningun hermano anterior y carece de tokens

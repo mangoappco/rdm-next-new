@@ -1,21 +1,19 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Lab — RDM ManGo! App</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
-  <link rel="stylesheet" href="../src/css/main.css">
-  <script type="module" src="../src/js/main.js"></script>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <title>Lab — RDM ManGo! App</title>
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+   <link rel="stylesheet" href="../src/css/main.css">
+   <script type="module" src="../src/js/main.js"></script>
 </head>
-
 <body class="md-bg-background md-text-on-background md-type-body-medium">
 
-
-  <header class="md-app-header" data-md-top-app-bar-scroll role="banner">
-    <div class="md-top-app-bar md-top-app-bar-small">
+  <header class="md-app-header " data-md-top-app-bar-scroll role="banner">
+    <div class="md-top-app-bar md-top-app-bar-large" data-md-top-app-bar-collapse>
       <div class="md-top-app-bar-leading">
         <button type="button" class="md-icon-button" aria-label="Abrir menú principal">
           <span class="md-icon" aria-hidden="true">menu</span>
@@ -49,61 +47,62 @@
     </div>
   </header>
 
-
-
-
-
-
-
-
-
   <main>
-
     <br>
-
-
-    <button type="button" class="md-fab md-fab-extended md-fab-anchored" data-md-theme-toggle>
+    <button type="button" class="md-button" data-md-theme-toggle>
       <span class="md-button-label">Tema: sistema</span>
     </button>
 
 
 
 
-    <button type="button" class="md-button md-button-filled" data-trigger-snackbar="demo-snackbar">
-  <span class="md-button-label">Disparar aviso (4s)</span>
-</button>
 
-<div class="md-snackbar-container">
-  <aside class="md-snackbar md-snackbar-visible" id="demo-snackbar" role="status" aria-live="polite">
-    <span class="md-snackbar-label">Factura electrónica #9082 enviada a la DIAN</span>
-    <div class="md-snackbar-actions">
-      <button type="button" class="md-snackbar-action" data-close-snackbar>Ver PDF</button>
-      <button type="button" class="md-icon-button md-snackbar-close" data-close-snackbar aria-label="Cerrar aviso">
-        <span class="md-icon-button-icon md-icon" aria-hidden="true">close</span>
-        <span class="md-icon-button-touch"></span>
-      </button>
-    </div>
-  </aside>
-</div>
+
+
+    <p class="md-type-display-large">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Culpa eius exercitationem maxime deserunt quod sequi nesciunt reprehenderit architecto perspiciatis aperiam, natus rem similique voluptates rerum voluptatem fugit quaerat, consectetur provident.</p>
+
+    <p class="md-type-display-large">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consectetur pariatur, unde quaerat recusandae enim ab esse rerum eum minus aperiam dolorem maxime voluptatem laudantium. Quia aliquid at vel nulla asperiores.</p>
 
 
 
 
 
 
+    <button class="md-fab md-fab-extended md-fab-anchored" type="button"><span class="md-icon" aria-hidden="true">reply</span>Responder<span class="md-fab-touch"></span></button>
 
 
-
-
-
+    <button type="button" class="md-fab md-fab-extended md-fab-over-nav"><span class="md-icon" aria-hidden="true">add</span>Nuevo pedido<span class="md-fab-touch"></span></button>
+<nav class="md-navigation-bar md-navigation-bar-docked" role="tablist" aria-label="Navegación conmutada">
+  <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="true" tabindex="0">
+    <span class="md-navigation-bar-indicator">
+      <span class="md-navigation-bar-icon md-icon" aria-hidden="true">home</span>
+    </span>
+    <span class="md-navigation-bar-label">Inicio</span>
+  </button>
+  <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1">
+    <span class="md-navigation-bar-indicator">
+      <span class="md-navigation-bar-icon md-icon" aria-hidden="true">restaurant_menu</span>
+    </span>
+    <span class="md-navigation-bar-label">Menú</span>
+  </button>
+  <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1">
+    <span class="md-navigation-bar-indicator">
+      <span class="md-navigation-bar-icon md-icon" aria-hidden="true">history</span>
+    </span>
+    <span class="md-navigation-bar-label">Historial</span>
+  </button>
+  <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1">
+    <span class="md-navigation-bar-indicator">
+      <span class="md-navigation-bar-icon md-icon" aria-hidden="true">person</span>
+    </span>
+    <span class="md-navigation-bar-label">Perfil</span>
+  </button>
+</nav>
 
 
 
 
 
   </main>
-
-
-
 </body>
 </html>

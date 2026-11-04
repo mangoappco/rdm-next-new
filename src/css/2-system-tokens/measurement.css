@@ -367,8 +367,30 @@
   --md-sys-measurement-top-bar-title-morph-x: var(--md-sys-measurement-space-600); /* 48dp = columna leading compacta */
   --md-sys-measurement-top-bar-title-morph-y: calc((var(--md-sys-measurement-top-bar-height) - var(--md-sys-typescale-title-large-line-height)) / 2 - var(--md-sys-measurement-top-bar-height)); /* 18 - 64 = -46 */
 
-  /* Alto de una barra de navegacion inferior o rail. */
-  --md-sys-measurement-navigation-bar-height: var(--md-ref-spacing-800);
+  /* Alto de una barra de navegacion inferior o rail (M3 NavigationBar:
+     80dp). Canon `tokens/versions/latest/sass/_md-comp-navigation-bar.scss`
+     de v34.0.21: `$container-height = 80px`, la misma cota que declara
+     `_md-comp-fab-medium` y `_md-comp-bottom-app-bar`.
+
+     CORRECCION. Este rol apuntaba a `--md-ref-spacing-800` --64dp--: ese es
+     el alto del Top App Bar small, y no el de la Navigation Bar. La escala
+     de espacio Space 0-900 no alcanza el 80 (su tope es 72), y la cota
+     canonica vive en 1-reference-tokens/container-height.css como
+     `container-height-fab-medium`, que M3 comparte entre la familia FAB y
+     la Navigation Bar. El rol no tenia consumidores en todo el proyecto
+     (verificado antes de moverlo), asi que re-apuntarlo no desplaza nada
+     que ya este en pantalla. Mismo criterio que `top-bar-height` y las
+     alturas de fila de lista: una altura de contenedor se lee de
+     container-height.css aunque un numero del espaciado coincida. */
+  --md-sys-measurement-navigation-bar-height: var(--md-ref-container-height-fab-medium); /* 80dp */
+
+  /* La pastilla del destino activo (Active Indicator): 64x32dp. Canon
+     `_md-comp-navigation-bar.scss` v34.0.21: $active-indicator-width = 64,
+     $active-indicator-height = 32. El ancho sale de la escala de espacio
+     (Space 800) y el alto se apoya en el rol generico de 32dp, el mismo
+     que la pista del switch: coincidir no convierte dos cotas en una. */
+  --md-sys-measurement-navigation-bar-indicator-width: var(--md-ref-spacing-800); /* 64dp */
+  --md-sys-measurement-navigation-bar-indicator-height: var(--md-sys-measurement-space-400); /* 32dp */
 
   /* Alto de un tab. */
   --md-sys-measurement-tab-height: var(--md-ref-spacing-600);

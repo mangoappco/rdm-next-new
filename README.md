@@ -1400,6 +1400,21 @@ Tres cosas que se saltaban por estar solo en la hoja y conviene tener a mano:
 - **El id de cada dialog tiene que ser único.** `data-open-dialog` es lo único que dice
   qué botón abre qué dialog, y con un id repetido los dos abren el primero, sin error.
 
+### Navigation Bar (.md-navigation-bar)
+
+Barra de navegación primaria para móvil y tablet anclada al borde inferior:
+- **Cotas canónicas M3:** 80dp de altura (`--md-sys-measurement-navigation-bar-height`), superficie tonal `surface-container`, elevación `level2` y destinos distribuidos con `flex: 1` simétrico (3 a 5 destinos).
+- **Active Indicator:** Cápsula de $64\times32\text{dp}$ (`corner-full`, color `secondary-container`) con animación horizontal cinemática de 32dp a 64dp en 100ms (`short2` + `standard`).
+- **Glifo y Etiqueta:** Glifo de 24dp con variación rellena (`FILL 1`) en el destino activo y `FILL 0` en inactivo. Etiqueta `label-medium` con modificador `.md-navigation-bar-selected-label` para modo *selected-only* sin perder accesibilidad semántica.
+- **Convivencia con FAB:** Modificador `.md-fab-over-nav` flotando a 16dp del techo de la barra (96dp del fondo) sin muesca ni incrustación M2.
+
+### Snackbar (.md-snackbar)
+
+Avisos contextuales temporales de retroalimentación en la base de la pantalla:
+- **Cotas y Densidades:** 48dp (1 línea) y 68dp (2 líneas), superficie `inverse-surface` con tipografía `inverse-on-surface`.
+- **Cinemática Asimétrica M3:** Desaceleración enfática de entrada (300ms, `medium2`, ascenso de 16px) y aceleración enfática de salida (150ms, `short3`).
+- **Ergonomía:** Temporizador automático a 4.000ms con pausa automática en `hover` o `focus-within`.
+
 ---
 
 ## 12. Iconos

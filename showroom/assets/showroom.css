@@ -138,16 +138,13 @@
   .sr-specimen-tall {
     min-height: calc(var(--md-ref-spacing-900) * 2);
 
-    /* Contexto de posicionamiento, y por eso va aqui y no en
-       .sr-specimen. Un componente que se ancla dentro de su contenedor
-       (hoy .md-fab-anchored) necesita un padre posicionado que marque la
-       esquina: sin el, se va al del documento y se sale del recuadro.
-
-       Va en el specimen alto y no en el base porque el alto es el que
-       tiene sitio para un anclado con su separacion sin encimarse con lo
-       demas. Los dos que ya lo usan (divider y elevation) no llevan nada
-       posicionado, asi que el cambio les da igual. */
+    /* Contexto de posicionamiento y contencion para elementos fixed.
+       transform: translateZ(0) crea un containing block local estricto para
+       elementos position: fixed, permitiendo que snippets canónicos de
+       producción con position: fixed (.md-fab-anchored) se muestren anclados
+       a la esquina del recuadro sin fugarse al monitor ni invadir la documentación. */
     position: relative;
+    transform: translateZ(0);
   }
 
   .sr-specimen-tall > div:not(.md-divider-vertical) {
@@ -163,6 +160,26 @@
      lo convertiria en un bloque de 288px. */
   .sr-specimen-tall > div.md-divider-vertical {
     min-height: calc(var(--md-ref-spacing-900) * 2);
+  }
+
+  /* ESCENARIO DE ACOPLAMIENTO (convivencia FAB sobre Navigation Bar)
+     --------------------------------------------------------------------------
+     Escenario de pantalla minima donde un componente absoluto (hoy el
+     .md-fab de .md-fab-over-nav) y una barra acoplada
+     (.md-navigation-bar-docked) comparten la misma base. La altura debe
+     cubrir el techo de la barra de 80px mas el vuelo del FAB hasta su
+     posicion a 96px del fondo (56px de alto + su aire), y sobra un
+     respiro: tres conteos de spacing-900.
+
+     La clase es solo infraestructura del escenario (chrome invisible):
+     no la copia el snippet y REGLA 11 no la ve. position: relative la
+     convierte en el contexto de posicionamiento de los dos absolutos.
+     --------------------------------------------------------------------- */
+  .sr-specimen-dock {
+    min-height: calc(var(--md-ref-spacing-900) * 3);
+    position: relative;
+    transform: translateZ(0);
+    overflow: hidden;
   }
 
   /* Caja con capa en escenario simple: mismo contrato (la caja aporta el

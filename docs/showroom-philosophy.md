@@ -107,3 +107,17 @@ El componente implementa transición asimétrica declarativa con tokens de siste
 - **Salida (Reposo):** Aceleración enfática `emphasized-accelerate` (150ms, `short3`) con desvanecimiento inmediato.
 - **Ergonomía:** Auto-dismiss temporizado a 4.000ms que congela el cronómetro al pasar el puntero (`mouseover`) o enfocar por teclado (`focusin`).
 
+## 8. Directrices Consolidadas: Navigation Bar (2026-11-04)
+
+### 8.1 Geometría Canónica de 80dp y Active Indicator
+La Navigation Bar de M3 establece una altura fija de **80dp** (`--md-sys-measurement-navigation-bar-height`, enlazada a `--md-ref-container-height-fab-medium`).
+- **Active Indicator:** Cápsula integrada de **$64\times32\text{dp}$** en `corner-full` con fondo tonal `secondary-container` y glifo en `on-secondary-container`.
+- **Transición Horizontal de Pastilla:** En reposo inactivo mide 32dp y se expande simétricamente a 64dp en 100ms (`short2` + `standard`).
+- **Glifo:** 24dp en `font-variation-settings: 'FILL' 1` cuando está activo, y `FILL 0` en `on-surface-variant` cuando está inactivo.
+- **Etiqueta:** Tipografía `label-medium` con gap vertical de 4dp respecto a la pastilla. En modo selected-only (`.md-navigation-bar-selected-label`), colapsa a `block-size: 0` y `opacity: 0` en destinos inactivos.
+
+### 8.2 Doctrina de Flotantes y Contención en Showroom
+Los modificadores de anclaje de componentes flotantes o acoplados (`.md-fab-anchored`, `.md-fab-over-nav`, `.md-navigation-bar-docked`):
+- Se declaran nativamente con `position: fixed` para ser 100% autosuficientes (REGLA 13) y resistir el scroll real en cualquier página que consuma `main.css`.
+- En el Showroom, las tarjetas de prueba (`.sr-specimen-tall`, `.sr-specimen-dock`) aplican `transform: translateZ(0);`, creando un nuevo *containing block* que confina estrictamente los elementos fijos a su marco local sin invadir el monitor ni solaparse con la documentación.
+

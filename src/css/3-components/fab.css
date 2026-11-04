@@ -473,54 +473,43 @@
 }
 
 /* ---------------------------------------------------------------------------
-   ANCHORED
+   ANCHORED & FIXED (Modificadores de anclaje)
    ---------------------------------------------------------------------------
    La base queda en el flujo, como cualquier boton. Este modificador la saca
-   y la pega en la esquina de su contenedor, que es lo que una pantalla
-   quiere de un FAB.
-
-   Tres decisiones dentro de una sola regla, y las tres van contra lo
-   primero que haria cualquiera, asi que estan escritas para no se
-   "arreglen".
-
-   NO SE POSICIONA LA BASE. M3 no lo hace: en el `fab.scss` de la guia,
-   sus 79 lineas, cero apariciones de position, y en los tokens del FAB,
-   tambien cero. La guia no trae la esquina, la trae la aplicacion. Por eso
-   esto va en un modificador y no en `.md-fab`, que a la primera le darian
-   un `fixed` a todos los FAB y los tres cayeran encima: medido, tres FAB
-   fixed con separacion 16 entre si y su contenedor daban todos (708, 814),
-   es decir, 0px de separacion entre ellos.
-
-   `absolute` y no `fixed`. Ancla al padre posicionado mas cercano, que es
-   la pantalla de una app y lo que hace falta. `fixed` ancla a la ventana,
-   que con varias en pantalla no es lo que nadie quiso. Si no hay padre
-   posicionado, cae al documento, que es el comportamiento estandar y
-   documentado en el molde.
-
-   SIN z-index. El sistema entero solo usa z-index negativo, para meter las
-   capas de estado debajo del texto (button.css, icon-button.css y aqui
-   mismo). No hay ninguna convencion de apilar hacia arriba, y un `100` aqui
-   seria un numero magico sin a donde. No hace falta: un elemento
-   posicionado ya pinta sobre el contenido estatico de su mismo contexto,
-   que es el caso de un FAB sobre una pantalla.
-
-   Dos insets y no cuatro: es una esquina, no un marco. La que elijo es la
-   de abajo-al-final (inferior-derecha en LTR), que es la de un FAB por
-   convencion: la guia de M3 lo dibuja siempre ahi y la accion vive cerca
-   del pulgar. Para cualquier otra esquina basta con escribir el inset que
-   haga falta, y no se añaden cuatro clases por si las moscas.
-
-   El valor lo da un token de capa 2 existente, --md-sys-measurement-inset,
-   que es spacing-200 y vale 16dp. Se reutiliza y no se duplica. Ese token
-   lo creo el divider para su variante inset; aqui comparte el significado
-   de "separacion de un componente respecto a su contenedor", que es el
-   mismo, y su cabecera se amplio en consecuencia. Si manana M3 mueve los
-   16dp, se toca un sitio.
+   y la fija en la esquina inferior derecha a 16px del borde (position: fixed).
+   En cualquier vista de produccion o lab es 100% autosuficiente y resiste
+   el scroll; en el Showroom el chrome .sr-specimen-tall confina el containing
+   block con transform sin invadir el monitor.
    ------------------------------------------------------------------------ */
 
-.md-fab.md-fab-anchored {
+.md-fab.md-fab-anchored,
+.md-fab-extended.md-fab-anchored,
+.md-fab.md-fab-fixed,
+.md-fab-extended.md-fab-fixed {
   position: fixed;
   bottom: var(--md-sys-measurement-space-200);
+  right: var(--md-sys-measurement-space-200);
+  z-index: 1;
+}
+
+/* ---------------------------------------------------------------------------
+   CONVIVENCIA CON NAVIGATION BAR (canon M3: nunca se incrusta)
+   ---------------------------------------------------------------------------
+   M3 prohibe la muesca del M2 (cradle): el FAB NO perfora ni se incrusta en
+   la Navigation Bar; flota por encima en Y y en Z. Su borde inferior debe
+   quedar a 16dp del TECHO de la barra de 80dp: 80 + 16 = 96dp de cota del
+   fondo. `_md-comp-fab.scss` y `_md-comp-navigation-bar.scss` de v34.0.21
+   dan las dos cotas; el offset lo compone este archivo sin token nuevo.
+
+   Ambos selectores (.md-fab-over-nav y .md-fab-over-nav-fixed) son fixed a 96dp.
+   ------------------------------------------------------------------------ */
+
+.md-fab.md-fab-over-nav,
+.md-fab-extended.md-fab-over-nav,
+.md-fab.md-fab-over-nav-fixed,
+.md-fab-extended.md-fab-over-nav-fixed {
+  position: fixed;
+  bottom: calc(var(--md-sys-measurement-navigation-bar-height) + var(--md-sys-measurement-space-200));
   right: var(--md-sys-measurement-space-200);
   z-index: 1;
 }
