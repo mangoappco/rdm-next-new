@@ -395,6 +395,11 @@
   --md-sys-measurement-navigation-bar-horizontal-indicator-height: var(--md-sys-measurement-space-500); /* 40dp */
   --md-sys-measurement-navigation-bar-horizontal-indicator-max-width: var(--md-ref-container-height-dialog-min); /* 140dp */
 
+  /* Navigation Rail: ancho fijo de 80dp y pastilla activa de 56x32dp (M3 specs). */
+  --md-sys-measurement-navigation-rail-width: var(--md-ref-container-width-navigation-rail); /* 80dp */
+  --md-sys-measurement-navigation-rail-indicator-width: var(--md-sys-measurement-space-700); /* 56dp */
+  --md-sys-measurement-navigation-rail-indicator-height: var(--md-sys-measurement-space-400); /* 32dp */
+
   /* Alto de un tab. */
   --md-sys-measurement-tab-height: var(--md-ref-spacing-600);
   /* Altura de tab primario con icono apilado (64dp). */

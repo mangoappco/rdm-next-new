@@ -1,0 +1,217 @@
+/* ==========================================================================
+   src/css/3-components/navigation-rail.css — NAVIGATION RAIL (M3 Navegación)
+   ==========================================================================
+
+   QUE HACE ESTE ARCHIVO
+   ---------------------
+   Implementa el Navigation Rail canónico de Material Design 3: barra vertical
+   fija de 80dp de ancho para navegación primaria en pantallas medianas y
+   expandidas (tablets de POS, KDS y escritorio).
+
+   ANATOMIA
+   --------
+   <nav class="md-navigation-rail" role="tablist" aria-label="...">
+     <div class="md-navigation-rail-header">
+       <button class="md-icon-button" ...><span class="md-icon">menu</span></button>
+     </div>
+     <div class="md-navigation-rail-content">
+       <button class="md-navigation-rail-item" role="tab" aria-selected="true" tabindex="0">
+         <span class="md-navigation-rail-indicator">
+           <span class="md-navigation-rail-icon md-icon">home</span>
+         </span>
+         <span class="md-navigation-rail-label">Inicio</span>
+       </button>
+     </div>
+   </nav>
+
+   FUENTES Y DECISIONES CANÓNICAS
+   ------------------------------
+   - m3.material.io/components/navigation-rail/{overview, specs, accessibility}
+   - Ancho de 80dp fijo (--md-sys-measurement-navigation-rail-width).
+   - Pastilla activa fija de 56x32dp (corner-full): CERO efecto elástico en hover.
+   - En reposo inactivo la pastilla es transparente; en hover enciende su ::before
+     (state layer al 8%) dentro de la caja de 56x32dp sin mutar sus dimensiones.
+   - Resiliencia de caja: block-size: 100% y min-block-size: 100% para integrarse
+     tanto en el Showroom como en el scaffold de pantalla completa.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   HOST: Contenedor vertical de 80dp
+   ------------------------------------------------------------------------ */
+.md-navigation-rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  inline-size: var(--md-sys-measurement-navigation-rail-width); /* 80dp */
+  min-inline-size: var(--md-sys-measurement-navigation-rail-width);
+  block-size: 100%;
+  min-block-size: 100%;
+  background-color: var(--md-sys-color-surface);
+  box-sizing: border-box;
+  padding-block: var(--md-sys-measurement-space-150); /* 12dp arriba y abajo */
+  gap: var(--md-sys-measurement-space-150);
+  position: relative;
+}
+
+/* --------------------------------------------------------------------------
+   HEADER (Acción opcional superior: menú o FAB)
+   ------------------------------------------------------------------------ */
+.md-navigation-rail-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-block-end: var(--md-sys-measurement-space-100); /* 8dp hacia destinos */
+}
+
+/* --------------------------------------------------------------------------
+   CONTENT: Contenedor de destinos
+   ------------------------------------------------------------------------ */
+.md-navigation-rail-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  inline-size: 100%;
+  gap: var(--md-sys-measurement-space-150); /* 12dp entre destinos */
+}
+
+/* --------------------------------------------------------------------------
+   DESTINO (ITEM)
+   ------------------------------------------------------------------------ */
+.md-navigation-rail-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  inline-size: 100%;
+  min-inline-size: var(--md-sys-measurement-touch-target); /* 48dp */
+  min-block-size: var(--md-sys-measurement-space-700); /* 56dp cota mínima táctil */
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  text-align: center;
+  color: var(--md-sys-color-on-surface-variant);
+  font: var(--md-sys-typescale-label-medium);
+  letter-spacing: var(--md-sys-typescale-label-medium-tracking);
+  outline: none;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+
+/* Slot del Active Indicator: 56x32dp fijo en reposo, hover y selección */
+.md-navigation-rail-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 0;
+  inline-size: var(--md-sys-measurement-navigation-rail-indicator-width); /* 56dp fijo */
+  block-size: var(--md-sys-measurement-navigation-rail-indicator-height); /* 32dp fijo */
+  border-radius: var(--md-sys-shape-corner-full);
+  background-color: transparent;
+  overflow: visible; /* Respeto estricto para no cercenar badges */
+  transition: background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+}
+
+/* State Layer limpio sobre la pastilla */
+.md-navigation-rail-indicator::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-color: transparent;
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
+  transition: opacity var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+}
+
+/* Glifo e insignia (Badge): z-index: 0 para el glifo, permitiendo que
+   .md-badge flote a z-index: 1 por encima sin ser cortado */
+.md-navigation-rail-icon {
+  font-size: var(--md-sys-measurement-icon-size); /* 24dp */
+  inline-size: var(--md-sys-measurement-icon-size);
+  block-size: var(--md-sys-measurement-icon-size);
+  color: inherit;
+  position: relative;
+  z-index: 0;
+}
+
+.md-navigation-rail-indicator .md-badge-anchor {
+  position: relative;
+  z-index: 1;
+}
+
+/* Etiqueta tipográfica */
+.md-navigation-rail-label {
+  margin-block-start: var(--md-sys-measurement-space-50); /* 4dp bajo la pastilla */
+  block-size: var(--md-sys-typescale-label-medium-line-height); /* 16dp */
+  max-inline-size: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   ESTADO ACTIVO (M3 Selection)
+   ------------------------------------------------------------------------ */
+.md-navigation-rail-item[aria-selected="true"] .md-navigation-rail-indicator {
+  background-color: var(--md-sys-color-secondary-container);
+}
+
+.md-navigation-rail-item[aria-selected="true"] {
+  color: var(--md-sys-color-on-surface);
+}
+
+.md-navigation-rail-item[aria-selected="true"] .md-navigation-rail-icon {
+  color: var(--md-sys-color-on-secondary-container);
+  --md-sys-icon-fill: var(--md-sys-icon-fill-full);
+}
+
+.md-navigation-rail-item[aria-selected="true"] .md-navigation-rail-label {
+  font-weight: var(--md-sys-typescale-label-medium-weight-prominent);
+}
+
+/* --------------------------------------------------------------------------
+   STATE LAYERS (Hover, Focus, Pressed)
+   ------------------------------------------------------------------------ */
+.md-navigation-rail-item:hover:not(:disabled):not([aria-disabled="true"]):not([aria-selected="true"]) .md-navigation-rail-indicator::before {
+  background-color: var(--md-sys-color-on-surface);
+  opacity: var(--md-sys-state-hover-state-layer-opacity);
+}
+
+.md-navigation-rail-item[aria-selected="true"]:hover:not(:disabled):not([aria-disabled="true"]) .md-navigation-rail-indicator::before {
+  background-color: var(--md-sys-color-on-secondary-container);
+  opacity: var(--md-sys-state-hover-state-layer-opacity);
+}
+
+.md-navigation-rail-item:active:not(:disabled):not([aria-disabled="true"]):not([aria-selected="true"]) .md-navigation-rail-indicator::before {
+  background-color: var(--md-sys-color-on-surface);
+  opacity: var(--md-sys-state-pressed-state-layer-opacity);
+}
+
+.md-navigation-rail-item[aria-selected="true"]:active:not(:disabled):not([aria-disabled="true"]) .md-navigation-rail-indicator::before {
+  background-color: var(--md-sys-color-on-secondary-container);
+  opacity: var(--md-sys-state-pressed-state-layer-opacity);
+}
+
+.md-navigation-rail-item:focus-visible {
+  outline: var(--md-sys-shape-stroke-extra-thick) solid var(--md-sys-color-secondary);
+  outline-offset: var(--md-sys-shape-stroke-thick);
+}
+
+.md-navigation-rail-item:disabled,
+.md-navigation-rail-item[aria-disabled="true"] {
+  cursor: not-allowed;
+  pointer-events: none;
+  color: var(--md-sys-color-on-surface);
+  opacity: var(--md-sys-state-disabled-state-layer-opacity);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .md-navigation-rail-indicator,
+  .md-navigation-rail-label,
+  .md-navigation-rail-indicator::before {
+    transition: none;
+  }
+}

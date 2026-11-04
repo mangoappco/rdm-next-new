@@ -129,6 +129,7 @@ import { initTheme } from './theme.js';
 import { initTopAppBar } from './top-app-bar.js?v=2';
 import { initTabs } from './tabs.js';
 import { initNavigationBar } from './navigation-bar.js';
+import { initNavigationRail } from './navigation-rail.js';
 import { initSnackbar } from './snackbar.js';
 
 /* Se registra al cargar el script, no al hacer clic. Los specimens del
@@ -191,6 +192,11 @@ initTabs();
    'md-navigation-bar:change'). Delegación global viva antes de que exista
    ningún .md-navigation-bar en la página. */
 initNavigationBar();
+
+/* Navigation Rail: faja lateral vertical de navegación primaria (delegación
+   de clic con aria-selected + roving tabindex vertical con ArrowUp/Down y
+   evento 'md-navigation-rail:change'). */
+initNavigationRail();
 
 /* Snackbar: gestión de cierre declarativo [data-close-snackbar], apertura [data-open-snackbar]
    y temporizador con pausa por hover y focus. */

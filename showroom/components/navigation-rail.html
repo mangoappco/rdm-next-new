@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Navigation Rail de RDM Next: barra vertical de navegación primaria de 80dp con pastilla de active indicator de 56×32dp para pantallas medianas y expandidas.">
+  <title>Navigation Rail — RDM ManGo! App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+  <link rel="stylesheet" href="../../src/css/main.css?v=66">
+  <link rel="stylesheet" href="../assets/showroom.css">
+  <script type="module" src="../../src/js/main.js"></script>
+  <script src="../assets/showroom.js"></script>
+</head>
+
+<!--
+  VISTA ATÓMICA DE NAVIGATION RAIL (M3 Navegación Lateral):
+  1. Base anatomy & Top-aligned (3 destinos alineados arriba con cabecera de menú)
+
+  LOS ACUERDOS DEL SHOWROOM
+  -------------------------
+  1. Jerarquia: h1 (componente) > h2 (bloque) > h3 (par).
+  2. REGLA 11: el texto de cada pre.sr-code desescapado es identico al
+     innerHTML de su .sr-specimen (normalizando solo el espacio).
+  3. REGLA 6: sin atributos de estilo en linea ni bloques <style>.
+  4. REGLA 9: iconos siempre con .md-icon, nunca material-symbols-*.
+  5. REGLA 10: toda clase md-* del showroom existe en src/css/.
+  6. REGLA 13: cada snippet es autonomo (solo clases del sistema).
+  7. ARIA: nav con role="tablist" (W3C); items con role="tab", aria-selected
+     y roving tabindex con ArrowUp y ArrowDown.
+-->
+
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <!-- CABECERA INSTITUCIONAL DEL SHOWROOM (DOGFOODING) -->
+  <header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll role="banner" aria-label="Cabecera institucional del showroom">
+    <div class="md-top-app-bar-leading">
+      <a href="../index.html" class="md-icon-button" aria-label="Volver al catálogo">
+        <span class="md-icon" aria-hidden="true">arrow_back</span>
+      </a>
+    </div>
+    <div class="md-top-app-bar-content">
+      <span class="md-top-app-bar-title">Navigation Rail</span>
+    </div>
+    <div class="md-top-app-bar-trailing">
+      <button type="button" class="md-icon-button" data-theme-toggle aria-label="Cambiar tema">
+        <span class="md-icon" aria-hidden="true">dark_mode</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN: cuerpo del showroom -->
+  <main class="sr-main">
+
+    <!-- PORTADA DEL COMPONENTE -->
+    <header class="sr-header">
+      <div class="sr-header-pill">
+        <span class="md-icon" aria-hidden="true">view_sidebar</span>
+        <span class="md-type-label-large">M3 Navegación</span>
+      </div>
+      <h1 class="md-type-display-small">Navigation Rail</h1>
+      <p class="md-type-body-large">Barra vertical de navegación primaria de 80dp de ancho para pantallas medianas y expandidas (tablets de POS, KDS y pantallas de escritorio), con pastilla de active indicator de 56×32dp y alineación superior.</p>
+    </header>
+
+    <h2 class="md-type-title-large sr-section-title">Anatomía y alineación</h2>
+
+    <!-- PAR 1: Base anatomy & Top-aligned -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Base anatomy &amp; Top-aligned</h3>
+      <p class="md-type-body-medium">Anatomía canónica M3: contenedor fijo de 80dp, cabecera de acción (menú) y destinos alineados arriba con pastilla activa de 56×32dp y selección WAI-ARIA.</p>
+
+      <div class="sr-specimen sr-specimen-tall">
+        <nav class="md-navigation-rail" role="tablist" aria-label="Navegación principal">
+          <div class="md-navigation-rail-header">
+            <button type="button" class="md-icon-button" aria-label="Abrir menú de navegación">
+              <span class="md-icon" aria-hidden="true">menu</span>
+            </button>
+          </div>
+          <div class="md-navigation-rail-content">
+            <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="true" tabindex="0">
+              <span class="md-navigation-rail-indicator">
+                <span class="md-navigation-rail-icon md-icon" aria-hidden="true">home</span>
+              </span>
+              <span class="md-navigation-rail-label">Inicio</span>
+            </button>
+            <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1">
+              <span class="md-navigation-rail-indicator">
+                <span class="md-navigation-rail-icon md-icon" aria-hidden="true">search</span>
+              </span>
+              <span class="md-navigation-rail-label">Explorar</span>
+            </button>
+            <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1">
+              <span class="md-navigation-rail-indicator">
+                <span class="md-navigation-rail-icon md-icon" aria-hidden="true">settings</span>
+              </span>
+              <span class="md-navigation-rail-label">Ajustes</span>
+            </button>
+          </div>
+        </nav>
+      </div>
+
+      <pre class="sr-code"><code>&lt;nav class="md-navigation-rail" role="tablist" aria-label="Navegación principal"&gt;
+  &lt;div class="md-navigation-rail-header"&gt;
+    &lt;button type="button" class="md-icon-button" aria-label="Abrir menú de navegación"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;menu&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="md-navigation-rail-content"&gt;
+    &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="true" tabindex="0"&gt;
+      &lt;span class="md-navigation-rail-indicator"&gt;
+        &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;home&lt;/span&gt;
+      &lt;/span&gt;
+      &lt;span class="md-navigation-rail-label"&gt;Inicio&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1"&gt;
+      &lt;span class="md-navigation-rail-indicator"&gt;
+        &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;search&lt;/span&gt;
+      &lt;/span&gt;
+      &lt;span class="md-navigation-rail-label"&gt;Explorar&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1"&gt;
+      &lt;span class="md-navigation-rail-indicator"&gt;
+        &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;
+      &lt;/span&gt;
+      &lt;span class="md-navigation-rail-label"&gt;Ajustes&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/nav&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+  </main>
+  <!-- MAIN: fin -->
+</body>
+</html>

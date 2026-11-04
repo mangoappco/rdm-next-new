@@ -36,6 +36,7 @@
 @import url("tabs.css");
 @import url("badge.css");
 @import url("navigation-bar.css");
+@import url("navigation-rail.css");
 @import url("snackbar.css");
 
 /* navigation-bar.css no compone con ningun hermano anterior: sus clases

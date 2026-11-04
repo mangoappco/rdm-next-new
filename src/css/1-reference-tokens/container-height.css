@@ -372,4 +372,11 @@
   --md-ref-container-width-snackbar-min: 344px;
   --md-ref-container-width-snackbar-max: 672px;
   --md-ref-container-height-snackbar-two-line: 68px;
+
+  /* ------------------------------------------------------------------------
+     NAVIGATION RAIL: ANCHO FIJO DE CONTENEDOR (M3 specs: 80dp)
+     ------------------------------------------------------------------------
+     Ancho formal canónico del Navigation Rail.
+     ------------------------------------------------------------------------ */
+  --md-ref-container-width-navigation-rail: 80px;
 }
