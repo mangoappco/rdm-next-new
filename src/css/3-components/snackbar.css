@@ -44,9 +44,10 @@
    EL HOST FLOTANTE (Anclaje en viewport o layout de vista)
    -------------------------------------------------------------------------- */
 .md-snackbar-container {
+  --_snackbar-bottom-offset: var(--md-sys-measurement-space-200);
   position: fixed;
   inset-inline-start: 50%;
-  inset-block-end: var(--md-sys-measurement-space-200);
+  inset-block-end: var(--_snackbar-bottom-offset);
   transform: translateX(-50%);
   display: flex;
   flex-direction: column;
@@ -56,24 +57,25 @@
   pointer-events: none;
   inline-size: calc(100% - (var(--md-sys-measurement-space-200) * 2));
   max-inline-size: var(--md-sys-measurement-snackbar-max-width);
+  transition: inset-block-end var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-standard);
 }
 
 /* --------------------------------------------------------------------------
-   MODIFICADORES DE CONVIVENCIA VERTICAL (Navigation Bar y FAB)
+   MODIFICADORES DE CONVIVENCIA VERTICAL (Fallbacks estáticos)
    --------------------------------------------------------------------------
-   En M3, el Snackbar nunca solapa la Navigation Bar ni el FAB:
+   En M3, el cálculo universal automático en JS gobierna --_snackbar-bottom-offset.
+   Estas clases permanecen como fallbacks manuales compatibles:
    - .md-snackbar-over-nav: 80dp (Navigation Bar) + 16dp (gap) = 96dp.
    - .md-snackbar-over-fab-nav: 80dp (Nav Bar) + 16dp + 56dp (FAB) + 16dp = 168dp.
-   Aplicable tanto al host .md-snackbar-container como a .md-snackbar directo.
    ------------------------------------------------------------------------ */
 .md-snackbar-container.md-snackbar-over-nav,
 .md-snackbar.md-snackbar-over-nav {
-  inset-block-end: calc(var(--md-sys-measurement-navigation-bar-height) + var(--md-sys-measurement-space-200));
+  --_snackbar-bottom-offset: calc(var(--md-sys-measurement-navigation-bar-height) + var(--md-sys-measurement-space-200));
 }
 
 .md-snackbar-container.md-snackbar-over-fab-nav,
 .md-snackbar.md-snackbar-over-fab-nav {
-  inset-block-end: calc(var(--md-sys-measurement-navigation-bar-height) + var(--md-sys-measurement-space-200) + var(--md-sys-measurement-fab-height) + var(--md-sys-measurement-space-200));
+  --_snackbar-bottom-offset: calc(var(--md-sys-measurement-navigation-bar-height) + var(--md-sys-measurement-space-200) + var(--md-sys-measurement-fab-height) + var(--md-sys-measurement-space-200));
 }
 
 /* --------------------------------------------------------------------------

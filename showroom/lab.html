@@ -49,10 +49,28 @@
 
   <main>
     <br>
-    <button type="button" class="md-button" data-md-theme-toggle>
-      <span class="md-button-label">Tema: sistema</span>
-    </button>
+    <div class="md-button-group">
+      <button type="button" class="md-button" data-md-theme-toggle>
+        <span class="md-button-label">Tema: sistema</span>
+      </button>
+      <button type="button" class="md-button md-button-filled" data-trigger-snackbar="demo-snackbar">
+        <span class="md-button-label">Disparar Snackbar Universal</span>
+      </button>
+    </div>
 
+    <!-- Snackbar Universal sin clases rígidas (Offset gobernado dinámicamente) -->
+    <div class="md-snackbar-container">
+      <aside class="md-snackbar" id="demo-snackbar" role="status" aria-live="polite">
+        <span class="md-snackbar-label">Factura electrónica #9082 enviada a la DIAN</span>
+        <div class="md-snackbar-actions">
+          <button type="button" class="md-snackbar-action" data-close-snackbar>Ver PDF</button>
+          <button type="button" class="md-icon-button md-snackbar-close" data-close-snackbar aria-label="Cerrar aviso">
+            <span class="md-icon-button-icon md-icon" aria-hidden="true">close</span>
+            <span class="md-icon-button-touch"></span>
+          </button>
+        </div>
+      </aside>
+    </div>
 
 
 
@@ -63,43 +81,7 @@
 
     <p class="md-type-display-large">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Consectetur pariatur, unde quaerat recusandae enim ab esse rerum eum minus aperiam dolorem maxime voluptatem laudantium. Quia aliquid at vel nulla asperiores.</p>
 
-    <!-- Disparadores de auditoría de convivencia -->
-    <div class="md-button-group">
-      <button type="button" class="md-button md-button-filled" data-trigger-snackbar="demo-snackbar-nav">
-        <span class="md-button-label">Aviso sobre Nav Bar (96dp)</span>
-      </button>
-      <button type="button" class="md-button md-button-tonal" data-trigger-snackbar="demo-snackbar-fab-nav">
-        <span class="md-button-label">Aviso sobre Nav + FAB (168dp)</span>
-      </button>
-    </div>
 
-    <!-- Escenario 1: Snackbar sobre Navigation Bar (sin FAB) -->
-    <div class="md-snackbar-container md-snackbar-over-nav">
-      <aside class="md-snackbar" id="demo-snackbar-nav" role="status" aria-live="polite">
-        <span class="md-snackbar-label">Mesa 4 liberada correctamente</span>
-        <div class="md-snackbar-actions">
-          <button type="button" class="md-snackbar-action" data-close-snackbar>Deshacer</button>
-          <button type="button" class="md-icon-button md-snackbar-close" data-close-snackbar aria-label="Cerrar aviso">
-            <span class="md-icon-button-icon md-icon" aria-hidden="true">close</span>
-            <span class="md-icon-button-touch"></span>
-          </button>
-        </div>
-      </aside>
-    </div>
-
-    <!-- Escenario 2: Snackbar sobre Navigation Bar + FAB (168dp) -->
-    <div class="md-snackbar-container md-snackbar-over-fab-nav">
-      <aside class="md-snackbar" id="demo-snackbar-fab-nav" role="status" aria-live="polite">
-        <span class="md-snackbar-label">Factura #9082 enviada a la DIAN</span>
-        <div class="md-snackbar-actions">
-          <button type="button" class="md-snackbar-action" data-close-snackbar>Ver PDF</button>
-          <button type="button" class="md-icon-button md-snackbar-close" data-close-snackbar aria-label="Cerrar aviso">
-            <span class="md-icon-button-icon md-icon" aria-hidden="true">close</span>
-            <span class="md-icon-button-touch"></span>
-          </button>
-        </div>
-      </aside>
-    </div>
 
     <!-- Extended FAB a 96dp sobre Navigation Bar -->
     <button type="button" class="md-fab md-fab-extended md-fab-over-nav" id="demo-fab">

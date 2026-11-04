@@ -20,12 +20,74 @@
 const timers = new WeakMap();
 
 /**
+ * Comprueba si un elemento es visible en pantalla.
+ * @param {Element} el
+ * @returns {boolean}
+ */
+function isElementVisible(el) {
+  if (!el || !el.isConnected) return false;
+  const style = window.getComputedStyle(el);
+  if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') {
+    return false;
+  }
+  const rect = el.getBoundingClientRect();
+  return rect.width > 0 && rect.height > 0;
+}
+
+/**
+ * Calcula la cota inferior universal según los componentes visibles en la base del viewport.
+ * @returns {string}
+ */
+export function getUniversalBottomOffset() {
+  const GAP = 16; // 16px de holgura canónica M3
+  let bottomOffset = GAP; // Reposo base: 16px
+
+  // 1. Detectar si hay Navigation Bar fija visible
+  const navBar = document.querySelector('.md-navigation-bar-docked, .md-navigation-bar-fixed, .md-navigation-bar');
+  if (navBar && isElementVisible(navBar)) {
+    const navRect = navBar.getBoundingClientRect();
+    // Si la barra está pegada al piso de la pantalla
+    if (navRect.bottom >= window.innerHeight - 5) {
+      bottomOffset = navRect.height + GAP; // 80 + 16 = 96px
+    }
+  }
+
+  // 2. Detectar si hay un FAB visible (regular o extendido)
+  const fab = document.querySelector('.md-fab-over-nav, .md-fab-over-nav-fixed, .md-fab-anchored, .md-fab-fixed, .md-fab');
+  if (fab && isElementVisible(fab)) {
+    const fabRect = fab.getBoundingClientRect();
+    // Si el FAB flota en la zona inferior de la pantalla (últimos 250px)
+    if (fabRect.bottom >= window.innerHeight - 250) {
+      const fabTopFromBottom = window.innerHeight - fabRect.top;
+      // El snackbar debe quedar a 16px sobre el techo del FAB
+      bottomOffset = Math.max(bottomOffset, fabTopFromBottom + GAP); // 80 + 16 + 56 + 16 = 168px
+    }
+  }
+
+  return `${bottomOffset}px`;
+}
+
+/**
+ * Aplica la cota inferior automática al host o al snackbar.
+ * @param {HTMLElement} snackbar
+ */
+export function updateSnackbarOffset(snackbar) {
+  if (!snackbar) return;
+  const dynamicOffset = getUniversalBottomOffset();
+  const host = snackbar.closest('.md-snackbar-container') || snackbar;
+  host.style.setProperty('--_snackbar-bottom-offset', dynamicOffset);
+}
+
+/**
  * Muestra u oculta con animación.
  * @param {HTMLElement} snackbar
  * @param {number} [duration]
  */
 export function mostrarSnackbar(snackbar, duration = 4000) {
   if (!snackbar) return;
+
+  // Autodetección de cota inferior universal antes de entrar
+  updateSnackbarOffset(snackbar);
 
   // Si había un timer en curso, cancelarlo
   const prev = timers.get(snackbar);
