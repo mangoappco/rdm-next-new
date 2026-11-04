@@ -393,6 +393,7 @@
   --md-sys-measurement-navigation-bar-indicator-width: var(--md-ref-spacing-800); /* 64dp */
   --md-sys-measurement-navigation-bar-indicator-height: var(--md-sys-measurement-space-400); /* 32dp */
   --md-sys-measurement-navigation-bar-horizontal-indicator-height: var(--md-sys-measurement-space-500); /* 40dp */
+  --md-sys-measurement-navigation-bar-horizontal-indicator-max-width: var(--md-ref-container-height-dialog-min); /* 140dp */
 
   /* Alto de un tab. */
   --md-sys-measurement-tab-height: var(--md-ref-spacing-600);

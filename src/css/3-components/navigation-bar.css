@@ -254,10 +254,11 @@
    Para pantallas apaisadas (landscape), tablets compactas o interfaces de
    alta densidad donde 80dp comprometen el espacio vertical.
    - Altura total de la barra: 64dp.
-   - Destinos dispuestos en flex fila horizontal con 4dp de gap entre
-     glifo y etiqueta.
-   - Pastilla activa del indicador: 40dp de altura con padding perimetral
-     canónico.
+   - Destinos dispuestos en flex fila horizontal.
+   - Pastilla activa unificada de 40dp: envuelve CONJUNTAMENTE al icono
+     y a la etiqueta de texto con 4dp de gap entre ellos y 16/20dp de
+     padding perimetral con corner-full, sin alterar el contrato de ranuras
+     del marcado HTML.
    ------------------------------------------------------------------------ */
 .md-navigation-bar.md-navigation-bar-horizontal {
   block-size: var(--md-sys-measurement-navigation-bar-horizontal-height); /* 64dp */
@@ -265,27 +266,76 @@
 }
 
 .md-navigation-bar-horizontal .md-navigation-bar-item {
+  position: relative;
+  display: inline-flex;
   flex-direction: row;
+  align-items: center;
+  justify-content: center;
   block-size: 100%;
-  padding: 0 var(--md-sys-measurement-space-100);
-  gap: var(--md-sys-measurement-space-50); /* 4dp entre indicador/icono y etiqueta */
+  padding-inline: var(--md-sys-measurement-space-200); /* 16dp */
+  gap: var(--md-sys-measurement-space-50); /* 4dp entre glifo/indicador y etiqueta */
+  z-index: 0;
 }
 
+/* En la variante horizontal, la pastilla individual del slot de icono
+   cede su fondo: la pastilla activa envuelve el conjunto icono + etiqueta */
 .md-navigation-bar-horizontal .md-navigation-bar-indicator {
-  inline-size: var(--md-sys-measurement-space-500); /* 40dp en reposo */
-  block-size: var(--md-sys-measurement-navigation-bar-horizontal-indicator-height); /* 40dp */
+  inline-size: auto;
+  block-size: auto;
+  background-color: transparent !important;
+  z-index: 1;
 }
 
-.md-navigation-bar-horizontal .md-navigation-bar-item[aria-selected="true"] .md-navigation-bar-indicator {
-  inline-size: var(--md-sys-measurement-space-700); /* 56dp cota canonica M3 en horizontal */
-}
-
-.md-navigation-bar-horizontal .md-navigation-bar-item:hover:not(:disabled):not([aria-disabled="true"]):not([aria-selected="true"]) .md-navigation-bar-indicator {
-  inline-size: var(--md-sys-measurement-space-700);
+.md-navigation-bar-horizontal .md-navigation-bar-indicator::before {
+  display: none; /* El state layer se traslada al host o pseudo ::after del ítem */
 }
 
 .md-navigation-bar-horizontal .md-navigation-bar-label {
   margin-block-start: 0;
+  z-index: 1;
+}
+
+/* Pastilla unificada activa de 40dp que envuelve icono + texto */
+.md-navigation-bar-horizontal .md-navigation-bar-item::before {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  inset-inline: auto;
+  inline-size: calc(100% - var(--md-sys-measurement-space-200));
+  max-inline-size: var(--md-sys-measurement-navigation-bar-horizontal-indicator-max-width); /* 140dp tope canonico */
+  block-size: var(--md-sys-measurement-navigation-bar-horizontal-indicator-height); /* 40dp */
+  border-radius: var(--md-sys-shape-corner-full);
+  background-color: transparent;
+  pointer-events: none;
+  z-index: 0;
+  transition: background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
+              opacity var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+}
+
+.md-navigation-bar-horizontal .md-navigation-bar-item[aria-selected="true"]::before {
+  background-color: var(--md-sys-color-secondary-container);
+}
+
+/* Hover en variante horizontal: state layer sobre la pastilla unificada */
+.md-navigation-bar-horizontal .md-navigation-bar-item:hover:not(:disabled):not([aria-disabled="true"]):not([aria-selected="true"])::before {
+  background-color: var(--md-sys-color-on-surface);
+  opacity: var(--md-sys-state-hover-state-layer-opacity);
+}
+
+.md-navigation-bar-horizontal .md-navigation-bar-item[aria-selected="true"]:hover:not(:disabled):not([aria-disabled="true"])::before {
+  background-color: var(--md-sys-color-on-secondary-container);
+  opacity: var(--md-sys-state-hover-state-layer-opacity);
+}
+
+/* Pressed en variante horizontal: state layer al 12% sobre la pastilla unificada */
+.md-navigation-bar-horizontal .md-navigation-bar-item:active:not(:disabled):not([aria-disabled="true"]):not([aria-selected="true"])::before {
+  background-color: var(--md-sys-color-on-surface);
+  opacity: var(--md-sys-state-pressed-state-layer-opacity);
+}
+
+.md-navigation-bar-horizontal .md-navigation-bar-item[aria-selected="true"]:active:not(:disabled):not([aria-disabled="true"])::before {
+  background-color: var(--md-sys-color-on-secondary-container);
+  opacity: var(--md-sys-state-pressed-state-layer-opacity);
 }
 
 /* --------------------------------------------------------------------------
