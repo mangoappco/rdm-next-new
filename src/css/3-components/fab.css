@@ -516,13 +516,18 @@
   z-index: 1;
 }
 
-/* Convivencia automática con Navigation Bar Horizontal (64dp + 16dp = 80dp) en 100% CSS puro */
-body:has(.md-navigation-bar-horizontal) .md-fab.md-fab-over-nav,
-body:has(.md-navigation-bar-horizontal) .md-fab-extended.md-fab-over-nav,
-body:has(.md-navigation-bar-horizontal) .md-fab.md-fab-over-nav-fixed,
-body:has(.md-navigation-bar-horizontal) .md-fab-extended.md-fab-over-nav-fixed,
-body:has(.md-navigation-bar-horizontal.md-navigation-bar-fixed) .md-fab.md-fab-fixed,
-body:has(.md-navigation-bar-horizontal.md-navigation-bar-fixed) .md-fab-extended.md-fab-fixed {
+/* Convivencia automática con Navigation Bar Horizontal (64dp + 16dp = 80dp) en 100% CSS puro.
+   Acotado al contenedor local o a la vista de producción para que en páginas de
+   documentación con múltiples especímenes (Showroom) una barra horizontal no
+   contamine las cotas de especímenes con barra vertical estándar. */
+:not(body):has(> .md-navigation-bar-horizontal) .md-fab.md-fab-over-nav,
+:not(body):has(> .md-navigation-bar-horizontal) .md-fab-extended.md-fab-over-nav,
+:not(body):has(> .md-navigation-bar-horizontal) .md-fab.md-fab-over-nav-fixed,
+:not(body):has(> .md-navigation-bar-horizontal) .md-fab-extended.md-fab-over-nav-fixed,
+body:has(> .md-navigation-bar-horizontal.md-navigation-bar-fixed) .md-fab.md-fab-fixed,
+body:has(> .md-navigation-bar-horizontal.md-navigation-bar-fixed) .md-fab-extended.md-fab-fixed,
+body:has(> * .md-navigation-bar-horizontal.md-navigation-bar-fixed) .md-fab.md-fab-fixed,
+body:has(> * .md-navigation-bar-horizontal.md-navigation-bar-fixed) .md-fab-extended.md-fab-fixed {
   bottom: calc(var(--md-sys-measurement-navigation-bar-horizontal-height) + var(--md-sys-measurement-space-200)); /* 80dp */
 }
 
