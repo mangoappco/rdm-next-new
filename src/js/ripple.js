@@ -78,7 +78,26 @@ function createWave(el, x, y, fromKeyboard) {
   }
   if (typeof cx !== 'number' || isNaN(cx)) cx = rect.width / 2;
   if (typeof cy !== 'number' || isNaN(cy)) cy = rect.height / 2;
-  const maxDist = Math.hypot(Math.max(cx, rect.width - cx), Math.max(cy, rect.height - cy));
+  const touch = el.querySelector(':scope > .md-icon-button-touch');
+  const navIndicator = el.querySelector(':scope > .md-navigation-bar-indicator');
+  const host = navIndicator || touch || el;
+
+  /* Si la onda se aloja en un contenedor hijo con su propio sistema de
+     coordenadas (ej. .md-navigation-bar-indicator en lugar de .md-navigation-bar-item),
+     recalculamos cx/cy respecto al host de recorte. */
+  if (host !== el) {
+    const hostRect = host.getBoundingClientRect();
+    if (fromKeyboard) {
+      cx = hostRect.width / 2;
+      cy = hostRect.height / 2;
+    } else {
+      cx = x - hostRect.left;
+      cy = y - hostRect.top;
+    }
+  }
+
+  const hostRect = host !== el ? host.getBoundingClientRect() : rect;
+  const maxDist = Math.hypot(Math.max(cx, hostRect.width - cx), Math.max(cy, hostRect.height - cy));
   const radius = maxDist;
   const diameter = radius * 2;
   const wave = document.createElement('span');
@@ -88,17 +107,6 @@ function createWave(el, x, y, fromKeyboard) {
   wave.style.height = diameter + 'px';
   wave.style.left = (cx - radius) + 'px';
   wave.style.top = (cy - radius) + 'px';
-  /* CONFINAMIENTO (2026-11-02): en el icon-button la onda NO se inyecta en
-     el anfitrion sino en su subcapa de recorte .md-icon-button-touch (caja
-     exacta del boton con overflow: hidden + radius inherit). El diametro de
-     la onda supera al circulo de 40dp — un anfitrion de badge abre
-     overflow: visible para dejar respirar al badge y confiar el recorte a
-     la subcapa. El fallback (el anfitrion) cubre los icon-button sin touch
-     y el resto de componentes, donde el anfitrion sigue recortando. Las
-     coordenadas no cambian: el touch con inset: 0 comparte caja con el
-     boton. */
-  const touch = el.querySelector(':scope > .md-icon-button-touch');
-  const host = touch || el;
   host.appendChild(wave);
   return wave;
 }

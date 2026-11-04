@@ -129,13 +129,13 @@
   letter-spacing: var(--md-sys-typescale-label-medium-tracking);
   outline: none;
   box-sizing: border-box;
-  overflow: hidden; /* confina la capa de estado y la onda del ripple */
   white-space: nowrap;
 }
 
 /* Slot del Active Indicator: mide 64x32 en los dos estados, la unica
    caja de la geometria canonica; el fondo transparente lo apaga y el ancho
-   de arranque (mitad, 32dp) guarda el crecimiento canonico de la pastilla. */
+   de arranque (mitad, 32dp) guarda el crecimiento canonico de la pastilla.
+   Confinado para recortar la onda de ripple y la capa de estado (State Layer). */
 .md-navigation-bar-indicator {
   display: flex;
   align-items: center;
@@ -146,6 +146,7 @@
   block-size: var(--md-sys-measurement-navigation-bar-indicator-height); /* 32dp */
   border-radius: var(--md-sys-shape-corner-full);
   background-color: transparent;
+  overflow: hidden;
   transition: inline-size var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
               background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
 }
@@ -244,22 +245,34 @@ main:has(~ * .md-navigation-bar.md-navigation-bar-fixed) {
    STATE LAYER CANÓNICO M3 (Hover, Focus, Pressed)
    ========================================================================== */
 
-/* Capa de estado base confinada al area del item. Canon de v34.0.21: el
-   color de estado es on-surface para activo e inactivo por igual
-   ($active-hover-state-layer-color y $inactive-hover-state-layer-color). */
-.md-navigation-bar-item::before {
+/* Capa de estado confinada exclusivamente a la pastilla (.md-navigation-bar-indicator).
+   En M3, el state layer nunca debe teñir toda la columna de 80dp del item.
+   Canon: on-surface para inactivo ($inactive-hover-state-layer-color) y
+   on-secondary-container para activo sobre secondary-container. */
+.md-navigation-bar-indicator::before {
   content: '';
   position: absolute;
   inset: 0;
+  border-radius: inherit;
   background-color: transparent;
   opacity: 0;
   pointer-events: none;
   transition: opacity var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
 }
 
-/* Hover: 8% on-surface */
-.md-navigation-bar-item:hover:not(:disabled):not([aria-disabled="true"])::before {
+/* Hover en ítem inactivo: expande la píldora a 64dp y muestra 8% on-surface */
+.md-navigation-bar-item:hover:not(:disabled):not([aria-disabled="true"]):not([aria-selected="true"]) .md-navigation-bar-indicator {
+  inline-size: var(--md-sys-measurement-navigation-bar-indicator-width);
+}
+
+.md-navigation-bar-item:hover:not(:disabled):not([aria-disabled="true"]):not([aria-selected="true"]) .md-navigation-bar-indicator::before {
   background-color: var(--md-sys-color-on-surface);
+  opacity: var(--md-sys-state-hover-state-layer-opacity);
+}
+
+/* Hover en ítem activo: sobreimprime 8% on-secondary-container en la pastilla activa */
+.md-navigation-bar-item[aria-selected="true"]:hover:not(:disabled):not([aria-disabled="true"]) .md-navigation-bar-indicator::before {
+  background-color: var(--md-sys-color-on-secondary-container);
   opacity: var(--md-sys-state-hover-state-layer-opacity);
 }
 
@@ -286,7 +299,7 @@ main:has(~ * .md-navigation-bar.md-navigation-bar-fixed) {
 @media (prefers-reduced-motion: reduce) {
   .md-navigation-bar-indicator,
   .md-navigation-bar-label,
-  .md-navigation-bar-item::before {
+  .md-navigation-bar-indicator::before {
     transition: none;
   }
 }
