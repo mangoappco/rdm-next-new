@@ -59,6 +59,24 @@
 }
 
 /* --------------------------------------------------------------------------
+   MODIFICADORES DE CONVIVENCIA VERTICAL (Navigation Bar y FAB)
+   --------------------------------------------------------------------------
+   En M3, el Snackbar nunca solapa la Navigation Bar ni el FAB:
+   - .md-snackbar-over-nav: 80dp (Navigation Bar) + 16dp (gap) = 96dp.
+   - .md-snackbar-over-fab-nav: 80dp (Nav Bar) + 16dp + 56dp (FAB) + 16dp = 168dp.
+   Aplicable tanto al host .md-snackbar-container como a .md-snackbar directo.
+   ------------------------------------------------------------------------ */
+.md-snackbar-container.md-snackbar-over-nav,
+.md-snackbar.md-snackbar-over-nav {
+  inset-block-end: calc(var(--md-sys-measurement-navigation-bar-height) + var(--md-sys-measurement-space-200));
+}
+
+.md-snackbar-container.md-snackbar-over-fab-nav,
+.md-snackbar.md-snackbar-over-fab-nav {
+  inset-block-end: calc(var(--md-sys-measurement-navigation-bar-height) + var(--md-sys-measurement-space-200) + var(--md-sys-measurement-fab-height) + var(--md-sys-measurement-space-200));
+}
+
+/* --------------------------------------------------------------------------
    EL SNACKBAR (Base de 1 línea)
    -------------------------------------------------------------------------- */
 .md-snackbar {
