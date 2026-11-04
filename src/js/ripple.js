@@ -23,7 +23,6 @@ const SELECTOR = [
   'a.md-card',
   '.md-card[tabindex]',
   '.md-tab',
-  '.md-navigation-bar-item',
   '[data-ripple]'
 ].join(', ');
 
@@ -78,23 +77,12 @@ function createWave(el, x, y, fromKeyboard) {
   }
   if (typeof cx !== 'number' || isNaN(cx)) cx = rect.width / 2;
   if (typeof cy !== 'number' || isNaN(cy)) cy = rect.height / 2;
+  /* CONFINAMIENTO (2026-11-02): en el icon-button la onda NO se inyecta en
+     el anfitrion sino en su subcapa de recorte .md-icon-button-touch (caja
+     exacta del boton con overflow: hidden + radius inherit). El touch con
+     inset: 0 comparte caja con el boton. */
   const touch = el.querySelector(':scope > .md-icon-button-touch');
-  const navIndicator = el.querySelector(':scope > .md-navigation-bar-indicator');
-  const host = navIndicator || touch || el;
-
-  /* Si la onda se aloja en un contenedor hijo con su propio sistema de
-     coordenadas (ej. .md-navigation-bar-indicator en lugar de .md-navigation-bar-item),
-     recalculamos cx/cy respecto al host de recorte. */
-  if (host !== el) {
-    const hostRect = host.getBoundingClientRect();
-    if (fromKeyboard) {
-      cx = hostRect.width / 2;
-      cy = hostRect.height / 2;
-    } else {
-      cx = x - hostRect.left;
-      cy = y - hostRect.top;
-    }
-  }
+  const host = touch || el;
 
   const hostRect = host !== el ? host.getBoundingClientRect() : rect;
   const maxDist = Math.hypot(Math.max(cx, hostRect.width - cx), Math.max(cy, hostRect.height - cy));

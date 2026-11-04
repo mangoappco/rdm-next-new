@@ -135,20 +135,41 @@
 /* Slot del Active Indicator: mide 64x32 en los dos estados, la unica
    caja de la geometria canonica; el fondo transparente lo apaga y el ancho
    de arranque (mitad, 32dp) guarda el crecimiento canonico de la pastilla.
-   Confinado para recortar la onda de ripple y la capa de estado (State Layer). */
+   overflow: visible es OBLIGATORIO en M3 para que los badges anclados al
+   icono (.md-badge-anchor) no sufran recorte en su mitad superior. */
 .md-navigation-bar-indicator {
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  z-index: 1;
+  z-index: 0;
   inline-size: calc(var(--md-sys-measurement-navigation-bar-indicator-width) / 2); /* 32dp de arranque canonico */
   block-size: var(--md-sys-measurement-navigation-bar-indicator-height); /* 32dp */
   border-radius: var(--md-sys-shape-corner-full);
   background-color: transparent;
-  overflow: hidden;
+  overflow: visible;
   transition: inline-size var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
               background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+}
+
+/* Capa de estado (State Layer) situada en el plano inferior del indicador */
+.md-navigation-bar-indicator::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-color: transparent;
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
+  transition: opacity var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+}
+
+/* Glifo e insignia (Badge): z-index: 1 para flotar sobre el state layer */
+.md-navigation-bar-icon,
+.md-navigation-bar-indicator .md-badge-anchor {
+  position: relative;
+  z-index: 1;
 }
 
 /* Glifo de 24dp, centrado en el slot 64x32 */
@@ -245,21 +266,6 @@ main:has(~ * .md-navigation-bar.md-navigation-bar-fixed) {
    STATE LAYER CANÓNICO M3 (Hover, Focus, Pressed)
    ========================================================================== */
 
-/* Capa de estado confinada exclusivamente a la pastilla (.md-navigation-bar-indicator).
-   En M3, el state layer nunca debe teñir toda la columna de 80dp del item.
-   Canon: on-surface para inactivo ($inactive-hover-state-layer-color) y
-   on-secondary-container para activo sobre secondary-container. */
-.md-navigation-bar-indicator::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background-color: transparent;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
-}
-
 /* Hover en ítem inactivo: expande la píldora a 64dp y muestra 8% on-surface */
 .md-navigation-bar-item:hover:not(:disabled):not([aria-disabled="true"]):not([aria-selected="true"]) .md-navigation-bar-indicator {
   inline-size: var(--md-sys-measurement-navigation-bar-indicator-width);
@@ -276,7 +282,17 @@ main:has(~ * .md-navigation-bar.md-navigation-bar-fixed) {
   opacity: var(--md-sys-state-hover-state-layer-opacity);
 }
 
-/* Pressed / Ripple: gobernado dinamicamente por src/js/ripple.js */
+/* Pressed / Active en la pastilla (State Layer pressed canónico, 12%):
+   Sustituye la onda invasiva de ripple evitando recortar o desbordar el badge. */
+.md-navigation-bar-item:active:not(:disabled):not([aria-disabled="true"]):not([aria-selected="true"]) .md-navigation-bar-indicator::before {
+  background-color: var(--md-sys-color-on-surface);
+  opacity: var(--md-sys-state-pressed-state-layer-opacity);
+}
+
+.md-navigation-bar-item[aria-selected="true"]:active:not(:disabled):not([aria-disabled="true"]) .md-navigation-bar-indicator::before {
+  background-color: var(--md-sys-color-on-secondary-container);
+  opacity: var(--md-sys-state-pressed-state-layer-opacity);
+}
 
 /* Foco de teclado: canon $focus-indicator-color = secondary. El anillo de
    tabs se compone de los mismos tokens: thickness extra-thick + offset thin. */
