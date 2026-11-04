@@ -249,17 +249,63 @@
 }
 
 /* --------------------------------------------------------------------------
+   VARIANTE HORIZONTAL / INLINE (M3 Specs: 64dp altura, 40dp pastilla)
+   ------------------------------------------------------------------------
+   Para pantallas apaisadas (landscape), tablets compactas o interfaces de
+   alta densidad donde 80dp comprometen el espacio vertical.
+   - Altura total de la barra: 64dp.
+   - Destinos dispuestos en flex fila horizontal con 4dp de gap entre
+     glifo y etiqueta.
+   - Pastilla activa del indicador: 40dp de altura con padding perimetral
+     canónico.
+   ------------------------------------------------------------------------ */
+.md-navigation-bar.md-navigation-bar-horizontal {
+  block-size: var(--md-sys-measurement-navigation-bar-horizontal-height); /* 64dp */
+  padding-block: var(--md-sys-measurement-space-150); /* 12dp superior e inferior */
+}
+
+.md-navigation-bar-horizontal .md-navigation-bar-item {
+  flex-direction: row;
+  block-size: 100%;
+  padding: 0 var(--md-sys-measurement-space-100);
+  gap: var(--md-sys-measurement-space-50); /* 4dp entre indicador/icono y etiqueta */
+}
+
+.md-navigation-bar-horizontal .md-navigation-bar-indicator {
+  inline-size: var(--md-sys-measurement-space-500); /* 40dp en reposo */
+  block-size: var(--md-sys-measurement-navigation-bar-horizontal-indicator-height); /* 40dp */
+}
+
+.md-navigation-bar-horizontal .md-navigation-bar-item[aria-selected="true"] .md-navigation-bar-indicator {
+  inline-size: var(--md-sys-measurement-space-700); /* 56dp cota canonica M3 en horizontal */
+}
+
+.md-navigation-bar-horizontal .md-navigation-bar-item:hover:not(:disabled):not([aria-disabled="true"]):not([aria-selected="true"]) .md-navigation-bar-indicator {
+  inline-size: var(--md-sys-measurement-space-700);
+}
+
+.md-navigation-bar-horizontal .md-navigation-bar-label {
+  margin-block-start: 0;
+}
+
+/* --------------------------------------------------------------------------
    SCAFFOLD DE LAYOUT: Holgura de seguridad inferior (Clearance Spacer)
    ------------------------------------------------------------------------
-   Cuando una vista móvil tiene Navigation Bar fija al fondo (80dp), el
-   contenedor de scroll (`<main>` o `.md-has-navigation-bar`) debe incorporar
-   un respiro inferior de 96dp (80dp de barra + 16dp de gap canónico M3) para
-   que los últimos elementos nunca queden ocultos detrás de la barra.
+   Cuando una vista móvil tiene Navigation Bar fija al fondo (80dp o 64dp en
+   horizontal), el contenedor de scroll (`<main>` o `.md-has-navigation-bar`)
+   debe incorporar un respiro inferior (altura de barra + 16dp de gap canónico)
+   para que los últimos elementos nunca queden ocultos detrás de la barra.
    ------------------------------------------------------------------------ */
 .md-has-navigation-bar,
 main:has(~ .md-navigation-bar.md-navigation-bar-fixed),
 main:has(~ * .md-navigation-bar.md-navigation-bar-fixed) {
   padding-block-end: calc(var(--md-sys-measurement-navigation-bar-height) + var(--md-sys-measurement-space-200));
+}
+
+.md-has-navigation-bar-horizontal,
+main:has(~ .md-navigation-bar.md-navigation-bar-horizontal.md-navigation-bar-fixed),
+main:has(~ * .md-navigation-bar.md-navigation-bar-horizontal.md-navigation-bar-fixed) {
+  padding-block-end: calc(var(--md-sys-measurement-navigation-bar-horizontal-height) + var(--md-sys-measurement-space-200));
 }
 
 /* ==========================================================================

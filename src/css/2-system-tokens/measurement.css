@@ -383,14 +383,16 @@
      alturas de fila de lista: una altura de contenedor se lee de
      container-height.css aunque un numero del espaciado coincida. */
   --md-sys-measurement-navigation-bar-height: var(--md-ref-container-height-fab-medium); /* 80dp */
+  --md-sys-measurement-navigation-bar-horizontal-height: var(--md-ref-spacing-800); /* 64dp */
 
-  /* La pastilla del destino activo (Active Indicator): 64x32dp. Canon
+  /* La pastilla del destino activo (Active Indicator): 64x32dp en vertical y 40dp en horizontal. Canon
      `_md-comp-navigation-bar.scss` v34.0.21: $active-indicator-width = 64,
      $active-indicator-height = 32. El ancho sale de la escala de espacio
      (Space 800) y el alto se apoya en el rol generico de 32dp, el mismo
      que la pista del switch: coincidir no convierte dos cotas en una. */
   --md-sys-measurement-navigation-bar-indicator-width: var(--md-ref-spacing-800); /* 64dp */
   --md-sys-measurement-navigation-bar-indicator-height: var(--md-sys-measurement-space-400); /* 32dp */
+  --md-sys-measurement-navigation-bar-horizontal-indicator-height: var(--md-sys-measurement-space-500); /* 40dp */
 
   /* Alto de un tab. */
   --md-sys-measurement-tab-height: var(--md-ref-spacing-600);

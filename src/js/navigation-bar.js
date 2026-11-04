@@ -95,8 +95,16 @@ export function initNavigationBar() {
   const fixedNav = document.querySelector('.md-navigation-bar-fixed, body > .md-navigation-bar, body > .md-navigation-bar-docked');
   if (fixedNav) {
     const main = document.querySelector('main, .md-main-content');
-    if (main && !main.classList.contains('md-has-navigation-bar')) {
-      main.classList.add('md-has-navigation-bar');
+    if (main) {
+      if (fixedNav.classList.contains('md-navigation-bar-horizontal')) {
+        if (!main.classList.contains('md-has-navigation-bar-horizontal')) {
+          main.classList.add('md-has-navigation-bar-horizontal');
+        }
+      } else {
+        if (!main.classList.contains('md-has-navigation-bar')) {
+          main.classList.add('md-has-navigation-bar');
+        }
+      }
     }
   }
 }

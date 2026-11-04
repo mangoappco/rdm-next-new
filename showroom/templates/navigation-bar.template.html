@@ -15,7 +15,7 @@
 </head>
 
 <!--
-  ESTA VISTA TIENE OCHO PARES ATOMICOS EN UN SOLO BLOQUE (especificacion y
+  ESTA VISTA TIENE NUEVE PARES ATOMICOS EN UN SOLO BLOQUE (especificacion y
   anatomia): un especimen evalua UNA sola configuracion estructural a la
   vez. CERO casos de uso ManGo! App: la aplicacion al negocio
   (comandero, KDS, mesas) queda reservada para la Galeria de Usos Reales
@@ -32,6 +32,8 @@
      96dp del fondo sobre la barra acoplada, sin muesca M2; el
      modificador de convivencia es .md-fab-over-nav en fab.css y el
      escenario del espécimen es .sr-specimen-dock)
+  9. Horizontal / Inline layout (variante apaisada de 64dp de altura con
+     pastilla activa de 40dp y destinos flex en fila)
 
   LOS ACUERDOS DEL SHOWROOM
   -------------------------
@@ -546,6 +548,57 @@
       &lt;span class="md-navigation-bar-icon md-icon" aria-hidden="true"&gt;person&lt;/span&gt;
     &lt;/span&gt;
     &lt;span class="md-navigation-bar-label"&gt;Perfil&lt;/span&gt;
+  &lt;/button&gt;
+&lt;/nav&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- PAR 9: Horizontal / Inline layout -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Horizontal / Inline layout</h3>
+      <p class="md-type-body-medium">Variante apaisada (landscape) de 64dp de altura con pastilla de 40dp (.md-navigation-bar-horizontal): los destinos disponen glifo y etiqueta en fila con gap de 4dp.</p>
+
+      <div class="sr-specimen">
+        <nav class="md-navigation-bar md-navigation-bar-horizontal" role="tablist" aria-label="Navegación horizontal apaisada">
+          <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="true" tabindex="0">
+            <span class="md-navigation-bar-indicator">
+              <span class="md-navigation-bar-icon md-icon" aria-hidden="true">home</span>
+            </span>
+            <span class="md-navigation-bar-label">Inicio</span>
+          </button>
+          <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1">
+            <span class="md-navigation-bar-indicator">
+              <span class="md-navigation-bar-icon md-icon" aria-hidden="true">search</span>
+            </span>
+            <span class="md-navigation-bar-label">Explorar</span>
+          </button>
+          <button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1">
+            <span class="md-navigation-bar-indicator">
+              <span class="md-navigation-bar-icon md-icon" aria-hidden="true">settings</span>
+            </span>
+            <span class="md-navigation-bar-label">Ajustes</span>
+          </button>
+        </nav>
+      </div>
+
+      <pre class="sr-code"><code>&lt;nav class="md-navigation-bar md-navigation-bar-horizontal" role="tablist" aria-label="Navegación horizontal apaisada"&gt;
+  &lt;button type="button" class="md-navigation-bar-item" role="tab" aria-selected="true" tabindex="0"&gt;
+    &lt;span class="md-navigation-bar-indicator"&gt;
+      &lt;span class="md-navigation-bar-icon md-icon" aria-hidden="true"&gt;home&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;span class="md-navigation-bar-label"&gt;Inicio&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1"&gt;
+    &lt;span class="md-navigation-bar-indicator"&gt;
+      &lt;span class="md-navigation-bar-icon md-icon" aria-hidden="true"&gt;search&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;span class="md-navigation-bar-label"&gt;Explorar&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button type="button" class="md-navigation-bar-item" role="tab" aria-selected="false" tabindex="-1"&gt;
+    &lt;span class="md-navigation-bar-indicator"&gt;
+      &lt;span class="md-navigation-bar-icon md-icon" aria-hidden="true"&gt;settings&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;span class="md-navigation-bar-label"&gt;Ajustes&lt;/span&gt;
   &lt;/button&gt;
 &lt;/nav&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
