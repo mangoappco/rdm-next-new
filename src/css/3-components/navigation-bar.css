@@ -249,93 +249,107 @@
 }
 
 /* --------------------------------------------------------------------------
-   VARIANTE HORIZONTAL / INLINE (M3 Specs: 64dp altura, 40dp pastilla)
+   VARIANTE HORIZONTAL / INLINE (M3 Specs: 64dp, Fixed items, Dynamic outer margins)
    ------------------------------------------------------------------------
    Para pantallas apaisadas (landscape), tablets compactas o interfaces de
    alta densidad donde 80dp comprometen el espacio vertical.
    - Altura total de la barra: 64dp.
-   - Destinos dispuestos en flex fila horizontal.
-   - Pastilla activa unificada de 40dp: envuelve CONJUNTAMENTE al icono
-     y a la etiqueta de texto con 4dp de gap entre ellos y 16/20dp de
-     padding perimetral con corner-full, sin alterar el contrato de ranuras
-     del marcado HTML.
+   - Disposición agrupada al centro: los destinos tienen ancho fijo/intrínseco
+     (Fixed width), dejando margen dinámico flexible (Dynamic width) hacia los
+     extremos de la ventana, según el diagrama oficial M3.
+   - Cada destino (.md-navigation-bar-item) es su propia pastilla de 40dp con
+     corner-full, padding horizontal de 16dp y gap de 4dp entre glifo y label.
+   - El State Layer se confina a la pastilla mediante ::after al 8% (hover)
+     y al 12% (pressed), garantizando CERO salto de layout (layout shift).
    ------------------------------------------------------------------------ */
 .md-navigation-bar.md-navigation-bar-horizontal {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centra el bloque de destinos (Dynamic width exterior) */
   block-size: var(--md-sys-measurement-navigation-bar-horizontal-height); /* 64dp */
-  padding-block: var(--md-sys-measurement-space-150); /* 12dp superior e inferior */
+  min-block-size: var(--md-sys-measurement-navigation-bar-horizontal-height);
+  padding-block: var(--md-sys-measurement-space-150); /* 12dp */
+  padding-inline: var(--md-sys-measurement-space-300); /* Margen mínimo perimetral */
+  gap: var(--md-sys-measurement-space-100); /* 8dp de separación canónica entre destinos */
 }
 
+/* Los destinos NO son flex: 1. Tienen ancho fijo/intrínseco al contenido */
 .md-navigation-bar-horizontal .md-navigation-bar-item {
-  position: relative;
+  flex: 0 0 auto; /* Ancho fijo/intrínseco */
   display: inline-flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  block-size: 100%;
-  padding-inline: var(--md-sys-measurement-space-200); /* 16dp */
-  gap: var(--md-sys-measurement-space-50); /* 4dp entre glifo/indicador y etiqueta */
-  z-index: 0;
-}
-
-/* En la variante horizontal, la pastilla individual del slot de icono
-   cede su fondo: la pastilla activa envuelve el conjunto icono + etiqueta */
-.md-navigation-bar-horizontal .md-navigation-bar-indicator {
   inline-size: auto;
-  block-size: auto;
-  background-color: transparent !important;
-  z-index: 1;
+  block-size: var(--md-sys-measurement-navigation-bar-horizontal-indicator-height); /* 40dp */
+  min-block-size: var(--md-sys-measurement-navigation-bar-horizontal-indicator-height);
+  padding: 0 var(--md-sys-measurement-space-200); /* 16dp lateral canónico */
+  border-radius: var(--md-sys-shape-corner-full);
+  gap: var(--md-sys-measurement-space-50); /* 4dp exactos entre icono y label */
+  position: relative;
+  isolation: isolate;
+  background-color: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  box-sizing: border-box;
+  transition: background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
+              color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
 }
 
-.md-navigation-bar-horizontal .md-navigation-bar-indicator::before {
-  display: none; /* El state layer se traslada al host o pseudo ::after del ítem */
+/* Desvanece la caja contenedora del indicador vertical para que el icono
+   y la etiqueta fluyan en la misma fila sin cajas ni dimensiones extra */
+.md-navigation-bar-horizontal .md-navigation-bar-indicator {
+  display: contents;
+}
+
+.md-navigation-bar-horizontal .md-navigation-bar-icon {
+  font-size: var(--md-sys-measurement-icon-size); /* 24dp */
+  inline-size: var(--md-sys-measurement-icon-size);
+  block-size: var(--md-sys-measurement-icon-size);
+  color: inherit;
+  position: relative;
+  z-index: 1;
 }
 
 .md-navigation-bar-horizontal .md-navigation-bar-label {
+  font: var(--md-sys-typescale-label-medium);
+  color: inherit;
+  white-space: nowrap;
   margin-block-start: 0;
+  position: relative;
   z-index: 1;
 }
 
-/* Pastilla unificada activa de 40dp que envuelve icono + texto */
-.md-navigation-bar-horizontal .md-navigation-bar-item::before {
+/* --- ESTADO ACTIVO (M3 Selection) --- */
+.md-navigation-bar-horizontal .md-navigation-bar-item[aria-selected="true"] {
+  background-color: var(--md-sys-color-secondary-container);
+  color: var(--md-sys-color-on-secondary-container);
+}
+
+.md-navigation-bar-horizontal .md-navigation-bar-item[aria-selected="true"] .md-navigation-bar-icon {
+  --md-sys-icon-fill: var(--md-sys-icon-fill-full);
+}
+
+/* --- STATE LAYER CANÓNICO (Hover / Pressed) SIN DESPLAZAMIENTO ---
+   ::after posicionado en inset: 0 con z-index: -1 para pintar sobre el fondo
+   sin interferir en el cálculo geométrico de icono ni texto. */
+.md-navigation-bar-horizontal .md-navigation-bar-item::after {
   content: '';
   position: absolute;
-  inset-block: 0;
-  inset-inline: auto;
-  inline-size: calc(100% - var(--md-sys-measurement-space-200));
-  max-inline-size: var(--md-sys-measurement-navigation-bar-horizontal-indicator-max-width); /* 140dp tope canonico */
-  block-size: var(--md-sys-measurement-navigation-bar-horizontal-indicator-height); /* 40dp */
-  border-radius: var(--md-sys-shape-corner-full);
-  background-color: transparent;
+  inset: 0;
+  border-radius: inherit;
+  background-color: currentColor;
+  opacity: 0;
   pointer-events: none;
-  z-index: 0;
-  transition: background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
-              opacity var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+  z-index: -1;
+  transition: opacity var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
 }
 
-.md-navigation-bar-horizontal .md-navigation-bar-item[aria-selected="true"]::before {
-  background-color: var(--md-sys-color-secondary-container);
+.md-navigation-bar-horizontal .md-navigation-bar-item:hover:not(:disabled):not([aria-disabled="true"])::after {
+  opacity: var(--md-sys-state-hover-state-layer-opacity); /* 8% currentColor */
 }
 
-/* Hover en variante horizontal: state layer sobre la pastilla unificada */
-.md-navigation-bar-horizontal .md-navigation-bar-item:hover:not(:disabled):not([aria-disabled="true"]):not([aria-selected="true"])::before {
-  background-color: var(--md-sys-color-on-surface);
-  opacity: var(--md-sys-state-hover-state-layer-opacity);
-}
-
-.md-navigation-bar-horizontal .md-navigation-bar-item[aria-selected="true"]:hover:not(:disabled):not([aria-disabled="true"])::before {
-  background-color: var(--md-sys-color-on-secondary-container);
-  opacity: var(--md-sys-state-hover-state-layer-opacity);
-}
-
-/* Pressed en variante horizontal: state layer al 12% sobre la pastilla unificada */
-.md-navigation-bar-horizontal .md-navigation-bar-item:active:not(:disabled):not([aria-disabled="true"]):not([aria-selected="true"])::before {
-  background-color: var(--md-sys-color-on-surface);
-  opacity: var(--md-sys-state-pressed-state-layer-opacity);
-}
-
-.md-navigation-bar-horizontal .md-navigation-bar-item[aria-selected="true"]:active:not(:disabled):not([aria-disabled="true"])::before {
-  background-color: var(--md-sys-color-on-secondary-container);
-  opacity: var(--md-sys-state-pressed-state-layer-opacity);
+.md-navigation-bar-horizontal .md-navigation-bar-item:active:not(:disabled):not([aria-disabled="true"])::after {
+  opacity: var(--md-sys-state-pressed-state-layer-opacity); /* 12% currentColor */
 }
 
 /* --------------------------------------------------------------------------
