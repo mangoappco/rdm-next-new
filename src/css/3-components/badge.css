@@ -68,8 +68,16 @@
   display: inline-flex;
 }
 
+/* El icono anclado se posiciona en el plano base */
+.md-badge-anchor > .md-icon {
+  position: relative;
+  z-index: 0;
+}
+
 /* BASE: la geometría de anclaje y la piel de error viven en la base; las
-   dos variantes solo fijan tamaño y, si hacen falta, texto. */
+   dos variantes solo fijan tamaño y, si hacen falta, texto.
+   En el canon BadgedBox M3, el badge siempre flota y muerde por encima del
+   glifo anfitrión (z-index: 1), nunca detrás de las líneas de la fuente. */
 .md-badge {
   position: absolute;
   top: 0;
@@ -83,6 +91,7 @@
   background: var(--md-sys-color-error);
   color: var(--md-sys-color-on-error);
   font: var(--md-sys-typescale-label-small);
+  z-index: 1;
 }
 
 /* DOT: 6x6dp, binario. Sin texto jamás: nombrar el estado en el

@@ -165,19 +165,20 @@
   transition: opacity var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
 }
 
-/* Glifo e insignia (Badge): z-index: 1 para flotar sobre el state layer */
-.md-navigation-bar-icon,
+/* Glifo e insignia (Badge): el ancla y el glifo no compiten con el badge.
+   El badge flota incondicionalmente a z-index: 1 dentro de .md-badge-anchor */
 .md-navigation-bar-indicator .md-badge-anchor {
   position: relative;
   z-index: 1;
 }
 
-/* Glifo de 24dp, centrado en el slot 64x32 */
 .md-navigation-bar-icon {
   font-size: var(--md-sys-measurement-icon-size); /* 24dp */
   inline-size: var(--md-sys-measurement-icon-size);
   block-size: var(--md-sys-measurement-icon-size);
   color: inherit;
+  position: relative;
+  z-index: 0;
 }
 
 /* Etiqueta: 16dp de alto fijos (label-medium line-height), 4dp bajo la
