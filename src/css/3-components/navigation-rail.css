@@ -45,8 +45,6 @@
   align-self: stretch; /* Asegura que nunca colapse verticalmente en layouts flex */
   inline-size: var(--md-sys-measurement-navigation-rail-width); /* 80dp */
   min-inline-size: var(--md-sys-measurement-navigation-rail-width);
-  block-size: 100%;
-  min-block-size: 100%;
   background-color: var(--md-sys-color-surface);
   box-sizing: border-box;
   padding-block: var(--md-sys-measurement-space-150); /* 12dp arriba y abajo */
