@@ -1408,6 +1408,17 @@ Barra de navegación primaria para móvil y tablet anclada al borde inferior:
 - **Glifo y Etiqueta:** Glifo de 24dp con variación rellena (`FILL 1`) en el destino activo y `FILL 0` en inactivo. Etiqueta `label-medium` con modificador `.md-navigation-bar-selected-label` para modo *selected-only* sin perder accesibilidad semántica.
 - **Convivencia con FAB:** Modificador `.md-fab-over-nav` flotando a 16dp del techo de la barra (96dp del fondo) sin muesca ni incrustación M2.
 
+### Navigation Rail (.md-navigation-rail)
+
+Carril de navegación primaria vertical M3 Expressive para tabletas y escritorio:
+- **Cotas y Densidades:** 96dp de ancho en modo colapsado (`--md-sys-measurement-navigation-rail-width`) con destinos de 64dp y pastilla activa de $56\times32\text{dp}$. Expansión fluida a 280dp (`--md-sys-measurement-navigation-rail-expanded-width`) con destinos continuos de 56dp en filas completas (`corner-full`).
+- **Alineación Coaxial y Keyline Canónico:** Centro de todos los iconos interactivos rigurosamente anclado al eje común de **48dp** (keyline 36dp). El botón de alternancia (`.md-icon-button` de 40dp con margen de 28dp) permanece estático e inmutable ($\Delta = 0.0\text{px}$) entre estados colapsado y expandido.
+- **Extended FAB Responsivo:** Modifica su morfología de Standard FAB (56×56dp) a Extended FAB (superficie `primary-container`, gap 12px) confinando la onda ripple con `overflow: hidden`.
+- **Continuidad Vertical:** Estructura gobernada con `block-size: 100%; min-block-size: 100dvh;` y modificador `.md-navigation-rail-docked` (`position: fixed`).
+- **Cinemática M3:** Transición en 300ms con curva de desaceleración enfática M3 (`--md-sys-motion-easing-emphasized`).
+- **WAI-ARIA y Roving Tabindex:** Alternancia dinámica con `aria-expanded` y conmutación de glifos (`menu` $\leftrightarrow$ `menu_open`), gobernada por `src/js/navigation-rail.js`.
+
+
 ### Snackbar (.md-snackbar)
 
 Avisos contextuales temporales de retroalimentación en la base de la pantalla:

@@ -121,3 +121,30 @@ Los modificadores de anclaje de componentes flotantes o acoplados (`.md-fab-anch
 - Se declaran nativamente con `position: fixed` para ser 100% autosuficientes (REGLA 13) y resistir el scroll real en cualquier página que consuma `main.css`.
 - En el Showroom, las tarjetas de prueba (`.sr-specimen-tall`, `.sr-specimen-dock`) aplican `transform: translateZ(0);`, creando un nuevo *containing block* que confina estrictamente los elementos fijos a su marco local sin invadir el monitor ni solaparse con la documentación.
 
+## 9. Directrices Consolidadas: Navigation Rail (2026-11-05)
+
+### 9.1 Geometría Canónica M3 Expressive (96dp Colapsado / 280dp Expandido)
+El Navigation Rail es el carril de navegación vertical primaria para pantallas medianas, tabletas y escritorio.
+- **Modo Colapsado (96dp):** Ancho fijo de 96dp (`--md-sys-measurement-navigation-rail-width`), destinos en columna con altura mínima de 64dp (`--md-sys-measurement-navigation-rail-item-min-height`), gap entre destinos de 4dp y pastilla activa (`.md-navigation-rail-indicator`) de $56\times32\text{dp}$ (`corner-full`).
+- **Modo Expandido (280dp):** Sustituto canónico no modal del Navigation Drawer (`m3_navigation_rail` en Expressive). El carril se expande a 280dp (`--md-sys-measurement-navigation-rail-expanded-width`) con rango de respiro 220dp-360dp (`HUG content`). Los destinos devienen pastillas completas corridas de 56dp de alto (`corner-full`) en filas continuas sin gap vertical (`expanded_item_spacing: 0dp`).
+- **Neutralización del Indicador Colapsado en Modo Expandido:** La pastilla colapsada pasa a $24\times24\text{dp}$ transparente sin pseudo-elementos (`display: none` en `::before`) para alojar limpiamente el glifo sin halos ni dobles indicadores residuales.
+
+### 9.2 Alineación Coaxial Canónica (Eje Central de 48dp y Keyline de 36dp)
+El principio arquitectónico fundamental de M3 Expressive en navegación vertical es la **coaxialidad estricta**:
+- **Eje Coaxial Común:** El centro de todos los iconos interactivos (glifo de menú, icono del FAB colapsado y glifos de los destinos) se sitúa invariablemente a **48dp** del borde izquierdo del carril.
+- **Keyline del Glifo (24dp):** Ocupa la franja de 36dp a 60dp (con centro en 48dp).
+- **Desglose Anatómico de Márgenes Coaxiales:**
+  - *Ítems de destino expandidos:* Margen exterior de 20dp (`--md-sys-measurement-navigation-rail-expanded-item-margin-horizontal`) + padding interior de 16dp (`--md-sys-measurement-navigation-rail-expanded-leading-space`) = 36dp al borde del glifo (centro en $36 + 12 = 48\text{dp}$).
+  - *Standard FAB colapsado (56×56dp):* Margen de 20dp + radio/centrado interior de 28dp = centro en 48dp.
+  - *Botón de menú / alternancia (`.md-icon-button` small de 40×40dp):* Margen independiente de **28dp** (`--md-sys-measurement-navigation-rail-header-toggle-margin-start`) + centrado interior de 20dp = centro en 48dp.
+- **Anclaje de Control Inmutable ($\Delta = 0.0\text{px}$):** Durante la transición cinemática de colapsado (96dp) a expandido (280dp), el control maestro de menú no experimenta ningún desplazamiento horizontal.
+
+### 9.3 FAB Responsivo y Confinamiento de Ripple
+- El FAB en cabecera muta morfológicamente mediante CSS puro: en rail colapsado se compacta a **Standard FAB de 56×56dp** (`corner-large` de 16dp) ocultando el nodo de texto; en rail expandido se transforma en **Extended FAB** con gap de 12px, superficie tonal `primary-container` y tipografía `label-large`.
+- **Confinamiento de Onda:** Se prescribe `overflow: hidden;` riguroso en `.md-fab` para que la onda de choque (`ripple.js`) y las capas de estado no desborden las esquinas redondeadas de 16px.
+
+### 9.4 Cinemática M3 y Continuidad Vertical
+- **Spatial Transform:** La expansión y colapso horizontal se animan fluidamente en 300ms con la curva canónica de desaceleración enfática M3 (`--md-sys-motion-easing-emphasized`: `cubic-bezier(0.05, 0.7, 0.1, 1)`).
+- **Continuidad Vertical:** El carril gobierna `block-size: 100%` y `min-block-size: 100dvh` para garantizar presencia continua en la retícula de pantalla, complementado con el modificador `.md-navigation-rail-docked` (`position: fixed; inset-block: 0; inset-inline-start: 0`).
+
+

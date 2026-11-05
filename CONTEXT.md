@@ -43,11 +43,12 @@ Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **23 compo
 | Tabs | `tabs.css` | `tabs.html` |
 | Badge | `badge.css` | `badge.html` |
 | Navigation Bar | `navigation-bar.css` | `navigation-bar.html` |
+| Navigation Rail | `navigation-rail.css` | `navigation-rail.html` |
 | Snackbar | `snackbar.css` | `snackbar.html` |
 
 Cada componente tiene además su molde en `showroom/templates/<nombre>.template.html`.
 
-**Hoy DIEZ pares molde/vista rinden byte-idénticos: `search`, `switch`, `checkbox`, `radio`, `select`, `top-app-bar`, `tabs`, `navigation-bar` y `snackbar`** —verificados por hash SHA256; los moldes de `fab`, `fab-extended`, `card`, `dialog`, `list` y `segmented-button`, que sí lo fueron a su día (rumbo del 2026-10-13), se quedaron atrás de su vista. Las demás vistas difieren de su molde por el puntero de dos líneas de la convención antigua o por el desfase del molde anotado en deuda. `chips` no tiene molde propio y `typography.html` apunta a `component.template.html`.
+**Hoy ONCE pares molde/vista rinden byte-idénticos: `search`, `switch`, `checkbox`, `radio`, `select`, `top-app-bar`, `tabs`, `navigation-bar`, `navigation-rail` y `snackbar`** —verificados por hash SHA256; los moldes de `fab`, `fab-extended`, `card`, `dialog`, `list` y `segmented-button`, que sí lo fueron a su día (rumbo del 2026-10-13), se quedaron atrás de su vista. Las demás vistas difieren de su molde por el puntero de dos líneas de la convención antigua o por el desfase del molde anotado en deuda. `chips` no tiene molde propio y `typography.html` apunta a `component.template.html`.
 
 ## FAB — la base NO es el `md-fab-medium`
 
@@ -433,6 +434,16 @@ Primer componente de la familia **Comunicación** además de Dialog, con **5 par
 
 - **La pauta primero, el código después**: las tres desviaciones del documento de mano (corner-small, variantes de color, cap 99+) se refutaron contra el sistema ANTES de escribir CSS, con las 3 question tool del 2026-11-02. El patrón de siempre: la auditoría externa trae la geografía M3 correcta pero los nombres del cuenta del sistema hay que validarlos contra `corner.css` y `measurement.css` en cada fila.
 - **El falso pozoo de caché**: el badge no cargaba en el navegador y una auditoría diagnosticó "caché de sub-recursos en cascada (@import)" y propuso `?v` en el import de `main.css`. El verificador lo tumba REGLA 5 (los `@import` se comparan contra disco y `index.css?v=63` no es archivo; el `.htaccess` ya manda `no-store` para css/html/js). La causa real: la edición del `index.css` había entrado el COMENTARIO del import pero NO la línea `@import url("badge.css")`. Lección bilingüe: (a) el verificador es el gran determinista contra teorías de navegador — ejecútalo ANTES de navegar; (b) cuando muevas un import a la proximidad de un comentario, revisa el diff de git contra disk para ver qué línea cayó. Las vistas de badge actualmente llevan `main.css?v=64` (la cascada de vBusters que se medio generó es inerte, compatible y no canon del repo).
+
+## Navigation Rail — M3 Expressive, expansión a 280dp y alineación coaxial (2026-11-05)
+
+- **Cotas canónicas M3 Expressive en Capa 2**: `--md-sys-measurement-navigation-rail-width` (96dp) colapsado y `--md-sys-measurement-navigation-rail-expanded-width` (280dp, max-menu) en expandido. Rango de respiro HUG content: min 220dp / max 360dp (`tokens.xml` v34). Altura de destinos: 64dp en colapsado con spacing de 4dp; 56dp en expandido continuos con spacing 0dp (`m3_navigation_rail_expanded_item_spacing`).
+- **Alineación coaxial absoluta al eje de 48dp**: Keyline canónico a 36dp (glifo 24dp centrado en 48dp). Margen externo de ítem expandido en 20dp + padding interno de 16dp = centro en 48dp. FAB colapsado de 56×56dp con margen de 20dp = centro en 48dp. Botón toggle de menú (`.md-icon-button` de 40dp) con margen independiente en 28dp (`--md-sys-measurement-navigation-rail-header-toggle-margin-start`) = centro en 48dp. Offset horizontal idéntico en colapsado y expandido ($\Delta = 0.0\text{px}$).
+- **FAB responsivo mutante**: Un único elemento interactivo `.md-fab` en cabecera colapsa a Standard FAB (56×56dp con esquinas de 16dp y texto oculto) en rail de 96dp, y se despliega como Extended FAB (superficie `primary-container`, gap 12px, texto visible) en rail de 280dp. Ripple confinado con `overflow: hidden;` en el contenedor del FAB.
+- **Continuidad vertical y anclaje**: `block-size: 100%; min-block-size: 100dvh;` nativo en el carril. Modificador `.md-navigation-rail-docked` / `.md-navigation-rail-fixed` con `position: fixed; inset-block: 0; inset-inline-start: 0; z-index: 1;`. En Showroom, las tarjetas de prueba `.sr-specimen-rail` crean su propio contexto de apilamiento con altura fija acotada y `min-block-size: 100%`.
+- **Cinemática espacial M3**: Expansión/contracción gobernada por la curva canónica de desaceleración enfática M3 (`--md-sys-motion-easing-emphasized`: `cubic-bezier(0.05, 0.7, 0.1, 1)`) en 300ms (`--md-sys-motion-duration-medium2`), con soporte para `prefers-reduced-motion: reduce`.
+- **Servicio y Accesibilidad WAI-ARIA**: `src/js/navigation-rail.js` gestiona la alternancia dinámica `data-rail-toggle` (`aria-expanded`, mutación de glifo `menu` $\leftrightarrow$ `menu_open`, y mutación accesible `aria-label`). Soporta navegación por teclado con roving tabindex y selección vía `role="tablist"` / `role="tab"` sincronizada con paneles `aria-controls`.
+- **Showroom canónico**: Matriz dual simétrica de 8 pares técnicos (4 colapsados en 96dp y 4 expandidos en 280dp: base, with menu, with FAB, with menu + FAB). Cumplimiento estricto de REGLA 11 (paridad idéntica espécimen/snippet).
 
 ## Navigation Bar — 80dp, pastilla unificada y sin self-docking (2026-11-04)
 
