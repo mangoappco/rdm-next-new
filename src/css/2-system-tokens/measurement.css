@@ -703,7 +703,7 @@
     var(--md-ref-padding-extended-fab-medium-inline);
   --md-sys-measurement-fab-extended-inline-space-large:
     var(--md-ref-padding-extended-fab-large-inline);
-  --md-sys-measurement-fab-extended-icon-label-space: var(--md-ref-spacing-100);
+  --md-sys-measurement-fab-extended-icon-label-space: var(--md-ref-spacing-150);
   --md-sys-measurement-fab-extended-icon-label-space-medium: var(--md-ref-spacing-150);
   --md-sys-measurement-fab-extended-icon-label-space-large: var(--md-ref-spacing-200);
 
