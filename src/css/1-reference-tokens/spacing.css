@@ -164,7 +164,13 @@
      los dos casos: M3 Expressive publica una escalera que nuestra escala
      no puede expresar, y no expresarla habria dejado dos tamaños sin
      implementar.
+
+     Navigation Rail se suma al mismo deshielo con su margen superior de
+     44dp (contentMarginTop de NavigationRailView): 44 no es un paso de la
+     escala Space 0-900 ni de las anidadas, que ya terminan en 14dp. Sin
+     primitiva propia habria que escribir el px en una capa prohibida.
      ------------------------------------------------------------------------ */
   --md-ref-padding-extended-fab-medium-inline: 26px;
   --md-ref-padding-extended-fab-large-inline: 28px;
+  --md-ref-padding-navigation-rail-content-top: 44px;
 }

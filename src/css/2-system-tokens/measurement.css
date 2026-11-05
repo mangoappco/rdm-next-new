@@ -395,11 +395,63 @@
   --md-sys-measurement-navigation-bar-horizontal-indicator-height: var(--md-sys-measurement-space-500); /* 40dp */
   --md-sys-measurement-navigation-bar-horizontal-indicator-max-width: var(--md-ref-container-height-dialog-min); /* 140dp */
 
-  /* Navigation Rail: ancho fijo colapsado de 80dp, ancho expandido de 280dp (M3 Expressive) y pastilla de 56x32dp. */
-  --md-sys-measurement-navigation-rail-width: var(--md-ref-container-width-navigation-rail); /* 80dp */
+  /* Navigation Rail (M3 Expressive). Canon de NavigationRail.md de
+     material-components-android (variante Widget.Material3Expressive):
+       - Ancho colapsado: 96dp (era 80dp en la variante baseline; la
+         primitiva container-width trae el valor del momento).
+       - Item minimo: 64dp. SI es un paso de la escala: Space 800.
+       - Spacing entre items: 4dp; padding de item: 6dp simetrico (6 arriba
+         y 6 abajo; 6dp es Space 75, de las anidadas). Verificado contra
+         navigationrail/res/values/tokens.xml (v34):
+         `m3_comp_nav_rail_item_container_vertical_space` = 6dp, y el
+         styles.xml de Expressive lo repite en itemPaddingTop/Bottom.
+       - Margen superior del contenido: 44dp (Space no puede expresarlo,
+         por eso vive como primitiva `padding-navigation-rail-*`). En el
+         codigo fuente de NavigationRailView.java este padding-top del
+         contenedor es ACUMULATIVO con el margen inferior del header
+         (40dp): el contenido empieza a 44dp y, si hay header, el menu
+         empieza 40dp despues de este, no sustituye al margen.
+       - La pastilla activa sigue siendo la misma que la variante
+         baseline: 56x32dp en 56 + 32 de espacio. */
+  --md-sys-measurement-navigation-rail-width: var(--md-ref-container-width-navigation-rail); /* 96dp */
   --md-sys-measurement-navigation-rail-expanded-width: var(--md-ref-container-width-menu-max); /* 280dp (M3 Expressive) */
+  --md-sys-measurement-navigation-rail-item-min-height: var(--md-ref-spacing-800); /* 64dp */
+  --md-sys-measurement-navigation-rail-item-spacing: var(--md-ref-spacing-50); /* 4dp */
+  --md-sys-measurement-navigation-rail-item-padding-top: var(--md-ref-spacing-75); /* 6dp */
+  /* El vertical space es SIMETRICO en Expressive: styles.xml repite el mismo
+     token itemPaddingTop/itemPaddingBottom = item_vertical_space (6dp). */
+  --md-sys-measurement-navigation-rail-item-padding-bottom: var(--md-ref-spacing-75); /* 6dp */
+  --md-sys-measurement-navigation-rail-content-top-margin: var(--md-ref-padding-navigation-rail-content-top); /* 44dp */
+  --md-sys-measurement-navigation-rail-header-margin-bottom: var(--md-ref-spacing-500); /* 40dp */
+  /* Gap interno de la cabecera APILADA (menu debajo del FAB / with menu and
+     FAB). El doc Android no publica una cota entre ambos slots, asi que es
+     una decision de RDM: se toma Space 200 (16dp), el mismo paso del
+     padding de pastilla expandida, para que el aire del header rime con
+     el aire de los destinos. */
+  --md-sys-measurement-navigation-rail-header-gap: var(--md-ref-spacing-200); /* 16dp entre menu y FAB */
   --md-sys-measurement-navigation-rail-indicator-width: var(--md-sys-measurement-space-700); /* 56dp */
   --md-sys-measurement-navigation-rail-indicator-height: var(--md-sys-measurement-space-400); /* 32dp */
+  --md-sys-measurement-navigation-rail-icon-label-space: var(--md-ref-spacing-100); /* 8dp de espacio icono-etiqueta (iconLabelHorizontalSpacing) */
+
+  /* Modo EXPANDIDO (expandedWidth HUG): el item entero deviene pastilla. */
+  /* Keyline canónico expandido (tokens.xml v34 + spec M3):
+     - horizontal_full_width_leading_space = 16dp → padding INTERNO del ítem (borde ítem → icono)
+     - Margen EXTERNO del ítem (borde rail → borde ítem) = 20dp (36 - 16 = 20dp por cota roja oficial).
+     - El header debe compartir el mismo margen externo (20dp) para alinear menu_open con los iconos. */
+  --md-sys-measurement-navigation-rail-expanded-leading-space: var(--md-ref-spacing-200); /* 16dp: padding interno ítem → icono */
+  --md-sys-measurement-navigation-rail-expanded-item-margin-horizontal: var(--md-ref-spacing-250); /* 20dp: margen externo ítem ←→ rail (cota 36 - 16) */
+  --md-sys-measurement-navigation-rail-expanded-indicator-padding: var(--md-ref-spacing-200); /* 16dp en los cuatro flancos de la pastilla (legacy, no se usa en expandido) */
+
+  /* Modo EXPANDIDO, cabecera + contenido:
+     - Paredes de ancho: min 220 / max 360 (tokens.xml v34). El Android
+       mide HUG entre ellas; la vista fija 280 dentro del rango.
+     - SPACING ENTRE ITEMS EXPANDIDOS = 0dp: NavigationRailView.java toma
+       el gap de filas de `m3_navigation_rail_expanded_item_spacing` (0dp,
+       token v34). El itemSpacing=4 de los estilos Expressive SOLO gobierra
+       el colapsado: el Java lo pasa al menu cerrado, nunca al abierto. */
+  --md-sys-measurement-navigation-rail-expanded-min-width: var(--md-ref-container-width-navigation-rail-expanded-min); /* 220dp */
+  --md-sys-measurement-navigation-rail-expanded-max-width: var(--md-ref-container-width-navigation-rail-expanded-max); /* 360dp */
+  --md-sys-measurement-navigation-rail-expanded-item-spacing: var(--md-ref-spacing-0); /* 0dp entre filas */
 
   /* Alto de un tab. */
   --md-sys-measurement-tab-height: var(--md-ref-spacing-600);

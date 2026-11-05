@@ -4,15 +4,16 @@
 
    QUE HACE ESTE ARCHIVO
    ---------------------
-   Implementa el Navigation Rail canónico de Material Design 3: barra vertical
-   fija de 80dp de ancho para navegación primaria en pantallas medianas y
-   expandidas (tablets de POS, KDS y escritorio).
+   Implementa el Navigation Rail de Material Design 3 EXPRESSIVE (2025):
+   barra vertical fija de 96dp de ancho (la variante Expressive sustituye
+   a la de 80dp del baseline M3) para navegación primaria en pantallas
+   medianas y expandidas (tablets de POS, KDS y escritorio).
 
    ANATOMIA
    --------
    <nav class="md-navigation-rail" role="tablist" aria-label="...">
      <div class="md-navigation-rail-header">
-       <button class="md-icon-button" ...><span class="md-icon">menu</span></button>
+       <button class="md-icon-button" data-rail-toggle ...><span class="md-icon">menu</span></button>
      </div>
      <div class="md-navigation-rail-content">
        <button class="md-navigation-rail-item" role="tab" aria-selected="true" tabindex="0">
@@ -26,32 +27,103 @@
 
    FUENTES Y DECISIONES CANÓNICAS
    ------------------------------
-   - m3.material.io/components/navigation-rail/{overview, specs, accessibility}
-   - Ancho de 80dp fijo (--md-sys-measurement-navigation-rail-width).
-   - Pastilla activa fija de 56x32dp (corner-full): CERO efecto elástico en hover.
-   - En reposo inactivo la pastilla es transparente; en hover enciende su ::before
-     (state layer al 8%) dentro de la caja de 56x32dp sin mutar sus dimensiones.
-   - Resiliencia de caja: block-size: 100% y min-block-size: 100% para integrarse
-     tanto en el Showroom como en el scaffold de pantalla completa.
+   - NavigationRail.md de material-components-android (fuente de verdad
+     primaria) y m3.material.io/components/navigation-rail/{overview,
+     specs, accessibility}.
+   - VARIANTE: M3 Expressive. Todas las cotas de este bloque vienen de la
+     lista de cambios "M3 Expressive styles" del documento: 96dp de ancho,
+     item mínimo de 64dp, spacing entre items de 4dp, elevation de 3dp y
+     etiqueta activa SIN negrita («Label text is no longer bolded when
+     selected»).
+   - Tipografía de item: TitleSmall (textAppearanceTitleSmall canónico),
+     peso medium nativo, para activo e inactivo.
+   - Etiqueta activa en `secondary`: cambio oficial Expressive («Active
+     label on vertical items changed from on surface variant to
+     secondary»). El glifo activo sigue en on-secondary-container.
+   - Pastilla activa fija de 56x32dp (corner-full): CERO efecto elástico
+     en hover. En reposo inactivo es transparente; en hover enciende su
+     ::before (state layer al 8%) dentro de la caja de 56x32dp sin mutar
+     sus dimensiones.
+   - Composición vertical canónica: margen superior del contenido de
+     44dp ACUMULATIVO con el margen inferior del header (40dp), según el
+     orden de addContentContainer/addHeaderView de NavigationRailView.java
+     (contentContainer.setPaddingTop + header bottomMargin).
+   - Resiliencia de caja: block-size al 100% para integrarse en el
+     Showroom y en el scaffold de pantalla completa; el 100vh explícito
+     quedó descentralizado a `.md-navigation-rail-viewport`.
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   HOST: Contenedor vertical de 80dp
+   HOST: Contenedor vertical de 96dp (M3 Expressive)
    ------------------------------------------------------------------------ */
 .md-navigation-rail {
   display: flex;
   flex-direction: column;
   align-items: center;
   align-self: stretch; /* Asegura que nunca colapse verticalmente en layouts flex */
-  inline-size: var(--md-sys-measurement-navigation-rail-width); /* 80dp */
+  inline-size: var(--md-sys-measurement-navigation-rail-width); /* 96dp */
   min-inline-size: var(--md-sys-measurement-navigation-rail-width);
-  min-block-size: 100vh; /* Cobertura por defecto en páginas globales / body */
+  min-block-size: 100%; /* La cobertura de viewport completo es del consumidor: vive en el modificador de abajo */
   background-color: var(--md-sys-color-surface);
+  box-shadow: var(--md-sys-elevation-level3); /* Expressive: 3dp (era 0 en baseline) */
   box-sizing: border-box;
-  padding-block: var(--md-sys-measurement-space-150); /* 12dp arriba y abajo */
-  gap: var(--md-sys-measurement-space-150);
+  padding-block-start: var(--md-sys-measurement-navigation-rail-content-top-margin); /* 44dp acumulativo, canónico */
+  padding-block-end: var(--md-sys-measurement-navigation-rail-item-padding-bottom); /* 4dp de cierre */
   position: relative;
   transition: inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-spatial-default);
+}
+
+/* Contexto de scaffold completo: el consumidor pide 100vh con esta clase
+   de intención, no el host por defecto. */
+.md-navigation-rail-viewport {
+  min-block-size: 100vh;
+}
+
+/* GRAVEDAD VERTICAL (menuGravity CENTER canónico): el menú se centra en
+   el espacio libre restante tras la cabecera, en lugar de amarrarse
+   arriba. Para ergonomía de mostrador/POS. */
+.md-navigation-rail-center .md-navigation-rail-content {
+  margin-block: auto;
+}
+
+/* VARIANTE MODAL: carril expandido flotante. Es una decisión de diseño
+   de RDM: el documento canónico Android solo publica la modalidad
+   non-modal, y el rail modal ocupa aquí el puesto del Drawer modal.
+   Elevación del nivel 4 (por encima del level3 del carril en reposo)
+   y contexto de pintura sobre su scrim. */
+.md-navigation-rail-modal {
+  position: relative;
+  z-index: 1;
+  box-shadow: var(--md-sys-elevation-level4);
+}
+
+/* Encuadre del modo modal: aporta el bloque de coordenadas absoluto del
+   scrim. En producción el autor decide su encaje (flujo o position
+   fixed); el contrato es solo posicionarse en relación con su contenido. */
+.md-navigation-rail-modal-stage {
+  position: relative;
+}
+
+/* Scrim del modo modal: la capa de atenuado canónica de M3 (color scrim
+   al 32%, mismo rol que consume dialog.css). Se compone como primer hijo
+   del encuadre; el carril con .md-navigation-rail-modal pinta por encima. */
+.md-navigation-rail-scrim {
+  position: absolute;
+  inset: 0;
+  background-color: var(--md-sys-color-scrim);
+  opacity: var(--md-sys-scrim-opacity);
+}
+
+/* Capa de estado explícita (patrón de 4-utilities/state.css: la capa de
+   estado como hijo del elemento). El slot de la pastilla es position
+   relative, así que un span .md-state-layer-* directo se estiva para
+   cubrirla entera: sin esta regla la capa no tendría caja que pintar.
+   En el Showroom es la forma canónica de fijar el estado de hover sin
+   interacción (estados a imitación de state.html). */
+.md-navigation-rail-indicator > [class*="md-state-layer"] {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
 }
 
 /* Contexto acotado a tarjetas de documentación en el Showroom */
@@ -75,7 +147,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-block-end: var(--md-sys-measurement-space-100); /* 8dp hacia destinos */
+  gap: var(--md-sys-measurement-navigation-rail-header-gap); /* 16dp: aire entre menu y FAB (solo manda si hay dos) */
+  margin-block-end: var(--md-sys-measurement-navigation-rail-header-margin-bottom); /* 40dp Expressive: entre header y destinos */
 }
 
 /* --------------------------------------------------------------------------
@@ -86,7 +159,7 @@
   flex-direction: column;
   align-items: center;
   inline-size: 100%;
-  gap: var(--md-sys-measurement-space-150); /* 12dp entre destinos */
+  gap: var(--md-sys-measurement-navigation-rail-item-spacing); /* 4dp Expressive entre destinos */
 }
 
 /* --------------------------------------------------------------------------
@@ -99,13 +172,22 @@
   justify-content: center;
   inline-size: 100%;
   min-inline-size: var(--md-sys-measurement-touch-target); /* 48dp */
-  min-block-size: var(--md-sys-measurement-space-700); /* 56dp cota mínima táctil */
-  padding: 0;
+  min-block-size: var(--md-sys-measurement-navigation-rail-item-min-height); /* 64dp Expressive */
+  padding-block-start: var(--md-sys-measurement-navigation-rail-item-padding-top); /* 6dp */
+  padding-block-end: var(--md-sys-measurement-navigation-rail-item-padding-bottom); /* 6dp simetrico (Expresive: item_vertical_space en ambos flancos) */
+  padding-inline: 0;
   border: none;
   background-color: transparent;
   cursor: pointer;
   text-align: center;
   color: var(--md-sys-color-on-surface-variant);
+  /* Tipografia vertical canonica: tokens.xml v34 macro
+     `m3_comp_nav_rail_item_vertical_label_text_font` = ?attr/textAppearanceLabelMedium
+     (12/16, peso 500). La tabla del doc Android que lista TitleSmall describe
+     el atributo por defecto del baseline, que este estilo expresivo
+     sobreescribe: con label-medium la pila del item cierra EXACTA en el token
+     container height 64dp: 6 + 32 + 4 + 16 + 6. Ver decision del usuario
+     2026-11-05. */
   font: var(--md-sys-typescale-label-medium);
   letter-spacing: var(--md-sys-typescale-label-medium-tracking);
   outline: none;
@@ -159,8 +241,8 @@
 
 /* Etiqueta tipográfica */
 .md-navigation-rail-label {
-  margin-block-start: var(--md-sys-measurement-space-50); /* 4dp bajo la pastilla */
-  block-size: var(--md-sys-typescale-label-medium-line-height); /* 16dp */
+  margin-block-start: var(--md-sys-measurement-space-50); /* 4dp bajo la pastilla (activeIndicatorLabelPadding) */
+  block-size: var(--md-sys-typescale-label-medium-line-height); /* 16dp de linea label-medium */
   max-inline-size: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -168,7 +250,13 @@
 }
 
 /* --------------------------------------------------------------------------
-   ESTADO ACTIVO (M3 Selection)
+   ESTADO ACTIVO (M3 Expressive Selection)
+   --------------------------------------------------------------------------
+   La etiqueta activa conserva el color de titulación `secondary`, pero
+   SIN negrita: M3 Expressive eliminó el bold de la selección. El peso
+   medium 500 de LabelMedium (heredado del item) es el acabado canónico,
+   y la doc de Expressive lo fija: "Label text is no longer bolded when
+   selected".
    ------------------------------------------------------------------------ */
 .md-navigation-rail-item[aria-selected="true"] .md-navigation-rail-indicator {
   background-color: var(--md-sys-color-secondary-container);
@@ -184,8 +272,7 @@
 }
 
 .md-navigation-rail-item[aria-selected="true"] .md-navigation-rail-label {
-  font-weight: var(--md-sys-typescale-label-medium-weight-prominent);
-  color: var(--md-sys-color-secondary); /* M3 Expressive: etiqueta activa en secondary para destacar del reposo inactivo */
+  color: var(--md-sys-color-secondary); /* M3 Expressive: etiqueta activa en secondary */
 }
 
 /* --------------------------------------------------------------------------
@@ -228,50 +315,92 @@
    VARIANTE EXPANDIDA (M3 Expressive: Expanded Navigation Rail)
    --------------------------------------------------------------------------
    Sustituye formalmente al Navigation Drawer con ancho de 280dp.
-   Los destinos conmutan a fila horizontal con el glifo a la izquierda y la
-   etiqueta a la derecha; el propio item actúa como pastilla activa con
-   forma corner-full y altura táctil de 56dp.
+   Los destinos conmutan a fila horizontal (itemIconGravity START) y el
+   propio item deviene la pastilla activa (expandedWidth HUG): margen
+   lateral de 20dp (expandedMarginHorizontal), padding interior de 16dp
+   en los cuatro flancos, altura de 56dp (expandedHeight) y espacio
+   icono-etiqueta de 8dp (iconLabelHorizontalSpacing).
    ------------------------------------------------------------------------ */
 .md-navigation-rail-expanded {
-  inline-size: var(--md-sys-measurement-navigation-rail-expanded-width); /* 280dp */
-  min-inline-size: var(--md-sys-measurement-navigation-rail-expanded-width);
-  padding-inline: var(--md-sys-measurement-space-150); /* 12dp en los flancos */
+  inline-size: var(--md-sys-measurement-navigation-rail-expanded-width); /* 280dp, dentro del rango canonico */
+  min-inline-size: var(--md-sys-measurement-navigation-rail-expanded-min-width); /* 220dp (expanded_container_width_minimum) */
+  max-inline-size: var(--md-sys-measurement-navigation-rail-expanded-max-width); /* 360dp (expanded_container_width_maximum) */
+  padding-inline: 0; /* El margen canónico vive en el item (20dp), no en el rail */
   align-items: stretch;
 }
 
 .md-navigation-rail-expanded .md-navigation-rail-header {
   align-items: flex-start;
-  padding-inline-start: var(--md-sys-measurement-space-50); /* 4dp de compensación visual */
+  /* Margen externo canónico: 20dp (cota roja 36 - 16).
+     Alinea el header con el margen exterior de los items, no con el padding interno. */
+  padding-inline-start: var(--md-sys-measurement-navigation-rail-expanded-item-margin-horizontal); /* 20dp */
 }
 
 .md-navigation-rail-expanded .md-navigation-rail-content {
-  gap: var(--md-sys-measurement-space-50); /* 4dp entre destinos en lista expandida */
+  inline-size: 100%;
+  align-items: stretch;
+  gap: var(--md-sys-measurement-navigation-rail-expanded-item-spacing); /* 0dp: filas continuas (m3_navigation_rail_expanded_item_spacing) */
 }
 
 .md-navigation-rail-expanded .md-navigation-rail-item {
+  display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  gap: var(--md-sys-measurement-space-150); /* 12dp entre indicador de icono y texto */
-  block-size: var(--md-sys-measurement-space-700); /* 56dp cota canónica */
+  gap: var(--md-sys-measurement-navigation-rail-icon-label-space); /* 8dp icono-etiqueta */
+  inline-size: auto;
+  min-inline-size: 0;
+  block-size: var(--md-sys-measurement-space-700); /* 56dp (expandedHeight) */
   min-block-size: var(--md-sys-measurement-space-700);
   border-radius: var(--md-sys-shape-corner-full);
-  padding-inline: var(--md-sys-measurement-space-200); /* 16dp lateral */
+  /* Margen EXTERNO canónico: 20dp (cota roja 36 - 16 padding interno).
+     Padding INTERNO canónico: 16dp (horizontal_full_width_leading_space).
+     El item ENTERO es la pastilla corrida de 56dp con corner-full. */
+  margin-inline: var(--md-sys-measurement-navigation-rail-expanded-item-margin-horizontal); /* 20dp */
+  padding-inline: var(--md-sys-measurement-navigation-rail-expanded-leading-space); /* 16dp */
+  box-sizing: border-box;
   transition: background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
   position: relative;
 }
 
 .md-navigation-rail-expanded .md-navigation-rail-item .md-navigation-rail-indicator {
-  /* En modo expandido el icono no requiere pastilla independiente: el propio item es la pastilla */
-  inline-size: var(--md-sys-measurement-icon-size); /* 24dp */
-  block-size: var(--md-sys-measurement-icon-size);
+  /* Neutralizar la pastilla colapsada sin ocultar el glifo */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background-color: transparent !important;
+  inline-size: var(--md-sys-measurement-icon-size); /* 24dp */
+  min-inline-size: var(--md-sys-measurement-icon-size);
+  block-size: var(--md-sys-measurement-icon-size);
+  border-radius: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/* Neutralizar el pseudo-elemento ::before del indicador colapsado para que
+   no cree círculos residuales en hover ni en selección dentro del ítem expandido */
+.md-navigation-rail-expanded .md-navigation-rail-item .md-navigation-rail-indicator::before {
+  display: none;
+}
+
+/* Forzar renderizado y tamaño del icono */
+.md-navigation-rail-expanded .md-navigation-rail-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--md-sys-measurement-icon-size); /* 24dp */
+  inline-size: var(--md-sys-measurement-icon-size);
+  block-size: var(--md-sys-measurement-icon-size);
 }
 
 .md-navigation-rail-expanded .md-navigation-rail-item .md-navigation-rail-label {
   margin-block-start: var(--md-sys-measurement-space-0); /* Sin offset vertical en fila */
+  /* Horizontal canonica: macro `m3_comp_nav_rail_item_horizontal_label_text_font`
+     = ?attr/textAppearanceLabelLarge (14/20). La linea crece respecto a la
+     vertical (16dp) porque la fila de 56dp la aloja sin padding extra. */
   font: var(--md-sys-typescale-label-large);
   letter-spacing: var(--md-sys-typescale-label-large-tracking);
+  block-size: var(--md-sys-typescale-label-large-line-height);
 }
 
 /* Estado activo en modo expandido: el fondo secondary-container tiñe todo el item */
@@ -286,7 +415,8 @@
 
 .md-navigation-rail-expanded .md-navigation-rail-item[aria-selected="true"] .md-navigation-rail-label {
   color: var(--md-sys-color-on-secondary-container);
-  font-weight: var(--md-sys-typescale-label-large-weight-prominent);
+  /* Sin negrita: la nota Expressive de NavigationRail.md («Label text is
+     no longer bolded when selected») aplica al label en ambos modos. */
 }
 
 /* State layers para el item extendido */
@@ -329,6 +459,10 @@
   .md-navigation-rail-indicator,
   .md-navigation-rail-label,
   .md-navigation-rail-indicator::before {
+    transition: none;
+  }
+  .md-navigation-rail-expanded .md-navigation-rail-item,
+  .md-navigation-rail-expanded .md-navigation-rail-item::before {
     transition: none;
   }
 }

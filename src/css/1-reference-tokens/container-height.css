@@ -374,9 +374,24 @@
   --md-ref-container-height-snackbar-two-line: 68px;
 
   /* ------------------------------------------------------------------------
-     NAVIGATION RAIL: ANCHO FIJO DE CONTENEDOR (M3 specs: 80dp)
+     NAVIGATION RAIL: ANCHO DE CONTENEDOR
      ------------------------------------------------------------------------
-     Ancho formal canónico del Navigation Rail.
+     Ancho formal del Navigation Rail COLAPSADO. Su valor ha pasado por tres
+     publicaciones:
+       - Material 2: 72dp.
+       - M3 baseline: 80dp.
+       - M3 Expressive: 96dp. Es la variante que RDM Next adopta para el
+         componente entero, tal como documenta navigation-rail.css.
+     La primitiva PONE el valor del momento una sola vez: los roles que la
+     consumen (measurement.css) no necesitan enterarse de la migración.
      ------------------------------------------------------------------------ */
-  --md-ref-container-width-navigation-rail: 80px;
+  --md-ref-container-width-navigation-rail: 96px;
+
+  /* Paredes del modo EXPANDIDO (tokens.xml v34: md.comp.nav-rail.expanded):
+     Android mide HUG, ensancha al contenido dentro de estas dos paredes.
+     La vista fija 280px como decision documentada, ahora amarrada a los
+     limites canonicos del rol. */
+  --md-ref-container-width-navigation-rail-expanded-min: 220px; /* expanded_container_width_minimum */
+  --md-ref-container-width-navigation-rail-expanded-max: 360px; /* expanded_container_width_maximum */
+
 }
