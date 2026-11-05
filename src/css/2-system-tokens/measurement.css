@@ -429,6 +429,12 @@
      padding de pastilla expandida, para que el aire del header rime con
      el aire de los destinos. */
   --md-sys-measurement-navigation-rail-header-gap: var(--md-ref-spacing-200); /* 16dp entre menu y FAB */
+  /* Margen horizontal del toggle de menu en cabecera para alinear coaxialmente
+     el centro del glifo (24dp) a 48dp exactos de keyline:
+     Keyline al centro = 48dp; ancho icon-button (small) = 40dp (mitad = 20dp).
+     Margen necesario = 48dp - 20dp = 28dp.
+     M3 publica el token para switch-handle-pressed / container-height-switch-handle-pressed = 28px. */
+  --md-sys-measurement-navigation-rail-header-toggle-margin-start: var(--md-ref-container-height-switch-handle-pressed); /* 28dp */
   --md-sys-measurement-navigation-rail-indicator-width: var(--md-sys-measurement-space-700); /* 56dp */
   --md-sys-measurement-navigation-rail-indicator-height: var(--md-sys-measurement-space-400); /* 32dp */
   --md-sys-measurement-navigation-rail-icon-label-space: var(--md-ref-spacing-100); /* 8dp de espacio icono-etiqueta (iconLabelHorizontalSpacing) */

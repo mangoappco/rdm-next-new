@@ -150,10 +150,24 @@
   flex-direction: column;
   align-items: flex-start;
   inline-size: 100%;
-  padding-inline-start: var(--md-sys-measurement-navigation-rail-expanded-item-margin-horizontal); /* 20dp: Ancla coaxial estática para menu toggle y FAB */
+  padding-inline: var(--md-sys-measurement-space-0);
   box-sizing: border-box;
   gap: var(--md-sys-measurement-navigation-rail-header-gap); /* 16dp: aire entre menu y FAB (solo manda si hay dos) */
   margin-block-end: var(--md-sys-measurement-navigation-rail-header-margin-bottom); /* 40dp Expressive: entre header y destinos */
+}
+
+/* Alineación coaxial canónica para los elementos hijos de la cabecera:
+   Eje común a 48dp de centro del carril (keyline 36dp - 60dp para glifo de 24dp):
+   - Botón de alternancia / menú: caja de 40dp (small uniform).
+     Margen = 48dp - (40dp / 2) = 28dp. Centro del icono en 28 + 20 = 48dp.
+   - FAB (56x56dp): caja de 56dp.
+     Margen = 20dp. Centro del icono en 20 + 28 = 48dp. */
+.md-navigation-rail-header :is([data-rail-toggle], .md-icon-button) {
+  margin-inline-start: var(--md-sys-measurement-navigation-rail-header-toggle-margin-start); /* 28dp */
+}
+
+.md-navigation-rail-header .md-fab {
+  margin-inline-start: var(--md-sys-measurement-navigation-rail-expanded-item-margin-horizontal); /* 20dp */
 }
 
 /* --------------------------------------------------------------------------
@@ -341,9 +355,7 @@
 
 .md-navigation-rail-expanded .md-navigation-rail-header {
   align-items: flex-start;
-  /* Margen externo canónico: 20dp (cota roja 36 - 16).
-     Alinea el header con el margen exterior de los items, no con el padding interno. */
-  padding-inline-start: var(--md-sys-measurement-navigation-rail-expanded-item-margin-horizontal); /* 20dp */
+  padding-inline: var(--md-sys-measurement-space-0);
 }
 
 /* ==========================================================================
