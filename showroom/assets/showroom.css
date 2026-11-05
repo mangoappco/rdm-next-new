@@ -190,6 +190,7 @@
      --------------------------------------------------------------------- */
   .sr-specimen-rail {
     min-height: calc(var(--md-ref-spacing-900) * 6); /* 432px */
+    height: calc(var(--md-ref-spacing-900) * 6);
     display: flex;
     flex-direction: row;
     align-items: stretch !important;

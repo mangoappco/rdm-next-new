@@ -63,7 +63,8 @@
   align-self: stretch; /* Asegura que nunca colapse verticalmente en layouts flex */
   inline-size: var(--md-sys-measurement-navigation-rail-width); /* 96dp */
   min-inline-size: var(--md-sys-measurement-navigation-rail-width);
-  min-block-size: 100%; /* La cobertura de viewport completo es del consumidor: vive en el modificador de abajo */
+  block-size: 100%;
+  min-block-size: 100dvh; /* Cubre toda la altura dinámica de la ventana en pantalla completa */
   background-color: var(--md-sys-color-surface);
   box-shadow: var(--md-sys-elevation-level3); /* Expressive: 3dp (era 0 en baseline) */
   box-sizing: border-box;
