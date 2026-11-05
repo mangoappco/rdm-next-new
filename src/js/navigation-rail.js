@@ -12,7 +12,34 @@
    ========================================================================== */
 
 export function initNavigationRail() {
-  // 1. Delegación de clics para conmutar destinos dentro de cualquier .md-navigation-rail
+  // 1. Delegación de clics para conmutar expansión del rail (Collapsed <-> Expanded)
+  document.addEventListener('click', (event) => {
+    const toggleBtn = event.target.closest('.md-navigation-rail-header button, [data-rail-toggle]');
+    if (!toggleBtn) return;
+    const rail = toggleBtn.closest('.md-navigation-rail');
+    if (!rail) return;
+
+    rail.classList.toggle('md-navigation-rail-expanded');
+    const isExpanded = rail.classList.contains('md-navigation-rail-expanded');
+    toggleBtn.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+
+    // Conmutar icono semántico si existe
+    const icon = toggleBtn.querySelector('.md-icon');
+    if (icon) {
+      icon.textContent = isExpanded ? 'menu_open' : 'menu';
+    }
+
+    // Actualizar accesibilidad de etiqueta
+    toggleBtn.setAttribute('aria-label', isExpanded ? 'Contraer menú de navegación' : 'Abrir menú de navegación');
+
+    // Despachar evento canónico de conmutación
+    rail.dispatchEvent(new CustomEvent('md-navigation-rail:toggle', {
+      bubbles: true,
+      detail: { expanded: isExpanded }
+    }));
+  });
+
+  // 2. Delegación de clics para conmutar destinos dentro de cualquier .md-navigation-rail
   document.addEventListener('click', (event) => {
     const item = event.target.closest('.md-navigation-rail-item');
     if (!item) return;
