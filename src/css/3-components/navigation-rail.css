@@ -71,7 +71,8 @@
   padding-block-start: var(--md-sys-measurement-navigation-rail-content-top-margin); /* 44dp acumulativo, canónico */
   padding-block-end: var(--md-sys-measurement-navigation-rail-item-padding-bottom); /* 4dp de cierre */
   position: relative;
-  transition: inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-spatial-default);
+  transition: inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized);
+  will-change: inline-size;
 }
 
 /* Contexto de scaffold completo: el consumidor pide 100vh con esta clase
@@ -194,6 +195,10 @@
   outline: none;
   box-sizing: border-box;
   white-space: nowrap;
+  transition:
+    margin-inline var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized),
+    padding-inline var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized),
+    background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-linear);
 }
 
 /* Slot del Active Indicator: 56x32dp fijo en reposo, hover y selección */
@@ -248,6 +253,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  transition: opacity var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-standard);
 }
 
 /* --------------------------------------------------------------------------
@@ -355,6 +361,12 @@
   overflow: hidden; /* Oculta cualquier texto desbordado */
   font-size: 0; /* Colapsa nodos de texto directo */
   line-height: 0;
+  transition:
+    inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized),
+    min-inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized),
+    max-inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized),
+    padding-inline var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized),
+    gap var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-standard);
 }
 
 /* Restaura el icono centrado en 24dp dentro del FAB colapsado */
@@ -377,6 +389,12 @@
   border-radius: var(--md-sys-shape-corner-large); /* 16dp */
   font-size: var(--md-sys-typescale-label-large-size); /* 14dp */
   overflow: hidden; /* Canónico M3: confina el ripple y state layers al radio de 16px */
+  transition:
+    inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized),
+    min-inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized),
+    max-inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized),
+    padding-inline var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized),
+    gap var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-standard);
 }
 
 .md-navigation-rail-expanded .md-navigation-rail-content {
@@ -402,7 +420,10 @@
   margin-inline: var(--md-sys-measurement-navigation-rail-expanded-item-margin-horizontal); /* 20dp */
   padding-inline: var(--md-sys-measurement-navigation-rail-expanded-leading-space); /* 16dp */
   box-sizing: border-box;
-  transition: background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+  transition:
+    margin-inline var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized),
+    padding-inline var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized),
+    background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-linear);
   position: relative;
 }
 
@@ -496,16 +517,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .md-navigation-rail {
-    transition: none;
-  }
-  .md-navigation-rail-indicator,
-  .md-navigation-rail-label,
-  .md-navigation-rail-indicator::before {
-    transition: none;
-  }
-  .md-navigation-rail-expanded .md-navigation-rail-item,
-  .md-navigation-rail-expanded .md-navigation-rail-item::before {
-    transition: none;
+  .md-navigation-rail,
+  .md-navigation-rail *,
+  .md-navigation-rail *::before,
+  .md-navigation-rail *::after {
+    transition: none !important;
+    animation: none !important;
   }
 }
