@@ -148,7 +148,10 @@
 .md-navigation-rail-header {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
+  inline-size: 100%;
+  padding-inline-start: var(--md-sys-measurement-navigation-rail-expanded-item-margin-horizontal); /* 20dp: Ancla coaxial estática para menu toggle y FAB */
+  box-sizing: border-box;
   gap: var(--md-sys-measurement-navigation-rail-header-gap); /* 16dp: aire entre menu y FAB (solo manda si hay dos) */
   margin-block-end: var(--md-sys-measurement-navigation-rail-header-margin-bottom); /* 40dp Expressive: entre header y destinos */
 }
