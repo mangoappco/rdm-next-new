@@ -375,7 +375,7 @@
   padding-inline: var(--md-sys-measurement-space-200) var(--md-sys-measurement-space-250); /* 16dp start, 20dp end */
   border-radius: var(--md-sys-shape-corner-large); /* 16dp */
   font-size: var(--md-sys-typescale-label-large-size); /* 14dp */
-  overflow: visible;
+  overflow: hidden; /* Canónico M3: confina el ripple y state layers al radio de 16px */
 }
 
 .md-navigation-rail-expanded .md-navigation-rail-content {
