@@ -336,6 +336,48 @@
   padding-inline-start: var(--md-sys-measurement-navigation-rail-expanded-item-margin-horizontal); /* 20dp */
 }
 
+/* ==========================================================================
+   FAB RESPONSIVO DENTRO DE NAVIGATION RAIL (M3 Expressive)
+   ========================================================================== */
+
+/* 1. MODO COLAPSADO (Por defecto en .md-navigation-rail: 96dp):
+   Cualquier FAB en la cabecera colapsada DEBE forzarse a Standard FAB (56x56dp) */
+.md-navigation-rail:not(.md-navigation-rail-expanded) .md-navigation-rail-header .md-fab {
+  inline-size: var(--md-sys-measurement-fab-height); /* 56dp */
+  min-inline-size: var(--md-sys-measurement-fab-height);
+  max-inline-size: var(--md-sys-measurement-fab-height);
+  block-size: var(--md-sys-measurement-fab-height);
+  padding: 0;
+  gap: var(--md-sys-measurement-space-0); /* 0dp para centrado perfecto del icono sin desplazamiento por gap */
+  border-radius: var(--md-sys-shape-corner-large); /* 16dp */
+  justify-content: center;
+  overflow: hidden; /* Oculta cualquier texto desbordado */
+  font-size: 0; /* Colapsa nodos de texto directo */
+  line-height: 0;
+}
+
+/* Restaura el icono centrado en 24dp dentro del FAB colapsado */
+.md-navigation-rail:not(.md-navigation-rail-expanded) .md-navigation-rail-header .md-fab .md-icon {
+  font-size: var(--md-sys-measurement-icon-size); /* 24dp */
+  inline-size: var(--md-sys-measurement-icon-size);
+  block-size: var(--md-sys-measurement-icon-size);
+  margin: 0;
+}
+
+/* 2. MODO EXPANDIDO (.md-navigation-rail-expanded: 280dp):
+   El FAB recupera su morfología extendida natural */
+.md-navigation-rail-expanded .md-navigation-rail-header .md-fab {
+  inline-size: auto;
+  min-inline-size: var(--md-sys-measurement-fab-height-medium); /* 80dp base extendida */
+  max-inline-size: none;
+  block-size: var(--md-sys-measurement-fab-height); /* 56dp */
+  gap: var(--md-sys-measurement-fab-extended-icon-label-space); /* 12dp entre icono y texto */
+  padding-inline: var(--md-sys-measurement-space-200) var(--md-sys-measurement-space-250); /* 16dp start, 20dp end */
+  border-radius: var(--md-sys-shape-corner-large); /* 16dp */
+  font-size: var(--md-sys-typescale-label-large-size); /* 14dp */
+  overflow: visible;
+}
+
 .md-navigation-rail-expanded .md-navigation-rail-content {
   inline-size: 100%;
   align-items: stretch;
