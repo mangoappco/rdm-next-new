@@ -1065,7 +1065,7 @@ for (const html of htmlFiles) {
       .replace(/&gt;/g, '>')
       .replace(/&quot;/g, '"')
       .replace(/&#39;/g, "'");
-    snippet = snippet.replace(/&amp;/g, '&').replace(/>\s+</g, '><').trim();
+    snippet = snippet.replace(/&amp;/g, '&').replace(/<!--[\s\S]*?-->/g, '').replace(/>\s+</g, '><').trim();
 
     if (rendered === snippet) continue;
 

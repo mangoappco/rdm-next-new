@@ -77,9 +77,12 @@
         </div>
       </div>
       <pre class="sr-code"><code>&lt;div class="md-search md-search-bar"&gt;
+  &lt;!-- Slot: Leading / Icono de búsqueda --&gt;
   &lt;span class="md-search-leading" aria-hidden="true"&gt;
     &lt;span class="md-icon"&gt;search&lt;/span&gt;
   &lt;/span&gt;
+
+  &lt;!-- Slot: Content / Campo de búsqueda --&gt;
   &lt;input type="search" class="md-search-input" placeholder="Buscar en ManGo!..." aria-label="Buscar en ManGo!"&gt;
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
@@ -108,10 +111,15 @@
       </div>
 
       <pre class="sr-code"><code>&lt;div class="md-search md-search-bar"&gt;
+  &lt;!-- Slot: Leading / Icono de búsqueda --&gt;
   &lt;span class="md-search-leading" aria-hidden="true"&gt;
     &lt;span class="md-icon"&gt;search&lt;/span&gt;
   &lt;/span&gt;
+
+  &lt;!-- Slot: Content / Campo de búsqueda --&gt;
   &lt;input type="search" class="md-search-input" id="search-input-trailing" placeholder="Buscar productos o ingredientes..." aria-label="Buscar productos o ingredientes"&gt;
+
+  &lt;!-- Slot: Trailing / Acciones y comandos --&gt;
   &lt;div class="md-search-trailing"&gt;
     &lt;button type="button" class="md-icon-button" data-md-search-clear aria-label="Borrar búsqueda"&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;close&lt;/span&gt;

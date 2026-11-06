@@ -329,13 +329,18 @@
 </dialog>
       </div>
       <pre class="sr-code"><code>&lt;dialog class="md-dialog" open aria-labelledby="dialog-title"&gt;
+  &lt;!-- Slot: Headline / Icono y Titular --&gt;
   &lt;div class="md-dialog-headline"&gt;
     &lt;div class="md-dialog-icon"&gt;&lt;span class="md-icon"&gt;info&lt;/span&gt;&lt;/div&gt;
     &lt;h3 class="md-type-headline-small" id="dialog-title"&gt;Headline&lt;/h3&gt;
   &lt;/div&gt;
+
+  &lt;!-- Slot: Content / Cuerpo y texto de apoyo --&gt;
   &lt;div class="md-dialog-content"&gt;
     &lt;p class="md-type-body-medium"&gt;Supporting text&lt;/p&gt;
   &lt;/div&gt;
+
+  &lt;!-- Slot: Actions / Botones de acción --&gt;
   &lt;div class="md-dialog-actions"&gt;
     &lt;button class="md-button md-button-text" type="button"&gt;Cancelar&lt;/button&gt;
     &lt;button class="md-button md-button-text" type="button"&gt;Aceptar&lt;/button&gt;
@@ -360,9 +365,12 @@
 </dialog>
       </div>
       <pre class="sr-code"><code>&lt;dialog class="md-dialog" open&gt;
+  &lt;!-- Slot: Content / Cuerpo y texto de apoyo --&gt;
   &lt;div class="md-dialog-content"&gt;
     &lt;p class="md-type-body-medium"&gt;Supporting text&lt;/p&gt;
   &lt;/div&gt;
+
+  &lt;!-- Slot: Actions / Botones de acción --&gt;
   &lt;div class="md-dialog-actions"&gt;
     &lt;button class="md-button md-button-text" type="button"&gt;Cancelar&lt;/button&gt;
     &lt;button class="md-button md-button-text" type="button"&gt;Aceptar&lt;/button&gt;

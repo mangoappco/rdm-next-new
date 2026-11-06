@@ -89,11 +89,14 @@
         </div>
       </div>
       <pre class="sr-code"><code>&lt;div class="md-text-field md-text-field-outlined"&gt;
+  &lt;!-- Slot: Container / Input y Label flotante --&gt;
   &lt;div class="md-text-field-container"&gt;
     &lt;input type="text" class="md-text-field-input" id="tf-base" placeholder=" " aria-describedby="tf-base-supporting"&gt;
     &lt;label class="md-text-field-label" for="tf-base"&gt;Nombre del producto&lt;/label&gt;
     &lt;span class="md-text-field-outline" aria-hidden="true"&gt;&lt;/span&gt;
   &lt;/div&gt;
+
+  &lt;!-- Slot: Supporting text / Ayuda y feedback --&gt;
   &lt;span class="md-text-field-supporting-text" id="tf-base-supporting"&gt;Ingresa el nombre visible en el catálogo&lt;/span&gt;
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
@@ -121,16 +124,20 @@
       </div>
       <pre class="sr-code"><code>&lt;div class="md-text-field md-text-field-outlined"&gt;
   &lt;div class="md-text-field-container"&gt;
+    &lt;!-- Slot: Leading icon / Acción inicial --&gt;
     &lt;span class="md-text-field-leading-icon" aria-hidden="true"&gt;
       &lt;span class="md-icon"&gt;search&lt;/span&gt;
     &lt;/span&gt;
     &lt;input type="text" class="md-text-field-input" id="tf-icons" placeholder=" " aria-describedby="tf-icons-supporting"&gt;
     &lt;label class="md-text-field-label" for="tf-icons"&gt;Buscar productos&lt;/label&gt;
     &lt;span class="md-text-field-outline" aria-hidden="true"&gt;&lt;/span&gt;
+    &lt;!-- Slot: Trailing icon / Acción o filtro --&gt;
     &lt;span class="md-text-field-trailing-icon" aria-hidden="true"&gt;
       &lt;span class="md-icon"&gt;tune&lt;/span&gt;
     &lt;/span&gt;
   &lt;/div&gt;
+
+  &lt;!-- Slot: Supporting text / Ayuda --&gt;
   &lt;span class="md-text-field-supporting-text" id="tf-icons-supporting"&gt;Filtra el catálogo por nombre&lt;/span&gt;
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>

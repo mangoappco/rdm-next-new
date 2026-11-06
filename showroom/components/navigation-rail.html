@@ -167,16 +167,21 @@
       </div>
 
       <pre class="sr-code"><code>&lt;nav class="md-navigation-rail" role="tablist" aria-label="Navegación con menú"&gt;
+  &lt;!-- Slot: Cabecera y controles maestros --&gt;
   &lt;div class="md-navigation-rail-header"&gt;
     &lt;button type="button" class="md-icon-button" aria-label="Abrir menú de navegación" data-rail-toggle&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;menu&lt;/span&gt;
     &lt;/button&gt;
   &lt;/div&gt;
+
+  &lt;!-- Slot: Lista de destinos de navegación --&gt;
   &lt;div class="md-navigation-rail-content"&gt;
     &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="true" tabindex="0"&gt;
+      &lt;!-- Slot: Icono / Indicador --&gt;
       &lt;span class="md-navigation-rail-indicator"&gt;
         &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;star&lt;/span&gt;
       &lt;/span&gt;
+      &lt;!-- Slot: Etiqueta de texto --&gt;
       &lt;span class="md-navigation-rail-label"&gt;Destacados&lt;/span&gt;
     &lt;/button&gt;
     &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1"&gt;
