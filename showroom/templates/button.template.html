@@ -93,9 +93,13 @@
       <h3 class="md-type-title-large">Base</h3>
       <p class="md-type-body-medium">La clase base sola: relleno primary, sin borde, tamano small (40). Aqui la base es filled, al reves que en el icon-button.</p>
       <div class="sr-specimen sr-specimen-gap">
-        <button class="md-button" type="button"><span class="md-button-label">Filled</span></button>
+        <button class="md-button" type="button">
+          <span class="md-button-label">Filled</span>
+        </button>
       </div>
-      <pre class="sr-code"><code>&lt;button class="md-button" type="button"&gt;&lt;span class="md-button-label"&gt;Filled&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <pre class="sr-code"><code>&lt;button class="md-button" type="button"&gt;
+  &lt;span class="md-button-label"&gt;Filled&lt;/span&gt;
+&lt;/button&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
     <!-- PAREJA: hasta aqui -->
@@ -597,11 +601,23 @@
       <h3 class="md-type-title-large">Link</h3>
       <p class="md-type-body-medium">El mismo marcado con <code>&lt;button&gt;</code> y con <code>&lt;a&gt;</code>. El enlace no necesita ninguna clase extra: en el componente no hay ni un selector de elemento.</p>
       <div class="sr-specimen sr-specimen-gap">
-        <button class="md-button md-button-filled md-button-small" type="button"><span class="md-button-label">Label</span><span class="md-button-touch"></span></button>
-        <a class="md-button md-button-filled md-button-small" href="#"><span class="md-button-label">Label</span><span class="md-button-touch"></span></a>
+        <button class="md-button md-button-filled md-button-small" type="button">
+          <span class="md-button-label">Label</span>
+          <span class="md-button-touch"></span>
+        </button>
+        <a class="md-button md-button-filled md-button-small" href="#">
+          <span class="md-button-label">Label</span>
+          <span class="md-button-touch"></span>
+        </a>
       </div>
-      <pre class="sr-code"><code>&lt;button class="md-button md-button-filled md-button-small" type="button"&gt;&lt;span class="md-button-label"&gt;Label&lt;/span&gt;&lt;span class="md-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
-&lt;a class="md-button md-button-filled md-button-small" href="#"&gt;&lt;span class="md-button-label"&gt;Label&lt;/span&gt;&lt;span class="md-button-touch"&gt;&lt;/span&gt;&lt;/a&gt;</code></pre>
+      <pre class="sr-code"><code>&lt;button class="md-button md-button-filled md-button-small" type="button"&gt;
+  &lt;span class="md-button-label"&gt;Label&lt;/span&gt;
+  &lt;span class="md-button-touch"&gt;&lt;/span&gt;
+&lt;/button&gt;
+&lt;a class="md-button md-button-filled md-button-small" href="#"&gt;
+  &lt;span class="md-button-label"&gt;Label&lt;/span&gt;
+  &lt;span class="md-button-touch"&gt;&lt;/span&gt;
+&lt;/a&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
     <!-- PAREJA: hasta aqui -->

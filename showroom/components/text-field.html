@@ -44,30 +44,32 @@
 -->
 
 <body class="md-bg-background md-text-on-background md-type-body-medium">
+  <!-- CABECERA INSTITUCIONAL DEL SHOWROOM (DOGFOODING) -->
   <header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll role="banner" aria-label="Cabecera institucional del showroom">
-      <div class="md-top-app-bar-leading">
-        <a href="../index.html" class="md-icon-button" aria-label="Volver al catálogo">
-          <span class="md-icon" aria-hidden="true">arrow_back</span>
-        </a>
-      </div>
-      <div class="md-top-app-bar-content">
-        <span class="md-top-app-bar-title">Text Field</span>
-        <span class="md-top-app-bar-subtitle">RDM Next · ManGo! App</span>
-      </div>
-      <div class="md-top-app-bar-trailing">
-        <button type="button" class="md-icon-button" data-theme-toggle aria-label="Tema del sistema activo"><span class="md-icon" aria-hidden="true">brightness_auto</span></button>
-      </div>
-    </header>
+    <div class="md-top-app-bar-leading">
+      <a href="../index.html" class="md-icon-button" aria-label="Volver al catálogo">
+        <span class="md-icon" aria-hidden="true">arrow_back</span>
+      </a>
+    </div>
+    <div class="md-top-app-bar-content">
+      <span class="md-top-app-bar-title">Text Field</span>
+      <span class="md-top-app-bar-subtitle">RDM Next · ManGo! App</span>
+    </div>
+    <div class="md-top-app-bar-trailing">
+      <button type="button" class="md-icon-button" data-theme-toggle aria-label="Tema del sistema activo">
+        <span class="md-icon" aria-hidden="true">brightness_auto</span>
+      </button>
+    </div>
+  </header>
 
   <main class="sr-page">
 
+    <!-- HEADER: inicio (barra + titulo + descripcion) -->
     <header class="sr-header">
       <h1 class="md-type-display-large">Text Field</h1>
-<p class="md-type-body-large">Los campos de texto permiten a los usuarios ingresar texto en una interfaz de usuario.</p>
+      <p class="md-type-body-large">Campo de texto estructural M3 para entrada de datos. Variante Outlined con label flotante CSS-only (sin JS), notch automático y estados interactivos.</p>
     </header>
-
-
-  
+    <!-- HEADER: fin -->
 
     <hr class="md-divider">
 
@@ -77,7 +79,7 @@
     <!-- Anatomy -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Anatomy</h3>
-      <p class="md-type-body-medium">Outlined Text Field en reposo. Label flotante gobernado 100% por CSS (:focus-within, :placeholder-shown). Sin JS.</p>
+      <p class="md-type-body-medium">Outlined Text Field en reposo con label flotante gobernado 100% por CSS (:focus-within y :not(:placeholder-shown)), sin JavaScript.</p>
       <div class="sr-specimen">
         <div class="md-text-field md-text-field-outlined">
           <div class="md-text-field-container">
@@ -105,7 +107,7 @@
     <!-- Icon slots -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Icon slots</h3>
-      <p class="md-type-body-medium">Campo Outlined con iconos leading y trailing contextuales.</p>
+      <p class="md-type-body-medium">Campo Outlined con iconos leading (search) y trailing (tune) contextuales. Padding lateral 12dp, gap icono-texto 16dp.</p>
       <div class="sr-specimen">
         <div class="md-text-field md-text-field-outlined">
           <div class="md-text-field-container">
@@ -123,6 +125,8 @@
         </div>
       </div>
       <pre class="sr-code"><code>&lt;div class="md-text-field md-text-field-outlined"&gt;
+
+  &lt;!-- Slot: Container / Campo de entrada --&gt;
   &lt;div class="md-text-field-container"&gt;
     &lt;!-- Slot: Leading icon / Acción inicial --&gt;
     &lt;span class="md-text-field-leading-icon" aria-hidden="true"&gt;
@@ -146,7 +150,7 @@
     <!-- Filled variant -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Filled variant</h3>
-      <p class="md-type-body-medium">Variante Filled: fondo surface-container-highest, esquinas asimétricas arriba, active indicator inferior.</p>
+      <p class="md-type-body-medium">Mismo HTML que Outlined, solo cambia la clase raíz. Fondo surface-container-highest, esquinas asimétricas (4dp arriba, 0dp abajo), active indicator inferior (1px reposo → 2px focus/error).</p>
       <div class="sr-specimen">
         <div class="md-text-field md-text-field-filled">
           <div class="md-text-field-container">
@@ -164,17 +168,25 @@
         </div>
       </div>
       <pre class="sr-code"><code>&lt;div class="md-text-field md-text-field-filled"&gt;
+
+  &lt;!-- Slot: Container / Campo de entrada --&gt;
   &lt;div class="md-text-field-container"&gt;
+
+    &lt;!-- Slot: Leading icon / Icono inicial --&gt;
     &lt;span class="md-text-field-leading-icon" aria-hidden="true"&gt;
       &lt;span class="md-icon"&gt;search&lt;/span&gt;
     &lt;/span&gt;
     &lt;input type="text" class="md-text-field-input" id="tf-filled" placeholder=" " aria-describedby="tf-filled-supporting"&gt;
     &lt;label class="md-text-field-label" for="tf-filled"&gt;Buscar productos&lt;/label&gt;
+
+    &lt;!-- Slot: Trailing icon / Icono o acción final --&gt;
     &lt;span class="md-text-field-trailing-icon" aria-hidden="true"&gt;
       &lt;span class="md-icon"&gt;tune&lt;/span&gt;
     &lt;/span&gt;
     &lt;span class="md-text-field-outline" aria-hidden="true"&gt;&lt;/span&gt;
   &lt;/div&gt;
+
+  &lt;!-- Slot: Supporting text / Texto de apoyo y feedback --&gt;
   &lt;span class="md-text-field-supporting-text" id="tf-filled-supporting"&gt;Filtra el catálogo por nombre&lt;/span&gt;
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
@@ -183,7 +195,7 @@
     <!-- Disabled state -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Disabled state</h3>
-      <p class="md-type-body-medium">Outlined y Filled deshabilitados. Opacidad 38% contenido, outline 12% (Outlined), fondo 10% (Filled).</p>
+      <p class="md-type-body-medium">Outlined y Filled deshabilitados con opacidad 38% en contenido, outline 12% (Outlined), fondo 10% (Filled). Iconos simétricos en ambas variantes.</p>
       <div class="sr-specimen sr-specimen-gap">
         <div class="md-text-field md-text-field-outlined">
           <div class="md-text-field-container">
@@ -215,32 +227,48 @@
         </div>
       </div>
       <pre class="sr-code"><code>&lt;div class="md-text-field md-text-field-outlined"&gt;
+
+  &lt;!-- Slot: Container / Campo de entrada --&gt;
   &lt;div class="md-text-field-container"&gt;
+
+    &lt;!-- Slot: Leading icon / Icono inicial --&gt;
     &lt;span class="md-text-field-leading-icon" aria-hidden="true"&gt;
       &lt;span class="md-icon"&gt;search&lt;/span&gt;
     &lt;/span&gt;
     &lt;input type="text" class="md-text-field-input" id="tf-outlined-disabled" placeholder=" " aria-describedby="tf-outlined-disabled-supporting" disabled value="Solo lectura"&gt;
     &lt;label class="md-text-field-label" for="tf-outlined-disabled"&gt;Buscar productos&lt;/label&gt;
     &lt;span class="md-text-field-outline" aria-hidden="true"&gt;&lt;/span&gt;
+
+    &lt;!-- Slot: Trailing icon / Icono o acción final --&gt;
     &lt;span class="md-text-field-trailing-icon" aria-hidden="true"&gt;
       &lt;span class="md-icon"&gt;tune&lt;/span&gt;
     &lt;/span&gt;
   &lt;/div&gt;
+
+  &lt;!-- Slot: Supporting text / Texto de apoyo y feedback --&gt;
   &lt;span class="md-text-field-supporting-text" id="tf-outlined-disabled-supporting"&gt;Campo deshabilitado&lt;/span&gt;
 &lt;/div&gt;
 
 &lt;div class="md-text-field md-text-field-filled"&gt;
+
+  &lt;!-- Slot: Container / Campo de entrada --&gt;
   &lt;div class="md-text-field-container"&gt;
+
+    &lt;!-- Slot: Leading icon / Icono inicial --&gt;
     &lt;span class="md-text-field-leading-icon" aria-hidden="true"&gt;
       &lt;span class="md-icon"&gt;search&lt;/span&gt;
     &lt;/span&gt;
     &lt;input type="text" class="md-text-field-input" id="tf-filled-disabled" placeholder=" " aria-describedby="tf-filled-disabled-supporting" disabled value="Solo lectura"&gt;
     &lt;label class="md-text-field-label" for="tf-filled-disabled"&gt;Buscar productos&lt;/label&gt;
+
+    &lt;!-- Slot: Trailing icon / Icono o acción final --&gt;
     &lt;span class="md-text-field-trailing-icon" aria-hidden="true"&gt;
       &lt;span class="md-icon"&gt;tune&lt;/span&gt;
     &lt;/span&gt;
     &lt;span class="md-text-field-outline" aria-hidden="true"&gt;&lt;/span&gt;
   &lt;/div&gt;
+
+  &lt;!-- Slot: Supporting text / Texto de apoyo y feedback --&gt;
   &lt;span class="md-text-field-supporting-text" id="tf-filled-disabled-supporting"&gt;Campo deshabilitado&lt;/span&gt;
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
@@ -249,7 +277,7 @@
     <!-- Dense variant -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Dense variant</h3>
-      <p class="md-type-body-medium">Variante densa de Text Field. Ambas variantes Outlined y Filled.</p>
+      <p class="md-type-body-medium">Variante densa (48dp) de Text Field. Paso -2 de densidad M3 conservando tipografía body-medium (14px). Iconos a 20dp. Ambas variantes Outlined y Filled.</p>
       <div class="sr-specimen sr-specimen-gap">
         <div class="md-text-field md-text-field-outlined md-text-field-dense">
           <div class="md-text-field-container">
@@ -269,20 +297,28 @@
         </div>
       </div>
       <pre class="sr-code"><code>&lt;div class="md-text-field md-text-field-outlined md-text-field-dense"&gt;
+
+  &lt;!-- Slot: Container / Campo de entrada --&gt;
   &lt;div class="md-text-field-container"&gt;
     &lt;input type="text" class="md-text-field-input" id="tf-dense-outlined" placeholder=" " aria-describedby="tf-dense-outlined-supporting"&gt;
     &lt;label class="md-text-field-label" for="tf-dense-outlined"&gt;Buscar productos&lt;/label&gt;
     &lt;span class="md-text-field-outline" aria-hidden="true"&gt;&lt;/span&gt;
   &lt;/div&gt;
+
+  &lt;!-- Slot: Supporting text / Texto de apoyo y feedback --&gt;
   &lt;span class="md-text-field-supporting-text" id="tf-dense-outlined-supporting"&gt;Campo denso (48dp)&lt;/span&gt;
 &lt;/div&gt;
 
 &lt;div class="md-text-field md-text-field-filled md-text-field-dense"&gt;
+
+  &lt;!-- Slot: Container / Campo de entrada --&gt;
   &lt;div class="md-text-field-container"&gt;
     &lt;input type="text" class="md-text-field-input" id="tf-dense-filled" placeholder=" " aria-describedby="tf-dense-filled-supporting"&gt;
     &lt;label class="md-text-field-label" for="tf-dense-filled"&gt;Buscar productos&lt;/label&gt;
     &lt;span class="md-text-field-outline" aria-hidden="true"&gt;&lt;/span&gt;
   &lt;/div&gt;
+
+  &lt;!-- Slot: Supporting text / Texto de apoyo y feedback --&gt;
   &lt;span class="md-text-field-supporting-text" id="tf-dense-filled-supporting"&gt;Campo denso (48dp)&lt;/span&gt;
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
@@ -291,7 +327,7 @@
     <!-- Textarea -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Textarea</h3>
-      <p class="md-type-body-medium">Área de texto multilínea con label alineado arriba. Counter opcional. Outlined y Filled.</p>
+      <p class="md-type-body-medium">Área de texto multilínea con label alineado arriba (16dp), min-height 96dp (3 líneas), resize none y counter opcional. Ambas variantes Outlined y Filled.</p>
       <div class="sr-specimen sr-specimen-gap">
         <div class="md-text-field md-text-field-outlined md-text-field-textarea">
           <div class="md-text-field-container">
@@ -317,24 +353,32 @@
         </div>
       </div>
       <pre class="sr-code"><code>&lt;div class="md-text-field md-text-field-outlined md-text-field-textarea"&gt;
+
+  &lt;!-- Slot: Container / Campo de entrada --&gt;
   &lt;div class="md-text-field-container"&gt;
     &lt;textarea class="md-text-field-input" id="tf-textarea-outlined" placeholder=" " aria-describedby="tf-textarea-outlined-supporting" rows="3"&gt;&lt;/textarea&gt;
     &lt;label class="md-text-field-label" for="tf-textarea-outlined"&gt;Descripción del producto&lt;/label&gt;
     &lt;span class="md-text-field-outline" aria-hidden="true"&gt;&lt;/span&gt;
   &lt;/div&gt;
   &lt;div class="md-text-field-supporting-row" aria-live="polite"&gt;
+
+    &lt;!-- Slot: Supporting text / Texto de apoyo y feedback --&gt;
     &lt;span class="md-text-field-supporting-text" id="tf-textarea-outlined-supporting"&gt;Descripción detallada&lt;/span&gt;
     &lt;span class="md-text-field-counter"&gt;0/500&lt;/span&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;div class="md-text-field md-text-field-filled md-text-field-textarea"&gt;
+
+  &lt;!-- Slot: Container / Campo de entrada --&gt;
   &lt;div class="md-text-field-container"&gt;
     &lt;textarea class="md-text-field-input" id="tf-textarea-filled" placeholder=" " aria-describedby="tf-textarea-filled-supporting" rows="3"&gt;&lt;/textarea&gt;
     &lt;label class="md-text-field-label" for="tf-textarea-filled"&gt;Descripción del producto&lt;/label&gt;
     &lt;span class="md-text-field-outline" aria-hidden="true"&gt;&lt;/span&gt;
   &lt;/div&gt;
   &lt;div class="md-text-field-supporting-row" aria-live="polite"&gt;
+
+    &lt;!-- Slot: Supporting text / Texto de apoyo y feedback --&gt;
     &lt;span class="md-text-field-supporting-text" id="tf-textarea-filled-supporting"&gt;Descripción detallada&lt;/span&gt;
     &lt;span class="md-text-field-counter"&gt;0/500&lt;/span&gt;
   &lt;/div&gt;
@@ -350,7 +394,7 @@
     <!-- Prefix & Suffix -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Prefix and suffix</h3>
-      <p class="md-type-body-medium">Prefijo y sufijo contextuales. Solo visibles con label flotante.</p>
+      <p class="md-type-body-medium">Campo Outlined y Filled con prefijo ($) y sufijo (COP) contextuales. Solo se muestran cuando el label flota (focus o contenido).</p>
       <div class="sr-specimen sr-specimen-gap">
         <div class="md-text-field md-text-field-outlined">
           <div class="md-text-field-container">
@@ -374,6 +418,8 @@
         </div>
       </div>
       <pre class="sr-code"><code>&lt;div class="md-text-field md-text-field-outlined"&gt;
+
+  &lt;!-- Slot: Container / Campo de entrada --&gt;
   &lt;div class="md-text-field-container"&gt;
     &lt;span class="md-text-field-prefix" aria-hidden="true"&gt;$&lt;/span&gt;
     &lt;input type="text" class="md-text-field-input" id="tf-prefix-outlined" placeholder=" " aria-describedby="tf-prefix-outlined-supporting" value="45.000"&gt;
@@ -381,10 +427,14 @@
     &lt;label class="md-text-field-label" for="tf-prefix-outlined"&gt;Precio del plato&lt;/label&gt;
     &lt;span class="md-text-field-outline" aria-hidden="true"&gt;&lt;/span&gt;
   &lt;/div&gt;
+
+  &lt;!-- Slot: Supporting text / Texto de apoyo y feedback --&gt;
   &lt;span class="md-text-field-supporting-text" id="tf-prefix-outlined-supporting"&gt;Precio en pesos colombianos&lt;/span&gt;
 &lt;/div&gt;
 
 &lt;div class="md-text-field md-text-field-filled"&gt;
+
+  &lt;!-- Slot: Container / Campo de entrada --&gt;
   &lt;div class="md-text-field-container"&gt;
     &lt;span class="md-text-field-prefix" aria-hidden="true"&gt;$&lt;/span&gt;
     &lt;input type="text" class="md-text-field-input" id="tf-prefix-filled" placeholder=" " aria-describedby="tf-prefix-filled-supporting" value="45.000"&gt;
@@ -392,6 +442,8 @@
     &lt;label class="md-text-field-label" for="tf-prefix-filled"&gt;Precio del plato&lt;/label&gt;
     &lt;span class="md-text-field-outline" aria-hidden="true"&gt;&lt;/span&gt;
   &lt;/div&gt;
+
+  &lt;!-- Slot: Supporting text / Texto de apoyo y feedback --&gt;
   &lt;span class="md-text-field-supporting-text" id="tf-prefix-filled-supporting"&gt;Precio en pesos colombianos&lt;/span&gt;
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
@@ -400,7 +452,7 @@
     <!-- Number formatting -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Number formatting</h3>
-      <p class="md-type-body-medium">Enteros con formateo en vivo (es-CO): 1200000 se agrupa 1.200.000. Espejo data-md-text-field-value con el entero limpio desde la primera tecla.</p>
+      <p class="md-type-body-medium">Enteros con formateo en vivo de miles y millones (es-CO): 1200000 queda 1.200.000 a cada tecla. El input es type=text con inputmode=numeric y data-md-text-field-number; el espejo data-md-text-field-value nace con la primera tecla cargando el entero limpio.</p>
       <div class="sr-specimen sr-specimen-gap">
         <div class="md-text-field md-text-field-outlined">
           <div class="md-text-field-container">
@@ -425,6 +477,8 @@
         </div>
       </div>
       <pre class="sr-code"><code>&lt;div class="md-text-field md-text-field-outlined"&gt;
+
+  &lt;!-- Slot: Container / Campo de entrada --&gt;
   &lt;div class="md-text-field-container"&gt;
     &lt;span class="md-text-field-prefix" aria-hidden="true"&gt;$&lt;/span&gt;
     &lt;input type="text" class="md-text-field-input" id="tf-numeric-outlined" placeholder=" " inputmode="numeric" data-md-text-field-number aria-describedby="tf-numeric-outlined-supporting" value="1.200.000"&gt;
@@ -432,10 +486,14 @@
     &lt;label class="md-text-field-label" for="tf-numeric-outlined"&gt;Total del día&lt;/label&gt;
     &lt;span class="md-text-field-outline" aria-hidden="true"&gt;&lt;/span&gt;
   &lt;/div&gt;
+
+  &lt;!-- Slot: Supporting text / Texto de apoyo y feedback --&gt;
   &lt;span class="md-text-field-supporting-text" id="tf-numeric-outlined-supporting"&gt;Total en pesos colombianos&lt;/span&gt;
 &lt;/div&gt;
 
 &lt;div class="md-text-field md-text-field-filled"&gt;
+
+  &lt;!-- Slot: Container / Campo de entrada --&gt;
   &lt;div class="md-text-field-container"&gt;
     &lt;span class="md-text-field-prefix" aria-hidden="true"&gt;$&lt;/span&gt;
     &lt;input type="text" class="md-text-field-input" id="tf-numeric-filled" placeholder=" " inputmode="numeric" data-md-text-field-number aria-describedby="tf-numeric-filled-supporting" value="1.200.000"&gt;
@@ -443,6 +501,8 @@
     &lt;label class="md-text-field-label" for="tf-numeric-filled"&gt;Total del día&lt;/label&gt;
     &lt;span class="md-text-field-outline" aria-hidden="true"&gt;&lt;/span&gt;
   &lt;/div&gt;
+
+  &lt;!-- Slot: Supporting text / Texto de apoyo y feedback --&gt;
   &lt;span class="md-text-field-supporting-text" id="tf-numeric-filled-supporting"&gt;Total en pesos colombianos&lt;/span&gt;
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
@@ -451,7 +511,7 @@
     <!-- Prominent numeric input -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Prominent numeric input</h3>
-      <p class="md-type-body-medium">Monto destacado: .md-type-title-large (22px/28px) en input, prefix y suffix. Dogfooding de Capa 4: la utilidad gana a la receta del componente.</p>
+      <p class="md-type-body-medium">Montos destacados en TPV/facturación: dogfooding del rol de Capa 4 .md-type-title-large (22px/28px) sobre el input, el prefix y el suffix del campo numérico. Sin clases ad-hoc: la capa de utilidades gana a la receta del componente en cascada. En Filled el input conserva su caja canónica (24dp + 28px + 8dp) y sobresale solo 4dp por la tapa, transparente: los glifos quedan íntegros dentro del contenedor con despeje bajo el label flotante.</p>
       <div class="sr-specimen sr-specimen-gap">
         <div class="md-text-field md-text-field-outlined">
           <div class="md-text-field-container">
@@ -476,6 +536,8 @@
         </div>
       </div>
       <pre class="sr-code"><code>&lt;div class="md-text-field md-text-field-outlined"&gt;
+
+  &lt;!-- Slot: Container / Campo de entrada --&gt;
   &lt;div class="md-text-field-container"&gt;
     &lt;span class="md-text-field-prefix md-type-title-large" aria-hidden="true"&gt;$&lt;/span&gt;
     &lt;input type="text" class="md-text-field-input md-type-title-large" id="tf-numeric-prominent-outlined" placeholder=" " inputmode="numeric" data-md-text-field-number aria-describedby="tf-numeric-prominent-outlined-supporting" value="1.200.000"&gt;
@@ -483,10 +545,14 @@
     &lt;label class="md-text-field-label" for="tf-numeric-prominent-outlined"&gt;Total a cobrar&lt;/label&gt;
     &lt;span class="md-text-field-outline" aria-hidden="true"&gt;&lt;/span&gt;
   &lt;/div&gt;
+
+  &lt;!-- Slot: Supporting text / Texto de apoyo y feedback --&gt;
   &lt;span class="md-text-field-supporting-text" id="tf-numeric-prominent-outlined-supporting"&gt;Monto liquidado con impuestos&lt;/span&gt;
 &lt;/div&gt;
 
 &lt;div class="md-text-field md-text-field-filled"&gt;
+
+  &lt;!-- Slot: Container / Campo de entrada --&gt;
   &lt;div class="md-text-field-container"&gt;
     &lt;span class="md-text-field-prefix md-type-title-large" aria-hidden="true"&gt;$&lt;/span&gt;
     &lt;input type="text" class="md-text-field-input md-type-title-large" id="tf-numeric-prominent-filled" placeholder=" " inputmode="numeric" data-md-text-field-number aria-describedby="tf-numeric-prominent-filled-supporting" value="1.200.000"&gt;
@@ -494,6 +560,8 @@
     &lt;label class="md-text-field-label" for="tf-numeric-prominent-filled"&gt;Total a cobrar&lt;/label&gt;
     &lt;span class="md-text-field-outline" aria-hidden="true"&gt;&lt;/span&gt;
   &lt;/div&gt;
+
+  &lt;!-- Slot: Supporting text / Texto de apoyo y feedback --&gt;
   &lt;span class="md-text-field-supporting-text" id="tf-numeric-prominent-filled-supporting"&gt;Monto liquidado con impuestos&lt;/span&gt;
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
@@ -502,7 +570,7 @@
     <!-- Trailing actions -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Trailing actions</h3>
-      <p class="md-type-body-medium">Botón Clear (visible con contenido) y toggle de contraseña. Área táctil accesible.</p>
+      <p class="md-type-body-medium">Acciones interactivas finales: botón Clear (visible solo con contenido) y toggle de contraseña (siempre visible en campos password). Botón 48dp con área táctil accesible.</p>
       <div class="sr-specimen sr-specimen-gap">
         <div class="md-text-field md-text-field-outlined">
           <div class="md-text-field-container">
@@ -528,6 +596,8 @@
         </div>
       </div>
       <pre class="sr-code"><code>&lt;div class="md-text-field md-text-field-outlined"&gt;
+
+  &lt;!-- Slot: Container / Campo de entrada --&gt;
   &lt;div class="md-text-field-container"&gt;
     &lt;input type="text" class="md-text-field-input" id="tf-clear-outlined" placeholder=" " aria-describedby="tf-clear-outlined-supporting" value="Texto a borrar"&gt;
     &lt;label class="md-text-field-label" for="tf-clear-outlined"&gt;Búsqueda rápida&lt;/label&gt;
@@ -536,10 +606,14 @@
       &lt;span class="md-icon" aria-hidden="true"&gt;cancel&lt;/span&gt;
     &lt;/button&gt;
   &lt;/div&gt;
+
+  &lt;!-- Slot: Supporting text / Texto de apoyo y feedback --&gt;
   &lt;span class="md-text-field-supporting-text" id="tf-clear-outlined-supporting"&gt;Escribe para filtrar&lt;/span&gt;
 &lt;/div&gt;
 
 &lt;div class="md-text-field md-text-field-filled"&gt;
+
+  &lt;!-- Slot: Container / Campo de entrada --&gt;
   &lt;div class="md-text-field-container"&gt;
     &lt;input type="password" class="md-text-field-input" id="tf-password-filled" placeholder=" " aria-describedby="tf-password-filled-supporting" value="secreto123"&gt;
     &lt;label class="md-text-field-label" for="tf-password-filled"&gt;Contraseña de acceso&lt;/label&gt;
@@ -548,6 +622,8 @@
       &lt;span class="md-icon" aria-hidden="true"&gt;visibility&lt;/span&gt;
     &lt;/button&gt;
   &lt;/div&gt;
+
+  &lt;!-- Slot: Supporting text / Texto de apoyo y feedback --&gt;
   &lt;span class="md-text-field-supporting-text" id="tf-password-filled-supporting"&gt;Ingresa tu contraseña&lt;/span&gt;
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
@@ -561,7 +637,7 @@
     <!-- Readonly state -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Readonly state</h3>
-      <p class="md-type-body-medium">Campo readonly con atributo nativo. 100% opacidad y contraste, cursor de selección. CSS con :read-only.</p>
+      <p class="md-type-body-medium">Campo de solo lectura con atributo nativo readonly. Mantiene 100% opacidad y contraste, cursor de selección, trazo de reposo en 1px durante foco. Gobernado 100% por CSS con :has(.md-text-field-input:read-only).</p>
       <div class="sr-specimen sr-specimen-gap">
         <div class="md-text-field md-text-field-outlined">
           <div class="md-text-field-container">
@@ -581,20 +657,28 @@
         </div>
       </div>
       <pre class="sr-code"><code>&lt;div class="md-text-field md-text-field-outlined"&gt;
+
+  &lt;!-- Slot: Container / Campo de entrada --&gt;
   &lt;div class="md-text-field-container"&gt;
     &lt;input type="text" class="md-text-field-input" id="tf-readonly-outlined" placeholder=" " readonly value="ORD-2026-9481"&gt;
     &lt;label class="md-text-field-label" for="tf-readonly-outlined"&gt;Número de orden&lt;/label&gt;
     &lt;span class="md-text-field-outline" aria-hidden="true"&gt;&lt;/span&gt;
   &lt;/div&gt;
+
+  &lt;!-- Slot: Supporting text / Texto de apoyo y feedback --&gt;
   &lt;span class="md-text-field-supporting-text" id="tf-readonly-outlined-supporting"&gt;No editable: referencia del sistema&lt;/span&gt;
 &lt;/div&gt;
 
 &lt;div class="md-text-field md-text-field-filled"&gt;
+
+  &lt;!-- Slot: Container / Campo de entrada --&gt;
   &lt;div class="md-text-field-container"&gt;
     &lt;input type="text" class="md-text-field-input" id="tf-readonly-filled" placeholder=" " readonly value="Mesa 4 · Terraza"&gt;
     &lt;label class="md-text-field-label" for="tf-readonly-filled"&gt;Mesa asignada&lt;/label&gt;
     &lt;span class="md-text-field-outline" aria-hidden="true"&gt;&lt;/span&gt;
   &lt;/div&gt;
+
+  &lt;!-- Slot: Supporting text / Texto de apoyo y feedback --&gt;
   &lt;span class="md-text-field-supporting-text" id="tf-readonly-filled-supporting"&gt;No editable: dato de sala&lt;/span&gt;
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
@@ -608,7 +692,7 @@
     <!-- Interactive validation -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Interactive validation</h3>
-      <p class="md-type-body-medium">Validación HTML5 nativa. Counter en vivo. Error en focusout: clase error, icono, outline 2px, helper cambiado.</p>
+      <p class="md-type-body-medium">Campo Outlined con validación HTML5 nativa (Constraint Validation API). Counter en vivo (longitud/maxlength). Al desenfocar campo sucio inválido: .md-text-field-error, ícono error en trailing, outline 2px error, helper permutado a mensaje de error.</p>
       <div class="sr-specimen">
         <div class="md-text-field md-text-field-outlined">
           <div class="md-text-field-container">
@@ -629,7 +713,11 @@
         </div>
       </div>
       <pre class="sr-code"><code>&lt;div class="md-text-field md-text-field-outlined"&gt;
+
+  &lt;!-- Slot: Container / Campo de entrada --&gt;
   &lt;div class="md-text-field-container"&gt;
+
+    &lt;!-- Slot: Leading icon / Icono inicial --&gt;
     &lt;span class="md-text-field-leading-icon" aria-hidden="true"&gt;
       &lt;span class="md-icon"&gt;mail&lt;/span&gt;
     &lt;/span&gt;
@@ -641,6 +729,8 @@
     &lt;/span&gt;
   &lt;/div&gt;
   &lt;div class="md-text-field-supporting-row" aria-live="polite"&gt;
+
+    &lt;!-- Slot: Supporting text / Texto de apoyo y feedback --&gt;
     &lt;span class="md-text-field-supporting-text" id="tf-email-supporting" data-md-helper-text="Ingresa un correo para la factura electrónica" data-md-error-text="Formato de correo inválido (ej. usuario@dominio.com)"&gt;Ingresa un correo para la factura electrónica&lt;/span&gt;
     &lt;span class="md-text-field-counter" data-md-text-field-counter&gt;0/50&lt;/span&gt;
   &lt;/div&gt;
@@ -651,7 +741,7 @@
     <!-- Number range required -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Number range required</h3>
-      <p class="md-type-body-medium">Input number con min=1, max=30, required. Error en focusout: vacío o fuera de rango.</p>
+      <p class="md-type-body-medium">Input type=number con min=1, max=30, step=1 y required. Error solo en focusout: vacío → "Este campo es obligatorio"; fuera de rango → helper de error.</p>
       <div class="sr-specimen">
         <div class="md-text-field md-text-field-outlined">
           <div class="md-text-field-container">
@@ -671,7 +761,11 @@
         </div>
       </div>
       <pre class="sr-code"><code>&lt;div class="md-text-field md-text-field-outlined"&gt;
+
+  &lt;!-- Slot: Container / Campo de entrada --&gt;
   &lt;div class="md-text-field-container"&gt;
+
+    &lt;!-- Slot: Leading icon / Icono inicial --&gt;
     &lt;span class="md-text-field-leading-icon" aria-hidden="true"&gt;
       &lt;span class="md-icon"&gt;group&lt;/span&gt;
     &lt;/span&gt;
@@ -683,6 +777,8 @@
     &lt;/span&gt;
   &lt;/div&gt;
   &lt;div class="md-text-field-supporting-row" aria-live="polite"&gt;
+
+    &lt;!-- Slot: Supporting text / Texto de apoyo y feedback --&gt;
     &lt;span class="md-text-field-supporting-text" id="tf-number-required-helper" data-md-helper-text="Capacidad de mesa entre 1 y 30 personas" data-md-error-text="Ingresa un número válido de personas (1 a 30)"&gt;Capacidad de mesa entre 1 y 30 personas&lt;/span&gt;
   &lt;/div&gt;
 &lt;/div&gt;</code></pre>
@@ -692,7 +788,7 @@
     <!-- Phone pattern required -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Phone pattern required</h3>
-      <p class="md-type-body-medium">Input tel con pattern 10 dígitos, maxlength 10, required y counter. Error en focusout.</p>
+      <p class="md-type-body-medium">Input type=tel con pattern=[0-9]{10}, maxlength=10, inputmode=numeric, required y counter 0/10 en vivo. Error en focusout: inválido o vacío requerido.</p>
       <div class="sr-specimen">
         <div class="md-text-field md-text-field-outlined">
           <div class="md-text-field-container">
@@ -713,7 +809,11 @@
         </div>
       </div>
       <pre class="sr-code"><code>&lt;div class="md-text-field md-text-field-outlined"&gt;
+
+  &lt;!-- Slot: Container / Campo de entrada --&gt;
   &lt;div class="md-text-field-container"&gt;
+
+    &lt;!-- Slot: Leading icon / Icono inicial --&gt;
     &lt;span class="md-text-field-leading-icon" aria-hidden="true"&gt;
       &lt;span class="md-icon"&gt;phone&lt;/span&gt;
     &lt;/span&gt;
@@ -725,6 +825,8 @@
     &lt;/span&gt;
   &lt;/div&gt;
   &lt;div class="md-text-field-supporting-row" aria-live="polite"&gt;
+
+    &lt;!-- Slot: Supporting text / Texto de apoyo y feedback --&gt;
     &lt;span class="md-text-field-supporting-text" id="tf-tel-required-helper" data-md-helper-text="10 dígitos para confirmación de reserva" data-md-error-text="Ingresa un celular de 10 dígitos (ej. 3001234567)"&gt;10 dígitos para confirmación de reserva&lt;/span&gt;
     &lt;span class="md-text-field-counter" data-md-text-field-counter&gt;0/10&lt;/span&gt;
   &lt;/div&gt;
@@ -735,7 +837,7 @@
     <!-- Price prefix required -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Price prefix required</h3>
-      <p class="md-type-body-medium">Input number con min=500, required, prefix y suffix. Error en focusout: valor inferior al mínimo.</p>
+      <p class="md-type-body-medium">Input type=number con min=500, step=100, required, prefix $ y suffix COP. Error en focusout: valor por debajo del mínimo.</p>
       <div class="sr-specimen">
         <div class="md-text-field md-text-field-outlined">
           <div class="md-text-field-container">
@@ -754,6 +856,8 @@
         </div>
       </div>
       <pre class="sr-code"><code>&lt;div class="md-text-field md-text-field-outlined"&gt;
+
+  &lt;!-- Slot: Container / Campo de entrada --&gt;
   &lt;div class="md-text-field-container"&gt;
     &lt;span class="md-text-field-prefix" aria-hidden="true"&gt;$&lt;/span&gt;
     &lt;input type="number" class="md-text-field-input" id="tf-price-required" placeholder=" " min="500" step="100" required aria-describedby="tf-price-required-helper"&gt;
@@ -765,6 +869,8 @@
     &lt;/span&gt;
   &lt;/div&gt;
   &lt;div class="md-text-field-supporting-row" aria-live="polite"&gt;
+
+    &lt;!-- Slot: Supporting text / Texto de apoyo y feedback --&gt;
     &lt;span class="md-text-field-supporting-text" id="tf-price-required-helper" data-md-helper-text="Monto mínimo $500 COP" data-md-error-text="El valor mínimo es $500 COP"&gt;Monto mínimo $500 COP&lt;/span&gt;
   &lt;/div&gt;
 &lt;/div&gt;</code></pre>
@@ -774,7 +880,7 @@
     <!-- URL filled required -->
     <section class="sr-section">
       <h3 class="md-type-title-large">URL filled required</h3>
-      <p class="md-type-body-medium">Input url en variante Filled con required. Valida esquema https. Error en focusout.</p>
+      <p class="md-type-body-medium">Input type=url en variante Filled con required. Valida esquema https nativo. Error en focusout: inválido o vacío requerido. Orden DOM canónico input → label → outline → error-icon.</p>
       <div class="sr-specimen">
         <div class="md-text-field md-text-field-filled">
           <div class="md-text-field-container">
@@ -794,7 +900,11 @@
         </div>
       </div>
       <pre class="sr-code"><code>&lt;div class="md-text-field md-text-field-filled"&gt;
+
+  &lt;!-- Slot: Container / Campo de entrada --&gt;
   &lt;div class="md-text-field-container"&gt;
+
+    &lt;!-- Slot: Leading icon / Icono inicial --&gt;
     &lt;span class="md-text-field-leading-icon" aria-hidden="true"&gt;
       &lt;span class="md-icon"&gt;link&lt;/span&gt;
     &lt;/span&gt;
@@ -806,6 +916,8 @@
     &lt;/span&gt;
   &lt;/div&gt;
   &lt;div class="md-text-field-supporting-row" aria-live="polite"&gt;
+
+    &lt;!-- Slot: Supporting text / Texto de apoyo y feedback --&gt;
     &lt;span class="md-text-field-supporting-text" id="tf-url-required-helper" data-md-helper-text="Debe iniciar con https://" data-md-error-text="Ingresa una URL válida con https://"&gt;Debe iniciar con https://&lt;/span&gt;
   &lt;/div&gt;
 &lt;/div&gt;</code></pre>

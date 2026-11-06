@@ -121,9 +121,20 @@
       <h3 class="md-type-title-large">Base</h3>
       <p class="md-type-body-medium">FAB extendido con icono y texto. Sin aria-label: el texto es el nombre accesible.</p>
       <div class="sr-specimen sr-specimen-gap">
-        <button class="md-fab md-fab-extended" type="button"><span class="md-icon" aria-hidden="true">navigation</span>Navegar<span class="md-fab-touch"></span></button>
+        <button class="md-fab md-fab-extended" type="button">
+          <span class="md-icon" aria-hidden="true">navigation</span>
+          Navegar
+          <span class="md-fab-touch"></span>
+        </button>
       </div>
-      <pre class="sr-code"><code>&lt;button class="md-fab md-fab-extended" type="button"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;navigation&lt;/span&gt;Navegar&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <pre class="sr-code"><code>&lt;button class="md-fab md-fab-extended" type="button"&gt;
+  &lt;!-- Slot: Icono --&gt;
+  &lt;span class="md-icon" aria-hidden="true"&gt;navigation&lt;/span&gt;
+
+  &lt;!-- Slot: Etiqueta de texto --&gt;
+  Navegar
+  &lt;span class="md-fab-touch"&gt;&lt;/span&gt;
+&lt;/button&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
     <!-- PAREJA: hasta aqui -->
@@ -133,11 +144,33 @@
       <h3 class="md-type-title-large">Colors</h3>
       <p class="md-type-body-medium">La misma familia de color que el FAB base, asi que las dos clases combinan sin nada mas. El texto hereda el color del host, igual que el icono.</p>
       <div class="sr-specimen sr-specimen-gap">
-        <button class="md-fab md-fab-extended" type="button"><span class="md-icon" aria-hidden="true">edit</span>Editar<span class="md-fab-touch"></span></button>
-        <button class="md-fab md-fab-primary md-fab-extended" type="button"><span class="md-icon" aria-hidden="true">edit</span>Editar<span class="md-fab-touch"></span></button>
+        <button class="md-fab md-fab-extended" type="button">
+          <span class="md-icon" aria-hidden="true">edit</span>
+          Editar
+          <span class="md-fab-touch"></span>
+        </button>
+        <button class="md-fab md-fab-primary md-fab-extended" type="button">
+          <span class="md-icon" aria-hidden="true">edit</span>
+          Editar
+          <span class="md-fab-touch"></span>
+        </button>
       </div>
-      <pre class="sr-code"><code>&lt;button class="md-fab md-fab-extended" type="button"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;Editar&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;
-&lt;button class="md-fab md-fab-primary md-fab-extended" type="button"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;Editar&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <pre class="sr-code"><code>&lt;button class="md-fab md-fab-extended" type="button"&gt;
+  &lt;!-- Slot: Icono --&gt;
+  &lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;
+
+  &lt;!-- Slot: Etiqueta de texto --&gt;
+  Editar
+  &lt;span class="md-fab-touch"&gt;&lt;/span&gt;
+&lt;/button&gt;
+&lt;button class="md-fab md-fab-primary md-fab-extended" type="button"&gt;
+  &lt;!-- Slot: Icono --&gt;
+  &lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;
+
+  &lt;!-- Slot: Etiqueta de texto --&gt;
+  Editar
+  &lt;span class="md-fab-touch"&gt;&lt;/span&gt;
+&lt;/button&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
     <!-- PAREJA: hasta aqui -->
@@ -147,13 +180,46 @@
       <h3 class="md-type-title-large">Sizes</h3>
       <p class="md-type-body-medium">Base sin clase, medium y large: 56, 80 y 96px. Con el tamaño cambian también el radio, el padding y la tipografía. Aquí no hay small.</p>
       <div class="sr-specimen sr-specimen-gap">
-        <button class="md-fab md-fab-extended" type="button"><span class="md-icon" aria-hidden="true">edit</span>Editar<span class="md-fab-touch"></span></button>
-        <button class="md-fab md-fab-medium md-fab-extended" type="button"><span class="md-icon" aria-hidden="true">edit</span>Editar<span class="md-fab-touch"></span></button>
-        <button class="md-fab md-fab-large md-fab-extended" type="button"><span class="md-icon" aria-hidden="true">edit</span>Editar<span class="md-fab-touch"></span></button>
+        <button class="md-fab md-fab-extended" type="button">
+          <span class="md-icon" aria-hidden="true">edit</span>
+          Editar
+          <span class="md-fab-touch"></span>
+        </button>
+        <button class="md-fab md-fab-medium md-fab-extended" type="button">
+          <span class="md-icon" aria-hidden="true">edit</span>
+          Editar
+          <span class="md-fab-touch"></span>
+        </button>
+        <button class="md-fab md-fab-large md-fab-extended" type="button">
+          <span class="md-icon" aria-hidden="true">edit</span>
+          Editar
+          <span class="md-fab-touch"></span>
+        </button>
       </div>
-      <pre class="sr-code"><code>&lt;button class="md-fab md-fab-extended" type="button"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;Editar&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;
-&lt;button class="md-fab md-fab-medium md-fab-extended" type="button"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;Editar&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;
-&lt;button class="md-fab md-fab-large md-fab-extended" type="button"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;Editar&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <pre class="sr-code"><code>&lt;button class="md-fab md-fab-extended" type="button"&gt;
+  &lt;!-- Slot: Icono --&gt;
+  &lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;
+
+  &lt;!-- Slot: Etiqueta de texto --&gt;
+  Editar
+  &lt;span class="md-fab-touch"&gt;&lt;/span&gt;
+&lt;/button&gt;
+&lt;button class="md-fab md-fab-medium md-fab-extended" type="button"&gt;
+  &lt;!-- Slot: Icono --&gt;
+  &lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;
+
+  &lt;!-- Slot: Etiqueta de texto --&gt;
+  Editar
+  &lt;span class="md-fab-touch"&gt;&lt;/span&gt;
+&lt;/button&gt;
+&lt;button class="md-fab md-fab-large md-fab-extended" type="button"&gt;
+  &lt;!-- Slot: Icono --&gt;
+  &lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;
+
+  &lt;!-- Slot: Etiqueta de texto --&gt;
+  Editar
+  &lt;span class="md-fab-touch"&gt;&lt;/span&gt;
+&lt;/button&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
     <!-- PAREJA: hasta aqui -->
@@ -163,11 +229,29 @@
       <h3 class="md-type-title-large">Icon</h3>
       <p class="md-type-body-medium">Con y sin icono la caja es igual (padding simétrico). Solo el extendido puede ir sin icono.</p>
       <div class="sr-specimen sr-specimen-gap">
-        <button class="md-fab md-fab-extended" type="button"><span class="md-icon" aria-hidden="true">navigation</span>Navegar<span class="md-fab-touch"></span></button>
-        <button class="md-fab md-fab-extended" type="button">Nuevo hilo<span class="md-fab-touch"></span></button>
+        <button class="md-fab md-fab-extended" type="button">
+          <span class="md-icon" aria-hidden="true">navigation</span>
+          Navegar
+          <span class="md-fab-touch"></span>
+        </button>
+        <button class="md-fab md-fab-extended" type="button">
+          Nuevo hilo
+          <span class="md-fab-touch"></span>
+        </button>
       </div>
-      <pre class="sr-code"><code>&lt;button class="md-fab md-fab-extended" type="button"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;navigation&lt;/span&gt;Navegar&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;
-&lt;button class="md-fab md-fab-extended" type="button"&gt;Nuevo hilo&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <pre class="sr-code"><code>&lt;button class="md-fab md-fab-extended" type="button"&gt;
+  &lt;!-- Slot: Icono --&gt;
+  &lt;span class="md-icon" aria-hidden="true"&gt;navigation&lt;/span&gt;
+
+  &lt;!-- Slot: Etiqueta de texto --&gt;
+  Navegar
+  &lt;span class="md-fab-touch"&gt;&lt;/span&gt;
+&lt;/button&gt;
+&lt;button class="md-fab md-fab-extended" type="button"&gt;
+  &lt;!-- Slot: Etiqueta de texto --&gt;
+  Nuevo hilo
+  &lt;span class="md-fab-touch"&gt;&lt;/span&gt;
+&lt;/button&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
     <!-- PAREJA: hasta aqui -->
@@ -177,11 +261,33 @@
       <h3 class="md-type-title-large">States</h3>
       <p class="md-type-body-medium">Reposo y deshabilitado. Disabled baja texto e icono al 38% y apaga la sombra.</p>
       <div class="sr-specimen sr-specimen-gap">
-        <button class="md-fab md-fab-extended" type="button"><span class="md-icon" aria-hidden="true">edit</span>Editar<span class="md-fab-touch"></span></button>
-        <button class="md-fab md-fab-extended" type="button" disabled><span class="md-icon" aria-hidden="true">edit</span>Editar<span class="md-fab-touch"></span></button>
+        <button class="md-fab md-fab-extended" type="button">
+          <span class="md-icon" aria-hidden="true">edit</span>
+          Editar
+          <span class="md-fab-touch"></span>
+        </button>
+        <button class="md-fab md-fab-extended" type="button" disabled>
+          <span class="md-icon" aria-hidden="true">edit</span>
+          Editar
+          <span class="md-fab-touch"></span>
+        </button>
       </div>
-      <pre class="sr-code"><code>&lt;button class="md-fab md-fab-extended" type="button"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;Editar&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;
-&lt;button class="md-fab md-fab-extended" type="button" disabled&gt;&lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;Editar&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <pre class="sr-code"><code>&lt;button class="md-fab md-fab-extended" type="button"&gt;
+  &lt;!-- Slot: Icono --&gt;
+  &lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;
+
+  &lt;!-- Slot: Etiqueta de texto --&gt;
+  Editar
+  &lt;span class="md-fab-touch"&gt;&lt;/span&gt;
+&lt;/button&gt;
+&lt;button class="md-fab md-fab-extended" type="button" disabled&gt;
+  &lt;!-- Slot: Icono --&gt;
+  &lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;
+
+  &lt;!-- Slot: Etiqueta de texto --&gt;
+  Editar
+  &lt;span class="md-fab-touch"&gt;&lt;/span&gt;
+&lt;/button&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
     <!-- PAREJA: hasta aqui -->
@@ -191,9 +297,20 @@
       <h3 class="md-type-title-large">Anchored</h3>
       <p class="md-type-body-medium">FAB extendido anclado a la pantalla (fixed), 16px del borde. El ancho lo manda el texto.</p>
       <div class="sr-specimen sr-specimen-tall">
-        <button class="md-fab md-fab-extended md-fab-anchored" type="button"><span class="md-icon" aria-hidden="true">reply</span>Responder<span class="md-fab-touch"></span></button>
+        <button class="md-fab md-fab-extended md-fab-anchored" type="button">
+          <span class="md-icon" aria-hidden="true">reply</span>
+          Responder
+          <span class="md-fab-touch"></span>
+        </button>
       </div>
-      <pre class="sr-code"><code>&lt;button class="md-fab md-fab-extended md-fab-anchored" type="button"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;reply&lt;/span&gt;Responder&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;</code></pre>
+      <pre class="sr-code"><code>&lt;button class="md-fab md-fab-extended md-fab-anchored" type="button"&gt;
+  &lt;!-- Slot: Icono --&gt;
+  &lt;span class="md-icon" aria-hidden="true"&gt;reply&lt;/span&gt;
+
+  &lt;!-- Slot: Etiqueta de texto --&gt;
+  Responder
+  &lt;span class="md-fab-touch"&gt;&lt;/span&gt;
+&lt;/button&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
     <!-- PAREJA: hasta aqui -->

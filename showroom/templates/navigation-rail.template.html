@@ -106,6 +106,7 @@
       </div>
 
       <pre class="sr-code"><code>&lt;nav class="md-navigation-rail" role="tablist" aria-label="Navegación principal"&gt;
+  &lt;!-- Slot: Lista de destinos de navegación --&gt;
   &lt;div class="md-navigation-rail-content"&gt;
     &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="true" tabindex="0"&gt;
       &lt;span class="md-navigation-rail-indicator"&gt;
@@ -239,12 +240,14 @@
       </div>
 
       <pre class="sr-code"><code>&lt;nav class="md-navigation-rail" role="tablist" aria-label="Navegación con acción principal"&gt;
+  &lt;!-- Slot: Cabecera y controles maestros --&gt;
   &lt;div class="md-navigation-rail-header"&gt;
     &lt;button type="button" class="md-fab" aria-label="Crear nuevo registro"&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;
       &lt;span class="md-fab-touch"&gt;&lt;/span&gt;
     &lt;/button&gt;
   &lt;/div&gt;
+  &lt;!-- Slot: Lista de destinos de navegación --&gt;
   &lt;div class="md-navigation-rail-content"&gt;
     &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="true" tabindex="0"&gt;
       &lt;span class="md-navigation-rail-indicator"&gt;
@@ -282,7 +285,9 @@
               <span class="md-icon" aria-hidden="true">menu</span>
             </button>
             <button type="button" class="md-fab md-fab-extended">
-              <span class="md-icon" aria-hidden="true">edit</span>Crear<span class="md-fab-touch"></span>
+              <span class="md-icon" aria-hidden="true">edit</span>
+      Crear
+      <span class="md-fab-touch"></span>
             </button>
           </div>
           <div class="md-navigation-rail-content">
@@ -309,14 +314,18 @@
       </div>
 
       <pre class="sr-code"><code>&lt;nav class="md-navigation-rail" role="tablist" aria-label="Navegación con menú y acción principal"&gt;
+  &lt;!-- Slot: Cabecera y controles maestros --&gt;
   &lt;div class="md-navigation-rail-header"&gt;
     &lt;button type="button" class="md-icon-button" aria-label="Abrir menú de navegación" data-rail-toggle&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;menu&lt;/span&gt;
     &lt;/button&gt;
     &lt;button type="button" class="md-fab md-fab-extended"&gt;
-      &lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;Crear&lt;span class="md-fab-touch"&gt;&lt;/span&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;
+      Crear
+      &lt;span class="md-fab-touch"&gt;&lt;/span&gt;
     &lt;/button&gt;
   &lt;/div&gt;
+  &lt;!-- Slot: Lista de destinos de navegación --&gt;
   &lt;div class="md-navigation-rail-content"&gt;
     &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="true" tabindex="0"&gt;
       &lt;span class="md-navigation-rail-indicator"&gt;
@@ -378,6 +387,7 @@
       </div>
 
       <pre class="sr-code"><code>&lt;nav class="md-navigation-rail md-navigation-rail-expanded" role="tablist" aria-label="Navegación extendida"&gt;
+  &lt;!-- Slot: Lista de destinos de navegación --&gt;
   &lt;div class="md-navigation-rail-content"&gt;
     &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="true" tabindex="0"&gt;
       &lt;span class="md-navigation-rail-indicator"&gt;
@@ -439,11 +449,13 @@
       </div>
 
       <pre class="sr-code"><code>&lt;nav class="md-navigation-rail md-navigation-rail-expanded" role="tablist" aria-label="Navegación extendida con menú"&gt;
+  &lt;!-- Slot: Cabecera y controles maestros --&gt;
   &lt;div class="md-navigation-rail-header"&gt;
     &lt;button type="button" class="md-icon-button" aria-label="Contraer menú de navegación" aria-expanded="true" data-rail-toggle&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;menu_open&lt;/span&gt;
     &lt;/button&gt;
   &lt;/div&gt;
+  &lt;!-- Slot: Lista de destinos de navegación --&gt;
   &lt;div class="md-navigation-rail-content"&gt;
     &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="true" tabindex="0"&gt;
       &lt;span class="md-navigation-rail-indicator"&gt;
@@ -478,7 +490,9 @@
         <nav class="md-navigation-rail md-navigation-rail-expanded" role="tablist" aria-label="Navegación extendida con acción principal">
           <div class="md-navigation-rail-header">
             <button type="button" class="md-fab md-fab-extended">
-              <span class="md-icon" aria-hidden="true">edit</span>Crear<span class="md-fab-touch"></span>
+              <span class="md-icon" aria-hidden="true">edit</span>
+      Crear
+      <span class="md-fab-touch"></span>
             </button>
           </div>
           <div class="md-navigation-rail-content">
@@ -505,11 +519,15 @@
       </div>
 
       <pre class="sr-code"><code>&lt;nav class="md-navigation-rail md-navigation-rail-expanded" role="tablist" aria-label="Navegación extendida con acción principal"&gt;
+  &lt;!-- Slot: Cabecera y controles maestros --&gt;
   &lt;div class="md-navigation-rail-header"&gt;
     &lt;button type="button" class="md-fab md-fab-extended"&gt;
-      &lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;Crear&lt;span class="md-fab-touch"&gt;&lt;/span&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;
+      Crear
+      &lt;span class="md-fab-touch"&gt;&lt;/span&gt;
     &lt;/button&gt;
   &lt;/div&gt;
+  &lt;!-- Slot: Lista de destinos de navegación --&gt;
   &lt;div class="md-navigation-rail-content"&gt;
     &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="true" tabindex="0"&gt;
       &lt;span class="md-navigation-rail-indicator"&gt;
@@ -547,7 +565,9 @@
               <span class="md-icon" aria-hidden="true">menu_open</span>
             </button>
             <button type="button" class="md-fab md-fab-extended">
-              <span class="md-icon" aria-hidden="true">edit</span>Crear<span class="md-fab-touch"></span>
+              <span class="md-icon" aria-hidden="true">edit</span>
+      Crear
+      <span class="md-fab-touch"></span>
             </button>
           </div>
           <div class="md-navigation-rail-content">
@@ -574,14 +594,18 @@
       </div>
 
       <pre class="sr-code"><code>&lt;nav class="md-navigation-rail md-navigation-rail-expanded" role="tablist" aria-label="Navegación extendida con menú y acción principal"&gt;
+  &lt;!-- Slot: Cabecera y controles maestros --&gt;
   &lt;div class="md-navigation-rail-header"&gt;
     &lt;button type="button" class="md-icon-button" aria-label="Contraer menú de navegación" aria-expanded="true" data-rail-toggle&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;menu_open&lt;/span&gt;
     &lt;/button&gt;
     &lt;button type="button" class="md-fab md-fab-extended"&gt;
-      &lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;Crear&lt;span class="md-fab-touch"&gt;&lt;/span&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;
+      Crear
+      &lt;span class="md-fab-touch"&gt;&lt;/span&gt;
     &lt;/button&gt;
   &lt;/div&gt;
+  &lt;!-- Slot: Lista de destinos de navegación --&gt;
   &lt;div class="md-navigation-rail-content"&gt;
     &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="true" tabindex="0"&gt;
       &lt;span class="md-navigation-rail-indicator"&gt;

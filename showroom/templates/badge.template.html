@@ -88,8 +88,10 @@
       </div>
 
       <pre class="sr-code"><code>&lt;button type="button" class="md-icon-button" aria-label="Novedades de cocina"&gt;
+  &lt;!-- Slot: Anchor / Botón --&gt;
   &lt;span class="md-badge-anchor"&gt;
     &lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;notifications&lt;/span&gt;
+    &lt;!-- Slot: Insignia numérica / Dot --&gt;
     &lt;span class="md-badge md-badge-small" aria-hidden="true"&gt;&lt;/span&gt;
   &lt;/span&gt;
   &lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;
@@ -113,8 +115,10 @@
       </div>
 
       <pre class="sr-code"><code>&lt;button type="button" class="md-icon-button" aria-label="Mensajes, 3 sin leer"&gt;
+  &lt;!-- Slot: Anchor / Botón --&gt;
   &lt;span class="md-badge-anchor"&gt;
     &lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;mail&lt;/span&gt;
+    &lt;!-- Slot: Insignia numérica / Dot --&gt;
     &lt;span class="md-badge md-badge-large" aria-hidden="true"&gt;3&lt;/span&gt;
   &lt;/span&gt;
   &lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;
@@ -146,16 +150,20 @@
       </div>
 
       <pre class="sr-code"><code>&lt;button type="button" class="md-icon-button" aria-label="Notificaciones, 12 pendientes"&gt;
+  &lt;!-- Slot: Anchor / Botón --&gt;
   &lt;span class="md-badge-anchor"&gt;
     &lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;shopping_cart&lt;/span&gt;
+    &lt;!-- Slot: Insignia numérica / Dot --&gt;
     &lt;span class="md-badge md-badge-large" aria-hidden="true"&gt;12&lt;/span&gt;
   &lt;/span&gt;
   &lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;
 &lt;/button&gt;
 
 &lt;button type="button" class="md-icon-button" aria-label="Notificaciones, más de 999"&gt;
+  &lt;!-- Slot: Anchor / Botón --&gt;
   &lt;span class="md-badge-anchor"&gt;
     &lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;shopping_cart&lt;/span&gt;
+    &lt;!-- Slot: Insignia numérica / Dot --&gt;
     &lt;span class="md-badge md-badge-large" aria-hidden="true"&gt;999+&lt;/span&gt;
   &lt;/span&gt;
   &lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;
@@ -200,20 +208,27 @@
       </div>
 
       <pre class="sr-code"><code>&lt;header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll role="banner"&gt;
+  &lt;!-- Slot: Leading / Navegación --&gt;
   &lt;div class="md-top-app-bar-leading"&gt;
     &lt;button type="button" class="md-icon-button" aria-label="Menú"&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;menu&lt;/span&gt;
       &lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;
     &lt;/button&gt;
   &lt;/div&gt;
+
+  &lt;!-- Slot: Content / Titular y subtítulo --&gt;
   &lt;div class="md-top-app-bar-content"&gt;
     &lt;span class="md-top-app-bar-title"&gt;Turno cocina&lt;/span&gt;
     &lt;span class="md-top-app-bar-subtitle"&gt;3 comandas activas&lt;/span&gt;
   &lt;/div&gt;
+
+  &lt;!-- Slot: Trailing / Acciones y Badge --&gt;
   &lt;div class="md-top-app-bar-trailing"&gt;
     &lt;button type="button" class="md-icon-button" aria-label="Novedades en cocina"&gt;
+      &lt;!-- Slot: Anchor / Botón --&gt;
       &lt;span class="md-badge-anchor"&gt;
         &lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;notifications&lt;/span&gt;
+        &lt;!-- Slot: Insignia numérica / Dot --&gt;
         &lt;span class="md-badge md-badge-small" aria-hidden="true"&gt;&lt;/span&gt;
       &lt;/span&gt;
       &lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;
@@ -252,14 +267,21 @@
 
       <pre class="sr-code"><code>&lt;ul class="md-list"&gt;
   &lt;li class="md-list-item md-list-item-two-line"&gt;
+    &lt;!-- Slot: Leading / Icono o avatar --&gt;
     &lt;span class="md-list-item-leading"&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;soup_kitchen&lt;/span&gt;
     &lt;/span&gt;
+
+    &lt;!-- Slot: Content / Titular y texto de apoyo --&gt;
     &lt;div class="md-list-item-content"&gt;
       &lt;span class="md-list-item-headline"&gt;Mesa 4 · Comanda&lt;/span&gt;
       &lt;span class="md-list-item-supporting-text"&gt;En cocina · 3 platos pendientes&lt;/span&gt;
     &lt;/div&gt;
+
+    &lt;!-- Slot: Insignia numérica / Dot --&gt;
     &lt;span class="md-badge md-badge-large md-badge-adjacent" aria-hidden="true"&gt;3&lt;/span&gt;
+
+    &lt;!-- Slot: Trailing / Acción de navegación --&gt;
     &lt;span class="md-list-item-trailing"&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;chevron_right&lt;/span&gt;
     &lt;/span&gt;

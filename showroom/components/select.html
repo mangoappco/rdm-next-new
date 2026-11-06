@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="utf-8">
@@ -101,6 +101,7 @@
       </div>
 
       <pre class="sr-code"><code>&lt;div class="md-select md-select-outlined" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox"&gt;
+  &lt;!-- Slot: Campo selector --&gt;
   &lt;div class="md-select-container"&gt;
     &lt;input type="text" class="md-select-input" id="select-anatomy" readonly value="" placeholder=" " aria-label="Método de pago" aria-describedby="select-anatomy-supporting"&gt;
     &lt;label class="md-select-label" for="select-anatomy"&gt;Método de pago&lt;/label&gt;
@@ -110,6 +111,8 @@
     &lt;/span&gt;
   &lt;/div&gt;
   &lt;span class="md-select-supporting-text" id="select-anatomy-supporting"&gt;Selecciona el medio de liquidación&lt;/span&gt;
+
+  &lt;!-- Slot: Menú de opciones --&gt;
   &lt;div class="md-menu" role="listbox" aria-labelledby="select-anatomy"&gt;
     &lt;div class="md-list-item" role="option" aria-selected="false" data-value="efectivo"&gt;
       &lt;span class="md-list-item-headline"&gt;Efectivo&lt;/span&gt;
@@ -179,6 +182,7 @@
       </div>
 
       <pre class="sr-code"><code>&lt;div class="md-select md-select-filled" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox"&gt;
+  &lt;!-- Slot: Campo selector --&gt;
   &lt;div class="md-select-container"&gt;
     &lt;input type="text" class="md-select-input" id="select-filled-rest" readonly value="" placeholder=" " aria-label="Categoría" aria-describedby="select-filled-rest-supporting"&gt;
     &lt;label class="md-select-label" for="select-filled-rest"&gt;Categoría&lt;/label&gt;
@@ -188,6 +192,8 @@
     &lt;/span&gt;
   &lt;/div&gt;
   &lt;span class="md-select-supporting-text" id="select-filled-rest-supporting"&gt;Categoría del catálogo gastronómico&lt;/span&gt;
+
+  &lt;!-- Slot: Menú de opciones --&gt;
   &lt;div class="md-menu" role="listbox" aria-labelledby="select-filled-rest"&gt;
     &lt;div class="md-list-item" role="option" aria-selected="false" data-value="bebidas"&gt;
       &lt;span class="md-list-item-headline"&gt;Bebidas&lt;/span&gt;
@@ -202,6 +208,7 @@
 &lt;/div&gt;
 
 &lt;div class="md-select md-select-filled" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox"&gt;
+  &lt;!-- Slot: Campo selector --&gt;
   &lt;div class="md-select-container"&gt;
     &lt;input type="text" class="md-select-input" id="select-filled-selected" readonly value="Bebidas" placeholder=" " aria-label="Categoría" aria-describedby="select-filled-selected-supporting"&gt;
     &lt;label class="md-select-label" for="select-filled-selected"&gt;Categoría&lt;/label&gt;
@@ -211,6 +218,8 @@
     &lt;/span&gt;
   &lt;/div&gt;
   &lt;span class="md-select-supporting-text" id="select-filled-selected-supporting"&gt;Categoría del catálogo gastronómico&lt;/span&gt;
+
+  &lt;!-- Slot: Menú de opciones --&gt;
   &lt;div class="md-menu" role="listbox" aria-labelledby="select-filled-selected"&gt;
     &lt;div class="md-list-item md-list-item-selected" role="option" aria-selected="true" data-value="bebidas"&gt;
       &lt;span class="md-list-item-headline"&gt;Bebidas&lt;/span&gt;
@@ -263,6 +272,7 @@
       </div>
 
       <pre class="sr-code"><code>&lt;div class="md-select md-select-outlined" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox"&gt;
+  &lt;!-- Slot: Campo selector --&gt;
   &lt;div class="md-select-container"&gt;
     &lt;span class="md-select-leading-icon" aria-hidden="true"&gt;
       &lt;span class="md-icon"&gt;payments&lt;/span&gt;
@@ -275,6 +285,8 @@
     &lt;/span&gt;
   &lt;/div&gt;
   &lt;span class="md-select-supporting-text" id="select-icon-slots-supporting"&gt;Selecciona el medio de liquidación&lt;/span&gt;
+
+  &lt;!-- Slot: Menú de opciones --&gt;
   &lt;div class="md-menu" role="listbox" aria-labelledby="select-icon-slots"&gt;
     &lt;div class="md-list-item md-list-item-selected" role="option" aria-selected="true" data-value="efectivo" data-icon="payments"&gt;
       &lt;span class="md-icon md-list-item-leading" aria-hidden="true"&gt;payments&lt;/span&gt;
@@ -289,7 +301,7 @@
       &lt;span class="md-list-item-headline"&gt;Transferencia&lt;/span&gt;
     &lt;/div&gt;
   &lt;/div&gt;
-  &lt;/div&gt;</code></pre>
+&lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
 
@@ -324,6 +336,7 @@
       </div>
 
       <pre class="sr-code"><code>&lt;div class="md-select md-select-outlined md-select-open" data-md-select role="combobox" aria-expanded="true" aria-haspopup="listbox"&gt;
+  &lt;!-- Slot: Campo selector --&gt;
   &lt;div class="md-select-container"&gt;
     &lt;input type="text" class="md-select-input" id="select-open" readonly value="Efectivo" placeholder=" " aria-label="Método de pago" aria-describedby="select-open-supporting"&gt;
     &lt;label class="md-select-label" for="select-open"&gt;Método de pago&lt;/label&gt;
@@ -333,11 +346,13 @@
     &lt;/span&gt;
   &lt;/div&gt;
   &lt;span class="md-select-supporting-text" id="select-open-supporting"&gt;Selecciona el medio de liquidación&lt;/span&gt;
+
+  &lt;!-- Slot: Menú de opciones --&gt;
   &lt;div class="md-menu" role="listbox" aria-labelledby="select-open"&gt;
     &lt;div class="md-list-item md-list-item-selected" role="option" aria-selected="true" data-value="efectivo"&gt;
       &lt;span class="md-list-item-headline"&gt;Efectivo&lt;/span&gt;
     &lt;/div&gt;
-    &lt;div class="md-list-item" role="option" aria-selected="false" data-value="tarjeta"&gt;
+    &lt;div class="md-list-item" role="option" aria-selected="false" data-value="tarjeta">
       &lt;span class="md-list-item-headline"&gt;Tarjeta Débito/Crédito&lt;/span&gt;
     &lt;/div&gt;
     &lt;div class="md-list-item" role="option" aria-selected="false" data-value="transferencia"&gt;
@@ -368,6 +383,7 @@
       </div>
 
       <pre class="sr-code"><code>&lt;div class="md-select md-select-outlined" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox"&gt;
+  &lt;!-- Slot: Campo selector --&gt;
   &lt;div class="md-select-container"&gt;
     &lt;input type="text" class="md-select-input" id="select-disabled" readonly value="Efectivo" placeholder=" " aria-label="Método de pago" aria-describedby="select-disabled-supporting" disabled&gt;
     &lt;label class="md-select-label" for="select-disabled"&gt;Método de pago&lt;/label&gt;
@@ -412,6 +428,7 @@
       </div>
 
       <pre class="sr-code"><code>&lt;div class="md-select md-select-outlined md-select-error" data-md-select role="combobox" aria-expanded="false" aria-haspopup="listbox"&gt;
+  &lt;!-- Slot: Campo selector --&gt;
   &lt;div class="md-select-container"&gt;
     &lt;input type="text" class="md-select-input" id="select-error" readonly value="" placeholder=" " aria-label="Método de pago" aria-invalid="true" aria-describedby="select-error-supporting"&gt;
     &lt;label class="md-select-label" for="select-error"&gt;Método de pago&lt;/label&gt;
@@ -421,6 +438,8 @@
     &lt;/span&gt;
   &lt;/div&gt;
   &lt;span class="md-select-supporting-text" id="select-error-supporting"&gt;Selecciona un método de pago obligatorio&lt;/span&gt;
+
+  &lt;!-- Slot: Menú de opciones --&gt;
   &lt;div class="md-menu" role="listbox" aria-labelledby="select-error"&gt;
     &lt;div class="md-list-item" role="option" aria-selected="false" data-value="efectivo"&gt;
       &lt;span class="md-list-item-headline"&gt;Efectivo&lt;/span&gt;

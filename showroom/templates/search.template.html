@@ -187,11 +187,17 @@
       </div>
 
       <pre class="sr-code"><code>&lt;div class="md-search md-search-view"&gt;
+  &lt;!-- Slot: Header / Barra de búsqueda principal --&gt;
   &lt;div class="md-search-view-header"&gt;
+    &lt;!-- Slot: Leading / Icono de búsqueda --&gt;
     &lt;span class="md-search-leading" aria-hidden="true"&gt;
       &lt;span class="md-icon"&gt;search&lt;/span&gt;
     &lt;/span&gt;
+
+    &lt;!-- Slot: Content / Campo de búsqueda --&gt;
     &lt;input type="search" class="md-search-input" id="search-input-docked" placeholder="Buscar en el catálogo..." aria-label="Buscar en el catálogo" value="Hamburguesa"&gt;
+
+    &lt;!-- Slot: Trailing / Acciones y comandos --&gt;
     &lt;div class="md-search-trailing"&gt;
       &lt;button type="button" class="md-icon-button" data-md-search-clear aria-label="Borrar búsqueda"&gt;
         &lt;span class="md-icon" aria-hidden="true"&gt;close&lt;/span&gt;
@@ -201,7 +207,10 @@
       &lt;/button&gt;
     &lt;/div&gt;
   &lt;/div&gt;
+
   &lt;hr class="md-divider"&gt;
+
+  &lt;!-- Slot: Suggestions / Lista de sugerencias --&gt;
   &lt;div class="md-search-suggestions" role="listbox" aria-label="Sugerencias de búsqueda"&gt;
     &lt;button type="button" class="md-search-suggestion" role="option"&gt;
       &lt;span class="md-search-suggestion-leading" aria-hidden="true"&gt;
@@ -267,10 +276,15 @@
       </div>
 
       <pre class="sr-code"><code>&lt;div class="md-search md-search-bar md-search-flat"&gt;
+  &lt;!-- Slot: Leading / Icono de búsqueda --&gt;
   &lt;span class="md-search-leading" aria-hidden="true"&gt;
     &lt;span class="md-icon"&gt;search&lt;/span&gt;
   &lt;/span&gt;
+
+  &lt;!-- Slot: Content / Campo de búsqueda --&gt;
   &lt;input type="search" class="md-search-input" id="search-input-flat" placeholder="Búsqueda plana (Flat level 0)..." aria-label="Búsqueda plana"&gt;
+
+  &lt;!-- Slot: Trailing / Acciones y comandos --&gt;
   &lt;div class="md-search-trailing"&gt;
     &lt;button type="button" class="md-icon-button" data-md-search-mic aria-label="Búsqueda por voz"&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;mic&lt;/span&gt;
@@ -279,10 +293,15 @@
 &lt;/div&gt;
 
 &lt;div class="md-search md-search-bar"&gt;
+  &lt;!-- Slot: Leading / Icono de búsqueda --&gt;
   &lt;span class="md-search-leading" aria-hidden="true"&gt;
     &lt;span class="md-icon"&gt;search&lt;/span&gt;
   &lt;/span&gt;
+
+  &lt;!-- Slot: Content / Campo de búsqueda --&gt;
   &lt;input type="search" class="md-search-input" id="search-input-elevated" placeholder="Búsqueda elevada (Level 3)..." aria-label="Búsqueda elevada"&gt;
+
+  &lt;!-- Slot: Trailing / Acciones y comandos --&gt;
   &lt;div class="md-search-trailing"&gt;
     &lt;button type="button" class="md-icon-button" data-md-search-mic aria-label="Búsqueda por voz"&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;mic&lt;/span&gt;
@@ -327,10 +346,15 @@
       </div>
 
       <pre class="sr-code"><code>&lt;div class="md-search md-search-bar"&gt;
+  &lt;!-- Slot: Leading / Icono de búsqueda --&gt;
   &lt;span class="md-search-leading" aria-hidden="true"&gt;
     &lt;span class="md-icon"&gt;search&lt;/span&gt;
   &lt;/span&gt;
+
+  &lt;!-- Slot: Content / Campo de búsqueda --&gt;
   &lt;input type="search" class="md-search-input" id="search-input-focused" placeholder="Buscar..." aria-label="Buscar" value="Café americano"&gt;
+
+  &lt;!-- Slot: Trailing / Acciones y comandos --&gt;
   &lt;div class="md-search-trailing"&gt;
     &lt;button type="button" class="md-icon-button" data-md-search-clear aria-label="Borrar búsqueda"&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;close&lt;/span&gt;
@@ -342,10 +366,15 @@
 &lt;/div&gt;
 
 &lt;div class="md-search md-search-bar"&gt;
+  &lt;!-- Slot: Leading / Icono de búsqueda --&gt;
   &lt;span class="md-search-leading" aria-hidden="true"&gt;
     &lt;span class="md-icon"&gt;search&lt;/span&gt;
   &lt;/span&gt;
+
+  &lt;!-- Slot: Content / Campo de búsqueda --&gt;
   &lt;input type="search" class="md-search-input" id="search-input-disabled" placeholder="Búsqueda deshabilitada..." aria-label="Búsqueda deshabilitada" disabled&gt;
+
+  &lt;!-- Slot: Trailing / Acciones y comandos --&gt;
   &lt;div class="md-search-trailing"&gt;
     &lt;button type="button" class="md-icon-button" data-md-search-mic aria-label="Búsqueda por voz" disabled&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;mic&lt;/span&gt;

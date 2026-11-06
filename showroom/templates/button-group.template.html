@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="utf-8">
@@ -193,21 +193,41 @@
       <p class="md-type-body-medium">Los iconos van dentro del boton, no del grupo: el grupo no toca el interior de sus hijos. Las dos filas miden lo mismo porque el icono no cambia la altura.</p>
       <div class="sr-specimen sr-specimen-gap">
         <div class="md-button-group">
-          <button class="md-button md-button-filled" type="button"><span class="md-button-icon md-icon" aria-hidden="true">add</span><span class="md-button-label">Nuevo</span></button>
-          <button class="md-button md-button-filled" type="button"><span class="md-button-icon md-icon" aria-hidden="true">delete</span><span class="md-button-label">Borrar</span></button>
+          <button class="md-button md-button-filled" type="button">
+            <span class="md-button-icon md-icon" aria-hidden="true">add</span>
+            <span class="md-button-label">Nuevo</span>
+          </button>
+          <button class="md-button md-button-filled" type="button">
+            <span class="md-button-icon md-icon" aria-hidden="true">delete</span>
+            <span class="md-button-label">Borrar</span>
+          </button>
         </div>
         <div class="md-button-group">
-          <button class="md-button md-button-filled" type="button"><span class="md-button-label">Nuevo</span></button>
-          <button class="md-button md-button-filled" type="button"><span class="md-button-label">Borrar</span></button>
+          <button class="md-button md-button-filled" type="button">
+            <span class="md-button-label">Nuevo</span>
+          </button>
+          <button class="md-button md-button-filled" type="button">
+            <span class="md-button-label">Borrar</span>
+          </button>
         </div>
       </div>
       <pre class="sr-code"><code>&lt;div class="md-button-group"&gt;
-  &lt;button class="md-button md-button-filled" type="button"&gt;&lt;span class="md-button-icon md-icon" aria-hidden="true"&gt;add&lt;/span&gt;&lt;span class="md-button-label"&gt;Nuevo&lt;/span&gt;&lt;/button&gt;
-  &lt;button class="md-button md-button-filled" type="button"&gt;&lt;span class="md-button-icon md-icon" aria-hidden="true"&gt;delete&lt;/span&gt;&lt;span class="md-button-label"&gt;Borrar&lt;/span&gt;&lt;/button&gt;
+  &lt;button class="md-button md-button-filled" type="button"&gt;
+    &lt;span class="md-button-icon md-icon" aria-hidden="true"&gt;add&lt;/span&gt;
+    &lt;span class="md-button-label"&gt;Nuevo&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button class="md-button md-button-filled" type="button"&gt;
+    &lt;span class="md-button-icon md-icon" aria-hidden="true"&gt;delete&lt;/span&gt;
+    &lt;span class="md-button-label"&gt;Borrar&lt;/span&gt;
+  &lt;/button&gt;
 &lt;/div&gt;
 &lt;div class="md-button-group"&gt;
-  &lt;button class="md-button md-button-filled" type="button"&gt;&lt;span class="md-button-label"&gt;Nuevo&lt;/span&gt;&lt;/button&gt;
-  &lt;button class="md-button md-button-filled" type="button"&gt;&lt;span class="md-button-label"&gt;Borrar&lt;/span&gt;&lt;/button&gt;
+  &lt;button class="md-button md-button-filled" type="button"&gt;
+    &lt;span class="md-button-label"&gt;Nuevo&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button class="md-button md-button-filled" type="button"&gt;
+    &lt;span class="md-button-label"&gt;Borrar&lt;/span&gt;
+  &lt;/button&gt;
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
@@ -218,22 +238,46 @@
       <h3 class="md-type-title-large">With &amp; without group</h3>
       <p class="md-type-body-medium">Los tres primeros van sueltos y el aire lo pone quien los contiene, que aqui es el escenario. Los tres de dentro del grupo lo pone el sistema, en 8px. Un grupo no cambia como se ven los botones: cambia quien decide el aire.</p>
       <div class="sr-specimen sr-specimen-gap">
-        <button class="md-button md-button-filled" type="button"><span class="md-button-label">A</span></button>
-        <button class="md-button md-button-filled" type="button"><span class="md-button-label">B</span></button>
-        <button class="md-button md-button-filled" type="button"><span class="md-button-label">C</span></button>
+        <button class="md-button md-button-filled" type="button">
+          <span class="md-button-label">A</span>
+        </button>
+        <button class="md-button md-button-filled" type="button">
+          <span class="md-button-label">B</span>
+        </button>
+        <button class="md-button md-button-filled" type="button">
+          <span class="md-button-label">C</span>
+        </button>
         <div class="md-button-group">
-          <button class="md-button md-button-filled" type="button"><span class="md-button-label">A</span></button>
-          <button class="md-button md-button-filled" type="button"><span class="md-button-label">B</span></button>
-          <button class="md-button md-button-filled" type="button"><span class="md-button-label">C</span></button>
+          <button class="md-button md-button-filled" type="button">
+            <span class="md-button-label">A</span>
+          </button>
+          <button class="md-button md-button-filled" type="button">
+            <span class="md-button-label">B</span>
+          </button>
+          <button class="md-button md-button-filled" type="button">
+            <span class="md-button-label">C</span>
+          </button>
         </div>
       </div>
-      <pre class="sr-code"><code>&lt;button class="md-button md-button-filled" type="button"&gt;&lt;span class="md-button-label"&gt;A&lt;/span&gt;&lt;/button&gt;
-&lt;button class="md-button md-button-filled" type="button"&gt;&lt;span class="md-button-label"&gt;B&lt;/span&gt;&lt;/button&gt;
-&lt;button class="md-button md-button-filled" type="button"&gt;&lt;span class="md-button-label"&gt;C&lt;/span&gt;&lt;/button&gt;
+      <pre class="sr-code"><code>&lt;button class="md-button md-button-filled" type="button"&gt;
+  &lt;span class="md-button-label"&gt;A&lt;/span&gt;
+&lt;/button&gt;
+&lt;button class="md-button md-button-filled" type="button"&gt;
+  &lt;span class="md-button-label"&gt;B&lt;/span&gt;
+&lt;/button&gt;
+&lt;button class="md-button md-button-filled" type="button"&gt;
+  &lt;span class="md-button-label"&gt;C&lt;/span&gt;
+&lt;/button&gt;
 &lt;div class="md-button-group"&gt;
-  &lt;button class="md-button md-button-filled" type="button"&gt;&lt;span class="md-button-label"&gt;A&lt;/span&gt;&lt;/button&gt;
-  &lt;button class="md-button md-button-filled" type="button"&gt;&lt;span class="md-button-label"&gt;B&lt;/span&gt;&lt;/button&gt;
-  &lt;button class="md-button md-button-filled" type="button"&gt;&lt;span class="md-button-label"&gt;C&lt;/span&gt;&lt;/button&gt;
+  &lt;button class="md-button md-button-filled" type="button"&gt;
+    &lt;span class="md-button-label"&gt;A&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button class="md-button md-button-filled" type="button"&gt;
+    &lt;span class="md-button-label"&gt;B&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button class="md-button md-button-filled" type="button"&gt;
+    &lt;span class="md-button-label"&gt;C&lt;/span&gt;
+  &lt;/button&gt;
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
@@ -245,15 +289,27 @@
       <p class="md-type-body-medium">Las etiquetas largas se quedan en una linea y no se encogen para hacer sitio. Sin esas dos reglas la fila se comprimiria y la etiqueta se partiria por la mitad.</p>
       <div class="sr-specimen sr-specimen-gap">
         <div class="md-button-group">
-          <button class="md-button md-button-filled" type="button"><span class="md-button-label">Guardar cambios</span></button>
-          <button class="md-button md-button-filled" type="button"><span class="md-button-label">Guardar y cerrar</span></button>
-          <button class="md-button md-button-filled" type="button"><span class="md-button-label">Guardar como borrador</span></button>
+          <button class="md-button md-button-filled" type="button">
+            <span class="md-button-label">Guardar cambios</span>
+          </button>
+          <button class="md-button md-button-filled" type="button">
+            <span class="md-button-label">Guardar y cerrar</span>
+          </button>
+          <button class="md-button md-button-filled" type="button">
+            <span class="md-button-label">Guardar como borrador</span>
+          </button>
         </div>
       </div>
       <pre class="sr-code"><code>&lt;div class="md-button-group"&gt;
-  &lt;button class="md-button md-button-filled" type="button"&gt;&lt;span class="md-button-label"&gt;Guardar cambios&lt;/span&gt;&lt;/button&gt;
-  &lt;button class="md-button md-button-filled" type="button"&gt;&lt;span class="md-button-label"&gt;Guardar y cerrar&lt;/span&gt;&lt;/button&gt;
-  &lt;button class="md-button md-button-filled" type="button"&gt;&lt;span class="md-button-label"&gt;Guardar como borrador&lt;/span&gt;&lt;/button&gt;
+  &lt;button class="md-button md-button-filled" type="button"&gt;
+    &lt;span class="md-button-label"&gt;Guardar cambios&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button class="md-button md-button-filled" type="button"&gt;
+    &lt;span class="md-button-label"&gt;Guardar y cerrar&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;button class="md-button md-button-filled" type="button"&gt;
+    &lt;span class="md-button-label"&gt;Guardar como borrador&lt;/span&gt;
+  &lt;/button&gt;
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="utf-8">
@@ -99,30 +99,32 @@
   lista no lleva JavaScript.
 -->
 <body class="md-bg-background md-text-on-background md-type-body-medium">
+  <!-- CABECERA INSTITUCIONAL DEL SHOWROOM (DOGFOODING) -->
   <header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll role="banner" aria-label="Cabecera institucional del showroom">
-      <div class="md-top-app-bar-leading">
-        <a href="../index.html" class="md-icon-button" aria-label="Volver al catálogo">
-          <span class="md-icon" aria-hidden="true">arrow_back</span>
-        </a>
-      </div>
-      <div class="md-top-app-bar-content">
-        <span class="md-top-app-bar-title">List</span>
-        <span class="md-top-app-bar-subtitle">RDM Next · ManGo! App</span>
-      </div>
-      <div class="md-top-app-bar-trailing">
-        <button type="button" class="md-icon-button" data-theme-toggle aria-label="Tema del sistema activo"><span class="md-icon" aria-hidden="true">brightness_auto</span></button>
-      </div>
-    </header>
+    <div class="md-top-app-bar-leading">
+      <a href="../index.html" class="md-icon-button" aria-label="Volver al catálogo">
+        <span class="md-icon" aria-hidden="true">arrow_back</span>
+      </a>
+    </div>
+    <div class="md-top-app-bar-content">
+      <span class="md-top-app-bar-title">List</span>
+      <span class="md-top-app-bar-subtitle">RDM Next · ManGo! App</span>
+    </div>
+    <div class="md-top-app-bar-trailing">
+      <button type="button" class="md-icon-button" data-theme-toggle aria-label="Tema del sistema activo">
+        <span class="md-icon" aria-hidden="true">brightness_auto</span>
+      </button>
+    </div>
+  </header>
 
   <main class="sr-page">
 
+    <!-- HEADER: inicio (barra + titulo + descripcion) -->
     <header class="sr-header">
       <h1 class="md-type-display-large">List</h1>
       <p class="md-type-body-large">Una superficie con filas en vertical. Cada fila tiene su altura, su forma y su color, y puede estar seleccionada. · <em>Un par</em></p>
     </header>
-
-
-  
+    <!-- HEADER: fin -->
 
     <hr class="md-divider">
 
@@ -183,17 +185,23 @@
       </div>
       <pre class="sr-code"><code>&lt;ul class="md-list"&gt;
   &lt;li class="md-list-item"&gt;
+
+    &lt;!-- Slot: Content / Titular y cuerpo --&gt;
     &lt;div class="md-list-item-content"&gt;
       &lt;span class="md-list-item-headline"&gt;Facturación&lt;/span&gt;
     &lt;/div&gt;
   &lt;/li&gt;
   &lt;li class="md-list-item md-list-item-two-line"&gt;
+
+    &lt;!-- Slot: Content / Titular y cuerpo --&gt;
     &lt;div class="md-list-item-content"&gt;
       &lt;span class="md-list-item-headline"&gt;Facturación&lt;/span&gt;
       &lt;span class="md-list-item-supporting-text"&gt;Cobros y facturas&lt;/span&gt;
     &lt;/div&gt;
   &lt;/li&gt;
   &lt;li class="md-list-item md-list-item-three-line"&gt;
+
+    &lt;!-- Slot: Content / Titular y cuerpo --&gt;
     &lt;div class="md-list-item-content"&gt;
       &lt;span class="md-list-item-overline"&gt;SISTEMA&lt;/span&gt;
       &lt;span class="md-list-item-headline"&gt;Facturación&lt;/span&gt;
@@ -265,26 +273,38 @@
     &lt;/span&gt;
   &lt;/li&gt;
   &lt;li class="md-list-item md-list-item-two-line"&gt;
+
+    &lt;!-- Slot: Leading / Icono o recurso visual --&gt;
     &lt;span class="md-list-item-leading"&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;receipt_long&lt;/span&gt;
     &lt;/span&gt;
+
+    &lt;!-- Slot: Content / Titular y cuerpo --&gt;
     &lt;div class="md-list-item-content"&gt;
       &lt;span class="md-list-item-headline"&gt;Facturación&lt;/span&gt;
       &lt;span class="md-list-item-supporting-text"&gt;Cobros y facturas&lt;/span&gt;
     &lt;/div&gt;
+
+    &lt;!-- Slot: Trailing / Acciones o metadatos --&gt;
     &lt;span class="md-list-item-trailing"&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;chevron_right&lt;/span&gt;
     &lt;/span&gt;
   &lt;/li&gt;
   &lt;li class="md-list-item md-list-item-three-line"&gt;
+
+    &lt;!-- Slot: Leading / Icono o recurso visual --&gt;
     &lt;span class="md-list-item-leading"&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;receipt_long&lt;/span&gt;
     &lt;/span&gt;
+
+    &lt;!-- Slot: Content / Titular y cuerpo --&gt;
     &lt;div class="md-list-item-content"&gt;
       &lt;span class="md-list-item-overline"&gt;SISTEMA&lt;/span&gt;
       &lt;span class="md-list-item-headline"&gt;Facturación&lt;/span&gt;
       &lt;span class="md-list-item-supporting-text"&gt;Cobros y facturas&lt;/span&gt;
     &lt;/div&gt;
+
+    &lt;!-- Slot: Trailing / Acciones o metadatos --&gt;
     &lt;span class="md-list-item-trailing"&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;chevron_right&lt;/span&gt;
     &lt;/span&gt;
@@ -316,13 +336,19 @@
       </div>
       <pre class="sr-code"><code>&lt;ul class="md-list"&gt;
   &lt;li class="md-list-item md-list-item-multiline"&gt;
+
+    &lt;!-- Slot: Leading / Icono o recurso visual --&gt;
     &lt;span class="md-list-item-leading"&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;receipt_long&lt;/span&gt;
     &lt;/span&gt;
+
+    &lt;!-- Slot: Content / Titular y cuerpo --&gt;
     &lt;div class="md-list-item-content"&gt;
       &lt;span class="md-list-item-headline"&gt;Facturación de los tres proveedores&lt;/span&gt;
       &lt;span class="md-list-item-supporting-text"&gt;Cobros, facturas, notas de crédito y recibos de los tres proveedores que facturan en euros y en dólares, con el desglose de cada concepto, su importe y la fecha de cada cobro.&lt;/span&gt;
     &lt;/div&gt;
+
+    &lt;!-- Slot: Trailing / Acciones o metadatos --&gt;
     &lt;span class="md-list-item-trailing"&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;chevron_right&lt;/span&gt;
     &lt;/span&gt;
@@ -372,31 +398,45 @@
       </div>
       <pre class="sr-code"><code>&lt;ul class="md-list"&gt;
   &lt;li class="md-list-item"&gt;
+
+    &lt;!-- Slot: Content / Titular y cuerpo --&gt;
     &lt;div class="md-list-item-content"&gt;
       &lt;span class="md-list-item-headline"&gt;Facturación&lt;/span&gt;
     &lt;/div&gt;
     &lt;hr class="md-divider md-divider-middle-inset"&gt;
   &lt;/li&gt;
   &lt;li class="md-list-item md-list-item-two-line"&gt;
+
+    &lt;!-- Slot: Leading / Icono o recurso visual --&gt;
     &lt;span class="md-list-item-leading"&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;receipt_long&lt;/span&gt;
     &lt;/span&gt;
+
+    &lt;!-- Slot: Content / Titular y cuerpo --&gt;
     &lt;div class="md-list-item-content"&gt;
       &lt;span class="md-list-item-headline"&gt;Pagos&lt;/span&gt;
       &lt;span class="md-list-item-supporting-text"&gt;Cobros y facturas&lt;/span&gt;
     &lt;/div&gt;
+
+    &lt;!-- Slot: Trailing / Acciones o metadatos --&gt;
     &lt;span class="md-list-item-trailing"&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;chevron_right&lt;/span&gt;
     &lt;/span&gt;
     &lt;hr class="md-divider md-divider-middle-inset"&gt;
   &lt;/li&gt;
   &lt;li class="md-list-item"&gt;
+
+    &lt;!-- Slot: Leading / Icono o recurso visual --&gt;
     &lt;span class="md-list-item-leading"&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;receipt_long&lt;/span&gt;
     &lt;/span&gt;
+
+    &lt;!-- Slot: Content / Titular y cuerpo --&gt;
     &lt;div class="md-list-item-content"&gt;
       &lt;span class="md-list-item-headline"&gt;Clientes&lt;/span&gt;
     &lt;/div&gt;
+
+    &lt;!-- Slot: Trailing / Acciones o metadatos --&gt;
     &lt;span class="md-list-item-trailing"&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;chevron_right&lt;/span&gt;
     &lt;/span&gt;
@@ -457,12 +497,18 @@
       <pre class="sr-code"><code>&lt;ul class="md-list"&gt;
   &lt;li&gt;
     &lt;button type="button" class="md-list-item"&gt;
+
+      &lt;!-- Slot: Leading / Icono o recurso visual --&gt;
       &lt;span class="md-list-item-leading"&gt;
         &lt;span class="md-icon" aria-hidden="true"&gt;receipt_long&lt;/span&gt;
       &lt;/span&gt;
+
+      &lt;!-- Slot: Content / Titular y cuerpo --&gt;
       &lt;div class="md-list-item-content"&gt;
         &lt;span class="md-list-item-headline"&gt;Facturación&lt;/span&gt;
       &lt;/div&gt;
+
+      &lt;!-- Slot: Trailing / Acciones o metadatos --&gt;
       &lt;span class="md-list-item-trailing"&gt;
         &lt;span class="md-icon" aria-hidden="true"&gt;chevron_right&lt;/span&gt;
       &lt;/span&gt;
@@ -470,13 +516,19 @@
   &lt;/li&gt;
   &lt;li&gt;
     &lt;button type="button" class="md-list-item md-list-item-selected" aria-selected="true"&gt;
+
+      &lt;!-- Slot: Leading / Icono o recurso visual --&gt;
       &lt;span class="md-list-item-leading"&gt;
         &lt;span class="md-icon" aria-hidden="true"&gt;receipt_long&lt;/span&gt;
       &lt;/span&gt;
+
+      &lt;!-- Slot: Content / Titular y cuerpo --&gt;
       &lt;div class="md-list-item-content"&gt;
         &lt;span class="md-list-item-headline"&gt;Pagos&lt;/span&gt;
         &lt;span class="md-list-item-supporting-text"&gt;Cobros y facturas&lt;/span&gt;
       &lt;/div&gt;
+
+      &lt;!-- Slot: Trailing / Acciones o metadatos --&gt;
       &lt;span class="md-list-item-trailing"&gt;
         &lt;span class="md-icon" aria-hidden="true"&gt;chevron_right&lt;/span&gt;
       &lt;/span&gt;
@@ -484,12 +536,18 @@
   &lt;/li&gt;
   &lt;li&gt;
     &lt;button type="button" class="md-list-item" disabled&gt;
+
+      &lt;!-- Slot: Leading / Icono o recurso visual --&gt;
       &lt;span class="md-list-item-leading"&gt;
         &lt;span class="md-icon" aria-hidden="true"&gt;receipt_long&lt;/span&gt;
       &lt;/span&gt;
+
+      &lt;!-- Slot: Content / Titular y cuerpo --&gt;
       &lt;div class="md-list-item-content"&gt;
         &lt;span class="md-list-item-headline"&gt;Clientes&lt;/span&gt;
       &lt;/div&gt;
+
+      &lt;!-- Slot: Trailing / Acciones o metadatos --&gt;
       &lt;span class="md-list-item-trailing"&gt;
         &lt;span class="md-icon" aria-hidden="true"&gt;chevron_right&lt;/span&gt;
       &lt;/span&gt;
@@ -524,15 +582,23 @@
       </div>
       <pre class="sr-code"><code>&lt;ul class="md-list"&gt;
   &lt;li class="md-list-item"&gt;
+
+    &lt;!-- Slot: Leading / Icono o recurso visual --&gt;
     &lt;span class="md-list-item-avatar" aria-hidden="true"&gt;AM&lt;/span&gt;
+
+    &lt;!-- Slot: Content / Titular y cuerpo --&gt;
     &lt;div class="md-list-item-content"&gt;
       &lt;span class="md-list-item-headline"&gt;Ana Morales&lt;/span&gt;
     &lt;/div&gt;
   &lt;/li&gt;
   &lt;li class="md-list-item"&gt;
+
+    &lt;!-- Slot: Leading / Icono o recurso visual --&gt;
     &lt;span class="md-list-item-thumbnail"&gt;
       &lt;img src="../assets/list-thumb.svg" alt=""&gt;
     &lt;/span&gt;
+
+    &lt;!-- Slot: Content / Titular y cuerpo --&gt;
     &lt;div class="md-list-item-content"&gt;
       &lt;span class="md-list-item-headline"&gt;Mesa 4&lt;/span&gt;
     &lt;/div&gt;
@@ -559,24 +625,38 @@
               <span class="md-list-item-headline">Ana Morales</span>
             </div>
             <span class="md-list-item-action">
-              <button type="button" class="md-icon-button" aria-label="Editar"><span class="md-icon-button-icon md-icon" aria-hidden="true">edit</span><span class="md-icon-button-touch"></span></button>
+              <button type="button" class="md-icon-button" aria-label="Editar">
+        <span class="md-icon-button-icon md-icon" aria-hidden="true">edit</span>
+        <span class="md-icon-button-touch"></span>
+      </button>
             </span>
           </li>
         </ul>
       </div>
       <pre class="sr-code"><code>&lt;ul class="md-list"&gt;
   &lt;li class="md-list-item"&gt;
+
+    &lt;!-- Slot: Content / Titular y cuerpo --&gt;
     &lt;div class="md-list-item-content"&gt;
       &lt;span class="md-list-item-headline"&gt;Mesa 4&lt;/span&gt;
     &lt;/div&gt;
+
+    &lt;!-- Slot: Trailing / Acciones o metadatos --&gt;
     &lt;span class="md-list-item-trailing-text"&gt;12,50 €&lt;/span&gt;
   &lt;/li&gt;
   &lt;li class="md-list-item"&gt;
+
+    &lt;!-- Slot: Content / Titular y cuerpo --&gt;
     &lt;div class="md-list-item-content"&gt;
       &lt;span class="md-list-item-headline"&gt;Ana Morales&lt;/span&gt;
     &lt;/div&gt;
+
+    &lt;!-- Slot: Trailing / Acciones o metadatos --&gt;
     &lt;span class="md-list-item-action"&gt;
-      &lt;button type="button" class="md-icon-button" aria-label="Editar"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+      &lt;button type="button" class="md-icon-button" aria-label="Editar"&gt;
+        &lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;
+        &lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;
+      &lt;/button&gt;
     &lt;/span&gt;
   &lt;/li&gt;
 &lt;/ul&gt;</code></pre>
@@ -637,11 +717,17 @@
       <pre class="sr-code"><code>&lt;ul class="md-list"&gt;
   &lt;li&gt;
     &lt;a class="md-list-item" href="#"&gt;
+
+      &lt;!-- Slot: Leading / Icono o recurso visual --&gt;
       &lt;span class="md-list-item-avatar" aria-hidden="true"&gt;AM&lt;/span&gt;
+
+      &lt;!-- Slot: Content / Titular y cuerpo --&gt;
       &lt;div class="md-list-item-content"&gt;
         &lt;span class="md-list-item-headline"&gt;Ana Morales&lt;/span&gt;
         &lt;span class="md-list-item-supporting-text"&gt;Camarera · Turno de mañana&lt;/span&gt;
       &lt;/div&gt;
+
+      &lt;!-- Slot: Trailing / Acciones o metadatos --&gt;
       &lt;span class="md-list-item-trailing"&gt;
         &lt;span class="md-icon" aria-hidden="true"&gt;chevron_right&lt;/span&gt;
       &lt;/span&gt;
@@ -649,11 +735,17 @@
   &lt;/li&gt;
   &lt;li&gt;
     &lt;a class="md-list-item" href="#"&gt;
+
+      &lt;!-- Slot: Leading / Icono o recurso visual --&gt;
       &lt;span class="md-list-item-avatar" aria-hidden="true"&gt;CP&lt;/span&gt;
+
+      &lt;!-- Slot: Content / Titular y cuerpo --&gt;
       &lt;div class="md-list-item-content"&gt;
         &lt;span class="md-list-item-headline"&gt;Carlos Pérez&lt;/span&gt;
         &lt;span class="md-list-item-supporting-text"&gt;Cajero principal · Turno de mañana&lt;/span&gt;
       &lt;/div&gt;
+
+      &lt;!-- Slot: Trailing / Acciones o metadatos --&gt;
       &lt;span class="md-list-item-trailing"&gt;
         &lt;span class="md-icon" aria-hidden="true"&gt;chevron_right&lt;/span&gt;
       &lt;/span&gt;
@@ -661,11 +753,17 @@
   &lt;/li&gt;
   &lt;li&gt;
     &lt;a class="md-list-item" href="#"&gt;
+
+      &lt;!-- Slot: Leading / Icono o recurso visual --&gt;
       &lt;span class="md-list-item-avatar" aria-hidden="true"&gt;LR&lt;/span&gt;
+
+      &lt;!-- Slot: Content / Titular y cuerpo --&gt;
       &lt;div class="md-list-item-content"&gt;
         &lt;span class="md-list-item-headline"&gt;Lucía Ruiz&lt;/span&gt;
         &lt;span class="md-list-item-supporting-text"&gt;Cocinera · Turno de noche&lt;/span&gt;
       &lt;/div&gt;
+
+      &lt;!-- Slot: Trailing / Acciones o metadatos --&gt;
       &lt;span class="md-list-item-trailing"&gt;
         &lt;span class="md-icon" aria-hidden="true"&gt;chevron_right&lt;/span&gt;
       &lt;/span&gt;
@@ -723,37 +821,55 @@
       <pre class="sr-code"><code>&lt;ul class="md-list"&gt;
   &lt;li&gt;
     &lt;a class="md-list-item md-list-item-multiline" href="#"&gt;
+
+      &lt;!-- Slot: Leading / Icono o recurso visual --&gt;
       &lt;span class="md-list-item-thumbnail"&gt;
         &lt;img src="../assets/list-thumb.svg" alt=""&gt;
       &lt;/span&gt;
+
+      &lt;!-- Slot: Content / Titular y cuerpo --&gt;
       &lt;div class="md-list-item-content"&gt;
         &lt;span class="md-list-item-headline"&gt;Hamburguesa Especial&lt;/span&gt;
         &lt;span class="md-list-item-supporting-text"&gt;Carne de res 180g, queso cheddar fundido y tocineta.&lt;/span&gt;
       &lt;/div&gt;
+
+      &lt;!-- Slot: Trailing / Acciones o metadatos --&gt;
       &lt;span class="md-list-item-trailing-text"&gt;$ 34.900&lt;/span&gt;
     &lt;/a&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;a class="md-list-item md-list-item-multiline" href="#"&gt;
+
+      &lt;!-- Slot: Leading / Icono o recurso visual --&gt;
       &lt;span class="md-list-item-thumbnail"&gt;
         &lt;img src="../assets/list-thumb.svg" alt=""&gt;
       &lt;/span&gt;
+
+      &lt;!-- Slot: Content / Titular y cuerpo --&gt;
       &lt;div class="md-list-item-content"&gt;
         &lt;span class="md-list-item-headline"&gt;Milanesa de pollo&lt;/span&gt;
         &lt;span class="md-list-item-supporting-text"&gt;Pechuga empanizada con papas y ensalada.&lt;/span&gt;
       &lt;/div&gt;
+
+      &lt;!-- Slot: Trailing / Acciones o metadatos --&gt;
       &lt;span class="md-list-item-trailing-text"&gt;$ 28.500&lt;/span&gt;
     &lt;/a&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;a class="md-list-item md-list-item-multiline" href="#"&gt;
+
+      &lt;!-- Slot: Leading / Icono o recurso visual --&gt;
       &lt;span class="md-list-item-thumbnail"&gt;
         &lt;img src="../assets/list-thumb.svg" alt=""&gt;
       &lt;/span&gt;
+
+      &lt;!-- Slot: Content / Titular y cuerpo --&gt;
       &lt;div class="md-list-item-content"&gt;
         &lt;span class="md-list-item-headline"&gt;Combo familiar&lt;/span&gt;
         &lt;span class="md-list-item-supporting-text"&gt;Tres hamburguesas, papas y bebidas.&lt;/span&gt;
       &lt;/div&gt;
+
+      &lt;!-- Slot: Trailing / Acciones o metadatos --&gt;
       &lt;span class="md-list-item-trailing-text"&gt;$ 115.000&lt;/span&gt;
     &lt;/a&gt;
   &lt;/li&gt;
@@ -800,28 +916,40 @@
       <pre class="sr-code"><code>&lt;ul class="md-list"&gt;
   &lt;li&gt;
     &lt;button type="button" class="md-list-item md-list-item-multiline"&gt;
+
+      &lt;!-- Slot: Content / Titular y cuerpo --&gt;
       &lt;div class="md-list-item-content"&gt;
         &lt;span class="md-list-item-headline"&gt;Comanda #104&lt;/span&gt;
         &lt;span class="md-list-item-supporting-text"&gt;Mesa 4 · 3 comensales&lt;/span&gt;
       &lt;/div&gt;
+
+      &lt;!-- Slot: Trailing / Acciones o metadatos --&gt;
       &lt;span class="md-list-item-trailing-text"&gt;$ 115.000&lt;/span&gt;
     &lt;/button&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;button type="button" class="md-list-item md-list-item-multiline"&gt;
+
+      &lt;!-- Slot: Content / Titular y cuerpo --&gt;
       &lt;div class="md-list-item-content"&gt;
         &lt;span class="md-list-item-headline"&gt;Comanda #105&lt;/span&gt;
         &lt;span class="md-list-item-supporting-text"&gt;Mesa 2 · 2 comensales&lt;/span&gt;
       &lt;/div&gt;
+
+      &lt;!-- Slot: Trailing / Acciones o metadatos --&gt;
       &lt;span class="md-list-item-trailing-text"&gt;$ 82.400&lt;/span&gt;
     &lt;/button&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;button type="button" class="md-list-item md-list-item-multiline"&gt;
+
+      &lt;!-- Slot: Content / Titular y cuerpo --&gt;
       &lt;div class="md-list-item-content"&gt;
         &lt;span class="md-list-item-headline"&gt;Entrega a domicilio #2107&lt;/span&gt;
         &lt;span class="md-list-item-supporting-text"&gt;Salió del local&lt;/span&gt;
       &lt;/div&gt;
+
+      &lt;!-- Slot: Trailing / Acciones o metadatos --&gt;
       &lt;span class="md-list-item-trailing-text"&gt;18:00&lt;/span&gt;
     &lt;/button&gt;
   &lt;/li&gt;
@@ -845,7 +973,10 @@
               <span class="md-list-item-supporting-text">Comanda #104 · 3 comensales</span>
             </div>
             <span class="md-list-item-action">
-              <button class="md-icon-button" type="button" aria-label="Editar comanda"><span class="md-icon-button-icon md-icon" aria-hidden="true">edit</span><span class="md-icon-button-touch"></span></button>
+              <button class="md-icon-button" type="button" aria-label="Editar comanda">
+                <span class="md-icon-button-icon md-icon" aria-hidden="true">edit</span>
+                <span class="md-icon-button-touch"></span>
+              </button>
             </span>
           </li>
           <li class="md-list-item">
@@ -857,7 +988,10 @@
               <span class="md-list-item-supporting-text">Caja 2 · Turno de noche</span>
             </div>
             <span class="md-list-item-action">
-              <button class="md-icon-button" type="button" aria-label="Cerrar caja"><span class="md-icon-button-icon md-icon" aria-hidden="true">check</span><span class="md-icon-button-touch"></span></button>
+              <button class="md-icon-button" type="button" aria-label="Cerrar caja">
+                <span class="md-icon-button-icon md-icon" aria-hidden="true">check</span>
+                <span class="md-icon-button-touch"></span>
+              </button>
             </span>
           </li>
           <li class="md-list-item">
@@ -869,46 +1003,76 @@
               <span class="md-list-item-supporting-text">Salió del local</span>
             </div>
             <span class="md-list-item-action">
-              <button class="md-icon-button" type="button" aria-label="Más opciones"><span class="md-icon-button-icon md-icon" aria-hidden="true">more_vert</span><span class="md-icon-button-touch"></span></button>
+              <button class="md-icon-button" type="button" aria-label="Más opciones">
+                <span class="md-icon-button-icon md-icon" aria-hidden="true">more_vert</span>
+                <span class="md-icon-button-touch"></span>
+              </button>
             </span>
           </li>
         </ul>
       </div>
       <pre class="sr-code"><code>&lt;ul class="md-list"&gt;
   &lt;li class="md-list-item"&gt;
+
+    &lt;!-- Slot: Leading / Icono o recurso visual --&gt;
     &lt;span class="md-list-item-leading"&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;table_restaurant&lt;/span&gt;
     &lt;/span&gt;
+
+    &lt;!-- Slot: Content / Titular y cuerpo --&gt;
     &lt;div class="md-list-item-content"&gt;
       &lt;span class="md-list-item-headline"&gt;Mesa 4 · Terraza&lt;/span&gt;
       &lt;span class="md-list-item-supporting-text"&gt;Comanda #104 · 3 comensales&lt;/span&gt;
     &lt;/div&gt;
+
+    &lt;!-- Slot: Trailing / Acciones o metadatos --&gt;
     &lt;span class="md-list-item-action"&gt;
-      &lt;button class="md-icon-button" type="button" aria-label="Editar comanda"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+      &lt;button class="md-icon-button" type="button" aria-label="Editar comanda"&gt;
+        &lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;
+        &lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;
+      &lt;/button&gt;
     &lt;/span&gt;
   &lt;/li&gt;
   &lt;li class="md-list-item"&gt;
+
+    &lt;!-- Slot: Leading / Icono o recurso visual --&gt;
     &lt;span class="md-list-item-leading"&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;point_of_sale&lt;/span&gt;
     &lt;/span&gt;
+
+    &lt;!-- Slot: Content / Titular y cuerpo --&gt;
     &lt;div class="md-list-item-content"&gt;
       &lt;span class="md-list-item-headline"&gt;Cierre de caja&lt;/span&gt;
       &lt;span class="md-list-item-supporting-text"&gt;Caja 2 · Turno de noche&lt;/span&gt;
     &lt;/div&gt;
+
+    &lt;!-- Slot: Trailing / Acciones o metadatos --&gt;
     &lt;span class="md-list-item-action"&gt;
-      &lt;button class="md-icon-button" type="button" aria-label="Cerrar caja"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;check&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+      &lt;button class="md-icon-button" type="button" aria-label="Cerrar caja"&gt;
+        &lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;check&lt;/span&gt;
+        &lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;
+      &lt;/button&gt;
     &lt;/span&gt;
   &lt;/li&gt;
   &lt;li class="md-list-item"&gt;
+
+    &lt;!-- Slot: Leading / Icono o recurso visual --&gt;
     &lt;span class="md-list-item-leading"&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;local_shipping&lt;/span&gt;
     &lt;/span&gt;
+
+    &lt;!-- Slot: Content / Titular y cuerpo --&gt;
     &lt;div class="md-list-item-content"&gt;
       &lt;span class="md-list-item-headline"&gt;Pedido a domicilio #2107&lt;/span&gt;
       &lt;span class="md-list-item-supporting-text"&gt;Salió del local&lt;/span&gt;
     &lt;/div&gt;
+
+    &lt;!-- Slot: Trailing / Acciones o metadatos --&gt;
     &lt;span class="md-list-item-action"&gt;
-      &lt;button class="md-icon-button" type="button" aria-label="Más opciones"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;more_vert&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+      &lt;button class="md-icon-button" type="button" aria-label="Más opciones"&gt;
+        &lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;more_vert&lt;/span&gt;
+        &lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;
+      &lt;/button&gt;
     &lt;/span&gt;
   &lt;/li&gt;
 &lt;/ul&gt;</code></pre>
@@ -944,7 +1108,10 @@
             </div>
             <span class="md-list-item-trailing-text">$ 115.000</span>
             <span class="md-list-item-action">
-              <button class="md-icon-button" type="button" aria-label="Editar comanda"><span class="md-icon-button-icon md-icon" aria-hidden="true">edit</span><span class="md-icon-button-touch"></span></button>
+              <button class="md-icon-button" type="button" aria-label="Editar comanda">
+                <span class="md-icon-button-icon md-icon" aria-hidden="true">edit</span>
+                <span class="md-icon-button-touch"></span>
+              </button>
             </span>
           </li>
           <li>
@@ -962,36 +1129,59 @@
       <pre class="sr-code"><code>&lt;ul class="md-list"&gt;
   &lt;li&gt;
     &lt;a class="md-list-item md-list-item-multiline" href="#"&gt;
+
+      &lt;!-- Slot: Leading / Icono o recurso visual --&gt;
       &lt;span class="md-list-item-thumbnail"&gt;
         &lt;img src="../assets/list-thumb.svg" alt=""&gt;
       &lt;/span&gt;
+
+      &lt;!-- Slot: Content / Titular y cuerpo --&gt;
       &lt;div class="md-list-item-content"&gt;
         &lt;span class="md-list-item-headline"&gt;Hamburguesa Especial&lt;/span&gt;
         &lt;span class="md-list-item-supporting-text"&gt;Carne de res 180g, queso cheddar fundido, tocineta crocante y vegetales frescos.&lt;/span&gt;
       &lt;/div&gt;
+
+      &lt;!-- Slot: Trailing / Acciones o metadatos --&gt;
       &lt;span class="md-list-item-trailing-text"&gt;$ 34.900&lt;/span&gt;
     &lt;/a&gt;
   &lt;/li&gt;
   &lt;li class="md-list-item"&gt;
+
+    &lt;!-- Slot: Leading / Icono o recurso visual --&gt;
     &lt;span class="md-list-item-leading"&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;table_restaurant&lt;/span&gt;
     &lt;/span&gt;
+
+    &lt;!-- Slot: Content / Titular y cuerpo --&gt;
     &lt;div class="md-list-item-content"&gt;
       &lt;span class="md-list-item-headline"&gt;Mesa 4 · Terraza&lt;/span&gt;
       &lt;span class="md-list-item-supporting-text"&gt;Comanda #104 · 3 comensales&lt;/span&gt;
     &lt;/div&gt;
+
+    &lt;!-- Slot: Trailing / Acciones o metadatos --&gt;
     &lt;span class="md-list-item-trailing-text"&gt;$ 115.000&lt;/span&gt;
+
+    &lt;!-- Slot: Trailing / Acciones o metadatos --&gt;
     &lt;span class="md-list-item-action"&gt;
-      &lt;button class="md-icon-button" type="button" aria-label="Editar comanda"&gt;&lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;&lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;&lt;/button&gt;
+      &lt;button class="md-icon-button" type="button" aria-label="Editar comanda"&gt;
+        &lt;span class="md-icon-button-icon md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;
+        &lt;span class="md-icon-button-touch"&gt;&lt;/span&gt;
+      &lt;/button&gt;
     &lt;/span&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;button type="button" class="md-list-item"&gt;
+
+      &lt;!-- Slot: Leading / Icono o recurso visual --&gt;
       &lt;span class="md-list-item-avatar" aria-hidden="true"&gt;CP&lt;/span&gt;
+
+      &lt;!-- Slot: Content / Titular y cuerpo --&gt;
       &lt;div class="md-list-item-content"&gt;
         &lt;span class="md-list-item-headline"&gt;Carlos Pérez&lt;/span&gt;
         &lt;span class="md-list-item-supporting-text"&gt;Cajero principal · Turno mañana&lt;/span&gt;
       &lt;/div&gt;
+
+      &lt;!-- Slot: Trailing / Acciones o metadatos --&gt;
       &lt;span class="md-list-item-trailing-text"&gt;14:00&lt;/span&gt;
     &lt;/button&gt;
   &lt;/li&gt;
@@ -1043,31 +1233,47 @@
       <pre class="sr-code"><code>&lt;ul class="md-list"&gt;
   &lt;li&gt;
     &lt;button type="button" class="md-list-item md-list-item-selected" aria-selected="true"&gt;
+
+      &lt;!-- Slot: Leading / Icono o recurso visual --&gt;
       &lt;span class="md-list-item-leading"&gt;
         &lt;span class="md-icon" aria-hidden="true"&gt;payments&lt;/span&gt;
       &lt;/span&gt;
+
+      &lt;!-- Slot: Content / Titular y cuerpo --&gt;
       &lt;div class="md-list-item-content"&gt;
         &lt;span class="md-list-item-headline"&gt;Efectivo&lt;/span&gt;
       &lt;/div&gt;
+
+      &lt;!-- Slot: Trailing / Acciones o metadatos --&gt;
       &lt;span class="md-list-item-trailing-text"&gt;$ 200.000&lt;/span&gt;
     &lt;/button&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;button type="button" class="md-list-item"&gt;
+
+      &lt;!-- Slot: Leading / Icono o recurso visual --&gt;
       &lt;span class="md-list-item-leading"&gt;
         &lt;span class="md-icon" aria-hidden="true"&gt;credit_card&lt;/span&gt;
       &lt;/span&gt;
+
+      &lt;!-- Slot: Content / Titular y cuerpo --&gt;
       &lt;div class="md-list-item-content"&gt;
         &lt;span class="md-list-item-headline"&gt;Datáfono / Tarjeta&lt;/span&gt;
       &lt;/div&gt;
+
+      &lt;!-- Slot: Trailing / Acciones o metadatos --&gt;
       &lt;span class="md-list-item-trailing-text"&gt;Sin recargo&lt;/span&gt;
     &lt;/button&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;button type="button" class="md-list-item"&gt;
+
+      &lt;!-- Slot: Leading / Icono o recurso visual --&gt;
       &lt;span class="md-list-item-leading"&gt;
         &lt;span class="md-icon" aria-hidden="true"&gt;qr_code_2&lt;/span&gt;
       &lt;/span&gt;
+
+      &lt;!-- Slot: Content / Titular y cuerpo --&gt;
       &lt;div class="md-list-item-content"&gt;
         &lt;span class="md-list-item-headline"&gt;Transferencia QR (Nequi / Bancolombia)&lt;/span&gt;
       &lt;/div&gt;
@@ -1108,23 +1314,35 @@
       </div>
       <pre class="sr-code"><code>&lt;ul class="md-list"&gt;
   &lt;li class="md-list-item md-list-item-multiline"&gt;
+
+    &lt;!-- Slot: Leading / Icono o recurso visual --&gt;
     &lt;span class="md-list-item-leading"&gt;
       &lt;span class="md-type-body-medium"&gt;2x&lt;/span&gt;
     &lt;/span&gt;
+
+    &lt;!-- Slot: Content / Titular y cuerpo --&gt;
     &lt;div class="md-list-item-content"&gt;
       &lt;span class="md-list-item-headline"&gt;Pizza Cuatro Quesos&lt;/span&gt;
       &lt;span class="md-list-item-supporting-text"&gt;Sin champiñones · Extra borde de queso&lt;/span&gt;
     &lt;/div&gt;
+
+    &lt;!-- Slot: Trailing / Acciones o metadatos --&gt;
     &lt;span class="md-list-item-trailing-text"&gt;$ 64.000&lt;/span&gt;
   &lt;/li&gt;
   &lt;li class="md-list-item md-list-item-multiline"&gt;
+
+    &lt;!-- Slot: Leading / Icono o recurso visual --&gt;
     &lt;span class="md-list-item-leading"&gt;
       &lt;span class="md-type-body-medium"&gt;1x&lt;/span&gt;
     &lt;/span&gt;
+
+    &lt;!-- Slot: Content / Titular y cuerpo --&gt;
     &lt;div class="md-list-item-content"&gt;
       &lt;span class="md-list-item-headline"&gt;Limonada de Coco&lt;/span&gt;
       &lt;span class="md-list-item-supporting-text"&gt;Baja en azúcar&lt;/span&gt;
     &lt;/div&gt;
+
+    &lt;!-- Slot: Trailing / Acciones o metadatos --&gt;
     &lt;span class="md-list-item-trailing-text"&gt;$ 12.500&lt;/span&gt;
   &lt;/li&gt;
 &lt;/ul&gt;</code></pre>

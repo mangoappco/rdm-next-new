@@ -1058,14 +1058,14 @@ for (const html of htmlFiles) {
       continue;
     }
 
-    const rendered = inner.replace(/>\s+</g, '><').trim();
+    const rendered = inner.replace(/>\s+/g, '>').replace(/\s+</g, '<').trim();
 
     let snippet = code
       .replace(/&lt;/g, '<')
       .replace(/&gt;/g, '>')
       .replace(/&quot;/g, '"')
       .replace(/&#39;/g, "'");
-    snippet = snippet.replace(/&amp;/g, '&').replace(/<!--[\s\S]*?-->/g, '').replace(/>\s+</g, '><').trim();
+    snippet = snippet.replace(/&amp;/g, '&').replace(/<!--[\s\S]*?-->/g, '').replace(/>\s+/g, '>').replace(/\s+</g, '<').trim();
 
     if (rendered === snippet) continue;
 
