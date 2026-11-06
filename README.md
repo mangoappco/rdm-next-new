@@ -1629,3 +1629,13 @@ librería, y no de la documentación.
   `_md-sys-state.scss`, `_md-sys-shape.scss` en `tokens/versions/v0_192/` del mismo repositorio
 - Iconos de M3: `_md-comp-icon.scss` en `tokens/` del mismo repositorio. Publica dos
   tokens: `--md-icon-font` y `--md-icon-size`
+
+---
+
+## 14. Estandarización de Snippets (Blueprints de Desarrollo)
+
+A partir de noviembre de 2026, los bloques de código copiable (`<pre class="sr-code"><code>`) del showroom dejan de ser cadenas comprimidas de una sola línea y pasan a ser **blueprints listos para desarrollo**:
+- **Formateo canónico:** Sangría estructurada de **2 espacios** por nivel jerárquico y saltos de línea legibles.
+- **Ranuras identificadas (Slots):** En componentes multirranura (`Navigation Rail`, `Top App Bar`, `Card`, `List`, `Dialog`, `Text Field`, `Snackbar`, `Search`), los bloques de desarrollo incluyen comentarios pedagógicos explícitos (`<!-- Slot: Leading ... -->`, `<!-- Slot: Content ... -->`, etc.) que señalan con exactitud los puntos de composición.
+- **Gobernanza (REGLA 11):** El verificador `tools/verify-tokens.mjs` preserva paridad matemática con el espécimen renderizado normalizando espacios entre etiquetas y obviando comentarios pedagógicos tras decodificar el bloque copiable.
+

@@ -147,4 +147,22 @@ El principio arquitectónico fundamental de M3 Expressive en navegación vertica
 - **Spatial Transform:** La expansión y colapso horizontal se animan fluidamente en 300ms con la curva canónica de desaceleración enfática M3 (`--md-sys-motion-easing-emphasized`: `cubic-bezier(0.05, 0.7, 0.1, 1)`).
 - **Continuidad Vertical:** El carril gobierna `block-size: 100%` y `min-block-size: 100dvh` para garantizar presencia continua en la retícula de pantalla, complementado con el modificador `.md-navigation-rail-docked` (`position: fixed; inset-block: 0; inset-inline-start: 0`).
 
+## 10. Directrices Consolidadas: Blueprints de Desarrollo y Formateo Canónico (2026-11-06)
+
+### 10.1 Snippets como Blueprints Legibles (Anti-Monolito Horizontal)
+Los bloques de código expuestos en `<pre class="sr-code"><code>` y en los `.sr-specimen` renderizados dejan de colapsarse en una sola línea horizontal. Deben estructurarse como **blueprints listos para desarrollo**:
+- Indentación jerárquica estricta de **2 espacios** por nivel de anidamiento.
+- Saltos de línea claros en contenedores, hijos y controles adyacentes.
+
+### 10.2 Documentación Semántica de Slots (`<!-- Slot: ... -->`)
+En componentes complejos y multirranura (`Navigation Rail`, `Top App Bar`, `Card`, `List`, `Dialog`, `Text Field`, `Snackbar`, `Search`), cada ranura canónica debe estar formalmente identificada con comentarios HTML pedagógicos antes de su bloque:
+- `<!-- Slot: Leading / Icono o navegación inicial -->`
+- `<!-- Slot: Content / Titular, subtítulo y cuerpo -->`
+- `<!-- Slot: Trailing / Acciones y comandos secundarios -->`
+- (o ranuras equivalentes según la anatomía del componente: `Header`, `Media`, `Actions`, `Supporting text`).
+
+### 10.3 Compatibilidad Matemática con la REGLA 11
+Para permitir que los comentarios de slots vivan en los snippets copiables sin romper la correspondencia estructural con el DOM renderizado, `tools/verify-tokens.mjs` purga comentarios HTML (`<!--[\s\S]*?-->`) tras decodificar entidades (`&lt;!-- ... --&gt;`) y colapsa los espacios entre etiquetas (`>\s+<` → `><`). La paridad estructural se preserva al 100% manteniendo el baseline de verificación en verde.
+
+
 

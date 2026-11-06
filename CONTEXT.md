@@ -615,3 +615,11 @@ Para prosa de M3 hay que pegarla a mano. No se afirma lo que diga la web sin hab
 | Arquitectura de capas, nomenclatura, temas, iconos y fuentes | `README.md` |
 | Las 13 reglas automáticas y cómo se ejecutan | `tools/verify-tokens.mjs` |
 | Filosofía de las fichas del showroom | `docs/showroom-philosophy.md` |
+
+## Estandarización de Snippets y Comentarios de Slots (2026-11-06)
+
+- **Blueprints legibles a 2 espacios:** Se erradicaron los snippets monolineales horizontales en todas las vistas y templates del showroom. Todo snippet de desarrollo se formatea con sangría estructurada a 2 espacios y saltos de línea legibles.
+- **Documentación de Slots canónicos:** En componentes multirranura (`navigation-rail`, `top-app-bar`, `card`, `list`, `dialog`, `text-field`, `snackbar`, `search`), se introducen comentarios semánticos explícitos (`<!-- Slot: Leading ... -->`, `<!-- Slot: Content ... -->`, `<!-- Slot: Trailing ... -->`, etc.) para instruir inmediatamente al desarrollador sobre los puntos de inserción.
+- **Calibración de REGLA 11 en `tools/verify-tokens.mjs`:** El validador ahora decodifica y descarta comentarios HTML desescapados (`snippet.replace(/<!--[\s\S]*?-->/g, '')`) tras convertir entidades (`&lt;!-- ... --&gt;`). Esto permite que los comentarios pedagógicos vivan en los blueprints copiables sin alterar la paridad estructural con el DOM renderizado en `.sr-specimen`.
+- **Métricas:** REGLA 11 pasa en verde en el 100% de las 32 vistas; baseline de verificación conservado inmutable en **FALLOS: 2** (`select.css:448, 453`).
+

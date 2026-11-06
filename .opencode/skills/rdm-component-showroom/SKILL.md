@@ -1384,7 +1384,7 @@ and reported a false OK.
 | REGLA 8 | Token tables in the showroom paint their value and meet contrast |
 | REGLA 9 | Icons are requested with `.md-icon`, never with Google's class |
 | REGLA 10 | Every `md-*` class the showroom uses is actually declared in `src/css/` |
-| REGLA 11 | The copyable snippet is identical to its specimen |
+| REGLA 11 | The copyable snippet is identical to its specimen (normalising inter-tag whitespace and stripping HTML comments) |
 | REGLA 12 | The colour view shows roles, never the raw palette |
 | REGLA 13 | The snippet stands alone: it renders with `main.css` and `main.js` |
 
