@@ -16,15 +16,15 @@
 
 <!--
   VISTA ATOMICA DE NAVIGATION RAIL (M3 Expressive, 2025)
-  Solo pares tecnicos: 6, en dos bloques.
+  Solo pares tecnicos: 9, en dos bloques.
   Decisiones guardadas aqui (fuentes y cotas viven en navigation-rail.css):
   1. Variante adoptada: M3 Expressive — 96dp colapsado, items de 64dp,
      tipografia label-medium (12/16), label activa SIN negrita, elevation level3.
-  2. Estructura: MATRIZ DUAL simetrica (8 pares, dos configuraciones de
-     cabecera M3 x 2 modalidades):
+  2. Estructura: MATRIZ DUAL simetrica (9 pares: Bloque A con 5 pares colapsados
+     y Bloque B con 4 pares expandidos):
      - Bloque A, colapsado 96dp: base (sin header), with menu, with FAB,
-       with menu + FAB.
-     - Bloque B, expandido 280dp: la MISMA progresion con menu_open y
+       with menu + FAB, y Canonical badges (dot y contadores).
+     - Bloque B, expandido 280dp: la progresion con menu_open y
        Extended FAB (brujo canónico: simetria pedagogica con el bloque A).
   3. El FAB de cabecera es dogfooding del catalogo: API real un guion con
      su slot tactil `md-fab-touch`. Un FAB NO lleva data-rail-toggle: solo
@@ -351,12 +351,107 @@
     </section>
     <!-- PAREJA PAR 4: hasta aqui -->
 
+    <!-- PAREJA PAR 5: Canonical badges (Small dot & Counters) -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Canonical badges (Small dot & Counters)</h3>
+      <p class="md-type-body-medium">Pastilla de conteo y small dot anclados al glifo con .md-badge-anchor; el anfitrión los anuncia en su aria-label y .md-badge permanece en aria-hidden.</p>
+
+      <div class="sr-specimen sr-specimen-rail">
+        <nav class="md-navigation-rail" role="tablist" aria-label="Navegación con notificaciones y conteos">
+          <div class="md-navigation-rail-content">
+            <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="true" tabindex="0">
+              <span class="md-navigation-rail-indicator">
+                <span class="md-navigation-rail-icon md-icon" aria-hidden="true">home</span>
+              </span>
+              <span class="md-navigation-rail-label">Inicio</span>
+            </button>
+            <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" aria-label="Alertas, novedades pendientes" tabindex="-1">
+              <span class="md-navigation-rail-indicator">
+                <span class="md-badge-anchor">
+                  <span class="md-navigation-rail-icon md-icon" aria-hidden="true">notifications</span>
+                  <span class="md-badge md-badge-small" aria-hidden="true"></span>
+                </span>
+              </span>
+              <span class="md-navigation-rail-label">Alertas</span>
+            </button>
+            <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" aria-label="Mensajes, 3 sin leer" tabindex="-1">
+              <span class="md-navigation-rail-indicator">
+                <span class="md-badge-anchor">
+                  <span class="md-navigation-rail-icon md-icon" aria-hidden="true">mail</span>
+                  <span class="md-badge md-badge-large" aria-hidden="true">3</span>
+                </span>
+              </span>
+              <span class="md-navigation-rail-label">Mensajes</span>
+            </button>
+            <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" aria-label="Historial, 12 pedidos" tabindex="-1">
+              <span class="md-navigation-rail-indicator">
+                <span class="md-badge-anchor">
+                  <span class="md-navigation-rail-icon md-icon" aria-hidden="true">history</span>
+                  <span class="md-badge md-badge-large" aria-hidden="true">12</span>
+                </span>
+              </span>
+              <span class="md-navigation-rail-label">Historial</span>
+            </button>
+          </div>
+        </nav>
+      </div>
+
+      <pre class="sr-code"><code>&lt;nav class="md-navigation-rail" role="tablist" aria-label="Navegación con notificaciones y conteos"&gt;
+  &lt;!-- Slot: Lista de destinos de navegación --&gt;
+  &lt;div class="md-navigation-rail-content"&gt;
+    &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="true" tabindex="0"&gt;
+      &lt;!-- Slot: Icono / Indicador --&gt;
+      &lt;span class="md-navigation-rail-indicator"&gt;
+        &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;home&lt;/span&gt;
+      &lt;/span&gt;
+      &lt;!-- Slot: Etiqueta de texto --&gt;
+      &lt;span class="md-navigation-rail-label"&gt;Inicio&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" aria-label="Alertas, novedades pendientes" tabindex="-1"&gt;
+      &lt;!-- Slot: Icono / Indicador con Badge --&gt;
+      &lt;span class="md-navigation-rail-indicator"&gt;
+        &lt;span class="md-badge-anchor"&gt;
+          &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;notifications&lt;/span&gt;
+          &lt;span class="md-badge md-badge-small" aria-hidden="true"&gt;&lt;/span&gt;
+        &lt;/span&gt;
+      &lt;/span&gt;
+      &lt;!-- Slot: Etiqueta de texto --&gt;
+      &lt;span class="md-navigation-rail-label"&gt;Alertas&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" aria-label="Mensajes, 3 sin leer" tabindex="-1"&gt;
+      &lt;!-- Slot: Icono / Indicador con Badge --&gt;
+      &lt;span class="md-navigation-rail-indicator"&gt;
+        &lt;span class="md-badge-anchor"&gt;
+          &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;mail&lt;/span&gt;
+          &lt;span class="md-badge md-badge-large" aria-hidden="true"&gt;3&lt;/span&gt;
+        &lt;/span&gt;
+      &lt;/span&gt;
+      &lt;!-- Slot: Etiqueta de texto --&gt;
+      &lt;span class="md-navigation-rail-label"&gt;Mensajes&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" aria-label="Historial, 12 pedidos" tabindex="-1"&gt;
+      &lt;!-- Slot: Icono / Indicador con Badge --&gt;
+      &lt;span class="md-navigation-rail-indicator"&gt;
+        &lt;span class="md-badge-anchor"&gt;
+          &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;history&lt;/span&gt;
+          &lt;span class="md-badge md-badge-large" aria-hidden="true"&gt;12&lt;/span&gt;
+        &lt;/span&gt;
+      &lt;/span&gt;
+      &lt;!-- Slot: Etiqueta de texto --&gt;
+      &lt;span class="md-navigation-rail-label"&gt;Historial&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/nav&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA PAR 5: hasta aqui -->
+
     <hr class="md-divider">
 
     <!-- BLOQUE B: MATRIZ EXPANDIDA (M3 EXPRESSIVE Expanded Header Configurations) -->
     <h2 class="md-type-headline-medium">Bloque B · Matriz de cabecera expandida (280dp)</h2>
 
-    <!-- PAREJA PAR 5: Three navigation items (Expanded base) -->
+    <!-- PAREJA PAR 6: Three navigation items (Expanded base) -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Three navigation items (base expandida)</h3>
       <p class="md-type-body-medium">El carril permanente a 280dp sin cabecera: tres filas continuas de 56dp (gap 0, canon m3_navigation_rail_expanded_item_spacing) con pastilla corrida de 20dp de margen y 16dp de padding interno.</p>
@@ -411,9 +506,9 @@
 &lt;/nav&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
-    <!-- PAREJA PAR 5: hasta aqui -->
+    <!-- PAREJA PAR 6: hasta aqui -->
 
-    <!-- PAREJA PAR 6: Three navigation items with a menu (menu_open) -->
+    <!-- PAREJA PAR 7: Three navigation items with a menu (menu_open) -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Three navigation items with a menu (menu_open)</h3>
       <p class="md-type-body-medium">La cabecera alineada al keyline de 20dp porta el botón con glifo menu_open: en esta modalidad el mismo data-rail-toggle promete contraer, y el JS conmuta glifo, aria-expanded y aria-label al vuelo (probar: plega a 96dp).</p>
@@ -479,9 +574,9 @@
 &lt;/nav&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
-    <!-- PAREJA PAR 6: hasta aqui -->
+    <!-- PAREJA PAR 7: hasta aqui -->
 
-    <!-- PAREJA PAR 7: Three navigation items with an Extended FAB -->
+    <!-- PAREJA PAR 8: Three navigation items with an Extended FAB -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Three navigation items with an Extended FAB</h3>
       <p class="md-type-body-medium">La acción principal muta a Extended FAB (dogfooding del catálogo: superficie tonal primary-container en reposo, texto al vuelo sin .md-fab-label y sin aria-label, porque el texto visible es el nombre accesible; refutación auditable del 2026-11-04 en fab-extended.css).</p>
@@ -551,9 +646,9 @@
 &lt;/nav&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
-    <!-- PAREJA PAR 7: hasta aqui -->
+    <!-- PAREJA PAR 8: hasta aqui -->
 
-    <!-- PAREJA PAR 8: Three navigation items with a menu and Extended FAB -->
+    <!-- PAREJA PAR 9: Three navigation items with a menu and Extended FAB -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Three navigation items with a menu and Extended FAB</h3>
       <p class="md-type-body-medium">La cabecera expandida completa: menu_open y Extended FAB apilados con el mismo gap de 16dp del bloque colapsado, ambos alineados al keyline de 20dp que comparten el shared items.</p>
@@ -629,7 +724,7 @@
 &lt;/nav&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
-    <!-- PAREJA PAR 8: hasta aqui -->
+    <!-- PAREJA PAR 9: hasta aqui -->
 
   </main>
   <!-- MAIN: fin -->
