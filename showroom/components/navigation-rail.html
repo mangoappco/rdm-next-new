@@ -67,7 +67,7 @@
     <header class="sr-header">
       <h1 class="md-type-display-large">Navigation Rail</h1>
       <p class="md-type-body-large">Carril vertical de navegación primaria M3 Expressive (2025): 96dp colapsado, 280dp expandido como sustituto del Navigation Drawer, pastilla activa de 56×32dp y doble matriz simétrica de cabecera (items, menú, FAB) en las dos modalidades.</p>
-      <p class="md-type-body-medium md-text-on-surface-variant">M3 Expressive · 96dp colapsado · 280dp expandido · 8 pares</p>
+      <p class="md-type-body-medium md-text-on-surface-variant">M3 Expressive · 96dp colapsado · 280dp expandido · 9 pares</p>
     </header>
 
     <hr class="md-divider">
@@ -351,7 +351,287 @@
     </section>
     <!-- PAREJA PAR 4: hasta aqui -->
 
-    <!-- PAREJA PAR 5: Canonical badges (Small dot & Counters) -->
+    <hr class="md-divider">
+
+    <!-- BLOQUE B: MATRIZ EXPANDIDA (M3 EXPRESSIVE Expanded Header Configurations) -->
+    <h2 class="md-type-headline-medium">Bloque B · Matriz de cabecera expandida (280dp)</h2>
+
+    <!-- PAREJA PAR 5: Three navigation items (Expanded base) -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Three navigation items (base expandida)</h3>
+      <p class="md-type-body-medium">El carril permanente a 280dp sin cabecera: tres filas continuas de 56dp (gap 0, canon m3_navigation_rail_expanded_item_spacing) con pastilla corrida de 20dp de margen y 16dp de padding interno.</p>
+
+      <div class="sr-specimen sr-specimen-rail">
+        <nav class="md-navigation-rail md-navigation-rail-expanded" role="tablist" aria-label="Navegación extendida">
+          <div class="md-navigation-rail-content">
+            <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="true" tabindex="0">
+              <span class="md-navigation-rail-indicator">
+                <span class="md-navigation-rail-icon md-icon" aria-hidden="true">star</span>
+              </span>
+              <span class="md-navigation-rail-label">Destacados</span>
+            </button>
+            <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1">
+              <span class="md-navigation-rail-indicator">
+                <span class="md-navigation-rail-icon md-icon" aria-hidden="true">star</span>
+              </span>
+              <span class="md-navigation-rail-label">Favoritos</span>
+            </button>
+            <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1">
+              <span class="md-navigation-rail-indicator">
+                <span class="md-navigation-rail-icon md-icon" aria-hidden="true">star</span>
+              </span>
+              <span class="md-navigation-rail-label">Historial</span>
+            </button>
+          </div>
+        </nav>
+      </div>
+
+      <pre class="sr-code"><code>&lt;nav class="md-navigation-rail md-navigation-rail-expanded" role="tablist" aria-label="Navegación extendida"&gt;
+  &lt;!-- Slot: Lista de destinos de navegación --&gt;
+  &lt;div class="md-navigation-rail-content"&gt;
+    &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="true" tabindex="0"&gt;
+      &lt;span class="md-navigation-rail-indicator"&gt;
+        &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;star&lt;/span&gt;
+      &lt;/span&gt;
+      &lt;span class="md-navigation-rail-label"&gt;Destacados&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1"&gt;
+      &lt;span class="md-navigation-rail-indicator"&gt;
+        &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;star&lt;/span&gt;
+      &lt;/span&gt;
+      &lt;span class="md-navigation-rail-label"&gt;Favoritos&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1"&gt;
+      &lt;span class="md-navigation-rail-indicator"&gt;
+        &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;star&lt;/span&gt;
+      &lt;/span&gt;
+      &lt;span class="md-navigation-rail-label"&gt;Historial&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/nav&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA PAR 5: hasta aqui -->
+
+    <!-- PAREJA PAR 6: Three navigation items with a menu (menu_open) -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Three navigation items with a menu (menu_open)</h3>
+      <p class="md-type-body-medium">La cabecera alineada al keyline de 20dp porta el botón con glifo menu_open: en esta modalidad el mismo data-rail-toggle promete contraer, y el JS conmuta glifo, aria-expanded y aria-label al vuelo (probar: plega a 96dp).</p>
+
+      <div class="sr-specimen sr-specimen-rail">
+        <nav class="md-navigation-rail md-navigation-rail-expanded" role="tablist" aria-label="Navegación extendida con menú">
+          <div class="md-navigation-rail-header">
+            <button type="button" class="md-icon-button" aria-label="Contraer menú de navegación" aria-expanded="true" data-rail-toggle>
+              <span class="md-icon" aria-hidden="true">menu_open</span>
+            </button>
+          </div>
+          <div class="md-navigation-rail-content">
+            <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="true" tabindex="0">
+              <span class="md-navigation-rail-indicator">
+                <span class="md-navigation-rail-icon md-icon" aria-hidden="true">star</span>
+              </span>
+              <span class="md-navigation-rail-label">Destacados</span>
+            </button>
+            <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1">
+              <span class="md-navigation-rail-indicator">
+                <span class="md-navigation-rail-icon md-icon" aria-hidden="true">star</span>
+              </span>
+              <span class="md-navigation-rail-label">Favoritos</span>
+            </button>
+            <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1">
+              <span class="md-navigation-rail-indicator">
+                <span class="md-navigation-rail-icon md-icon" aria-hidden="true">star</span>
+              </span>
+              <span class="md-navigation-rail-label">Historial</span>
+            </button>
+          </div>
+        </nav>
+      </div>
+
+      <pre class="sr-code"><code>&lt;nav class="md-navigation-rail md-navigation-rail-expanded" role="tablist" aria-label="Navegación extendida con menú"&gt;
+  &lt;!-- Slot: Cabecera y controles maestros --&gt;
+  &lt;div class="md-navigation-rail-header"&gt;
+    &lt;button type="button" class="md-icon-button" aria-label="Contraer menú de navegación" aria-expanded="true" data-rail-toggle&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;menu_open&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+  &lt;!-- Slot: Lista de destinos de navegación --&gt;
+  &lt;div class="md-navigation-rail-content"&gt;
+    &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="true" tabindex="0"&gt;
+      &lt;span class="md-navigation-rail-indicator"&gt;
+        &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;star&lt;/span&gt;
+      &lt;/span&gt;
+      &lt;span class="md-navigation-rail-label"&gt;Destacados&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1"&gt;
+      &lt;span class="md-navigation-rail-indicator"&gt;
+        &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;star&lt;/span&gt;
+      &lt;/span&gt;
+      &lt;span class="md-navigation-rail-label"&gt;Favoritos&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1"&gt;
+      &lt;span class="md-navigation-rail-indicator"&gt;
+        &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;star&lt;/span&gt;
+      &lt;/span&gt;
+      &lt;span class="md-navigation-rail-label"&gt;Historial&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/nav&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA PAR 6: hasta aqui -->
+
+    <!-- PAREJA PAR 7: Three navigation items with an Extended FAB -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Three navigation items with an Extended FAB</h3>
+      <p class="md-type-body-medium">La acción principal muta a Extended FAB (dogfooding del catálogo: superficie tonal primary-container en reposo, texto al vuelo sin .md-fab-label y sin aria-label, porque el texto visible es el nombre accesible; refutación auditable del 2026-11-04 en fab-extended.css).</p>
+
+      <div class="sr-specimen sr-specimen-rail">
+        <nav class="md-navigation-rail md-navigation-rail-expanded" role="tablist" aria-label="Navegación extendida con acción principal">
+          <div class="md-navigation-rail-header">
+            <button type="button" class="md-fab md-fab-extended">
+              <span class="md-icon" aria-hidden="true">edit</span>
+      Crear
+      <span class="md-fab-touch"></span>
+            </button>
+          </div>
+          <div class="md-navigation-rail-content">
+            <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="true" tabindex="0">
+              <span class="md-navigation-rail-indicator">
+                <span class="md-navigation-rail-icon md-icon" aria-hidden="true">star</span>
+              </span>
+              <span class="md-navigation-rail-label">Destacados</span>
+            </button>
+            <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1">
+              <span class="md-navigation-rail-indicator">
+                <span class="md-navigation-rail-icon md-icon" aria-hidden="true">star</span>
+              </span>
+              <span class="md-navigation-rail-label">Favoritos</span>
+            </button>
+            <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1">
+              <span class="md-navigation-rail-indicator">
+                <span class="md-navigation-rail-icon md-icon" aria-hidden="true">star</span>
+              </span>
+              <span class="md-navigation-rail-label">Historial</span>
+            </button>
+          </div>
+        </nav>
+      </div>
+
+      <pre class="sr-code"><code>&lt;nav class="md-navigation-rail md-navigation-rail-expanded" role="tablist" aria-label="Navegación extendida con acción principal"&gt;
+  &lt;!-- Slot: Cabecera y controles maestros --&gt;
+  &lt;div class="md-navigation-rail-header"&gt;
+    &lt;button type="button" class="md-fab md-fab-extended"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;
+      Crear
+      &lt;span class="md-fab-touch"&gt;&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+  &lt;!-- Slot: Lista de destinos de navegación --&gt;
+  &lt;div class="md-navigation-rail-content"&gt;
+    &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="true" tabindex="0"&gt;
+      &lt;span class="md-navigation-rail-indicator"&gt;
+        &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;star&lt;/span&gt;
+      &lt;/span&gt;
+      &lt;span class="md-navigation-rail-label"&gt;Destacados&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1"&gt;
+      &lt;span class="md-navigation-rail-indicator"&gt;
+        &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;star&lt;/span&gt;
+      &lt;/span&gt;
+      &lt;span class="md-navigation-rail-label"&gt;Favoritos&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1"&gt;
+      &lt;span class="md-navigation-rail-indicator"&gt;
+        &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;star&lt;/span&gt;
+      &lt;/span&gt;
+      &lt;span class="md-navigation-rail-label"&gt;Historial&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/nav&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA PAR 7: hasta aqui -->
+
+    <!-- PAREJA PAR 8: Three navigation items with a menu and Extended FAB -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Three navigation items with a menu and Extended FAB</h3>
+      <p class="md-type-body-medium">La cabecera expandida completa: menu_open y Extended FAB apilados con el mismo gap de 16dp del bloque colapsado, ambos alineados al keyline de 20dp que comparten el shared items.</p>
+
+      <div class="sr-specimen sr-specimen-rail">
+        <nav class="md-navigation-rail md-navigation-rail-expanded" role="tablist" aria-label="Navegación extendida con menú y acción principal">
+          <div class="md-navigation-rail-header">
+            <button type="button" class="md-icon-button" aria-label="Contraer menú de navegación" aria-expanded="true" data-rail-toggle>
+              <span class="md-icon" aria-hidden="true">menu_open</span>
+            </button>
+            <button type="button" class="md-fab md-fab-extended">
+              <span class="md-icon" aria-hidden="true">edit</span>
+      Crear
+      <span class="md-fab-touch"></span>
+            </button>
+          </div>
+          <div class="md-navigation-rail-content">
+            <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="true" tabindex="0">
+              <span class="md-navigation-rail-indicator">
+                <span class="md-navigation-rail-icon md-icon" aria-hidden="true">star</span>
+              </span>
+              <span class="md-navigation-rail-label">Destacados</span>
+            </button>
+            <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1">
+              <span class="md-navigation-rail-indicator">
+                <span class="md-navigation-rail-icon md-icon" aria-hidden="true">star</span>
+              </span>
+              <span class="md-navigation-rail-label">Favoritos</span>
+            </button>
+            <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1">
+              <span class="md-navigation-rail-indicator">
+                <span class="md-navigation-rail-icon md-icon" aria-hidden="true">star</span>
+              </span>
+              <span class="md-navigation-rail-label">Historial</span>
+            </button>
+          </div>
+        </nav>
+      </div>
+
+      <pre class="sr-code"><code>&lt;nav class="md-navigation-rail md-navigation-rail-expanded" role="tablist" aria-label="Navegación extendida con menú y acción principal"&gt;
+  &lt;!-- Slot: Cabecera y controles maestros --&gt;
+  &lt;div class="md-navigation-rail-header"&gt;
+    &lt;button type="button" class="md-icon-button" aria-label="Contraer menú de navegación" aria-expanded="true" data-rail-toggle&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;menu_open&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-fab md-fab-extended"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;
+      Crear
+      &lt;span class="md-fab-touch"&gt;&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+  &lt;!-- Slot: Lista de destinos de navegación --&gt;
+  &lt;div class="md-navigation-rail-content"&gt;
+    &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="true" tabindex="0"&gt;
+      &lt;span class="md-navigation-rail-indicator"&gt;
+        &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;star&lt;/span&gt;
+      &lt;/span&gt;
+      &lt;span class="md-navigation-rail-label"&gt;Destacados&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1"&gt;
+      &lt;span class="md-navigation-rail-indicator"&gt;
+        &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;star&lt;/span&gt;
+      &lt;/span&gt;
+      &lt;span class="md-navigation-rail-label"&gt;Favoritos&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1"&gt;
+      &lt;span class="md-navigation-rail-indicator"&gt;
+        &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;star&lt;/span&gt;
+      &lt;/span&gt;
+      &lt;span class="md-navigation-rail-label"&gt;Historial&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/nav&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA PAR 8: hasta aqui -->
+
+    <!-- PAREJA PAR 9: Canonical badges (Small dot & Counters) -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Canonical badges (Small dot & Counters)</h3>
       <p class="md-type-body-medium">Pastilla de conteo y small dot anclados al glifo con .md-badge-anchor; el anfitrión los anuncia en su aria-label y .md-badge permanece en aria-hidden.</p>
@@ -455,286 +735,6 @@
         &lt;/span&gt;
       &lt;/span&gt;
       &lt;!-- Slot: Etiqueta de texto --&gt;
-      &lt;span class="md-navigation-rail-label"&gt;Historial&lt;/span&gt;
-    &lt;/button&gt;
-  &lt;/div&gt;
-&lt;/nav&gt;</code></pre>
-      <button type="button" class="sr-copy" data-copy>Copiar</button>
-    </section>
-    <!-- PAREJA PAR 5: hasta aqui -->
-
-    <hr class="md-divider">
-
-    <!-- BLOQUE B: MATRIZ EXPANDIDA (M3 EXPRESSIVE Expanded Header Configurations) -->
-    <h2 class="md-type-headline-medium">Bloque B · Matriz de cabecera expandida (280dp)</h2>
-
-    <!-- PAREJA PAR 6: Three navigation items (Expanded base) -->
-    <section class="sr-section">
-      <h3 class="md-type-title-large">Three navigation items (base expandida)</h3>
-      <p class="md-type-body-medium">El carril permanente a 280dp sin cabecera: tres filas continuas de 56dp (gap 0, canon m3_navigation_rail_expanded_item_spacing) con pastilla corrida de 20dp de margen y 16dp de padding interno.</p>
-
-      <div class="sr-specimen sr-specimen-rail">
-        <nav class="md-navigation-rail md-navigation-rail-expanded" role="tablist" aria-label="Navegación extendida">
-          <div class="md-navigation-rail-content">
-            <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="true" tabindex="0">
-              <span class="md-navigation-rail-indicator">
-                <span class="md-navigation-rail-icon md-icon" aria-hidden="true">star</span>
-              </span>
-              <span class="md-navigation-rail-label">Destacados</span>
-            </button>
-            <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1">
-              <span class="md-navigation-rail-indicator">
-                <span class="md-navigation-rail-icon md-icon" aria-hidden="true">star</span>
-              </span>
-              <span class="md-navigation-rail-label">Favoritos</span>
-            </button>
-            <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1">
-              <span class="md-navigation-rail-indicator">
-                <span class="md-navigation-rail-icon md-icon" aria-hidden="true">star</span>
-              </span>
-              <span class="md-navigation-rail-label">Historial</span>
-            </button>
-          </div>
-        </nav>
-      </div>
-
-      <pre class="sr-code"><code>&lt;nav class="md-navigation-rail md-navigation-rail-expanded" role="tablist" aria-label="Navegación extendida"&gt;
-  &lt;!-- Slot: Lista de destinos de navegación --&gt;
-  &lt;div class="md-navigation-rail-content"&gt;
-    &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="true" tabindex="0"&gt;
-      &lt;span class="md-navigation-rail-indicator"&gt;
-        &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;star&lt;/span&gt;
-      &lt;/span&gt;
-      &lt;span class="md-navigation-rail-label"&gt;Destacados&lt;/span&gt;
-    &lt;/button&gt;
-    &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1"&gt;
-      &lt;span class="md-navigation-rail-indicator"&gt;
-        &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;star&lt;/span&gt;
-      &lt;/span&gt;
-      &lt;span class="md-navigation-rail-label"&gt;Favoritos&lt;/span&gt;
-    &lt;/button&gt;
-    &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1"&gt;
-      &lt;span class="md-navigation-rail-indicator"&gt;
-        &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;star&lt;/span&gt;
-      &lt;/span&gt;
-      &lt;span class="md-navigation-rail-label"&gt;Historial&lt;/span&gt;
-    &lt;/button&gt;
-  &lt;/div&gt;
-&lt;/nav&gt;</code></pre>
-      <button type="button" class="sr-copy" data-copy>Copiar</button>
-    </section>
-    <!-- PAREJA PAR 6: hasta aqui -->
-
-    <!-- PAREJA PAR 7: Three navigation items with a menu (menu_open) -->
-    <section class="sr-section">
-      <h3 class="md-type-title-large">Three navigation items with a menu (menu_open)</h3>
-      <p class="md-type-body-medium">La cabecera alineada al keyline de 20dp porta el botón con glifo menu_open: en esta modalidad el mismo data-rail-toggle promete contraer, y el JS conmuta glifo, aria-expanded y aria-label al vuelo (probar: plega a 96dp).</p>
-
-      <div class="sr-specimen sr-specimen-rail">
-        <nav class="md-navigation-rail md-navigation-rail-expanded" role="tablist" aria-label="Navegación extendida con menú">
-          <div class="md-navigation-rail-header">
-            <button type="button" class="md-icon-button" aria-label="Contraer menú de navegación" aria-expanded="true" data-rail-toggle>
-              <span class="md-icon" aria-hidden="true">menu_open</span>
-            </button>
-          </div>
-          <div class="md-navigation-rail-content">
-            <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="true" tabindex="0">
-              <span class="md-navigation-rail-indicator">
-                <span class="md-navigation-rail-icon md-icon" aria-hidden="true">star</span>
-              </span>
-              <span class="md-navigation-rail-label">Destacados</span>
-            </button>
-            <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1">
-              <span class="md-navigation-rail-indicator">
-                <span class="md-navigation-rail-icon md-icon" aria-hidden="true">star</span>
-              </span>
-              <span class="md-navigation-rail-label">Favoritos</span>
-            </button>
-            <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1">
-              <span class="md-navigation-rail-indicator">
-                <span class="md-navigation-rail-icon md-icon" aria-hidden="true">star</span>
-              </span>
-              <span class="md-navigation-rail-label">Historial</span>
-            </button>
-          </div>
-        </nav>
-      </div>
-
-      <pre class="sr-code"><code>&lt;nav class="md-navigation-rail md-navigation-rail-expanded" role="tablist" aria-label="Navegación extendida con menú"&gt;
-  &lt;!-- Slot: Cabecera y controles maestros --&gt;
-  &lt;div class="md-navigation-rail-header"&gt;
-    &lt;button type="button" class="md-icon-button" aria-label="Contraer menú de navegación" aria-expanded="true" data-rail-toggle&gt;
-      &lt;span class="md-icon" aria-hidden="true"&gt;menu_open&lt;/span&gt;
-    &lt;/button&gt;
-  &lt;/div&gt;
-  &lt;!-- Slot: Lista de destinos de navegación --&gt;
-  &lt;div class="md-navigation-rail-content"&gt;
-    &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="true" tabindex="0"&gt;
-      &lt;span class="md-navigation-rail-indicator"&gt;
-        &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;star&lt;/span&gt;
-      &lt;/span&gt;
-      &lt;span class="md-navigation-rail-label"&gt;Destacados&lt;/span&gt;
-    &lt;/button&gt;
-    &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1"&gt;
-      &lt;span class="md-navigation-rail-indicator"&gt;
-        &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;star&lt;/span&gt;
-      &lt;/span&gt;
-      &lt;span class="md-navigation-rail-label"&gt;Favoritos&lt;/span&gt;
-    &lt;/button&gt;
-    &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1"&gt;
-      &lt;span class="md-navigation-rail-indicator"&gt;
-        &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;star&lt;/span&gt;
-      &lt;/span&gt;
-      &lt;span class="md-navigation-rail-label"&gt;Historial&lt;/span&gt;
-    &lt;/button&gt;
-  &lt;/div&gt;
-&lt;/nav&gt;</code></pre>
-      <button type="button" class="sr-copy" data-copy>Copiar</button>
-    </section>
-    <!-- PAREJA PAR 7: hasta aqui -->
-
-    <!-- PAREJA PAR 8: Three navigation items with an Extended FAB -->
-    <section class="sr-section">
-      <h3 class="md-type-title-large">Three navigation items with an Extended FAB</h3>
-      <p class="md-type-body-medium">La acción principal muta a Extended FAB (dogfooding del catálogo: superficie tonal primary-container en reposo, texto al vuelo sin .md-fab-label y sin aria-label, porque el texto visible es el nombre accesible; refutación auditable del 2026-11-04 en fab-extended.css).</p>
-
-      <div class="sr-specimen sr-specimen-rail">
-        <nav class="md-navigation-rail md-navigation-rail-expanded" role="tablist" aria-label="Navegación extendida con acción principal">
-          <div class="md-navigation-rail-header">
-            <button type="button" class="md-fab md-fab-extended">
-              <span class="md-icon" aria-hidden="true">edit</span>
-      Crear
-      <span class="md-fab-touch"></span>
-            </button>
-          </div>
-          <div class="md-navigation-rail-content">
-            <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="true" tabindex="0">
-              <span class="md-navigation-rail-indicator">
-                <span class="md-navigation-rail-icon md-icon" aria-hidden="true">star</span>
-              </span>
-              <span class="md-navigation-rail-label">Destacados</span>
-            </button>
-            <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1">
-              <span class="md-navigation-rail-indicator">
-                <span class="md-navigation-rail-icon md-icon" aria-hidden="true">star</span>
-              </span>
-              <span class="md-navigation-rail-label">Favoritos</span>
-            </button>
-            <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1">
-              <span class="md-navigation-rail-indicator">
-                <span class="md-navigation-rail-icon md-icon" aria-hidden="true">star</span>
-              </span>
-              <span class="md-navigation-rail-label">Historial</span>
-            </button>
-          </div>
-        </nav>
-      </div>
-
-      <pre class="sr-code"><code>&lt;nav class="md-navigation-rail md-navigation-rail-expanded" role="tablist" aria-label="Navegación extendida con acción principal"&gt;
-  &lt;!-- Slot: Cabecera y controles maestros --&gt;
-  &lt;div class="md-navigation-rail-header"&gt;
-    &lt;button type="button" class="md-fab md-fab-extended"&gt;
-      &lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;
-      Crear
-      &lt;span class="md-fab-touch"&gt;&lt;/span&gt;
-    &lt;/button&gt;
-  &lt;/div&gt;
-  &lt;!-- Slot: Lista de destinos de navegación --&gt;
-  &lt;div class="md-navigation-rail-content"&gt;
-    &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="true" tabindex="0"&gt;
-      &lt;span class="md-navigation-rail-indicator"&gt;
-        &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;star&lt;/span&gt;
-      &lt;/span&gt;
-      &lt;span class="md-navigation-rail-label"&gt;Destacados&lt;/span&gt;
-    &lt;/button&gt;
-    &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1"&gt;
-      &lt;span class="md-navigation-rail-indicator"&gt;
-        &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;star&lt;/span&gt;
-      &lt;/span&gt;
-      &lt;span class="md-navigation-rail-label"&gt;Favoritos&lt;/span&gt;
-    &lt;/button&gt;
-    &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1"&gt;
-      &lt;span class="md-navigation-rail-indicator"&gt;
-        &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;star&lt;/span&gt;
-      &lt;/span&gt;
-      &lt;span class="md-navigation-rail-label"&gt;Historial&lt;/span&gt;
-    &lt;/button&gt;
-  &lt;/div&gt;
-&lt;/nav&gt;</code></pre>
-      <button type="button" class="sr-copy" data-copy>Copiar</button>
-    </section>
-    <!-- PAREJA PAR 8: hasta aqui -->
-
-    <!-- PAREJA PAR 9: Three navigation items with a menu and Extended FAB -->
-    <section class="sr-section">
-      <h3 class="md-type-title-large">Three navigation items with a menu and Extended FAB</h3>
-      <p class="md-type-body-medium">La cabecera expandida completa: menu_open y Extended FAB apilados con el mismo gap de 16dp del bloque colapsado, ambos alineados al keyline de 20dp que comparten el shared items.</p>
-
-      <div class="sr-specimen sr-specimen-rail">
-        <nav class="md-navigation-rail md-navigation-rail-expanded" role="tablist" aria-label="Navegación extendida con menú y acción principal">
-          <div class="md-navigation-rail-header">
-            <button type="button" class="md-icon-button" aria-label="Contraer menú de navegación" aria-expanded="true" data-rail-toggle>
-              <span class="md-icon" aria-hidden="true">menu_open</span>
-            </button>
-            <button type="button" class="md-fab md-fab-extended">
-              <span class="md-icon" aria-hidden="true">edit</span>
-      Crear
-      <span class="md-fab-touch"></span>
-            </button>
-          </div>
-          <div class="md-navigation-rail-content">
-            <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="true" tabindex="0">
-              <span class="md-navigation-rail-indicator">
-                <span class="md-navigation-rail-icon md-icon" aria-hidden="true">star</span>
-              </span>
-              <span class="md-navigation-rail-label">Destacados</span>
-            </button>
-            <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1">
-              <span class="md-navigation-rail-indicator">
-                <span class="md-navigation-rail-icon md-icon" aria-hidden="true">star</span>
-              </span>
-              <span class="md-navigation-rail-label">Favoritos</span>
-            </button>
-            <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1">
-              <span class="md-navigation-rail-indicator">
-                <span class="md-navigation-rail-icon md-icon" aria-hidden="true">star</span>
-              </span>
-              <span class="md-navigation-rail-label">Historial</span>
-            </button>
-          </div>
-        </nav>
-      </div>
-
-      <pre class="sr-code"><code>&lt;nav class="md-navigation-rail md-navigation-rail-expanded" role="tablist" aria-label="Navegación extendida con menú y acción principal"&gt;
-  &lt;!-- Slot: Cabecera y controles maestros --&gt;
-  &lt;div class="md-navigation-rail-header"&gt;
-    &lt;button type="button" class="md-icon-button" aria-label="Contraer menú de navegación" aria-expanded="true" data-rail-toggle&gt;
-      &lt;span class="md-icon" aria-hidden="true"&gt;menu_open&lt;/span&gt;
-    &lt;/button&gt;
-    &lt;button type="button" class="md-fab md-fab-extended"&gt;
-      &lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;
-      Crear
-      &lt;span class="md-fab-touch"&gt;&lt;/span&gt;
-    &lt;/button&gt;
-  &lt;/div&gt;
-  &lt;!-- Slot: Lista de destinos de navegación --&gt;
-  &lt;div class="md-navigation-rail-content"&gt;
-    &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="true" tabindex="0"&gt;
-      &lt;span class="md-navigation-rail-indicator"&gt;
-        &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;star&lt;/span&gt;
-      &lt;/span&gt;
-      &lt;span class="md-navigation-rail-label"&gt;Destacados&lt;/span&gt;
-    &lt;/button&gt;
-    &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1"&gt;
-      &lt;span class="md-navigation-rail-indicator"&gt;
-        &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;star&lt;/span&gt;
-      &lt;/span&gt;
-      &lt;span class="md-navigation-rail-label"&gt;Favoritos&lt;/span&gt;
-    &lt;/button&gt;
-    &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1"&gt;
-      &lt;span class="md-navigation-rail-indicator"&gt;
-        &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;star&lt;/span&gt;
-      &lt;/span&gt;
       &lt;span class="md-navigation-rail-label"&gt;Historial&lt;/span&gt;
     &lt;/button&gt;
   &lt;/div&gt;
