@@ -176,8 +176,10 @@
 
    COMPOSICION
    ------------
-   SI con .md-fab-primary: la familia de color es la misma que en el FAB
-   base y no cambia nada.
+   SI con .md-fab-primary: cambia SOLO la familia de color (container
+   `primary` solido, glifo `on-primary`); todo lo demas del extended no
+   se toca. El FAB por defecto del sistema NO lleva esta clase y queda
+   en la familia container de la base.
 
    SI con .md-fab-anchored: cada clase promete algo distinto y no se pisan. El
    resultado es un FAB con etiqueta pegado a la esquina de su contenedor,

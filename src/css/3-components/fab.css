@@ -154,10 +154,10 @@
   --md-comp-fab-shape: var(--md-sys-shape-corner-large);
 
   /* Color. La base es la variante `primary-container`, que en M3 es la
-     primera de las ocho que publica. Mismo criterio que el boton: la base
-     ya ES una variante, y la explicita (.md-fab-primary) la vuelve a
-     declarar por el mismo motivo de siempre --el nombre que alguien va a
-     escribir primero tiene que existir--. Ver 5489438. */
+     primera de las ocho que publica. La variante explicita es otra cosa:
+     `.md-fab-primary` es el rol de enfasis de marca (container `primary`
+     solido, glifo `on-primary`), la variante de alto contraste que el
+     Showroom de color muestra diferenciada. Ver el bloque VARIANTES. */
   --md-comp-fab-container-color: var(--md-sys-color-primary-container);
   --md-comp-fab-icon-color: var(--md-sys-color-on-primary-container);
 
@@ -455,7 +455,9 @@
    M3 publica OCHO para el FAB: primary, primary-container, secondary,
    secondary-container, tertiary, tertiary-container, branded y surface.
 
-   Aqui solo la que ya es la base, declarada otra vez. Con esta la familia
+   Aqui va la del enfasis de marca: la base ya trae `primary-container` y la
+   explicita la convierte en enfasis (container `primary` solido, glifo
+   `on-primary`) para las acciones de maximo contraste. Con esta la familia
    completa esta cubierta para ManGo! App, y las otras siete no son codigo
    que falte sino decisiones que no han hecho falta. Apareceran si alguna
    pantalla pide dos FAB jerarquicamente distintos, que es lo unico para lo
@@ -467,15 +469,14 @@
    familias; aqui la base ya trae la primera.
    ------------------------------------------------------------------------ */
 
-/* Redeclaracion canonica: la variante explicita existe por gobernanza (el
-   nombre que alguien va a escribir primero tiene que existir) y mapea a la
-   MISMA familia que la base. Fuente: tokens oficiales de M3 FAB —
-   `md.comp.fab.primary.container.color` = primary-container. No hay FAB con
-   contenedor solido `primary` entre las ocho variantes publicadas; esos
-   solidos de alta enfasis son territorio del button, no del FAB. */
-.md-fab-primary {
-  --md-comp-fab-container-color: var(--md-sys-color-primary-container);
-  --md-comp-fab-icon-color: var(--md-sys-color-on-primary-container);
+/* Redeclaracion de la variante de color de marca: la base ya resuelve a
+   `primary-container`; `.md-fab-primary` es la variante de alta enfasis
+   (container `primary` solido, glifo `on-primary`) que el Showroom de
+   color publica diferenciada. El FAB por defecto de una pantalla NO lleva
+   esta clase y hereda la familia container de la base. */
+.md-fab.md-fab-primary {
+  --md-comp-fab-container-color: var(--md-sys-color-primary);
+  --md-comp-fab-icon-color: var(--md-sys-color-on-primary);
 }
 
 /* ---------------------------------------------------------------------------
