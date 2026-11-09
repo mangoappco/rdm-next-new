@@ -452,50 +452,73 @@
 /* ---------------------------------------------------------------------------
    VARIANTES DE COLOR
    ---------------------------------------------------------------------------
-   Matriz oficial de M3 para el FAB, en dos familias cromáticas:
+   Matriz oficial de M3 para el FAB: DOS ternas exactas y simétricas
+   (`Color roles for FAB` de m3.material.io). Los mismos tres tonos
+   presentados en dos formatos:
 
-   - Familia Container (énfasis estándar): la base ya trae la primera
-     (primary-container). `secondary` y `tertiary` reempapan la superficie
-     tonal con el rol homónimo de color. `surface` es la de menor contraste:
-     superficie neutra alta con el glifo primary (variante de reposo
-     discreto para superficies saturadas).
-   - Familia Solid (alto énfasis): `primary` con contenedor sólido
-     primary y glifo on-primary, para la acción de maximo contraste.
+   - Familia CONTAINER (1-3, claro): superficie tonal del rol `-container`
+     con glifo `on-*-container`. La base ya trae la primera
+     (primary-container); las otras dos reempapan la misma custom property.
+   - Familia SOLID (4-6, alto énfasis): contenedor sólido del rol con
+     glifo `on-*` blanco, para las acciones de maximo contraste.
 
    Todas se resuelven por las mismas dos custom properties del host y la
    capa de estado (`.md-fab::after`) lee `currentColor`, así que hover,
-   focus y pressed heredan la familia entera sin reglas propias. La base
-   no lleva ninguna clase: el FAB por defecto de una pantalla es
-   primary-container y las variantes solo se suman cuando una pantalla
-   necesita jerarquía cromática distinta.
+   focus y pressed heredan la familia entera sin reglas propias. Además de
+   los nombres cortos del showroom, cada rama container publica su alias
+   `-container` explicito, para que el nombre largo que alguien escriba
+   primero tambien exista.
 
    En `_md-comp-fab.scss`, el fichero de M3 para el tamaño por defecto, no
    hay ni un `container-color`: el color SIEMPRE viene de la familia
    elegida; aqui la base ya trae la primera.
    ------------------------------------------------------------------------ */
 
-/* Familia Container: rebaños tonales de los otros dos contenedores
-   estándar y la superficie neutra discreta. */
-.md-fab.md-fab-secondary {
+/* ==========================================================================
+   FAMILIA CONTAINER (1-3): tonos pastel de enfasis estándar
+   ========================================================================== */
+
+/* 1. Primary Container (Default canónico): primera de la lámina, la vive
+      la base; el alias largo redeclara el mismo contrato. */
+.md-fab.md-fab-primary-container {
+  --md-comp-fab-container-color: var(--md-sys-color-primary-container);
+  --md-comp-fab-icon-color: var(--md-sys-color-on-primary-container);
+}
+
+/* 2. Secondary Container */
+.md-fab.md-fab-secondary,
+.md-fab.md-fab-secondary-container {
   --md-comp-fab-container-color: var(--md-sys-color-secondary-container);
   --md-comp-fab-icon-color: var(--md-sys-color-on-secondary-container);
 }
 
-.md-fab.md-fab-tertiary {
+/* 3. Tertiary Container */
+.md-fab.md-fab-tertiary,
+.md-fab.md-fab-tertiary-container {
   --md-comp-fab-container-color: var(--md-sys-color-tertiary-container);
   --md-comp-fab-icon-color: var(--md-sys-color-on-tertiary-container);
 }
 
-.md-fab.md-fab-surface {
-  --md-comp-fab-container-color: var(--md-sys-color-surface-container-high);
-  --md-comp-fab-icon-color: var(--md-sys-color-primary);
-}
+/* ==========================================================================
+   FAMILIA SOLID (4-6): solidos oscuros de alto énfasis
+   ========================================================================== */
 
-/* Familia Solid: la variante de alto énfasis, última en la lectura para
-   cerrar la graduación del reposo discreto al máximo contraste. */
+/* 4. Primary Solid */
 .md-fab.md-fab-primary {
   --md-comp-fab-container-color: var(--md-sys-color-primary);
   --md-comp-fab-icon-color: var(--md-sys-color-on-primary);
+}
+
+/* 5. Secondary Solid */
+.md-fab.md-fab-secondary-solid {
+  --md-comp-fab-container-color: var(--md-sys-color-secondary);
+  --md-comp-fab-icon-color: var(--md-sys-color-on-secondary);
+}
+
+/* 6. Tertiary Solid */
+.md-fab.md-fab-tertiary-solid {
+  --md-comp-fab-container-color: var(--md-sys-color-tertiary);
+  --md-comp-fab-icon-color: var(--md-sys-color-on-tertiary);
 }
 
 /* ---------------------------------------------------------------------------

@@ -120,10 +120,10 @@
     </section>
     <!-- PAREJA: hasta aqui -->
 
-    <!-- PAREJA: la matriz de cinco colores (h2 + specimen + pre + boton). -->
+    <!-- PAREJA: la matriz de seis colores (h2 + specimen + pre + boton). -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Colors</h3>
-      <p class="md-type-body-medium">La base resuelve a primary-container (familia container, énfasis estándar); md-fab-secondary, md-fab-tertiary y md-fab-surface completan la familia; md-fab-primary es la sólida de alto énfasis. El glifo y el state layer leen currentColor en todas.</p>
+      <p class="md-type-body-medium">La lámina oficial `Color roles for FAB` define dos ternas simétricas: 3 variantes Container (claras, de énfasis estándar) y 3 Solid (oscuras de alto contraste con glifo blanco). Base = primary-container; el glifo y el state layer leen currentColor en las seis.</p>
       <div class="sr-specimen sr-specimen-gap">
         <button class="md-fab" type="button" aria-label="Añadir">
           <span class="md-icon" aria-hidden="true">add</span>
@@ -141,7 +141,11 @@
           <span class="md-icon" aria-hidden="true">add</span>
           <span class="md-fab-touch"></span>
         </button>
-        <button class="md-fab md-fab-surface" type="button" aria-label="Añadir">
+        <button class="md-fab md-fab-secondary-solid" type="button" aria-label="Añadir">
+          <span class="md-icon" aria-hidden="true">add</span>
+          <span class="md-fab-touch"></span>
+        </button>
+        <button class="md-fab md-fab-tertiary-solid" type="button" aria-label="Añadir">
           <span class="md-icon" aria-hidden="true">add</span>
           <span class="md-fab-touch"></span>
         </button>
@@ -162,7 +166,11 @@
   &lt;span class=&quot;md-icon&quot; aria-hidden=&quot;true&quot;&gt;add&lt;/span&gt;
   &lt;span class=&quot;md-fab-touch&quot;&gt;&lt;/span&gt;
 &lt;/button&gt;
-&lt;button class=&quot;md-fab md-fab-surface&quot; type=&quot;button&quot; aria-label=&quot;Añadir&quot;&gt;
+&lt;button class=&quot;md-fab md-fab-secondary-solid&quot; type=&quot;button&quot; aria-label=&quot;Añadir&quot;&gt;
+  &lt;span class=&quot;md-icon&quot; aria-hidden=&quot;true&quot;&gt;add&lt;/span&gt;
+  &lt;span class=&quot;md-fab-touch&quot;&gt;&lt;/span&gt;
+&lt;/button&gt;
+&lt;button class=&quot;md-fab md-fab-tertiary-solid&quot; type=&quot;button&quot; aria-label=&quot;Añadir&quot;&gt;
   &lt;span class=&quot;md-icon&quot; aria-hidden=&quot;true&quot;&gt;add&lt;/span&gt;
   &lt;span class=&quot;md-fab-touch&quot;&gt;&lt;/span&gt;
 &lt;/button&gt;</code></pre>
