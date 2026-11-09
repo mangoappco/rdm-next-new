@@ -63,8 +63,9 @@
   align-self: stretch; /* Asegura que nunca colapse verticalmente en layouts flex */
   inline-size: var(--md-sys-measurement-navigation-rail-width); /* 96dp */
   min-inline-size: var(--md-sys-measurement-navigation-rail-width);
+  flex-shrink: 0;
   block-size: 100%;
-  min-block-size: 100dvh; /* Cubre toda la altura dinámica de la ventana en pantalla completa */
+  min-block-size: 100%;
   background-color: var(--md-sys-color-surface-container); /* Canónico M3 Expressive: contraste tonal */
   box-shadow: none; /* Canónico M3 reposo: Level 0 (sin elevación ni sombra) */
   border-inline-end: var(--md-sys-shape-stroke-thin) solid var(--_rail-border, transparent);

@@ -189,8 +189,9 @@
      izquierda y alinea arriba para reflejar fielmente el layout M3.
      --------------------------------------------------------------------- */
   .sr-specimen-rail {
-    min-height: calc(var(--md-ref-spacing-900) * 6); /* 432px */
-    height: calc(var(--md-ref-spacing-900) * 6);
+    min-height: calc(var(--md-ref-spacing-900) * 8); /* 576px */
+    max-height: calc(var(--md-ref-spacing-900) * 9); /* 648px */
+    height: calc(var(--md-ref-spacing-900) * 8);
     display: flex;
     flex-direction: row;
     align-items: stretch !important;
