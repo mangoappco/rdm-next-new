@@ -51,6 +51,14 @@
    - Resiliencia de caja: block-size al 100% para integrarse en el
      Showroom y en el scaffold de pantalla completa; el 100vh explícito
      quedó descentralizado a `.md-navigation-rail-viewport`.
+   - Coreografía de expansión (Emphasized Motion): réplica del
+     startTransitionAnimation() de NavigationRailView.java — la caja
+     (ChangeBounds) morfa con las curvas canónicas emphasized mientras
+     las etiquetas corren un handoff de opacidad (Fade 100ms) en dos
+     fases secuenciales que orquesta el JS con la clase
+     `md-navigation-rail-morphing`. El FAB de cabecera es un ÚNICO nodo
+     que morfifica (cuadrado <- extended) gobernado por el estado del
+     riel, como el FloatingActionButton real dentro del View.
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
@@ -425,7 +433,8 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
     max-inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-accelerate),
     padding-inline var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-accelerate),
     gap var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-standard),
-    font-size var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-standard);
+    font-size var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-standard),
+    color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard); /* handoff del texto morfante (fase A) */
   will-change: inline-size, max-inline-size;
 }
 
@@ -456,7 +465,8 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
     max-inline-size var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
     padding-inline var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
     gap var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate),
-    font-size var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate);
+    font-size var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate),
+    color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard); /* handoff del texto morfante (fase B) */
   will-change: inline-size, max-inline-size;
 }
 
@@ -583,6 +593,32 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
 .md-navigation-rail-expanded .md-navigation-rail-item[aria-selected="true"]:active:not(:disabled):not([aria-disabled="true"])::before {
   background-color: var(--md-sys-color-on-secondary-container);
   opacity: var(--md-sys-state-pressed-state-layer-opacity);
+}
+
+/* --------------------------------------------------------------------------
+   HANDOFF CANÓNICO (100ms) — clase inyectada por el JS durante la fase A
+   --------------------------------------------------------------------------
+   Réplica de startTransitionAnimation() de NavigationRailView.java:
+   TransitionSet SEQUENTIAL = [fadeOut de labels, 100ms] -> [ChangeBounds
+   500ms + fadeIn]. El JS: (1) añade esta clase, (2) espera duration-short2,
+   (3) conmuta el estado del riel y (4) la retira en el frame siguiente para
+   que el estado destino anime el precio de vuelta desde opacidad 0.
+   Texto del FAB: se apaga por `color` (el glifo conserva el color explícito
+   de variante --md-comp-fab-icon-color y no se ve afectado).
+   ------------------------------------------------------------------------ */
+.md-navigation-rail-morphing .md-navigation-rail-item .md-navigation-rail-label {
+  opacity: 0;
+  transform: translateX(calc(-1 * var(--md-sys-measurement-navigation-rail-item-spacing))); /* desliz de 4dp */
+  transition-duration:
+    var(--md-sys-motion-duration-short2),
+    var(--md-sys-motion-duration-short2);
+  transition-timing-function:
+    var(--md-sys-motion-easing-emphasized-accelerate),
+    var(--md-sys-motion-easing-emphasized-accelerate);
+}
+
+.md-navigation-rail-morphing .md-navigation-rail-header .md-fab {
+  color: transparent; /* texto «Crear» en fade-out; glifo intacto */
 }
 
 @media (prefers-reduced-motion: reduce) {
