@@ -284,21 +284,24 @@ main:has(> .md-navigation-rail.md-navigation-rail-collapsing) {
     background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
-/* Slot del Active Indicator: 56x32dp fijo en reposo, hover y selección */
+/* Slot del Active Indicator: 56x32dp fijo en reposo, pastilla elástica continua en expansión */
 .md-navigation-rail-indicator {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  padding-inline-start: var(--md-sys-measurement-navigation-rail-expanded-leading-space); /* 16dp: alinea glifo en eje coaxial a 28dp */
+  box-sizing: border-box;
   position: relative;
   z-index: 0;
-  inline-size: var(--md-sys-measurement-navigation-rail-indicator-width); /* 56dp fijo */
-  block-size: var(--md-sys-measurement-navigation-rail-indicator-height); /* 32dp fijo */
+  inline-size: var(--md-sys-measurement-navigation-rail-indicator-width); /* 56dp */
+  block-size: var(--md-sys-measurement-navigation-rail-indicator-height); /* 32dp */
   border-radius: var(--md-sys-shape-corner-full);
   background-color: transparent;
   overflow: visible; /* Respeto estricto para no cercenar badges */
   transition:
     background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate),
-    inline-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized);
+    inline-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized),
+    block-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized);
 }
 
 /* State Layer limpio sobre la pastilla */
@@ -538,45 +541,49 @@ main:has(> .md-navigation-rail.md-navigation-rail-collapsing) {
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  gap: var(--md-sys-measurement-navigation-rail-icon-label-space); /* 8dp icono-etiqueta */
   inline-size: auto;
   min-inline-size: 0;
   block-size: var(--md-sys-measurement-space-700); /* 56dp (expandedHeight) */
   min-block-size: var(--md-sys-measurement-space-700);
   border-radius: var(--md-sys-shape-corner-full);
   margin-inline: var(--md-sys-measurement-navigation-rail-expanded-item-margin-horizontal); /* 20dp */
-  padding-inline: var(--md-sys-measurement-navigation-rail-expanded-leading-space); /* 16dp */
+  padding: var(--md-sys-measurement-space-0); /* Sin padding interno: el indicador cubre toda la celda */
   box-sizing: border-box;
-  overflow: hidden;
-  transition:
-    block-size var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
-    background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-linear);
+  overflow: visible;
+  background-color: transparent !important; /* El item es siempre transparente; la pastilla es el indicador */
   position: relative;
+  transition:
+    block-size var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
-.md-navigation-rail-expanded .md-navigation-rail-item .md-navigation-rail-indicator,
+.md-navigation-rail-collapsing .md-navigation-rail-item {
+  transition:
+    block-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized);
+}
+
+/* Pastilla elástica continua en modo expandido: ensancha a 100% (240dp) y 56dp de alto */
+.md-navigation-rail-expanded .md-navigation-rail-item .md-navigation-rail-indicator {
+  inline-size: 100%;
+  block-size: var(--md-sys-measurement-space-700); /* 56dp */
+  border-radius: var(--md-sys-shape-corner-full);
+  padding-inline-start: var(--md-sys-measurement-navigation-rail-expanded-leading-space); /* 16dp */
+  transition:
+    inline-size var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
+    block-size var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate);
+}
+
+/* Pastilla elástica continua en colapso: se contrae a 56x32dp en 450ms con curva emphasized */
 .md-navigation-rail-collapsing .md-navigation-rail-item .md-navigation-rail-indicator {
-  /* Neutralizar la pastilla colapsada sin ocultar el glifo */
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background-color: transparent !important;
-  inline-size: var(--md-sys-measurement-icon-size); /* 24dp */
-  min-inline-size: var(--md-sys-measurement-icon-size);
-  block-size: var(--md-sys-measurement-icon-size);
-  border-radius: 0;
-  margin: 0;
-  padding: 0;
+  inline-size: var(--md-sys-measurement-navigation-rail-indicator-width); /* 56dp */
+  block-size: var(--md-sys-measurement-navigation-rail-indicator-height); /* 32dp */
+  border-radius: var(--md-sys-shape-corner-full);
+  padding-inline-start: var(--md-sys-measurement-navigation-rail-expanded-leading-space); /* 16dp */
+  transition:
+    inline-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized),
+    block-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized);
 }
 
-/* Neutralizar el pseudo-elemento ::before del indicador colapsado para que
-   no cree círculos residuales en hover ni en selección dentro del ítem expandido */
-.md-navigation-rail-expanded .md-navigation-rail-item .md-navigation-rail-indicator::before,
-.md-navigation-rail-collapsing .md-navigation-rail-item .md-navigation-rail-indicator::before {
-  display: none;
-}
-
-/* Forzar renderizado y tamaño del icono */
+/* Forzar renderizado y tamaño del icono coaxial (eje x = 48dp siempre) */
 .md-navigation-rail-expanded .md-navigation-rail-icon,
 .md-navigation-rail-collapsing .md-navigation-rail-icon {
   display: inline-flex;
@@ -584,36 +591,55 @@ main:has(> .md-navigation-rail.md-navigation-rail-collapsing) {
   justify-content: center;
   font-size: var(--md-sys-measurement-icon-size); /* 24dp */
   inline-size: var(--md-sys-measurement-icon-size);
+  min-inline-size: var(--md-sys-measurement-icon-size);
   block-size: var(--md-sys-measurement-icon-size);
+  flex-shrink: 0;
 }
 
+/* Etiqueta horizontal en modo expandido y colapsando */
 .md-navigation-rail-expanded .md-navigation-rail-item .md-navigation-rail-label,
 .md-navigation-rail-collapsing .md-navigation-rail-item .md-navigation-rail-label {
-  margin-block-start: var(--md-sys-measurement-space-0); /* Sin offset vertical en fila */
+  position: absolute;
+  inset-inline-start: calc(var(--md-sys-measurement-navigation-rail-expanded-leading-space) + var(--md-sys-measurement-icon-size) + var(--md-sys-measurement-navigation-rail-icon-label-space));
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+  margin-block-start: var(--md-sys-measurement-space-0);
   font: var(--md-sys-typescale-label-large);
   letter-spacing: var(--md-sys-typescale-label-large-tracking);
   block-size: var(--md-sys-typescale-label-large-line-height);
-  opacity: 1;
-  transform: translateX(var(--md-sys-measurement-space-0));
-  transition:
-    opacity var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
-    transform var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.md-navigation-rail-expanded .md-navigation-rail-item .md-navigation-rail-label {
+  animation: md-nav-rail-label-fade-in var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate) both;
 }
 
 .md-navigation-rail-collapsing .md-navigation-rail-item .md-navigation-rail-label {
+  animation: none;
   opacity: 0;
-  transform: translateX(calc(-1 * var(--md-sys-measurement-navigation-rail-item-spacing)));
+  transform: translateY(-50%) translateX(calc(-1 * var(--md-sys-measurement-navigation-rail-item-spacing)));
   transition:
     opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized),
     transform var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized);
 }
 
-/* Estado activo en modo expandido: el fondo secondary-container tiñe todo el item */
-.md-navigation-rail-expanded .md-navigation-rail-item[aria-selected="true"],
-.md-navigation-rail-collapsing .md-navigation-rail-item[aria-selected="true"] {
-  background-color: var(--md-sys-color-secondary-container);
+@keyframes md-nav-rail-label-fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-50%) translateX(calc(-1 * var(--md-sys-measurement-navigation-rail-item-spacing)));
+  }
+  50% {
+    opacity: 0;
+    transform: translateY(-50%) translateX(calc(-1 * var(--md-sys-measurement-navigation-rail-item-spacing)));
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(-50%) translateX(var(--md-sys-measurement-space-0));
+  }
 }
 
+/* Colores semánticos en modo expandido */
 .md-navigation-rail-expanded .md-navigation-rail-item[aria-selected="true"] .md-navigation-rail-icon,
 .md-navigation-rail-collapsing .md-navigation-rail-item[aria-selected="true"] .md-navigation-rail-icon {
   color: var(--md-sys-color-on-secondary-container);
@@ -625,42 +651,9 @@ main:has(> .md-navigation-rail.md-navigation-rail-collapsing) {
   color: var(--md-sys-color-on-secondary-container);
 }
 
-/* State layers para el item extendido */
-.md-navigation-rail-expanded .md-navigation-rail-item::before,
-.md-navigation-rail-collapsing .md-navigation-rail-item::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background-color: transparent;
-  opacity: 0;
-  pointer-events: none;
-  z-index: 0;
-  transition: opacity var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
-}
-
-.md-navigation-rail-expanded .md-navigation-rail-item:hover:not(:disabled):not([aria-disabled="true"]):not([aria-selected="true"])::before,
-.md-navigation-rail-collapsing .md-navigation-rail-item:hover:not(:disabled):not([aria-disabled="true"]):not([aria-selected="true"])::before {
-  background-color: var(--md-sys-color-on-surface);
-  opacity: var(--md-sys-state-hover-state-layer-opacity);
-}
-
-.md-navigation-rail-expanded .md-navigation-rail-item[aria-selected="true"]:hover:not(:disabled):not([aria-disabled="true"])::before,
-.md-navigation-rail-collapsing .md-navigation-rail-item[aria-selected="true"]:hover:not(:disabled):not([aria-disabled="true"])::before {
-  background-color: var(--md-sys-color-on-secondary-container);
-  opacity: var(--md-sys-state-hover-state-layer-opacity);
-}
-
-.md-navigation-rail-expanded .md-navigation-rail-item:active:not(:disabled):not([aria-disabled="true"]):not([aria-selected="true"])::before,
-.md-navigation-rail-collapsing .md-navigation-rail-item:active:not(:disabled):not([aria-disabled="true"]):not([aria-selected="true"])::before {
-  background-color: var(--md-sys-color-on-surface);
-  opacity: var(--md-sys-state-pressed-state-layer-opacity);
-}
-
-.md-navigation-rail-expanded .md-navigation-rail-item[aria-selected="true"]:active:not(:disabled):not([aria-disabled="true"])::before,
-.md-navigation-rail-collapsing .md-navigation-rail-item[aria-selected="true"]:active:not(:disabled):not([aria-disabled="true"])::before {
-  background-color: var(--md-sys-color-on-secondary-container);
-  opacity: var(--md-sys-state-pressed-state-layer-opacity);
+.md-navigation-rail-expanded .md-navigation-rail-item:not([aria-selected="true"]) .md-navigation-rail-label,
+.md-navigation-rail-collapsing .md-navigation-rail-item:not([aria-selected="true"]) .md-navigation-rail-label {
+  color: var(--md-sys-color-on-surface);
 }
 
 /* --------------------------------------------------------------------------
