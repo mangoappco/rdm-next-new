@@ -83,11 +83,11 @@ export function initNavigationRail() {
     } else {
       // COLAPSO COORDINADO M3:
       // Mantener la disposición de fila (.md-navigation-rail-collapsing)
-      // mientras el riel se encoge de 280dp a 96dp en 300ms (medium2)
-      // y las etiquetas se desvanecen en 150ms (short3).
+      // mientras el riel se encoge de 280dp a 96dp en 450ms (long1) con
+      // curva emphasized, y las etiquetas se desvanecen en 200ms (short4).
       rail.classList.add('md-navigation-rail-collapsing');
-      const raw = getComputedStyle(document.documentElement).getPropertyValue('--md-sys-motion-duration-medium2');
-      const ms = parseFloat(raw) || 300;
+      const raw = getComputedStyle(document.documentElement).getPropertyValue('--md-sys-motion-duration-long1');
+      const ms = parseFloat(raw) || 450;
       morphTimers.set(rail, setTimeout(() => {
         rail.classList.remove('md-navigation-rail-expanded', 'md-navigation-rail-collapsing');
         morphTimers.delete(rail);

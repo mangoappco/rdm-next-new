@@ -84,7 +84,7 @@
   padding-block-start: var(--md-sys-measurement-navigation-rail-padding-top); /* 16dp respiro perimetral unificado M3 */
   padding-block-end: var(--md-sys-measurement-navigation-rail-padding-top); /* 16dp de cierre */
   overflow-x: hidden; /* Evita scrolls horizontales parásitos y confina el contenido durante metamorfosis */
-  transition: inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-accelerate);
+  transition: inline-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized);
   will-change: inline-size;
 }
 
@@ -99,16 +99,13 @@
 body:has(> .md-navigation-rail) > main,
 main:has(> .md-navigation-rail) {
   margin-inline-start: var(--md-sys-measurement-navigation-rail-width);
-  transition: margin-inline-start var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-accelerate);
+  transition: margin-inline-start var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized);
   will-change: margin-inline-start;
 }
 
 .md-navigation-rail.md-navigation-rail-expanded ~ main,
 body:has(> .md-navigation-rail.md-navigation-rail-expanded) > main,
-main:has(> .md-navigation-rail.md-navigation-rail-expanded),
-.md-navigation-rail.md-navigation-rail-collapsing ~ main,
-body:has(> .md-navigation-rail.md-navigation-rail-collapsing) > main,
-main:has(> .md-navigation-rail.md-navigation-rail-collapsing) {
+main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
   margin-inline-start: var(--md-sys-measurement-navigation-rail-expanded-width);
   transition: margin-inline-start var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate);
 }
@@ -117,7 +114,7 @@ main:has(> .md-navigation-rail.md-navigation-rail-collapsing) {
 body:has(> .md-navigation-rail.md-navigation-rail-collapsing) > main,
 main:has(> .md-navigation-rail.md-navigation-rail-collapsing) {
   margin-inline-start: var(--md-sys-measurement-navigation-rail-width);
-  transition: margin-inline-start var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-accelerate);
+  transition: margin-inline-start var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized);
 }
 
 /* Modificador canónico para delimitación gráfica explícita cuando se requiera */
@@ -283,10 +280,8 @@ main:has(> .md-navigation-rail.md-navigation-rail-collapsing) {
   box-sizing: border-box;
   white-space: nowrap;
   transition:
-    margin-inline var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-accelerate),
-    padding-inline var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-accelerate),
-    block-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-accelerate),
-    background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-linear);
+    block-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized),
+    background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
 /* Slot del Active Indicator: 56x32dp fijo en reposo, hover y selección */
@@ -302,8 +297,8 @@ main:has(> .md-navigation-rail.md-navigation-rail-collapsing) {
   background-color: transparent;
   overflow: visible; /* Respeto estricto para no cercenar badges */
   transition:
-    background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
-    inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-accelerate);
+    background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate),
+    inline-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized);
 }
 
 /* State Layer limpio sobre la pastilla */
@@ -346,8 +341,8 @@ main:has(> .md-navigation-rail.md-navigation-rail-collapsing) {
   opacity: 1;
   transform: translateX(var(--md-sys-measurement-space-0));
   transition:
-    opacity var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-emphasized-accelerate),
-    transform var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-emphasized-accelerate);
+    opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate),
+    transform var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
 /* --------------------------------------------------------------------------
@@ -361,6 +356,7 @@ main:has(> .md-navigation-rail.md-navigation-rail-collapsing) {
    ------------------------------------------------------------------------ */
 .md-navigation-rail-item[aria-selected="true"] .md-navigation-rail-indicator {
   background-color: var(--md-sys-color-secondary-container);
+  transition: background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
 .md-navigation-rail-item[aria-selected="true"] {
@@ -435,7 +431,7 @@ main:has(> .md-navigation-rail.md-navigation-rail-collapsing) {
 .md-navigation-rail-collapsing {
   inline-size: var(--md-sys-measurement-navigation-rail-width); /* 96dp */
   min-inline-size: var(--md-sys-measurement-navigation-rail-width);
-  transition: inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-accelerate);
+  transition: inline-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized);
 }
 
 .md-navigation-rail-expanded .md-navigation-rail-header,
@@ -464,13 +460,13 @@ main:has(> .md-navigation-rail.md-navigation-rail-collapsing) {
   font-size: 0; /* Colapsa nodos de texto directo en colapso */
   line-height: 0;
   transition:
-    inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-accelerate),
-    min-inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-accelerate),
-    max-inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-accelerate),
-    padding-inline var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-accelerate),
-    gap var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-emphasized-accelerate),
-    font-size var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-emphasized-accelerate),
-    color var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-emphasized-accelerate);
+    inline-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized),
+    min-inline-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized),
+    max-inline-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized),
+    padding-inline var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized),
+    gap var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized),
+    font-size var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized),
+    color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized);
   will-change: inline-size, max-inline-size;
 }
 
@@ -502,12 +498,12 @@ main:has(> .md-navigation-rail.md-navigation-rail-collapsing) {
     padding-inline var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
     gap var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate),
     font-size var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate),
-    color var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-emphasized-decelerate);
+    color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate);
   will-change: inline-size, max-inline-size;
 }
 
 /* 3. MODO COLAPSANDO (.md-navigation-rail-collapsing):
-   El FAB se contrae orgánicamente en 300ms hacia 56px antes del cambio de layout */
+   El FAB se contrae orgánicamente en 450ms hacia 56px antes del cambio de layout */
 .md-navigation-rail-collapsing .md-navigation-rail-header .md-fab {
   inline-size: var(--md-sys-measurement-fab-height); /* 56dp */
   min-inline-size: var(--md-sys-measurement-fab-height);
@@ -520,12 +516,12 @@ main:has(> .md-navigation-rail.md-navigation-rail-collapsing) {
   white-space: nowrap;
   color: transparent;
   transition:
-    inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-accelerate),
-    min-inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-accelerate),
-    max-inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-accelerate),
-    padding-inline var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-accelerate),
-    gap var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-emphasized-accelerate),
-    color var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-emphasized-accelerate);
+    inline-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized),
+    min-inline-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized),
+    max-inline-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized),
+    padding-inline var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized),
+    gap var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized),
+    color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized);
   will-change: inline-size, max-inline-size;
 }
 
@@ -608,8 +604,8 @@ main:has(> .md-navigation-rail.md-navigation-rail-collapsing) {
   opacity: 0;
   transform: translateX(calc(-1 * var(--md-sys-measurement-navigation-rail-item-spacing)));
   transition:
-    opacity var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-emphasized-accelerate),
-    transform var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-emphasized-accelerate);
+    opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized),
+    transform var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized);
 }
 
 /* Estado activo en modo expandido: el fondo secondary-container tiñe todo el item */
@@ -682,16 +678,16 @@ main:has(> .md-navigation-rail.md-navigation-rail-collapsing) {
   opacity: 0;
   transform: translateX(calc(-1 * var(--md-sys-measurement-navigation-rail-item-spacing))); /* desliz de 4dp */
   transition-duration:
-    var(--md-sys-motion-duration-short3),
-    var(--md-sys-motion-duration-short3);
+    var(--md-sys-motion-duration-short4),
+    var(--md-sys-motion-duration-short4);
   transition-timing-function:
-    var(--md-sys-motion-easing-emphasized-accelerate),
-    var(--md-sys-motion-easing-emphasized-accelerate);
+    var(--md-sys-motion-easing-emphasized),
+    var(--md-sys-motion-easing-emphasized);
 }
 
 .md-navigation-rail-morphing .md-navigation-rail-header .md-fab {
   color: transparent; /* texto «Crear» en fade-out; glifo intacto */
-  transition: color var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-emphasized-accelerate);
+  transition: color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized);
 }
 
 @media (prefers-reduced-motion: reduce) {
