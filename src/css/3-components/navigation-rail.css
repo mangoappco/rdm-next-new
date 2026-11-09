@@ -156,6 +156,14 @@
   margin-block-end: var(--md-sys-measurement-navigation-rail-header-margin-bottom); /* 40dp Expressive: entre header y destinos */
 }
 
+/* Compensación de margen superior cuando la cabecera arranca solo con FAB (sin botón previo de menú):
+   M3 canónico especifica 16dp de separación superior para el FAB en reposo. Al restar la diferencia
+   (44dp - 16dp = 28dp) respecto al padding superior de 44dp del rail, el FAB se posiciona
+   exactamente a 16dp del borde superior. */
+.md-navigation-rail-header > .md-fab:first-child {
+  margin-block-start: calc(var(--md-sys-measurement-navigation-rail-header-top-space-fab-only) - var(--md-sys-measurement-navigation-rail-content-top-margin));
+}
+
 /* Alineación coaxial canónica para los elementos hijos de la cabecera:
    Eje común a 48dp de centro del carril (keyline 36dp - 60dp para glifo de 24dp):
    - Botón de alternancia / menú: caja de 40dp (small uniform).

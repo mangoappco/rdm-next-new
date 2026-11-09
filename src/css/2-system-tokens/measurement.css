@@ -422,6 +422,7 @@
      token itemPaddingTop/itemPaddingBottom = item_vertical_space (6dp). */
   --md-sys-measurement-navigation-rail-item-padding-bottom: var(--md-ref-spacing-75); /* 6dp */
   --md-sys-measurement-navigation-rail-content-top-margin: var(--md-ref-padding-navigation-rail-content-top); /* 44dp */
+  --md-sys-measurement-navigation-rail-header-top-space-fab-only: var(--md-sys-measurement-space-200); /* 16dp: separación superior cuando solo hay FAB */
   --md-sys-measurement-navigation-rail-header-margin-bottom: var(--md-ref-spacing-500); /* 40dp */
   /* Gap interno de la cabecera APILADA (menu debajo del FAB / with menu and
      FAB). El doc Android no publica una cota entre ambos slots, asi que es
