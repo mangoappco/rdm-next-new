@@ -659,65 +659,100 @@ main:has(> .md-navigation-rail.md-navigation-rail-collapsing) {
 /* ==========================================================================
    SECTION HEADER (M3 Expressive: Subtítulo / Encabezado de Sección)
    ==========================================================================
-   Cotas canónicas oficiales M3:
-   - Margen superior: 12dp (--md-sys-measurement-navigation-rail-section-space-top)
-   - Margen inferior: 8dp (--md-sys-measurement-navigation-rail-section-space-bottom)
-   - Keyline: alineada a 36dp (margen 20dp + leading 16dp)
-   - Tipografía: title-small (14dp / peso 500)
-   - Color: on-surface-variant
-   - Colapso: en reposo colapsado (96dp) se contrae con opacity: 0 y block-size: 0
+   Comportamiento canónico oficial M3:
+   - En expandido (280dp): Exhibe el texto canónico en title-small (14dp / 500)
+     con keyline de 36dp y márgenes de 12dp superior / 8dp inferior.
+   - En colapsado (96dp): El texto se desvanece y la caja metamorfosea en
+     un divisor horizontal centrado de 48dp (outline-variant) para preservar
+     la segmentación visual entre grupos de destinos.
    ========================================================================== */
 .md-navigation-rail-section-header {
-  display: block;
-  font: var(--md-sys-typescale-title-small);
-  letter-spacing: var(--md-sys-typescale-title-small-tracking);
-  color: var(--md-sys-color-on-surface-variant);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   inline-size: 100%;
   box-sizing: border-box;
+  position: relative;
+  font: var(--md-sys-typescale-title-small);
+  letter-spacing: var(--md-sys-typescale-title-small-tracking);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding-inline-start: calc(var(--md-sys-measurement-navigation-rail-expanded-item-margin-horizontal) + var(--md-sys-measurement-navigation-rail-expanded-leading-space)); /* 36dp */
-  padding-inline-end: var(--md-sys-measurement-navigation-rail-expanded-item-margin-horizontal); /* 20dp */
-  /* Estado por defecto (colapsado 96dp): confinado a 0 para no desbordar */
-  opacity: 0;
-  max-block-size: var(--md-sys-measurement-space-0);
-  margin-block-start: var(--md-sys-measurement-space-0);
-  margin-block-end: var(--md-sys-measurement-space-0);
+  /* Estado por defecto (colapsado 96dp): contenedor centrado con texto transparente */
+  block-size: var(--md-sys-measurement-space-200); /* 16dp de altura contenida */
+  margin-block: var(--md-sys-measurement-space-100); /* 8dp simétrico */
+  padding-inline: var(--md-sys-measurement-space-0);
+  color: transparent;
+  user-select: none;
   pointer-events: none;
   transition:
-    opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized),
-    max-block-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized),
+    color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized),
+    block-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized),
     margin-block-start var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized),
-    margin-block-end var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized);
+    margin-block-end var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized),
+    padding-inline-start var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized);
 }
 
-/* Modo EXPANDIDO (280dp): emerge con sus cotas de 12dp/8dp y opacidad plena */
-.md-navigation-rail-expanded .md-navigation-rail-section-header {
+/* Divisor horizontal centrado de 48dp en estado colapsado */
+.md-navigation-rail-section-header::after {
+  content: '';
+  display: block;
+  inline-size: var(--md-sys-measurement-touch-target); /* 48dp centrado */
+  block-size: var(--md-sys-shape-stroke-thin); /* 1dp */
+  background-color: var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-full);
+  position: absolute;
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
   opacity: 1;
-  max-block-size: var(--md-sys-measurement-space-600); /* 48dp de holgura */
+  transition: opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized);
+}
+
+/* Modo EXPANDIDO (280dp): emerge el texto a 36dp de keyline y el divisor se desvanece */
+.md-navigation-rail-expanded .md-navigation-rail-section-header {
+  justify-content: flex-start;
+  block-size: var(--md-sys-typescale-title-small-line-height); /* 20dp */
   margin-block-start: var(--md-sys-measurement-navigation-rail-section-space-top); /* 12dp */
   margin-block-end: var(--md-sys-measurement-navigation-rail-section-space-bottom); /* 8dp */
+  padding-inline-start: calc(var(--md-sys-measurement-navigation-rail-expanded-item-margin-horizontal) + var(--md-sys-measurement-navigation-rail-expanded-leading-space)); /* 36dp */
+  padding-inline-end: var(--md-sys-measurement-navigation-rail-expanded-item-margin-horizontal); /* 20dp */
+  color: var(--md-sys-color-on-surface-variant);
+  user-select: auto;
   pointer-events: auto;
   transition:
-    opacity var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
-    max-block-size var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
+    color var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
+    block-size var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
     margin-block-start var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
-    margin-block-end var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate);
+    margin-block-end var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
+    padding-inline-start var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
-/* Modo COLAPSANDO: fade-out rápido y contracción hacia 0 */
-.md-navigation-rail-collapsing .md-navigation-rail-section-header {
+.md-navigation-rail-expanded .md-navigation-rail-section-header::after {
   opacity: 0;
-  max-block-size: var(--md-sys-measurement-space-0);
-  margin-block-start: var(--md-sys-measurement-space-0);
-  margin-block-end: var(--md-sys-measurement-space-0);
+  pointer-events: none;
+  transition: opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate);
+}
+
+/* Modo COLAPSANDO: fade-out del texto y reaparición suave del divisor */
+.md-navigation-rail-collapsing .md-navigation-rail-section-header {
+  justify-content: center;
+  block-size: var(--md-sys-measurement-space-200); /* 16dp */
+  margin-block: var(--md-sys-measurement-space-100); /* 8dp */
+  padding-inline-start: var(--md-sys-measurement-space-0);
+  color: transparent;
+  user-select: none;
   pointer-events: none;
   transition:
-    opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized),
-    max-block-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized),
+    color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized),
+    block-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized),
     margin-block-start var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized),
-    margin-block-end var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized);
+    margin-block-end var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized),
+    padding-inline-start var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized);
+}
+
+.md-navigation-rail-collapsing .md-navigation-rail-section-header::after {
+  opacity: 1;
+  transition: opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized);
 }
 
 /* --------------------------------------------------------------------------
