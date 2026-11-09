@@ -416,7 +416,9 @@
   --md-sys-measurement-navigation-rail-width: var(--md-ref-container-width-navigation-rail); /* 96dp */
   --md-sys-measurement-navigation-rail-expanded-width: var(--md-ref-container-width-menu-max); /* 280dp (M3 Expressive) */
   --md-sys-measurement-navigation-rail-item-min-height: var(--md-ref-spacing-800); /* 64dp */
-  --md-sys-measurement-navigation-rail-item-spacing: var(--md-ref-spacing-50); /* 4dp */
+  --md-sys-measurement-navigation-rail-item-spacing: var(--md-ref-spacing-100); /* 8dp: cota roja canónica M3 entre destinos colapsados */
+  --md-sys-measurement-navigation-rail-section-space-top: var(--md-ref-spacing-150); /* 12dp: cota superior canónica M3 de encabezado de sección */
+  --md-sys-measurement-navigation-rail-section-space-bottom: var(--md-ref-spacing-100); /* 8dp: cota inferior canónica M3 de encabezado de sección */
   --md-sys-measurement-navigation-rail-item-padding-top: var(--md-ref-spacing-75); /* 6dp */
   /* El vertical space es SIMETRICO en Expressive: styles.xml repite el mismo
      token itemPaddingTop/itemPaddingBottom = item_vertical_space (6dp). */

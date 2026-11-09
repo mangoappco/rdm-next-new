@@ -67,7 +67,7 @@
     <header class="sr-header">
       <h1 class="md-type-display-large">Navigation Rail</h1>
       <p class="md-type-body-large">Carril vertical de navegación primaria M3 Expressive (2025): 96dp colapsado, 280dp expandido como sustituto del Navigation Drawer, pastilla activa de 56×32dp y doble matriz simétrica de cabecera (items, menú, FAB) en las dos modalidades.</p>
-      <p class="md-type-body-medium md-text-on-surface-variant">M3 Expressive · 96dp colapsado · 280dp expandido · 9 pares</p>
+      <p class="md-type-body-medium md-text-on-surface-variant">M3 Expressive · 96dp colapsado · 280dp expandido · 10 pares</p>
     </header>
 
     <hr class="md-divider">
@@ -736,6 +736,122 @@
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
     <!-- PAREJA PAR 9: hasta aqui -->
+
+    <hr class="md-divider">
+
+    <!-- BLOQUE D: AGRUPACIÓN CANÓNICA DE DESTINOS -->
+    <h2 class="md-type-headline-medium">Bloque D · Agrupación canónica (Section Header)</h2>
+
+    <!-- PAREJA PAR 10: Navigation items with Section Headers -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Navigation items with Section Headers</h3>
+      <p class="md-type-body-medium">Subtítulos de sección canónicos M3 (12dp superior, 8dp inferior, keyline a 36dp en title-small) para categorizar destinos. En modo colapsado (96dp) se ocultan automáticamente, y emergen con movimiento suave al expandir.</p>
+
+      <div class="sr-specimen sr-specimen-rail">
+        <nav class="md-navigation-rail" role="tablist" aria-label="Navegación por secciones">
+          <div class="md-navigation-rail-header">
+            <button type="button" class="md-icon-button" aria-label="Abrir menú de navegación" data-rail-toggle>
+              <span class="md-icon" aria-hidden="true">menu</span>
+            </button>
+            <button type="button" class="md-fab md-fab-extended">
+              <span class="md-icon" aria-hidden="true">edit</span>Crear<span class="md-fab-touch"></span>
+            </button>
+          </div>
+          <div class="md-navigation-rail-content">
+            <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="true" tabindex="0">
+              <span class="md-navigation-rail-indicator">
+                <span class="md-navigation-rail-icon md-icon" aria-hidden="true">inbox</span>
+              </span>
+              <span class="md-navigation-rail-label">Recibidos</span>
+            </button>
+            <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1">
+              <span class="md-navigation-rail-indicator">
+                <span class="md-navigation-rail-icon md-icon" aria-hidden="true">send</span>
+              </span>
+              <span class="md-navigation-rail-label">Enviados</span>
+            </button>
+            <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1">
+              <span class="md-navigation-rail-indicator">
+                <span class="md-navigation-rail-icon md-icon" aria-hidden="true">favorite</span>
+              </span>
+              <span class="md-navigation-rail-label">Favoritos</span>
+            </button>
+            <span class="md-navigation-rail-section-header" role="presentation">Etiquetas</span>
+            <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1">
+              <span class="md-navigation-rail-indicator">
+                <span class="md-navigation-rail-icon md-icon" aria-hidden="true">label</span>
+              </span>
+              <span class="md-navigation-rail-label">Trabajo</span>
+            </button>
+            <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1">
+              <span class="md-navigation-rail-indicator">
+                <span class="md-navigation-rail-icon md-icon" aria-hidden="true">folder</span>
+              </span>
+              <span class="md-navigation-rail-label">Proyectos</span>
+            </button>
+          </div>
+        </nav>
+      </div>
+
+      <pre class="sr-code"><code>&lt;nav class="md-navigation-rail" role="tablist" aria-label="Navegación por secciones"&gt;
+  &lt;!-- Slot: Cabecera y controles maestros --&gt;
+  &lt;div class="md-navigation-rail-header"&gt;
+    &lt;button type="button" class="md-icon-button" aria-label="Abrir menú de navegación" data-rail-toggle&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;menu&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-fab md-fab-extended"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;Crear&lt;span class="md-fab-touch"&gt;&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+  &lt;!-- Slot: Contenido y grupos --&gt;
+  &lt;div class="md-navigation-rail-content"&gt;
+    &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="true" tabindex="0"&gt;
+      &lt;!-- Slot: Icono / Indicador --&gt;
+      &lt;span class="md-navigation-rail-indicator"&gt;
+        &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;inbox&lt;/span&gt;
+      &lt;/span&gt;
+      &lt;!-- Slot: Etiqueta de texto --&gt;
+      &lt;span class="md-navigation-rail-label"&gt;Recibidos&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1"&gt;
+      &lt;!-- Slot: Icono / Indicador --&gt;
+      &lt;span class="md-navigation-rail-indicator"&gt;
+        &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;send&lt;/span&gt;
+      &lt;/span&gt;
+      &lt;!-- Slot: Etiqueta de texto --&gt;
+      &lt;span class="md-navigation-rail-label"&gt;Enviados&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1"&gt;
+      &lt;!-- Slot: Icono / Indicador --&gt;
+      &lt;span class="md-navigation-rail-indicator"&gt;
+        &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;favorite&lt;/span&gt;
+      &lt;/span&gt;
+      &lt;!-- Slot: Etiqueta de texto --&gt;
+      &lt;span class="md-navigation-rail-label"&gt;Favoritos&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;!-- Slot: Encabezado de sección canónico M3 --&gt;
+    &lt;span class="md-navigation-rail-section-header" role="presentation"&gt;Etiquetas&lt;/span&gt;
+    &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1"&gt;
+      &lt;!-- Slot: Icono / Indicador --&gt;
+      &lt;span class="md-navigation-rail-indicator"&gt;
+        &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;label&lt;/span&gt;
+      &lt;/span&gt;
+      &lt;!-- Slot: Etiqueta de texto --&gt;
+      &lt;span class="md-navigation-rail-label"&gt;Trabajo&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1"&gt;
+      &lt;!-- Slot: Icono / Indicador --&gt;
+      &lt;span class="md-navigation-rail-indicator"&gt;
+        &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;folder&lt;/span&gt;
+      &lt;/span&gt;
+      &lt;!-- Slot: Etiqueta de texto --&gt;
+      &lt;span class="md-navigation-rail-label"&gt;Proyectos&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/nav&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA PAR 10: hasta aqui -->
 
   </main>
   <!-- MAIN: fin -->
