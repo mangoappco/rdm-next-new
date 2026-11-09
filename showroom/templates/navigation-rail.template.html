@@ -8,8 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
-  <link rel="stylesheet" href="../../src/css/main.css?v=69">
-  <link rel="stylesheet" href="../assets/showroom.css?v=69">
+  <link rel="stylesheet" href="../../src/css/main.css?v=70">
+  <link rel="stylesheet" href="../assets/showroom.css?v=70">
   <script type="module" src="../../src/js/main.js"></script>
   <script src="../assets/showroom.js"></script>
 </head>
@@ -206,15 +206,12 @@
     <!-- PAREJA PAR 3: Three navigation items with a FAB -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Three navigation items with a FAB</h3>
-      <p class="md-type-body-medium">La cabecera aloja la acción principal con un FAB base de 56×56dp (dogfooding del catálogo: md-fab en reposo con superficie tonal primary-container y su slot táctil). Sin menú: un FAB no expande el carril.</p>
+      <p class="md-type-body-medium">La cabecera aloja la acción principal como ÚNICO nodo extended morfante (md-fab md-fab-primary md-fab-extended, texto al vuelo sin aria-label: el nombre accesible es el texto): en colapsado el sistema lo clampnea a 56×56dp y expandido lo suelta. Sin menú: un FAB no expande el carril.</p>
 
       <div class="sr-specimen sr-specimen-rail">
         <nav class="md-navigation-rail" role="tablist" aria-label="Navegación con acción principal">
           <div class="md-navigation-rail-header">
-            <button type="button" class="md-fab" aria-label="Crear nuevo registro">
-              <span class="md-icon" aria-hidden="true">edit</span>
-              <span class="md-fab-touch"></span>
-            </button>
+            <button type="button" class="md-fab md-fab-primary md-fab-extended"><span class="md-icon" aria-hidden="true">edit</span>Crear<span class="md-fab-touch"></span></button>
           </div>
           <div class="md-navigation-rail-content">
             <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="true" tabindex="0">
@@ -242,10 +239,7 @@
       <pre class="sr-code"><code>&lt;nav class="md-navigation-rail" role="tablist" aria-label="Navegación con acción principal"&gt;
   &lt;!-- Slot: Cabecera y controles maestros --&gt;
   &lt;div class="md-navigation-rail-header"&gt;
-    &lt;button type="button" class="md-fab" aria-label="Crear nuevo registro"&gt;
-      &lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;
-      &lt;span class="md-fab-touch"&gt;&lt;/span&gt;
-    &lt;/button&gt;
+    &lt;button type="button" class="md-fab md-fab-primary md-fab-extended"&gt;&lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;Crear&lt;span class="md-fab-touch"&gt;&lt;/span&gt;&lt;/button&gt;
   &lt;/div&gt;
   &lt;!-- Slot: Lista de destinos de navegación --&gt;
   &lt;div class="md-navigation-rail-content"&gt;
@@ -276,7 +270,7 @@
     <!-- PAREJA PAR 4: Three navigation items with a menu and FAB -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Three navigation items with a menu and FAB</h3>
-      <p class="md-type-body-medium">Cabecera completa: el slot apila el menú y el FAB debajo (gap interno de 16dp, decisión de RDM) antes del margen canónico de 40dp que separa la cabecera de los destinos.</p>
+      <p class="md-type-body-medium">La cabecera completa morfante: el menú y el FAB extended (única anatomía, clamp 56×56dp en colapsado) apilados con el gap interno de 16dp que decide RDM; los destinos arrancan tras el respiro de cabecera del bloque.</p>
 
       <div class="sr-specimen sr-specimen-rail">
         <nav class="md-navigation-rail" role="tablist" aria-label="Navegación con menú y acción principal">
@@ -284,10 +278,10 @@
             <button type="button" class="md-icon-button" aria-label="Abrir menú de navegación" data-rail-toggle>
               <span class="md-icon" aria-hidden="true">menu</span>
             </button>
-            <button type="button" class="md-fab md-fab-extended">
+            <button type="button" class="md-fab md-fab-primary md-fab-extended">
               <span class="md-icon" aria-hidden="true">edit</span>
-      Crear
-      <span class="md-fab-touch"></span>
+              Crear
+              <span class="md-fab-touch"></span>
             </button>
           </div>
           <div class="md-navigation-rail-content">
@@ -319,7 +313,7 @@
     &lt;button type="button" class="md-icon-button" aria-label="Abrir menú de navegación" data-rail-toggle&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;menu&lt;/span&gt;
     &lt;/button&gt;
-    &lt;button type="button" class="md-fab md-fab-extended"&gt;
+    &lt;button type="button" class="md-fab md-fab-primary md-fab-extended"&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;
       Crear
       &lt;span class="md-fab-touch"&gt;&lt;/span&gt;
@@ -489,10 +483,10 @@
       <div class="sr-specimen sr-specimen-rail">
         <nav class="md-navigation-rail md-navigation-rail-expanded" role="tablist" aria-label="Navegación extendida con acción principal">
           <div class="md-navigation-rail-header">
-            <button type="button" class="md-fab md-fab-extended">
+            <button type="button" class="md-fab md-fab-primary md-fab-extended">
               <span class="md-icon" aria-hidden="true">edit</span>
-      Crear
-      <span class="md-fab-touch"></span>
+              Crear
+              <span class="md-fab-touch"></span>
             </button>
           </div>
           <div class="md-navigation-rail-content">
@@ -521,7 +515,7 @@
       <pre class="sr-code"><code>&lt;nav class="md-navigation-rail md-navigation-rail-expanded" role="tablist" aria-label="Navegación extendida con acción principal"&gt;
   &lt;!-- Slot: Cabecera y controles maestros --&gt;
   &lt;div class="md-navigation-rail-header"&gt;
-    &lt;button type="button" class="md-fab md-fab-extended"&gt;
+    &lt;button type="button" class="md-fab md-fab-primary md-fab-extended"&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;
       Crear
       &lt;span class="md-fab-touch"&gt;&lt;/span&gt;
@@ -564,10 +558,10 @@
             <button type="button" class="md-icon-button" aria-label="Contraer menú de navegación" aria-expanded="true" data-rail-toggle>
               <span class="md-icon" aria-hidden="true">menu_open</span>
             </button>
-            <button type="button" class="md-fab md-fab-extended">
+            <button type="button" class="md-fab md-fab-primary md-fab-extended">
               <span class="md-icon" aria-hidden="true">edit</span>
-      Crear
-      <span class="md-fab-touch"></span>
+              Crear
+              <span class="md-fab-touch"></span>
             </button>
           </div>
           <div class="md-navigation-rail-content">
@@ -599,7 +593,7 @@
     &lt;button type="button" class="md-icon-button" aria-label="Contraer menú de navegación" aria-expanded="true" data-rail-toggle&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;menu_open&lt;/span&gt;
     &lt;/button&gt;
-    &lt;button type="button" class="md-fab md-fab-extended"&gt;
+    &lt;button type="button" class="md-fab md-fab-primary md-fab-extended"&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;
       Crear
       &lt;span class="md-fab-touch"&gt;&lt;/span&gt;
@@ -642,7 +636,7 @@
             <button type="button" class="md-icon-button" aria-label="Abrir menú de navegación" data-rail-toggle>
               <span class="md-icon" aria-hidden="true">menu</span>
             </button>
-            <button type="button" class="md-fab md-fab-extended">
+            <button type="button" class="md-fab md-fab-primary md-fab-extended">
               <span class="md-icon" aria-hidden="true">edit</span>Crear<span class="md-fab-touch"></span>
             </button>
           </div>
@@ -690,7 +684,7 @@
     &lt;button type="button" class="md-icon-button" aria-label="Abrir menú de navegación" data-rail-toggle&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;menu&lt;/span&gt;
     &lt;/button&gt;
-    &lt;button type="button" class="md-fab md-fab-extended"&gt;
+    &lt;button type="button" class="md-fab md-fab-primary md-fab-extended"&gt;
       &lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;Crear&lt;span class="md-fab-touch"&gt;&lt;/span&gt;
     &lt;/button&gt;
   &lt;/div&gt;
