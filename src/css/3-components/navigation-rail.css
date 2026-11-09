@@ -68,8 +68,8 @@
   background-color: var(--md-sys-color-surface);
   box-shadow: var(--md-sys-elevation-level3); /* Expressive: 3dp (era 0 en baseline) */
   box-sizing: border-box;
-  padding-block-start: var(--md-sys-measurement-navigation-rail-content-top-margin); /* 44dp acumulativo, canónico */
-  padding-block-end: var(--md-sys-measurement-navigation-rail-item-padding-bottom); /* 4dp de cierre */
+  padding-block-start: var(--md-sys-measurement-navigation-rail-padding-top); /* 16dp respiro perimetral unificado M3 */
+  padding-block-end: var(--md-sys-measurement-navigation-rail-padding-top); /* 16dp de cierre */
   position: relative;
   transition: inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized);
   will-change: inline-size;
@@ -154,14 +154,6 @@
   box-sizing: border-box;
   gap: var(--md-sys-measurement-navigation-rail-header-gap); /* 16dp: aire entre menu y FAB (solo manda si hay dos) */
   margin-block-end: var(--md-sys-measurement-navigation-rail-header-margin-bottom); /* 40dp Expressive: entre header y destinos */
-}
-
-/* Compensación de margen superior cuando la cabecera arranca solo con FAB (sin botón previo de menú):
-   M3 canónico especifica 16dp de separación superior para el FAB en reposo. Al restar la diferencia
-   (44dp - 16dp = 28dp) respecto al padding superior de 44dp del rail, el FAB se posiciona
-   exactamente a 16dp del borde superior. */
-.md-navigation-rail-header > .md-fab:first-child {
-  margin-block-start: calc(var(--md-sys-measurement-navigation-rail-header-top-space-fab-only) - var(--md-sys-measurement-navigation-rail-content-top-margin));
 }
 
 /* Alineación coaxial canónica para los elementos hijos de la cabecera:
