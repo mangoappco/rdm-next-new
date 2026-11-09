@@ -17,30 +17,77 @@ export function initNavigationRail() {
   //    IMPORTANTE: solo [data-rail-toggle] activa la expansión. El header es el
   //    slot canónico para FABs y logos: un clic en cualquiera de ellos NUNCA
   //    debe colapsar el carril (era el defecto del selector '.header button').
+  //
+  //    COREOGRAFÍA (réplica de startTransitionAnimation() de
+  //    NavigationRailView.java): la semántica (estado, glifo, aria-label,
+  //    evento) se fija INMEDIATAMENTE al clic; la animación corre en dos
+  //    fases secuenciales — Fase A: fade-out de etiquetas y texto del FAB
+  //    (100ms, entre el teletransporte semántico y el flip) — Fase B:
+  //    conmutación del estado del riel (la caja morfa con las curvas
+  //    emphasized del CSS) y retirada de la clase morphing en el frame
+  //    siguiente para que el estado destino anime el fade-in.
+  const handoff = () => {
+    // El valor canónico se LEE del token (Capa 2): duration-short2 = 100ms.
+    const raw = getComputedStyle(document.documentElement).getPropertyValue('--md-sys-motion-duration-short2');
+    const ms = parseFloat(raw);
+    return Number.isFinite(ms) && ms > 0 ? ms : 100; /* fallback: valor del token en el momento de escribir esto */
+  };
+  const morphTimers = new WeakMap(); // timer pendiente por rail (anti doble clic)
+
   document.addEventListener('click', (event) => {
     const toggleBtn = event.target.closest('[data-rail-toggle]');
     if (!toggleBtn) return;
     const rail = toggleBtn.closest('.md-navigation-rail');
     if (!rail) return;
 
-    rail.classList.toggle('md-navigation-rail-expanded');
-    const isExpanded = rail.classList.contains('md-navigation-rail-expanded');
-    toggleBtn.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+    const willExpand = !rail.classList.contains('md-navigation-rail-expanded');
+
+    // SEMANTICA INMEDIATA (no espera a la animación)
+    toggleBtn.setAttribute('aria-expanded', willExpand ? 'true' : 'false');
 
     // Conmutar icono semántico si existe
     const icon = toggleBtn.querySelector('.md-icon');
     if (icon) {
-      icon.textContent = isExpanded ? 'menu_open' : 'menu';
+      icon.textContent = willExpand ? 'menu_open' : 'menu';
     }
 
     // Actualizar accesibilidad de etiqueta
-    toggleBtn.setAttribute('aria-label', isExpanded ? 'Contraer menú de navegación' : 'Abrir menú de navegación');
+    toggleBtn.setAttribute('aria-label', willExpand ? 'Contraer menú de navegación' : 'Abrir menú de navegación');
 
     // Despachar evento canónico de conmutación
     rail.dispatchEvent(new CustomEvent('md-navigation-rail:toggle', {
       bubbles: true,
-      detail: { expanded: isExpanded }
+      detail: { expanded: willExpand }
     }));
+
+    // ANIMACION: bypass instantáneo si el usuario pide menos movimiento.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      rail.classList.toggle('md-navigation-rail-expanded', willExpand);
+      return;
+    }
+
+    // Cancelar una coreografía a medio volar antes de empezar otra.
+    const previous = morphTimers.get(rail);
+    if (previous !== undefined) {
+      clearTimeout(previous);
+      morphTimers.delete(rail);
+    }
+
+    // Fase A: fade-out de labels (100ms) con el riel aún en estado origen.
+    rail.classList.add('md-navigation-rail-morphing');
+
+    morphTimers.set(rail, setTimeout(() => {
+      // Fase B: flip de estado; la caja morfa con la curva del estado destino.
+      rail.classList.toggle('md-navigation-rail-expanded', willExpand);
+      // Commit del estado intermedio con un reflow forzado y retirada
+      // sincronica de la clase morphing: el fade-in del estado destino
+      // anima desde la opacidad 0 recien commiteada. NO se usa
+      // requestAnimationFrame: en pestañas no visibles queda en cola
+      // indefinidamente y la clase morphing nunca se retiraria.
+      void rail.getBoundingClientRect();
+      rail.classList.remove('md-navigation-rail-morphing');
+      morphTimers.delete(rail);
+    }, handoff()));
   });
 
   // 2. Delegación de clics para conmutar destinos dentro de cualquier .md-navigation-rail
