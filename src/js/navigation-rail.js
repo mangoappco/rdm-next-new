@@ -22,15 +22,15 @@ export function initNavigationRail() {
   //    NavigationRailView.java): la semántica (estado, glifo, aria-label,
   //    evento) se fija INMEDIATAMENTE al clic; la animación corre en dos
   //    fases secuenciales — Fase A: fade-out de etiquetas y texto del FAB
-  //    (100ms, entre el teletransporte semántico y el flip) — Fase B:
+  //    (150ms, entre el teletransporte semántico y el flip) — Fase B:
   //    conmutación del estado del riel (la caja morfa con las curvas
   //    emphasized del CSS) y retirada de la clase morphing en el frame
   //    siguiente para que el estado destino anime el fade-in.
   const handoff = () => {
-    // El valor canónico se LEE del token (Capa 2): duration-short2 = 100ms.
-    const raw = getComputedStyle(document.documentElement).getPropertyValue('--md-sys-motion-duration-short2');
+    // El valor canónico se LEE del token (Capa 2): duration-short3 = 150ms.
+    const raw = getComputedStyle(document.documentElement).getPropertyValue('--md-sys-motion-duration-short3');
     const ms = parseFloat(raw);
-    return Number.isFinite(ms) && ms > 0 ? ms : 100; /* fallback: valor del token en el momento de escribir esto */
+    return Number.isFinite(ms) && ms > 0 ? ms : 150; /* fallback: valor del token en el momento de escribir esto */
   };
   const morphTimers = new WeakMap(); // timer pendiente por rail (anti doble clic)
 

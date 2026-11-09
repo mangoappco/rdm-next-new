@@ -291,7 +291,9 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
   border-radius: var(--md-sys-shape-corner-full);
   background-color: transparent;
   overflow: visible; /* Respeto estricto para no cercenar badges */
-  transition: background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+  transition:
+    background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
+    inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-accelerate);
 }
 
 /* State Layer limpio sobre la pastilla */
@@ -334,8 +336,8 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
   opacity: 1;
   transform: translateX(var(--md-sys-measurement-space-0));
   transition:
-    opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-accelerate),
-    transform var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-accelerate);
+    opacity var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-emphasized-accelerate),
+    transform var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-emphasized-accelerate);
 }
 
 /* --------------------------------------------------------------------------
@@ -448,9 +450,9 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
     min-inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-accelerate),
     max-inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-accelerate),
     padding-inline var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-accelerate),
-    gap var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-standard),
-    font-size var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-standard),
-    color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard); /* handoff del texto morfante (fase A) */
+    gap var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-emphasized-accelerate),
+    font-size var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-emphasized-accelerate),
+    color var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-emphasized-accelerate);
   will-change: inline-size, max-inline-size;
 }
 
@@ -482,7 +484,7 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
     padding-inline var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
     gap var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate),
     font-size var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate),
-    color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard); /* handoff del texto morfante (fase B) */
+    color var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-emphasized-decelerate);
   will-change: inline-size, max-inline-size;
 }
 
@@ -612,13 +614,13 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
 }
 
 /* --------------------------------------------------------------------------
-   HANDOFF CANÓNICO (100ms) — clase inyectada por el JS durante la fase A
+   HANDOFF CANÓNICO (150ms) — clase inyectada por el JS durante la fase A
    --------------------------------------------------------------------------
    Réplica de startTransitionAnimation() de NavigationRailView.java:
-   TransitionSet SEQUENTIAL = [fadeOut de labels, 100ms] -> [ChangeBounds
-   500ms + fadeIn]. El JS: (1) añade esta clase, (2) espera duration-short2,
+   TransitionSet SEQUENTIAL = [fadeOut de labels, 150ms] -> [ChangeBounds
+   500ms/300ms + fadeIn]. El JS: (1) añade esta clase, (2) espera duration-short3,
    (3) conmuta el estado del riel y (4) la retira en el frame siguiente para
-   que el estado destino anime el precio de vuelta desde opacidad 0.
+   que el estado destino anime la entrada desde opacidad 0.
    Texto del FAB: se apaga por `color` (el glifo conserva el color explícito
    de variante --md-comp-fab-icon-color y no se ve afectado).
    ------------------------------------------------------------------------ */
@@ -626,8 +628,8 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
   opacity: 0;
   transform: translateX(calc(-1 * var(--md-sys-measurement-navigation-rail-item-spacing))); /* desliz de 4dp */
   transition-duration:
-    var(--md-sys-motion-duration-short2),
-    var(--md-sys-motion-duration-short2);
+    var(--md-sys-motion-duration-short3),
+    var(--md-sys-motion-duration-short3);
   transition-timing-function:
     var(--md-sys-motion-easing-emphasized-accelerate),
     var(--md-sys-motion-easing-emphasized-accelerate);
@@ -635,6 +637,7 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
 
 .md-navigation-rail-morphing .md-navigation-rail-header .md-fab {
   color: transparent; /* texto «Crear» en fade-out; glifo intacto */
+  transition: color var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-emphasized-accelerate);
 }
 
 @media (prefers-reduced-motion: reduce) {
