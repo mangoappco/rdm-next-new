@@ -153,7 +153,13 @@
   padding-inline: var(--md-sys-measurement-space-0);
   box-sizing: border-box;
   gap: var(--md-sys-measurement-navigation-rail-header-gap); /* 16dp: aire entre menu y FAB (solo manda si hay dos) */
-  margin-block-end: var(--md-sys-measurement-navigation-rail-header-margin-bottom); /* 40dp Expressive: entre header y destinos */
+  margin-block-end: var(--md-sys-measurement-navigation-rail-header-margin-bottom); /* 32dp: separación canónica cabecera a destinos */
+}
+
+/* Cuando la cabecera contiene un FAB, la masa visual del botón de 56dp requiere
+   un respiro inferior compacto de 24dp (space-300) para no desvincular los destinos */
+.md-navigation-rail-header:has(.md-fab) {
+  margin-block-end: var(--md-sys-measurement-navigation-rail-header-fab-margin-bottom); /* 24dp */
 }
 
 /* Alineación coaxial canónica para los elementos hijos de la cabecera:

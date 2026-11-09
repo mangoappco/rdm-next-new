@@ -423,7 +423,8 @@
   --md-sys-measurement-navigation-rail-item-padding-bottom: var(--md-ref-spacing-75); /* 6dp */
   --md-sys-measurement-navigation-rail-content-top-margin: var(--md-ref-padding-navigation-rail-content-top); /* 44dp */
   --md-sys-measurement-navigation-rail-padding-top: var(--md-sys-measurement-space-200); /* 16dp: respiro perimetral superior canónico */
-  --md-sys-measurement-navigation-rail-header-margin-bottom: var(--md-ref-spacing-500); /* 40dp */
+  --md-sys-measurement-navigation-rail-header-margin-bottom: var(--md-sys-measurement-space-400); /* 32dp: separación canónica cuando solo hay menú */
+  --md-sys-measurement-navigation-rail-header-fab-margin-bottom: var(--md-sys-measurement-space-300); /* 24dp: separación canónica compacta cuando hay FAB */
   /* Gap interno de la cabecera APILADA (menu debajo del FAB / with menu and
      FAB). El doc Android no publica una cota entre ambos slots, asi que es
      una decision de RDM: se toma Space 200 (16dp), el mismo paso del
