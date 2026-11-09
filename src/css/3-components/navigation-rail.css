@@ -65,15 +65,20 @@
   min-inline-size: var(--md-sys-measurement-navigation-rail-width);
   block-size: 100%;
   min-block-size: 100dvh; /* Cubre toda la altura dinámica de la ventana en pantalla completa */
-  background-color: var(--md-sys-color-surface);
+  background-color: var(--md-sys-color-surface-container); /* Canónico M3 Expressive: contraste tonal */
   box-shadow: none; /* Canónico M3 reposo: Level 0 (sin elevación ni sombra) */
-  border-inline-end: var(--md-sys-shape-stroke-thin) solid var(--md-sys-color-outline-variant); /* Delimitación canónica M3 */
+  border-inline-end: var(--md-sys-shape-stroke-thin) solid var(--_rail-border, transparent);
   box-sizing: border-box;
   padding-block-start: var(--md-sys-measurement-navigation-rail-padding-top); /* 16dp respiro perimetral unificado M3 */
   padding-block-end: var(--md-sys-measurement-navigation-rail-padding-top); /* 16dp de cierre */
   position: relative;
   transition: inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized);
   will-change: inline-size;
+}
+
+/* Modificador canónico para delimitación gráfica explícita cuando se requiera */
+.md-navigation-rail.md-navigation-rail-bordered {
+  --_rail-border: var(--md-sys-color-outline-variant);
 }
 
 /* Contexto de scaffold completo: el consumidor pide 100vh con esta clase
