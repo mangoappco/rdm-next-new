@@ -89,30 +89,32 @@
 -->
 
 <body class="md-bg-background md-text-on-background md-type-body-medium">
+  <!-- CABECERA INSTITUCIONAL DEL SHOWROOM (DOGFOODING) -->
   <header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll role="banner" aria-label="Cabecera institucional del showroom">
-      <div class="md-top-app-bar-leading">
-        <a href="../index.html" class="md-icon-button" aria-label="Volver al catálogo">
-          <span class="md-icon" aria-hidden="true">arrow_back</span>
-        </a>
-      </div>
-      <div class="md-top-app-bar-content">
-        <span class="md-top-app-bar-title">FAB extended</span>
-        <span class="md-top-app-bar-subtitle">RDM Next · ManGo! App</span>
-      </div>
-      <div class="md-top-app-bar-trailing">
-        <button type="button" class="md-icon-button" data-theme-toggle aria-label="Tema del sistema activo"><span class="md-icon" aria-hidden="true">brightness_auto</span></button>
-      </div>
-    </header>
+    <div class="md-top-app-bar-leading">
+      <a href="../index.html" class="md-icon-button" aria-label="Volver al catálogo">
+        <span class="md-icon" aria-hidden="true">arrow_back</span>
+      </a>
+    </div>
+    <div class="md-top-app-bar-content">
+      <span class="md-top-app-bar-title">FAB extended</span>
+      <span class="md-top-app-bar-subtitle">RDM Next · ManGo! App</span>
+    </div>
+    <div class="md-top-app-bar-trailing">
+      <button type="button" class="md-icon-button" data-theme-toggle aria-label="Tema del sistema activo">
+        <span class="md-icon" aria-hidden="true">brightness_auto</span>
+      </button>
+    </div>
+  </header>
 
   <main class="sr-page">
 
+    <!-- HEADER: inicio (barra + titulo + descripcion) -->
     <header class="sr-header">
       <h1 class="md-type-display-large">FAB extended</h1>
       <p class="md-type-body-large">FAB con etiqueta de texto.</p>
     </header>
-
-
-  
+    <!-- HEADER: fin -->
 
     <hr class="md-divider">
 
@@ -139,17 +141,32 @@
     </section>
     <!-- PAREJA: hasta aqui -->
 
-    <!-- PAREJA: los dos colores (h2 + specimen + pre + boton). -->
+    <!-- PAREJA: la matriz de cinco colores (h2 + specimen + pre + boton). -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Colors</h3>
-      <p class="md-type-body-medium">La misma familia de color que el FAB base, asi que las dos clases combinan sin nada mas. El texto hereda el color del host, igual que el icono.</p>
+      <p class="md-type-body-medium">La misma matriz de color del FAB base, asi que las variantes combinan con extended sin nada mas: la base trae primary-container, secondary/tertiary/surface reempapan y primary es la solida de alto enfasis. El texto hereda el color del host, igual que el icono y el state layer.</p>
       <div class="sr-specimen sr-specimen-gap">
         <button class="md-fab md-fab-extended" type="button">
           <span class="md-icon" aria-hidden="true">edit</span>
           Editar
           <span class="md-fab-touch"></span>
         </button>
+        <button class="md-fab md-fab-secondary md-fab-extended" type="button">
+          <span class="md-icon" aria-hidden="true">edit</span>
+          Editar
+          <span class="md-fab-touch"></span>
+        </button>
+        <button class="md-fab md-fab-tertiary md-fab-extended" type="button">
+          <span class="md-icon" aria-hidden="true">edit</span>
+          Editar
+          <span class="md-fab-touch"></span>
+        </button>
         <button class="md-fab md-fab-primary md-fab-extended" type="button">
+          <span class="md-icon" aria-hidden="true">edit</span>
+          Editar
+          <span class="md-fab-touch"></span>
+        </button>
+        <button class="md-fab md-fab-surface md-fab-extended" type="button">
           <span class="md-icon" aria-hidden="true">edit</span>
           Editar
           <span class="md-fab-touch"></span>
@@ -163,7 +180,31 @@
   Editar
   &lt;span class="md-fab-touch"&gt;&lt;/span&gt;
 &lt;/button&gt;
+&lt;button class="md-fab md-fab-secondary md-fab-extended" type="button"&gt;
+  &lt;!-- Slot: Icono --&gt;
+  &lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;
+
+  &lt;!-- Slot: Etiqueta de texto --&gt;
+  Editar
+  &lt;span class="md-fab-touch"&gt;&lt;/span&gt;
+&lt;/button&gt;
+&lt;button class="md-fab md-fab-tertiary md-fab-extended" type="button"&gt;
+  &lt;!-- Slot: Icono --&gt;
+  &lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;
+
+  &lt;!-- Slot: Etiqueta de texto --&gt;
+  Editar
+  &lt;span class="md-fab-touch"&gt;&lt;/span&gt;
+&lt;/button&gt;
 &lt;button class="md-fab md-fab-primary md-fab-extended" type="button"&gt;
+  &lt;!-- Slot: Icono --&gt;
+  &lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;
+
+  &lt;!-- Slot: Etiqueta de texto --&gt;
+  Editar
+  &lt;span class="md-fab-touch"&gt;&lt;/span&gt;
+&lt;/button&gt;
+&lt;button class="md-fab md-fab-surface md-fab-extended" type="button"&gt;
   &lt;!-- Slot: Icono --&gt;
   &lt;span class="md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;
 

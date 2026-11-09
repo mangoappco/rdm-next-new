@@ -450,30 +450,49 @@
 }
 
 /* ---------------------------------------------------------------------------
-   VARIANTES
+   VARIANTES DE COLOR
    ---------------------------------------------------------------------------
-   M3 publica OCHO para el FAB: primary, primary-container, secondary,
-   secondary-container, tertiary, tertiary-container, branded y surface.
+   Matriz oficial de M3 para el FAB, en dos familias cromáticas:
 
-   Aqui va la del enfasis de marca: la base ya trae `primary-container` y la
-   explicita la convierte en enfasis (container `primary` solido, glifo
-   `on-primary`) para las acciones de maximo contraste. Con esta la familia
-   completa esta cubierta para ManGo! App, y las otras siete no son codigo
-   que falte sino decisiones que no han hecho falta. Apareceran si alguna
-   pantalla pide dos FAB jerarquicamente distintos, que es lo unico para lo
-   que sirven.
+   - Familia Container (énfasis estándar): la base ya trae la primera
+     (primary-container). `secondary` y `tertiary` reempapan la superficie
+     tonal con el rol homónimo de color. `surface` es la de menor contraste:
+     superficie neutra alta con el glifo primary (variante de reposo
+     discreto para superficies saturadas).
+   - Familia Solid (alto énfasis): `primary` con contenedor sólido
+     primary y glifo on-primary, para la acción de maximo contraste.
 
-   Ojo con lo que NO es una variante: la base no tiene ninguna. En
-   `_md-comp-fab.scss`, el fichero de M3 para el tamano por defecto, no hay
-   ni un `container-color`. El color SIEMPRE viene de una de las ocho
-   familias; aqui la base ya trae la primera.
+   Todas se resuelven por las mismas dos custom properties del host y la
+   capa de estado (`.md-fab::after`) lee `currentColor`, así que hover,
+   focus y pressed heredan la familia entera sin reglas propias. La base
+   no lleva ninguna clase: el FAB por defecto de una pantalla es
+   primary-container y las variantes solo se suman cuando una pantalla
+   necesita jerarquía cromática distinta.
+
+   En `_md-comp-fab.scss`, el fichero de M3 para el tamaño por defecto, no
+   hay ni un `container-color`: el color SIEMPRE viene de la familia
+   elegida; aqui la base ya trae la primera.
    ------------------------------------------------------------------------ */
 
-/* Redeclaracion de la variante de color de marca: la base ya resuelve a
-   `primary-container`; `.md-fab-primary` es la variante de alta enfasis
-   (container `primary` solido, glifo `on-primary`) que el Showroom de
-   color publica diferenciada. El FAB por defecto de una pantalla NO lleva
-   esta clase y hereda la familia container de la base. */
+/* Familia Container: rebaños tonales de los otros dos contenedores
+   estándar y la superficie neutra discreta. */
+.md-fab.md-fab-secondary {
+  --md-comp-fab-container-color: var(--md-sys-color-secondary-container);
+  --md-comp-fab-icon-color: var(--md-sys-color-on-secondary-container);
+}
+
+.md-fab.md-fab-tertiary {
+  --md-comp-fab-container-color: var(--md-sys-color-tertiary-container);
+  --md-comp-fab-icon-color: var(--md-sys-color-on-tertiary-container);
+}
+
+.md-fab.md-fab-surface {
+  --md-comp-fab-container-color: var(--md-sys-color-surface-container-high);
+  --md-comp-fab-icon-color: var(--md-sys-color-primary);
+}
+
+/* Familia Solid: la variante de alto énfasis, última en la lectura para
+   cerrar la graduación del reposo discreto al máximo contraste. */
 .md-fab.md-fab-primary {
   --md-comp-fab-container-color: var(--md-sys-color-primary);
   --md-comp-fab-icon-color: var(--md-sys-color-on-primary);
