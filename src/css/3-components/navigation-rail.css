@@ -214,6 +214,22 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
   margin-inline-start: var(--md-sys-measurement-navigation-rail-expanded-item-margin-horizontal); /* 20dp */
 }
 
+/* FAB anidado en cabecera del Navigation Rail — elevación canónica M3:
+   Level 0 (flat) en reposo, Level 1 en hover/focus, Level 2 en active.
+   Especificidad aumentada para ganar a la regla base .md-fab. */
+.md-navigation-rail .md-navigation-rail-header .md-fab {
+  box-shadow: none; /* Level 0: al ras con la superficie del rail */
+}
+
+.md-navigation-rail .md-navigation-rail-header .md-fab:hover,
+.md-navigation-rail .md-navigation-rail-header .md-fab:focus {
+  box-shadow: var(--md-sys-elevation-level1);
+}
+
+.md-navigation-rail .md-navigation-rail-header .md-fab:active {
+  box-shadow: var(--md-sys-elevation-level2);
+}
+
 /* --------------------------------------------------------------------------
    CONTENT: Contenedor de destinos
    ------------------------------------------------------------------------ */
