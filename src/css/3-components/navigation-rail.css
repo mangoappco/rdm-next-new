@@ -60,21 +60,43 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  align-self: stretch; /* Asegura que nunca colapse verticalmente en layouts flex */
+  position: fixed;
+  inset-block: 0;
+  inset-inline-start: 0;
+  z-index: 1;
   inline-size: var(--md-sys-measurement-navigation-rail-width); /* 96dp */
   min-inline-size: var(--md-sys-measurement-navigation-rail-width);
   flex-shrink: 0;
-  block-size: 100%;
-  min-block-size: 100%;
+  block-size: 100dvh;
+  min-block-size: 100dvh;
   background-color: var(--md-sys-color-surface-container); /* Canónico M3 Expressive: contraste tonal */
   box-shadow: none; /* Canónico M3 reposo: Level 0 (sin elevación ni sombra) */
   border-inline-end: var(--md-sys-shape-stroke-thin) solid var(--_rail-border, transparent);
   box-sizing: border-box;
   padding-block-start: var(--md-sys-measurement-navigation-rail-padding-top); /* 16dp respiro perimetral unificado M3 */
   padding-block-end: var(--md-sys-measurement-navigation-rail-padding-top); /* 16dp de cierre */
-  position: relative;
   transition: inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized);
   will-change: inline-size;
+}
+
+/* --------------------------------------------------------------------------
+   SCAFFOLD DE LAYOUT DE PÁGINA (Reserva natural de espacio para el contenido)
+   ------------------------------------------------------------------------
+   Cuando el riel se ancla al lateral izquierdo de la ventana, el contenido
+   hermano (<main>) reserva el ancho del riel automáticamente sin necesidad
+   de envoltorios artificiales. Al expandirse, la transición acompaña la anchura.
+   ------------------------------------------------------------------------ */
+.md-navigation-rail ~ main,
+body:has(> .md-navigation-rail) > main,
+main:has(> .md-navigation-rail) {
+  margin-inline-start: var(--md-sys-measurement-navigation-rail-width);
+  transition: margin-inline-start var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized);
+}
+
+.md-navigation-rail.md-navigation-rail-expanded ~ main,
+body:has(> .md-navigation-rail.md-navigation-rail-expanded) > main,
+main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
+  margin-inline-start: var(--md-sys-measurement-navigation-rail-expanded-width);
 }
 
 /* Modificador canónico para delimitación gráfica explícita cuando se requiera */
@@ -137,7 +159,11 @@
 
 /* Contexto acotado a tarjetas de documentación en el Showroom */
 :is(.sr-specimen, .sr-specimen-tall, .sr-specimen-rail) .md-navigation-rail {
+  position: relative;
+  block-size: 100%;
   min-block-size: 100%;
+  inset: auto;
+  z-index: 0;
 }
 
 /* Modificadores canónicos M3 para acoplamiento lateral fijo */
