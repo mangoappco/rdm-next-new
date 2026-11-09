@@ -105,9 +105,19 @@ main:has(> .md-navigation-rail) {
 
 .md-navigation-rail.md-navigation-rail-expanded ~ main,
 body:has(> .md-navigation-rail.md-navigation-rail-expanded) > main,
-main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
+main:has(> .md-navigation-rail.md-navigation-rail-expanded),
+.md-navigation-rail.md-navigation-rail-collapsing ~ main,
+body:has(> .md-navigation-rail.md-navigation-rail-collapsing) > main,
+main:has(> .md-navigation-rail.md-navigation-rail-collapsing) {
   margin-inline-start: var(--md-sys-measurement-navigation-rail-expanded-width);
   transition: margin-inline-start var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate);
+}
+
+.md-navigation-rail.md-navigation-rail-collapsing ~ main,
+body:has(> .md-navigation-rail.md-navigation-rail-collapsing) > main,
+main:has(> .md-navigation-rail.md-navigation-rail-collapsing) {
+  margin-inline-start: var(--md-sys-measurement-navigation-rail-width);
+  transition: margin-inline-start var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-accelerate);
 }
 
 /* Modificador canónico para delimitación gráfica explícita cuando se requiera */
@@ -412,16 +422,24 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
    en los cuatro flancos, altura de 56dp (expandedHeight) y espacio
    icono-etiqueta de 8dp (iconLabelHorizontalSpacing).
    ------------------------------------------------------------------------ */
-.md-navigation-rail-expanded {
+.md-navigation-rail-expanded,
+.md-navigation-rail-collapsing {
   inline-size: var(--md-sys-measurement-navigation-rail-expanded-width); /* 280dp, dentro del rango canonico */
-  min-inline-size: var(--md-sys-measurement-navigation-rail-expanded-min-width); /* 220dp (expanded_container_width_minimum) */
+  min-inline-size: var(--md-sys-measurement-navigation-rail-width); /* 96dp base para permitir interpolacion continua */
   max-inline-size: var(--md-sys-measurement-navigation-rail-expanded-max-width); /* 360dp (expanded_container_width_maximum) */
   padding-inline: 0; /* El margen canónico vive en el item (20dp), no en el rail */
   align-items: stretch;
   transition: inline-size var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
-.md-navigation-rail-expanded .md-navigation-rail-header {
+.md-navigation-rail-collapsing {
+  inline-size: var(--md-sys-measurement-navigation-rail-width); /* 96dp */
+  min-inline-size: var(--md-sys-measurement-navigation-rail-width);
+  transition: inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-accelerate);
+}
+
+.md-navigation-rail-expanded .md-navigation-rail-header,
+.md-navigation-rail-collapsing .md-navigation-rail-header {
   align-items: flex-start;
   padding-inline: var(--md-sys-measurement-space-0);
 }
@@ -432,7 +450,7 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
 
 /* 1. MODO COLAPSADO (Por defecto en .md-navigation-rail: 96dp):
    Cualquier FAB en la cabecera colapsada se confina al Standard FAB (56x56dp) */
-.md-navigation-rail:not(.md-navigation-rail-expanded) .md-navigation-rail-header .md-fab {
+.md-navigation-rail:not(.md-navigation-rail-expanded):not(.md-navigation-rail-collapsing) .md-navigation-rail-header .md-fab {
   inline-size: var(--md-sys-measurement-fab-height); /* 56dp */
   min-inline-size: var(--md-sys-measurement-fab-height);
   max-inline-size: var(--md-sys-measurement-fab-height);
@@ -457,7 +475,7 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
 }
 
 /* Restaura el icono centrado en 24dp dentro del FAB colapsado */
-.md-navigation-rail:not(.md-navigation-rail-expanded) .md-navigation-rail-header .md-fab .md-icon {
+.md-navigation-rail:not(.md-navigation-rail-expanded):not(.md-navigation-rail-collapsing) .md-navigation-rail-header .md-fab .md-icon {
   font-size: var(--md-sys-measurement-icon-size); /* 24dp */
   inline-size: var(--md-sys-measurement-icon-size);
   block-size: var(--md-sys-measurement-icon-size);
@@ -488,13 +506,38 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
   will-change: inline-size, max-inline-size;
 }
 
-.md-navigation-rail-expanded .md-navigation-rail-content {
+/* 3. MODO COLAPSANDO (.md-navigation-rail-collapsing):
+   El FAB se contrae orgánicamente en 300ms hacia 56px antes del cambio de layout */
+.md-navigation-rail-collapsing .md-navigation-rail-header .md-fab {
+  inline-size: var(--md-sys-measurement-fab-height); /* 56dp */
+  min-inline-size: var(--md-sys-measurement-fab-height);
+  max-inline-size: var(--md-sys-measurement-fab-height);
+  block-size: var(--md-sys-measurement-fab-height);
+  gap: var(--md-sys-measurement-space-0);
+  padding-inline: var(--md-sys-measurement-space-0);
+  border-radius: var(--md-sys-shape-corner-large);
+  overflow: hidden;
+  white-space: nowrap;
+  color: transparent;
+  transition:
+    inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-accelerate),
+    min-inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-accelerate),
+    max-inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-accelerate),
+    padding-inline var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-accelerate),
+    gap var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-emphasized-accelerate),
+    color var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-emphasized-accelerate);
+  will-change: inline-size, max-inline-size;
+}
+
+.md-navigation-rail-expanded .md-navigation-rail-content,
+.md-navigation-rail-collapsing .md-navigation-rail-content {
   inline-size: 100%;
   align-items: stretch;
   gap: var(--md-sys-measurement-navigation-rail-expanded-item-spacing); /* 0dp: filas continuas (m3_navigation_rail_expanded_item_spacing) */
 }
 
-.md-navigation-rail-expanded .md-navigation-rail-item {
+.md-navigation-rail-expanded .md-navigation-rail-item,
+.md-navigation-rail-collapsing .md-navigation-rail-item {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -505,21 +548,18 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
   block-size: var(--md-sys-measurement-space-700); /* 56dp (expandedHeight) */
   min-block-size: var(--md-sys-measurement-space-700);
   border-radius: var(--md-sys-shape-corner-full);
-  /* Margen EXTERNO canónico: 20dp (cota roja 36 - 16 padding interno).
-     Padding INTERNO canónico: 16dp (horizontal_full_width_leading_space).
-     El item ENTERO es la pastilla corrida de 56dp con corner-full. */
   margin-inline: var(--md-sys-measurement-navigation-rail-expanded-item-margin-horizontal); /* 20dp */
   padding-inline: var(--md-sys-measurement-navigation-rail-expanded-leading-space); /* 16dp */
   box-sizing: border-box;
+  overflow: hidden;
   transition:
-    margin-inline var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
-    padding-inline var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
     block-size var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
     background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-linear);
   position: relative;
 }
 
-.md-navigation-rail-expanded .md-navigation-rail-item .md-navigation-rail-indicator {
+.md-navigation-rail-expanded .md-navigation-rail-item .md-navigation-rail-indicator,
+.md-navigation-rail-collapsing .md-navigation-rail-item .md-navigation-rail-indicator {
   /* Neutralizar la pastilla colapsada sin ocultar el glifo */
   display: inline-flex;
   align-items: center;
@@ -535,12 +575,14 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
 
 /* Neutralizar el pseudo-elemento ::before del indicador colapsado para que
    no cree círculos residuales en hover ni en selección dentro del ítem expandido */
-.md-navigation-rail-expanded .md-navigation-rail-item .md-navigation-rail-indicator::before {
+.md-navigation-rail-expanded .md-navigation-rail-item .md-navigation-rail-indicator::before,
+.md-navigation-rail-collapsing .md-navigation-rail-item .md-navigation-rail-indicator::before {
   display: none;
 }
 
 /* Forzar renderizado y tamaño del icono */
-.md-navigation-rail-expanded .md-navigation-rail-icon {
+.md-navigation-rail-expanded .md-navigation-rail-icon,
+.md-navigation-rail-collapsing .md-navigation-rail-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -549,11 +591,9 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
   block-size: var(--md-sys-measurement-icon-size);
 }
 
-.md-navigation-rail-expanded .md-navigation-rail-item .md-navigation-rail-label {
+.md-navigation-rail-expanded .md-navigation-rail-item .md-navigation-rail-label,
+.md-navigation-rail-collapsing .md-navigation-rail-item .md-navigation-rail-label {
   margin-block-start: var(--md-sys-measurement-space-0); /* Sin offset vertical en fila */
-  /* Horizontal canonica: macro `m3_comp_nav_rail_item_horizontal_label_text_font`
-     = ?attr/textAppearanceLabelLarge (14/20). La linea crece respecto a la
-     vertical (16dp) porque la fila de 56dp la aloja sin padding extra. */
   font: var(--md-sys-typescale-label-large);
   letter-spacing: var(--md-sys-typescale-label-large-tracking);
   block-size: var(--md-sys-typescale-label-large-line-height);
@@ -564,24 +604,34 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
     transform var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
+.md-navigation-rail-collapsing .md-navigation-rail-item .md-navigation-rail-label {
+  opacity: 0;
+  transform: translateX(calc(-1 * var(--md-sys-measurement-navigation-rail-item-spacing)));
+  transition:
+    opacity var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-emphasized-accelerate),
+    transform var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-emphasized-accelerate);
+}
+
 /* Estado activo en modo expandido: el fondo secondary-container tiñe todo el item */
-.md-navigation-rail-expanded .md-navigation-rail-item[aria-selected="true"] {
+.md-navigation-rail-expanded .md-navigation-rail-item[aria-selected="true"],
+.md-navigation-rail-collapsing .md-navigation-rail-item[aria-selected="true"] {
   background-color: var(--md-sys-color-secondary-container);
 }
 
-.md-navigation-rail-expanded .md-navigation-rail-item[aria-selected="true"] .md-navigation-rail-icon {
+.md-navigation-rail-expanded .md-navigation-rail-item[aria-selected="true"] .md-navigation-rail-icon,
+.md-navigation-rail-collapsing .md-navigation-rail-item[aria-selected="true"] .md-navigation-rail-icon {
   color: var(--md-sys-color-on-secondary-container);
   --md-sys-icon-fill: var(--md-sys-icon-fill-full);
 }
 
-.md-navigation-rail-expanded .md-navigation-rail-item[aria-selected="true"] .md-navigation-rail-label {
+.md-navigation-rail-expanded .md-navigation-rail-item[aria-selected="true"] .md-navigation-rail-label,
+.md-navigation-rail-collapsing .md-navigation-rail-item[aria-selected="true"] .md-navigation-rail-label {
   color: var(--md-sys-color-on-secondary-container);
-  /* Sin negrita: la nota Expressive de NavigationRail.md («Label text is
-     no longer bolded when selected») aplica al label en ambos modos. */
 }
 
 /* State layers para el item extendido */
-.md-navigation-rail-expanded .md-navigation-rail-item::before {
+.md-navigation-rail-expanded .md-navigation-rail-item::before,
+.md-navigation-rail-collapsing .md-navigation-rail-item::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -593,22 +643,26 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
   transition: opacity var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
 }
 
-.md-navigation-rail-expanded .md-navigation-rail-item:hover:not(:disabled):not([aria-disabled="true"]):not([aria-selected="true"])::before {
+.md-navigation-rail-expanded .md-navigation-rail-item:hover:not(:disabled):not([aria-disabled="true"]):not([aria-selected="true"])::before,
+.md-navigation-rail-collapsing .md-navigation-rail-item:hover:not(:disabled):not([aria-disabled="true"]):not([aria-selected="true"])::before {
   background-color: var(--md-sys-color-on-surface);
   opacity: var(--md-sys-state-hover-state-layer-opacity);
 }
 
-.md-navigation-rail-expanded .md-navigation-rail-item[aria-selected="true"]:hover:not(:disabled):not([aria-disabled="true"])::before {
+.md-navigation-rail-expanded .md-navigation-rail-item[aria-selected="true"]:hover:not(:disabled):not([aria-disabled="true"])::before,
+.md-navigation-rail-collapsing .md-navigation-rail-item[aria-selected="true"]:hover:not(:disabled):not([aria-disabled="true"])::before {
   background-color: var(--md-sys-color-on-secondary-container);
   opacity: var(--md-sys-state-hover-state-layer-opacity);
 }
 
-.md-navigation-rail-expanded .md-navigation-rail-item:active:not(:disabled):not([aria-disabled="true"]):not([aria-selected="true"])::before {
+.md-navigation-rail-expanded .md-navigation-rail-item:active:not(:disabled):not([aria-disabled="true"]):not([aria-selected="true"])::before,
+.md-navigation-rail-collapsing .md-navigation-rail-item:active:not(:disabled):not([aria-disabled="true"]):not([aria-selected="true"])::before {
   background-color: var(--md-sys-color-on-surface);
   opacity: var(--md-sys-state-pressed-state-layer-opacity);
 }
 
-.md-navigation-rail-expanded .md-navigation-rail-item[aria-selected="true"]:active:not(:disabled):not([aria-disabled="true"])::before {
+.md-navigation-rail-expanded .md-navigation-rail-item[aria-selected="true"]:active:not(:disabled):not([aria-disabled="true"])::before,
+.md-navigation-rail-collapsing .md-navigation-rail-item[aria-selected="true"]:active:not(:disabled):not([aria-disabled="true"])::before {
   background-color: var(--md-sys-color-on-secondary-container);
   opacity: var(--md-sys-state-pressed-state-layer-opacity);
 }

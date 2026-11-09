@@ -40,7 +40,9 @@ export function initNavigationRail() {
     const rail = toggleBtn.closest('.md-navigation-rail');
     if (!rail) return;
 
-    const willExpand = !rail.classList.contains('md-navigation-rail-expanded');
+    const isCollapsing = rail.classList.contains('md-navigation-rail-collapsing');
+    const isExpanded = rail.classList.contains('md-navigation-rail-expanded') && !isCollapsing;
+    const willExpand = !isExpanded;
 
     // SEMANTICA INMEDIATA (no espera a la animación)
     toggleBtn.setAttribute('aria-expanded', willExpand ? 'true' : 'false');
@@ -62,6 +64,7 @@ export function initNavigationRail() {
 
     // ANIMACION: bypass instantáneo si el usuario pide menos movimiento.
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      rail.classList.remove('md-navigation-rail-collapsing', 'md-navigation-rail-morphing');
       rail.classList.toggle('md-navigation-rail-expanded', willExpand);
       return;
     }
@@ -73,21 +76,23 @@ export function initNavigationRail() {
       morphTimers.delete(rail);
     }
 
-    // Fase A: fade-out de labels (100ms) con el riel aún en estado origen.
-    rail.classList.add('md-navigation-rail-morphing');
-
-    morphTimers.set(rail, setTimeout(() => {
-      // Fase B: flip de estado; la caja morfa con la curva del estado destino.
-      rail.classList.toggle('md-navigation-rail-expanded', willExpand);
-      // Commit del estado intermedio con un reflow forzado y retirada
-      // sincronica de la clase morphing: el fade-in del estado destino
-      // anima desde la opacidad 0 recien commiteada. NO se usa
-      // requestAnimationFrame: en pestañas no visibles queda en cola
-      // indefinidamente y la clase morphing nunca se retiraria.
-      void rail.getBoundingClientRect();
-      rail.classList.remove('md-navigation-rail-morphing');
-      morphTimers.delete(rail);
-    }, handoff()));
+    if (willExpand) {
+      // EXPANSION: conmutar inmediatamente a layout expandido
+      rail.classList.remove('md-navigation-rail-collapsing');
+      rail.classList.add('md-navigation-rail-expanded');
+    } else {
+      // COLAPSO COORDINADO M3:
+      // Mantener la disposición de fila (.md-navigation-rail-collapsing)
+      // mientras el riel se encoge de 280dp a 96dp en 300ms (medium2)
+      // y las etiquetas se desvanecen en 150ms (short3).
+      rail.classList.add('md-navigation-rail-collapsing');
+      const raw = getComputedStyle(document.documentElement).getPropertyValue('--md-sys-motion-duration-medium2');
+      const ms = parseFloat(raw) || 300;
+      morphTimers.set(rail, setTimeout(() => {
+        rail.classList.remove('md-navigation-rail-expanded', 'md-navigation-rail-collapsing');
+        morphTimers.delete(rail);
+      }, ms));
+    }
   });
 
   // 2. Delegación de clics para conmutar destinos dentro de cualquier .md-navigation-rail
