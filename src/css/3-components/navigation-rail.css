@@ -348,6 +348,22 @@ main:has(> .md-navigation-rail.md-navigation-rail-collapsing) {
     transform var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
+/* Entrada suave con fade-in para la etiqueta vertical colapsada al asentarse el riel */
+.md-navigation-rail:not(.md-navigation-rail-expanded):not(.md-navigation-rail-collapsing) .md-navigation-rail-label {
+  animation: md-nav-rail-label-vertical-fade-in var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate) forwards;
+}
+
+@keyframes md-nav-rail-label-vertical-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(calc(-1 * var(--md-sys-measurement-space-25)));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(var(--md-sys-measurement-space-0));
+  }
+}
+
 /* --------------------------------------------------------------------------
    ESTADO ACTIVO (M3 Expressive Selection)
    --------------------------------------------------------------------------
@@ -615,9 +631,10 @@ main:has(> .md-navigation-rail.md-navigation-rail-collapsing) {
   animation: md-nav-rail-label-fade-in var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate) both;
 }
 
-.md-navigation-rail-collapsing .md-navigation-rail-item .md-navigation-rail-label {
+.md-navigation-rail-collapsing .md-navigation-rail-item .md-navigation-rail-label,
+.md-navigation-rail-collapsing .md-navigation-rail-label {
   animation: none;
-  opacity: 0;
+  opacity: 0 !important;
   transform: translateY(-50%) translateX(calc(-1 * var(--md-sys-measurement-navigation-rail-item-spacing)));
   transition:
     opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized),
