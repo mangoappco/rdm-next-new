@@ -2,7 +2,7 @@
    src/js/navigation-rail.js — SERVICIO DE NAVIGATION RAIL M3 (Navegación WAI-ARIA)
    ==========================================================================
 
-   ALCANCE DEL SCRIPT:
+   ALCANCE DEL SCRIPT (Zero JS en Motion):
    1. Conmutación dinámica de selección (aria-selected="true" / "false") y
       roving tabindex ("0" / "-1") entre los destinos del rail.
    2. Despacho del evento canónico desacoplado 'md-navigation-rail:change'
@@ -10,6 +10,8 @@
    3. Navegación por teclado vertical WAI-ARIA (ArrowUp, ArrowDown, Home,
       End, con ArrowLeft/ArrowRight como alias en modo expandido).
    4. Alternancia accesible de paneles asociados vía 'aria-controls' / role="tabpanel".
+   5. Toggle de expansión: SOLO conmuta la clase lógica .md-navigation-rail-expanded
+      y su aria-expanded. Toda la cinemática es soberanía de CSS (tokens Capa 2).
    ========================================================================== */
 
 export function initNavigationRail() {
@@ -18,20 +20,9 @@ export function initNavigationRail() {
   //    slot canónico para FABs y logos: un clic en cualquiera de ellos NUNCA
   //    debe colapsar el carril (era el defecto del selector '.header button').
   //
-  //    COREOGRAFÍA (réplica de startTransitionAnimation() de
-  //    NavigationRailView.java): la semántica (estado, glifo, aria-label,
-  //    evento) se fija INMEDIATAMENTE al clic; la animación corre en dos
-  //    fases secuenciales — Fase A: fade-out de etiquetas y texto del FAB
-  //    (150ms, entre el teletransporte semántico y el flip) — Fase B:
-  //    conmutación del estado del riel (la caja morfa con las curvas
-  //    emphasized del CSS) y retirada de la clase morphing en el frame
-  //    siguiente para que el estado destino anime el fade-in.
-  const handoff = () => {
-    // El valor canónico se LEE del token (Capa 2): duration-short3 = 150ms.
-    const raw = getComputedStyle(document.documentElement).getPropertyValue('--md-sys-motion-duration-short3');
-    const ms = parseFloat(raw);
-    return Number.isFinite(ms) && ms > 0 ? ms : 150; /* fallback: valor del token en el momento de escribir esto */
-  };
+  //    ZERO JS MOTION: la clase raíz se conmuta en frame 0; el CSS declara
+  //    toda la coreografía asimétrica (long2/decelerate expandir,
+  //    long1/emphasized-accelerate colapsar) consumiendo tokens Capa 2.
   document.addEventListener('click', (event) => {
     const toggleBtn = event.target.closest('[data-rail-toggle]');
     if (!toggleBtn) return;
@@ -59,8 +50,7 @@ export function initNavigationRail() {
       detail: { expanded: willExpand }
     }));
 
-    // CONMUTACIÓN SIMULTÁNEA EN FRAME 0 (Sin timers artificiales que bloqueen la física)
-    rail.classList.remove('md-navigation-rail-collapsing', 'md-navigation-rail-morphing');
+    // CONMUTACIÓN PURA EN FRAME 0 — CSS gobierna la física
     rail.classList.toggle('md-navigation-rail-expanded', willExpand);
   });
 

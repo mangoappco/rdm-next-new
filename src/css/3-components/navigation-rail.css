@@ -51,14 +51,14 @@
    - Resiliencia de caja: block-size al 100% para integrarse en el
      Showroom y en el scaffold de pantalla completa; el 100vh explícito
      quedó descentralizado a `.md-navigation-rail-viewport`.
-   - Coreografía de expansión (Emphasized Motion): réplica del
-     startTransitionAnimation() de NavigationRailView.java — la caja
-     (ChangeBounds) morfa con las curvas canónicas emphasized mientras
-     las etiquetas corren un handoff de opacidad (Fade 100ms) en dos
-     fases secuenciales que orquesta el JS con la clase
-     `md-navigation-rail-morphing`. El FAB de cabecera es un ÚNICO nodo
-     que morfifica (cuadrado <- extended) gobernado por el estado del
-     riel, como el FloatingActionButton real dentro del View.
+   - Coreografía de expansión (Emphasized Motion, Zero JS): la caja
+     startTransitionAnimation() de NavigationRailView.java en curvas
+      asimétricas canónicas consumiendo tokens Capa 2 (expandir:
+      long2/decelerate; colapsar: long1/emphasized-accelerate). El JS solo
+      conmuta la clase raíz .md-navigation-rail-expanded y aria-expanded en
+      frame 0. El FAB de cabecera morfifica (56dp <-> extended) con el estado
+      del riel; etiqueta y pastilla interpolan geometría absoluta
+      (inset/transform) sin clases temporales, timers ni handoff orquestado.
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
@@ -94,12 +94,13 @@
    Cuando el riel se ancla al lateral izquierdo de la ventana, el contenido
    hermano (<main>) reserva el ancho del riel automáticamente sin necesidad
    de envoltorios artificiales. Al expandirse, la transición acompaña la anchura.
+   Asimetría canónica M3: expandir long2/decelerate, colapsar long1/emphasized-accelerate.
    ------------------------------------------------------------------------ */
 .md-navigation-rail ~ main,
 body:has(> .md-navigation-rail) > main,
 main:has(> .md-navigation-rail) {
   margin-inline-start: var(--md-sys-measurement-navigation-rail-width);
-  transition: margin-inline-start var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized);
+  transition: margin-inline-start var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-accelerate);
   will-change: margin-inline-start;
 }
 
@@ -246,9 +247,9 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
    ------------------------------------------------------------------------ */
 .md-navigation-rail-item {
   display: flex;
-  flex-direction: column;
+  flex-direction: column;          /* colapsado: pila vertical canonica (6+32+4+16+6 = 64dp) */
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;     /* pastilla arriba: la etiqueta absoluta ocupa la banda inferior reservada */
   inline-size: 100%;
   min-inline-size: var(--md-sys-measurement-touch-target); /* 48dp */
   min-block-size: var(--md-sys-measurement-navigation-rail-item-min-height); /* 64dp Expressive */
@@ -272,8 +273,11 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
   outline: none;
   box-sizing: border-box;
   white-space: nowrap;
+  position: relative; /* Bloque de coordenadas de la etiqueta absoluta interpolable */
+  z-index: 0;
+  color: inherit;
   transition:
-    block-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized),
+    block-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-accelerate),
     background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
@@ -293,8 +297,8 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
   overflow: visible; /* Respeto estricto para no cercenar badges */
   transition:
     background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate),
-    inline-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized),
-    block-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized);
+    inline-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-accelerate),
+    block-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-accelerate);
 }
 
 /* State Layer limpio sobre la pastilla */
@@ -311,14 +315,21 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
 }
 
 /* Glifo e insignia (Badge): z-index: 0 para el glifo, permitiendo que
-   .md-badge flote a z-index: 1 por encima sin ser cortado */
+   .md-badge flote a z-index: 1 por encima sin ser cortado.
+   Caja flexible explícita (inline-flex): en fila expandida y en columna
+   colapsada el glifo mantiene su caja de 24dp con el eje coaxial a 48dp. */
 .md-navigation-rail-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-size: var(--md-sys-measurement-icon-size); /* 24dp */
   inline-size: var(--md-sys-measurement-icon-size);
   block-size: var(--md-sys-measurement-icon-size);
   color: inherit;
   position: relative;
   z-index: 0;
+  flex-shrink: 0;
+  transition: color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-accelerate);
 }
 
 .md-navigation-rail-indicator .md-badge-anchor {
@@ -326,35 +337,35 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
   z-index: 1;
 }
 
-/* Etiqueta tipográfica */
+/* Etiqueta tipográfica — Geometría absoluta interpolable (Zero JS Motion)
+   Misma caja absoluta en ambos estados del item (position: relative):
+   - Colapsada: centrada bajo la pastilla (rotulada vertical del riel 96dp).
+   - Expandida: a la derecha del icono (fila horizontal del riel 280dp).
+   inset + transform son interpolables → el texto DESLIZA entre las dos
+   posiciones con curva asimétrica por dirección (salir: accelerate,
+   llegar: decelerate). Sin animation reiniciable → cero pop en frame 0. */
 .md-navigation-rail-label {
-  margin-block-start: var(--md-sys-measurement-space-50); /* 4dp bajo la pastilla (activeIndicatorLabelPadding) */
-  block-size: var(--md-sys-typescale-label-medium-line-height); /* 16dp de linea label-medium */
-  max-inline-size: 100%;
+  position: absolute;
+  inset-block-start: calc(
+    var(--md-sys-measurement-navigation-rail-item-padding-top) +
+    var(--md-sys-measurement-navigation-rail-indicator-height) +
+    var(--md-sys-measurement-space-50)
+  ); /* colapsada: 6 + 32 + 4 = 42dp bajo el tope del item */
+  inset-inline-start: 50%; /* colapsada: centrada horizontalmente */
+  transform: translate(-50%, var(--md-sys-measurement-space-0)); /* Ajuste fino: el margin-block del flow ya no aplica */
+  max-inline-size: calc(100% - var(--md-sys-measurement-space-100));
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  pointer-events: none;
   opacity: 1;
-  transform: translateX(var(--md-sys-measurement-space-0));
   transition:
-    opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate),
-    transform var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate);
-}
-
-/* Entrada suave con fade-in para la etiqueta vertical colapsada al asentarse el riel */
-.md-navigation-rail:not(.md-navigation-rail-expanded) .md-navigation-rail-label {
-  animation: md-nav-rail-label-vertical-fade-in var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate) forwards;
-}
-
-@keyframes md-nav-rail-label-vertical-fade-in {
-  0% {
-    opacity: 0;
-    transform: translateY(calc(-1 * var(--md-sys-measurement-space-25)));
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(var(--md-sys-measurement-space-0));
-  }
+    opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-accelerate),
+    transform var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-accelerate),
+    inset-block-start var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-accelerate),
+    inset-inline-start var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-accelerate),
+    font-size var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-accelerate),
+    line-height var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-accelerate);
 }
 
 /* --------------------------------------------------------------------------
@@ -368,7 +379,22 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
    ------------------------------------------------------------------------ */
 .md-navigation-rail-item[aria-selected="true"] .md-navigation-rail-indicator {
   background-color: var(--md-sys-color-secondary-container);
-  transition: background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate);
+  /* Transición COMPLETA (no solo background-color): este selector de
+     especificidad (0,3,0) pisaría la transición de dimensiones de la regla
+     base y la pastilla snappearía al colapsar (bug del pop en frame 0). */
+  transition:
+    background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate),
+    inline-size var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
+    block-size var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate);
+}
+
+/* Rama de colapso: misma especificidad + :not(expanded) para que la reversa
+   use la curva canónica de cierre (long1/emphasized-accelerate). */
+.md-navigation-rail:not(.md-navigation-rail-expanded) .md-navigation-rail-item[aria-selected="true"] .md-navigation-rail-indicator {
+  transition:
+    background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-accelerate),
+    inline-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-accelerate),
+    block-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-accelerate);
 }
 
 .md-navigation-rail-item[aria-selected="true"] {
@@ -464,13 +490,13 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
   font-size: 0; /* Colapsa nodos de texto directo en colapso */
   line-height: 0;
   transition:
-    inline-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized),
-    min-inline-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized),
-    max-inline-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized),
-    padding-inline var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized),
-    gap var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized),
-    font-size var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized),
-    color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized);
+    inline-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-accelerate),
+    min-inline-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-accelerate),
+    max-inline-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-accelerate),
+    padding-inline var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-accelerate),
+    gap var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-accelerate),
+    font-size var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-accelerate),
+    color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-accelerate);
   will-change: inline-size, max-inline-size;
 }
 
@@ -514,7 +540,7 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
 
 .md-navigation-rail-expanded .md-navigation-rail-item {
   display: flex;
-  flex-direction: row;
+  flex-direction: row;            /* fila continua: eje principal horizontal */
   align-items: center;
   justify-content: flex-start;
   inline-size: auto;
@@ -532,7 +558,8 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
     block-size var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
-/* Pastilla elástica continua en modo expandido: ensancha a 100% (240dp) y 56dp de alto */
+/* Pastilla elástica: en expandido 100%×56dp, en colapsado (base) 56×32dp.
+   La transición de colapso vive en la regla base del indicador. */
 .md-navigation-rail-expanded .md-navigation-rail-item .md-navigation-rail-indicator {
   inline-size: 100%;
   block-size: var(--md-sys-measurement-space-700); /* 56dp */
@@ -543,46 +570,29 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
     block-size var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
-/* Forzar renderizado y tamaño del icono coaxial (eje x = 48dp siempre) */
-.md-navigation-rail-expanded .md-navigation-rail-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: var(--md-sys-measurement-icon-size); /* 24dp */
-  inline-size: var(--md-sys-measurement-icon-size);
-  min-inline-size: var(--md-sys-measurement-icon-size);
-  block-size: var(--md-sys-measurement-icon-size);
-  flex-shrink: 0;
-}
+/* El glifo de 24dp vive en la regla base única (.md-navigation-rail-icon):
+   mismo tamaño y eje coaxial en ambos estados. */
 
-/* Etiqueta horizontal en modo expandido */
+/* Etiqueta en expandido: misma estructura de transform que la colapsada
+   `translate(X%, Y%)` para interpolar el desliz (50% ↔ 0 en X, 0 ↔ -50% en Y). */
 .md-navigation-rail-expanded .md-navigation-rail-item .md-navigation-rail-label {
-  position: absolute;
-  inset-inline-start: calc(var(--md-sys-measurement-navigation-rail-expanded-leading-space) + var(--md-sys-measurement-icon-size) + var(--md-sys-measurement-navigation-rail-icon-label-space));
+  inset-inline-start: calc(
+    var(--md-sys-measurement-navigation-rail-expanded-leading-space) +
+    var(--md-sys-measurement-icon-size) +
+    var(--md-sys-measurement-navigation-rail-icon-label-space)
+  ); /* 16 + 24 + 8 = 48dp de keyline */
   inset-block-start: 50%;
-  transform: translateY(-50%);
-  margin-block-start: var(--md-sys-measurement-space-0);
+  transform: translate(var(--md-sys-measurement-space-0), -50%);
   font: var(--md-sys-typescale-label-large);
   letter-spacing: var(--md-sys-typescale-label-large-tracking);
-  block-size: var(--md-sys-typescale-label-large-line-height);
-  pointer-events: none;
-  white-space: nowrap;
-  animation: md-nav-rail-label-fade-in var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate) both;
-}
-
-@keyframes md-nav-rail-label-fade-in {
-  0% {
-    opacity: 0;
-    transform: translateY(-50%) translateX(calc(-1 * var(--md-sys-measurement-navigation-rail-item-spacing)));
-  }
-  50% {
-    opacity: 0;
-    transform: translateY(-50%) translateX(calc(-1 * var(--md-sys-measurement-navigation-rail-item-spacing)));
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(-50%) translateX(var(--md-sys-measurement-space-0));
-  }
+  opacity: 1;
+  transition:
+    opacity var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
+    transform var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
+    inset-inline-start var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
+    inset-block-start var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
+    font-size var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
+    line-height var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
 /* Colores semánticos en modo expandido */
@@ -629,11 +639,11 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
   user-select: none;
   pointer-events: none;
   transition:
-    color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized),
-    block-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized),
-    margin-block-start var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized),
-    margin-block-end var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized),
-    padding-inline-start var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized);
+    color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-accelerate),
+    block-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-accelerate),
+    margin-block-start var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-accelerate),
+    margin-block-end var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-accelerate),
+    padding-inline-start var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-accelerate);
 }
 
 /* Divisor horizontal centrado de 48dp en estado colapsado */
@@ -648,7 +658,7 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
   inset-inline-start: 50%;
   transform: translateX(-50%);
   opacity: 1;
-  transition: opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized);
+  transition: opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-accelerate);
 }
 
 /* Modo EXPANDIDO (280dp): emerge el texto a 36dp de keyline y el divisor se desvanece */
@@ -674,33 +684,6 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
   opacity: 0;
   pointer-events: none;
   transition: opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate);
-}
-
-/* --------------------------------------------------------------------------
-   HANDOFF CANÓNICO (150ms) — clase inyectada por el JS durante la fase A
-   --------------------------------------------------------------------------
-   Réplica de startTransitionAnimation() de NavigationRailView.java:
-   TransitionSet SEQUENTIAL = [fadeOut de labels, 150ms] -> [ChangeBounds
-   500ms/300ms + fadeIn]. El JS: (1) añade esta clase, (2) espera duration-short3,
-   (3) conmuta el estado del riel y (4) la retira en el frame siguiente para
-   que el estado destino anime la entrada desde opacidad 0.
-   Texto del FAB: se apaga por `color` (el glifo conserva el color explícito
-   de variante --md-comp-fab-icon-color y no se ve afectado).
-   ------------------------------------------------------------------------ */
-.md-navigation-rail-morphing .md-navigation-rail-item .md-navigation-rail-label {
-  opacity: 0;
-  transform: translateX(calc(-1 * var(--md-sys-measurement-navigation-rail-item-spacing))); /* desliz de 4dp */
-  transition-duration:
-    var(--md-sys-motion-duration-short4),
-    var(--md-sys-motion-duration-short4);
-  transition-timing-function:
-    var(--md-sys-motion-easing-emphasized),
-    var(--md-sys-motion-easing-emphasized);
-}
-
-.md-navigation-rail-morphing .md-navigation-rail-header .md-fab {
-  color: transparent; /* texto «Crear» en fade-out; glifo intacto */
-  transition: color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized);
 }
 
 @media (prefers-reduced-motion: reduce) {
