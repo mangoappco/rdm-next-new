@@ -634,11 +634,11 @@ main:has(> .md-navigation-rail.md-navigation-rail-collapsing) {
 .md-navigation-rail-collapsing .md-navigation-rail-item .md-navigation-rail-label,
 .md-navigation-rail-collapsing .md-navigation-rail-label {
   animation: none;
-  opacity: 0 !important;
+  opacity: 0;
   transform: translateY(-50%) translateX(calc(-1 * var(--md-sys-measurement-navigation-rail-item-spacing)));
   transition:
-    opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized),
-    transform var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized);
+    opacity var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-emphasized),
+    transform var(--md-sys-motion-duration-short3) var(--md-sys-motion-easing-emphasized);
 }
 
 @keyframes md-nav-rail-label-fade-in {

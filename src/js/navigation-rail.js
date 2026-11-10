@@ -81,13 +81,14 @@ export function initNavigationRail() {
       rail.classList.remove('md-navigation-rail-collapsing');
       rail.classList.add('md-navigation-rail-expanded');
     } else {
-      // COLAPSO COORDINADO M3:
+      // COLAPSO COORDINADO M3 (Cross-fade solapado):
       // Mantener la disposición de fila (.md-navigation-rail-collapsing)
-      // mientras el riel se encoge de 280dp a 96dp en 450ms (long1) con
-      // curva emphasized, y las etiquetas se desvanecen en 200ms (short4).
+      // mientras el riel se encoge hacia 96dp. El handoff ocurre a duration-medium1
+      // (250ms), sincronizándose con la llegada física a 96dp para que el
+      // fade-in de las etiquetas verticales colapsadas se solape de forma continua.
       rail.classList.add('md-navigation-rail-collapsing');
-      const raw = getComputedStyle(document.documentElement).getPropertyValue('--md-sys-motion-duration-long1');
-      const ms = parseFloat(raw) || 450;
+      const raw = getComputedStyle(document.documentElement).getPropertyValue('--md-sys-motion-duration-medium1');
+      const ms = parseFloat(raw) || 250;
       morphTimers.set(rail, setTimeout(() => {
         rail.classList.remove('md-navigation-rail-expanded', 'md-navigation-rail-collapsing');
         morphTimers.delete(rail);
