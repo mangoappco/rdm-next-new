@@ -337,13 +337,11 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
   z-index: 1;
 }
 
-/* Etiqueta tipográfica — Geometría absoluta interpolable (Zero JS Motion)
-   Misma caja absoluta en ambos estados del item (position: relative):
-   - Colapsada: centrada bajo la pastilla (rotulada vertical del riel 96dp).
-   - Expandida: a la derecha del icono (fila horizontal del riel 280dp).
-   inset + transform son interpolables → el texto DESLIZA entre las dos
-   posiciones con curva asimétrica por dirección (salir: accelerate,
-   llegar: decelerate). Sin animation reiniciable → cero pop en frame 0. */
+/* Etiqueta VERTICAL (canónica, un nodo por item) — Cross-fade ortogonal.
+   El texto VIVE SOLO en su sitio colapsado (centrado bajo la pastilla):
+   fade-in/out EN SU COORDENADA, cero viaje diagonal, cero font-size
+   animado. La variante horizontal es un nodo hermano independiente
+   (.md-navigation-rail-label-horizontal) con slide exclusivo en X. */
 .md-navigation-rail-label {
   position: absolute;
   inset-block-start: calc(
@@ -351,21 +349,52 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
     var(--md-sys-measurement-navigation-rail-indicator-height) +
     var(--md-sys-measurement-space-50)
   ); /* colapsada: 6 + 32 + 4 = 42dp bajo el tope del item */
-  inset-inline-start: 50%; /* colapsada: centrada horizontalmente */
-  transform: translate(-50%, var(--md-sys-measurement-space-0)); /* Ajuste fino: el margin-block del flow ya no aplica */
+  inset-inline-start: 50%; /* centrada horizontalmente */
+  transform: translateX(-50%);
   max-inline-size: calc(100% - var(--md-sys-measurement-space-100));
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   pointer-events: none;
   opacity: 1;
+  transition: opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-accelerate);
+}
+
+/* Horizontal (clone presentacional, aria-hidden en el marcado):
+   alineada a la derecha del glifo en keyline 48dp. sale deslizándose
+   SOLO en X (-8dp) con fade a 0; jamás cambia de Y ni de tamaño. */
+.md-navigation-rail-label-horizontal {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: calc(
+    var(--md-sys-measurement-navigation-rail-expanded-leading-space) +
+    var(--md-sys-measurement-icon-size) +
+    var(--md-sys-measurement-navigation-rail-icon-label-space)
+  ); /* 16 + 24 + 8 = 48dp de keyline */
+  transform: translate(calc(-1 * var(--md-sys-measurement-space-100)), -50%); /* -8dp: desliz solo en X, Y fijo */
+  font: var(--md-sys-typescale-label-large);
+  letter-spacing: var(--md-sys-typescale-label-large-tracking);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
   transition:
     opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-accelerate),
-    transform var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-accelerate),
-    inset-block-start var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-accelerate),
-    inset-inline-start var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-accelerate),
-    font-size var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-accelerate),
-    line-height var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-accelerate);
+    transform var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-accelerate);
+}
+
+/* En expandido la dominante es la horizontal: la vertical se funde a 0
+   en su sitio (sin desplazarse) y la horizontal entra deslizando en X. */
+.md-navigation-rail-expanded .md-navigation-rail-item .md-navigation-rail-label {
+  opacity: 0;
+  transition: opacity var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate);
+}
+
+.md-navigation-rail-expanded .md-navigation-rail-item .md-navigation-rail-label-horizontal {
+  opacity: 1;
+  transform: translate(var(--md-sys-measurement-space-0), -50%); /* estable en keyline: solo X anima */
+  transition:
+    opacity var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
+    transform var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
 /* --------------------------------------------------------------------------
@@ -573,39 +602,19 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
 /* El glifo de 24dp vive en la regla base única (.md-navigation-rail-icon):
    mismo tamaño y eje coaxial en ambos estados. */
 
-/* Etiqueta en expandido: misma estructura de transform que la colapsada
-   `translate(X%, Y%)` para interpolar el desliz (50% ↔ 0 en X, 0 ↔ -50% en Y). */
-.md-navigation-rail-expanded .md-navigation-rail-item .md-navigation-rail-label {
-  inset-inline-start: calc(
-    var(--md-sys-measurement-navigation-rail-expanded-leading-space) +
-    var(--md-sys-measurement-icon-size) +
-    var(--md-sys-measurement-navigation-rail-icon-label-space)
-  ); /* 16 + 24 + 8 = 48dp de keyline */
-  inset-block-start: 50%;
-  transform: translate(var(--md-sys-measurement-space-0), -50%);
-  font: var(--md-sys-typescale-label-large);
-  letter-spacing: var(--md-sys-typescale-label-large-tracking);
-  opacity: 1;
-  transition:
-    opacity var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
-    transform var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
-    inset-inline-start var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
-    inset-block-start var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
-    font-size var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
-    line-height var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate);
-}
-
 /* Colores semánticos en modo expandido */
 .md-navigation-rail-expanded .md-navigation-rail-item[aria-selected="true"] .md-navigation-rail-icon {
   color: var(--md-sys-color-on-secondary-container);
   --md-sys-icon-fill: var(--md-sys-icon-fill-full);
 }
 
-.md-navigation-rail-expanded .md-navigation-rail-item[aria-selected="true"] .md-navigation-rail-label {
+.md-navigation-rail-expanded .md-navigation-rail-item[aria-selected="true"] .md-navigation-rail-label,
+.md-navigation-rail-expanded .md-navigation-rail-item[aria-selected="true"] .md-navigation-rail-label-horizontal {
   color: var(--md-sys-color-on-secondary-container);
 }
 
-.md-navigation-rail-expanded .md-navigation-rail-item:not([aria-selected="true"]) .md-navigation-rail-label {
+.md-navigation-rail-expanded .md-navigation-rail-item:not([aria-selected="true"]) .md-navigation-rail-label,
+.md-navigation-rail-expanded .md-navigation-rail-item:not([aria-selected="true"]) .md-navigation-rail-label-horizontal {
   color: var(--md-sys-color-on-surface);
 }
 
