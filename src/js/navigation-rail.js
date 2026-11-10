@@ -32,19 +32,16 @@ export function initNavigationRail() {
     const ms = parseFloat(raw);
     return Number.isFinite(ms) && ms > 0 ? ms : 150; /* fallback: valor del token en el momento de escribir esto */
   };
-  const morphTimers = new WeakMap(); // timer pendiente por rail (anti doble clic)
-
   document.addEventListener('click', (event) => {
     const toggleBtn = event.target.closest('[data-rail-toggle]');
     if (!toggleBtn) return;
     const rail = toggleBtn.closest('.md-navigation-rail');
     if (!rail) return;
 
-    const isCollapsing = rail.classList.contains('md-navigation-rail-collapsing');
-    const isExpanded = rail.classList.contains('md-navigation-rail-expanded') && !isCollapsing;
+    const isExpanded = rail.classList.contains('md-navigation-rail-expanded');
     const willExpand = !isExpanded;
 
-    // SEMANTICA INMEDIATA (no espera a la animación)
+    // SEMANTICA INMEDIATA
     toggleBtn.setAttribute('aria-expanded', willExpand ? 'true' : 'false');
 
     // Conmutar icono semántico si existe
@@ -62,38 +59,9 @@ export function initNavigationRail() {
       detail: { expanded: willExpand }
     }));
 
-    // ANIMACION: bypass instantáneo si el usuario pide menos movimiento.
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      rail.classList.remove('md-navigation-rail-collapsing', 'md-navigation-rail-morphing');
-      rail.classList.toggle('md-navigation-rail-expanded', willExpand);
-      return;
-    }
-
-    // Cancelar una coreografía a medio volar antes de empezar otra.
-    const previous = morphTimers.get(rail);
-    if (previous !== undefined) {
-      clearTimeout(previous);
-      morphTimers.delete(rail);
-    }
-
-    if (willExpand) {
-      // EXPANSION: conmutar inmediatamente a layout expandido
-      rail.classList.remove('md-navigation-rail-collapsing');
-      rail.classList.add('md-navigation-rail-expanded');
-    } else {
-      // COLAPSO COORDINADO M3 (Cross-fade solapado):
-      // Mantener la disposición de fila (.md-navigation-rail-collapsing)
-      // mientras el riel se encoge hacia 96dp. El handoff ocurre a duration-medium1
-      // (250ms), sincronizándose con la llegada física a 96dp para que el
-      // fade-in de las etiquetas verticales colapsadas se solape de forma continua.
-      rail.classList.add('md-navigation-rail-collapsing');
-      const raw = getComputedStyle(document.documentElement).getPropertyValue('--md-sys-motion-duration-medium1');
-      const ms = parseFloat(raw) || 250;
-      morphTimers.set(rail, setTimeout(() => {
-        rail.classList.remove('md-navigation-rail-expanded', 'md-navigation-rail-collapsing');
-        morphTimers.delete(rail);
-      }, ms));
-    }
+    // CONMUTACIÓN SIMULTÁNEA EN FRAME 0 (Sin timers artificiales que bloqueen la física)
+    rail.classList.remove('md-navigation-rail-collapsing', 'md-navigation-rail-morphing');
+    rail.classList.toggle('md-navigation-rail-expanded', willExpand);
   });
 
   // 2. Delegación de clics para conmutar destinos dentro de cualquier .md-navigation-rail
