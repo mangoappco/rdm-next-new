@@ -79,12 +79,13 @@
   min-block-size: 100dvh;
   background-color: var(--md-sys-color-surface-container); /* Canónico M3 Expressive: contraste tonal */
   box-shadow: none; /* Canónico M3 reposo: Level 0 (sin elevación ni sombra) */
-  border-inline-end: var(--md-sys-shape-stroke-thin) solid var(--_rail-border, transparent);
+  outline: var(--md-sys-shape-stroke-thin) solid var(--_rail-border, transparent); /* stroke decorativo vía outline: NO ocupa layout (un border descontaba 1dp de la pastilla: 55dp) */
+  outline-offset: calc(-1 * var(--md-sys-shape-stroke-thin)); /* pinta dentro del borde de la caja, igual que el border anterior */
   box-sizing: border-box;
   padding-block-start: var(--md-sys-measurement-navigation-rail-padding-top); /* 16dp respiro perimetral unificado M3 */
   padding-block-end: var(--md-sys-measurement-navigation-rail-padding-top); /* 16dp de cierre */
   overflow-x: hidden; /* Evita scrolls horizontales parásitos y confina el contenido durante metamorfosis */
-  transition: inline-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized);
+  transition: inline-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-accelerate); /* curva de CIERRE canónica: el expandido la sobreescribe con long2/decelerate */
   will-change: inline-size;
 }
 
@@ -250,9 +251,14 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
   flex-direction: column;          /* colapsado: pila vertical canonica (6+32+4+16+6 = 64dp) */
   align-items: center;
   justify-content: flex-start;     /* pastilla arriba: la etiqueta absoluta ocupa la banda inferior reservada */
-  inline-size: 100%;
+  inline-size: calc(
+    100% - 2 * var(--md-sys-measurement-navigation-rail-expanded-item-margin-horizontal)
+  ); /* 100% menos márgenes: 56dp colapsado / 240dp expandido. El VALOR de la
+     propiedad es idéntico en ambos estados (el ancho cambia por layout del
+     riel) → jamás re-vincula ni snappea en frame 0. */
   min-inline-size: var(--md-sys-measurement-touch-target); /* 48dp */
   min-block-size: var(--md-sys-measurement-navigation-rail-item-min-height); /* 64dp Expressive */
+  margin-inline: var(--md-sys-measurement-navigation-rail-expanded-item-margin-horizontal); /* 20dp EN AMBOS estados: el borde de arranque del item es constante → la etiqueta vertical (ancla 28dp) y el clon horizontal (keyline 48dp) jamás re-vinculan su coordenada */
   padding-block-start: var(--md-sys-measurement-navigation-rail-item-padding-top); /* 6dp */
   padding-block-end: var(--md-sys-measurement-navigation-rail-item-padding-bottom); /* 6dp simetrico (Expresive: item_vertical_space en ambos flancos) */
   padding-inline: 0;
@@ -281,7 +287,12 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
     background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
-/* Slot del Active Indicator: 56x32dp fijo en reposo, pastilla elástica continua en expansión */
+/* Slot del Active Indicator: 100%×32dp (llena el item de 56dp), pastilla
+   elástica continua en expansión. inline-size es SIEMPRE 100% del item —
+   jamás transiciona como propiedad: su anchura es layout puro que sigue
+   la anchura animada del riel. Esto elimina la re-vinculación del
+   porcentaje (el % del valor de partida se resolvía contra la nueva
+   anchura del item y la pastilla saltaba 239→279px en frame 0). */
 .md-navigation-rail-indicator {
   display: flex;
   align-items: center;
@@ -290,14 +301,13 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
   box-sizing: border-box;
   position: relative;
   z-index: 0;
-  inline-size: var(--md-sys-measurement-navigation-rail-indicator-width); /* 56dp */
+  inline-size: 100%;
   block-size: var(--md-sys-measurement-navigation-rail-indicator-height); /* 32dp */
   border-radius: var(--md-sys-shape-corner-full);
   background-color: transparent;
   overflow: visible; /* Respeto estricto para no cercenar badges */
   transition:
     background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate),
-    inline-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-accelerate),
     block-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-accelerate);
 }
 
@@ -338,10 +348,14 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
 }
 
 /* Etiqueta VERTICAL (canónica, un nodo por item) — Cross-fade ortogonal.
-   El texto VIVE SOLO en su sitio colapsado (centrado bajo la pastilla):
-   fade-in/out EN SU COORDENADA, cero viaje diagonal, cero font-size
-   animado. La variante horizontal es un nodo hermano independiente
-   (.md-navigation-rail-label-horizontal) con slide exclusivo en X. */
+   El texto VIVE SOLO en su sitio colapsado: fade-in/out EN SU COORDENADA,
+   cero viaje diagonal, cero font-size animado. La variante horizontal es
+   un nodo hermano independiente (.md-navigation-rail-label-horizontal)
+   con slide exclusivo en X.
+   Ancla X = 16dp + 24dp/2 = 28dp del arranque del item: el centro del
+   glifo en AMBOS estados (colapsado: item 56dp centrado; expandido:
+   pastilla con padding 16dp). El borde de arranque del item es constante
+   (margin-inline 20dp siempre) → la etiqueta JAMÁS se desplaza. */
 .md-navigation-rail-label {
   position: absolute;
   inset-block-start: calc(
@@ -349,9 +363,14 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
     var(--md-sys-measurement-navigation-rail-indicator-height) +
     var(--md-sys-measurement-space-50)
   ); /* colapsada: 6 + 32 + 4 = 42dp bajo el tope del item */
-  inset-inline-start: 50%; /* centrada horizontalmente */
+  inset-inline-start: calc(
+    var(--md-sys-measurement-navigation-rail-expanded-leading-space) +
+    var(--md-sys-measurement-icon-size) / 2
+  ); /* 16 + 12 = 28dp: centro del glifo, constante en ambos estados */
   transform: translateX(-50%);
-  max-inline-size: calc(100% - var(--md-sys-measurement-space-100));
+  max-inline-size: calc(
+    var(--md-sys-measurement-navigation-rail-width) - var(--md-sys-measurement-space-100)
+  ); /* 88dp respecto del riel (el item solo mide 56dp): sin truncar etiquetas cortas */
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -362,10 +381,13 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
 
 /* Horizontal (clone presentacional, aria-hidden en el marcado):
    alineada a la derecha del glifo en keyline 48dp. sale deslizándose
-   SOLO en X (-8dp) con fade a 0; jamás cambia de Y ni de tamaño. */
+   SOLO en X (-8dp) con fade a 0; jamás cambia de Y ni de tamaño.
+   Ancla Y = 28dp fijos (mitad del item expandido de 56dp), NO 50%: la
+   altura del item anima 64⇄56 y un ancla porcentual haría derivar el
+   texto 4dp en Y durante el fundido. */
 .md-navigation-rail-label-horizontal {
   position: absolute;
-  inset-block-start: 50%;
+  inset-block-start: calc(var(--md-sys-measurement-space-700) / 2); /* 28dp fijos: centro del item expandido, constante en ambos estados */
   inset-inline-start: calc(
     var(--md-sys-measurement-navigation-rail-expanded-leading-space) +
     var(--md-sys-measurement-icon-size) +
@@ -413,7 +435,6 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
      base y la pastilla snappearía al colapsar (bug del pop en frame 0). */
   transition:
     background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate),
-    inline-size var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
     block-size var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
@@ -422,7 +443,6 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
 .md-navigation-rail:not(.md-navigation-rail-expanded) .md-navigation-rail-item[aria-selected="true"] .md-navigation-rail-indicator {
   transition:
     background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-accelerate),
-    inline-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-accelerate),
     block-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-accelerate);
 }
 
@@ -572,7 +592,9 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
   flex-direction: row;            /* fila continua: eje principal horizontal */
   align-items: center;
   justify-content: flex-start;
-  inline-size: auto;
+  /* inline-size heredado del base (calc(100% - 40dp) = 240dp): MISMO valor de
+     propiedad en ambos estados → la pastilla (100% del item) es layout puro
+     sincronizado con el riel, jamás re-vincula un porcentaje. */
   min-inline-size: 0;
   block-size: var(--md-sys-measurement-space-700); /* 56dp (expandedHeight) */
   min-block-size: var(--md-sys-measurement-space-700);
@@ -587,15 +609,13 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
     block-size var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
-/* Pastilla elástica: en expandido 100%×56dp, en colapsado (base) 56×32dp.
-   La transición de colapso vive en la regla base del indicador. */
+/* Pastilla elástica: en expandido llena el item (100%×56dp); su anchura es
+   SIEMPRE 100% del item (layout puro) — solo anima block-size. */
 .md-navigation-rail-expanded .md-navigation-rail-item .md-navigation-rail-indicator {
-  inline-size: 100%;
   block-size: var(--md-sys-measurement-space-700); /* 56dp */
   border-radius: var(--md-sys-shape-corner-full);
   padding-inline-start: var(--md-sys-measurement-navigation-rail-expanded-leading-space); /* 16dp */
   transition:
-    inline-size var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
     block-size var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
