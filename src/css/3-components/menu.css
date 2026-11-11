@@ -298,6 +298,58 @@
   color: var(--md-sys-color-error);
 }
 
+/* Variante vibrant (.md-menu-vibrant) — canon md.comp.menus.vibrant.*
+   (MDS v34.0.21): contenedor e ítems viven en tertiary-container; la
+   selección sube a tertiary sólido con on-tertiary; en hover, focus y
+   pressed los iconos leading/trailing giran a tertiary. El state layer
+   (::before) hereda currentColor = on-tertiary-container (canon).
+   El focus ring no está sobreescrito en el canon vibrant: hereda el
+   indicador secondary del menú estándar. */
+.md-menu.md-menu-vibrant {
+  background-color: var(--md-sys-color-tertiary-container);
+}
+
+.md-menu.md-menu-vibrant .md-menu-item {
+  color: var(--md-sys-color-on-tertiary-container);
+}
+
+.md-menu.md-menu-vibrant .md-menu-item-leading,
+.md-menu.md-menu-vibrant .md-menu-item-trailing {
+  color: var(--md-sys-color-on-tertiary-container);
+}
+
+.md-menu.md-menu-vibrant .md-menu-label {
+  color: var(--md-sys-color-on-tertiary-container);
+}
+
+.md-menu.md-menu-vibrant .md-menu-item:hover .md-menu-item-leading,
+.md-menu.md-menu-vibrant .md-menu-item:hover .md-menu-item-trailing,
+.md-menu.md-menu-vibrant .md-menu-item:focus-visible .md-menu-item-leading,
+.md-menu.md-menu-vibrant .md-menu-item:focus-visible .md-menu-item-trailing,
+.md-menu.md-menu-vibrant .md-menu-item:active .md-menu-item-leading,
+.md-menu.md-menu-vibrant .md-menu-item:active .md-menu-item-trailing {
+  color: var(--md-sys-color-tertiary);
+}
+
+/* Selección vibrant: canon `menu-item.selected.container.color` =
+   tertiary sólido, textos e iconos on-tertiary (rincón 12dp igual al
+   estándar). Declarado después de la selección base para ganar cascada. */
+.md-menu.md-menu-vibrant > .md-menu-item.md-menu-item-selected,
+.md-menu.md-menu-vibrant > .md-menu-item[aria-selected="true"],
+.md-menu.md-menu-vibrant > .md-menu-submenu > .md-menu-item.md-menu-item-selected,
+.md-menu.md-menu-vibrant > .md-menu-submenu > .md-menu-item[aria-selected="true"] {
+  background-color: var(--md-sys-color-tertiary);
+  color: var(--md-sys-color-on-tertiary);
+  border-radius: var(--md-sys-shape-corner-medium); /* 12dp canon selected-shape */
+}
+
+.md-menu.md-menu-vibrant > .md-menu-item.md-menu-item-selected .md-menu-item-leading,
+.md-menu.md-menu-vibrant > .md-menu-item.md-menu-item-selected .md-menu-item-trailing,
+.md-menu.md-menu-vibrant > .md-menu-item[aria-selected="true"] .md-menu-item-leading,
+.md-menu.md-menu-vibrant > .md-menu-item[aria-selected="true"] .md-menu-item-trailing {
+  color: var(--md-sys-color-on-tertiary);
+}
+
 .md-menu-item.md-menu-item-destructive:focus-visible,
 .md-menu-item.md-menu-item-destructive.md-menu-item-focus {
   outline: none;

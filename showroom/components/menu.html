@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
-  <link rel="stylesheet" href="../../src/css/main.css?v=79">
+  <link rel="stylesheet" href="../../src/css/main.css?v=80">
   <link rel="stylesheet" href="../assets/showroom.css">
   <script type="module" src="../../src/js/main.js"></script>
   <script src="../assets/showroom.js"></script>
@@ -46,7 +46,7 @@
     <header class="sr-header">
       <h1 class="md-type-display-large">Menu</h1>
       <p class="md-type-body-large">Superficie flotante elevada que presenta una lista vertical de opciones o acciones sobre el contenido anfitrión.</p>
-      <p class="md-type-body-medium md-text-on-surface-variant">M3 Expressive · Elevación level2 · Bloque 1 (Pares 1 a 9)</p>
+      <p class="md-type-body-medium md-text-on-surface-variant">M3 Expressive · Elevación level2 · Bloque 1 (Pares 1 a 10)</p>
     </header>
 
     <hr class="md-divider">
@@ -632,6 +632,68 @@
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
     <!-- PAREJA PAR 9: hasta aqui -->
+
+    <!-- PAREJA PAR 10: Variante vibrant (tertiary-container) -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Variante vibrant (tertiary-container)</h3>
+      <p class="md-type-body-medium">Variante expresiva del canon md.comp.menus.vibrant: contenedor e ítems en tertiary-container, selección sólida en tertiary y iconos que giran en interacción.</p>
+
+      <div class="sr-specimen sr-specimen-menu sr-specimen-tall">
+        <div class="md-menu-anchor">
+          <button type="button" class="md-icon-button" id="menu-trigger-vibrant" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-vibrant" aria-label="Estilo de carta">
+            <span class="md-icon" aria-hidden="true">more_vert</span>
+          </button>
+          <div class="md-menu md-menu-vibrant md-menu-open" id="menu-vibrant" role="menu" aria-labelledby="menu-trigger-vibrant">
+            <span class="md-menu-label" id="menu-vibrant-label">Estilo de carta</span>
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-leading md-icon" aria-hidden="true">list_alt</span>
+              <span class="md-menu-item-headline">Compacto</span>
+            </button>
+            <button type="button" class="md-menu-item md-menu-item-selected" role="menuitem" aria-selected="true">
+              <span class="md-menu-item-leading md-icon" aria-hidden="true">grid_view</span>
+              <span class="md-menu-item-headline">Cuadrícula</span>
+            </button>
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-leading md-icon" aria-hidden="true">calendar_view_month</span>
+              <span class="md-menu-item-headline">Calendario</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;div class="md-menu-anchor"&gt;
+  &lt;!-- Slot: Disparador anfitrión --&gt;
+  &lt;button type="button" class="md-icon-button" id="menu-trigger-vibrant" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-vibrant" aria-label="Estilo de carta"&gt;
+    &lt;span class="md-icon" aria-hidden="true"&gt;more_vert&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;!-- Slot: Superficie flotante vibrant (tertiary-container) --&gt;
+  &lt;div class="md-menu md-menu-vibrant md-menu-open" id="menu-vibrant" role="menu" aria-labelledby="menu-trigger-vibrant"&gt;
+    &lt;!-- Etiqueta de sección --&gt;
+    &lt;span class="md-menu-label" id="menu-vibrant-label"&gt;Estilo de carta&lt;/span&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;!-- Slot: Leading --&gt;
+      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;list_alt&lt;/span&gt;
+      &lt;!-- Slot: Content --&gt;
+      &lt;span class="md-menu-item-headline"&gt;Compacto&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;!-- Estado: Selected (tertiary sólido, on-tertiary) --&gt;
+    &lt;button type="button" class="md-menu-item md-menu-item-selected" role="menuitem" aria-selected="true"&gt;
+      &lt;!-- Slot: Leading --&gt;
+      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;grid_view&lt;/span&gt;
+      &lt;!-- Slot: Content --&gt;
+      &lt;span class="md-menu-item-headline"&gt;Cuadrícula&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;!-- Slot: Leading --&gt;
+      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;calendar_view_month&lt;/span&gt;
+      &lt;!-- Slot: Content --&gt;
+      &lt;span class="md-menu-item-headline"&gt;Calendario&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA PAR 10: hasta aqui -->
 
   </main>
 
