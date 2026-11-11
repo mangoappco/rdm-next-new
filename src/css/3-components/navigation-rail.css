@@ -342,9 +342,51 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
   transition: color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
+/* ==========================================================================
+   BADGE ANATOMY: Colapsado (anclado al glifo) vs Expandido (Trailing Slot)
+   ==========================================================================
+   M3 Expressive Navigation Rail:
+   - En colapsado (96dp): .md-navigation-rail-badge-collapsed reposa sobre el
+     glifo anfitrión mediante .md-badge-anchor (z-index: 1).
+   - En expandido (280dp): la fila de navegación adopta la anatomía horizontal
+     de Navigation Drawer; el badge numérico o dot migra al extremo derecho
+     (.md-navigation-rail-badge-trailing) en el trailing slot a 16dp del borde.
+   - Cross-fade simultáneo en Frame 0 sincronizado a 300ms (medium2/decelerate).
+   ========================================================================== */
 .md-navigation-rail-indicator .md-badge-anchor {
   position: relative;
   z-index: 1;
+}
+
+.md-navigation-rail-badge-trailing {
+  position: absolute;
+  top: auto;
+  bottom: auto;
+  left: auto;
+  right: auto;
+  inset-block-start: calc(var(--md-sys-measurement-space-700) / 2);
+  inset-inline-end: var(--md-sys-measurement-navigation-rail-expanded-leading-space);
+  transform: translateY(-50%);
+  margin: var(--md-sys-measurement-space-0);
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate);
+}
+
+.md-navigation-rail-badge-collapsed {
+  opacity: 1;
+  transition: opacity var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate);
+}
+
+.md-navigation-rail-expanded .md-navigation-rail-badge-collapsed {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.md-navigation-rail-expanded .md-navigation-rail-badge-trailing {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 /* Etiqueta VERTICAL (canónica, un nodo por item) — Cross-fade ortogonal.

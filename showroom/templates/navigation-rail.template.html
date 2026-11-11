@@ -628,7 +628,7 @@
     <!-- PAREJA PAR 9: Canonical badges (Small dot & Counters) -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Canonical badges (Small dot & Counters)</h3>
-      <p class="md-type-body-medium">Pastilla de conteo y small dot anclados al glifo con .md-badge-anchor; el anfitrión los anuncia en su aria-label y .md-badge permanece en aria-hidden.</p>
+      <p class="md-type-body-medium">En colapsado el badge ancla al glifo; en expandido migra al trailing slot derecho en sincronía con el riel.</p>
 
       <div class="sr-specimen sr-specimen-rail">
         <nav class="md-navigation-rail" role="tablist" aria-label="Navegación con menú, acción principal y notificaciones">
@@ -651,28 +651,31 @@
               <span class="md-navigation-rail-indicator">
                 <span class="md-badge-anchor">
                   <span class="md-navigation-rail-icon md-icon" aria-hidden="true">notifications</span>
-                  <span class="md-badge md-badge-small" aria-hidden="true"></span>
+                  <span class="md-badge md-badge-small md-navigation-rail-badge-collapsed" aria-hidden="true"></span>
                 </span>
               </span>
               <span class="md-navigation-rail-label">Alertas</span><span class="md-navigation-rail-label-horizontal" aria-hidden="true">Alertas</span>
+              <span class="md-badge md-badge-small md-navigation-rail-badge-trailing" aria-hidden="true"></span>
             </button>
             <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" aria-label="Mensajes, 3 sin leer" tabindex="-1">
               <span class="md-navigation-rail-indicator">
                 <span class="md-badge-anchor">
                   <span class="md-navigation-rail-icon md-icon" aria-hidden="true">mail</span>
-                  <span class="md-badge md-badge-large" aria-hidden="true">3</span>
+                  <span class="md-badge md-badge-large md-navigation-rail-badge-collapsed" aria-hidden="true">3</span>
                 </span>
               </span>
               <span class="md-navigation-rail-label">Mensajes</span><span class="md-navigation-rail-label-horizontal" aria-hidden="true">Mensajes</span>
+              <span class="md-badge md-badge-large md-navigation-rail-badge-trailing" aria-hidden="true">3</span>
             </button>
             <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" aria-label="Historial, 12 pedidos" tabindex="-1">
               <span class="md-navigation-rail-indicator">
                 <span class="md-badge-anchor">
                   <span class="md-navigation-rail-icon md-icon" aria-hidden="true">history</span>
-                  <span class="md-badge md-badge-large" aria-hidden="true">12</span>
+                  <span class="md-badge md-badge-large md-navigation-rail-badge-collapsed" aria-hidden="true">12</span>
                 </span>
               </span>
               <span class="md-navigation-rail-label">Historial</span><span class="md-navigation-rail-label-horizontal" aria-hidden="true">Historial</span>
+              <span class="md-badge md-badge-large md-navigation-rail-badge-trailing" aria-hidden="true">12</span>
             </button>
           </div>
         </nav>
@@ -703,33 +706,39 @@
       &lt;span class="md-navigation-rail-indicator"&gt;
         &lt;span class="md-badge-anchor"&gt;
           &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;notifications&lt;/span&gt;
-          &lt;span class="md-badge md-badge-small" aria-hidden="true"&gt;&lt;/span&gt;
+          &lt;span class="md-badge md-badge-small md-navigation-rail-badge-collapsed" aria-hidden="true"&gt;&lt;/span&gt;
         &lt;/span&gt;
       &lt;/span&gt;
       &lt;!-- Slot: Etiqueta de texto --&gt;
       &lt;span class="md-navigation-rail-label"&gt;Alertas&lt;/span&gt;&lt;span class="md-navigation-rail-label-horizontal" aria-hidden="true"&gt;Alertas&lt;/span&gt;
+      &lt;!-- Slot: Trailing Badge expandido --&gt;
+      &lt;span class="md-badge md-badge-small md-navigation-rail-badge-trailing" aria-hidden="true"&gt;&lt;/span&gt;
     &lt;/button&gt;
     &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" aria-label="Mensajes, 3 sin leer" tabindex="-1"&gt;
       &lt;!-- Slot: Icono / Indicador con Badge --&gt;
       &lt;span class="md-navigation-rail-indicator"&gt;
         &lt;span class="md-badge-anchor"&gt;
           &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;mail&lt;/span&gt;
-          &lt;span class="md-badge md-badge-large" aria-hidden="true"&gt;3&lt;/span&gt;
+          &lt;span class="md-badge md-badge-large md-navigation-rail-badge-collapsed" aria-hidden="true"&gt;3&lt;/span&gt;
         &lt;/span&gt;
       &lt;/span&gt;
       &lt;!-- Slot: Etiqueta de texto --&gt;
       &lt;span class="md-navigation-rail-label"&gt;Mensajes&lt;/span&gt;&lt;span class="md-navigation-rail-label-horizontal" aria-hidden="true"&gt;Mensajes&lt;/span&gt;
+      &lt;!-- Slot: Trailing Badge expandido --&gt;
+      &lt;span class="md-badge md-badge-large md-navigation-rail-badge-trailing" aria-hidden="true"&gt;3&lt;/span&gt;
     &lt;/button&gt;
     &lt;button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" aria-label="Historial, 12 pedidos" tabindex="-1"&gt;
       &lt;!-- Slot: Icono / Indicador con Badge --&gt;
       &lt;span class="md-navigation-rail-indicator"&gt;
         &lt;span class="md-badge-anchor"&gt;
           &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;history&lt;/span&gt;
-          &lt;span class="md-badge md-badge-large" aria-hidden="true"&gt;12&lt;/span&gt;
+          &lt;span class="md-badge md-badge-large md-navigation-rail-badge-collapsed" aria-hidden="true"&gt;12&lt;/span&gt;
         &lt;/span&gt;
       &lt;/span&gt;
       &lt;!-- Slot: Etiqueta de texto --&gt;
       &lt;span class="md-navigation-rail-label"&gt;Historial&lt;/span&gt;&lt;span class="md-navigation-rail-label-horizontal" aria-hidden="true"&gt;Historial&lt;/span&gt;
+      &lt;!-- Slot: Trailing Badge expandido --&gt;
+      &lt;span class="md-badge md-badge-large md-navigation-rail-badge-trailing" aria-hidden="true"&gt;12&lt;/span&gt;
     &lt;/button&gt;
   &lt;/div&gt;
 &lt;/nav&gt;</code></pre>
