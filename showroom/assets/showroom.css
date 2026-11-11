@@ -147,7 +147,7 @@
     transform: translateZ(0);
   }
 
-  .sr-specimen-tall > div:not(.md-divider-vertical) {
+  .sr-specimen-tall > div:not(.md-divider-vertical, .md-menu-anchor) {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -160,6 +160,20 @@
      lo convertiria en un bloque de 288px. */
   .sr-specimen-tall > div.md-divider-vertical {
     min-height: calc(var(--md-ref-spacing-900) * 2);
+  }
+
+  /* ESCENARIO PARA MENU (superficie flotante)
+     --------------------------------------------------------------------------
+     Escenario con altura suficiente (min 368px) para exhibir el disparador
+     arriba y el menu flotante desplegado debajo sin desbordar sobre el codigo.
+     Alineacion vertical al inicio y respiro perimetral generoso.
+     --------------------------------------------------------------------- */
+  .sr-specimen-menu {
+    min-height: calc(var(--md-ref-spacing-900) * 2 + var(--md-ref-spacing-600) + var(--md-ref-spacing-400)); /* 368px */
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    padding: var(--md-ref-spacing-400) !important;
+    position: relative;
   }
 
   /* ESCENARIO DE ACOPLAMIENTO (convivencia FAB sobre Navigation Bar)
@@ -262,7 +276,7 @@
       Y AHORA .md-snackbar-container: el host de viewport es div directo
       y este padding engordaba la caja y creaba asimetria vertical.
      --------------------------------------------------------------------- */
-  .sr-specimen:not(.sr-meter) > div:not(.sr-motion-dot):not(.md-divider-vertical):not(.md-button-group):not(.md-segmented-button):not(.md-row):not(.md-select):not(.md-text-field):not(.md-tabs):not(.md-snackbar-container) {
+  .sr-specimen:not(.sr-meter) > div:not(.sr-motion-dot):not(.md-divider-vertical):not(.md-button-group):not(.md-segmented-button):not(.md-row):not(.md-select):not(.md-text-field):not(.md-tabs):not(.md-snackbar-container):not(.md-menu-anchor) {
     padding: var(--md-ref-spacing-200);
   }
 

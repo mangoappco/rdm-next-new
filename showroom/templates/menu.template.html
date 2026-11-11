@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Menu de RDM Next: superficie flotante elevada M3 Expressive con contenedor surface-container-low, morfosis de esquina 8 a 16dp, elevacion level2 y opciones tactiles de 48dp.">
+  <title>Menu — RDM ManGo! App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+  <link rel="stylesheet" href="../../src/css/main.css?v=79">
+  <link rel="stylesheet" href="../assets/showroom.css">
+  <script type="module" src="../../src/js/main.js"></script>
+  <script src="../assets/showroom.js"></script>
+</head>
+
+<!--
+  VISTA ATOMICA DE MENU (M3 Superficie Flotante)
+  Estructura minimalista de Dos Bloques con entrega iterativa Par por Par.
+  Bloque 1: Especificación técnica y anatomía.
+  Bloque 2: Casos de uso ManGo! App (POS / KDS).
+-->
+
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <!-- CABECERA INSTITUCIONAL DEL SHOWROOM (DOGFOODING) -->
+  <header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll role="banner" aria-label="Cabecera institucional del showroom">
+    <div class="md-top-app-bar-leading">
+      <a href="../index.html" class="md-icon-button" aria-label="Volver al catálogo">
+        <span class="md-icon" aria-hidden="true">arrow_back</span>
+      </a>
+    </div>
+    <div class="md-top-app-bar-content">
+      <span class="md-top-app-bar-title">Menu</span>
+      <span class="md-top-app-bar-subtitle">RDM Next · ManGo! App</span>
+    </div>
+    <div class="md-top-app-bar-trailing">
+      <button type="button" class="md-icon-button" data-theme-toggle aria-label="Tema del sistema activo">
+        <span class="md-icon" aria-hidden="true">brightness_auto</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="sr-page">
+
+    <!-- PORTADA DEL COMPONENTE -->
+    <header class="sr-header">
+      <h1 class="md-type-display-large">Menu</h1>
+      <p class="md-type-body-large">Superficie flotante elevada que presenta una lista vertical de opciones o acciones sobre el contenido anfitrión.</p>
+      <p class="md-type-body-medium md-text-on-surface-variant">M3 Expressive · Elevación level2 · Bloque 1 (Pares 1 a 9)</p>
+    </header>
+
+    <hr class="md-divider">
+
+    <!-- BLOQUE 1: ESPECIFICACIÓN TÉCNICA Y ANATOMÍA -->
+    <h2 class="md-type-headline-medium">Bloque 1 · Especificación técnica y anatomía</h2>
+
+    <!-- PAREJA PAR 1: Anatomía básica y clase base (.md-menu) -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Anatomía básica y clase base</h3>
+      <p class="md-type-body-medium">Superficie flotante en contenedor anfitrión con disparador icon-button y tres opciones de acción en altura táctil de 48dp.</p>
+
+      <div class="sr-specimen sr-specimen-menu sr-specimen-tall">
+        <div class="md-menu-anchor">
+          <button type="button" class="md-icon-button" id="menu-trigger-demo" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-demo" aria-label="Opciones">
+            <span class="md-icon" aria-hidden="true">more_vert</span>
+          </button>
+          <div class="md-menu md-menu-open" id="menu-demo" role="menu" aria-labelledby="menu-trigger-demo">
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-headline">Ver detalles</span>
+            </button>
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-headline">Duplicar</span>
+            </button>
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-headline">Compartir</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;div class="md-menu-anchor"&gt;
+  &lt;!-- Slot: Disparador anfitrión --&gt;
+  &lt;button type="button" class="md-icon-button" id="menu-trigger-demo" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-demo" aria-label="Opciones"&gt;
+    &lt;span class="md-icon" aria-hidden="true"&gt;more_vert&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;!-- Slot: Superficie flotante desplegada --&gt;
+  &lt;div class="md-menu md-menu-open" id="menu-demo" role="menu" aria-labelledby="menu-trigger-demo"&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-headline"&gt;Ver detalles&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-headline"&gt;Duplicar&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-headline"&gt;Compartir&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA PAR 1: hasta aqui -->
+
+    <!-- PAREJA PAR 2: Slots canónicos (Leading icons y Trailing shortcuts) -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Slots canónicos (Leading icons y Trailing shortcuts)</h3>
+      <p class="md-type-body-medium">Menú con la matriz completa de slots M3: icono de acción leading a 20dp, texto headline central y atajo de teclado trailing.</p>
+
+      <div class="sr-specimen sr-specimen-menu sr-specimen-tall">
+        <div class="md-menu-anchor">
+          <button type="button" class="md-icon-button" id="menu-trigger-slots" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-slots" aria-label="Acciones de edición">
+            <span class="md-icon" aria-hidden="true">more_vert</span>
+          </button>
+          <div class="md-menu md-menu-open" id="menu-slots" role="menu" aria-labelledby="menu-trigger-slots">
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-leading md-icon" aria-hidden="true">content_cut</span>
+              <span class="md-menu-item-headline">Cortar</span>
+              <span class="md-menu-item-trailing">Ctrl+X</span>
+            </button>
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-leading md-icon" aria-hidden="true">content_copy</span>
+              <span class="md-menu-item-headline">Copiar</span>
+              <span class="md-menu-item-trailing">Ctrl+C</span>
+            </button>
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-leading md-icon" aria-hidden="true">content_paste</span>
+              <span class="md-menu-item-headline">Pegar</span>
+              <span class="md-menu-item-trailing">Ctrl+V</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;div class="md-menu-anchor"&gt;
+  &lt;!-- Slot: Disparador anfitrión --&gt;
+  &lt;button type="button" class="md-icon-button" id="menu-trigger-slots" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-slots" aria-label="Acciones de edición"&gt;
+    &lt;span class="md-icon" aria-hidden="true"&gt;more_vert&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;!-- Slot: Superficie flotante con matriz de slots M3 --&gt;
+  &lt;div class="md-menu md-menu-open" id="menu-slots" role="menu" aria-labelledby="menu-trigger-slots"&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;!-- Slot: Leading --&gt;
+      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;content_cut&lt;/span&gt;
+      &lt;!-- Slot: Content --&gt;
+      &lt;span class="md-menu-item-headline"&gt;Cortar&lt;/span&gt;
+      &lt;!-- Slot: Trailing --&gt;
+      &lt;span class="md-menu-item-trailing"&gt;Ctrl+X&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;!-- Slot: Leading --&gt;
+      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;content_copy&lt;/span&gt;
+      &lt;!-- Slot: Content --&gt;
+      &lt;span class="md-menu-item-headline"&gt;Copiar&lt;/span&gt;
+      &lt;!-- Slot: Trailing --&gt;
+      &lt;span class="md-menu-item-trailing"&gt;Ctrl+C&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;!-- Slot: Leading --&gt;
+      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;content_paste&lt;/span&gt;
+      &lt;!-- Slot: Content --&gt;
+      &lt;span class="md-menu-item-headline"&gt;Pegar&lt;/span&gt;
+      &lt;!-- Slot: Trailing --&gt;
+      &lt;span class="md-menu-item-trailing"&gt;Ctrl+V&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA PAR 2: hasta aqui -->
+
+    <!-- PAREJA PAR 3: Agrupación con divisores (.md-divider) -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Agrupación con divisores (.md-divider)</h3>
+      <p class="md-type-body-medium">Separación de grupos de opciones mediante divisor horizontal y acción final destructiva con semántica de color de peligro.</p>
+
+      <div class="sr-specimen sr-specimen-menu sr-specimen-tall">
+        <div class="md-menu-anchor">
+          <button type="button" class="md-icon-button" id="menu-trigger-groups" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-groups" aria-label="Opciones de registro">
+            <span class="md-icon" aria-hidden="true">more_vert</span>
+          </button>
+          <div class="md-menu md-menu-open" id="menu-groups" role="menu" aria-labelledby="menu-trigger-groups">
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-leading md-icon" aria-hidden="true">edit</span>
+              <span class="md-menu-item-headline">Editar</span>
+            </button>
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-leading md-icon" aria-hidden="true">content_copy</span>
+              <span class="md-menu-item-headline">Duplicar</span>
+            </button>
+            <hr class="md-divider" role="separator">
+            <button type="button" class="md-menu-item md-menu-item-destructive" role="menuitem">
+              <span class="md-menu-item-leading md-icon" aria-hidden="true">delete</span>
+              <span class="md-menu-item-headline">Eliminar</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;div class="md-menu-anchor"&gt;
+  &lt;!-- Slot: Disparador anfitrión --&gt;
+  &lt;button type="button" class="md-icon-button" id="menu-trigger-groups" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-groups" aria-label="Opciones de registro"&gt;
+    &lt;span class="md-icon" aria-hidden="true"&gt;more_vert&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;!-- Slot: Superficie flotante con grupos y divisor --&gt;
+  &lt;div class="md-menu md-menu-open" id="menu-groups" role="menu" aria-labelledby="menu-trigger-groups"&gt;
+    &lt;!-- Grupo 1: Acciones ordinarias --&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;!-- Slot: Leading --&gt;
+      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;edit&lt;/span&gt;
+      &lt;!-- Slot: Content --&gt;
+      &lt;span class="md-menu-item-headline"&gt;Editar&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;!-- Slot: Leading --&gt;
+      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;content_copy&lt;/span&gt;
+      &lt;!-- Slot: Content --&gt;
+      &lt;span class="md-menu-item-headline"&gt;Duplicar&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;!-- Separador canónico M3 --&gt;
+    &lt;hr class="md-divider" role="separator"&gt;
+    &lt;!-- Grupo 2: Acción destructiva --&gt;
+    &lt;button type="button" class="md-menu-item md-menu-item-destructive" role="menuitem"&gt;
+      &lt;!-- Slot: Leading --&gt;
+      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;delete&lt;/span&gt;
+      &lt;!-- Slot: Content --&gt;
+      &lt;span class="md-menu-item-headline"&gt;Eliminar&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA PAR 3: hasta aqui -->
+
+    <!-- PAREJA PAR 4: Menú compacto y denso (Variante POS) -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Menú compacto y denso (Variante POS)</h3>
+      <p class="md-type-body-medium">Variante compacta para terminales POS con ítems de 36dp y tipografía label-medium, optimizando espacio en pantalla.</p>
+
+      <div class="sr-specimen sr-specimen-menu sr-specimen-tall">
+        <div class="md-menu-anchor">
+          <button type="button" class="md-icon-button" id="menu-trigger-dense" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-dense" aria-label="Acciones de comanda">
+            <span class="md-icon" aria-hidden="true">more_vert</span>
+          </button>
+          <div class="md-menu md-menu-dense md-menu-open" id="menu-dense" role="menu" aria-labelledby="menu-trigger-dense">
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-leading md-icon" aria-hidden="true">print</span>
+              <span class="md-menu-item-headline">Reimprimir comanda</span>
+            </button>
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-leading md-icon" aria-hidden="true">call_split</span>
+              <span class="md-menu-item-headline">Dividir cuenta</span>
+            </button>
+            <hr class="md-divider" role="separator">
+            <button type="button" class="md-menu-item md-menu-item-destructive" role="menuitem">
+              <span class="md-menu-item-leading md-icon" aria-hidden="true">cancel</span>
+              <span class="md-menu-item-headline">Anular orden</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;div class="md-menu-anchor"&gt;
+  &lt;!-- Slot: Disparador anfitrión --&gt;
+  &lt;button type="button" class="md-icon-button" id="menu-trigger-dense" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-dense" aria-label="Acciones de comanda"&gt;
+    &lt;span class="md-icon" aria-hidden="true"&gt;more_vert&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;!-- Slot: Superficie flotante compacta para POS (36dp) --&gt;
+  &lt;div class="md-menu md-menu-dense md-menu-open" id="menu-dense" role="menu" aria-labelledby="menu-trigger-dense"&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;!-- Slot: Leading --&gt;
+      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;print&lt;/span&gt;
+      &lt;!-- Slot: Content --&gt;
+      &lt;span class="md-menu-item-headline"&gt;Reimprimir comanda&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;!-- Slot: Leading --&gt;
+      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;call_split&lt;/span&gt;
+      &lt;!-- Slot: Content --&gt;
+      &lt;span class="md-menu-item-headline"&gt;Dividir cuenta&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;!-- Separador canónico M3 --&gt;
+    &lt;hr class="md-divider" role="separator"&gt;
+    &lt;button type="button" class="md-menu-item md-menu-item-destructive" role="menuitem"&gt;
+      &lt;!-- Slot: Leading --&gt;
+      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;cancel&lt;/span&gt;
+      &lt;!-- Slot: Content --&gt;
+      &lt;span class="md-menu-item-headline"&gt;Anular orden&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA PAR 4: hasta aqui -->
+
+    <!-- PAREJA PAR 5: Matriz de estados interactivos y deshabilitado -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Matriz de estados interactivos y deshabilitado</h3>
+      <p class="md-type-body-medium">Respuesta del sistema de capas de estado: ítem en reposo, ítem enfocado con anillo secundario e ítem deshabilitado al 38%.</p>
+
+      <div class="sr-specimen sr-specimen-menu sr-specimen-tall">
+        <div class="md-menu-anchor">
+          <button type="button" class="md-icon-button" id="menu-trigger-states" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-states" aria-label="Opciones de venta">
+            <span class="md-icon" aria-hidden="true">more_vert</span>
+          </button>
+          <div class="md-menu md-menu-open" id="menu-states" role="menu" aria-labelledby="menu-trigger-states">
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-leading md-icon" aria-hidden="true">save</span>
+              <span class="md-menu-item-headline">Guardar cambios</span>
+            </button>
+            <button type="button" class="md-menu-item md-menu-item-focus" role="menuitem">
+              <span class="md-menu-item-leading md-icon" aria-hidden="true">share</span>
+              <span class="md-menu-item-headline">Exportar reporte</span>
+            </button>
+            <button type="button" class="md-menu-item" role="menuitem" disabled aria-disabled="true" tabindex="-1">
+              <span class="md-menu-item-leading md-icon" aria-hidden="true">restore</span>
+              <span class="md-menu-item-headline">Restaurar copia</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;div class="md-menu-anchor"&gt;
+  &lt;!-- Slot: Disparador anfitrión --&gt;
+  &lt;button type="button" class="md-icon-button" id="menu-trigger-states" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-states" aria-label="Opciones de venta"&gt;
+    &lt;span class="md-icon" aria-hidden="true"&gt;more_vert&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;!-- Slot: Superficie flotante con matriz de estados --&gt;
+  &lt;div class="md-menu md-menu-open" id="menu-states" role="menu" aria-labelledby="menu-trigger-states"&gt;
+    &lt;!-- Estado: Enabled (Reposo) --&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;!-- Slot: Leading --&gt;
+      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;save&lt;/span&gt;
+      &lt;!-- Slot: Content --&gt;
+      &lt;span class="md-menu-item-headline"&gt;Guardar cambios&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;!-- Estado: Focused (Anillo de foco secundario) --&gt;
+    &lt;button type="button" class="md-menu-item md-menu-item-focus" role="menuitem"&gt;
+      &lt;!-- Slot: Leading --&gt;
+      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;share&lt;/span&gt;
+      &lt;!-- Slot: Content --&gt;
+      &lt;span class="md-menu-item-headline"&gt;Exportar reporte&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;!-- Estado: Disabled (Opacidad 38% y bloqueo de eventos) --&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem" disabled aria-disabled="true" tabindex="-1"&gt;
+      &lt;!-- Slot: Leading --&gt;
+      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;restore&lt;/span&gt;
+      &lt;!-- Slot: Content --&gt;
+      &lt;span class="md-menu-item-headline"&gt;Restaurar copia&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA PAR 5: hasta aqui -->
+
+    <!-- PAREJA PAR 6: Menú interactivo en vivo (Clic, Teclado y Cierre exterior) -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Menú interactivo en vivo (Clic, Teclado y Cierre exterior)</h3>
+      <p class="md-type-body-medium">Menú con comportamiento interactivo en vivo: despliegue con clic o teclado, navegación cíclica WAI-ARIA y cierre exterior.</p>
+
+      <div class="sr-specimen sr-specimen-menu sr-specimen-tall">
+        <div class="md-menu-anchor">
+          <button type="button" class="md-icon-button" id="menu-trigger-interactive" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-interactive" aria-label="Acciones interactivas de comanda">
+            <span class="md-icon" aria-hidden="true">more_vert</span>
+          </button>
+          <div class="md-menu" id="menu-interactive" role="menu" aria-labelledby="menu-trigger-interactive">
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-leading md-icon" aria-hidden="true">visibility</span>
+              <span class="md-menu-item-headline">Ver comanda</span>
+            </button>
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-leading md-icon" aria-hidden="true">print</span>
+              <span class="md-menu-item-headline">Reimprimir</span>
+              <span class="md-menu-item-trailing">Ctrl+P</span>
+            </button>
+            <hr class="md-divider" role="separator">
+            <button type="button" class="md-menu-item md-menu-item-destructive" role="menuitem">
+              <span class="md-menu-item-leading md-icon" aria-hidden="true">delete</span>
+              <span class="md-menu-item-headline">Cancelar</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;div class="md-menu-anchor"&gt;
+  &lt;!-- Slot: Disparador interactivo --&gt;
+  &lt;button type="button" class="md-icon-button" id="menu-trigger-interactive" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-interactive" aria-label="Acciones interactivas de comanda"&gt;
+    &lt;span class="md-icon" aria-hidden="true"&gt;more_vert&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;!-- Slot: Superficie flotante interactiva (se despliega con clic/teclado) --&gt;
+  &lt;div class="md-menu" id="menu-interactive" role="menu" aria-labelledby="menu-trigger-interactive"&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;!-- Slot: Leading --&gt;
+      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;visibility&lt;/span&gt;
+      &lt;!-- Slot: Content --&gt;
+      &lt;span class="md-menu-item-headline"&gt;Ver comanda&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;!-- Slot: Leading --&gt;
+      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;print&lt;/span&gt;
+      &lt;!-- Slot: Content --&gt;
+      &lt;span class="md-menu-item-headline"&gt;Reimprimir&lt;/span&gt;
+      &lt;!-- Slot: Trailing --&gt;
+      &lt;span class="md-menu-item-trailing"&gt;Ctrl+P&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;!-- Separador canónico M3 --&gt;
+    &lt;hr class="md-divider" role="separator"&gt;
+    &lt;button type="button" class="md-menu-item md-menu-item-destructive" role="menuitem"&gt;
+      &lt;!-- Slot: Leading --&gt;
+      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;delete&lt;/span&gt;
+      &lt;!-- Slot: Content --&gt;
+      &lt;span class="md-menu-item-headline"&gt;Cancelar&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA PAR 6: hasta aqui -->
+
+    <!-- PAREJA PAR 7: Etiqueta de sección e ítem seleccionado -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Etiqueta de sección e ítem seleccionado</h3>
+      <p class="md-type-body-medium">Grupo encabezado por etiqueta de sección de 32dp e ítem con estado seleccionado: fondo tertiary-container con rincón de 12dp (canon Expressive).</p>
+
+      <div class="sr-specimen sr-specimen-menu sr-specimen-tall">
+        <div class="md-menu-anchor">
+          <button type="button" class="md-icon-button" id="menu-trigger-selected" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-selected" aria-label="Vista de catalogo">
+            <span class="md-icon" aria-hidden="true">more_vert</span>
+          </button>
+          <div class="md-menu md-menu-open" id="menu-selected" role="menu" aria-labelledby="menu-trigger-selected">
+            <span class="md-menu-label" id="menu-selected-label">Ordenar por</span>
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-headline">Recientes</span>
+            </button>
+            <button type="button" class="md-menu-item md-menu-item-selected" role="menuitem" aria-selected="true">
+              <span class="md-menu-item-headline">Precio: menor a mayor</span>
+            </button>
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-headline">Mejor valorados</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;div class="md-menu-anchor"&gt;
+  &lt;!-- Slot: Disparador anfitrión --&gt;
+  &lt;button type="button" class="md-icon-button" id="menu-trigger-selected" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-selected" aria-label="Vista de catalogo"&gt;
+    &lt;span class="md-icon" aria-hidden="true"&gt;more_vert&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;!-- Slot: Superficie flotante con sección e ítem seleccionado --&gt;
+  &lt;div class="md-menu md-menu-open" id="menu-selected" role="menu" aria-labelledby="menu-trigger-selected"&gt;
+    &lt;!-- Etiqueta de sección (32dp) --&gt;
+    &lt;span class="md-menu-label" id="menu-selected-label"&gt;Ordenar por&lt;/span&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-headline"&gt;Recientes&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;!-- Estado: Selected (tertiary-container, rincón 12dp) --&gt;
+    &lt;button type="button" class="md-menu-item md-menu-item-selected" role="menuitem" aria-selected="true"&gt;
+      &lt;span class="md-menu-item-headline"&gt;Precio: menor a mayor&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-headline"&gt;Mejor valorados&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA PAR 7: hasta aqui -->
+
+    <!-- PAREJA PAR 8: Submenú en cascada -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Submenú en cascada</h3>
+      <p class="md-type-body-medium">Nivel secundario anclado al flanco final del ítem padre, con flecha trailing y la misma superficie flotante scrolleable de esquina morfeada.</p>
+
+      <div class="sr-specimen sr-specimen-menu sr-specimen-tall">
+        <div class="md-menu-anchor">
+          <button type="button" class="md-icon-button" id="menu-trigger-submenu" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-submenu" aria-label="Opciones de exportacion">
+            <span class="md-icon" aria-hidden="true">more_vert</span>
+          </button>
+          <div class="md-menu md-menu-open" id="menu-submenu" role="menu" aria-labelledby="menu-trigger-submenu">
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-leading md-icon" aria-hidden="true">save</span>
+              <span class="md-menu-item-headline">Guardar</span>
+            </button>
+            <div class="md-menu-submenu">
+              <button type="button" class="md-menu-item" role="menuitem" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-submenu-export">
+                <span class="md-menu-item-leading md-icon" aria-hidden="true">file_upload</span>
+                <span class="md-menu-item-headline">Exportar como</span>
+                <span class="md-menu-item-trailing md-icon" aria-hidden="true">arrow_right</span>
+              </button>
+              <div class="md-menu md-menu-open" id="menu-submenu-export" role="menu" aria-label="Exportar como">
+                <button type="button" class="md-menu-item" role="menuitem">
+                  <span class="md-menu-item-headline">PDF</span>
+                </button>
+                <button type="button" class="md-menu-item" role="menuitem">
+                  <span class="md-menu-item-headline">CSV</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;div class="md-menu-anchor"&gt;
+  &lt;!-- Slot: Disparador anfitrión --&gt;
+  &lt;button type="button" class="md-icon-button" id="menu-trigger-submenu" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-submenu" aria-label="Opciones de exportacion"&gt;
+    &lt;span class="md-icon" aria-hidden="true"&gt;more_vert&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;!-- Slot: Superficie flotante raíz --&gt;
+  &lt;div class="md-menu md-menu-open" id="menu-submenu" role="menu" aria-labelledby="menu-trigger-submenu"&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;!-- Slot: Leading --&gt;
+      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;save&lt;/span&gt;
+      &lt;!-- Slot: Content --&gt;
+      &lt;span class="md-menu-item-headline"&gt;Guardar&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;!-- Slot: Ancla de submenú en cascada --&gt;
+    &lt;div class="md-menu-submenu"&gt;
+      &lt;button type="button" class="md-menu-item" role="menuitem" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-submenu-export"&gt;
+        &lt;!-- Slot: Leading --&gt;
+        &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;file_upload&lt;/span&gt;
+        &lt;!-- Slot: Content --&gt;
+        &lt;span class="md-menu-item-headline"&gt;Exportar como&lt;/span&gt;
+        &lt;!-- Slot: Trailing (flecha de cascada) --&gt;
+        &lt;span class="md-menu-item-trailing md-icon" aria-hidden="true"&gt;arrow_right&lt;/span&gt;
+      &lt;/button&gt;
+      &lt;!-- Slot: Superficie flotante secundaria --&gt;
+      &lt;div class="md-menu md-menu-open" id="menu-submenu-export" role="menu" aria-label="Exportar como"&gt;
+        &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+          &lt;span class="md-menu-item-headline"&gt;PDF&lt;/span&gt;
+        &lt;/button&gt;
+        &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+          &lt;span class="md-menu-item-headline"&gt;CSV&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA PAR 8: hasta aqui -->
+
+    <!-- PAREJA PAR 9: Menú scrolleable (max-height 300dp) -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Menú scrolleable (max-height 300dp)</h3>
+      <p class="md-type-body-medium">Listado largo dentro de la altura máxima canónica de 300dp: el contenedor es scrolleable y todos los ítems permanecen alcanzables por scroll o teclado.</p>
+
+      <div class="sr-specimen sr-specimen-menu sr-specimen-tall">
+        <div class="md-menu-anchor">
+          <button type="button" class="md-icon-button" id="menu-trigger-scroll" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-scroll" aria-label="Sucursales">
+            <span class="md-icon" aria-hidden="true">more_vert</span>
+          </button>
+          <div class="md-menu md-menu-open" id="menu-scroll" role="menu" aria-labelledby="menu-trigger-scroll">
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-leading md-icon" aria-hidden="true">storefront</span>
+              <span class="md-menu-item-headline">Sucursal Centro</span>
+            </button>
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-leading md-icon" aria-hidden="true">storefront</span>
+              <span class="md-menu-item-headline">Sucursal Norte</span>
+            </button>
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-leading md-icon" aria-hidden="true">storefront</span>
+              <span class="md-menu-item-headline">Sucursal Sur</span>
+            </button>
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-leading md-icon" aria-hidden="true">storefront</span>
+              <span class="md-menu-item-headline">Sucursal Oriente</span>
+            </button>
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-leading md-icon" aria-hidden="true">storefront</span>
+              <span class="md-menu-item-headline">Sucursal Poniente</span>
+            </button>
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-leading md-icon" aria-hidden="true">storefront</span>
+              <span class="md-menu-item-headline">Sucursal Playa</span>
+            </button>
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-leading md-icon" aria-hidden="true">storefront</span>
+              <span class="md-menu-item-headline">Sucursal Plaza</span>
+            </button>
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-leading md-icon" aria-hidden="true">storefront</span>
+              <span class="md-menu-item-headline">Sucursal Parque</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;div class="md-menu-anchor"&gt;
+  &lt;!-- Slot: Disparador anfitrión --&gt;
+  &lt;button type="button" class="md-icon-button" id="menu-trigger-scroll" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-scroll" aria-label="Sucursales"&gt;
+    &lt;span class="md-icon" aria-hidden="true"&gt;more_vert&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;!-- Slot: Superficie flotante scrolleable (max-height 300dp, overflow auto) --&gt;
+  &lt;div class="md-menu md-menu-open" id="menu-scroll" role="menu" aria-labelledby="menu-trigger-scroll"&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;!-- Slot: Leading --&gt;
+      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;storefront&lt;/span&gt;
+      &lt;!-- Slot: Content --&gt;
+      &lt;span class="md-menu-item-headline"&gt;Sucursal Centro&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;storefront&lt;/span&gt;
+      &lt;span class="md-menu-item-headline"&gt;Sucursal Norte&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;storefront&lt;/span&gt;
+      &lt;span class="md-menu-item-headline"&gt;Sucursal Sur&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;storefront&lt;/span&gt;
+      &lt;span class="md-menu-item-headline"&gt;Sucursal Oriente&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;storefront&lt;/span&gt;
+      &lt;span class="md-menu-item-headline"&gt;Sucursal Poniente&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;storefront&lt;/span&gt;
+      &lt;span class="md-menu-item-headline"&gt;Sucursal Playa&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;storefront&lt;/span&gt;
+      &lt;span class="md-menu-item-headline"&gt;Sucursal Plaza&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;storefront&lt;/span&gt;
+      &lt;span class="md-menu-item-headline"&gt;Sucursal Parque&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA PAR 9: hasta aqui -->
+
+  </main>
+
+</body>
+</html>

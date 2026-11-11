@@ -1230,15 +1230,29 @@
   --md-sys-measurement-radio-touch-target: var(--md-sys-measurement-touch-target);  /* 48dp */
 
   /* ==========================================================================
-     MENU — Geometría canónica M3 (Superficie flotante)
+     MENU — Geometría canónica M3 Expressive (Superficie flotante)
      --------------------------------------------------------------------------
-     Fuente: M3 Specs (menus/specs).
+     Fuente: md.comp.menus.* v34.0.21 (MDS tokens latest, Expressive) con
+     override táctil decidido por el usuario (mixto C): height 48dp para
+     target de dedo en POS/KDS (el canon Expressive pointer usa 44dp; el
+     dense 36dp se mantiene aparte).
      Ancho min: 112dp, max: 280dp, alto max: 300dp.
-     Padding vertical: 8dp. Esquinas: 4dp (extra-small).
+     Contenedor: padding-block 8dp, padding-inline 0 (ítems full-bleed).
+     Espacios de ítem: leading/trailing 16dp, entre slots 12dp, gap 2dp,
+     group-padding 2dp.
      ========================================================================== */
   --md-sys-measurement-menu-min-width: var(--md-ref-container-width-menu-min);   /* 112dp */
   --md-sys-measurement-menu-max-width: var(--md-ref-container-width-menu-max);   /* 280dp */
   --md-sys-measurement-menu-max-height: var(--md-ref-container-height-menu-max); /* 300dp */
+  --md-sys-measurement-menu-container-space: var(--md-sys-measurement-space-100); /* 8dp: respiro vertical del contenedor */
+  --md-sys-measurement-menu-item-height: var(--md-sys-measurement-touch-target); /* 48dp: override táctil POS/KDS */
+  --md-sys-measurement-menu-item-leading-space: var(--md-ref-spacing-200);       /* 16dp */
+  --md-sys-measurement-menu-item-trailing-space: var(--md-ref-spacing-200);      /* 16dp */
+  --md-sys-measurement-menu-item-between-space: var(--md-ref-spacing-150);       /* 12dp */
+  --md-sys-measurement-menu-item-gap: var(--md-ref-spacing-25);                  /* 2dp: respiro entre pastillas */
+  --md-sys-measurement-menu-group-padding: var(--md-ref-spacing-25);             /* 2dp: respiración del grupo dentro del contenedor */
+  --md-sys-measurement-menu-container-shape-closed: var(--md-sys-shape-corner-small);  /* 8dp: rincón en reposo (morph al abrir) */
+  --md-sys-measurement-menu-container-shape-open: var(--md-sys-shape-corner-large);    /* 16dp: rincón activo */
 
   /* ==========================================================================
      TEXT FIELD — Altura de contenedor (M3: 56dp = container-height-medium)

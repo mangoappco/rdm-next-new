@@ -4,66 +4,372 @@
 
    QUE HACE
    --------
-   Superficie flotante de Material Design 3: contenedor elevado que muestra
-   una lista de opciones (items) por encima del contenido. Se usa como
-   dropdown de Select, overflow menu, etc.
+   Superficie flotante de Material Design 3: contenedor elevado que presenta
+   una lista vertical de opciones o acciones sobre el contenido anfitrión.
+   Se usa como menú de desbordamiento (overflow), menú contextual o
+   dropdown de controles de selección.
 
-   M3 publica menus con elevacion level2, fondo surface-container, esquinas
-   extra-small (4px), padding vertical de 8dp, ancho minimo 112dp y maximo
-   280dp.
+   ANATOMIA
+   --------
+     <div class="md-menu-anchor">                  Ancla anfitriona relativa
+       <button class="md-icon-button" ...>         Disparador (ej. more_vert)
+       <div class="md-menu md-menu-open" role="menu"> Superficie flotante
+         <button class="md-menu-item" ...>         Ítem interactivo full-bleed
+           <span class="md-menu-item-leading md-icon">...</span> Slot icono leading (24dp)
+           <span class="md-menu-item-headline">...</span>        Slot titular central
+           <span class="md-menu-item-trailing">...</span>       Slot atajo/soporte trailing
+         </button>
+       </div>
+     </div>
 
    FUENTES
    -------
    - m3.material.io/components/menus/specs
-   - tokens/versions/v0_192/_md-comp-menu.scss
+   - tokens/versions/latest/sass/_md-comp-menus.scss (MDS v34.0.21 Expressive)
+   - material-web packages/menu/_menu.scss (contenedor scrolleable)
    ========================================================================== */
 
-/* Base: superficie flotante */
+/* Ancla anfitriona para el control disparador y la superficie flotante */
+.md-menu-anchor {
+  position: relative;
+  display: inline-flex;
+  vertical-align: middle;
+  padding: var(--md-sys-measurement-space-0);
+  margin: var(--md-sys-measurement-space-0);
+  box-sizing: border-box;
+}
+
+/* Superficie flotante (.md-menu) — Zero JS Motion.
+   El estado cerrado usa `visibility: hidden` (transicionable y fuera del
+   árbol de accesibilidad/tab-order igual que display:none): display:none→flex
+   MATARÍA las transiciones y el menú entraría con pop. El contenedor morfea
+   su shape 8dp (reposo, canon `inactive-container-shape`) → 16dp (activo,
+   canon `container-shape`) interpolando border-radius en la misma coreografía.
+   Ítems full-bleed: padding-inline 0 (los 16dp viven en el ítem); el
+   contenedor es scrolleable (canon material-web `overflow: auto`). */
 .md-menu {
   position: absolute;
-  z-index: 0;
-  min-width: var(--md-sys-measurement-menu-min-width);
-  max-width: var(--md-sys-measurement-menu-max-width);
-  padding-block: var(--md-sys-measurement-space-100); /* 8dp */
-  border-radius: var(--md-sys-shape-corner-extra-small);
-  background-color: var(--md-sys-color-surface-container);
+  inset-block-start: 100%;
+  inset-inline-start: var(--md-sys-measurement-space-0);
+  z-index: 1;
+  min-inline-size: var(--md-sys-measurement-menu-min-width);
+  max-inline-size: var(--md-sys-measurement-menu-max-width);
+  padding: var(--md-sys-measurement-menu-container-space) var(--md-sys-measurement-space-0);
+  border-radius: var(--md-sys-measurement-menu-container-shape-closed); /* 8dp reposo → 16dp activo (morph) */
+  background-color: var(--md-sys-color-surface-container-low); /* canon Expressive v34 */
   box-shadow: var(--md-sys-elevation-level2);
-  overflow-y: auto;
-  overflow-x: hidden;
-  max-height: var(--md-sys-measurement-menu-max-height);
-  display: none;
-}
-
-/* Visible: se muestra cuando el padre tiene .md-select-open o aria-expanded */
-.md-select-open > .md-menu,
-.md-select[aria-expanded="true"] > .md-menu {
+  overflow: auto; /* canon material-web: menú scrolleable, ítems siempre alcanzables */
+  max-block-size: var(--md-sys-measurement-menu-max-height);
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  visibility: hidden;
+  opacity: 0;
+  transform: scaleY(0.9);
+  transform-origin: top center;
+  pointer-events: none;
+  transition:
+    opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-accelerate),
+    transform var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-accelerate),
+    border-radius var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-accelerate),
+    visibility var(--md-sys-motion-duration-short4);
 }
 
-/* Items: ancho completo, borde recto (M3 full-bleed), sin morph heredado */
+/* Estado abierto: visible cuando el ancla tiene aria-expanded="true",
+   cuando tiene clase .md-menu-open o en selectores vinculados.
+   Curva canónica de llegada: emphasized-decelerate (asimetría M3). */
+.md-menu-anchor:has(> [aria-expanded="true"]) > .md-menu,
+.md-menu-submenu:has(> [aria-expanded="true"]) > .md-menu,
+.md-menu-anchor > .md-menu.md-menu-open,
+.md-menu-submenu > .md-menu.md-menu-open,
+.md-menu.md-menu-open,
+.md-menu[aria-hidden="false"],
+.md-select-open > .md-menu,
+.md-select[aria-expanded="true"] > .md-menu {
+  visibility: visible;
+  opacity: 1;
+  transform: scaleY(1);
+  border-radius: var(--md-sys-measurement-menu-container-shape-open); /* 16dp activo */
+  pointer-events: auto;
+  transition:
+    opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate),
+    transform var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate),
+    border-radius var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate),
+    visibility var(--md-sys-motion-duration-short4);
+}
+
+/* Ítems del menú (.md-menu-item):
+   Botón interactivo full-bleed (pastilla concéntrica Expressive):
+   shape 4dp (canon `menu-item-shape`), first/last-child 12dp
+   (`menu-item.first/last-child-shape`), altura 48dp (override táctil
+   POS/KDS del canon pointer de 44dp, decisión mixta C).
+   Los espacios viven aquí: leading/trailing 16dp, entre slots 12dp. */
+.md-menu-item {
+  display: flex;
+  align-items: center;
+  inline-size: 100%;
+  box-sizing: border-box;
+  border: none;
+  background-color: transparent;
+  margin: var(--md-sys-measurement-space-0);
+  padding-inline: var(--md-sys-measurement-menu-item-leading-space); /* 16dp canon Expressive */
+  min-block-size: var(--md-sys-measurement-menu-item-height); /* 48dp táctil */
+  border-radius: var(--md-sys-shape-corner-extra-small); /* 4dp canon menu-item-shape */
+  font: var(--md-sys-typescale-label-large);
+  letter-spacing: var(--md-sys-typescale-label-large-tracking);
+  color: var(--md-sys-color-on-surface);
+  text-align: start;
+  text-decoration: none;
+  cursor: pointer;
+  outline: none;
+  position: relative;
+  user-select: none;
+  white-space: nowrap;
+  transition:
+    background-color var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard),
+    border-radius var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+}
+
+/* Respiro entre pastillas (canon `gap` = 2dp) y respiración del grupo
+   contra el contenedor (`group-padding` = 2dp): solo entre ítems y en los
+   flancos, nunca tras el último. */
+.md-menu > .md-menu-item + .md-menu-item,
+.md-menu > .md-menu-submenu + .md-menu-item,
+.md-menu > .md-menu-item + .md-menu-submenu {
+  margin-block-start: var(--md-sys-measurement-menu-item-gap); /* 2dp */
+}
+
+/* Primer/último ítem: canon Expressive `first/last-child-shape` = 12dp.
+   `:where()` anula la especificidad extra para que el estado selected
+   (shape 12dp con fondo) pueda gobernar el radio sin guerra de cascada. */
+.md-menu > :where(.md-menu-item:first-child, .md-menu-item:first-of-type),
+.md-menu > :where(.md-menu-submenu:first-child > .md-menu-item, .md-menu-submenu:first-of-type > .md-menu-item) {
+  border-start-start-radius: var(--md-sys-shape-corner-medium); /* 12dp canon */
+  border-start-end-radius: var(--md-sys-shape-corner-medium);
+}
+
+/* Último ítem: canon Expressive `last-child-shape` = 12dp */
+.md-menu > :where(.md-menu-item:last-child, .md-menu-item:last-of-type),
+.md-menu > :where(.md-menu-submenu:last-child > .md-menu-item, .md-menu-submenu:last-of-type > .md-menu-item) {
+  border-end-start-radius: var(--md-sys-shape-corner-medium); /* 12dp canon */
+  border-end-end-radius: var(--md-sys-shape-corner-medium);
+}
+
+/* Estado seleccionado (.md-menu-item-selected / aria-selected="true"):
+   canon Expressive `selected-container` = tertiary-container /
+   on-tertiary-container, con shape 12dp (canon `selected-shape`).
+   El state layer (::before) hereda currentColor, así que hover, focus y
+   pressed adoptan on-tertiary-container automáticamente. */
+.md-menu > .md-menu-item.md-menu-item-selected,
+.md-menu > .md-menu-item[aria-selected="true"],
+.md-menu > .md-menu-submenu > .md-menu-item.md-menu-item-selected,
+.md-menu > .md-menu-submenu > .md-menu-item[aria-selected="true"] {
+  background-color: var(--md-sys-color-tertiary-container);
+  color: var(--md-sys-color-on-tertiary-container);
+  border-radius: var(--md-sys-shape-corner-medium); /* 12dp canon selected-shape */
+}
+
+/* State layer M3: pseudo-elemento que hereda currentColor con opacidades canónicas */
+.md-menu-item::before {
+  content: '';
+  position: absolute;
+  inset: var(--md-sys-measurement-space-0);
+  border-radius: inherit;
+  background-color: currentColor;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
+}
+
+.md-menu-item:hover::before,
+.md-menu-item.md-menu-item-hover::before {
+  opacity: var(--md-sys-state-hover-state-layer-opacity);
+}
+
+.md-menu-item:focus-visible::before,
+.md-menu-item.md-menu-item-focus::before {
+  opacity: var(--md-sys-state-focus-state-layer-opacity);
+}
+
+.md-menu-item:active::before,
+.md-menu-item.md-menu-item-active::before {
+  opacity: var(--md-sys-state-pressed-state-layer-opacity);
+}
+
+.md-menu-item:disabled,
+.md-menu-item[disabled],
+.md-menu-item[aria-disabled="true"],
+.md-menu-item.md-menu-item-disabled {
+  opacity: var(--md-sys-state-disabled-state-layer-opacity);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Anillo de foco M3: trazado interior curvo que abraza el radio de 8dp */
+.md-menu-item:focus-visible,
+.md-menu-item.md-menu-item-focus {
+  outline: none;
+  box-shadow: inset 0 0 0 var(--md-sys-shape-stroke-thick) var(--md-sys-color-secondary);
+}
+
+/* Headline / Texto principal de la opción (canon M3) */
+.md-menu-item-headline,
+.md-menu-item-text {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+  z-index: 0;
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+}
+
+/* Slot Leading (.md-menu-item-leading): Icono de 20dp en color on-surface-variant */
+.md-menu-item-leading {
+  --md-sys-measurement-icon-size: var(--md-sys-measurement-icon-size-small);
+  --md-sys-icon-optical-size: var(--md-sys-icon-optical-size-small);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--md-sys-measurement-icon-size-small);
+  block-size: var(--md-sys-measurement-icon-size-small);
+  font-size: var(--md-sys-measurement-icon-size-small);
+  color: var(--md-sys-color-on-surface-variant);
+  margin-inline-end: var(--md-sys-measurement-menu-item-between-space); /* 12dp canon between-space */
+  flex-shrink: 0;
+  position: relative;
+  z-index: 0;
+}
+
+/* Slot Trailing (.md-menu-item-trailing): Atajo de teclado o icono secundario.
+   Canon Expressive `trailing-supporting-text` = label-large. */
+.md-menu-item-trailing {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-inline-start: auto;
+  padding-inline-start: var(--md-sys-measurement-menu-item-between-space); /* 12dp canon between-space */
+  font: var(--md-sys-typescale-label-large);
+  letter-spacing: var(--md-sys-typescale-label-large-tracking);
+  color: var(--md-sys-color-on-surface-variant);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 0;
+  user-select: none;
+}
+
+/* Icono trailing (ej. flecha submenú 20dp según diagrama) */
+.md-menu-item-trailing.md-icon {
+  inline-size: var(--md-sys-measurement-icon-size-small);
+  block-size: var(--md-sys-measurement-icon-size-small);
+  font-size: var(--md-sys-measurement-icon-size-small);
+  --md-sys-measurement-icon-size: var(--md-sys-measurement-icon-size-small);
+  --md-sys-icon-optical-size: var(--md-sys-icon-optical-size-small);
+}
+
+/* Subcabecera de sección de menú (.md-menu-label) — 32dp según diagrama M3 */
+.md-menu-label {
+  display: flex;
+  align-items: center;
+  min-block-size: var(--md-sys-measurement-space-400); /* 32dp */
+  padding-inline: var(--md-sys-measurement-space-150); /* 12dp */
+  font: var(--md-sys-typescale-title-small);
+  letter-spacing: var(--md-sys-typescale-title-small-tracking);
+  color: var(--md-sys-color-on-surface-variant);
+  user-select: none;
+  box-sizing: border-box;
+}
+
+/* Divisor horizontal entre grupos de opciones dentro del menú */
+.md-menu > .md-divider {
+  margin-block: var(--md-sys-measurement-space-100); /* 8dp separación vertical */
+  margin-inline: calc(-1 * var(--md-sys-measurement-space-100)); /* Sangrado al borde exterior */
+  width: calc(100% + var(--md-sys-measurement-space-100) + var(--md-sys-measurement-space-100));
+}
+
+/* Variante destructiva (.md-menu-item-destructive):
+   Para acciones irreversibles (ej. Eliminar), con semántica de color de error */
+.md-menu-item.md-menu-item-destructive {
+  color: var(--md-sys-color-error);
+}
+
+.md-menu-item.md-menu-item-destructive .md-menu-item-leading {
+  color: var(--md-sys-color-error);
+}
+
+.md-menu-item.md-menu-item-destructive:focus-visible,
+.md-menu-item.md-menu-item-destructive.md-menu-item-focus {
+  outline: none;
+  box-shadow: inset 0 0 0 var(--md-sys-shape-stroke-thick) var(--md-sys-color-error);
+}
+
+/* Variante compacta / densa (.md-menu-dense) — Entornos táctiles POS / KDS */
+.md-menu-dense .md-menu-item {
+  min-block-size: var(--md-sys-measurement-space-450); /* 36dp */
+  font: var(--md-sys-typescale-label-medium);
+  letter-spacing: var(--md-sys-typescale-label-medium-tracking);
+}
+
+.md-menu-dense .md-menu-item-leading {
+  inline-size: var(--md-sys-measurement-icon-size-small);
+  block-size: var(--md-sys-measurement-icon-size-small);
+  font-size: var(--md-sys-measurement-icon-size-small);
+  margin-inline-end: var(--md-sys-measurement-space-100); /* 8dp en denso */
+}
+
+.md-menu-dense .md-menu-item-trailing {
+  padding-inline-start: var(--md-sys-measurement-menu-item-between-space); /* 12dp, coherente con el canon */
+}
+
+.md-menu-dense > .md-divider {
+  margin-block: var(--md-sys-measurement-space-50); /* 4dp de respiro en denso */
+}
+
+/* Submenús en cascada (.md-menu-submenu) */
+.md-menu-submenu {
+  position: relative;
+  display: block;
+  inline-size: 100%;
+}
+
+.md-menu-submenu > .md-menu {
+  inset-block-start: var(--md-sys-measurement-space-0);
+  inset-inline-start: 100%;
+  transform-origin: top left;
+}
+
+/* Retrocompatibilidad con select existente (.md-menu .md-list-item) */
 .md-menu .md-list-item {
-  width: 100%;
-  border-radius: 0;
-  margin: 0;
-  min-height: var(--md-sys-measurement-touch-target); /* 48dp */
-  padding-inline: var(--md-sys-measurement-space-200); /* 16dp */
+  inline-size: 100%;
+  border-radius: var(--md-sys-shape-corner-none);
+  margin: var(--md-sys-measurement-space-0);
+  min-block-size: var(--md-sys-measurement-touch-target);
+  padding-inline: var(--md-sys-measurement-space-200);
 }
 
-/* Estado seleccionado: fondo plano de borde a borde, sin esquinas redondeadas */
 .md-menu .md-list-item.md-list-item-selected,
 .md-menu .md-list-item[aria-selected="true"] {
   background-color: var(--md-sys-color-secondary-container);
   color: var(--md-sys-color-on-secondary-container);
-  border-radius: 0;
+  border-radius: var(--md-sys-shape-corner-none);
 }
 
-/* Item seleccionado: checkmark trailing opcional */
 .md-menu .md-list-item[aria-selected="true"]::after {
-  content: "check";
+  content: 'check';
   font-family: var(--md-sys-icon-font);
   font-size: var(--md-sys-measurement-icon-size-small);
   line-height: 1;
   color: var(--md-sys-color-on-surface);
   margin-inline-start: auto;
+}
+
+/* Modo de contraste alto / accesibilidad */
+@media (forced-colors: active) {
+  .md-menu-item:disabled,
+  .md-menu-item[aria-disabled="true"],
+  .md-menu-item.md-menu-item-disabled {
+    color: GrayText;
+    opacity: 1;
+  }
 }

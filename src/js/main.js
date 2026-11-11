@@ -131,6 +131,7 @@ import { initTabs } from './tabs.js';
 import { initNavigationBar } from './navigation-bar.js';
 import { initNavigationRail } from './navigation-rail.js';
 import { initSnackbar } from './snackbar.js';
+import { initMenu } from './menu.js';
 
 /* Se registra al cargar el script, no al hacer clic. Los specimens del
    showroom llevan `<dialog open>` a secas, que NO es modal, asi que ahi no
@@ -201,6 +202,10 @@ initNavigationRail();
 /* Snackbar: gestión de cierre declarativo [data-close-snackbar], apertura [data-open-snackbar]
    y temporizador con pausa por hover y focus. */
 initSnackbar();
+
+/* Menu: gestión de apertura/cierre, navegación por teclado WAI-ARIA
+   y cierre exterior (click outside) */
+initMenu();
 
 /* Y aqui iran los que lo necesiten:
      import { registrar as registrarFabMenu } from './fab-menu.js';

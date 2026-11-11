@@ -22,58 +22,38 @@
 
 
 
-
-
- <nav class="md-navigation-rail md-navigation-rail-expanded" role="tablist" aria-label="Navegación extendida con menú y acción principal">
-  <!-- Slot: Cabecera y controles maestros -->
-  <div class="md-navigation-rail-header">
-    <button type="button" class="md-icon-button" aria-label="Contraer menú de navegación" aria-expanded="true" data-rail-toggle>
-      <span class="md-icon" aria-hidden="true">menu_open</span>
+<div class="md-menu-anchor">
+  <!-- Slot: Disparador interactivo -->
+  <button type="button" class="md-icon-button" id="menu-trigger-interactive" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-interactive" aria-label="Acciones interactivas de comanda">
+    <span class="md-icon" aria-hidden="true">more_vert</span>
+  </button>
+  <!-- Slot: Superficie flotante interactiva (se despliega con clic/teclado) -->
+  <div class="md-menu" id="menu-interactive" role="menu" aria-labelledby="menu-trigger-interactive">
+    <button type="button" class="md-menu-item" role="menuitem">
+      <!-- Slot: Leading -->
+      <span class="md-menu-item-leading md-icon" aria-hidden="true">visibility</span>
+      <!-- Slot: Content -->
+      <span class="md-menu-item-headline">Ver comanda</span>
     </button>
-    <button type="button" class="md-fab md-fab-extended">
-      <span class="md-icon" aria-hidden="true">edit</span>
-      Crear
-      <span class="md-fab-touch"></span>
+    <button type="button" class="md-menu-item" role="menuitem">
+      <!-- Slot: Leading -->
+      <span class="md-menu-item-leading md-icon" aria-hidden="true">print</span>
+      <!-- Slot: Content -->
+      <span class="md-menu-item-headline">Reimprimir</span>
+      <!-- Slot: Trailing -->
+      <span class="md-menu-item-trailing">Ctrl+P</span>
     </button>
-  </div>
-  <!-- Slot: Lista de destinos de navegación -->
-  <div class="md-navigation-rail-content">
-    <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="true" tabindex="0">
-      <span class="md-navigation-rail-indicator">
-        <span class="md-navigation-rail-icon md-icon" aria-hidden="true">star</span>
-      </span>
-      <span class="md-navigation-rail-label">Destacados</span><span class="md-navigation-rail-label-horizontal" aria-hidden="true">Destacados</span>
-    </button>
-    <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1">
-      <span class="md-navigation-rail-indicator">
-        <span class="md-navigation-rail-icon md-icon" aria-hidden="true">star</span>
-      </span>
-      <span class="md-navigation-rail-label">Favoritos</span><span class="md-navigation-rail-label-horizontal" aria-hidden="true">Favoritos</span>
-    </button>
-    <button type="button" class="md-navigation-rail-item" role="tab" aria-selected="false" tabindex="-1">
-      <span class="md-navigation-rail-indicator">
-        <span class="md-navigation-rail-icon md-icon" aria-hidden="true">star</span>
-      </span>
-      <span class="md-navigation-rail-label">Historial</span><span class="md-navigation-rail-label-horizontal" aria-hidden="true">Historial</span>
+    <!-- Separador canónico M3 -->
+    <hr class="md-divider" role="separator">
+    <button type="button" class="md-menu-item md-menu-item-destructive" role="menuitem">
+      <!-- Slot: Leading -->
+      <span class="md-menu-item-leading md-icon" aria-hidden="true">delete</span>
+      <!-- Slot: Content -->
+      <span class="md-menu-item-headline">Cancelar</span>
     </button>
   </div>
-</nav>
+</div>
 
-
-
-<p class="md-type-display-large">Display large</p>
-<p class="md-type-display-large">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Pariatur assumenda saepe quam velit eius, ipsum eligendi eaque at, laborum libero aliquam excepturi? Numquam consequatur voluptatibus corporis nesciunt non labore libero?</p>
-<p class="md-type-display-large">Display large</p>
-<p class="md-type-display-large">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ullam nam repellat ea unde beatae iusto reiciendis quo iure ratione, veniam enim distinctio mollitia laboriosam dignissimos, velit maxime eius repellendus quas?</p>
-<p class="md-type-display-large">Display large</p>
-<p class="md-type-display-large">Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem ut fugit sunt, excepturi labore laborum beatae corporis pariatur quam est deleniti laudantium perferendis consequuntur maiores praesentium! Quisquam fugit eum delectus.</p>
-
-<p class="md-type-display-large">Display large</p>
-<p class="md-type-display-large">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Pariatur assumenda saepe quam velit eius, ipsum eligendi eaque at, laborum libero aliquam excepturi? Numquam consequatur voluptatibus corporis nesciunt non labore libero?</p>
-<p class="md-type-display-large">Display large</p>
-<p class="md-type-display-large">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ullam nam repellat ea unde beatae iusto reiciendis quo iure ratione, veniam enim distinctio mollitia laboriosam dignissimos, velit maxime eius repellendus quas?</p>
-<p class="md-type-display-large">Display large</p>
-<p class="md-type-display-large">Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem ut fugit sunt, excepturi labore laborum beatae corporis pariatur quam est deleniti laudantium perferendis consequuntur maiores praesentium! Quisquam fugit eum delectus.</p>
 
 
 
