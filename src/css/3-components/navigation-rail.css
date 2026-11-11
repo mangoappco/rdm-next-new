@@ -11,12 +11,12 @@
 
    ANATOMIA
    --------
-   <nav class="md-navigation-rail" role="tablist" aria-label="...">
+   <nav class="md-navigation-rail" aria-label="...">
      <div class="md-navigation-rail-header">
        <button class="md-icon-button" data-rail-toggle ...><span class="md-icon">menu</span></button>
      </div>
      <div class="md-navigation-rail-content">
-       <button class="md-navigation-rail-item" role="tab" aria-selected="true" tabindex="0">
+       <button class="md-navigation-rail-item" aria-current="page">
          <span class="md-navigation-rail-indicator">
            <span class="md-navigation-rail-icon md-icon">home</span>
          </span>
@@ -470,6 +470,7 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
    y la doc de Expressive lo fija: "Label text is no longer bolded when
    selected".
    ------------------------------------------------------------------------ */
+.md-navigation-rail-item[aria-current="page"] .md-navigation-rail-indicator,
 .md-navigation-rail-item[aria-selected="true"] .md-navigation-rail-indicator {
   background-color: var(--md-sys-color-secondary-container);
   /* Transición COMPLETA (no solo background-color): este selector de
@@ -481,21 +482,25 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
 }
 
 /* Rama de colapso: simetría canónica con medium2/emphasized-decelerate */
+.md-navigation-rail:not(.md-navigation-rail-expanded) .md-navigation-rail-item[aria-current="page"] .md-navigation-rail-indicator,
 .md-navigation-rail:not(.md-navigation-rail-expanded) .md-navigation-rail-item[aria-selected="true"] .md-navigation-rail-indicator {
   transition:
     background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate),
     block-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
+.md-navigation-rail-item[aria-current="page"],
 .md-navigation-rail-item[aria-selected="true"] {
   color: var(--md-sys-color-on-surface);
 }
 
+.md-navigation-rail-item[aria-current="page"] .md-navigation-rail-icon,
 .md-navigation-rail-item[aria-selected="true"] .md-navigation-rail-icon {
   color: var(--md-sys-color-on-secondary-container);
   --md-sys-icon-fill: var(--md-sys-icon-fill-full);
 }
 
+.md-navigation-rail-item[aria-current="page"] .md-navigation-rail-label,
 .md-navigation-rail-item[aria-selected="true"] .md-navigation-rail-label {
   color: var(--md-sys-color-secondary); /* M3 Expressive: etiqueta activa en secondary */
 }
@@ -503,21 +508,23 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
 /* --------------------------------------------------------------------------
    STATE LAYERS (Hover, Focus, Pressed)
    ------------------------------------------------------------------------ */
-.md-navigation-rail-item:hover:not(:disabled):not([aria-disabled="true"]):not([aria-selected="true"]) .md-navigation-rail-indicator::before {
+.md-navigation-rail-item:hover:not(:disabled):not([aria-disabled="true"]):not([aria-current="page"]):not([aria-selected="true"]) .md-navigation-rail-indicator::before {
   background-color: var(--md-sys-color-on-surface);
   opacity: var(--md-sys-state-hover-state-layer-opacity);
 }
 
+.md-navigation-rail-item[aria-current="page"]:hover:not(:disabled):not([aria-disabled="true"]) .md-navigation-rail-indicator::before,
 .md-navigation-rail-item[aria-selected="true"]:hover:not(:disabled):not([aria-disabled="true"]) .md-navigation-rail-indicator::before {
   background-color: var(--md-sys-color-on-secondary-container);
   opacity: var(--md-sys-state-hover-state-layer-opacity);
 }
 
-.md-navigation-rail-item:active:not(:disabled):not([aria-disabled="true"]):not([aria-selected="true"]) .md-navigation-rail-indicator::before {
+.md-navigation-rail-item:active:not(:disabled):not([aria-disabled="true"]):not([aria-current="page"]):not([aria-selected="true"]) .md-navigation-rail-indicator::before {
   background-color: var(--md-sys-color-on-surface);
   opacity: var(--md-sys-state-pressed-state-layer-opacity);
 }
 
+.md-navigation-rail-item[aria-current="page"]:active:not(:disabled):not([aria-disabled="true"]) .md-navigation-rail-indicator::before,
 .md-navigation-rail-item[aria-selected="true"]:active:not(:disabled):not([aria-disabled="true"]) .md-navigation-rail-indicator::before {
   background-color: var(--md-sys-color-on-secondary-container);
   opacity: var(--md-sys-state-pressed-state-layer-opacity);
@@ -664,18 +671,21 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
    mismo tamaño y eje coaxial en ambos estados. */
 
 /* Colores semánticos en modo expandido */
+.md-navigation-rail-expanded .md-navigation-rail-item[aria-current="page"] .md-navigation-rail-icon,
 .md-navigation-rail-expanded .md-navigation-rail-item[aria-selected="true"] .md-navigation-rail-icon {
   color: var(--md-sys-color-on-secondary-container);
   --md-sys-icon-fill: var(--md-sys-icon-fill-full);
 }
 
+.md-navigation-rail-expanded .md-navigation-rail-item[aria-current="page"] .md-navigation-rail-label,
+.md-navigation-rail-expanded .md-navigation-rail-item[aria-current="page"] .md-navigation-rail-label-horizontal,
 .md-navigation-rail-expanded .md-navigation-rail-item[aria-selected="true"] .md-navigation-rail-label,
 .md-navigation-rail-expanded .md-navigation-rail-item[aria-selected="true"] .md-navigation-rail-label-horizontal {
   color: var(--md-sys-color-on-secondary-container);
 }
 
-.md-navigation-rail-expanded .md-navigation-rail-item:not([aria-selected="true"]) .md-navigation-rail-label,
-.md-navigation-rail-expanded .md-navigation-rail-item:not([aria-selected="true"]) .md-navigation-rail-label-horizontal {
+.md-navigation-rail-expanded .md-navigation-rail-item:not([aria-current="page"]):not([aria-selected="true"]) .md-navigation-rail-label,
+.md-navigation-rail-expanded .md-navigation-rail-item:not([aria-current="page"]):not([aria-selected="true"]) .md-navigation-rail-label-horizontal {
   color: var(--md-sys-color-on-surface);
 }
 

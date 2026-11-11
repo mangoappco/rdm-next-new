@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Menu de RDM Next: superficie flotante elevada M3 Expressive con contenedor surface-container-low, morfosis de esquina 8 a 16dp, elevacion level2 y opciones tactiles de 48dp.">
-  <title>Menu — RDM ManGo! App</title>
+  <meta name="description" content="Menú de RDM Next: superficie flotante elevada M3 con contenedor surface-container, elevación level2 y opciones táctiles de 48dp.">
+  <title>Menú — RDM ManGo! App</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
-  <link rel="stylesheet" href="../../src/css/main.css?v=80">
+  <link rel="stylesheet" href="../../src/css/main.css?v=91">
   <link rel="stylesheet" href="../assets/showroom.css">
   <script type="module" src="../../src/js/main.js"></script>
   <script src="../assets/showroom.js"></script>
@@ -30,7 +30,7 @@
       </a>
     </div>
     <div class="md-top-app-bar-content">
-      <span class="md-top-app-bar-title">Menu</span>
+      <span class="md-top-app-bar-title">Menú</span>
       <span class="md-top-app-bar-subtitle">RDM Next · ManGo! App</span>
     </div>
     <div class="md-top-app-bar-trailing">
@@ -44,9 +44,9 @@
 
     <!-- PORTADA DEL COMPONENTE -->
     <header class="sr-header">
-      <h1 class="md-type-display-large">Menu</h1>
+      <h1 class="md-type-display-large">Menú</h1>
       <p class="md-type-body-large">Superficie flotante elevada que presenta una lista vertical de opciones o acciones sobre el contenido anfitrión.</p>
-      <p class="md-type-body-medium md-text-on-surface-variant">M3 Expressive · Elevación level2 · Bloque 1 (Pares 1 a 10)</p>
+      <p class="md-type-body-medium md-text-on-surface-variant">M3 Expressive · Elevación level2 · Bloque 1 (Pares 1 a 8)</p>
     </header>
 
     <hr class="md-divider">
@@ -54,17 +54,17 @@
     <!-- BLOQUE 1: ESPECIFICACIÓN TÉCNICA Y ANATOMÍA -->
     <h2 class="md-type-headline-medium">Bloque 1 · Especificación técnica y anatomía</h2>
 
-    <!-- PAREJA PAR 1: Anatomía básica y clase base (.md-menu) -->
+    <!-- PAREJA PAR 1: Anatomía básica y contenedor anfitrión -->
     <section class="sr-section">
-      <h3 class="md-type-title-large">Anatomía básica y clase base</h3>
-      <p class="md-type-body-medium">Superficie flotante en contenedor anfitrión con disparador icon-button y tres opciones de acción en altura táctil de 48dp.</p>
+      <h3 class="md-type-title-large">Anatomía básica y contenedor anfitrión</h3>
+      <p class="md-type-body-medium">Superficie flotante en ancla relativa con disparador de icono y opciones de acción en altura táctil de 48dp.</p>
 
       <div class="sr-specimen sr-specimen-menu sr-specimen-tall">
         <div class="md-menu-anchor">
-          <button type="button" class="md-icon-button" id="menu-trigger-demo" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-demo" aria-label="Opciones">
+          <button type="button" class="md-icon-button" id="menu-trigger-demo" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-demo" aria-label="Opciones">
             <span class="md-icon" aria-hidden="true">more_vert</span>
           </button>
-          <div class="md-menu md-menu-open" id="menu-demo" role="menu" aria-labelledby="menu-trigger-demo">
+          <div class="md-menu" id="menu-demo" role="menu" aria-labelledby="menu-trigger-demo">
             <button type="button" class="md-menu-item" role="menuitem">
               <span class="md-menu-item-headline">Ver detalles</span>
             </button>
@@ -80,11 +80,11 @@
 
       <pre class="sr-code"><code>&lt;div class="md-menu-anchor"&gt;
   &lt;!-- Slot: Disparador anfitrión --&gt;
-  &lt;button type="button" class="md-icon-button" id="menu-trigger-demo" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-demo" aria-label="Opciones"&gt;
+  &lt;button type="button" class="md-icon-button" id="menu-trigger-demo" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-demo" aria-label="Opciones"&gt;
     &lt;span class="md-icon" aria-hidden="true"&gt;more_vert&lt;/span&gt;
   &lt;/button&gt;
-  &lt;!-- Slot: Superficie flotante desplegada --&gt;
-  &lt;div class="md-menu md-menu-open" id="menu-demo" role="menu" aria-labelledby="menu-trigger-demo"&gt;
+  &lt;!-- Slot: Superficie flotante (reposo) --&gt;
+  &lt;div class="md-menu" id="menu-demo" role="menu" aria-labelledby="menu-trigger-demo"&gt;
     &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
       &lt;span class="md-menu-item-headline"&gt;Ver detalles&lt;/span&gt;
     &lt;/button&gt;
@@ -100,17 +100,17 @@
     </section>
     <!-- PAREJA PAR 1: hasta aqui -->
 
-    <!-- PAREJA PAR 2: Slots canónicos (Leading icons y Trailing shortcuts) -->
+    <!-- PAREJA PAR 2: Slots canónicos (Iconos leading y atajos trailing) -->
     <section class="sr-section">
-      <h3 class="md-type-title-large">Slots canónicos (Leading icons y Trailing shortcuts)</h3>
-      <p class="md-type-body-medium">Menú con la matriz completa de slots M3: icono de acción leading a 20dp, texto headline central y atajo de teclado trailing.</p>
+      <h3 class="md-type-title-large">Slots canónicos (Iconos leading y atajos trailing)</h3>
+      <p class="md-type-body-medium">Opciones configuradas con icono leading de 20dp, texto titular y atajo de teclado en el extremo trailing.</p>
 
       <div class="sr-specimen sr-specimen-menu sr-specimen-tall">
         <div class="md-menu-anchor">
-          <button type="button" class="md-icon-button" id="menu-trigger-slots" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-slots" aria-label="Acciones de edición">
+          <button type="button" class="md-icon-button" id="menu-trigger-slots" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-slots" aria-label="Acciones de edición">
             <span class="md-icon" aria-hidden="true">more_vert</span>
           </button>
-          <div class="md-menu md-menu-open" id="menu-slots" role="menu" aria-labelledby="menu-trigger-slots">
+          <div class="md-menu" id="menu-slots" role="menu" aria-labelledby="menu-trigger-slots">
             <button type="button" class="md-menu-item" role="menuitem">
               <span class="md-menu-item-leading md-icon" aria-hidden="true">content_cut</span>
               <span class="md-menu-item-headline">Cortar</span>
@@ -132,11 +132,11 @@
 
       <pre class="sr-code"><code>&lt;div class="md-menu-anchor"&gt;
   &lt;!-- Slot: Disparador anfitrión --&gt;
-  &lt;button type="button" class="md-icon-button" id="menu-trigger-slots" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-slots" aria-label="Acciones de edición"&gt;
+  &lt;button type="button" class="md-icon-button" id="menu-trigger-slots" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-slots" aria-label="Acciones de edición"&gt;
     &lt;span class="md-icon" aria-hidden="true"&gt;more_vert&lt;/span&gt;
   &lt;/button&gt;
   &lt;!-- Slot: Superficie flotante con matriz de slots M3 --&gt;
-  &lt;div class="md-menu md-menu-open" id="menu-slots" role="menu" aria-labelledby="menu-trigger-slots"&gt;
+  &lt;div class="md-menu" id="menu-slots" role="menu" aria-labelledby="menu-trigger-slots"&gt;
     &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
       &lt;!-- Slot: Leading --&gt;
       &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;content_cut&lt;/span&gt;
@@ -167,17 +167,17 @@
     </section>
     <!-- PAREJA PAR 2: hasta aqui -->
 
-    <!-- PAREJA PAR 3: Agrupación con divisores (.md-divider) -->
+    <!-- PAREJA PAR 3: Agrupación con divisor y acción destructiva -->
     <section class="sr-section">
-      <h3 class="md-type-title-large">Agrupación con divisores (.md-divider)</h3>
-      <p class="md-type-body-medium">Separación de grupos de opciones mediante divisor horizontal y acción final destructiva con semántica de color de peligro.</p>
+      <h3 class="md-type-title-large">Agrupación con divisor y acción destructiva</h3>
+      <p class="md-type-body-medium">Separación de bloques mediante divisor horizontal de borde a borde y acción final con semántica de color de error.</p>
 
       <div class="sr-specimen sr-specimen-menu sr-specimen-tall">
         <div class="md-menu-anchor">
-          <button type="button" class="md-icon-button" id="menu-trigger-groups" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-groups" aria-label="Opciones de registro">
+          <button type="button" class="md-icon-button" id="menu-trigger-groups" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-groups" aria-label="Opciones de registro">
             <span class="md-icon" aria-hidden="true">more_vert</span>
           </button>
-          <div class="md-menu md-menu-open" id="menu-groups" role="menu" aria-labelledby="menu-trigger-groups">
+          <div class="md-menu" id="menu-groups" role="menu" aria-labelledby="menu-trigger-groups">
             <button type="button" class="md-menu-item" role="menuitem">
               <span class="md-menu-item-leading md-icon" aria-hidden="true">edit</span>
               <span class="md-menu-item-headline">Editar</span>
@@ -197,11 +197,11 @@
 
       <pre class="sr-code"><code>&lt;div class="md-menu-anchor"&gt;
   &lt;!-- Slot: Disparador anfitrión --&gt;
-  &lt;button type="button" class="md-icon-button" id="menu-trigger-groups" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-groups" aria-label="Opciones de registro"&gt;
+  &lt;button type="button" class="md-icon-button" id="menu-trigger-groups" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-groups" aria-label="Opciones de registro"&gt;
     &lt;span class="md-icon" aria-hidden="true"&gt;more_vert&lt;/span&gt;
   &lt;/button&gt;
   &lt;!-- Slot: Superficie flotante con grupos y divisor --&gt;
-  &lt;div class="md-menu md-menu-open" id="menu-groups" role="menu" aria-labelledby="menu-trigger-groups"&gt;
+  &lt;div class="md-menu" id="menu-groups" role="menu" aria-labelledby="menu-trigger-groups"&gt;
     &lt;!-- Grupo 1: Acciones ordinarias --&gt;
     &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
       &lt;!-- Slot: Leading --&gt;
@@ -230,17 +230,17 @@
     </section>
     <!-- PAREJA PAR 3: hasta aqui -->
 
-    <!-- PAREJA PAR 4: Menú compacto y denso (Variante POS) -->
+    <!-- PAREJA PAR 4: Variante compacta de alta densidad (.md-menu-dense) -->
     <section class="sr-section">
-      <h3 class="md-type-title-large">Menú compacto y denso (Variante POS)</h3>
-      <p class="md-type-body-medium">Variante compacta para terminales POS con ítems de 36dp y tipografía label-medium, optimizando espacio en pantalla.</p>
+      <h3 class="md-type-title-large">Variante compacta de alta densidad (.md-menu-dense)</h3>
+      <p class="md-type-body-medium">Escala reducida a 36dp con tipografía label-medium para terminales táctiles POS o interfaces compactas.</p>
 
       <div class="sr-specimen sr-specimen-menu sr-specimen-tall">
         <div class="md-menu-anchor">
-          <button type="button" class="md-icon-button" id="menu-trigger-dense" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-dense" aria-label="Acciones de comanda">
+          <button type="button" class="md-icon-button" id="menu-trigger-dense" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-dense" aria-label="Acciones de comanda">
             <span class="md-icon" aria-hidden="true">more_vert</span>
           </button>
-          <div class="md-menu md-menu-dense md-menu-open" id="menu-dense" role="menu" aria-labelledby="menu-trigger-dense">
+          <div class="md-menu md-menu-dense" id="menu-dense" role="menu" aria-labelledby="menu-trigger-dense">
             <button type="button" class="md-menu-item" role="menuitem">
               <span class="md-menu-item-leading md-icon" aria-hidden="true">print</span>
               <span class="md-menu-item-headline">Reimprimir comanda</span>
@@ -260,11 +260,11 @@
 
       <pre class="sr-code"><code>&lt;div class="md-menu-anchor"&gt;
   &lt;!-- Slot: Disparador anfitrión --&gt;
-  &lt;button type="button" class="md-icon-button" id="menu-trigger-dense" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-dense" aria-label="Acciones de comanda"&gt;
+  &lt;button type="button" class="md-icon-button" id="menu-trigger-dense" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-dense" aria-label="Acciones de comanda"&gt;
     &lt;span class="md-icon" aria-hidden="true"&gt;more_vert&lt;/span&gt;
   &lt;/button&gt;
   &lt;!-- Slot: Superficie flotante compacta para POS (36dp) --&gt;
-  &lt;div class="md-menu md-menu-dense md-menu-open" id="menu-dense" role="menu" aria-labelledby="menu-trigger-dense"&gt;
+  &lt;div class="md-menu md-menu-dense" id="menu-dense" role="menu" aria-labelledby="menu-trigger-dense"&gt;
     &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
       &lt;!-- Slot: Leading --&gt;
       &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;print&lt;/span&gt;
@@ -291,17 +291,17 @@
     </section>
     <!-- PAREJA PAR 4: hasta aqui -->
 
-    <!-- PAREJA PAR 5: Matriz de estados interactivos y deshabilitado -->
+    <!-- PAREJA PAR 5: Matriz de estados (Reposo, foco y deshabilitado) -->
     <section class="sr-section">
-      <h3 class="md-type-title-large">Matriz de estados interactivos y deshabilitado</h3>
-      <p class="md-type-body-medium">Respuesta del sistema de capas de estado: ítem en reposo, ítem enfocado con anillo secundario e ítem deshabilitado al 38%.</p>
+      <h3 class="md-type-title-large">Matriz de estados (Reposo, foco y deshabilitado)</h3>
+      <p class="md-type-body-medium">Respuesta de las capas de estado: opción en reposo, foco visible con anillo interior y opción inactiva al 38%.</p>
 
       <div class="sr-specimen sr-specimen-menu sr-specimen-tall">
         <div class="md-menu-anchor">
-          <button type="button" class="md-icon-button" id="menu-trigger-states" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-states" aria-label="Opciones de venta">
+          <button type="button" class="md-icon-button" id="menu-trigger-states" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-states" aria-label="Opciones de venta">
             <span class="md-icon" aria-hidden="true">more_vert</span>
           </button>
-          <div class="md-menu md-menu-open" id="menu-states" role="menu" aria-labelledby="menu-trigger-states">
+          <div class="md-menu" id="menu-states" role="menu" aria-labelledby="menu-trigger-states">
             <button type="button" class="md-menu-item" role="menuitem">
               <span class="md-menu-item-leading md-icon" aria-hidden="true">save</span>
               <span class="md-menu-item-headline">Guardar cambios</span>
@@ -320,11 +320,11 @@
 
       <pre class="sr-code"><code>&lt;div class="md-menu-anchor"&gt;
   &lt;!-- Slot: Disparador anfitrión --&gt;
-  &lt;button type="button" class="md-icon-button" id="menu-trigger-states" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-states" aria-label="Opciones de venta"&gt;
+  &lt;button type="button" class="md-icon-button" id="menu-trigger-states" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-states" aria-label="Opciones de venta"&gt;
     &lt;span class="md-icon" aria-hidden="true"&gt;more_vert&lt;/span&gt;
   &lt;/button&gt;
   &lt;!-- Slot: Superficie flotante con matriz de estados --&gt;
-  &lt;div class="md-menu md-menu-open" id="menu-states" role="menu" aria-labelledby="menu-trigger-states"&gt;
+  &lt;div class="md-menu" id="menu-states" role="menu" aria-labelledby="menu-trigger-states"&gt;
     &lt;!-- Estado: Enabled (Reposo) --&gt;
     &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
       &lt;!-- Slot: Leading --&gt;
@@ -352,10 +352,10 @@
     </section>
     <!-- PAREJA PAR 5: hasta aqui -->
 
-    <!-- PAREJA PAR 6: Menú interactivo en vivo (Clic, Teclado y Cierre exterior) -->
+    <!-- PAREJA PAR 6: Navegación accesible y ciclo de teclado WAI-ARIA -->
     <section class="sr-section">
-      <h3 class="md-type-title-large">Menú interactivo en vivo (Clic, Teclado y Cierre exterior)</h3>
-      <p class="md-type-body-medium">Menú con comportamiento interactivo en vivo: despliegue con clic o teclado, navegación cíclica WAI-ARIA y cierre exterior.</p>
+      <h3 class="md-type-title-large">Navegación accesible y ciclo de teclado WAI-ARIA</h3>
+      <p class="md-type-body-medium">Flujo accesible completo: navegación cíclica con flechas, teclas Home y End, y repliegue con Escape o Tab.</p>
 
       <div class="sr-specimen sr-specimen-menu sr-specimen-tall">
         <div class="md-menu-anchor">
@@ -416,49 +416,139 @@
     </section>
     <!-- PAREJA PAR 6: hasta aqui -->
 
-    <!-- PAREJA PAR 7: Etiqueta de sección e ítem seleccionado -->
+    <!-- PAREJA PAR 7: Submenús recursivos en cascada (Niveles 1 a 3) -->
     <section class="sr-section">
-      <h3 class="md-type-title-large">Etiqueta de sección e ítem seleccionado</h3>
-      <p class="md-type-body-medium">Grupo encabezado por etiqueta de sección de 32dp e ítem con estado seleccionado: fondo tertiary-container con rincón de 12dp (canon Expressive).</p>
+      <h3 class="md-type-title-large">Submenús recursivos en cascada (Niveles 1 a 3)</h3>
+      <p class="md-type-body-medium">Jerarquía multinivel proyectada hacia la derecha con alineación coaxial de pastillas y retención de estado activo.</p>
 
       <div class="sr-specimen sr-specimen-menu sr-specimen-tall">
         <div class="md-menu-anchor">
-          <button type="button" class="md-icon-button" id="menu-trigger-selected" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-selected" aria-label="Vista de catalogo">
+          <!-- Disparador raíz (Nivel 0) -->
+          <button type="button" class="md-icon-button" id="trigger-root" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-level-1" aria-label="Opciones de mesa">
             <span class="md-icon" aria-hidden="true">more_vert</span>
           </button>
-          <div class="md-menu md-menu-open" id="menu-selected" role="menu" aria-labelledby="menu-trigger-selected">
-            <span class="md-menu-label" id="menu-selected-label">Ordenar por</span>
+          <!-- Superficie Nivel 1 (Menú Principal) -->
+          <div class="md-menu" id="menu-level-1" role="menu" aria-labelledby="trigger-root">
             <button type="button" class="md-menu-item" role="menuitem">
-              <span class="md-menu-item-headline">Recientes</span>
+              <span class="md-menu-item-leading md-icon" aria-hidden="true">receipt_long</span>
+              <span class="md-menu-item-headline">Cuenta</span>
             </button>
-            <button type="button" class="md-menu-item md-menu-item-selected" role="menuitem" aria-selected="true">
-              <span class="md-menu-item-headline">Precio: menor a mayor</span>
-            </button>
-            <button type="button" class="md-menu-item" role="menuitem">
-              <span class="md-menu-item-headline">Mejor valorados</span>
+            <!-- Cápsula Submenú (Nivel 1 -> Nivel 2) -->
+            <div class="md-menu-submenu">
+              <button type="button" class="md-menu-item" id="trigger-sub-level-2" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-level-2" role="menuitem">
+                <span class="md-menu-item-leading md-icon" aria-hidden="true">table_restaurant</span>
+                <span class="md-menu-item-headline">Mover de mesa</span>
+                <span class="md-menu-item-trailing md-icon" aria-hidden="true">arrow_right</span>
+              </button>
+              <!-- Superficie Nivel 2 (Primer Submenú lateral) -->
+              <div class="md-menu" id="menu-level-2" role="menu" aria-labelledby="trigger-sub-level-2">
+                <button type="button" class="md-menu-item" role="menuitem">
+                  <span class="md-menu-item-headline">Mesa 1 · Salón</span>
+                </button>
+                <!-- Cápsula Submenú Recursiva (Nivel 2 -> Nivel 3) -->
+                <div class="md-menu-submenu">
+                  <button type="button" class="md-menu-item" id="trigger-sub-level-3" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-level-3" role="menuitem">
+                    <span class="md-menu-item-headline">Mesa 2 · Terraza</span>
+                    <span class="md-menu-item-trailing md-icon" aria-hidden="true">arrow_right</span>
+                  </button>
+                  <!-- Superficie Nivel 3 (Segundo Submenú lateral en cascada) -->
+                  <div class="md-menu" id="menu-level-3" role="menu" aria-labelledby="trigger-sub-level-3">
+                    <button type="button" class="md-menu-item" role="menuitem">
+                      <span class="md-menu-item-headline">Zona Fumadores</span>
+                    </button>
+                    <button type="button" class="md-menu-item" role="menuitem">
+                      <span class="md-menu-item-headline">Zona Jardín</span>
+                    </button>
+                  </div>
+                </div>
+                <button type="button" class="md-menu-item" role="menuitem">
+                  <span class="md-menu-item-headline">Mesa 3 · Barra</span>
+                </button>
+              </div>
+            </div>
+            <hr class="md-divider" role="separator">
+            <button type="button" class="md-menu-item md-menu-item-destructive" role="menuitem">
+              <span class="md-menu-item-leading md-icon" aria-hidden="true">cancel</span>
+              <span class="md-menu-item-headline">Anular orden</span>
             </button>
           </div>
         </div>
       </div>
 
       <pre class="sr-code"><code>&lt;div class="md-menu-anchor"&gt;
-  &lt;!-- Slot: Disparador anfitrión --&gt;
-  &lt;button type="button" class="md-icon-button" id="menu-trigger-selected" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-selected" aria-label="Vista de catalogo"&gt;
+  &lt;!-- ====================================================================
+       DISPARADOR RAÍZ (Nivel 0)
+       Abre la superficie principal del menú en reposo.
+       ==================================================================== --&gt;
+  &lt;button type="button" class="md-icon-button" id="trigger-root" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-level-1" aria-label="Opciones de mesa"&gt;
     &lt;span class="md-icon" aria-hidden="true"&gt;more_vert&lt;/span&gt;
   &lt;/button&gt;
-  &lt;!-- Slot: Superficie flotante con sección e ítem seleccionado --&gt;
-  &lt;div class="md-menu md-menu-open" id="menu-selected" role="menu" aria-labelledby="menu-trigger-selected"&gt;
-    &lt;!-- Etiqueta de sección (32dp) --&gt;
-    &lt;span class="md-menu-label" id="menu-selected-label"&gt;Ordenar por&lt;/span&gt;
+
+  &lt;!-- ====================================================================
+       SUPERFICIE NIVEL 1 (Menú Principal)
+       ==================================================================== --&gt;
+  &lt;div class="md-menu" id="menu-level-1" role="menu" aria-labelledby="trigger-root"&gt;
+
+    &lt;!-- Opción regular (Acción directa) --&gt;
     &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
-      &lt;span class="md-menu-item-headline"&gt;Recientes&lt;/span&gt;
+      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;receipt_long&lt;/span&gt;
+      &lt;span class="md-menu-item-headline"&gt;Cuenta&lt;/span&gt;
     &lt;/button&gt;
-    &lt;!-- Estado: Selected (tertiary-container, rincón 12dp) --&gt;
-    &lt;button type="button" class="md-menu-item md-menu-item-selected" role="menuitem" aria-selected="true"&gt;
-      &lt;span class="md-menu-item-headline"&gt;Precio: menor a mayor&lt;/span&gt;
-    &lt;/button&gt;
-    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
-      &lt;span class="md-menu-item-headline"&gt;Mejor valorados&lt;/span&gt;
+
+    &lt;!-- CÁPSULA SUBMENÚ (Nivel 1 -&gt; Nivel 2) --&gt;
+    &lt;div class="md-menu-submenu"&gt;
+      &lt;!-- Disparador que abre el Nivel 2 --&gt;
+      &lt;button type="button" class="md-menu-item" id="trigger-sub-level-2" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-level-2" role="menuitem"&gt;
+        &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;table_restaurant&lt;/span&gt;
+        &lt;span class="md-menu-item-headline"&gt;Mover de mesa&lt;/span&gt;
+        &lt;span class="md-menu-item-trailing md-icon" aria-hidden="true"&gt;arrow_right&lt;/span&gt;
+      &lt;/button&gt;
+
+      &lt;!-- ================================================================
+           SUPERFICIE NIVEL 2 (Primer Submenú lateral)
+           ================================================================ --&gt;
+      &lt;div class="md-menu" id="menu-level-2" role="menu" aria-labelledby="trigger-sub-level-2"&gt;
+
+        &lt;!-- Opción regular Nivel 2 --&gt;
+        &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+          &lt;span class="md-menu-item-headline"&gt;Mesa 1 · Salón&lt;/span&gt;
+        &lt;/button&gt;
+
+        &lt;!-- CÁPSULA SUBMENÚ RECURSIVA (Nivel 2 -&gt; Nivel 3) --&gt;
+        &lt;div class="md-menu-submenu"&gt;
+          &lt;!-- Disparador que abre el Nivel 3 --&gt;
+          &lt;button type="button" class="md-menu-item" id="trigger-sub-level-3" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-level-3" role="menuitem"&gt;
+            &lt;span class="md-menu-item-headline"&gt;Mesa 2 · Terraza&lt;/span&gt;
+            &lt;span class="md-menu-item-trailing md-icon" aria-hidden="true"&gt;arrow_right&lt;/span&gt;
+          &lt;/button&gt;
+
+          &lt;!-- ============================================================
+               SUPERFICIE NIVEL 3 (Segundo Submenú lateral en cascada)
+               ============================================================ --&gt;
+          &lt;div class="md-menu" id="menu-level-3" role="menu" aria-labelledby="trigger-sub-level-3"&gt;
+            &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+              &lt;span class="md-menu-item-headline"&gt;Zona Fumadores&lt;/span&gt;
+            &lt;/button&gt;
+            &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+              &lt;span class="md-menu-item-headline"&gt;Zona Jardín&lt;/span&gt;
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Opción regular Nivel 2 --&gt;
+        &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+          &lt;span class="md-menu-item-headline"&gt;Mesa 3 · Barra&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Separador canónico M3 --&gt;
+    &lt;hr class="md-divider" role="separator"&gt;
+
+    &lt;!-- Opción destructiva (Acción directa) --&gt;
+    &lt;button type="button" class="md-menu-item md-menu-item-destructive" role="menuitem"&gt;
+      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;cancel&lt;/span&gt;
+      &lt;span class="md-menu-item-headline"&gt;Anular orden&lt;/span&gt;
     &lt;/button&gt;
   &lt;/div&gt;
 &lt;/div&gt;</code></pre>
@@ -466,234 +556,81 @@
     </section>
     <!-- PAREJA PAR 7: hasta aqui -->
 
-    <!-- PAREJA PAR 8: Submenú en cascada -->
+    <!-- PAREJA PAR 8: Ítems de navegación con enlace (<a href>) -->
     <section class="sr-section">
-      <h3 class="md-type-title-large">Submenú en cascada</h3>
-      <p class="md-type-body-medium">Nivel secundario anclado al flanco final del ítem padre, con flecha trailing y la misma superficie flotante scrolleable de esquina morfeada.</p>
+      <h3 class="md-type-title-large">Ítems de navegación con enlace (&lt;a href&gt;)</h3>
+      <p class="md-type-body-medium">Polimorfismo semántico: ítems de navegación con etiqueta &lt;a&gt;, role="menuitem" explícito y separación de cierre con &lt;button&gt;.</p>
 
       <div class="sr-specimen sr-specimen-menu sr-specimen-tall">
         <div class="md-menu-anchor">
-          <button type="button" class="md-icon-button" id="menu-trigger-submenu" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-submenu" aria-label="Opciones de exportacion">
-            <span class="md-icon" aria-hidden="true">more_vert</span>
+          <!-- Slot: Disparador anfitrión -->
+          <button type="button" class="md-icon-button" id="menu-trigger-links" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-links" aria-label="Menú de cuenta">
+            <span class="md-icon" aria-hidden="true">account_circle</span>
           </button>
-          <div class="md-menu md-menu-open" id="menu-submenu" role="menu" aria-labelledby="menu-trigger-submenu">
-            <button type="button" class="md-menu-item" role="menuitem">
-              <span class="md-menu-item-leading md-icon" aria-hidden="true">save</span>
-              <span class="md-menu-item-headline">Guardar</span>
+          <!-- Slot: Superficie flotante con ítems polimórficos (<a> + <button>) -->
+          <div class="md-menu" id="menu-links" role="menu" aria-labelledby="menu-trigger-links">
+            <!-- Ítem de navegación (Ruta) -->
+            <a href="#perfil" class="md-menu-item" role="menuitem">
+              <!-- Slot: Leading -->
+              <span class="md-menu-item-leading md-icon" aria-hidden="true">person</span>
+              <!-- Slot: Content -->
+              <span class="md-menu-item-headline">Mi perfil</span>
+            </a>
+            <!-- Ítem de navegación (Ruta) -->
+            <a href="#preferencias" class="md-menu-item" role="menuitem">
+              <!-- Slot: Leading -->
+              <span class="md-menu-item-leading md-icon" aria-hidden="true">tune</span>
+              <!-- Slot: Content -->
+              <span class="md-menu-item-headline">Preferencias</span>
+            </a>
+            <!-- Separador canónico M3 -->
+            <hr class="md-divider" role="separator">
+            <!-- Ítem de acción (Comando) -->
+            <button type="button" class="md-menu-item md-menu-item-destructive" role="menuitem">
+              <!-- Slot: Leading -->
+              <span class="md-menu-item-leading md-icon" aria-hidden="true">logout</span>
+              <!-- Slot: Content -->
+              <span class="md-menu-item-headline">Cerrar sesión</span>
             </button>
-            <div class="md-menu-submenu">
-              <button type="button" class="md-menu-item" role="menuitem" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-submenu-export">
-                <span class="md-menu-item-leading md-icon" aria-hidden="true">file_upload</span>
-                <span class="md-menu-item-headline">Exportar como</span>
-                <span class="md-menu-item-trailing md-icon" aria-hidden="true">arrow_right</span>
-              </button>
-              <div class="md-menu md-menu-open" id="menu-submenu-export" role="menu" aria-label="Exportar como">
-                <button type="button" class="md-menu-item" role="menuitem">
-                  <span class="md-menu-item-headline">PDF</span>
-                </button>
-                <button type="button" class="md-menu-item" role="menuitem">
-                  <span class="md-menu-item-headline">CSV</span>
-                </button>
-              </div>
-            </div>
           </div>
         </div>
       </div>
 
-      <pre class="sr-code"><code>&lt;div class="md-menu-anchor"&gt;
+      <pre class="sr-code"><code class="language-html">&lt;div class="md-menu-anchor"&gt;
   &lt;!-- Slot: Disparador anfitrión --&gt;
-  &lt;button type="button" class="md-icon-button" id="menu-trigger-submenu" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-submenu" aria-label="Opciones de exportacion"&gt;
-    &lt;span class="md-icon" aria-hidden="true"&gt;more_vert&lt;/span&gt;
+  &lt;button type="button" class="md-icon-button" id="menu-trigger-links" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-links" aria-label="Menú de cuenta"&gt;
+    &lt;span class="md-icon" aria-hidden="true"&gt;account_circle&lt;/span&gt;
   &lt;/button&gt;
-  &lt;!-- Slot: Superficie flotante raíz --&gt;
-  &lt;div class="md-menu md-menu-open" id="menu-submenu" role="menu" aria-labelledby="menu-trigger-submenu"&gt;
-    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+  &lt;!-- Slot: Superficie flotante con ítems polimórficos (&lt;a&gt; + &lt;button&gt;) --&gt;
+  &lt;div class="md-menu" id="menu-links" role="menu" aria-labelledby="menu-trigger-links"&gt;
+    &lt;!-- Ítem de navegación (Ruta) --&gt;
+    &lt;a href="#perfil" class="md-menu-item" role="menuitem"&gt;
       &lt;!-- Slot: Leading --&gt;
-      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;save&lt;/span&gt;
+      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;person&lt;/span&gt;
       &lt;!-- Slot: Content --&gt;
-      &lt;span class="md-menu-item-headline"&gt;Guardar&lt;/span&gt;
+      &lt;span class="md-menu-item-headline"&gt;Mi perfil&lt;/span&gt;
+    &lt;/a&gt;
+    &lt;!-- Ítem de navegación (Ruta) --&gt;
+    &lt;a href="#preferencias" class="md-menu-item" role="menuitem"&gt;
+      &lt;!-- Slot: Leading --&gt;
+      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;tune&lt;/span&gt;
+      &lt;!-- Slot: Content --&gt;
+      &lt;span class="md-menu-item-headline"&gt;Preferencias&lt;/span&gt;
+    &lt;/a&gt;
+    &lt;!-- Separador canónico M3 --&gt;
+    &lt;hr class="md-divider" role="separator"&gt;
+    &lt;!-- Ítem de acción (Comando) --&gt;
+    &lt;button type="button" class="md-menu-item md-menu-item-destructive" role="menuitem"&gt;
+      &lt;!-- Slot: Leading --&gt;
+      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;logout&lt;/span&gt;
+      &lt;!-- Slot: Content --&gt;
+      &lt;span class="md-menu-item-headline"&gt;Cerrar sesión&lt;/span&gt;
     &lt;/button&gt;
-    &lt;!-- Slot: Ancla de submenú en cascada --&gt;
-    &lt;div class="md-menu-submenu"&gt;
-      &lt;button type="button" class="md-menu-item" role="menuitem" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-submenu-export"&gt;
-        &lt;!-- Slot: Leading --&gt;
-        &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;file_upload&lt;/span&gt;
-        &lt;!-- Slot: Content --&gt;
-        &lt;span class="md-menu-item-headline"&gt;Exportar como&lt;/span&gt;
-        &lt;!-- Slot: Trailing (flecha de cascada) --&gt;
-        &lt;span class="md-menu-item-trailing md-icon" aria-hidden="true"&gt;arrow_right&lt;/span&gt;
-      &lt;/button&gt;
-      &lt;!-- Slot: Superficie flotante secundaria --&gt;
-      &lt;div class="md-menu md-menu-open" id="menu-submenu-export" role="menu" aria-label="Exportar como"&gt;
-        &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
-          &lt;span class="md-menu-item-headline"&gt;PDF&lt;/span&gt;
-        &lt;/button&gt;
-        &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
-          &lt;span class="md-menu-item-headline"&gt;CSV&lt;/span&gt;
-        &lt;/button&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
     <!-- PAREJA PAR 8: hasta aqui -->
-
-    <!-- PAREJA PAR 9: Menú scrolleable (max-height 300dp) -->
-    <section class="sr-section">
-      <h3 class="md-type-title-large">Menú scrolleable (max-height 300dp)</h3>
-      <p class="md-type-body-medium">Listado largo dentro de la altura máxima canónica de 300dp: el contenedor es scrolleable y todos los ítems permanecen alcanzables por scroll o teclado.</p>
-
-      <div class="sr-specimen sr-specimen-menu sr-specimen-tall">
-        <div class="md-menu-anchor">
-          <button type="button" class="md-icon-button" id="menu-trigger-scroll" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-scroll" aria-label="Sucursales">
-            <span class="md-icon" aria-hidden="true">more_vert</span>
-          </button>
-          <div class="md-menu md-menu-open" id="menu-scroll" role="menu" aria-labelledby="menu-trigger-scroll">
-            <button type="button" class="md-menu-item" role="menuitem">
-              <span class="md-menu-item-leading md-icon" aria-hidden="true">storefront</span>
-              <span class="md-menu-item-headline">Sucursal Centro</span>
-            </button>
-            <button type="button" class="md-menu-item" role="menuitem">
-              <span class="md-menu-item-leading md-icon" aria-hidden="true">storefront</span>
-              <span class="md-menu-item-headline">Sucursal Norte</span>
-            </button>
-            <button type="button" class="md-menu-item" role="menuitem">
-              <span class="md-menu-item-leading md-icon" aria-hidden="true">storefront</span>
-              <span class="md-menu-item-headline">Sucursal Sur</span>
-            </button>
-            <button type="button" class="md-menu-item" role="menuitem">
-              <span class="md-menu-item-leading md-icon" aria-hidden="true">storefront</span>
-              <span class="md-menu-item-headline">Sucursal Oriente</span>
-            </button>
-            <button type="button" class="md-menu-item" role="menuitem">
-              <span class="md-menu-item-leading md-icon" aria-hidden="true">storefront</span>
-              <span class="md-menu-item-headline">Sucursal Poniente</span>
-            </button>
-            <button type="button" class="md-menu-item" role="menuitem">
-              <span class="md-menu-item-leading md-icon" aria-hidden="true">storefront</span>
-              <span class="md-menu-item-headline">Sucursal Playa</span>
-            </button>
-            <button type="button" class="md-menu-item" role="menuitem">
-              <span class="md-menu-item-leading md-icon" aria-hidden="true">storefront</span>
-              <span class="md-menu-item-headline">Sucursal Plaza</span>
-            </button>
-            <button type="button" class="md-menu-item" role="menuitem">
-              <span class="md-menu-item-leading md-icon" aria-hidden="true">storefront</span>
-              <span class="md-menu-item-headline">Sucursal Parque</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <pre class="sr-code"><code>&lt;div class="md-menu-anchor"&gt;
-  &lt;!-- Slot: Disparador anfitrión --&gt;
-  &lt;button type="button" class="md-icon-button" id="menu-trigger-scroll" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-scroll" aria-label="Sucursales"&gt;
-    &lt;span class="md-icon" aria-hidden="true"&gt;more_vert&lt;/span&gt;
-  &lt;/button&gt;
-  &lt;!-- Slot: Superficie flotante scrolleable (max-height 300dp, overflow auto) --&gt;
-  &lt;div class="md-menu md-menu-open" id="menu-scroll" role="menu" aria-labelledby="menu-trigger-scroll"&gt;
-    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
-      &lt;!-- Slot: Leading --&gt;
-      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;storefront&lt;/span&gt;
-      &lt;!-- Slot: Content --&gt;
-      &lt;span class="md-menu-item-headline"&gt;Sucursal Centro&lt;/span&gt;
-    &lt;/button&gt;
-    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
-      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;storefront&lt;/span&gt;
-      &lt;span class="md-menu-item-headline"&gt;Sucursal Norte&lt;/span&gt;
-    &lt;/button&gt;
-    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
-      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;storefront&lt;/span&gt;
-      &lt;span class="md-menu-item-headline"&gt;Sucursal Sur&lt;/span&gt;
-    &lt;/button&gt;
-    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
-      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;storefront&lt;/span&gt;
-      &lt;span class="md-menu-item-headline"&gt;Sucursal Oriente&lt;/span&gt;
-    &lt;/button&gt;
-    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
-      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;storefront&lt;/span&gt;
-      &lt;span class="md-menu-item-headline"&gt;Sucursal Poniente&lt;/span&gt;
-    &lt;/button&gt;
-    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
-      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;storefront&lt;/span&gt;
-      &lt;span class="md-menu-item-headline"&gt;Sucursal Playa&lt;/span&gt;
-    &lt;/button&gt;
-    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
-      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;storefront&lt;/span&gt;
-      &lt;span class="md-menu-item-headline"&gt;Sucursal Plaza&lt;/span&gt;
-    &lt;/button&gt;
-    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
-      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;storefront&lt;/span&gt;
-      &lt;span class="md-menu-item-headline"&gt;Sucursal Parque&lt;/span&gt;
-    &lt;/button&gt;
-  &lt;/div&gt;
-&lt;/div&gt;</code></pre>
-      <button type="button" class="sr-copy" data-copy>Copiar</button>
-    </section>
-    <!-- PAREJA PAR 9: hasta aqui -->
-
-    <!-- PAREJA PAR 10: Variante vibrant (tertiary-container) -->
-    <section class="sr-section">
-      <h3 class="md-type-title-large">Variante vibrant (tertiary-container)</h3>
-      <p class="md-type-body-medium">Variante expresiva del canon md.comp.menus.vibrant: contenedor e ítems en tertiary-container, selección sólida en tertiary y iconos que giran en interacción.</p>
-
-      <div class="sr-specimen sr-specimen-menu sr-specimen-tall">
-        <div class="md-menu-anchor">
-          <button type="button" class="md-icon-button" id="menu-trigger-vibrant" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-vibrant" aria-label="Estilo de carta">
-            <span class="md-icon" aria-hidden="true">more_vert</span>
-          </button>
-          <div class="md-menu md-menu-vibrant md-menu-open" id="menu-vibrant" role="menu" aria-labelledby="menu-trigger-vibrant">
-            <span class="md-menu-label" id="menu-vibrant-label">Estilo de carta</span>
-            <button type="button" class="md-menu-item" role="menuitem">
-              <span class="md-menu-item-leading md-icon" aria-hidden="true">list_alt</span>
-              <span class="md-menu-item-headline">Compacto</span>
-            </button>
-            <button type="button" class="md-menu-item md-menu-item-selected" role="menuitem" aria-selected="true">
-              <span class="md-menu-item-leading md-icon" aria-hidden="true">grid_view</span>
-              <span class="md-menu-item-headline">Cuadrícula</span>
-            </button>
-            <button type="button" class="md-menu-item" role="menuitem">
-              <span class="md-menu-item-leading md-icon" aria-hidden="true">calendar_view_month</span>
-              <span class="md-menu-item-headline">Calendario</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <pre class="sr-code"><code>&lt;div class="md-menu-anchor"&gt;
-  &lt;!-- Slot: Disparador anfitrión --&gt;
-  &lt;button type="button" class="md-icon-button" id="menu-trigger-vibrant" aria-haspopup="menu" aria-expanded="true" aria-controls="menu-vibrant" aria-label="Estilo de carta"&gt;
-    &lt;span class="md-icon" aria-hidden="true"&gt;more_vert&lt;/span&gt;
-  &lt;/button&gt;
-  &lt;!-- Slot: Superficie flotante vibrant (tertiary-container) --&gt;
-  &lt;div class="md-menu md-menu-vibrant md-menu-open" id="menu-vibrant" role="menu" aria-labelledby="menu-trigger-vibrant"&gt;
-    &lt;!-- Etiqueta de sección --&gt;
-    &lt;span class="md-menu-label" id="menu-vibrant-label"&gt;Estilo de carta&lt;/span&gt;
-    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
-      &lt;!-- Slot: Leading --&gt;
-      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;list_alt&lt;/span&gt;
-      &lt;!-- Slot: Content --&gt;
-      &lt;span class="md-menu-item-headline"&gt;Compacto&lt;/span&gt;
-    &lt;/button&gt;
-    &lt;!-- Estado: Selected (tertiary sólido, on-tertiary) --&gt;
-    &lt;button type="button" class="md-menu-item md-menu-item-selected" role="menuitem" aria-selected="true"&gt;
-      &lt;!-- Slot: Leading --&gt;
-      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;grid_view&lt;/span&gt;
-      &lt;!-- Slot: Content --&gt;
-      &lt;span class="md-menu-item-headline"&gt;Cuadrícula&lt;/span&gt;
-    &lt;/button&gt;
-    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
-      &lt;!-- Slot: Leading --&gt;
-      &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;calendar_view_month&lt;/span&gt;
-      &lt;!-- Slot: Content --&gt;
-      &lt;span class="md-menu-item-headline"&gt;Calendario&lt;/span&gt;
-    &lt;/button&gt;
-  &lt;/div&gt;
-&lt;/div&gt;</code></pre>
-      <button type="button" class="sr-copy" data-copy>Copiar</button>
-    </section>
-    <!-- PAREJA PAR 10: hasta aqui -->
 
   </main>
 

@@ -164,5 +164,34 @@ En componentes complejos y multirranura (`Navigation Rail`, `Top App Bar`, `Card
 ### 10.3 Compatibilidad Matemática con la REGLA 11
 Para permitir que los comentarios de slots vivan en los snippets copiables sin romper la correspondencia estructural con el DOM renderizado, `tools/verify-tokens.mjs` purga comentarios HTML (`<!--[\s\S]*?-->`) tras decodificar entidades (`&lt;!-- ... --&gt;`) y colapsa los espacios entre etiquetas (`>\s+<` → `><`). La paridad estructural se preserva al 100% manteniendo el baseline de verificación en verde.
 
+## 11. Directrices Consolidadas: Menu (M3 Expressive Floating Surface & Submenus) (2026-11-11)
+
+### 11.1 Confinamiento y Concentricidad Simétrica
+Para eliminar cualquier tensión visual y evitar que las opciones colisionen contra las esquinas del menú:
+- El contenedor `.md-menu` establece `padding: 8dp` perimetral simétrico en sus 4 flancos (`--md-sys-measurement-space-100`) y radio exterior de 16dp (`--md-sys-shape-corner-large`).
+- Los ítems `.md-menu-item` se moldean con radio interior uniforme de **8dp** (`--md-sys-shape-corner-small`). Cumplen la ley de concentricidad natural: $R_{\text{interno}} = R_{\text{externo}} - \text{Padding}$ ($16\text{dp} - 8\text{dp} = 8\text{dp}$).
+- El divisor interno `.md-divider` sangra de borde a borde mediante márgenes negativos (`margin-inline: -8dp`) y ancho extendido (`inline-size: calc(100% + 16dp)`), preservando la respiración perimetral sin interrumpir el padding.
+
+### 11.2 Cascada Coaxial y Respiro de Sombras
+- **Coaxialidad Vertical:** Todo submenú subordinado (`.md-menu-submenu > .md-menu`) se desplaza verticalmente con `inset-block-start: -8dp` (`calc(-1 * space-100)`), logrando una alineación coaxial pastilla-con-pastilla perfecta con el ítem disparador padre.
+- **Despeje Horizontal de Sombra:** Se proyecta lateralmente con `inset-inline-start: calc(100% + 8dp)` (compensando el padding interior del padre) más `margin-inline-start: 4dp` (`space-50`) de aire exterior, impidiendo que la sombra flotante (`level2`) empaste sobre el texto o glifos del nivel anterior.
+- **Desbordamiento Inteligente:** El menú padre declara `overflow: visible` ante la presencia de submenús mediante `:has(.md-menu-submenu)`.
+
+### 11.3 Rastro Activo Persistente (Active Path / Breadcrumb Trail)
+En menús multinivel en cascada:
+- Mientras un submenú permanezca desplegado (`[aria-expanded="true"]`), su ítem disparador padre retiene de forma persistente su pastilla activa en color `secondary-container`, guiando visualmente al usuario sin importar que el puntero o el foco de teclado se hayan movido al nivel subordinado.
+- El disparador anfitrión raíz retiene su capa de estado sutil (`opacity: 0.08`) para certificar el origen del flujo sin usurpar el rol de un botón de alternancia.
+
+### 11.4 Viewport Edge Detection y Auto-Flipping Inteligente
+Para prevenir que los menús se proyecten fuera de la pantalla en esquinas críticas (ej. barras superiores o últimas columnas de tablas):
+- `src/js/menu.js` mide dinámicamente con `getBoundingClientRect()` contra los límites del viewport (guarda de 8px).
+- Activa `data-align="end"` para invertir la proyección hacia la izquierda (`inset-inline-end: 0` en Nivel 1; `inset-inline-end: calc(100% + 8dp)` en submenús) y `data-valign="top"` para proyectar hacia arriba.
+- El ciclo de teclado WAI-ARIA APG se adapta automáticamente: en menús invertidos a la izquierda, `ArrowLeft` despliega submenús y `ArrowRight` repliega hacia el nivel padre.
+
+### 11.5 Polimorfismo Semántico y Confinamiento de Ripple
+- El componente soporta indistintamente botones de comando (`<button>`) y enlaces de navegación (`<a href>`), compartiendo la clase `.md-menu-item`, `text-decoration: none` y `min-height: 48dp`.
+- La activación con tecla `Space` en ítems `<a>` simula la pulsación nativa según WAI-ARIA APG.
+- Se integra en `src/js/ripple.js` con recorte riguroso en `overflow: hidden;` para que la onda táctil no sobrepase las esquinas redondeadas concéntricas de 8dp.
+
 
 

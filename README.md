@@ -1426,6 +1426,17 @@ Avisos contextuales temporales de retroalimentación en la base de la pantalla:
 - **Cinemática Asimétrica M3:** Desaceleración enfática de entrada (300ms, `medium2`, ascenso de 16px) y aceleración enfática de salida (150ms, `short3`).
 - **Ergonomía:** Temporizador automático a 4.000ms con pausa automática en `hover` o `focus-within`.
 
+### Menu (.md-menu)
+
+`src/css/3-components/menu.css`, con `src/js/menu.js`. Superficie flotante elevada M3 Expressive para listas verticales de opciones, acciones y navegación en cascada:
+- **Geometría Concéntrica Simétrica:** Contenedor en `surface-container` con elevación `level2`, radio de 16dp (`corner-large`) y padding perimetral continuo de 8dp (`space-100`). Concentricidad matemática estricta $R_{\text{interno}} = R_{\text{externo}} - \text{Padding}$ ($16\text{dp} - 8\text{dp} = 8\text{dp}$): los ítems `.md-menu-item` se moldean con esquinas de 8dp (`corner-small`), altura táctil de 48dp (`touch-target`) y padding horizontal de 12dp.
+- **Divisor Sangrado:** Separador `.md-divider` con compensación perimetral completa (`margin-inline: -8dp; inline-size: calc(100% + 16dp)`), extendiendo la línea divisoria de borde a borde sin interrumpir el padding del contenedor.
+- **Submenús Recursivos en Cascada (.md-menu-submenu):** Eje vertical coaxial con desfase negativo de -8dp (`calc(-1 * space-100)`) que alinea pastilla con pastilla entre niveles. Despeje horizontal de 100% + 8dp + 4dp de aire exterior para evitar solapamientos o empastes de sombra sobre el ítem disparador. Soporte recursivo hasta Nivel 3+.
+- **Rastro Activo Persistente (Breadcrumb Trail):** Los ítems disparadores de submenús retienen su tonalidad activa (`secondary-container`) mientras su jerarquía subordinada esté visible (`[aria-expanded="true"]`). El disparador anfitrión raíz retiene su `state-layer` sutil al 8%.
+- **Viewport Edge Detection y Auto-Flipping Inteligente:** Mediciones en tiempo real en `menu.js` al abrir cada menú; si colisiona con el borde derecho o inferior del viewport, aplica dinámicamente `data-align="end"` (inversión horizontal a la izquierda) y `data-valign="top"` (inversión vertical hacia arriba) sin scripts inline.
+- **Navegación Adaptativa WAI-ARIA APG:** Flechas de teclado adaptativas según la dirección de proyección (en menú invertido a la izquierda, `ArrowLeft` despliega y `ArrowRight` repliega). Soporte nativo para tecla `Space` en ítems `<a role="menuitem">`.
+- **Polimorfismo Semántico y Ripple Universal:** Soporte homogéneo para botones de acción (`<button>`) y rutas de navegación (`<a href>`), integrados al motor de ondas táctiles `src/js/ripple.js` con confinamiento estricto mediante `overflow: hidden`.
+
 ---
 
 ## 12. Iconos

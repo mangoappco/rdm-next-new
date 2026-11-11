@@ -23,6 +23,7 @@ const SELECTOR = [
   'a.md-card',
   '.md-card[tabindex]',
   '.md-tab',
+  '.md-menu-item',
   '[data-ripple]'
 ].join(', ');
 

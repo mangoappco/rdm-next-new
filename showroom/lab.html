@@ -18,40 +18,66 @@
 
   <main>
 
+<!-- =========================================================================
+     LABORATORIO: PRUEBA DE COLISIÓN DE BORDE DERECHO (VIEWPORT EDGE)
+     ========================================================================= -->
+<div style="display: flex; justify-content: flex-end; align-items: flex-start; width: 100%; padding: 24px; border: 1px dashed var(--md-sys-color-outline-variant); border-radius: 16px; min-height: 360px;">
 
-
-
-
-<div class="md-menu-anchor">
-  <!-- Slot: Disparador interactivo -->
-  <button type="button" class="md-icon-button" id="menu-trigger-interactive" aria-haspopup="menu" aria-expanded="false" aria-controls="menu-interactive" aria-label="Acciones interactivas de comanda">
-    <span class="md-icon" aria-hidden="true">more_vert</span>
-  </button>
-  <!-- Slot: Superficie flotante interactiva (se despliega con clic/teclado) -->
-  <div class="md-menu" id="menu-interactive" role="menu" aria-labelledby="menu-trigger-interactive">
-    <button type="button" class="md-menu-item" role="menuitem">
-      <!-- Slot: Leading -->
-      <span class="md-menu-item-leading md-icon" aria-hidden="true">visibility</span>
-      <!-- Slot: Content -->
-      <span class="md-menu-item-headline">Ver comanda</span>
+  <!-- Pega aquí el snippet canónico del Par 7 (3 niveles en cascada) -->
+  <div class="md-menu-anchor">
+    <button type="button" class="md-icon-button" id="lab-trigger-root" aria-haspopup="menu" aria-expanded="false" aria-controls="lab-menu-level-1" aria-label="Opciones alineadas a la derecha">
+      <span class="md-icon" aria-hidden="true">more_vert</span>
     </button>
-    <button type="button" class="md-menu-item" role="menuitem">
-      <!-- Slot: Leading -->
-      <span class="md-menu-item-leading md-icon" aria-hidden="true">print</span>
-      <!-- Slot: Content -->
-      <span class="md-menu-item-headline">Reimprimir</span>
-      <!-- Slot: Trailing -->
-      <span class="md-menu-item-trailing">Ctrl+P</span>
-    </button>
-    <!-- Separador canónico M3 -->
-    <hr class="md-divider" role="separator">
-    <button type="button" class="md-menu-item md-menu-item-destructive" role="menuitem">
-      <!-- Slot: Leading -->
-      <span class="md-menu-item-leading md-icon" aria-hidden="true">delete</span>
-      <!-- Slot: Content -->
-      <span class="md-menu-item-headline">Cancelar</span>
-    </button>
+
+    <div class="md-menu" id="lab-menu-level-1" role="menu" aria-labelledby="lab-trigger-root">
+      <button type="button" class="md-menu-item" role="menuitem">
+        <span class="md-menu-item-leading md-icon" aria-hidden="true">receipt_long</span>
+        <span class="md-menu-item-headline">Cuenta</span>
+      </button>
+
+      <div class="md-menu-submenu">
+        <button type="button" class="md-menu-item" id="lab-trigger-sub-2" aria-haspopup="menu" aria-expanded="false" aria-controls="lab-menu-level-2" role="menuitem">
+          <span class="md-menu-item-leading md-icon" aria-hidden="true">table_restaurant</span>
+          <span class="md-menu-item-headline">Mover de mesa</span>
+          <span class="md-menu-item-trailing md-icon" aria-hidden="true">arrow_right</span>
+        </button>
+
+        <div class="md-menu" id="lab-menu-level-2" role="menu" aria-labelledby="lab-trigger-sub-2">
+          <button type="button" class="md-menu-item" role="menuitem">
+            <span class="md-menu-item-headline">Mesa 1 · Salón</span>
+          </button>
+
+          <div class="md-menu-submenu">
+            <button type="button" class="md-menu-item" id="lab-trigger-sub-3" aria-haspopup="menu" aria-expanded="false" aria-controls="lab-menu-level-3" role="menuitem">
+              <span class="md-menu-item-headline">Mesa 2 · Terraza</span>
+              <span class="md-menu-item-trailing md-icon" aria-hidden="true">arrow_right</span>
+            </button>
+
+            <div class="md-menu" id="lab-menu-level-3" role="menu" aria-labelledby="lab-trigger-sub-3">
+              <button type="button" class="md-menu-item" role="menuitem">
+                <span class="md-menu-item-headline">Zona Fumadores</span>
+              </button>
+              <button type="button" class="md-menu-item" role="menuitem">
+                <span class="md-menu-item-headline">Zona Jardín</span>
+              </button>
+            </div>
+          </div>
+
+          <button type="button" class="md-menu-item" role="menuitem">
+            <span class="md-menu-item-headline">Mesa 3 · Barra</span>
+          </button>
+        </div>
+      </div>
+
+      <hr class="md-divider" role="separator">
+
+      <button type="button" class="md-menu-item md-menu-item-destructive" role="menuitem">
+        <span class="md-menu-item-leading md-icon" aria-hidden="true">cancel</span>
+        <span class="md-menu-item-headline">Anular orden</span>
+      </button>
+    </div>
   </div>
+
 </div>
 
 

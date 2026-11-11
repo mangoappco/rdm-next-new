@@ -623,3 +623,40 @@ Para prosa de M3 hay que pegarla a mano. No se afirma lo que diga la web sin hab
 - **Calibración de REGLA 11 en `tools/verify-tokens.mjs`:** El validador ahora decodifica y descarta comentarios HTML desescapados (`snippet.replace(/<!--[\s\S]*?-->/g, '')`) tras convertir entidades (`&lt;!-- ... --&gt;`). Esto permite que los comentarios pedagógicos vivan en los blueprints copiables sin alterar la paridad estructural con el DOM renderizado en `.sr-specimen`.
 - **Métricas:** REGLA 11 pasa en verde en el 100% de las 32 vistas; baseline de verificación conservado inmutable en **FALLOS: 2** (`select.css:448, 453`).
 
+## Componente Menu (.md-menu) — Consolidación y Cierre de Especificación (2026-11-11)
+
+Superficie flotante de Material Design 3 Expressive construida con arquitectura de dos bloques, cerrada al 100% en su Bloque 1 de especificación técnica y anatomía (8 pares normativos interactivos):
+
+### Anatomía y Geometría Concéntrica
+- **Contenedor `.md-menu`:** Elevación `level2`, color semántico `surface-container`, radio exterior de 16dp (`corner-large`) y padding perimetral simétrico de 8dp (`space-100`).
+- **Concentricidad Natural:** Los ítems interactivos `.md-menu-item` tienen radio interior de 8dp (`corner-small`), cumpliendo $R_{\text{interno}} = R_{\text{externo}} - \text{Padding}$ ($16\text{dp} - 8\text{dp} = 8\text{dp}$), eliminando tensiones o mordeduras visuales. Altura táctil de 48dp (`touch-target`) y padding horizontal de 12dp (`space-150`).
+- **Divisor Sangrado:** El separador `.md-divider` sangra de borde a borde mediante `margin-inline: -8dp; inline-size: calc(100% + 16dp);` sin interrumpir la concentricidad de la caja.
+
+### Submenús Recursivos en Cascada (.md-menu-submenu)
+- **Coaxialidad Vertical:** Desfase de -8dp (`inset-block-start: calc(-1 * space-100)`) que alinea coaxialmente pastilla con pastilla entre el disparador y el submenú.
+- **Despeje Horizontal de Sombra:** Proyección exterior con `inset-inline-start: calc(100% + 8dp)` y `margin-inline-start: 4dp` (`space-50`) de aire para sombra `level2`.
+- **Rastro Activo Persistente:** El ítem disparador padre retiene su pastilla en `secondary-container` mientras su submenú hijo esté abierto (`[aria-expanded="true"]`). El disparador raíz retiene `state-layer` sutil (0.08).
+
+### Viewport Edge Detection y Auto-Flipping Inteligente
+- Medición reactiva con `getBoundingClientRect()` y guarda de seguridad de 8px en `src/js/menu.js`.
+- Atributos espaciales `data-align="end"` (inversión a la izquierda) y `data-valign="top"` (inversión hacia arriba) con transform-origin adaptativo.
+- Teclado WAI-ARIA APG direccional: en menú invertido a la izquierda, `ArrowLeft` despliega submenús y `ArrowRight` repliega.
+
+### Polimorfismo Semántico y Ripple
+- Soporte idéntico para `<button>` y `<a href>`, integrado en `src/js/ripple.js` con confinamiento estricto en `overflow: hidden;`.
+- Activación de enlaces `<a>` con tecla `Space` sin provocar scroll.
+
+### 8 Pares Normativos en Showroom
+1. Par 1 · Menú básico de acciones directas
+2. Par 2 · Opciones con icono leading (20dp)
+3. Par 3 · Opciones con atajo de teclado trailing
+4. Par 4 · Secciones con cabecera y divisores
+5. Par 5 · Estados interactivos y opción deshabilitada
+6. Par 6 · Navegación accesible y ciclo de teclado WAI-ARIA
+7. Par 7 · Submenús recursivos en cascada (Niveles 1 a 3)
+8. Par 8 · Ítems de navegación con enlace (`<a href>` polimórfico)
+
+### Métricas de Validación
+- `tools/verify-tokens.mjs`: 0 fallos nuevos en el componente; preservado el baseline histórico de `FALLOS: 2` (`select.css:448, 453`).
+- REGLA 11: 100% de paridad byte-idéntica entre especímenes y snippets copiables.
+

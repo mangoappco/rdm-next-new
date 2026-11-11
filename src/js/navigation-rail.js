@@ -3,13 +3,12 @@
    ==========================================================================
 
    ALCANCE DEL SCRIPT (Zero JS en Motion):
-   1. Conmutación dinámica de selección (aria-selected="true" / "false") y
-      roving tabindex ("0" / "-1") entre los destinos del rail.
+   1. Conmutación dinámica de destino activo (aria-current="page") entre los destinos del rail.
    2. Despacho del evento canónico desacoplado 'md-navigation-rail:change'
       hacia el contenedor padre .md-navigation-rail ({ destination, index }).
    3. Navegación por teclado vertical WAI-ARIA (ArrowUp, ArrowDown, Home,
       End, con ArrowLeft/ArrowRight como alias en modo expandido).
-   4. Alternancia accesible de paneles asociados vía 'aria-controls' / role="tabpanel".
+   4. Alternancia accesible de paneles asociados vía 'aria-controls'.
    5. Toggle de expansión: SOLO conmuta la clase lógica .md-navigation-rail-expanded
       y su aria-expanded. Toda la cinemática es soberanía de CSS (tokens Capa 2).
    ========================================================================== */
@@ -62,15 +61,22 @@ export function initNavigationRail() {
     if (!rail || item.disabled || item.getAttribute('aria-disabled') === 'true') return;
 
     // Si ya está activo, no duplicar trabajo
-    if (item.getAttribute('aria-selected') === 'true') return;
+    if (item.getAttribute('aria-current') === 'page') return;
 
     const items = Array.from(rail.querySelectorAll('.md-navigation-rail-item:not([disabled]):not([aria-disabled="true"])'));
 
-    // Actualizar estados aria-selected y roving tabindex
+    // Actualizar estado canónico WAI-ARIA (aria-current="page" en activo, remover en inactivos)
     items.forEach(t => {
       const isCurrent = (t === item);
-      t.setAttribute('aria-selected', isCurrent ? 'true' : 'false');
-      t.setAttribute('tabindex', isCurrent ? '0' : '-1');
+      if (isCurrent) {
+        t.setAttribute('aria-current', 'page');
+      } else {
+        t.removeAttribute('aria-current');
+      }
+      // Saneamiento de atributos del patrón tabs obsoleto
+      t.removeAttribute('aria-selected');
+      t.removeAttribute('role');
+      t.removeAttribute('tabindex');
     });
 
     // Alternar paneles asociados si existen (aria-controls).
