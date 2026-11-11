@@ -53,8 +53,8 @@
      quedó descentralizado a `.md-navigation-rail-viewport`.
    - Coreografía de expansión (Emphasized Motion, Zero JS): la caja
      startTransitionAnimation() de NavigationRailView.java en curvas
-      asimétricas canónicas consumiendo tokens Capa 2 (expandir:
-      long2/decelerate; colapsar: long1/emphasized-accelerate). El JS solo
+      simétricas canónicas consumiendo tokens Capa 2 (300ms medium2
+      con emphasized-decelerate para respuesta inmediata sin arrastre muerto). El JS solo
       conmuta la clase raíz .md-navigation-rail-expanded y aria-expanded en
       frame 0. El FAB de cabecera morfifica (56dp <-> extended) con el estado
       del riel; etiqueta y pastilla interpolan geometría absoluta
@@ -85,7 +85,7 @@
   padding-block-start: var(--md-sys-measurement-navigation-rail-padding-top); /* 16dp respiro perimetral unificado M3 */
   padding-block-end: var(--md-sys-measurement-navigation-rail-padding-top); /* 16dp de cierre */
   overflow-x: hidden; /* Evita scrolls horizontales parásitos y confina el contenido durante metamorfosis */
-  transition: inline-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-accelerate); /* curva de CIERRE canónica: el expandido la sobreescribe con long2/decelerate */
+  transition: inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate); /* Curva simétrica M3: respuesta instantánea en frame 0 en apertura y cierre */
   will-change: inline-size;
 }
 
@@ -95,13 +95,13 @@
    Cuando el riel se ancla al lateral izquierdo de la ventana, el contenido
    hermano (<main>) reserva el ancho del riel automáticamente sin necesidad
    de envoltorios artificiales. Al expandirse, la transición acompaña la anchura.
-   Asimetría canónica M3: expandir long2/decelerate, colapsar long1/emphasized-accelerate.
+   Simetría canónica M3: medium2 (300ms) con emphasized-decelerate.
    ------------------------------------------------------------------------ */
 .md-navigation-rail ~ main,
 body:has(> .md-navigation-rail) > main,
 main:has(> .md-navigation-rail) {
   margin-inline-start: var(--md-sys-measurement-navigation-rail-width);
-  transition: margin-inline-start var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-accelerate);
+  transition: margin-inline-start var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate);
   will-change: margin-inline-start;
 }
 
@@ -109,7 +109,7 @@ main:has(> .md-navigation-rail) {
 body:has(> .md-navigation-rail.md-navigation-rail-expanded) > main,
 main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
   margin-inline-start: var(--md-sys-measurement-navigation-rail-expanded-width);
-  transition: margin-inline-start var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate);
+  transition: margin-inline-start var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
 /* Modificador canónico para delimitación gráfica explícita cuando se requiera */
@@ -283,7 +283,7 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
   z-index: 0;
   color: inherit;
   transition:
-    block-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-accelerate),
+    block-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate),
     background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
@@ -308,7 +308,7 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
   overflow: visible; /* Respeto estricto para no cercenar badges */
   transition:
     background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate),
-    block-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-accelerate);
+    block-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
 /* State Layer limpio sobre la pastilla */
@@ -339,7 +339,7 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
   position: relative;
   z-index: 0;
   flex-shrink: 0;
-  transition: color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-accelerate);
+  transition: color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
 .md-navigation-rail-indicator .md-badge-anchor {
@@ -376,7 +376,7 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
   white-space: nowrap;
   pointer-events: none;
   opacity: 1;
-  transition: opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-accelerate);
+  transition: opacity var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
 /* Horizontal (clone presentacional, aria-hidden en el marcado):
@@ -400,23 +400,23 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
   pointer-events: none;
   opacity: 0;
   transition:
-    opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-accelerate),
-    transform var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-accelerate);
+    opacity var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate),
+    transform var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
 /* En expandido la dominante es la horizontal: la vertical se funde a 0
    en su sitio (sin desplazarse) y la horizontal entra deslizando en X. */
 .md-navigation-rail-expanded .md-navigation-rail-item .md-navigation-rail-label {
   opacity: 0;
-  transition: opacity var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate);
+  transition: opacity var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
 .md-navigation-rail-expanded .md-navigation-rail-item .md-navigation-rail-label-horizontal {
   opacity: 1;
   transform: translate(var(--md-sys-measurement-space-0), -50%); /* estable en keyline: solo X anima */
   transition:
-    opacity var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
-    transform var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate);
+    opacity var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate),
+    transform var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
 /* --------------------------------------------------------------------------
@@ -435,15 +435,14 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
      base y la pastilla snappearía al colapsar (bug del pop en frame 0). */
   transition:
     background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate),
-    block-size var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate);
+    block-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
-/* Rama de colapso: misma especificidad + :not(expanded) para que la reversa
-   use la curva canónica de cierre (long1/emphasized-accelerate). */
+/* Rama de colapso: simetría canónica con medium2/emphasized-decelerate */
 .md-navigation-rail:not(.md-navigation-rail-expanded) .md-navigation-rail-item[aria-selected="true"] .md-navigation-rail-indicator {
   transition:
-    background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-accelerate),
-    block-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-accelerate);
+    background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate),
+    block-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
 .md-navigation-rail-item[aria-selected="true"] {
@@ -511,7 +510,7 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
   max-inline-size: var(--md-sys-measurement-navigation-rail-expanded-max-width); /* 360dp (expanded_container_width_maximum) */
   padding-inline: 0; /* El margen canónico vive en el item (20dp), no en el rail */
   align-items: stretch;
-  transition: inline-size var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate);
+  transition: inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
 .md-navigation-rail-expanded .md-navigation-rail-header {
@@ -539,13 +538,13 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
   font-size: 0; /* Colapsa nodos de texto directo en colapso */
   line-height: 0;
   transition:
-    inline-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-accelerate),
-    min-inline-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-accelerate),
-    max-inline-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-accelerate),
-    padding-inline var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-accelerate),
-    gap var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-accelerate),
-    font-size var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-accelerate),
-    color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-accelerate);
+    inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate),
+    min-inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate),
+    max-inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate),
+    padding-inline var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate),
+    gap var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate),
+    font-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate),
+    color var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate);
   will-change: inline-size, max-inline-size;
 }
 
@@ -571,13 +570,13 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
   white-space: nowrap;
   overflow: hidden; /* Canónico M3: confina el ripple y state layers al radio de 16px */
   transition:
-    inline-size var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
-    min-inline-size var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
-    max-inline-size var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
-    padding-inline var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
-    gap var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate),
-    font-size var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate),
-    color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate);
+    inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate),
+    min-inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate),
+    max-inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate),
+    padding-inline var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate),
+    gap var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate),
+    font-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate),
+    color var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate);
   will-change: inline-size, max-inline-size;
 }
 
@@ -606,7 +605,7 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
   background-color: transparent !important; /* El item es siempre transparente; la pastilla es el indicador */
   position: relative;
   transition:
-    block-size var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate);
+    block-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
 /* Pastilla elástica: en expandido llena el item (100%×56dp); su anchura es
@@ -616,7 +615,7 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
   border-radius: var(--md-sys-shape-corner-full);
   padding-inline-start: var(--md-sys-measurement-navigation-rail-expanded-leading-space); /* 16dp */
   transition:
-    block-size var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate);
+    block-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
 /* El glifo de 24dp vive en la regla base única (.md-navigation-rail-icon):
@@ -668,11 +667,11 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
   user-select: none;
   pointer-events: none;
   transition:
-    color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-accelerate),
-    block-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-accelerate),
-    margin-block-start var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-accelerate),
-    margin-block-end var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-accelerate),
-    padding-inline-start var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized-accelerate);
+    color var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate),
+    block-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate),
+    margin-block-start var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate),
+    margin-block-end var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate),
+    padding-inline-start var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
 /* Divisor horizontal centrado de 48dp en estado colapsado */
@@ -687,7 +686,7 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
   inset-inline-start: 50%;
   transform: translateX(-50%);
   opacity: 1;
-  transition: opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-accelerate);
+  transition: opacity var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
 /* Modo EXPANDIDO (280dp): emerge el texto a 36dp de keyline y el divisor se desvanece */
@@ -702,17 +701,17 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
   user-select: auto;
   pointer-events: auto;
   transition:
-    color var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
-    block-size var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
-    margin-block-start var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
-    margin-block-end var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate),
-    padding-inline-start var(--md-sys-motion-duration-long2) var(--md-sys-motion-easing-emphasized-decelerate);
+    color var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate),
+    block-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate),
+    margin-block-start var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate),
+    margin-block-end var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate),
+    padding-inline-start var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
 .md-navigation-rail-expanded .md-navigation-rail-section-header::after {
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-emphasized-decelerate);
+  transition: opacity var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
 @media (prefers-reduced-motion: reduce) {
