@@ -96,25 +96,31 @@ Todo cambio debe validarse ejecutando: `node tools/verify-tokens.mjs`.
 
 ---
 
-## 6. Precondición y Flujo para Nuevos Componentes (de `.opencode`)
+## 6. Metodología Vigente: Showroom de Dos Bloques y Flujo Par por Par
 
 ### PRECONDICIÓN ABSOLUTA:
 El archivo `src/css/3-components/<componente>.css` **debe existir antes de documentar**. Si no existe: **DETENERSE**, informar al usuario y no inventar capacidades.
 
-### Flujo Obligatorio (Innegociable):
-```text
-1. Inspeccionar componente real y tokens consumidos
-2. Evaluar el checklist de 22 secciones canónicas
-3. Presentar checklist al usuario indicando aplicabilidad
-4. DETENERSE Y ESPERAR (STOP / WAIT) la confirmación del usuario
-5. Presentar estructura acordada
-6. Implementar copiando `showroom/templates/component.template.html`
-7. Verificar con `tools/verify-tokens.mjs` y telemetría en navegador
-```
+### Estructura Minimalista en Dos Bloques:
+Las vistas del showroom NO llevan checklists teóricos ni secciones de relleno. La estructura actual es directa y compacta:
+1. **Header del Showroom:** Título, descripción canónica corta de M3 (~120 caracteres) y metadatos.
+2. **Bloque 1: Especificación Técnica y Anatomía:**
+   - Evaluado mediante **Pares de Inspección normativos** (`.sr-specimen` + `pre.sr-code`).
+   - Cada par demuestra una receta atómica de la API pública.
+   - Paridad estricta e idéntica (carácter a carácter) bajo la REGLA 11.
+3. **Bloque 2: Casos de Uso ManGo! App:**
+   - Escenarios de producción reales para el software POS, cocina (KDS) o administración.
+   - Integración real con otros componentes mediante dogfooding.
 
-### Checklist de las 22 Secciones Canónicas:
-1. Header | 2. Uso | 3. Ejemplo básico | 4. Variantes / Types | 5. Variaciones de comportamiento | 6. Color | 7. Shapes | 8. Sizes | 9. Padding | 10. States | 11. Iconografía | 12. Contenido / Slots | 13. Interacción | 14. Comportamiento | 15. Anatomía | 16. Accesibilidad | 17. Responsive | 18. Content States | 19. Composición | 20. Do / Don't | 21. Medidas | 22. Tokens.
-*(Si una sección no aplica, se declara explícitamente: «Este componente no tiene estados»).*
+### Flujo Obligatorio Par por Par (Innegociable):
+NUNCA se construyen todos los pares de un solo golpe. El desarrollo es estrictamente incremental:
+```text
+1. Proponer alcance del Par N (Anatomía, tokens, comportamiento)
+2. Implementar Par N en CSS y en el template
+3. Validar con `node tools/verify-tokens.mjs` y confirmar cero nuevos fallos
+4. DETENERSE Y ESPERAR (STOP / WAIT) la revisión y confirmación del usuario
+5. Recién tras la aprobación del usuario, avanzar al Par N+1
+```
 
 ---
 
