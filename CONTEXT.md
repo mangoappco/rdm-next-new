@@ -18,7 +18,7 @@ Solo prohibiciones verbales. Las reglas de showroom, de capas y de ciclo no se c
 
 ## Componentes creados
 
-Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **26 componentes y 36 vistas** (27 de componente + 9 de tokens), todas enlazadas en `showroom/index.html`. El orden es el de `index.css`:
+Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **26 componentes y 35 vistas** (26 de componente + 9 de tokens), todas enlazadas en `showroom/index.html`. El orden es el de `index.css`:
 
 | Componente | Hoja | Vista |
 | --- | --- | --- |
@@ -39,6 +39,7 @@ Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **26 compo
 | Switch | `switch.css` | `switch.html` |
 | Checkbox | `checkbox.css` | `checkbox.html` |
 | Radio Button | `radio.css` | `radio.html` |
+| Menu | `menu.css` | `menu.html` |
 | Select | `select.css` | `select.html` |
 | Top App Bar | `top-app-bar.css` | `top-app-bar.html` |
 | Tabs | `tabs.css` | `tabs.html` |
@@ -50,7 +51,7 @@ Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **26 compo
 
 Cada componente tiene además su molde en `showroom/templates/<nombre>.template.html`.
 
-**Hoy DOCE pares molde/vista rinden byte-idénticos: `search`, `switch`, `checkbox`, `radio`, `select`, `top-app-bar`, `tabs`, `navigation-bar`, `navigation-rail`, `snackbar` y `scaffold`** —verificados por hash SHA256; los moldes de `fab`, `fab-extended`, `card`, `dialog`, `list` y `segmented-button`, que sí lo fueron a su día (rumbo del 2026-10-13), se quedaron atrás de su vista. Las demás vistas difieren de su molde por el puntero de dos líneas de la convención antigua o por el desfase del molde anotado en deuda. `chips` no tiene molde propio y `typography.html` apunta a `component.template.html`.
+**Hoy TRECE pares molde/vista rinden byte-idénticos: `search`, `switch`, `checkbox`, `radio`, `select`, `top-app-bar`, `tabs`, `navigation-bar`, `navigation-rail`, `snackbar`, `scaffold` y `split-button`** —verificados por hash SHA256; los moldes de `fab`, `fab-extended`, `card`, `dialog`, `list` y `segmented-button`, que sí lo fueron a su día (rumbo del 2026-10-13), se quedaron atrás de su vista. Las demás vistas difieren de su molde por el puntero de dos líneas de la convención antigua o por el desfase del molde anotado en deuda. `chips` no tiene molde propio y `typography.html` apunta a `component.template.html`.
 
 ## FAB — la base NO es el `md-fab-medium`
 

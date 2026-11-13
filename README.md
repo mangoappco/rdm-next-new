@@ -1025,12 +1025,14 @@ El orden es el de `3-components/index.css`, que es el de carga y el de dependenc
 | Dialog | `3-components/dialog.css` | 5 | 3 | `dialog.html`, 6 secciones |
 | List | `3-components/list.css` | 16 | 25 | `list.html`, 15 secciones |
 | Segmented Button | `3-components/segmented-button.css` | 6 | 18 | `segmented-button.html`, 9 secciones |
+| Split Button | `3-components/split-button.css` | 2 | 4 | `split-button.html`, 1 sección |
 | Chips | `3-components/chip.css` | 6 | 0 | `chips.html`, 11 secciones |
 | Text Field | `3-components/text-field.css` | 15 | 20 | `text-field.html`, 16 secciones |
 | Search | `3-components/search.css` | 12 | 8 | `search.html`, 5 secciones |
 | Switch | `3-components/switch.css` | 10 | 12 | `switch.html`, 4 secciones |
 | Checkbox | `3-components/checkbox.css` | 10 | 8 | `checkbox.html`, 5 secciones |
 | Radio Button | `3-components/radio.css` | 10 | 8 | `radio.html`, 5 secciones |
+| Menu | `3-components/menu.css` | 11 | 0 | `menu.html`, 8 secciones |
 | Select | `3-components/select.css` | 18 | 0 | `select.html`, 6 secciones |
 | Top App Bar | `3-components/top-app-bar.css` | 13 | 0 | `top-app-bar.html`, 6 secciones |
 | Tabs | `3-components/tabs.css` | 8 | 0 | `tabs.html`, 6 secciones |
