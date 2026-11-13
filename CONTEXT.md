@@ -18,11 +18,7 @@ Solo prohibiciones verbales. Las reglas de showroom, de capas y de ciclo no se c
 
 ## Componentes creados
 
-<<<<<<< HEAD
-Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **24 componentes y 33 vistas** (24 de componente + 9 de tokens), todas enlazadas en `showroom/index.html`. El orden es el de `index.css`:
-=======
-Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **25 componentes y 34 vistas** (25 de componente + 9 de tokens), todas enlazadas en `showroom/index.html`. El orden es el de `index.css`:
->>>>>>> 12534b0 (feat(split-button): Par 1 con anatomía base filled y su menu-button)
+Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **26 componentes y 36 vistas** (27 de componente + 9 de tokens), todas enlazadas en `showroom/index.html`. El orden es el de `index.css`:
 
 | Componente | Hoja | Vista |
 | --- | --- | --- |
@@ -666,7 +662,6 @@ Superficie flotante de Material Design 3 Expressive construida con arquitectura 
 - `tools/verify-tokens.mjs`: 0 fallos nuevos en el componente; preservado el baseline histórico de `FALLOS: 2` (`select.css:448, 453`).
 - REGLA 11: 100% de paridad byte-idéntica entre especímenes y snippets copiables.
 
-<<<<<<< HEAD
 ## Componente Scaffold (.md-scaffold) — Consolidación y Cierre de Especificación (2026-11-13)
 
 Ensamblador estructural de pantalla canónico de Material Design 3 Expressive, construido con arquitectura de dos bloques y cerrado al 100% en su Bloque 1 de especificación técnica y anatomía (7 pares normativos):
@@ -699,7 +694,6 @@ Ensamblador estructural de pantalla canónico de Material Design 3 Expressive, c
 - `tools/verify-tokens.mjs`: 0 fallos nuevos; baseline histórico intacto en `FALLOS: 2` (`select.css:448, 453`).
 - REGLA 11: 100% de correspondencia carácter a carácter entre especímenes y blueprints copiables.
 
-=======
 
 ## Split button — Par 1 (2026-11-13)
 
@@ -716,4 +710,3 @@ Hoja en `src/css/3-components/split-button.css`, vista y molde en `showroom/comp
 - **El desplazamiento óptico del chevron no se aplica** (−1, −1, −2, −3 y −6dp en implementaciones de terceros): androidx `v18_0_18` no lo publica. El giro del glifo y el redondeo del segmento al abrir son estado, y van en su par.
 - **Deuda pagada de paso:** `showroom.css` excluye `.md-split-button` del `padding: 16px` que recibe todo `div` directo de `.sr-specimen`. Medido antes de la exclusión: la pieza crecía de 40 a 72 de alto y de 123 a 155 de ancho, y REGLA 11 no lo veía porque compara marcado, no caja.
 - **Verificador:** `FALLOS: 3`, ninguno del componente — los dos `color-mix` del baseline de `select.css` y el `style` en línea de `lab.html` que llegó con el pull del 2026-11-13.
->>>>>>> 12534b0 (feat(split-button): Par 1 con anatomía base filled y su menu-button)

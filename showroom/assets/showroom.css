@@ -285,11 +285,12 @@
       se separaban de la costura. Nada de eso lo ve REGLA 11, que compara
       marcado; se ve midiendo.
      --------------------------------------------------------------------- */
-<<<<<<< HEAD
-  .sr-specimen:not(.sr-meter) > div:not(.sr-motion-dot):not(.md-divider-vertical):not(.md-button-group):not(.md-segmented-button):not(.md-row):not(.md-select):not(.md-text-field):not(.md-tabs):not(.md-snackbar-container):not(.md-menu-anchor):not(.md-scaffold) {
-=======
-  .sr-specimen:not(.sr-meter) > div:not(.sr-motion-dot):not(.md-divider-vertical):not(.md-button-group):not(.md-segmented-button):not(.md-row):not(.md-select):not(.md-text-field):not(.md-tabs):not(.md-snackbar-container):not(.md-menu-anchor):not(.md-split-button) {
->>>>>>> 12534b0 (feat(split-button): Par 1 con anatomía base filled y su menu-button)
+  /* Resolucion del rebase del 2026-11-13: las dos ramas excluian un
+div distinto del mismo padding y el merge dejo los marcadores dentro
+del archivo. Se conservan las DOS exclusiones, que son las dos
+correctas: .md-scaffold (el marco de 420px no debe recibir aire) y
+.md-split-button (la pieza de dos segmentos se descuadraba). */
+  .sr-specimen:not(.sr-meter) > div:not(.sr-motion-dot):not(.md-divider-vertical):not(.md-button-group):not(.md-segmented-button):not(.md-row):not(.md-select):not(.md-text-field):not(.md-tabs):not(.md-snackbar-container):not(.md-menu-anchor):not(.md-scaffold):not(.md-split-button) {
     padding: var(--md-ref-spacing-200);
   }
 
