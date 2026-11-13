@@ -193,5 +193,36 @@ Para prevenir que los menús se proyecten fuera de la pantalla en esquinas crít
 - La activación con tecla `Space` en ítems `<a>` simula la pulsación nativa según WAI-ARIA APG.
 - Se integra en `src/js/ripple.js` con recorte riguroso en `overflow: hidden;` para que la onda táctil no sobrepase las esquinas redondeadas concéntricas de 8dp.
 
+## 12. Directrices Consolidadas: Scaffold y Layouts Canónicos M3 (2026-11-13)
+
+### 12.1 Arquitectura Estructural de Pantalla y Contención de Scroll
+- **Host `.md-scaffold`:** Gobierna el viewport completo con `block-size: 100dvh; overflow: hidden;` evitando scroll parasitario en el `body`.
+- **Delegación de Scroll a `.md-scaffold-main`:** El desplazamiento vertical reside exclusivamente en `.md-scaffold-main` (`overflow-y: auto; overscroll-behavior: contain;`), permitiendo que el header (`.md-scaffold-header`) permanezca estrictamente fijo/sticky en `top: 0` y active el sombreado de scroll (`.md-top-app-bar-scrolled`) sin oscilaciones ni desplazamientos indeseados.
+
+### 12.2 Aislamiento de Showroom y Filosofía Copy-Paste Puro
+- Para confinar el `position: fixed` de `.md-scaffold-fab` y `.md-scaffold-snackbar` dentro de las tarjetas del showroom sin tocar el HTML copiable:
+  - El marco `.sr-specimen-scaffold .md-scaffold` declara `transform: translateZ(0); contain: paint; block-size: 420px;`.
+  - El marcado copiable expone la receta estructural canónica de producción pura, garantizando REGLA 11 estricta.
+
+### 12.3 Blindaje Ergonómico M3 con `:has()`
+- Las ranuras fijas flotantes (`.md-scaffold-fab` y `.md-scaffold-snackbar`) calculan automáticamente su elevación sobre la barra de navegación inferior (`.md-navigation-bar`, 80dp) mediante:
+  ```css
+  .md-scaffold:has(.md-navigation-bar) .md-scaffold-fab {
+    inset-block-end: calc(var(--md-sys-measurement-navigation-bar-height) + var(--md-sys-measurement-space-200));
+  }
+  ```
+- No requiere clases auxiliares ni intervención de JavaScript: el motor de CSS resuelve la coexistencia de componentes.
+
+### 12.4 Rejilla Responsiva Fluida y Clamping Preventivo
+- `.md-grid` responde a Container Queries (`@container scaffold`):
+  - Compact (< 600px): 4 columnas, gutters de 16dp.
+  - Medium (600px–839px): 8 columnas, gutters de 24dp.
+  - Expanded (>= 840px): 12 columnas, gutters de 24dp.
+- **Clamping de Columnas:** Las utilidades `.md-col-span-*` se clampean preventivamente por breakpoint para que solicitudes de span mayores a las columnas disponibles en la ventana computen `1 / -1`, evitando desbordamientos o pistas implícitas ficticias.
+
+### 12.5 Layout Canónico: Supporting Panel (360dp)
+- En pantallas anchas ($\ge 840\text{px}$), `.md-layout-supporting-panel` dispone un área principal de catálogo (`.md-layout-supporting-panel-main`) y un panel lateral de apoyo (`.md-layout-supporting-panel-aside`) acotado al ancho contractual de 360dp (`--md-sys-measurement-layout-supporting-panel-width`), con divisor vertical `outline-variant` y scroll independiente.
+- En pantallas estrechas ($< 840\text{px}$), apila verticalmente ambos paneles al 100% de ancho con scroll unificado para optimizar la toma de órdenes en terminales POS móviles.
+
 
 

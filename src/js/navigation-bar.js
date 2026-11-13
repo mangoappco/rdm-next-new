@@ -28,15 +28,25 @@ export function initNavigationBar() {
     if (!bar || item.disabled || item.getAttribute('aria-disabled') === 'true') return;
 
     // Si ya está activo, no duplicar trabajo
-    if (item.getAttribute('aria-selected') === 'true') return;
+    if (item.getAttribute('aria-selected') === 'true' || item.getAttribute('aria-current') === 'page') return;
 
     const items = Array.from(bar.querySelectorAll('.md-navigation-bar-item:not([disabled]):not([aria-disabled="true"])'));
 
-    // Actualizar estados aria-selected y roving tabindex
+    // Actualizar estados: aria-current="page" para landmarks de navegación y aria-selected para tablist
+    const usesCurrent = items.some(t => t.hasAttribute('aria-current')) || bar.getAttribute('role') !== 'tablist';
     items.forEach(t => {
       const isCurrent = (t === item);
-      t.setAttribute('aria-selected', isCurrent ? 'true' : 'false');
-      t.setAttribute('tabindex', isCurrent ? '0' : '-1');
+      if (usesCurrent) {
+        if (isCurrent) {
+          t.setAttribute('aria-current', 'page');
+        } else {
+          t.removeAttribute('aria-current');
+        }
+      }
+      if (t.hasAttribute('aria-selected') || bar.getAttribute('role') === 'tablist') {
+        t.setAttribute('aria-selected', isCurrent ? 'true' : 'false');
+        t.setAttribute('tabindex', isCurrent ? '0' : '-1');
+      }
     });
 
     // Alternar paneles asociados si existen (aria-controls),

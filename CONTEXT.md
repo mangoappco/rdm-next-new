@@ -18,7 +18,7 @@ Solo prohibiciones verbales. Las reglas de showroom, de capas y de ciclo no se c
 
 ## Componentes creados
 
-Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **23 componentes y 32 vistas** (23 de componente + 9 de tokens), todas enlazadas en `showroom/index.html`. El orden es el de `index.css`:
+Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **24 componentes y 33 vistas** (24 de componente + 9 de tokens), todas enlazadas en `showroom/index.html`. El orden es el de `index.css`:
 
 | Componente | Hoja | Vista |
 | --- | --- | --- |
@@ -45,10 +45,11 @@ Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **23 compo
 | Navigation Bar | `navigation-bar.css` | `navigation-bar.html` |
 | Navigation Rail | `navigation-rail.css` | `navigation-rail.html` |
 | Snackbar | `snackbar.css` | `snackbar.html` |
+| Scaffold | `scaffold.css` | `scaffold.html` |
 
 Cada componente tiene además su molde en `showroom/templates/<nombre>.template.html`.
 
-**Hoy ONCE pares molde/vista rinden byte-idénticos: `search`, `switch`, `checkbox`, `radio`, `select`, `top-app-bar`, `tabs`, `navigation-bar`, `navigation-rail` y `snackbar`** —verificados por hash SHA256; los moldes de `fab`, `fab-extended`, `card`, `dialog`, `list` y `segmented-button`, que sí lo fueron a su día (rumbo del 2026-10-13), se quedaron atrás de su vista. Las demás vistas difieren de su molde por el puntero de dos líneas de la convención antigua o por el desfase del molde anotado en deuda. `chips` no tiene molde propio y `typography.html` apunta a `component.template.html`.
+**Hoy DOCE pares molde/vista rinden byte-idénticos: `search`, `switch`, `checkbox`, `radio`, `select`, `top-app-bar`, `tabs`, `navigation-bar`, `navigation-rail`, `snackbar` y `scaffold`** —verificados por hash SHA256; los moldes de `fab`, `fab-extended`, `card`, `dialog`, `list` y `segmented-button`, que sí lo fueron a su día (rumbo del 2026-10-13), se quedaron atrás de su vista. Las demás vistas difieren de su molde por el puntero de dos líneas de la convención antigua o por el desfase del molde anotado en deuda. `chips` no tiene molde propio y `typography.html` apunta a `component.template.html`.
 
 ## FAB — la base NO es el `md-fab-medium`
 
@@ -659,4 +660,36 @@ Superficie flotante de Material Design 3 Expressive construida con arquitectura 
 ### Métricas de Validación
 - `tools/verify-tokens.mjs`: 0 fallos nuevos en el componente; preservado el baseline histórico de `FALLOS: 2` (`select.css:448, 453`).
 - REGLA 11: 100% de paridad byte-idéntica entre especímenes y snippets copiables.
+
+## Componente Scaffold (.md-scaffold) — Consolidación y Cierre de Especificación (2026-11-13)
+
+Ensamblador estructural de pantalla canónico de Material Design 3 Expressive, construido con arquitectura de dos bloques y cerrado al 100% en su Bloque 1 de especificación técnica y anatomía (7 pares normativos):
+
+### Anatomía Estructural y Ranuras de Pantalla
+- **Host `.md-scaffold`:** Establece `block-size: 100dvh; overflow: hidden;` con display flex columnar para gobernar el app shell completo sin desbordamientos globales. Define `@container scaffold (min-width: ...)` para reaccionar fluidamente a sus propias dimensiones.
+- **Header Sticky (`.md-scaffold-header`):** Posicionado con `position: sticky; top: 0; z-index: 1; inline-size: 100%;` alojando `Top App Bar` con el servicio `data-md-top-app-bar-scroll`. Aislado para proyectar sombra de scroll sin invadir rieles adyacentes.
+- **Scroll Independiente en Main (`.md-scaffold-main`):** Asume `flex: 1; overflow-y: auto; overscroll-behavior: contain;` con padding responsivo (`layout-margin-compact` en móvil / `layout-margin-expanded` en desktop). Delegación de scroll interna conectada con elevación automática de `top-app-bar.js`.
+- **Blindaje Ergonómico M3 con `:has()`:** Ranuras fijas flotantes (`.md-scaffold-fab`, `.md-scaffold-snackbar`) calculan automáticamente su elevación a `calc(80dp + 16dp)` en presencia de `.md-navigation-bar` mediante `:has(.md-navigation-bar)`.
+
+### Rejilla Responsiva Fluida (.md-grid) Desacoplada
+- **Compact (< 600px):** 4 columnas con gutters y márgenes de 16dp (`--md-sys-measurement-layout-gutter-compact`). Clamping preventivo para evitar pistas implícitas ficticias.
+- **Medium (600px–839px):** 8 columnas con gutters y márgenes de 24dp (`--md-sys-measurement-layout-gutter-expanded`).
+- **Expanded (>= 840px):** 12 columnas fluidas con gutters y márgenes de 24dp.
+
+### Layout Canónico: Supporting Panel (.md-layout-supporting-panel)
+- **Modo Escritorio (>= 840px):** Disposición en fila (`flex-direction: row; block-size: 100%; overflow: hidden;`) con área principal fluida (`.md-layout-supporting-panel-main`) y panel lateral de apoyo (`.md-layout-supporting-panel-aside`) de 360dp (`--md-sys-measurement-layout-supporting-panel-width`), divisor vertical sutil `outline-variant` y scroll independiente por panel.
+- **Modo Móvil (< 840px):** Apilado vertical al 100% del ancho (`flex-direction: column; overflow-y: auto;`) garantizando ergonomía de lectura en punto de venta (POS) y comanderos.
+
+### 7 Pares Normativos en Showroom
+1. Par 1 · Estructura base (Header con `data-md-top-app-bar-scroll`, Main y FAB)
+2. Par 2 · App Shell de escritorio con Navigation Rail (eje coaxial a 32dp, divisor vertical y sombra contenida)
+3. Par 3 · App Shell móvil con Navigation Bar (semántica landmark limpia con `aria-current="page"`)
+4. Par 4 · Rejilla responsiva: Compact (4 columnas · 412px con `.sr-specimen-compact`)
+5. Par 5 · Rejilla responsiva: Medium (8 columnas · 720px con `.sr-specimen-medium`)
+6. Par 6 · Rejilla responsiva: Expanded (12 columnas · Fluido)
+7. Par 7 · Layout canónico: Panel de apoyo (Supporting Panel 360dp para POS / Comanda activa)
+
+### Métricas de Validación
+- `tools/verify-tokens.mjs`: 0 fallos nuevos; baseline histórico intacto en `FALLOS: 2` (`select.css:448, 453`).
+- REGLA 11: 100% de correspondencia carácter a carácter entre especímenes y blueprints copiables.
 

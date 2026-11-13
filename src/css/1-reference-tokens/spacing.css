@@ -173,4 +173,16 @@
   --md-ref-padding-extended-fab-medium-inline: 26px;
   --md-ref-padding-extended-fab-large-inline: 28px;
   --md-ref-padding-navigation-rail-content-top: 44px;
+
+  /* ------------------------------------------------------------------------
+     BREAKPOINTS Y LAYOUT CANÓNICO M3 (Window Size Classes & Canonical Layouts)
+     ------------------------------------------------------------------------
+     Cotas oficiales publicadas en m3.material.io/foundations/layout/
+     Compact (< 600dp), Medium (600dp - 839dp), Expanded (>= 840dp / 1200dp).
+     Supporting Panel: 360dp de ancho canónico (TPV / POS / Resumen de comanda).
+     ------------------------------------------------------------------------ */
+  --md-ref-breakpoint-compact: 600px;
+  --md-ref-breakpoint-medium: 840px;
+  --md-ref-breakpoint-expanded: 1200px;
+  --md-ref-layout-supporting-panel-width: 360px;
 }

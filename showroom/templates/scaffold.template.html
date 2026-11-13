@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Scaffold de RDM Next: ensamblador estructural de pantalla M3 con ranuras para Header, Main, Nav, FAB y rejilla responsiva.">
+  <title>Scaffold — RDM ManGo! App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+  <link rel="stylesheet" href="../../src/css/main.css?v=92">
+  <link rel="stylesheet" href="../assets/showroom.css">
+  <script type="module" src="../../src/js/main.js"></script>
+  <script src="../assets/showroom.js"></script>
+</head>
+
+<!--
+  VISTA DE SCAFFOLD (Layout Canónico M3)
+  Estructura de Dos Bloques con entrega iterativa Par por Par.
+  Bloque 1: Especificación técnica y anatomía.
+  Bloque 2: Casos de uso ManGo! App (POS / KDS / Dashboard).
+-->
+
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <!-- CABECERA INSTITUCIONAL DEL SHOWROOM (DOGFOODING) -->
+  <header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll role="banner" aria-label="Cabecera institucional del showroom">
+    <div class="md-top-app-bar-leading">
+      <a href="../index.html" class="md-icon-button" aria-label="Volver al catálogo">
+        <span class="md-icon" aria-hidden="true">arrow_back</span>
+      </a>
+    </div>
+    <div class="md-top-app-bar-content">
+      <span class="md-top-app-bar-title">Scaffold</span>
+      <span class="md-top-app-bar-subtitle">RDM Next · ManGo! App</span>
+    </div>
+    <div class="md-top-app-bar-trailing">
+      <button type="button" class="md-icon-button" data-theme-toggle aria-label="Tema del sistema activo">
+        <span class="md-icon" aria-hidden="true">brightness_auto</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="sr-page">
+
+    <!-- PORTADA DEL COMPONENTE -->
+    <header class="sr-header">
+      <h1 class="md-type-display-large">Scaffold</h1>
+      <p class="md-type-body-large">Arquitectura estructural de pantalla que ensambla ranuras de ventana, navegación y rejillas responsivas M3.</p>
+      <p class="md-type-body-medium md-text-on-surface-variant">M3 Expressive · Window Size Classes · Bloque 1 (Pares 1 a 7 · Completo)</p>
+    </header>
+
+    <!-- BLOQUE 1: ESPECIFICACION TECNICA Y ANATOMIA -->
+    <h2 class="sr-block-title md-type-title-large">Bloque 1 · Especificación técnica y anatomía</h2>
+
+    <!-- PAREJA PAR 1: Estructura base: Header, Main y FAB -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Estructura base: Header, Main y FAB</h3>
+      <p class="md-type-body-medium">Esqueleto mínimo de pantalla con barra superior sticky, área de contenido con scroll y FAB anclado sin solapamientos.</p>
+
+      <div class="sr-specimen sr-specimen-scaffold">
+        <div class="md-scaffold">
+          <!-- Ranura superior sticky -->
+          <div class="md-scaffold-header">
+            <header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll>
+              <div class="md-top-app-bar-leading">
+                <button type="button" class="md-icon-button" aria-label="Menú principal">
+                  <span class="md-icon" aria-hidden="true">menu</span>
+                </button>
+              </div>
+              <div class="md-top-app-bar-content">
+                <span class="md-top-app-bar-title">Panel operativo</span>
+              </div>
+              <div class="md-top-app-bar-trailing">
+                <button type="button" class="md-icon-button" aria-label="Notificaciones">
+                  <span class="md-icon" aria-hidden="true">notifications</span>
+                </button>
+              </div>
+            </header>
+          </div>
+
+          <!-- Cuerpo principal con scroll independiente -->
+          <div class="md-scaffold-body">
+            <main class="md-scaffold-main">
+              <div class="md-grid">
+                <div class="md-col-full">
+                  <p class="md-type-body-large">Área de contenido principal fluida gobernada por los márgenes y columnas del Scaffold.</p>
+                </div>
+                <div class="md-col-full">
+                  <p class="md-type-body-medium md-text-on-surface-variant">Desplaza este contenedor para verificar el anclaje sticky de la cabecera y la activación de su elevación tonal.</p>
+                </div>
+                <div class="md-col-full">
+                  <p class="md-type-body-medium">Registro operativo 1 · Apertura de turno y validación de base de caja.</p>
+                </div>
+                <div class="md-col-full">
+                  <p class="md-type-body-medium">Registro operativo 2 · Comandas enviadas a estación de cocina (KDS).</p>
+                </div>
+                <div class="md-col-full">
+                  <p class="md-type-body-medium">Registro operativo 3 · Cuentas en mesa y solicitudes de pre-cuenta.</p>
+                </div>
+                <div class="md-col-full">
+                  <p class="md-type-body-medium">Registro operativo 4 · Pagos liquidados con datáfono y transferencia.</p>
+                </div>
+              </div>
+            </main>
+          </div>
+
+          <!-- Ranura flotante segura para acción primaria -->
+          <div class="md-scaffold-fab">
+            <button type="button" class="md-fab" aria-label="Nueva orden">
+              <span class="md-icon" aria-hidden="true">add</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code class="language-html">&lt;div class="md-scaffold"&gt;
+  &lt;!-- Ranura superior sticky --&gt;
+  &lt;div class="md-scaffold-header"&gt;
+    &lt;header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll&gt;
+      &lt;div class="md-top-app-bar-leading"&gt;
+        &lt;button type="button" class="md-icon-button" aria-label="Menú principal"&gt;
+          &lt;span class="md-icon" aria-hidden="true"&gt;menu&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div class="md-top-app-bar-content"&gt;
+        &lt;span class="md-top-app-bar-title"&gt;Panel operativo&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class="md-top-app-bar-trailing"&gt;
+        &lt;button type="button" class="md-icon-button" aria-label="Notificaciones"&gt;
+          &lt;span class="md-icon" aria-hidden="true"&gt;notifications&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Cuerpo principal con scroll independiente --&gt;
+  &lt;div class="md-scaffold-body"&gt;
+    &lt;main class="md-scaffold-main"&gt;
+      &lt;div class="md-grid"&gt;
+        &lt;div class="md-col-full"&gt;
+          &lt;p class="md-type-body-large"&gt;Área de contenido principal fluida gobernada por los márgenes y columnas del Scaffold.&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class="md-col-full"&gt;
+          &lt;p class="md-type-body-medium md-text-on-surface-variant"&gt;Desplaza este contenedor para verificar el anclaje sticky de la cabecera y la activación de su elevación tonal.&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class="md-col-full"&gt;
+          &lt;p class="md-type-body-medium"&gt;Registro operativo 1 · Apertura de turno y validación de base de caja.&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class="md-col-full"&gt;
+          &lt;p class="md-type-body-medium"&gt;Registro operativo 2 · Comandas enviadas a estación de cocina (KDS).&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class="md-col-full"&gt;
+          &lt;p class="md-type-body-medium"&gt;Registro operativo 3 · Cuentas en mesa y solicitudes de pre-cuenta.&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class="md-col-full"&gt;
+          &lt;p class="md-type-body-medium"&gt;Registro operativo 4 · Pagos liquidados con datáfono y transferencia.&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Ranura flotante segura para acción primaria --&gt;
+  &lt;div class="md-scaffold-fab"&gt;
+    &lt;button type="button" class="md-fab" aria-label="Nueva orden"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;add&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA PAR 1: hasta aqui -->
+
+    <!-- PAREJA PAR 2: App Shell de escritorio con Navigation Rail -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">App Shell de escritorio con Navigation Rail</h3>
+      <p class="md-type-body-medium">Esqueleto de escritorio y tablet: barra lateral Navigation Rail coaxial de 96dp acoplada a cabecera superior y área fluida.</p>
+
+      <div class="sr-specimen sr-specimen-scaffold">
+        <div class="md-scaffold">
+          <!-- Ranura adaptable de navegación lateral -->
+          <div class="md-scaffold-nav">
+            <nav class="md-navigation-rail" aria-label="Navegación principal">
+              <!-- Slot: Cabecera y controles maestros -->
+              <div class="md-navigation-rail-header">
+                <button type="button" class="md-icon-button" aria-label="Abrir menú de navegación" data-rail-toggle>
+                  <span class="md-icon" aria-hidden="true">menu</span>
+                </button>
+              </div>
+              <!-- Slot: Lista de destinos de navegación -->
+              <div class="md-navigation-rail-content">
+                <button type="button" class="md-navigation-rail-item" aria-current="page">
+                  <span class="md-navigation-rail-indicator">
+                    <span class="md-navigation-rail-icon md-icon" aria-hidden="true">table_restaurant</span>
+                  </span>
+                  <span class="md-navigation-rail-label">Mesas</span><span class="md-navigation-rail-label-horizontal" aria-hidden="true">Mesas</span>
+                </button>
+                <button type="button" class="md-navigation-rail-item">
+                  <span class="md-navigation-rail-indicator">
+                    <span class="md-navigation-rail-icon md-icon" aria-hidden="true">receipt_long</span>
+                  </span>
+                  <span class="md-navigation-rail-label">Comandas</span><span class="md-navigation-rail-label-horizontal" aria-hidden="true">Comandas</span>
+                </button>
+                <button type="button" class="md-navigation-rail-item">
+                  <span class="md-navigation-rail-indicator">
+                    <span class="md-navigation-rail-icon md-icon" aria-hidden="true">point_of_sale</span>
+                  </span>
+                  <span class="md-navigation-rail-label">Caja</span><span class="md-navigation-rail-label-horizontal" aria-hidden="true">Caja</span>
+                </button>
+              </div>
+            </nav>
+          </div>
+
+          <!-- Contenedor de contenido estructurado -->
+          <div class="md-scaffold-content">
+            <!-- Ranura superior sticky -->
+            <div class="md-scaffold-header">
+              <header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll>
+                <div class="md-top-app-bar-leading">
+                  <button type="button" class="md-icon-button" aria-label="Buscar orden o mesa">
+                    <span class="md-icon" aria-hidden="true">search</span>
+                  </button>
+                </div>
+                <div class="md-top-app-bar-content">
+                  <span class="md-top-app-bar-title">Salón principal</span>
+                </div>
+                <div class="md-top-app-bar-trailing">
+                  <button type="button" class="md-icon-button" aria-label="Filtros">
+                    <span class="md-icon" aria-hidden="true">filter_list</span>
+                  </button>
+                </div>
+              </header>
+            </div>
+
+            <!-- Cuerpo principal con scroll independiente -->
+            <div class="md-scaffold-body">
+              <main class="md-scaffold-main">
+                <div class="md-grid">
+                  <div class="md-col-full">
+                    <p class="md-type-body-large">Área fluida de mesas y comandas con barra de navegación lateral sincronizada.</p>
+                  </div>
+                  <div class="md-col-full">
+                    <p class="md-type-body-medium md-text-on-surface-variant">Desplaza el área central para observar cómo el carril lateral y la cabecera permanecen anclados.</p>
+                  </div>
+                  <div class="md-col-full">
+                    <p class="md-type-body-medium">Mesa 01 · Servicio en curso · 4 comensales · $ 145.000 COP</p>
+                  </div>
+                  <div class="md-col-full">
+                    <p class="md-type-body-medium">Mesa 02 · Por facturar · 2 comensales · $ 82.500 COP</p>
+                  </div>
+                  <div class="md-col-full">
+                    <p class="md-type-body-medium">Mesa 03 · Disponible · Lista para asignación</p>
+                  </div>
+                  <div class="md-col-full">
+                    <p class="md-type-body-medium">Mesa 04 · Servicio en curso · 6 comensales · $ 230.000 COP</p>
+                  </div>
+                </div>
+              </main>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code class="language-html">&lt;div class="md-scaffold"&gt;
+  &lt;!-- Ranura adaptable de navegación lateral --&gt;
+  &lt;div class="md-scaffold-nav"&gt;
+    &lt;nav class="md-navigation-rail" aria-label="Navegación principal"&gt;
+      &lt;!-- Slot: Cabecera y controles maestros --&gt;
+      &lt;div class="md-navigation-rail-header"&gt;
+        &lt;button type="button" class="md-icon-button" aria-label="Abrir menú de navegación" data-rail-toggle&gt;
+          &lt;span class="md-icon" aria-hidden="true"&gt;menu&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+      &lt;!-- Slot: Lista de destinos de navegación --&gt;
+      &lt;div class="md-navigation-rail-content"&gt;
+        &lt;button type="button" class="md-navigation-rail-item" aria-current="page"&gt;
+          &lt;span class="md-navigation-rail-indicator"&gt;
+            &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;table_restaurant&lt;/span&gt;
+          &lt;/span&gt;
+          &lt;span class="md-navigation-rail-label"&gt;Mesas&lt;/span&gt;&lt;span class="md-navigation-rail-label-horizontal" aria-hidden="true"&gt;Mesas&lt;/span&gt;
+        &lt;/button&gt;
+        &lt;button type="button" class="md-navigation-rail-item"&gt;
+          &lt;span class="md-navigation-rail-indicator"&gt;
+            &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;receipt_long&lt;/span&gt;
+          &lt;/span&gt;
+          &lt;span class="md-navigation-rail-label"&gt;Comandas&lt;/span&gt;&lt;span class="md-navigation-rail-label-horizontal" aria-hidden="true"&gt;Comandas&lt;/span&gt;
+        &lt;/button&gt;
+        &lt;button type="button" class="md-navigation-rail-item"&gt;
+          &lt;span class="md-navigation-rail-indicator"&gt;
+            &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;point_of_sale&lt;/span&gt;
+          &lt;/span&gt;
+          &lt;span class="md-navigation-rail-label"&gt;Caja&lt;/span&gt;&lt;span class="md-navigation-rail-label-horizontal" aria-hidden="true"&gt;Caja&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/nav&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Contenedor de contenido estructurado --&gt;
+  &lt;div class="md-scaffold-content"&gt;
+    &lt;!-- Ranura superior sticky --&gt;
+    &lt;div class="md-scaffold-header"&gt;
+      &lt;header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll&gt;
+        &lt;div class="md-top-app-bar-leading"&gt;
+          &lt;button type="button" class="md-icon-button" aria-label="Buscar orden o mesa"&gt;
+            &lt;span class="md-icon" aria-hidden="true"&gt;search&lt;/span&gt;
+          &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div class="md-top-app-bar-content"&gt;
+          &lt;span class="md-top-app-bar-title"&gt;Salón principal&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class="md-top-app-bar-trailing"&gt;
+          &lt;button type="button" class="md-icon-button" aria-label="Filtros"&gt;
+            &lt;span class="md-icon" aria-hidden="true"&gt;filter_list&lt;/span&gt;
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Cuerpo principal con scroll independiente --&gt;
+    &lt;div class="md-scaffold-body"&gt;
+      &lt;main class="md-scaffold-main"&gt;
+        &lt;div class="md-grid"&gt;
+          &lt;div class="md-col-full"&gt;
+            &lt;p class="md-type-body-large"&gt;Área fluida de mesas y comandas con barra de navegación lateral sincronizada.&lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div class="md-col-full"&gt;
+            &lt;p class="md-type-body-medium md-text-on-surface-variant"&gt;Desplaza el área central para observar cómo el carril lateral y la cabecera permanecen anclados.&lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div class="md-col-full"&gt;
+            &lt;p class="md-type-body-medium"&gt;Mesa 01 · Servicio en curso · 4 comensales · $ 145.000 COP&lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div class="md-col-full"&gt;
+            &lt;p class="md-type-body-medium"&gt;Mesa 02 · Por facturar · 2 comensales · $ 82.500 COP&lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div class="md-col-full"&gt;
+            &lt;p class="md-type-body-medium"&gt;Mesa 03 · Disponible · Lista para asignación&lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div class="md-col-full"&gt;
+            &lt;p class="md-type-body-medium"&gt;Mesa 04 · Servicio en curso · 6 comensales · $ 230.000 COP&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA PAR 2: hasta aqui -->
+
+    <!-- PAREJA PAR 3: App Shell móvil con Navigation Bar -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">App Shell móvil con Navigation Bar</h3>
+      <p class="md-type-body-medium">Esqueleto móvil (Compact): barra de navegación inferior de 80dp con cápsula activa y elevación automática del FAB a 96dp.</p>
+
+      <div class="sr-specimen sr-specimen-scaffold sr-specimen-compact">
+        <div class="md-scaffold">
+          <!-- Ranura superior sticky -->
+          <div class="md-scaffold-header">
+            <header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll>
+              <div class="md-top-app-bar-leading">
+                <button type="button" class="md-icon-button" aria-label="Menú principal">
+                  <span class="md-icon" aria-hidden="true">menu</span>
+                </button>
+              </div>
+              <div class="md-top-app-bar-content">
+                <span class="md-top-app-bar-title">ManGo! Móvil</span>
+              </div>
+              <div class="md-top-app-bar-trailing">
+                <button type="button" class="md-icon-button" aria-label="Notificaciones">
+                  <span class="md-icon" aria-hidden="true">notifications</span>
+                </button>
+              </div>
+            </header>
+          </div>
+
+          <!-- Cuerpo principal con scroll independiente -->
+          <div class="md-scaffold-body">
+            <main class="md-scaffold-main">
+              <div class="md-grid">
+                <div class="md-col-full">
+                  <p class="md-type-body-large">Diseño compacto de 4 columnas para smartphones y terminales móviles de pedidos.</p>
+                </div>
+                <div class="md-col-full">
+                  <p class="md-type-body-medium md-text-on-surface-variant">Desplaza verticalmente para comprobar la elevación de cabecera y el despeje ergonómico del FAB.</p>
+                </div>
+                <div class="md-col-full">
+                  <p class="md-type-body-medium">Orden #1042 · Mesa 05 · 3 ítems · $ 68.000 COP</p>
+                </div>
+                <div class="md-col-full">
+                  <p class="md-type-body-medium">Orden #1043 · Barra · 1 ítem · $ 18.500 COP</p>
+                </div>
+                <div class="md-col-full">
+                  <p class="md-type-body-medium">Orden #1044 · Mesa 12 · 4 ítems · $ 112.000 COP</p>
+                </div>
+                <div class="md-col-full">
+                  <p class="md-type-body-medium">Orden #1045 · Terraza · 2 ítems · $ 45.000 COP</p>
+                </div>
+              </div>
+            </main>
+          </div>
+
+          <!-- Ranura flotante segura para acción primaria -->
+          <div class="md-scaffold-fab">
+            <button type="button" class="md-fab" aria-label="Nueva orden">
+              <span class="md-icon" aria-hidden="true">add</span>
+            </button>
+          </div>
+
+          <!-- Ranura adaptable de navegación inferior -->
+          <div class="md-scaffold-nav">
+            <nav class="md-navigation-bar" aria-label="Navegación móvil">
+              <button type="button" class="md-navigation-bar-item" aria-current="page">
+                <span class="md-navigation-bar-indicator">
+                  <span class="md-navigation-bar-icon md-icon" aria-hidden="true">table_restaurant</span>
+                </span>
+                <span class="md-navigation-bar-label">Mesas</span>
+              </button>
+              <button type="button" class="md-navigation-bar-item">
+                <span class="md-navigation-bar-indicator">
+                  <span class="md-navigation-bar-icon md-icon" aria-hidden="true">receipt_long</span>
+                </span>
+                <span class="md-navigation-bar-label">Comandas</span>
+              </button>
+              <button type="button" class="md-navigation-bar-item">
+                <span class="md-navigation-bar-indicator">
+                  <span class="md-navigation-bar-icon md-icon" aria-hidden="true">soup_kitchen</span>
+                </span>
+                <span class="md-navigation-bar-label">Cocina</span>
+              </button>
+              <button type="button" class="md-navigation-bar-item">
+                <span class="md-navigation-bar-indicator">
+                  <span class="md-navigation-bar-icon md-icon" aria-hidden="true">point_of_sale</span>
+                </span>
+                <span class="md-navigation-bar-label">Caja</span>
+              </button>
+            </nav>
+          </div>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code class="language-html">&lt;div class="md-scaffold"&gt;
+  &lt;!-- Ranura superior sticky --&gt;
+  &lt;div class="md-scaffold-header"&gt;
+    &lt;header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll&gt;
+      &lt;div class="md-top-app-bar-leading"&gt;
+        &lt;button type="button" class="md-icon-button" aria-label="Menú principal"&gt;
+          &lt;span class="md-icon" aria-hidden="true"&gt;menu&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div class="md-top-app-bar-content"&gt;
+        &lt;span class="md-top-app-bar-title"&gt;ManGo! Móvil&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class="md-top-app-bar-trailing"&gt;
+        &lt;button type="button" class="md-icon-button" aria-label="Notificaciones"&gt;
+          &lt;span class="md-icon" aria-hidden="true"&gt;notifications&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Cuerpo principal con scroll independiente --&gt;
+  &lt;div class="md-scaffold-body"&gt;
+    &lt;main class="md-scaffold-main"&gt;
+      &lt;div class="md-grid"&gt;
+        &lt;div class="md-col-full"&gt;
+          &lt;p class="md-type-body-large"&gt;Diseño compacto de 4 columnas para smartphones y terminales móviles de pedidos.&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class="md-col-full"&gt;
+          &lt;p class="md-type-body-medium md-text-on-surface-variant"&gt;Desplaza verticalmente para comprobar la elevación de cabecera y el despeje ergonómico del FAB.&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class="md-col-full"&gt;
+          &lt;p class="md-type-body-medium"&gt;Orden #1042 · Mesa 05 · 3 ítems · $ 68.000 COP&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class="md-col-full"&gt;
+          &lt;p class="md-type-body-medium"&gt;Orden #1043 · Barra · 1 ítem · $ 18.500 COP&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class="md-col-full"&gt;
+          &lt;p class="md-type-body-medium"&gt;Orden #1044 · Mesa 12 · 4 ítems · $ 112.000 COP&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class="md-col-full"&gt;
+          &lt;p class="md-type-body-medium"&gt;Orden #1045 · Terraza · 2 ítems · $ 45.000 COP&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Ranura flotante segura para acción primaria --&gt;
+  &lt;div class="md-scaffold-fab"&gt;
+    &lt;button type="button" class="md-fab" aria-label="Nueva orden"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;add&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Ranura adaptable de navegación inferior --&gt;
+  &lt;div class="md-scaffold-nav"&gt;
+    &lt;nav class="md-navigation-bar" aria-label="Navegación móvil"&gt;
+      &lt;button type="button" class="md-navigation-bar-item" aria-current="page"&gt;
+        &lt;span class="md-navigation-bar-indicator"&gt;
+          &lt;span class="md-navigation-bar-icon md-icon" aria-hidden="true"&gt;table_restaurant&lt;/span&gt;
+        &lt;/span&gt;
+        &lt;span class="md-navigation-bar-label"&gt;Mesas&lt;/span&gt;
+      &lt;/button&gt;
+      &lt;button type="button" class="md-navigation-bar-item"&gt;
+        &lt;span class="md-navigation-bar-indicator"&gt;
+          &lt;span class="md-navigation-bar-icon md-icon" aria-hidden="true"&gt;receipt_long&lt;/span&gt;
+        &lt;/span&gt;
+        &lt;span class="md-navigation-bar-label"&gt;Comandas&lt;/span&gt;
+      &lt;/button&gt;
+      &lt;button type="button" class="md-navigation-bar-item"&gt;
+        &lt;span class="md-navigation-bar-indicator"&gt;
+          &lt;span class="md-navigation-bar-icon md-icon" aria-hidden="true"&gt;soup_kitchen&lt;/span&gt;
+        &lt;/span&gt;
+        &lt;span class="md-navigation-bar-label"&gt;Cocina&lt;/span&gt;
+      &lt;/button&gt;
+      &lt;button type="button" class="md-navigation-bar-item"&gt;
+        &lt;span class="md-navigation-bar-indicator"&gt;
+          &lt;span class="md-navigation-bar-icon md-icon" aria-hidden="true"&gt;point_of_sale&lt;/span&gt;
+        &lt;/span&gt;
+        &lt;span class="md-navigation-bar-label"&gt;Caja&lt;/span&gt;
+      &lt;/button&gt;
+    &lt;/nav&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA PAR 3: hasta aqui -->
+
+    <!-- PAREJA PAR 4: Rejilla responsiva: Compact (4 columnas · Móvil) -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Rejilla responsiva: Compact (4 columnas · Móvil)</h3>
+      <p class="md-type-body-medium">Distribución de 4 columnas para smartphones: bloques a ancho completo y tarjetas emparejadas de 2 columnas.</p>
+
+      <div class="sr-specimen sr-specimen-scaffold sr-specimen-compact">
+        <div class="md-scaffold">
+          <!-- Ranura superior sticky -->
+          <div class="md-scaffold-header">
+            <header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll>
+              <div class="md-top-app-bar-leading">
+                <button type="button" class="md-icon-button" aria-label="Menú principal">
+                  <span class="md-icon" aria-hidden="true">menu</span>
+                </button>
+              </div>
+              <div class="md-top-app-bar-content">
+                <span class="md-top-app-bar-title">Rejilla móvil</span>
+              </div>
+              <div class="md-top-app-bar-trailing">
+                <button type="button" class="md-icon-button" aria-label="Buscar">
+                  <span class="md-icon" aria-hidden="true">search</span>
+                </button>
+              </div>
+            </header>
+          </div>
+
+          <!-- Cuerpo principal con scroll independiente y rejilla compacta -->
+          <div class="md-scaffold-body">
+            <main class="md-scaffold-main">
+              <div class="md-grid">
+                <!-- Bloque superior de ancho completo (4/4 cols) -->
+                <div class="md-col-full">
+                  <article class="md-card md-card-outlined">
+                    <div class="md-card-header">
+                      <h4 class="md-type-title-medium">Resumen del turno operativo</h4>
+                      <p class="md-type-body-small">Servicio almuerzo · Salón</p>
+                    </div>
+                    <div class="md-card-content">
+                      <p class="md-type-body-medium">Capacidad de sala al 85% con 14 mesas activas.</p>
+                    </div>
+                  </article>
+                </div>
+
+                <!-- Dos tarjetas emparejadas (span 2: 2 + 2 = 4 cols) -->
+                <div class="md-col-span-2">
+                  <article class="md-card md-card-outlined">
+                    <div class="md-card-header">
+                      <h4 class="md-type-title-medium">Mesa 01</h4>
+                      <p class="md-type-body-small">4 comensales</p>
+                    </div>
+                    <div class="md-card-content">
+                      <p class="md-type-body-medium">$ 145.000 COP</p>
+                    </div>
+                  </article>
+                </div>
+                <div class="md-col-span-2">
+                  <article class="md-card md-card-outlined">
+                    <div class="md-card-header">
+                      <h4 class="md-type-title-medium">Mesa 02</h4>
+                      <p class="md-type-body-small">2 comensales</p>
+                    </div>
+                    <div class="md-card-content">
+                      <p class="md-type-body-medium">$ 82.500 COP</p>
+                    </div>
+                  </article>
+                </div>
+              </div>
+            </main>
+          </div>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code class="language-html">&lt;div class="md-scaffold"&gt;
+  &lt;!-- Ranura superior sticky --&gt;
+  &lt;div class="md-scaffold-header"&gt;
+    &lt;header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll&gt;
+      &lt;div class="md-top-app-bar-leading"&gt;
+        &lt;button type="button" class="md-icon-button" aria-label="Menú principal"&gt;
+          &lt;span class="md-icon" aria-hidden="true"&gt;menu&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div class="md-top-app-bar-content"&gt;
+        &lt;span class="md-top-app-bar-title"&gt;Rejilla móvil&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class="md-top-app-bar-trailing"&gt;
+        &lt;button type="button" class="md-icon-button" aria-label="Buscar"&gt;
+          &lt;span class="md-icon" aria-hidden="true"&gt;search&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Cuerpo principal con scroll independiente y rejilla compacta --&gt;
+  &lt;div class="md-scaffold-body"&gt;
+    &lt;main class="md-scaffold-main"&gt;
+      &lt;div class="md-grid"&gt;
+        &lt;!-- Bloque superior de ancho completo (4/4 cols) --&gt;
+        &lt;div class="md-col-full"&gt;
+          &lt;article class="md-card md-card-outlined"&gt;
+            &lt;div class="md-card-header"&gt;
+              &lt;h4 class="md-type-title-medium"&gt;Resumen del turno operativo&lt;/h4&gt;
+              &lt;p class="md-type-body-small"&gt;Servicio almuerzo · Salón&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class="md-card-content"&gt;
+              &lt;p class="md-type-body-medium"&gt;Capacidad de sala al 85% con 14 mesas activas.&lt;/p&gt;
+            &lt;/div&gt;
+          &lt;/article&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Dos tarjetas emparejadas (span 2: 2 + 2 = 4 cols) --&gt;
+        &lt;div class="md-col-span-2"&gt;
+          &lt;article class="md-card md-card-outlined"&gt;
+            &lt;div class="md-card-header"&gt;
+              &lt;h4 class="md-type-title-medium"&gt;Mesa 01&lt;/h4&gt;
+              &lt;p class="md-type-body-small"&gt;4 comensales&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class="md-card-content"&gt;
+              &lt;p class="md-type-body-medium"&gt;$ 145.000 COP&lt;/p&gt;
+            &lt;/div&gt;
+          &lt;/article&gt;
+        &lt;/div&gt;
+        &lt;div class="md-col-span-2"&gt;
+          &lt;article class="md-card md-card-outlined"&gt;
+            &lt;div class="md-card-header"&gt;
+              &lt;h4 class="md-type-title-medium"&gt;Mesa 02&lt;/h4&gt;
+              &lt;p class="md-type-body-small"&gt;2 comensales&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class="md-card-content"&gt;
+              &lt;p class="md-type-body-medium"&gt;$ 82.500 COP&lt;/p&gt;
+            &lt;/div&gt;
+          &lt;/article&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA PAR 4: hasta aqui -->
+
+    <!-- PAREJA PAR 5: Rejilla responsiva: Medium (8 columnas · Tablet) -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Rejilla responsiva: Medium (8 columnas · Tablet)</h3>
+      <p class="md-type-body-medium">Distribución de 8 columnas para tablets: cabecera completa y tarjetas modulares repartidas en dos mitades de 4 columnas.</p>
+
+      <div class="sr-specimen sr-specimen-scaffold sr-specimen-medium">
+        <div class="md-scaffold">
+          <!-- Ranura superior sticky -->
+          <div class="md-scaffold-header">
+            <header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll>
+              <div class="md-top-app-bar-leading">
+                <button type="button" class="md-icon-button" aria-label="Menú principal">
+                  <span class="md-icon" aria-hidden="true">menu</span>
+                </button>
+              </div>
+              <div class="md-top-app-bar-content">
+                <span class="md-top-app-bar-title">Rejilla tablet</span>
+              </div>
+              <div class="md-top-app-bar-trailing">
+                <button type="button" class="md-icon-button" aria-label="Buscar">
+                  <span class="md-icon" aria-hidden="true">search</span>
+                </button>
+              </div>
+            </header>
+          </div>
+
+          <!-- Cuerpo principal con scroll independiente y rejilla mediana -->
+          <div class="md-scaffold-body">
+            <main class="md-scaffold-main">
+              <div class="md-grid">
+                <!-- Bloque superior de ancho completo (8/8 cols) -->
+                <div class="md-col-full">
+                  <article class="md-card md-card-outlined">
+                    <div class="md-card-header">
+                      <h4 class="md-type-title-medium">Resumen del turno operativo</h4>
+                      <p class="md-type-body-small">Servicio almuerzo · Salón y Terraza</p>
+                    </div>
+                    <div class="md-card-content">
+                      <p class="md-type-body-medium">Capacidad de sala al 85% con 14 mesas activas y 6 órdenes en preparación.</p>
+                    </div>
+                  </article>
+                </div>
+
+                <!-- Dos tarjetas modulares en mitades (span 4: 4 + 4 = 8 cols) -->
+                <div class="md-col-span-4">
+                  <article class="md-card md-card-outlined">
+                    <div class="md-card-header">
+                      <h4 class="md-type-title-medium">Mesa 01</h4>
+                      <p class="md-type-body-small">4 comensales</p>
+                    </div>
+                    <div class="md-card-content">
+                      <p class="md-type-body-medium">Total: $ 145.000 COP</p>
+                    </div>
+                  </article>
+                </div>
+                <div class="md-col-span-4">
+                  <article class="md-card md-card-outlined">
+                    <div class="md-card-header">
+                      <h4 class="md-type-title-medium">Mesa 02</h4>
+                      <p class="md-type-body-small">2 comensales</p>
+                    </div>
+                    <div class="md-card-content">
+                      <p class="md-type-body-medium">Total: $ 82.500 COP</p>
+                    </div>
+                  </article>
+                </div>
+              </div>
+            </main>
+          </div>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code class="language-html">&lt;div class="md-scaffold"&gt;
+  &lt;!-- Ranura superior sticky --&gt;
+  &lt;div class="md-scaffold-header"&gt;
+    &lt;header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll&gt;
+      &lt;div class="md-top-app-bar-leading"&gt;
+        &lt;button type="button" class="md-icon-button" aria-label="Menú principal"&gt;
+          &lt;span class="md-icon" aria-hidden="true"&gt;menu&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div class="md-top-app-bar-content"&gt;
+        &lt;span class="md-top-app-bar-title"&gt;Rejilla tablet&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class="md-top-app-bar-trailing"&gt;
+        &lt;button type="button" class="md-icon-button" aria-label="Buscar"&gt;
+          &lt;span class="md-icon" aria-hidden="true"&gt;search&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Cuerpo principal con scroll independiente y rejilla mediana --&gt;
+  &lt;div class="md-scaffold-body"&gt;
+    &lt;main class="md-scaffold-main"&gt;
+      &lt;div class="md-grid"&gt;
+        &lt;!-- Bloque superior de ancho completo (8/8 cols) --&gt;
+        &lt;div class="md-col-full"&gt;
+          &lt;article class="md-card md-card-outlined"&gt;
+            &lt;div class="md-card-header"&gt;
+              &lt;h4 class="md-type-title-medium"&gt;Resumen del turno operativo&lt;/h4&gt;
+              &lt;p class="md-type-body-small"&gt;Servicio almuerzo · Salón y Terraza&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class="md-card-content"&gt;
+              &lt;p class="md-type-body-medium"&gt;Capacidad de sala al 85% con 14 mesas activas y 6 órdenes en preparación.&lt;/p&gt;
+            &lt;/div&gt;
+          &lt;/article&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Dos tarjetas modulares en mitades (span 4: 4 + 4 = 8 cols) --&gt;
+        &lt;div class="md-col-span-4"&gt;
+          &lt;article class="md-card md-card-outlined"&gt;
+            &lt;div class="md-card-header"&gt;
+              &lt;h4 class="md-type-title-medium"&gt;Mesa 01&lt;/h4&gt;
+              &lt;p class="md-type-body-small"&gt;4 comensales&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class="md-card-content"&gt;
+              &lt;p class="md-type-body-medium"&gt;Total: $ 145.000 COP&lt;/p&gt;
+            &lt;/div&gt;
+          &lt;/article&gt;
+        &lt;/div&gt;
+        &lt;div class="md-col-span-4"&gt;
+          &lt;article class="md-card md-card-outlined"&gt;
+            &lt;div class="md-card-header"&gt;
+              &lt;h4 class="md-type-title-medium"&gt;Mesa 02&lt;/h4&gt;
+              &lt;p class="md-type-body-small"&gt;2 comensales&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class="md-card-content"&gt;
+              &lt;p class="md-type-body-medium"&gt;Total: $ 82.500 COP&lt;/p&gt;
+            &lt;/div&gt;
+          &lt;/article&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA PAR 5: hasta aqui -->
+
+    <!-- PAREJA PAR 6: Rejilla responsiva: Expanded (12 columnas · Escritorio) -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Rejilla responsiva: Expanded (12 columnas · Escritorio)</h3>
+      <p class="md-type-body-medium">Distribución de 12 columnas para escritorio: filas modulares en tercios (4 columnas) y mitades (6 columnas).</p>
+
+      <div class="sr-specimen sr-specimen-scaffold">
+        <div class="md-scaffold">
+          <!-- Ranura superior sticky -->
+          <div class="md-scaffold-header">
+            <header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll>
+              <div class="md-top-app-bar-leading">
+                <button type="button" class="md-icon-button" aria-label="Menú principal">
+                  <span class="md-icon" aria-hidden="true">menu</span>
+                </button>
+              </div>
+              <div class="md-top-app-bar-content">
+                <span class="md-top-app-bar-title">Rejilla escritorio</span>
+              </div>
+              <div class="md-top-app-bar-trailing">
+                <button type="button" class="md-icon-button" aria-label="Buscar">
+                  <span class="md-icon" aria-hidden="true">search</span>
+                </button>
+              </div>
+            </header>
+          </div>
+
+          <!-- Cuerpo principal con scroll independiente y rejilla expandida -->
+          <div class="md-scaffold-body">
+            <main class="md-scaffold-main">
+              <div class="md-grid">
+                <!-- Tres tarjetas modulares en tercios (span 4: 4 + 4 + 4 = 12 cols) -->
+                <div class="md-col-span-4">
+                  <article class="md-card md-card-outlined">
+                    <div class="md-card-header">
+                      <h4 class="md-type-title-medium">Mesa 01</h4>
+                      <p class="md-type-body-small">4 comensales</p>
+                    </div>
+                    <div class="md-card-content">
+                      <p class="md-type-body-medium">Total: $ 145.000 COP</p>
+                    </div>
+                  </article>
+                </div>
+                <div class="md-col-span-4">
+                  <article class="md-card md-card-outlined">
+                    <div class="md-card-header">
+                      <h4 class="md-type-title-medium">Mesa 02</h4>
+                      <p class="md-type-body-small">2 comensales</p>
+                    </div>
+                    <div class="md-card-content">
+                      <p class="md-type-body-medium">Total: $ 82.500 COP</p>
+                    </div>
+                  </article>
+                </div>
+                <div class="md-col-span-4">
+                  <article class="md-card md-card-outlined">
+                    <div class="md-card-header">
+                      <h4 class="md-type-title-medium">Mesa 03</h4>
+                      <p class="md-type-body-small">6 comensales</p>
+                    </div>
+                    <div class="md-card-content">
+                      <p class="md-type-body-medium">Total: $ 230.000 COP</p>
+                    </div>
+                  </article>
+                </div>
+
+                <!-- Dos tarjetas inferiores en mitades (span 6: 6 + 6 = 12 cols) -->
+                <div class="md-col-span-6">
+                  <article class="md-card md-card-outlined">
+                    <div class="md-card-header">
+                      <h4 class="md-type-title-medium">Barra de licores</h4>
+                      <p class="md-type-body-small">Estación de coctelería</p>
+                    </div>
+                    <div class="md-card-content">
+                      <p class="md-type-body-medium">8 pedidos atendidos · $ 195.000 COP</p>
+                    </div>
+                  </article>
+                </div>
+                <div class="md-col-span-6">
+                  <article class="md-card md-card-outlined">
+                    <div class="md-card-header">
+                      <h4 class="md-type-title-medium">Cocina caliente</h4>
+                      <p class="md-type-body-small">Estación de despacho</p>
+                    </div>
+                    <div class="md-card-content">
+                      <p class="md-type-body-medium">12 platos en preparación · Tiempo prom: 14 min</p>
+                    </div>
+                  </article>
+                </div>
+              </div>
+            </main>
+          </div>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code class="language-html">&lt;div class="md-scaffold"&gt;
+  &lt;!-- Ranura superior sticky --&gt;
+  &lt;div class="md-scaffold-header"&gt;
+    &lt;header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll&gt;
+      &lt;div class="md-top-app-bar-leading"&gt;
+        &lt;button type="button" class="md-icon-button" aria-label="Menú principal"&gt;
+          &lt;span class="md-icon" aria-hidden="true"&gt;menu&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div class="md-top-app-bar-content"&gt;
+        &lt;span class="md-top-app-bar-title"&gt;Rejilla escritorio&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class="md-top-app-bar-trailing"&gt;
+        &lt;button type="button" class="md-icon-button" aria-label="Buscar&gt;
+          &lt;span class="md-icon" aria-hidden="true"&gt;search&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Cuerpo principal con scroll independiente y rejilla expandida --&gt;
+  &lt;div class="md-scaffold-body"&gt;
+    &lt;main class="md-scaffold-main"&gt;
+      &lt;div class="md-grid"&gt;
+        &lt;!-- Tres tarjetas modulares en tercios (span 4: 4 + 4 + 4 = 12 cols) --&gt;
+        &lt;div class="md-col-span-4"&gt;
+          &lt;article class="md-card md-card-outlined"&gt;
+            &lt;div class="md-card-header"&gt;
+              &lt;h4 class="md-type-title-medium"&gt;Mesa 01&lt;/h4&gt;
+              &lt;p class="md-type-body-small"&gt;4 comensales&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class="md-card-content"&gt;
+              &lt;p class="md-type-body-medium"&gt;Total: $ 145.000 COP&lt;/p&gt;
+            &lt;/div&gt;
+          &lt;/article&gt;
+        &lt;/div&gt;
+        &lt;div class="md-col-span-4"&gt;
+          &lt;article class="md-card md-card-outlined"&gt;
+            &lt;div class="md-card-header"&gt;
+              &lt;h4 class="md-type-title-medium"&gt;Mesa 02&lt;/h4&gt;
+              &lt;p class="md-type-body-small"&gt;2 comensales&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class="md-card-content"&gt;
+              &lt;p class="md-type-body-medium"&gt;Total: $ 82.500 COP&lt;/p&gt;
+            &lt;/div&gt;
+          &lt;/article&gt;
+        &lt;/div&gt;
+        &lt;div class="md-col-span-4"&gt;
+          &lt;article class="md-card md-card-outlined"&gt;
+            &lt;div class="md-card-header"&gt;
+              &lt;h4 class="md-type-title-medium"&gt;Mesa 03&lt;/h4&gt;
+              &lt;p class="md-type-body-small"&gt;6 comensales&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class="md-card-content"&gt;
+              &lt;p class="md-type-body-medium"&gt;Total: $ 230.000 COP&lt;/p&gt;
+            &lt;/div&gt;
+          &lt;/article&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Dos tarjetas inferiores en mitades (span 6: 6 + 6 = 12 cols) --&gt;
+        &lt;div class="md-col-span-6"&gt;
+          &lt;article class="md-card md-card-outlined"&gt;
+            &lt;div class="md-card-header"&gt;
+              &lt;h4 class="md-type-title-medium"&gt;Barra de licores&lt;/h4&gt;
+              &lt;p class="md-type-body-small"&gt;Estación de coctelería&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class="md-card-content"&gt;
+              &lt;p class="md-type-body-medium"&gt;8 pedidos atendidos · $ 195.000 COP&lt;/p&gt;
+            &lt;/div&gt;
+          &lt;/article&gt;
+        &lt;/div&gt;
+        &lt;div class="md-col-span-6"&gt;
+          &lt;article class="md-card md-card-outlined"&gt;
+            &lt;div class="md-card-header"&gt;
+              &lt;h4 class="md-type-title-medium"&gt;Cocina caliente&lt;/h4&gt;
+              &lt;p class="md-type-body-small"&gt;Estación de despacho&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class="md-card-content"&gt;
+              &lt;p class="md-type-body-medium"&gt;12 platos en preparación · Tiempo prom: 14 min&lt;/p&gt;
+            &lt;/div&gt;
+          &lt;/article&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA PAR 6: hasta aqui -->
+
+    <!-- PAREJA PAR 7: Layout canónico: Panel de apoyo (Supporting Panel 360dp) -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Layout canónico: Panel de apoyo (Supporting Panel 360dp)</h3>
+      <p class="md-type-body-medium">Patrón canónico de dos áreas: espacio principal fluido de catálogo o mesas junto a panel lateral de apoyo de 360dp.</p>
+
+      <div class="sr-specimen sr-specimen-scaffold">
+        <div class="md-scaffold">
+          <!-- Ranura superior sticky -->
+          <div class="md-scaffold-header">
+            <header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll>
+              <div class="md-top-app-bar-leading">
+                <button type="button" class="md-icon-button" aria-label="Menú principal">
+                  <span class="md-icon" aria-hidden="true">menu</span>
+                </button>
+              </div>
+              <div class="md-top-app-bar-content">
+                <span class="md-top-app-bar-title">Terminal POS · Salón</span>
+              </div>
+              <div class="md-top-app-bar-trailing">
+                <button type="button" class="md-icon-button" aria-label="Buscar producto">
+                  <span class="md-icon" aria-hidden="true">search</span>
+                </button>
+              </div>
+            </header>
+          </div>
+
+          <!-- Cuerpo con layout canónico de panel de apoyo -->
+          <div class="md-scaffold-body">
+            <div class="md-layout-supporting-panel">
+              <!-- Área principal fluida con rejilla de catálogo -->
+              <div class="md-layout-supporting-panel-main">
+                <div class="md-grid">
+                  <div class="md-col-span-6">
+                    <article class="md-card md-card-outlined">
+                      <div class="md-card-header">
+                        <h4 class="md-type-title-medium">Hamburguesa Clásica</h4>
+                        <p class="md-type-body-small">Cocina caliente</p>
+                      </div>
+                      <div class="md-card-content">
+                        <p class="md-type-body-medium">$ 28.000 COP</p>
+                      </div>
+                    </article>
+                  </div>
+                  <div class="md-col-span-6">
+                    <article class="md-card md-card-outlined">
+                      <div class="md-card-header">
+                        <h4 class="md-type-title-medium">Papas Rústicas</h4>
+                        <p class="md-type-body-small">Acompañamiento</p>
+                      </div>
+                      <div class="md-card-content">
+                        <p class="md-type-body-medium">$ 14.000 COP</p>
+                      </div>
+                    </article>
+                  </div>
+                  <div class="md-col-span-6">
+                    <article class="md-card md-card-outlined">
+                      <div class="md-card-header">
+                        <h4 class="md-type-title-medium">Cerveza Artesanal</h4>
+                        <p class="md-type-body-small">Bebidas y licores</p>
+                      </div>
+                      <div class="md-card-content">
+                        <p class="md-type-body-medium">$ 16.000 COP</p>
+                      </div>
+                    </article>
+                  </div>
+                  <div class="md-col-span-6">
+                    <article class="md-card md-card-outlined">
+                      <div class="md-card-header">
+                        <h4 class="md-type-title-medium">Limonada Natural</h4>
+                        <p class="md-type-body-small">Bebidas frías</p>
+                      </div>
+                      <div class="md-card-content">
+                        <p class="md-type-body-medium">$ 10.000 COP</p>
+                      </div>
+                    </article>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Panel lateral de apoyo (Supporting Panel 360dp) -->
+              <aside class="md-layout-supporting-panel-aside" aria-label="Resumen de comanda">
+                <article class="md-card md-card-filled">
+                  <div class="md-card-header">
+                    <h4 class="md-type-title-medium">Comanda · Mesa 04</h4>
+                    <p class="md-type-body-small">Mesero: Carlos M. · 4 productos</p>
+                  </div>
+                  <div class="md-card-content">
+                    <p class="md-type-body-medium">1× Hamburguesa Clásica · $ 28.000</p>
+                    <p class="md-type-body-medium">1× Papas Rústicas · $ 14.000</p>
+                    <p class="md-type-body-medium">1× Cerveza Artesanal · $ 16.000</p>
+                    <p class="md-type-body-medium">1× Limonada Natural · $ 10.000</p>
+                  </div>
+                  <div class="md-card-actions">
+                    <button type="button" class="md-button md-button-filled">
+                      <span class="md-button-label">Enviar a cocina · $ 68.000</span>
+                    </button>
+                  </div>
+                </article>
+              </aside>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;div class="md-scaffold"&gt;
+  &lt;!-- Ranura superior sticky --&gt;
+  &lt;div class="md-scaffold-header"&gt;
+    &lt;header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll&gt;
+      &lt;div class="md-top-app-bar-leading"&gt;
+        &lt;button type="button" class="md-icon-button" aria-label="Menú principal"&gt;
+          &lt;span class="md-icon" aria-hidden="true"&gt;menu&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div class="md-top-app-bar-content"&gt;
+        &lt;span class="md-top-app-bar-title"&gt;Terminal POS · Salón&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class="md-top-app-bar-trailing"&gt;
+        &lt;button type="button" class="md-icon-button" aria-label="Buscar producto"&gt;
+          &lt;span class="md-icon" aria-hidden="true"&gt;search&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Cuerpo con layout canónico de panel de apoyo --&gt;
+  &lt;div class="md-scaffold-body"&gt;
+    &lt;div class="md-layout-supporting-panel"&gt;
+      &lt;!-- Área principal fluida con rejilla de catálogo --&gt;
+      &lt;div class="md-layout-supporting-panel-main"&gt;
+        &lt;div class="md-grid"&gt;
+          &lt;div class="md-col-span-6"&gt;
+            &lt;article class="md-card md-card-outlined"&gt;
+              &lt;div class="md-card-header"&gt;
+                &lt;h4 class="md-type-title-medium"&gt;Hamburguesa Clásica&lt;/h4&gt;
+                &lt;p class="md-type-body-small"&gt;Cocina caliente&lt;/p&gt;
+              &lt;/div&gt;
+              &lt;div class="md-card-content"&gt;
+                &lt;p class="md-type-body-medium"&gt;$ 28.000 COP&lt;/p&gt;
+              &lt;/div&gt;
+            &lt;/article&gt;
+          &lt;/div&gt;
+          &lt;div class="md-col-span-6"&gt;
+            &lt;article class="md-card md-card-outlined"&gt;
+              &lt;div class="md-card-header"&gt;
+                &lt;h4 class="md-type-title-medium"&gt;Papas Rústicas&lt;/h4&gt;
+                &lt;p class="md-type-body-small"&gt;Acompañamiento&lt;/p&gt;
+              &lt;/div&gt;
+              &lt;div class="md-card-content"&gt;
+                &lt;p class="md-type-body-medium"&gt;$ 14.000 COP&lt;/p&gt;
+              &lt;/div&gt;
+            &lt;/article&gt;
+          &lt;/div&gt;
+          &lt;div class="md-col-span-6"&gt;
+            &lt;article class="md-card md-card-outlined"&gt;
+              &lt;div class="md-card-header"&gt;
+                &lt;h4 class="md-type-title-medium"&gt;Cerveza Artesanal&lt;/h4&gt;
+                &lt;p class="md-type-body-small"&gt;Bebidas y licores&lt;/p&gt;
+              &lt;/div&gt;
+              &lt;div class="md-card-content"&gt;
+                &lt;p class="md-type-body-medium"&gt;$ 16.000 COP&lt;/p&gt;
+              &lt;/div&gt;
+            &lt;/article&gt;
+          &lt;/div&gt;
+          &lt;div class="md-col-span-6"&gt;
+            &lt;article class="md-card md-card-outlined"&gt;
+              &lt;div class="md-card-header"&gt;
+                &lt;h4 class="md-type-title-medium"&gt;Limonada Natural&lt;/h4&gt;
+                &lt;p class="md-type-body-small"&gt;Bebidas frías&lt;/p&gt;
+              &lt;/div&gt;
+              &lt;div class="md-card-content"&gt;
+                &lt;p class="md-type-body-medium"&gt;$ 10.000 COP&lt;/p&gt;
+              &lt;/div&gt;
+            &lt;/article&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Panel lateral de apoyo (Supporting Panel 360dp) --&gt;
+      &lt;aside class="md-layout-supporting-panel-aside" aria-label="Resumen de comanda"&gt;
+        &lt;article class="md-card md-card-filled"&gt;
+          &lt;div class="md-card-header"&gt;
+            &lt;h4 class="md-type-title-medium"&gt;Comanda · Mesa 04&lt;/h4&gt;
+            &lt;p class="md-type-body-small"&gt;Mesero: Carlos M. · 4 productos&lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div class="md-card-content"&gt;
+            &lt;p class="md-type-body-medium"&gt;1× Hamburguesa Clásica · $ 28.000&lt;/p&gt;
+            &lt;p class="md-type-body-medium"&gt;1× Papas Rústicas · $ 14.000&lt;/p&gt;
+            &lt;p class="md-type-body-medium"&gt;1× Cerveza Artesanal · $ 16.000&lt;/p&gt;
+            &lt;p class="md-type-body-medium"&gt;1× Limonada Natural · $ 10.000&lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div class="md-card-actions"&gt;
+            &lt;button type="button" class="md-button md-button-filled"&gt;
+              &lt;span class="md-button-label"&gt;Enviar a cocina · $ 68.000&lt;/span&gt;
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/article&gt;
+      &lt;/aside&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA PAR 7: hasta aqui -->
+
+  </main>
+
+</body>
+</html>

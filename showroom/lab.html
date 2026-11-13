@@ -14,79 +14,223 @@
 
 
 
-
-
-  <main>
-
-<!-- =========================================================================
-     LABORATORIO: PRUEBA DE COLISIÓN DE BORDE DERECHO (VIEWPORT EDGE)
-     ========================================================================= -->
-<div style="display: flex; justify-content: flex-end; align-items: flex-start; width: 100%; padding: 24px; border: 1px dashed var(--md-sys-color-outline-variant); border-radius: 16px; min-height: 360px;">
-
-  <!-- Pega aquí el snippet canónico del Par 7 (3 niveles en cascada) -->
-  <div class="md-menu-anchor">
-    <button type="button" class="md-icon-button" id="lab-trigger-root" aria-haspopup="menu" aria-expanded="false" aria-controls="lab-menu-level-1" aria-label="Opciones alineadas a la derecha">
-      <span class="md-icon" aria-hidden="true">more_vert</span>
-    </button>
-
-    <div class="md-menu" id="lab-menu-level-1" role="menu" aria-labelledby="lab-trigger-root">
-      <button type="button" class="md-menu-item" role="menuitem">
-        <span class="md-menu-item-leading md-icon" aria-hidden="true">receipt_long</span>
-        <span class="md-menu-item-headline">Cuenta</span>
-      </button>
-
-      <div class="md-menu-submenu">
-        <button type="button" class="md-menu-item" id="lab-trigger-sub-2" aria-haspopup="menu" aria-expanded="false" aria-controls="lab-menu-level-2" role="menuitem">
-          <span class="md-menu-item-leading md-icon" aria-hidden="true">table_restaurant</span>
-          <span class="md-menu-item-headline">Mover de mesa</span>
-          <span class="md-menu-item-trailing md-icon" aria-hidden="true">arrow_right</span>
+<div class="md-scaffold">
+  <!-- Ranura superior sticky -->
+  <div class="md-scaffold-header">
+    <header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll>
+      <div class="md-top-app-bar-leading">
+        <button type="button" class="md-icon-button" aria-label="Menú principal">
+          <span class="md-icon" aria-hidden="true">menu</span>
         </button>
+      </div>
+      <div class="md-top-app-bar-content">
+        <span class="md-top-app-bar-title">Terminal POS · Salón</span>
+      </div>
+      <div class="md-top-app-bar-trailing">
+        <button type="button" class="md-icon-button" aria-label="Buscar producto">
+          <span class="md-icon" aria-hidden="true">search</span>
+        </button>
+      </div>
+    </header>
+  </div>
 
-        <div class="md-menu" id="lab-menu-level-2" role="menu" aria-labelledby="lab-trigger-sub-2">
-          <button type="button" class="md-menu-item" role="menuitem">
-            <span class="md-menu-item-headline">Mesa 1 · Salón</span>
-          </button>
-
-          <div class="md-menu-submenu">
-            <button type="button" class="md-menu-item" id="lab-trigger-sub-3" aria-haspopup="menu" aria-expanded="false" aria-controls="lab-menu-level-3" role="menuitem">
-              <span class="md-menu-item-headline">Mesa 2 · Terraza</span>
-              <span class="md-menu-item-trailing md-icon" aria-hidden="true">arrow_right</span>
-            </button>
-
-            <div class="md-menu" id="lab-menu-level-3" role="menu" aria-labelledby="lab-trigger-sub-3">
-              <button type="button" class="md-menu-item" role="menuitem">
-                <span class="md-menu-item-headline">Zona Fumadores</span>
-              </button>
-              <button type="button" class="md-menu-item" role="menuitem">
-                <span class="md-menu-item-headline">Zona Jardín</span>
-              </button>
-            </div>
+  <!-- Cuerpo con layout canónico de panel de apoyo -->
+  <div class="md-scaffold-body">
+    <div class="md-layout-supporting-panel">
+      <!-- Área principal fluida con rejilla de catálogo -->
+      <div class="md-layout-supporting-panel-main">
+        <div class="md-grid">
+          <div class="md-col-span-6">
+            <article class="md-card md-card-outlined">
+              <div class="md-card-header">
+                <h4 class="md-type-title-medium">Hamburguesa Clásica</h4>
+                <p class="md-type-body-small">Cocina caliente</p>
+              </div>
+              <div class="md-card-content">
+                <p class="md-type-body-medium">$ 28.000 COP</p>
+              </div>
+            </article>
           </div>
-
-          <button type="button" class="md-menu-item" role="menuitem">
-            <span class="md-menu-item-headline">Mesa 3 · Barra</span>
-          </button>
+          <div class="md-col-span-6">
+            <article class="md-card md-card-outlined">
+              <div class="md-card-header">
+                <h4 class="md-type-title-medium">Hamburguesa Clásica</h4>
+                <p class="md-type-body-small">Cocina caliente</p>
+              </div>
+              <div class="md-card-content">
+                <p class="md-type-body-medium">$ 28.000 COP</p>
+              </div>
+            </article>
+          </div>
+          <div class="md-col-span-6">
+            <article class="md-card md-card-outlined">
+              <div class="md-card-header">
+                <h4 class="md-type-title-medium">Hamburguesa Clásica</h4>
+                <p class="md-type-body-small">Cocina caliente</p>
+              </div>
+              <div class="md-card-content">
+                <p class="md-type-body-medium">$ 28.000 COP</p>
+              </div>
+            </article>
+          </div>
+          <div class="md-col-span-6">
+            <article class="md-card md-card-outlined">
+              <div class="md-card-header">
+                <h4 class="md-type-title-medium">Hamburguesa Clásica</h4>
+                <p class="md-type-body-small">Cocina caliente</p>
+              </div>
+              <div class="md-card-content">
+                <p class="md-type-body-medium">$ 28.000 COP</p>
+              </div>
+            </article>
+          </div>
+          <div class="md-col-span-6">
+            <article class="md-card md-card-outlined">
+              <div class="md-card-header">
+                <h4 class="md-type-title-medium">Hamburguesa Clásica</h4>
+                <p class="md-type-body-small">Cocina caliente</p>
+              </div>
+              <div class="md-card-content">
+                <p class="md-type-body-medium">$ 28.000 COP</p>
+              </div>
+            </article>
+          </div>
+          <div class="md-col-span-6">
+            <article class="md-card md-card-outlined">
+              <div class="md-card-header">
+                <h4 class="md-type-title-medium">Hamburguesa Clásica</h4>
+                <p class="md-type-body-small">Cocina caliente</p>
+              </div>
+              <div class="md-card-content">
+                <p class="md-type-body-medium">$ 28.000 COP</p>
+              </div>
+            </article>
+          </div>
+          <div class="md-col-span-6">
+            <article class="md-card md-card-outlined">
+              <div class="md-card-header">
+                <h4 class="md-type-title-medium">Hamburguesa Clásica</h4>
+                <p class="md-type-body-small">Cocina caliente</p>
+              </div>
+              <div class="md-card-content">
+                <p class="md-type-body-medium">$ 28.000 COP</p>
+              </div>
+            </article>
+          </div>
+          <div class="md-col-span-6">
+            <article class="md-card md-card-outlined">
+              <div class="md-card-header">
+                <h4 class="md-type-title-medium">Hamburguesa Clásica</h4>
+                <p class="md-type-body-small">Cocina caliente</p>
+              </div>
+              <div class="md-card-content">
+                <p class="md-type-body-medium">$ 28.000 COP</p>
+              </div>
+            </article>
+          </div>
+          <div class="md-col-span-6">
+            <article class="md-card md-card-outlined">
+              <div class="md-card-header">
+                <h4 class="md-type-title-medium">Hamburguesa Clásica</h4>
+                <p class="md-type-body-small">Cocina caliente</p>
+              </div>
+              <div class="md-card-content">
+                <p class="md-type-body-medium">$ 28.000 COP</p>
+              </div>
+            </article>
+          </div>
+          <div class="md-col-span-6">
+            <article class="md-card md-card-outlined">
+              <div class="md-card-header">
+                <h4 class="md-type-title-medium">Hamburguesa Clásica</h4>
+                <p class="md-type-body-small">Cocina caliente</p>
+              </div>
+              <div class="md-card-content">
+                <p class="md-type-body-medium">$ 28.000 COP</p>
+              </div>
+            </article>
+          </div>
+          <div class="md-col-span-6">
+            <article class="md-card md-card-outlined">
+              <div class="md-card-header">
+                <h4 class="md-type-title-medium">Hamburguesa Clásica</h4>
+                <p class="md-type-body-small">Cocina caliente</p>
+              </div>
+              <div class="md-card-content">
+                <p class="md-type-body-medium">$ 28.000 COP</p>
+              </div>
+            </article>
+          </div>
+          <div class="md-col-span-6">
+            <article class="md-card md-card-outlined">
+              <div class="md-card-header">
+                <h4 class="md-type-title-medium">Hamburguesa Clásica</h4>
+                <p class="md-type-body-small">Cocina caliente</p>
+              </div>
+              <div class="md-card-content">
+                <p class="md-type-body-medium">$ 28.000 COP</p>
+              </div>
+            </article>
+          </div>
+          <div class="md-col-span-6">
+            <article class="md-card md-card-outlined">
+              <div class="md-card-header">
+                <h4 class="md-type-title-medium">Papas Rústicas</h4>
+                <p class="md-type-body-small">Acompañamiento</p>
+              </div>
+              <div class="md-card-content">
+                <p class="md-type-body-medium">$ 14.000 COP</p>
+              </div>
+            </article>
+          </div>
+          <div class="md-col-span-6">
+            <article class="md-card md-card-outlined">
+              <div class="md-card-header">
+                <h4 class="md-type-title-medium">Cerveza Artesanal</h4>
+                <p class="md-type-body-small">Bebidas y licores</p>
+              </div>
+              <div class="md-card-content">
+                <p class="md-type-body-medium">$ 16.000 COP</p>
+              </div>
+            </article>
+          </div>
+          <div class="md-col-span-6">
+            <article class="md-card md-card-outlined">
+              <div class="md-card-header">
+                <h4 class="md-type-title-medium">Limonada Natural</h4>
+                <p class="md-type-body-small">Bebidas frías</p>
+              </div>
+              <div class="md-card-content">
+                <p class="md-type-body-medium">$ 10.000 COP</p>
+              </div>
+            </article>
+          </div>
         </div>
       </div>
 
-      <hr class="md-divider" role="separator">
-
-      <button type="button" class="md-menu-item md-menu-item-destructive" role="menuitem">
-        <span class="md-menu-item-leading md-icon" aria-hidden="true">cancel</span>
-        <span class="md-menu-item-headline">Anular orden</span>
-      </button>
+      <!-- Panel lateral de apoyo (Supporting Panel 360dp) -->
+      <aside class="md-layout-supporting-panel-aside" aria-label="Resumen de comanda">
+        <article class="md-card md-card-filled">
+          <div class="md-card-header">
+            <h4 class="md-type-title-medium">Comanda · Mesa 04</h4>
+            <p class="md-type-body-small">Mesero: Carlos M. · 4 productos</p>
+          </div>
+          <div class="md-card-content">
+            <p class="md-type-body-medium">1× Hamburguesa Clásica · $ 28.000</p>
+            <p class="md-type-body-medium">1× Papas Rústicas · $ 14.000</p>
+            <p class="md-type-body-medium">1× Cerveza Artesanal · $ 16.000</p>
+            <p class="md-type-body-medium">1× Limonada Natural · $ 10.000</p>
+          </div>
+          <div class="md-card-actions">
+            <button type="button" class="md-button md-button-filled">
+              <span class="md-button-label">Enviar a cocina · $ 68.000</span>
+            </button>
+          </div>
+        </article>
+      </aside>
     </div>
   </div>
-
 </div>
-
-
-
-
-
-
-
-  </main>
 
 
 

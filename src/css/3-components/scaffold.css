@@ -1,0 +1,359 @@
+/* ==========================================================================
+   src/css/3-components/scaffold.css — SCAFFOLD (Layout Canónico M3)
+   ==========================================================================
+
+   QUE HACE
+   --------
+   Arquitectura estructural de pantalla de Material Design 3. Ensambla y
+   orquesta los slots de ventana (Top App Bar sticky, Navigation Rail lateral,
+   Navigation Bar inferior, cuerpo con scroll independiente y FAB flotante seguro),
+   proporcionando el esqueleto de aplicación (App Shell) y la rejilla responsiva
+   (.md-grid) según las Window Size Classes de M3 (Compact, Medium, Expanded).
+
+   ANATOMIA
+   --------
+     <div class="md-scaffold">
+       <div class="md-scaffold-header"> ... Top App Bar sticky ... </div>
+       <div class="md-scaffold-body">
+         <div class="md-scaffold-nav"> ... Navigation Rail o Bar ... </div>
+         <main class="md-scaffold-main">
+           <div class="md-grid"> ... Rejilla y Contenido ... </div>
+         </main>
+       </div>
+       <div class="md-scaffold-fab"> ... FAB flotante seguro ... </div>
+       <div class="md-scaffold-snackbar"> ... Snackbar anclado ... </div>
+     </div>
+
+   FUENTES
+   -------
+   - m3.material.io/foundations/layout/applying-layout/window-size-classes
+   - m3.material.io/foundations/layout/canonical-layouts/overview
+   - m3.material.io/foundations/layout/understanding-layout/spacing
+   ========================================================================== */
+
+/* Contenedor raíz de pantalla (App Shell M3) */
+.md-scaffold {
+  container-type: inline-size;
+  container-name: scaffold;
+  display: flex;
+  flex-direction: column;
+  inline-size: 100%;
+  block-size: 100dvh;
+  background-color: var(--md-sys-color-background);
+  color: var(--md-sys-color-on-background);
+  position: relative;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Ranura superior de cabecera (Sticky Top App Bar) */
+.md-scaffold-header {
+  flex-shrink: 0;
+  position: sticky;
+  inset-block-start: var(--md-sys-measurement-space-0);
+  inline-size: 100%;
+  z-index: 1;
+  box-sizing: border-box;
+}
+
+/* Cuerpo flexible: aloja la navegación lateral y el contenido principal */
+.md-scaffold-body {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  min-block-size: var(--md-sys-measurement-space-0);
+  min-inline-size: var(--md-sys-measurement-space-0);
+  overflow: hidden;
+  position: relative;
+  box-sizing: border-box;
+}
+
+/* Ranura adaptable de navegación (Rail lateral o Bar inferior) */
+.md-scaffold-nav {
+  display: flex;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1;
+}
+
+/* Integración canónica con Navigation Rail (Disposición en fila para escritorio / tablet) */
+.md-scaffold:has(> .md-scaffold-nav > .md-navigation-rail) {
+  flex-direction: row;
+}
+
+.md-scaffold-nav > .md-navigation-rail {
+  position: relative;
+  inset-block: auto;
+  inset-inline-start: auto;
+  block-size: 100%;
+  min-block-size: 100%;
+  z-index: 1;
+  background-color: var(--md-sys-color-surface);
+  border-inline-end: var(--md-sys-shape-stroke-thin) solid var(--md-sys-color-outline-variant);
+  box-sizing: border-box;
+  padding-block-start: var(--md-sys-measurement-space-150); /* 12dp: alinea coaxialmente el botón menú (40dp) en el eje de 32dp de la Top App Bar (64dp) */
+}
+
+/* Integración canónica con Navigation Bar inferior (Disposición móvil / Compact) */
+.md-scaffold-nav:has(> .md-navigation-bar) {
+  inline-size: 100%;
+  flex-shrink: 0;
+}
+
+.md-scaffold-nav > .md-navigation-bar {
+  inline-size: 100%;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* Contenedor vertical de contenido (Header + Main) cuando coexiste con Rail lateral */
+.md-scaffold-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-inline-size: var(--md-sys-measurement-space-0);
+  min-block-size: var(--md-sys-measurement-space-0);
+  overflow: hidden;
+  position: relative;
+  z-index: 0;
+  box-sizing: border-box;
+}
+
+.md-scaffold-content > .md-scaffold-body {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  min-block-size: var(--md-sys-measurement-space-0);
+  min-inline-size: var(--md-sys-measurement-space-0);
+  overflow: hidden;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.md-scaffold-content > .md-scaffold-main {
+  flex: 1;
+  min-inline-size: var(--md-sys-measurement-space-0);
+  min-block-size: var(--md-sys-measurement-space-0);
+}
+
+/* Área de contenido principal con desplazamiento independiente */
+.md-scaffold-main {
+  flex: 1;
+  min-inline-size: var(--md-sys-measurement-space-0);
+  min-block-size: var(--md-sys-measurement-space-0);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  position: relative;
+  box-sizing: border-box;
+  padding: var(--md-sys-measurement-layout-margin-compact);
+}
+
+@container scaffold (min-width: 600px) {
+  .md-scaffold-main {
+    padding: var(--md-sys-measurement-layout-margin-expanded);
+  }
+}
+
+/* Ranura segura para botón de acción flotante (FAB) */
+.md-scaffold-fab {
+  position: fixed;
+  inset-inline-end: var(--md-sys-measurement-space-200);
+  inset-block-end: var(--md-sys-measurement-space-200);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.md-scaffold-fab > * {
+  pointer-events: auto;
+}
+
+/* Blindaje ergonómico M3: elevación automática del FAB sobre la barra inferior de navegación */
+.md-scaffold:has(.md-navigation-bar) .md-scaffold-fab {
+  inset-block-end: calc(var(--md-sys-measurement-navigation-bar-height) + var(--md-sys-measurement-space-200));
+}
+
+/* Ranura segura para avisos efímeros (Snackbar) */
+.md-scaffold-snackbar {
+  position: fixed;
+  inset-inline: var(--md-sys-measurement-space-0);
+  inset-block-end: var(--md-sys-measurement-space-200);
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.md-scaffold:has(.md-navigation-bar) .md-scaffold-snackbar {
+  inset-block-end: calc(var(--md-sys-measurement-navigation-bar-height) + var(--md-sys-measurement-space-200));
+}
+
+/* Compensación de desplazamiento cuando existe navegación inferior */
+.md-scaffold:has(.md-navigation-bar) .md-scaffold-main {
+  padding-block-end: calc(var(--md-sys-measurement-navigation-bar-height) + var(--md-sys-measurement-layout-margin-compact));
+}
+
+/* ==========================================================================
+   REJILLA RESPONSIVA CANÓNICA M3 (.md-grid)
+   ==========================================================================
+   Compact (< 600px):  4 columnas, gutters 16dp
+   Medium  (600-839px): 8 columnas, gutters 24dp
+   Expanded (>= 840px): 12 columnas, gutters 24dp
+   ========================================================================== */
+.md-grid {
+  display: grid;
+  inline-size: 100%;
+  max-inline-size: 100%;
+  box-sizing: border-box;
+  grid-template-columns: repeat(4, minmax(var(--md-sys-measurement-space-0), 1fr));
+  gap: var(--md-sys-measurement-layout-gutter-compact);
+}
+
+@container scaffold (min-width: 600px) {
+  .md-grid {
+    grid-template-columns: repeat(8, minmax(var(--md-sys-measurement-space-0), 1fr));
+    gap: var(--md-sys-measurement-layout-gutter-expanded);
+  }
+}
+
+@container scaffold (min-width: 840px) {
+  .md-grid {
+    grid-template-columns: repeat(12, minmax(var(--md-sys-measurement-space-0), 1fr));
+    gap: var(--md-sys-measurement-layout-gutter-expanded);
+  }
+}
+
+.md-grid > * {
+  min-inline-size: var(--md-sys-measurement-space-0);
+  box-sizing: border-box;
+}
+
+/* Ocupación de columnas (Spans): Base Compact acotada a máximo 4 columnas */
+.md-col-full { grid-column: 1 / -1; }
+.md-col-span-1  { grid-column: span 1; }
+.md-col-span-2  { grid-column: span 2; }
+.md-col-span-3  { grid-column: span 3; }
+.md-col-span-4,
+.md-col-span-5,
+.md-col-span-6,
+.md-col-span-7,
+.md-col-span-8,
+.md-col-span-9,
+.md-col-span-10,
+.md-col-span-11,
+.md-col-span-12 { grid-column: 1 / -1; }
+
+@container scaffold (min-width: 600px) {
+  .md-col-span-4  { grid-column: span 4; }
+  .md-col-span-5  { grid-column: span 5; }
+  .md-col-span-6  { grid-column: span 6; }
+  .md-col-span-7  { grid-column: span 7; }
+  .md-col-span-8,
+  .md-col-span-9,
+  .md-col-span-10,
+  .md-col-span-11,
+  .md-col-span-12 { grid-column: 1 / -1; }
+}
+
+@container scaffold (min-width: 840px) {
+  .md-col-span-8  { grid-column: span 8; }
+  .md-col-span-9  { grid-column: span 9; }
+  .md-col-span-10 { grid-column: span 10; }
+  .md-col-span-11 { grid-column: span 11; }
+  .md-col-span-12 { grid-column: 1 / -1; }
+}
+
+/* ==========================================================================
+   LAYOUTS CANÓNICOS M3
+   ========================================================================== */
+
+/* Panel de Apoyo (Supporting Panel 360dp · POS / Resumen de comanda) */
+.md-layout-supporting-panel {
+  display: flex;
+  flex-direction: column;
+  inline-size: 100%;
+  flex: 1;
+  min-block-size: var(--md-sys-measurement-space-0);
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.md-layout-supporting-panel-main {
+  flex: 1;
+  min-inline-size: var(--md-sys-measurement-space-0);
+  min-block-size: var(--md-sys-measurement-space-0);
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: var(--md-sys-measurement-layout-margin-compact);
+}
+
+@container scaffold (min-width: 600px) {
+  .md-layout-supporting-panel-main {
+    padding: var(--md-sys-measurement-layout-margin-expanded);
+  }
+}
+
+.md-layout-supporting-panel-side,
+.md-layout-supporting-panel-aside {
+  inline-size: 100%;
+  box-sizing: border-box;
+  border-block-start: var(--md-sys-shape-stroke-thin) solid var(--md-sys-color-outline-variant);
+  background-color: var(--md-sys-color-surface-container-low);
+  padding: var(--md-sys-measurement-layout-margin-compact);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+@container scaffold (min-width: 840px) {
+  .md-layout-supporting-panel {
+    flex-direction: row;
+    block-size: 100%;
+    overflow: hidden;
+  }
+
+  .md-layout-supporting-panel-side,
+  .md-layout-supporting-panel-aside {
+    inline-size: var(--md-sys-measurement-layout-supporting-panel-width);
+    flex-shrink: 0;
+    border-block-start: none;
+    border-inline-start: var(--md-sys-shape-stroke-thin) solid var(--md-sys-color-outline-variant);
+    padding: var(--md-sys-measurement-layout-margin-expanded);
+  }
+}
+
+/* Lista - Detalle (List-Detail responsivo) */
+.md-layout-list-detail {
+  display: flex;
+  flex-direction: column;
+  inline-size: 100%;
+  flex: 1;
+  min-block-size: var(--md-sys-measurement-space-0);
+  box-sizing: border-box;
+}
+
+.md-layout-list-pane {
+  inline-size: 100%;
+  box-sizing: border-box;
+}
+
+.md-layout-detail-pane {
+  flex: 1;
+  min-inline-size: var(--md-sys-measurement-space-0);
+  box-sizing: border-box;
+}
+
+@container scaffold (min-width: 840px) {
+  .md-layout-list-detail {
+    flex-direction: row;
+  }
+
+  .md-layout-list-pane {
+    inline-size: var(--md-sys-measurement-layout-supporting-panel-width);
+    flex-shrink: 0;
+    border-inline-end: var(--md-sys-shape-stroke-thin) solid var(--md-sys-color-outline-variant);
+    overflow-y: auto;
+  }
+}

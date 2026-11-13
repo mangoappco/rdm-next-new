@@ -196,23 +196,23 @@
               block-size var(--md-sys-motion-duration-short2) var(--md-sys-motion-easing-standard);
 }
 
-/* Estado activo: gobernado por aria-selected (WAI-ARIA), sin clase cosmética.
+/* Estado activo: gobernado por aria-current="page" o aria-selected="true" (WAI-ARIA Landmark & Tabs), sin clase cosmética.
    Fondo de la pastilla y crecimiento 32 -> 64 con la transicion canonica. */
-.md-navigation-bar-item[aria-selected="true"] .md-navigation-bar-indicator {
+.md-navigation-bar-item:is([aria-current="page"], [aria-selected="true"]) .md-navigation-bar-indicator {
   inline-size: var(--md-sys-measurement-navigation-bar-indicator-width); /* 64dp */
   background-color: var(--md-sys-color-secondary-container);
 }
 
-.md-navigation-bar-item[aria-selected="true"] {
+.md-navigation-bar-item:is([aria-current="page"], [aria-selected="true"]) {
   color: var(--md-sys-color-on-surface); /* etiqueta activa */
 }
 
-.md-navigation-bar-item[aria-selected="true"] .md-navigation-bar-icon {
+.md-navigation-bar-item:is([aria-current="page"], [aria-selected="true"]) .md-navigation-bar-icon {
   color: var(--md-sys-color-on-secondary-container);
   --md-sys-icon-fill: var(--md-sys-icon-fill-full); /* El glifo relleno marca SELECCION (patron local de tabs.css) */
 }
 
-.md-navigation-bar-item[aria-selected="true"] .md-navigation-bar-label {
+.md-navigation-bar-item:is([aria-current="page"], [aria-selected="true"]) .md-navigation-bar-label {
   font-weight: var(--md-sys-typescale-label-medium-weight-prominent); /* canon $active-label-text-weight */
 }
 
@@ -225,7 +225,7 @@
    la curva standard que material-web pone en el swap de la etiqueta.
    ------------------------------------------------------------------------ */
 .md-navigation-bar-selected-label
-  .md-navigation-bar-item:not([aria-selected="true"])
+  .md-navigation-bar-item:not([aria-current="page"]):not([aria-selected="true"])
   .md-navigation-bar-label {
   block-size: 0;
   opacity: 0;
@@ -321,12 +321,12 @@
 }
 
 /* --- ESTADO ACTIVO (M3 Selection) --- */
-.md-navigation-bar-horizontal .md-navigation-bar-item[aria-selected="true"] {
+.md-navigation-bar-horizontal .md-navigation-bar-item:is([aria-current="page"], [aria-selected="true"]) {
   background-color: var(--md-sys-color-secondary-container);
   color: var(--md-sys-color-on-secondary-container);
 }
 
-.md-navigation-bar-horizontal .md-navigation-bar-item[aria-selected="true"] .md-navigation-bar-icon {
+.md-navigation-bar-horizontal .md-navigation-bar-item:is([aria-current="page"], [aria-selected="true"]) .md-navigation-bar-icon {
   --md-sys-icon-fill: var(--md-sys-icon-fill-full);
 }
 
@@ -378,29 +378,29 @@ main:has(~ * .md-navigation-bar.md-navigation-bar-horizontal.md-navigation-bar-f
    ========================================================================== */
 
 /* Hover en ítem inactivo: expande la píldora a 64dp y muestra 8% on-surface */
-.md-navigation-bar-item:hover:not(:disabled):not([aria-disabled="true"]):not([aria-selected="true"]) .md-navigation-bar-indicator {
+.md-navigation-bar-item:hover:not(:disabled):not([aria-disabled="true"]):not([aria-current="page"]):not([aria-selected="true"]) .md-navigation-bar-indicator {
   inline-size: var(--md-sys-measurement-navigation-bar-indicator-width);
 }
 
-.md-navigation-bar-item:hover:not(:disabled):not([aria-disabled="true"]):not([aria-selected="true"]) .md-navigation-bar-indicator::before {
+.md-navigation-bar-item:hover:not(:disabled):not([aria-disabled="true"]):not([aria-current="page"]):not([aria-selected="true"]) .md-navigation-bar-indicator::before {
   background-color: var(--md-sys-color-on-surface);
   opacity: var(--md-sys-state-hover-state-layer-opacity);
 }
 
 /* Hover en ítem activo: sobreimprime 8% on-secondary-container en la pastilla activa */
-.md-navigation-bar-item[aria-selected="true"]:hover:not(:disabled):not([aria-disabled="true"]) .md-navigation-bar-indicator::before {
+.md-navigation-bar-item:is([aria-current="page"], [aria-selected="true"]):hover:not(:disabled):not([aria-disabled="true"]) .md-navigation-bar-indicator::before {
   background-color: var(--md-sys-color-on-secondary-container);
   opacity: var(--md-sys-state-hover-state-layer-opacity);
 }
 
 /* Pressed / Active en la pastilla (State Layer pressed canónico, 12%):
    Sustituye la onda invasiva de ripple evitando recortar o desbordar el badge. */
-.md-navigation-bar-item:active:not(:disabled):not([aria-disabled="true"]):not([aria-selected="true"]) .md-navigation-bar-indicator::before {
+.md-navigation-bar-item:active:not(:disabled):not([aria-disabled="true"]):not([aria-current="page"]):not([aria-selected="true"]) .md-navigation-bar-indicator::before {
   background-color: var(--md-sys-color-on-surface);
   opacity: var(--md-sys-state-pressed-state-layer-opacity);
 }
 
-.md-navigation-bar-item[aria-selected="true"]:active:not(:disabled):not([aria-disabled="true"]) .md-navigation-bar-indicator::before {
+.md-navigation-bar-item:is([aria-current="page"], [aria-selected="true"]):active:not(:disabled):not([aria-disabled="true"]) .md-navigation-bar-indicator::before {
   background-color: var(--md-sys-color-on-secondary-container);
   opacity: var(--md-sys-state-pressed-state-layer-opacity);
 }

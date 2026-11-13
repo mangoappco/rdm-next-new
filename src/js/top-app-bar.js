@@ -72,9 +72,27 @@ export function initTopAppBar() {
       }
       y = Math.max(0, y);
 
-      /* Scrolled state: par canon de effects (short4 + effects-default) */
+      const targetScaffold = (ultimoTarget && ultimoTarget.nodeType === 1)
+        ? ultimoTarget.closest('.md-scaffold')
+        : null;
+
+      /* Scrolled state: par canon de effects (short4 + effects-default)
+         Aislamiento por instancia: si la barra vive en un Scaffold, solo responde
+         al scroll de ese mismo Scaffold; si vive fuera, responde al scroll de ventana */
       scrollBars.forEach((bar) => {
-        bar.classList.toggle('md-top-app-bar-scrolled', y > 0);
+        const barScaffold = bar.closest('.md-scaffold');
+        if (barScaffold) {
+          if (targetScaffold === barScaffold) {
+            const scrollerY = Math.max(0, ultimoTarget.scrollTop || 0);
+            bar.classList.toggle('md-top-app-bar-scrolled', scrollerY > 0);
+          } else if (!ultimoTarget) {
+            const main = barScaffold.querySelector('.md-scaffold-main');
+            const initialY = main ? main.scrollTop : 0;
+            bar.classList.toggle('md-top-app-bar-scrolled', initialY > 0);
+          }
+        } else if (!targetScaffold) {
+          bar.classList.toggle('md-top-app-bar-scrolled', y > 0);
+        }
       });
 
       /* COMPRESS EFFECT con inercia (canon Compose exitUntilCollapsed):
@@ -89,8 +107,23 @@ export function initTopAppBar() {
       let enMovimiento = false;
 
       collapseBars.forEach((bar) => {
+        const barScaffold = bar.closest('.md-scaffold');
+        let barY = y;
+        if (barScaffold) {
+          if (targetScaffold === barScaffold) {
+            barY = Math.max(0, ultimoTarget.scrollTop || 0);
+          } else if (!ultimoTarget) {
+            const main = barScaffold.querySelector('.md-scaffold-main');
+            barY = main ? main.scrollTop : 0;
+          } else {
+            return;
+          }
+        } else if (targetScaffold) {
+          return;
+        }
+
         const delta = compressionDelta(bar);
-        const objetivo = Math.min(1, y / delta);
+        const objetivo = Math.min(1, barY / delta);
         let actual = progresoActual.get(bar) || 0;
 
         /* Persecucion friccional: el deficit respecto al objetivo decae

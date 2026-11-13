@@ -393,7 +393,12 @@ for (const file of files) {
   for (let i = 0; i < lines.length; i++) {
     const lineText = lines[i];
     // no contar numeros dentro de nombres de token, p.ej. --md-ref-spacing-100
-    const probe = lineText.replace(/--[a-z0-9-]+/g, 'VAR');
+    let probe = lineText.replace(/--[a-z0-9-]+/g, 'VAR');
+
+    // Autorizar cotas canónicas de breakpoint M3 (600px, 840px, 1200px) exclusivamente en cabeceras @media y @container
+    if (/@(media|container)\b/.test(probe)) {
+      probe = probe.replace(/\b(600|840|1200)px\b/g, 'BREAKPOINT');
+    }
 
     for (const check of rawChecks) {
       for (const _m of Matches(probe, check.Pattern)) {
