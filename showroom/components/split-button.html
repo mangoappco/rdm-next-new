@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Split button de RDM Next: acción principal y disparador de menú en una pieza de dos segmentos con costura de 2dp, M3 Expressive.">
+  <title>Split button — RDM ManGo! App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+  <link rel="stylesheet" href="../../src/css/main.css?v=92">
+  <link rel="stylesheet" href="../assets/showroom.css">
+  <script type="module" src="../../src/js/main.js"></script>
+  <script src="../assets/showroom.js"></script>
+</head>
+
+<!--
+  VISTA ATOMICA DE SPLIT BUTTON (M3 Expressive)
+  Estructura minimalista de Dos Bloques con entrega iterativa Par por Par.
+  Bloque 1: Especificación técnica y anatomía.
+  Bloque 2: Casos de uso ManGo! App (POS / KDS).
+
+  ESTADO DE LA VISTA
+  ------------------
+  Par 1 de 5, cerrado: anatomía base filled con su menu-button.
+  Pendientes: variantes de color, escala de tamaños, estados (morph de la
+  esquina interior incluido) y el bloque 2.
+-->
+
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <!-- CABECERA INSTITUCIONAL DEL SHOWROOM (DOGFOODING) -->
+  <header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll role="banner" aria-label="Cabecera institucional del showroom">
+    <div class="md-top-app-bar-leading">
+      <a href="../index.html" class="md-icon-button" aria-label="Volver al catálogo">
+        <span class="md-icon" aria-hidden="true">arrow_back</span>
+      </a>
+    </div>
+    <div class="md-top-app-bar-content">
+      <span class="md-top-app-bar-title">Split button</span>
+      <span class="md-top-app-bar-subtitle">RDM Next · ManGo! App</span>
+    </div>
+    <div class="md-top-app-bar-trailing">
+      <button type="button" class="md-icon-button" data-theme-toggle aria-label="Tema del sistema activo">
+        <span class="md-icon" aria-hidden="true">brightness_auto</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="sr-page">
+
+    <!-- PORTADA DEL COMPONENTE -->
+    <header class="sr-header">
+      <h1 class="md-type-display-large">Split button</h1>
+      <p class="md-type-body-large">Los botones divididos abren un menú para ofrecer más opciones relacionadas con una acción.</p>
+      <p class="md-type-body-medium md-text-on-surface-variant">M3 Expressive · Bloque 1 · Par 1 de 5</p>
+    </header>
+
+    <hr class="md-divider">
+
+    <!-- BLOQUE 1: ESPECIFICACIÓN TÉCNICA Y ANATOMÍA -->
+    <h2 class="md-type-headline-medium">Bloque 1 · Especificación técnica y anatomía</h2>
+
+    <!-- PAREJA PAR 1: Anatomía base filled -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Anatomía base filled</h3>
+      <p class="md-type-body-medium">La acción principal y el disparador del menú comparten relleno, canto y altura: los une una costura de 2dp, no un borde.</p>
+
+      <div class="sr-specimen sr-specimen-menu">
+        <div class="md-split-button">
+          <button type="button" class="md-button md-button-filled">
+            <span class="md-button-label">Cobrar</span>
+          </button>
+          <div class="md-menu-anchor">
+            <button type="button" class="md-button md-button-filled md-split-button-menu" id="split-menu-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="split-menu-demo" aria-label="Más formas de cobro">
+              <span class="md-icon" aria-hidden="true">arrow_drop_down</span>
+            </button>
+            <div class="md-menu" id="split-menu-demo" role="menu" aria-labelledby="split-menu-trigger">
+              <button type="button" class="md-menu-item" role="menuitem">
+                <span class="md-menu-item-headline">Cobrar en efectivo</span>
+              </button>
+              <button type="button" class="md-menu-item" role="menuitem">
+                <span class="md-menu-item-headline">Cobrar con tarjeta</span>
+              </button>
+              <button type="button" class="md-menu-item" role="menuitem">
+                <span class="md-menu-item-headline">Dividir la cuenta</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;div class="md-split-button"&gt;
+  &lt;!-- Slot: Acción principal --&gt;
+  &lt;button type="button" class="md-button md-button-filled"&gt;
+    &lt;span class="md-button-label"&gt;Cobrar&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;!-- Slot: Disparador del menú --&gt;
+  &lt;div class="md-menu-anchor"&gt;
+    &lt;button type="button" class="md-button md-button-filled md-split-button-menu" id="split-menu-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="split-menu-demo" aria-label="Más formas de cobro"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;arrow_drop_down&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;div class="md-menu" id="split-menu-demo" role="menu" aria-labelledby="split-menu-trigger"&gt;
+      &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+        &lt;span class="md-menu-item-headline"&gt;Cobrar en efectivo&lt;/span&gt;
+      &lt;/button&gt;
+      &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+        &lt;span class="md-menu-item-headline"&gt;Cobrar con tarjeta&lt;/span&gt;
+      &lt;/button&gt;
+      &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+        &lt;span class="md-menu-item-headline"&gt;Dividir la cuenta&lt;/span&gt;
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA PAR 1: hasta aqui -->
+
+  </main>
+</body>
+</html>

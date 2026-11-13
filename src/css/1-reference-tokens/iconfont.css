@@ -522,4 +522,30 @@
      de componente de M3 Expressive.
      ------------------------------------------------------------------------ */
   --md-ref-icon-size-checkbox: 18px;
+
+  /* ------------------------------------------------------------------------
+     SPLIT BUTTON — EL CHEVRON DE 22, 22, 26, 38 Y 50
+     ------------------------------------------------------------------------
+     Fuente: androidx `SplitButton{XSmall,Small,Medium,Large,XLarge}Tokens.kt`,
+     VERSION 18_0_18, campo `TrailingIconSize`. El comp web de M3 no publica
+     split button --su ficha marca Web como Unavailable--, asi que la medida se
+     lee en Compose, el mismo camino que el Top App Bar.
+
+     Ninguno de los cinco numeros esta en la escalera de esta familia (20, 24,
+     32, 40) ni es paso de Space 0-900 (de 20 salta a 24). Es la medida del
+     componente, escrita una vez por Google, y por eso vive aqui con nombre
+     propio y sin apuntar a ninguna escala: el cuarto descongelamiento de esta
+     capa por una medida de M3 Expressive, despues del FAB 28, el segmented 18
+     y el checkbox 18.
+
+     El 22 se repite en xsmall y small, y aun asi se declaran los dos: la
+     escalera de tamanos del split button tiene cinco peldaños y la capa 2
+     necesita un rol por peldaño, no cuatro. Repetir el valor es mas barato y
+     mas honesto que hacer que `small` apunte a `xsmall`.
+     ------------------------------------------------------------------------ */
+  --md-ref-icon-size-split-button-xsmall: 22px;
+  --md-ref-icon-size-split-button-small: 22px;
+  --md-ref-icon-size-split-button-medium: 26px;
+  --md-ref-icon-size-split-button-large: 38px;
+  --md-ref-icon-size-split-button-xlarge: 50px;
 }

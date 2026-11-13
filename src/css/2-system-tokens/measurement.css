@@ -1241,6 +1241,65 @@
   --md-sys-measurement-menu-max-height: var(--md-ref-container-height-menu-max); /* 300dp */
 
   /* ==========================================================================
+     SPLIT BUTTON — Geometría canónica M3 Expressive (Action)
+     --------------------------------------------------------------------------
+     Fuentes: androidx `SplitButton{XSmall,Small,Medium,Large,XLarge}Tokens.kt`,
+     VERSION 18_0_18. El comp web de M3 no lo implementa (m3.material.io marca
+     Web como Unavailable), asi que el contrato se audita en Compose, igual
+     que el Top App Bar.
+
+     LAS CINCO ALTURAS NO ACUÑAN PRIMITIVA NUEVA, y es la decision que hay que
+     leer antes de tocar nada: M3 las publica como `container.height` de cada
+     tamano y valen 32, 40, 56, 96 y 136dp, que son EXACTAMENTE los cinco
+     peldaños que ya viven en `1-reference-tokens/container-height.css` y que
+     el boton consume. Se mapean, no se duplican: el mismo criterio del track
+     del switch (32dp = spacing-400) y el de la navigation bar (80dp = la
+     primitiva del fab-medium). El `small` es la base, como en el boton.
+
+     LO QUE SI ES NUEVO es el chevron: 22, 22, 26, 38 y 50dp, ninguno en la
+     escalera de iconos (20, 24, 32, 40). Vive en iconfont.css.
+     ========================================================================== */
+  --md-sys-measurement-split-button-height: var(--md-ref-container-height-small);         /* 40dp */
+  --md-sys-measurement-split-button-height-xsmall: var(--md-ref-container-height-xsmall); /* 32dp */
+  --md-sys-measurement-split-button-height-medium: var(--md-ref-container-height-medium); /* 56dp */
+  --md-sys-measurement-split-button-height-large: var(--md-ref-container-height-large);   /* 96dp */
+  --md-sys-measurement-split-button-height-xlarge: var(--md-ref-container-height-xlarge); /* 136dp */
+
+  /* La costura entre los dos segmentos: 2dp en los cinco tamanos. */
+  --md-sys-measurement-split-button-between-space: var(--md-ref-spacing-25);              /* 2dp */
+
+  /* Esquina interior en reposo, la cara que mira a la costura: 4dp en xs, s y
+     m; 8dp en l; 12dp en xl. El canto exterior lo pone el propio boton con su
+     `corner-half-<tamano>`, que en una caja de 40 se recorta a pildora: es el
+     outer corner full de M3 sin su 9999px. El morph de hover/focus/pressed
+     (8, 12, 12, 20 y 20) NO se declara aqui: es estado, y va en su par. */
+  --md-sys-measurement-split-button-inner-corner: var(--md-sys-shape-corner-extra-small);      /* 4dp */
+  --md-sys-measurement-split-button-inner-corner-large: var(--md-sys-shape-corner-small);      /* 8dp */
+  --md-sys-measurement-split-button-inner-corner-xlarge: var(--md-sys-shape-corner-medium);    /* 12dp */
+
+  --md-sys-measurement-split-button-icon-size: var(--md-ref-icon-size-split-button-small);          /* 22dp */
+  --md-sys-measurement-split-button-icon-size-xsmall: var(--md-ref-icon-size-split-button-xsmall);  /* 22dp */
+  --md-sys-measurement-split-button-icon-size-medium: var(--md-ref-icon-size-split-button-medium);  /* 26dp */
+  --md-sys-measurement-split-button-icon-size-large: var(--md-ref-icon-size-split-button-large);    /* 38dp */
+  --md-sys-measurement-split-button-icon-size-xlarge: var(--md-ref-icon-size-split-button-xlarge);  /* 50dp */
+
+  /* El padding que va del borde delantero a la etiqueta es el MISMO del boton
+     por tamano (12, 16, 24, 48 y 64), asi que el segmento lo hereda de su
+     propia clase de tamano y aqui no se repite. Solo se acorta el lado que
+     mira a la costura, y solo donde M3 lo acorta: 10dp en xs y 12dp en s. En
+     m, l y xl los dos lados valen lo mismo. */
+  --md-sys-measurement-split-button-trailing-space: var(--md-ref-spacing-150);            /* 12dp */
+  --md-sys-measurement-split-button-trailing-space-xsmall: var(--md-ref-spacing-125);     /* 10dp */
+
+  /* Anchura del segmento del menu. NO es un token de M3: es una derivacion, y
+     se deja escrita aqui para que nadie la busque en el SCSS. M3 la construye
+     con sus dos paddings mas el glifo --13+22+13 en xs y s, 15+26+15 en m,
+     29+38+29 en l, 43+50+43 en xl-- y las cinco sumas dan 48, 48, 56, 96 y
+     136, o sea el alto con un piso de 48dp de touch target. El componente lo
+     calcula con max() y el glifo va centrado, asi que los cuatro paddings
+     intermedios no se declaran. */
+
+  /* ==========================================================================
      TEXT FIELD — Altura de contenedor (M3: 56dp = container-height-medium)
      -------------------------------------------------------------------------- */
   --md-sys-measurement-text-field-container-height: var(--md-ref-container-height-medium);

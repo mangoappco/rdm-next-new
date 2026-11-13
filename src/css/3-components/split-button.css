@@ -1,0 +1,152 @@
+/* ==========================================================================
+   src/css/3-components/split-button.css — SPLIT BUTTON (M3 Expressive)
+   ==========================================================================
+
+   QUE HACE
+   --------
+   Una accion principal y un disparador de menu en una sola pieza de dos
+   segmentos, separados por una costura de 2dp. El segmento izquierdo es un
+   `.md-button` normal; el derecho es un `.md-button` cuadrado que abre un
+   `.md-menu`. No hay componente nuevo por dentro: esto es la receta que une
+   dos botones y un menu ya existentes.
+
+   PAR 1 — LO QUE ESTA Y LO QUE NO
+   -------------------------------
+   Esta hoja cubre la anatomia base `filled` en su tamano por defecto (small,
+   40dp): la costura, las esquinas interiores, el ancho derivado del segmento
+   del menu y su chevron. NO estan todavia las otras tres variantes de color
+   (outlined, tonal, elevated), ni los cinco tamanos como escala visible, ni
+   los estados (incluido el morph de la esquina interior al pasar el raton,
+   que M3 publica como 8/12/12/20/20). Cada uno tiene su par.
+
+   FUENTES
+   -------
+   - androidx `SplitButton{XSmall,Small,Medium,Large,XLarge}Tokens.kt`,
+     VERSION 18_0_18: alturas, costura, esquinas interiores, espacios del
+     segmento y tamano del chevron.
+   - m3.material.io/components/split-button: anatomia y las cuatro variantes.
+   - El comp web de M3 NO lo implementa (Web: Unavailable), asi que no hay
+     `_md-comp-split-button.scss` que leer. El contrato es Compose.
+
+   LAS CUATRO DECISIONES QUE NO SE LEEN EN EL CODIGO
+   -------------------------------------------------
+   1. LAS ALTURAS SON LAS DEL BOTON. M3 publica `container.height` por tamano
+      --32, 40, 56, 96, 136-- y son los mismos cinco peldaños que el boton ya
+      consume. El split no acuña copia: hereda la altura de la clase de tamano
+      de cada segmento. Por eso aqui no hay una `--md-comp-split-button-height`
+      que mande sobre la caja; solo se lee para derivar el ancho del menu.
+
+   2. EL ANCHO DEL SEGMENTO DEL MENU SE CALCULA, NO SE MEMORIZA.
+      `max(alto del boton, 48dp)` da 48, 48, 56, 96 y 136, que es lo que suman
+      en M3 sus dos paddings mas el glifo en cada tamano. El 48 es el touch
+      target: en xs (32) y s (40) el segmento es mas ancho que alto para no
+      bajar del minimo tactil. Los cuatro paddings intermedios --13, 15, 29 y
+      43-- son (ancho - icono) / 2 y no se declaran: el glifo va centrado por
+      el `justify-content: center` que ya trae `.md-button`.
+
+   3. EL CANTO EXTERIOR NO SE TOCA. M3 lo define `corner.full` (50%), y el
+      boton de esta casa ya llega a pildora con `corner-half-<tamano>`, que en
+      una caja de 40 recorta a 20. Escribir 9999px aqui seria el mismo pildora
+      con otro nombre y romperia la transicion de forma del boton.
+
+   4. EL SEGMENTO NO ES UN ICON-BUTTON. Es un `.md-button` con la etiqueta
+      sustituida por el glifo, porque comparte relleno, capa de estado, anillo
+      de foco y onda con la accion principal: los dos tienen que verse como la
+      misma pieza. Un `md-icon-button` al lado de un `md-button` no comparte
+      ni el relleno ni el radio.
+
+   LO QUE NO SE IMPLEMENTA, Y POR QUE
+   ----------------------------------
+   - El desplazamiento optico del chevron (-1, -1, -2, -3 y -6dp en las
+     implementaciones de terceros) NO se aplica: androidx v18_0_18 no lo
+     publica. Inventarlo seria el mismo error que el morph de pulsado: una
+     curva que nadie ha medido.
+   - El giro del chevron y el redondeo del segmento al abrir el menu son
+     estado abierto, no anatomia: van en el par de estados, con la misma
+     disciplina que el giro de la flecha del Select.
+   ========================================================================== */
+
+.md-split-button {
+  /* Los cuatro roles del componente. Viven en el contenedor y bajan a los dos
+     segmentos por herencia: ninguno de los dos los declara, asi que no hay
+     pelea de especificidad ni depende del orden de las clases en el marcado. */
+  --md-comp-split-button-between-space: var(--md-sys-measurement-split-button-between-space);
+  --md-comp-split-button-inner-corner: var(--md-sys-measurement-split-button-inner-corner);
+  --md-comp-split-button-icon-size: var(--md-sys-measurement-split-button-icon-size);
+  --md-comp-split-button-trailing-space: var(--md-sys-measurement-split-button-trailing-space);
+
+  display: inline-flex;
+
+  /* `stretch` y no `center`: los dos segmentos tienen la misma altura porque
+     comparten la clase de tamano, y estirar garantiza que una diferencia de
+     contenido no los descuadre. La costura la pone el gap, no un borde. */
+  align-items: stretch;
+  gap: var(--md-comp-split-button-between-space);
+
+  /* Igual que `.md-button`: la pieza se alinea por el medio de la linea. */
+  vertical-align: middle;
+}
+
+/* ---------------------------------------------------------------------------
+   EL SEGMENTO DE LA ACCION
+   ---------------------------------------------------------------------------
+   No declara nada de la caja: relleno, altura, tipografia, capa de estado,
+   onda y canto exterior son los del boton. Solo se corrigen las dos cosas que
+   la costura cambia: la cara que mira al menu y el aire de ese lado.
+
+   La esquina se escribe en longhands y no con `border-radius` porque los otros
+   dos cantos se quedan como estan. Con el shorthand habria que repetir el
+   valor del boton y quedaria atado a su escalera.
+   ------------------------------------------------------------------------ */
+
+.md-split-button > .md-button:not(.md-split-button-menu) {
+  border-start-end-radius: var(--md-comp-split-button-inner-corner);
+  border-end-end-radius: var(--md-comp-split-button-inner-corner);
+
+  /* El padding del lado de la costura. En small son 12dp: dos menos que los
+     16 del borde delantero. El valor no es un capricho, es el de M3, y hace
+     que la etiqueta caiga centrada entre el canto izquierdo y el chevron. */
+  padding-inline-end: var(--md-comp-split-button-trailing-space);
+}
+
+/* ---------------------------------------------------------------------------
+   EL SEGMENTO DEL MENU
+   ---------------------------------------------------------------------------
+   Cuadrado en m, l y xl; mas ancho que alto en xs y s por el piso de 48dp.
+   ------------------------------------------------------------------------ */
+
+.md-split-button .md-split-button-menu {
+  /* El glifo. `.md-icon` lee este rol en la capa de utilidades, y el boton lo
+     reapunta a su propio tamano; aqui se reapunta otra vez, que es el mismo
+     mecanismo con el que el boton cambia el suyo. Escribir `font-size` en esta
+     capa perderia contra utilities y no haria nada. */
+  --md-sys-measurement-icon-size: var(--md-comp-split-button-icon-size);
+
+  flex: none;
+  inline-size: max(var(--md-comp-button-height), var(--md-sys-measurement-touch-target));
+
+  /* `min-inline-size: 0` NO es un descuido: el boton declara 64dp de ancho
+     minimo, que es el piso de un boton CON etiqueta. Medido sin esta linea, el
+     segmento salia de 64 en vez de 48 y la pieza dejaba de coincidir con M3
+     (48/48/56/96/136). El ancho de este segmento ya lo manda la linea de
+     arriba, asi que el piso del boton sobra, no se rebaja: se anula. */
+  min-inline-size: var(--md-sys-measurement-space-0);
+  padding-inline: var(--md-sys-measurement-space-0);
+
+  border-start-start-radius: var(--md-comp-split-button-inner-corner);
+  border-end-start-radius: var(--md-comp-split-button-inner-corner);
+}
+
+/* ---------------------------------------------------------------------------
+   EL MENU
+   ---------------------------------------------------------------------------
+   `menu.css` lo cuelga a `100% + 4dp` del ancla y lo alinea a la izquierda. En
+   un split button el ancla es el segmento derecho, y M3 alinea el menu a su
+   borde final: si no, el menu se abre hacia la derecha y se sale de la pieza
+   que lo invoca.
+   ------------------------------------------------------------------------ */
+
+.md-split-button .md-menu-anchor > .md-menu {
+  inset-inline-start: auto;
+  inset-inline-end: var(--md-sys-measurement-space-0);
+}

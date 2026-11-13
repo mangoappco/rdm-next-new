@@ -275,8 +275,21 @@
 
       Y AHORA .md-snackbar-container: el host de viewport es div directo
       y este padding engordaba la caja y creaba asimetria vertical.
+
+      Y AHORA .md-split-button, por el motivo del segmented-button: es un
+      div directo del escenario y marcado real del snippet, y el padding no
+      solo mentia en la comparacion copiable: MEDIDO, la pieza crecia de 40
+      a 72 de alto (40 + 16 arriba + 16 abajo) y de 155 a 123 de ancho, con
+      el chevron centrado en una caja que no era la suya. El componente
+      declara `stretch`, asi que el aire entraba dentro y los dos segmentos
+      se separaban de la costura. Nada de eso lo ve REGLA 11, que compara
+      marcado; se ve midiendo.
      --------------------------------------------------------------------- */
+<<<<<<< HEAD
   .sr-specimen:not(.sr-meter) > div:not(.sr-motion-dot):not(.md-divider-vertical):not(.md-button-group):not(.md-segmented-button):not(.md-row):not(.md-select):not(.md-text-field):not(.md-tabs):not(.md-snackbar-container):not(.md-menu-anchor):not(.md-scaffold) {
+=======
+  .sr-specimen:not(.sr-meter) > div:not(.sr-motion-dot):not(.md-divider-vertical):not(.md-button-group):not(.md-segmented-button):not(.md-row):not(.md-select):not(.md-text-field):not(.md-tabs):not(.md-snackbar-container):not(.md-menu-anchor):not(.md-split-button) {
+>>>>>>> 12534b0 (feat(split-button): Par 1 con anatomía base filled y su menu-button)
     padding: var(--md-ref-spacing-200);
   }
 

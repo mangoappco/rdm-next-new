@@ -18,7 +18,11 @@ Solo prohibiciones verbales. Las reglas de showroom, de capas y de ciclo no se c
 
 ## Componentes creados
 
+<<<<<<< HEAD
 Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **24 componentes y 33 vistas** (24 de componente + 9 de tokens), todas enlazadas en `showroom/index.html`. El orden es el de `index.css`:
+=======
+Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **25 componentes y 34 vistas** (25 de componente + 9 de tokens), todas enlazadas en `showroom/index.html`. El orden es el de `index.css`:
+>>>>>>> 12534b0 (feat(split-button): Par 1 con anatomía base filled y su menu-button)
 
 | Componente | Hoja | Vista |
 | --- | --- | --- |
@@ -32,6 +36,7 @@ Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **24 compo
 | Dialog | `dialog.css` | `dialog.html` |
 | List | `list.css` | `list.html` |
 | Segmented button | `segmented-button.css` | `segmented-button.html` |
+| Split button | `split-button.css` | `split-button.html` |
 | Chips | `chips.css` | `chips.html` |
 | Text Field | `text-field.css` | `text-field.html` |
 | Search | `search.css` | `search.html` |
@@ -515,7 +520,7 @@ Nada de esto se ha tocado. Está anotado para que no se dé por verdad:
 
 - `showroom.css:223` mete `padding: 16px` en todo `div` directo de `.sr-specimen`. Un specimen escrito como `<div class="md-card">` lo ganaría en silencio y REGLA 11 no lo detectaría. La card usa `<article>` por eso.
 - Tres vistas quedaron sobre el techo de prosa al recortarla: `button-group` (199 de media), `icon-button` (287 máx.) y `motion` (211 máx.).
-- El split button existe en M3 (`-split-button-{xs…xl}` + 3 `menu-button`) y depende de un `menu` que no existe. Queda registrado en `button.css`, en el bloque «LO QUE NO ESTA, Y POR QUE». Sus medidas ya están en `container-height.css:40`. **La razón cambió:** estaba refutado por «no puede abrirse sin JavaScript», y con `src/js/` eso ya no lo bloquea. Sigue sin hacerse porque nadie ha escrito el `menu`, no porque sea imposible. El FAB menu está en el mismo caso.
+- **El split button ya no está bloqueado.** Dependía de un `menu` que no existía, y el menú se publicó el 2026-11-11 (`menu.css` + `src/js/menu.js`). El componente arrancó el 2026-11-13 por el Par 1 (`split-button.css`, abajo). La nota de `button.css` que decía «dependen de un componente `menu` que no existe» quedó corregida en el mismo commit. El FAB menu sigue pendiente, pero ya no por el menú.
 - FAB y extended FAB tienen 1 de las 8 familias de color de M3. Decidido y escrito en `fab.css:448-451`.
 - `4-utilities` no publica ninguna utilidad de espaciado, así que las ranuras de la card no pueden delegar su hueco al autor: lo declara el componente.
 - **`dialog` ya no es una deuda de `main.css`.** La línea de la capa `comp` lo enunciaba como «button, card, dialog» cuando no existía, y el README §11 avisaba de ello —«esa línea es hoy más un recordatorio que una descripción: `card` ya existe y `dialog` no»—. Con la publicación esa línea describe lo que hay, así que la nota queda cerrada. **El recordatorio sigue sirviendo para los siguientes**: `3-components/index.css` avisa de los que vendrán.
@@ -661,6 +666,7 @@ Superficie flotante de Material Design 3 Expressive construida con arquitectura 
 - `tools/verify-tokens.mjs`: 0 fallos nuevos en el componente; preservado el baseline histórico de `FALLOS: 2` (`select.css:448, 453`).
 - REGLA 11: 100% de paridad byte-idéntica entre especímenes y snippets copiables.
 
+<<<<<<< HEAD
 ## Componente Scaffold (.md-scaffold) — Consolidación y Cierre de Especificación (2026-11-13)
 
 Ensamblador estructural de pantalla canónico de Material Design 3 Expressive, construido con arquitectura de dos bloques y cerrado al 100% en su Bloque 1 de especificación técnica y anatomía (7 pares normativos):
@@ -693,3 +699,21 @@ Ensamblador estructural de pantalla canónico de Material Design 3 Expressive, c
 - `tools/verify-tokens.mjs`: 0 fallos nuevos; baseline histórico intacto en `FALLOS: 2` (`select.css:448, 453`).
 - REGLA 11: 100% de correspondencia carácter a carácter entre especímenes y blueprints copiables.
 
+=======
+
+## Split button — Par 1 (2026-11-13)
+
+Hoja en `src/css/3-components/split-button.css`, vista y molde en `showroom/components/split-button.html` y `showroom/templates/split-button.template.html`, fila nueva en `showroom/index.html` y `@import` en `3-components/index.css` justo después de `menu.css`. Cierra el **Par 1: anatomía base filled con su menu-button**. Faltan las tres variantes de color restantes, la escala de tamaños, los estados (morph de la esquina interior incluido) y el bloque 2.
+
+- **El contrato es Compose, no el SCSS, porque el comp web no existe.** m3.material.io marca Web como *Unavailable* para split button y no hay `_md-comp-split-button.scss`; los valores se leen en `SplitButton{XSmall,Small,Medium,Large,XLarge}Tokens.kt`, VERSION `18_0_18`. Es el mismo camino que el Top App Bar.
+- **Las cinco alturas NO acuñan primitiva, y es la decisión que hay que leer antes de tocarlas.** `container.height` vale 32, 40, 56, 96 y 136dp, que son exactamente los cinco peldaños de `container-height.css` que el botón ya consume. Capa 2 las mapea (`--md-sys-measurement-split-button-height*`) y el componente **no** las usa para la caja: cada segmento hereda la altura de su propia clase de tamaño, así que la pieza no se descuadra ni puede tener una clase de tamaño y la otra no. Si se quieren los cinco roles con consumidor propio, eso se decide en el Par 3.
+- **Lo que sí se acuñó en Capa 1 es el chevron:** 22, 22, 26, 38 y 50dp, ninguno en la escalera de iconos (20/24/32/40) ni paso de Space. Cuarto descongelamiento por medida de componente, tras el FAB 28, el segmented 18 y el checkbox 18.
+- **El ancho del segmento del menú se calcula:** `max(alto del botón, 48dp)` da 48, 48, 56, 96 y 136. Los paddings de M3 (13, 15, 29 y 43) son `(ancho − icono) / 2` y no se declaran: el glifo va centrado. **Medido en la base: 48×40.**
+- **`min-inline-size: 0` en el segmento, y sin esa línea la pieza miente.** El botón declara 64dp de ancho mínimo, que es el piso de un botón con etiqueta; medido sin ella, el segmento salía de 64 en vez de 48.
+- **El canto exterior lo pone el botón** (`corner-half-small`, que en una caja de 40 recorta a 20) y el split solo toca las dos esquinas interiores, 4dp en la base. El outer `corner-full` de M3 no se escribe: sus 9999px romperían la transición de forma del botón.
+- **El segmento del menú es un `.md-button`, no un `md-icon-button`:** comparte relleno, capa de estado, anillo de foco y onda con la acción principal, que es lo que hace que se lean como una sola pieza.
+- **El ancla del menú es el segmento derecho**, y allí el menú se alinea a su borde final (`inset-inline-start: auto; inset-inline-end: 0`), porque `menu.css` lo cuelga a la izquierda del ancla. Medido al abrir: 4dp bajo el disparador, delta horizontal 0 y foco en el primer ítem.
+- **El desplazamiento óptico del chevron no se aplica** (−1, −1, −2, −3 y −6dp en implementaciones de terceros): androidx `v18_0_18` no lo publica. El giro del glifo y el redondeo del segmento al abrir son estado, y van en su par.
+- **Deuda pagada de paso:** `showroom.css` excluye `.md-split-button` del `padding: 16px` que recibe todo `div` directo de `.sr-specimen`. Medido antes de la exclusión: la pieza crecía de 40 a 72 de alto y de 123 a 155 de ancho, y REGLA 11 no lo veía porque compara marcado, no caja.
+- **Verificador:** `FALLOS: 3`, ninguno del componente — los dos `color-mix` del baseline de `select.css` y el `style` en línea de `lab.html` que llegó con el pull del 2026-11-13.
+>>>>>>> 12534b0 (feat(split-button): Par 1 con anatomía base filled y su menu-button)
