@@ -193,7 +193,7 @@ Para prevenir que los menús se proyecten fuera de la pantalla en esquinas crít
 - La activación con tecla `Space` en ítems `<a>` simula la pulsación nativa según WAI-ARIA APG.
 - Se integra en `src/js/ripple.js` con recorte riguroso en `overflow: hidden;` para que la onda táctil no sobrepase las esquinas redondeadas concéntricas de 8dp.
 
-## 12. Directrices Consolidadas: Scaffold y Layouts Canónicos M3 (2026-11-13)
+## 12. Directrices Consolidadas: Scaffold (App Shell M3 Expressive) (2026-11-13 / 2026-11-15)
 
 ### 12.1 Arquitectura Estructural de Pantalla y Contención de Scroll
 - **Host `.md-scaffold`:** Gobierna el viewport completo con `block-size: 100dvh; overflow: hidden;` evitando scroll parasitario en el `body`.
@@ -212,17 +212,34 @@ Para prevenir que los menús se proyecten fuera de la pantalla en esquinas crít
   }
   ```
 - No requiere clases auxiliares ni intervención de JavaScript: el motor de CSS resuelve la coexistencia de componentes.
+- Consolidado en 3 arquetipos canónicos de navegación real existentes: Estructura base (Header+Main+FAB), Desktop Navigation Rail (96dp) y Mobile Navigation Bar (80dp).
 
-### 12.4 Rejilla Responsiva Fluida y Clamping Preventivo
-- `.md-grid` responde a Container Queries (`@container scaffold`):
+## 13. Directrices Consolidadas: Split Button (2026-11-14)
+
+### 13.1 Morfología y Unión Asimétrica M3 Expressive
+- Segmento principal interactivo unido al disparador de menú por una costura de 2dp (`--md-comp-split-button-between-space`).
+- Esquinas interiores canónicas de 4dp (`--md-comp-split-button-inner-corner`) en ambos segmentos para formar una costura visual armónica.
+- Escalado continuo en 5 peldaños (`xsmall 32dp` a `xlarge 136dp`) con micro-compensación óptica del chevron hacia la costura en reposo, retornando a 0dp con rotación de 180° y morphing a círculo 1:1 al desplegar (`aria-expanded="true"`).
+
+### 13.2 Cascada de Posicionamiento y Desbordamiento en Contenedores
+- Algoritmo de posicionamiento en `src/js/menu.js` gobernando la cascada canónica de 6 peldaños (prioridad #2 inferior trailing).
+- Regla declarativa en tarjetas anfitrionas: `.md-card:has(.md-menu-anchor) { overflow: visible; }`, permitiendo que menús y split buttons vuelen sobre la superficie sin ser recortados.
+
+## 14. Directrices Consolidadas: Layout (Distribuciones Interiores y Rejilla M3) (2026-11-15)
+
+### 14.1 Rejilla Responsiva Fluida y Clamping Preventivo
+- `.md-grid` responde a breakpoints oficiales M3:
   - Compact (< 600px): 4 columnas, gutters de 16dp.
   - Medium (600px–839px): 8 columnas, gutters de 24dp.
   - Expanded (>= 840px): 12 columnas, gutters de 24dp.
-- **Clamping de Columnas:** Las utilidades `.md-col-span-*` se clampean preventivamente por breakpoint para que solicitudes de span mayores a las columnas disponibles en la ventana computen `1 / -1`, evitando desbordamientos o pistas implícitas ficticias.
+- **Clamping de Columnas:** Las utilidades `.md-col-span-*` se modulan limpiamente para evitar desbordamientos o pistas implícitas ficticias.
 
-### 12.5 Layout Canónico: Supporting Panel (360dp)
-- En pantallas anchas ($\ge 840\text{px}$), `.md-layout-supporting-panel` dispone un área principal de catálogo (`.md-layout-supporting-panel-main`) y un panel lateral de apoyo (`.md-layout-supporting-panel-aside`) acotado al ancho contractual de 360dp (`--md-sys-measurement-layout-supporting-panel-width`), con divisor vertical `outline-variant` y scroll independiente.
-- En pantallas estrechas ($< 840\text{px}$), apila verticalmente ambos paneles al 100% de ancho con scroll unificado para optimizar la toma de órdenes en terminales POS móviles.
+### 14.2 Patrones Canónicos: Supporting Pane, List-Detail y Feed
+- **Supporting Pane (`.md-layout-supporting-panel`):** Área principal fluida (1fr) con panel lateral de apoyo (360dp contractual). En pantallas medianas (600–839px) comparte espacio proporcionalmente (`flex: 1` / `flex: 1`), en grandes fija 360dp con brecha de 24dp, y en móvil colapsa verticalmente.
+- **List-Detail (`.md-layout-list-detail`):** Lista maestra de navegación fija a 360dp en desktop con panel fluido de detalle a la derecha.
+- **Feed (`.md-layout-feed`):** Rejilla auto-ajustable con `minmax` para tableros o monitoreo continuo.
+- **Purity Principle:** Catálogo técnico puro con tarjetas esquemáticas (`.md-card`), preservando los casos de uso de negocio para la galería maestra.
+
 
 
 

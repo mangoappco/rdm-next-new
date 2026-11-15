@@ -27,10 +27,93 @@ export function initMenu() {
   function positionMenu(menu) {
     if (!menu) return;
 
-    // Resetear atributos previos para medir en reposo canónico
+    // Resetear atributos previos y variables inline para medir en reposo canónico
     menu.removeAttribute('data-align');
     menu.removeAttribute('data-valign');
+    menu.removeAttribute('data-placement');
+    menu.style.removeProperty('--_menu-offset-start');
 
+    const anchor = menu.closest('.md-menu-anchor, .md-menu-submenu');
+    if (!anchor) return;
+
+    const viewportWidth = document.documentElement.clientWidth || window.innerWidth;
+    const viewportHeight = window.innerHeight;
+    const MARGIN = 8; // Margen de guarda de seguridad contra el borde de la pantalla
+
+    // -------------------------------------------------------------------------
+    // CASCADA CANÓNICA M3 EXPRESSIVE PARA SPLIT BUTTON (image_0f0fa2.jpg):
+    // #2 (Bottom trailing-start) -> #1 (Top trailing-start)
+    // -> #5 (Bottom right-aligned) -> #3 (Top right-aligned)
+    // -> #6 (Bottom left-aligned) -> #4 (Top left-aligned)
+    // -------------------------------------------------------------------------
+    const splitGroup = anchor.querySelector(':scope > .md-split-button');
+    const trigger = anchor.querySelector('.md-split-button-menu[aria-haspopup="menu"]') ||
+                    anchor.querySelector('[aria-haspopup="menu"][aria-expanded="true"]');
+
+    if (splitGroup && trigger && trigger.classList.contains('md-split-button-menu')) {
+      const triggerRect = trigger.getBoundingClientRect();
+      const splitRect = splitGroup.getBoundingClientRect();
+      const menuRect = menu.getBoundingClientRect();
+      const menuWidth = menuRect.width;
+      const menuHeight = menuRect.height;
+
+      // 1. Decisión vertical: preferir abajo si cabe; si no cabe abajo y sí arriba (o hay más espacio arriba), invertir a top
+      const spaceBelow = viewportHeight - triggerRect.bottom - MARGIN;
+      const spaceAbove = triggerRect.top - MARGIN;
+      const preferTop = spaceBelow < menuHeight && (spaceAbove >= menuHeight || spaceAbove > spaceBelow);
+
+      // 2. Cascada horizontal M3:
+      // Opción A: Trailing-start (Posiciones #2 y #1)
+      const trailingStartLeft = triggerRect.left;
+      const trailingStartRight = trailingStartLeft + menuWidth;
+      const fitsTrailingStart = trailingStartRight <= viewportWidth - MARGIN && trailingStartLeft >= MARGIN;
+
+      // Opción B: Right-aligned al split button completo (Posiciones #5 y #3)
+      const rightAlignedLeft = splitRect.right - menuWidth;
+      const rightAlignedRight = splitRect.right;
+      const fitsRightAligned = rightAlignedLeft >= MARGIN && rightAlignedRight <= viewportWidth - MARGIN;
+
+      // Opción C: Left-aligned al split button completo (Posiciones #6 y #4)
+      const leftAlignedLeft = splitRect.left;
+      const leftAlignedRight = leftAlignedLeft + menuWidth;
+      const fitsLeftAligned = leftAlignedRight <= viewportWidth - MARGIN && leftAlignedLeft >= MARGIN;
+
+      let chosenHorizontal = 'trailing-start';
+      if (fitsTrailingStart) {
+        chosenHorizontal = 'trailing-start'; // #2 (abajo) o #1 (arriba)
+      } else if (fitsRightAligned) {
+        chosenHorizontal = 'right'; // #5 (abajo) o #3 (arriba)
+      } else if (fitsLeftAligned) {
+        chosenHorizontal = 'left'; // #6 (abajo) o #4 (arriba)
+      } else {
+        // En caso de pantalla muy estrecha, anclar al lado que tenga más visibilidad
+        chosenHorizontal = trailingStartLeft >= MARGIN ? 'trailing-start' : (fitsRightAligned ? 'right' : 'left');
+      }
+
+      // Aplicar posición horizontal y data-placement M3
+      if (chosenHorizontal === 'trailing-start') {
+        const trailingOffset = trigger.offsetLeft;
+        menu.style.setProperty('--_menu-offset-start', `${trailingOffset}px`);
+        menu.setAttribute('data-placement', preferTop ? '1' : '2');
+      } else if (chosenHorizontal === 'right') {
+        menu.setAttribute('data-align', 'end');
+        menu.setAttribute('data-placement', preferTop ? '3' : '5');
+      } else {
+        menu.setAttribute('data-align', 'start');
+        menu.setAttribute('data-placement', preferTop ? '4' : '6');
+      }
+
+      // Aplicar posición vertical
+      if (preferTop) {
+        menu.setAttribute('data-valign', 'top');
+      }
+
+      return;
+    }
+
+    // -------------------------------------------------------------------------
+    // COMPORTAMIENTO ESTÁNDAR PARA MENÚS GENERALES (Icon Button, Button simple, Submenús)
+    // -------------------------------------------------------------------------
     const isSubmenu = Boolean(menu.closest('.md-menu-submenu'));
     const parentMenu = menu.parentElement ? menu.parentElement.closest('.md-menu') : null;
     const parentAlignEnd = parentMenu && parentMenu.getAttribute('data-align') === 'end';
@@ -41,9 +124,6 @@ export function initMenu() {
     }
 
     const rect = menu.getBoundingClientRect();
-    const viewportWidth = document.documentElement.clientWidth || window.innerWidth;
-    const viewportHeight = window.innerHeight;
-    const MARGIN = 8; // Margen de guarda de seguridad contra el borde de la pantalla
 
     // 1. Detección de colisión horizontal
     if (!parentAlignEnd) {
@@ -55,11 +135,18 @@ export function initMenu() {
         if (newRect.left < MARGIN && (viewportWidth - rect.right) > newRect.left) {
           menu.removeAttribute('data-align');
         }
+      } else if (rect.left < MARGIN) {
+        // Choca contra el borde izquierdo al abrir; asegurar que abra hacia la derecha
+        menu.removeAttribute('data-align');
       }
     } else {
       // Heredó apertura a la izquierda; verificar si choca con el borde izquierdo
       if (rect.left < MARGIN) {
         menu.removeAttribute('data-align');
+        const newRect = menu.getBoundingClientRect();
+        if (newRect.right > viewportWidth - MARGIN && (newRect.right - viewportWidth) > (MARGIN - rect.left)) {
+          menu.setAttribute('data-align', 'end');
+        }
       }
     }
 
@@ -82,8 +169,8 @@ export function initMenu() {
    */
   function closeAllMenus(exceptAnchor = null) {
     const openTriggers = document.querySelectorAll(
-      '.md-menu-anchor > [aria-haspopup="menu"][aria-expanded="true"], ' +
-      '.md-menu-submenu > [aria-haspopup="menu"][aria-expanded="true"]'
+      '.md-menu-anchor [aria-haspopup="menu"][aria-expanded="true"], ' +
+      '.md-menu-submenu [aria-haspopup="menu"][aria-expanded="true"]'
     );
 
     openTriggers.forEach((trigger) => {
@@ -96,6 +183,8 @@ export function initMenu() {
       if (menu) {
         menu.removeAttribute('data-align');
         menu.removeAttribute('data-valign');
+        menu.removeAttribute('data-placement');
+        menu.style.removeProperty('--_menu-offset-start');
       }
     });
   }
@@ -132,6 +221,8 @@ export function initMenu() {
         if (menu) {
           menu.removeAttribute('data-align');
           menu.removeAttribute('data-valign');
+          menu.removeAttribute('data-placement');
+          menu.style.removeProperty('--_menu-offset-start');
         }
       }
       return;
@@ -141,7 +232,7 @@ export function initMenu() {
     const item = e.target.closest('.md-menu-item:not([disabled]):not([aria-disabled="true"])');
     if (item && !item.hasAttribute('aria-haspopup')) {
       const rootAnchor = item.closest('.md-menu-anchor');
-      const rootTrigger = rootAnchor ? rootAnchor.querySelector(':scope > [aria-haspopup="menu"]') : null;
+      const rootTrigger = rootAnchor ? rootAnchor.querySelector('[aria-haspopup="menu"]') : null;
 
       // Despachar evento desacoplado de selección
       item.dispatchEvent(new CustomEvent('md-menu:select', {
@@ -192,13 +283,15 @@ export function initMenu() {
       }
 
       if (currentAnchor) {
-        const rootTrigger = currentAnchor.querySelector(':scope > [aria-haspopup="menu"]');
+        const rootTrigger = currentAnchor.querySelector('[aria-haspopup="menu"]');
         if (rootTrigger) {
           rootTrigger.setAttribute('aria-expanded', 'false');
           const rootMenu = currentAnchor.querySelector(':scope > .md-menu');
           if (rootMenu) {
             rootMenu.removeAttribute('data-align');
             rootMenu.removeAttribute('data-valign');
+            rootMenu.removeAttribute('data-placement');
+            rootMenu.style.removeProperty('--_menu-offset-start');
           }
           rootTrigger.focus();
           e.preventDefault();

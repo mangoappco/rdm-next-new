@@ -55,25 +55,28 @@
       misma pieza. Un `md-icon-button` al lado de un `md-button` no comparte
       ni el relleno ni el radio.
 
-   LO QUE NO SE IMPLEMENTA, Y POR QUE
-   ----------------------------------
-   - El desplazamiento optico del chevron (-1, -1, -2, -3 y -6dp en las
-     implementaciones de terceros) NO se aplica: androidx v18_0_18 no lo
-     publica. Inventarlo seria el mismo error que el morph de pulsado: una
-     curva que nadie ha medido.
-   - El giro del chevron y el redondeo del segmento al abrir el menu son
-     estado abierto, no anatomia: van en el par de estados, con la misma
-     disciplina que el giro de la flecha del Select.
+   DESPLAZAMIENTO ÓPTICO DEL CHEVRON (M3 Expressive)
+   -------------------------------------------------
+   El chevron del menú se desplaza ópticamente hacia la costura en reposo
+   (-1dp en xs y s, -2dp en m, -3dp en l y -6dp en xl) según la especificación
+   oficial de M3 Expressive (Specs · Split Button · Trailing button icon
+   Optically centered vs Centered), compensando la asimetría geométrica entre
+   la cara interior recta y el semicírculo exterior. Al abrirse el menú
+   (aria-expanded="true"), el offset vuelve a 0dp (centrado geométrico exacto)
+   en sincronía con el giro de 180° y el morphing a círculo completo.
    ========================================================================== */
 
 .md-split-button {
-  /* Los cuatro roles del componente. Viven en el contenedor y bajan a los dos
+  /* Los roles del componente. Viven en el contenedor y bajan a los dos
      segmentos por herencia: ninguno de los dos los declara, asi que no hay
      pelea de especificidad ni depende del orden de las clases en el marcado. */
   --md-comp-split-button-between-space: var(--md-sys-measurement-split-button-between-space);
   --md-comp-split-button-inner-corner: var(--md-sys-measurement-split-button-inner-corner);
   --md-comp-split-button-icon-size: var(--md-sys-measurement-split-button-icon-size);
   --md-comp-split-button-trailing-space: var(--md-sys-measurement-split-button-trailing-space);
+  --md-comp-split-button-optical-size: var(--md-sys-icon-optical-size-small);
+  --md-comp-split-button-chevron-offset: var(--md-sys-measurement-split-button-chevron-offset);
+  --md-comp-button-height: var(--md-sys-measurement-button-height);
 
   display: inline-flex;
 
@@ -121,32 +124,245 @@
      mecanismo con el que el boton cambia el suyo. Escribir `font-size` en esta
      capa perderia contra utilities y no haria nada. */
   --md-sys-measurement-icon-size: var(--md-comp-split-button-icon-size);
+  --md-sys-icon-optical-size: var(--md-comp-split-button-optical-size);
 
   flex: none;
-  inline-size: max(var(--md-comp-button-height), var(--md-sys-measurement-touch-target));
+  inline-size: var(--md-comp-button-height);
+  block-size: var(--md-comp-button-height);
+  aspect-ratio: 1 / 1;
 
   /* `min-inline-size: 0` NO es un descuido: el boton declara 64dp de ancho
      minimo, que es el piso de un boton CON etiqueta. Medido sin esta linea, el
-     segmento salia de 64 en vez de 48 y la pieza dejaba de coincidir con M3
-     (48/48/56/96/136). El ancho de este segmento ya lo manda la linea de
-     arriba, asi que el piso del boton sobra, no se rebaja: se anula. */
+     segmento salia de 64 en vez de la altura y la pieza dejaba de coincidir
+     con la cota 1:1 de M3. El ancho ya lo manda la linea de arriba, asi que
+     el piso del boton se anula. */
   min-inline-size: var(--md-sys-measurement-space-0);
   padding-inline: var(--md-sys-measurement-space-0);
 
   border-start-start-radius: var(--md-comp-split-button-inner-corner);
   border-end-start-radius: var(--md-comp-split-button-inner-corner);
+
+  transition: border-radius var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+}
+
+/* Sincronización geométrica del relleno interno con el morphing del botón */
+.md-split-button .md-split-button-menu::before {
+  border-radius: inherit;
+  transition: border-radius var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+}
+
+/* Área táctil mínima de 48dp estrictamente invisible (sin pintar fondo, borde ni halo) */
+.md-split-button .md-split-button-menu::after {
+  inset: calc((var(--md-sys-measurement-touch-target) - var(--md-comp-button-height)) / -2);
+  background-color: transparent !important;
+  border: none;
+  box-shadow: none;
+}
+
+/* Anillo de foco accesible sin contorno residual al hacer clic con mouse */
+.md-split-button .md-split-button-menu:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.md-split-button .md-split-button-menu:focus-visible {
+  border-radius: inherit;
 }
 
 /* ---------------------------------------------------------------------------
-   EL MENU
+   ESTADO ABIERTO: MORPHING DE ESQUINAS Y ROTACIÓN DEL CHEVRON
    ---------------------------------------------------------------------------
-   `menu.css` lo cuelga a `100% + 4dp` del ancla y lo alinea a la izquierda. En
-   un split button el ancla es el segmento derecho, y M3 alinea el menu a su
-   borde final: si no, el menu se abre hacia la derecha y se sale de la pieza
-   que lo invoca.
+   Al desplegar el menú flotante, el disparador redondea sus cuatro esquinas
+   (morphing a círculo 1:1 perfecto) y el glifo rota 180deg (0.5turn) con la curva
+   cinemática estándar de M3 Expressive.
    ------------------------------------------------------------------------ */
 
-.md-split-button .md-menu-anchor > .md-menu {
+.md-split-button .md-split-button-menu[aria-expanded="true"] {
+  border-radius: var(--md-comp-button-shape);
+}
+
+.md-split-button .md-split-button-menu .md-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateX(calc(-1 * var(--md-comp-split-button-chevron-offset))) rotate(0turn);
+  transition: transform var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+}
+
+:dir(rtl) .md-split-button .md-split-button-menu .md-icon,
+[dir="rtl"] .md-split-button .md-split-button-menu .md-icon {
+  transform: translateX(var(--md-comp-split-button-chevron-offset)) rotate(0turn);
+}
+
+.md-split-button .md-split-button-menu[aria-expanded="true"] .md-icon {
+  transform: translateX(0) rotate(0.5turn);
+}
+
+:dir(rtl) .md-split-button .md-split-button-menu[aria-expanded="true"] .md-icon,
+[dir="rtl"] .md-split-button .md-split-button-menu[aria-expanded="true"] .md-icon {
+  transform: translateX(0) rotate(0.5turn);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .md-split-button .md-split-button-menu,
+  .md-split-button .md-split-button-menu::before,
+  .md-split-button .md-split-button-menu .md-icon {
+    transition: none !important;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   VARIANTES CROMÁTICAS M3 (Filled, Tonal, Outlined, Elevated)
+   ---------------------------------------------------------------------------
+   Filled es la base por defecto. Las variantes Tonal, Outlined y Elevated
+   se declaran en el contenedor y garantizan los roles cromáticos de M3.
+   ------------------------------------------------------------------------ */
+
+.md-split-button-tonal > .md-button {
+  --md-comp-button-container-color: var(--md-sys-color-secondary-container);
+  --md-comp-button-label-color: var(--md-sys-color-on-secondary-container);
+}
+
+.md-split-button-elevated > .md-button {
+  --md-comp-button-container-color: var(--md-sys-color-surface-container-low);
+  --md-comp-button-label-color: var(--md-sys-color-primary);
+  --md-comp-button-elevation: var(--md-sys-elevation-level1);
+}
+
+.md-split-button-outlined > .md-button {
+  --md-comp-button-container-color: transparent;
+  --md-comp-button-label-color: var(--md-sys-color-on-surface-variant);
+  --md-comp-button-outline-width: var(--md-sys-shape-stroke-thin);
+  --md-comp-button-outline-color: var(--md-sys-color-outline-variant);
+}
+
+.md-split-button-outlined > .md-button:disabled {
+  --md-comp-button-container-color: transparent;
+}
+
+/* ---------------------------------------------------------------------------
+   ESTADOS INTERACTIVOS Y DESHABILITADO
+   ---------------------------------------------------------------------------
+   Los botones heredan los tokens deshabilitados de button.css (superficie al 10%
+   y contenido al 38%). Se asegura la opacidad del glifo del menú y la
+   inactividad de eventos táctiles.
+   ------------------------------------------------------------------------ */
+
+.md-split-button .md-split-button-menu:disabled .md-icon,
+.md-split-button > .md-button:disabled .md-icon {
+  opacity: var(--md-sys-state-disabled-state-layer-opacity);
+}
+
+/* ---------------------------------------------------------------------------
+   ESCALA DE TAMAÑOS M3 EXPRESSIVE (xsmall, small/base, medium, large, xlarge)
+   ---------------------------------------------------------------------------
+   M3 define cinco alturas escalonadas: 32dp (xsmall), 40dp (small, base),
+   56dp (medium), 96dp (large) y 136dp (xlarge).
+   El contenedor propaga las dimensiones de la costura, esquina interior,
+   tamaño del chevron, espaciado final y tamaño óptico hacia los dos segmentos.
+   ------------------------------------------------------------------------ */
+
+.md-split-button-xsmall,
+.md-split-button:has(> .md-button-xsmall) {
+  --md-comp-split-button-inner-corner: var(--md-sys-measurement-split-button-inner-corner);
+  --md-comp-split-button-icon-size: var(--md-sys-measurement-split-button-icon-size-xsmall);
+  --md-comp-split-button-trailing-space: var(--md-sys-measurement-split-button-trailing-space-xsmall);
+  --md-comp-split-button-optical-size: var(--md-sys-icon-optical-size-small);
+  --md-comp-split-button-chevron-offset: var(--md-sys-measurement-split-button-chevron-offset-xsmall);
+  --md-comp-button-height: var(--md-sys-measurement-button-height-xsmall);
+}
+
+.md-split-button-xsmall > .md-button:not(.md-split-button-menu),
+.md-split-button:has(> .md-button-xsmall) > .md-button:not(.md-split-button-menu) {
+  --md-comp-button-label-space: var(--md-sys-measurement-space-50);
+}
+
+.md-split-button-small,
+.md-split-button:has(> .md-button-small) {
+  --md-comp-split-button-inner-corner: var(--md-sys-measurement-split-button-inner-corner);
+  --md-comp-split-button-icon-size: var(--md-sys-measurement-split-button-icon-size);
+  --md-comp-split-button-trailing-space: var(--md-sys-measurement-split-button-trailing-space);
+  --md-comp-split-button-optical-size: var(--md-sys-icon-optical-size-small);
+  --md-comp-split-button-chevron-offset: var(--md-sys-measurement-split-button-chevron-offset);
+  --md-comp-button-height: var(--md-sys-measurement-button-height);
+}
+
+.md-split-button-medium,
+.md-split-button:has(> .md-button-medium) {
+  --md-comp-split-button-inner-corner: var(--md-sys-measurement-split-button-inner-corner);
+  --md-comp-split-button-icon-size: var(--md-sys-measurement-split-button-icon-size-medium);
+  --md-comp-split-button-trailing-space: var(--md-sys-measurement-button-padding-medium);
+  --md-comp-split-button-optical-size: var(--md-sys-icon-optical-size-medium);
+  --md-comp-split-button-chevron-offset: var(--md-sys-measurement-split-button-chevron-offset-medium);
+  --md-comp-button-height: var(--md-sys-measurement-button-height-medium);
+}
+
+.md-split-button-large,
+.md-split-button:has(> .md-button-large) {
+  --md-comp-split-button-inner-corner: var(--md-sys-measurement-split-button-inner-corner-large);
+  --md-comp-split-button-icon-size: var(--md-sys-measurement-split-button-icon-size-large);
+  --md-comp-split-button-trailing-space: var(--md-sys-measurement-button-padding-large);
+  --md-comp-split-button-optical-size: var(--md-sys-icon-optical-size-large);
+  --md-comp-split-button-chevron-offset: var(--md-sys-measurement-split-button-chevron-offset-large);
+  --md-comp-button-height: var(--md-sys-measurement-button-height-large);
+}
+
+.md-split-button-xlarge,
+.md-split-button:has(> .md-button-xlarge) {
+  --md-comp-split-button-inner-corner: var(--md-sys-measurement-split-button-inner-corner-xlarge);
+  --md-comp-split-button-icon-size: var(--md-sys-measurement-split-button-icon-size-xlarge);
+  --md-comp-split-button-trailing-space: var(--md-sys-measurement-button-padding-xlarge);
+  --md-comp-split-button-optical-size: var(--md-sys-icon-optical-size-xlarge);
+  --md-comp-split-button-chevron-offset: var(--md-sys-measurement-split-button-chevron-offset-xlarge);
+  --md-comp-button-height: var(--md-sys-measurement-button-height-xlarge);
+}
+
+/* ---------------------------------------------------------------------------
+   POSICIONAMIENTO DEL MENÚ DESPLEGABLE (M3 Expressive · 6 Posiciones Canónicas)
+   ---------------------------------------------------------------------------
+   Jerarquía oficial de M3 (Specs · Split Button · Menu placement):
+   Separación vertical canónica obligatoria de 4dp (--md-sys-measurement-space-50).
+   #2 (Preferida por defecto): Bottom aligned to trailing button.
+   #1: Top aligned to trailing button (si no cabe abajo).
+   #5: Bottom right-aligned (si desborda a la derecha en #2).
+   #3: Top right-aligned (si desborda a la derecha y no cabe abajo).
+   #6: Bottom left-aligned (respaldo alineado al leading button).
+   #4: Top left-aligned (respaldo superior alineado al leading button).
+   ------------------------------------------------------------------------ */
+
+.md-menu-anchor:has(> .md-split-button) > .md-menu {
+  /* Posición #2 por defecto: Trailing-start 4dp por debajo del Split Button */
+  inset-inline-start: var(--_menu-offset-start, calc(100% - var(--md-comp-button-height, var(--md-sys-measurement-button-height))));
+  inset-inline-end: auto;
+  transform-origin: top left;
+}
+
+/* Inversión horizontal: Posición #5 (Bottom right-aligned) */
+.md-menu-anchor:has(> .md-split-button) > .md-menu[data-align="end"] {
   inset-inline-start: auto;
   inset-inline-end: var(--md-sys-measurement-space-0);
+  transform-origin: top right;
+}
+
+/* Alineación al extremo izquierdo: Posición #6 (Bottom left-aligned) */
+.md-menu-anchor:has(> .md-split-button) > .md-menu[data-align="start"] {
+  inset-inline-start: var(--md-sys-measurement-space-0);
+  inset-inline-end: auto;
+  transform-origin: top left;
+}
+
+/* Inversión vertical: Posición #1 (Top aligned to trailing button) */
+.md-menu-anchor:has(> .md-split-button) > .md-menu[data-valign="top"] {
+  inset-block-start: auto;
+  inset-block-end: calc(100% + var(--md-sys-measurement-space-50));
+  transform-origin: bottom left;
+}
+
+/* Inversión vertical + derecha: Posición #3 (Top right-aligned) */
+.md-menu-anchor:has(> .md-split-button) > .md-menu[data-align="end"][data-valign="top"] {
+  transform-origin: bottom right;
+}
+
+/* Inversión vertical + izquierda: Posición #4 (Top left-aligned) */
+.md-menu-anchor:has(> .md-split-button) > .md-menu[data-align="start"][data-valign="top"] {
+  transform-origin: bottom left;
 }

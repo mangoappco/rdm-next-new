@@ -1291,6 +1291,15 @@
   --md-sys-measurement-split-button-trailing-space: var(--md-ref-spacing-150);            /* 12dp */
   --md-sys-measurement-split-button-trailing-space-xsmall: var(--md-ref-spacing-125);     /* 10dp */
 
+  /* Desplazamiento óptico del chevron del Split Button (reposo -> 0dp al abrir).
+     M3 Expressive desplaza el icono hacia la costura en reposo por la asimetría
+     del segmento, y vuelve al centro geométrico (0dp) al abrir el menú. */
+  --md-sys-measurement-split-button-chevron-offset: var(--md-ref-offset-split-button-small);
+  --md-sys-measurement-split-button-chevron-offset-xsmall: var(--md-ref-offset-split-button-xsmall);
+  --md-sys-measurement-split-button-chevron-offset-medium: var(--md-ref-offset-split-button-medium);
+  --md-sys-measurement-split-button-chevron-offset-large: var(--md-ref-offset-split-button-large);
+  --md-sys-measurement-split-button-chevron-offset-xlarge: var(--md-ref-offset-split-button-xlarge);
+
   /* Anchura del segmento del menu. NO es un token de M3: es una derivacion, y
      se deja escrita aqui para que nadie la busque en el SCSS. M3 la construye
      con sus dos paddings mas el glifo --13+22+13 en xs y s, 15+26+15 en m,

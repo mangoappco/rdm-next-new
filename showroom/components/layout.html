@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Layout de RDM Next: distribución interior de pantalla M3 con rejilla responsiva (4/8/12 cols), Supporting Pane, List-Detail y Feed.">
+  <title>Layout — RDM ManGo! App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+  <link rel="stylesheet" href="../../src/css/main.css?v=92">
+  <link rel="stylesheet" href="../assets/showroom.css">
+  <script type="module" src="../../src/js/main.js"></script>
+  <script src="../assets/showroom.js"></script>
+</head>
+
+<!--
+  VISTA DE LAYOUT (Patrones Canónicos y Rejilla M3)
+  Estructura de Bloque 1 Técnico y Puro.
+  Gobierna exclusivamente la distribución interior del contenido de pantalla.
+-->
+
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <!-- CABECERA INSTITUCIONAL DEL SHOWROOM (DOGFOODING) -->
+  <header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll role="banner" aria-label="Cabecera institucional del showroom">
+    <div class="md-top-app-bar-leading">
+      <a href="../index.html" class="md-icon-button" aria-label="Volver al catálogo">
+        <span class="md-icon" aria-hidden="true">arrow_back</span>
+      </a>
+    </div>
+    <div class="md-top-app-bar-content">
+      <span class="md-top-app-bar-title">Layout</span>
+      <span class="md-top-app-bar-subtitle">RDM Next · ManGo! App</span>
+    </div>
+    <div class="md-top-app-bar-trailing">
+      <button type="button" class="md-icon-button" data-theme-toggle aria-label="Tema del sistema activo">
+        <span class="md-icon" aria-hidden="true">brightness_auto</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="sr-page">
+
+    <!-- PORTADA DEL COMPONENTE -->
+    <header class="sr-header">
+      <h1 class="md-type-display-large">Layout</h1>
+      <p class="md-type-body-large">Patrones canónicos de distribución interior de Material Design 3: Rejilla responsiva fluida, Supporting Pane, List-Detail y Feed adaptativo.</p>
+      <p class="md-type-body-medium md-text-on-surface-variant">M3 Expressive · Canonical Layouts · Bloque 1 (Pares 1 a 5 · Completo)</p>
+    </header>
+
+    <h2 class="md-type-headline-small">Bloque 1 · Especificación técnica y anatomía</h2>
+
+    <!-- PAREJA PAR 1: Rejilla responsiva base (4 / 8 / 12 columnas) -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Rejilla responsiva base (4 / 8 / 12 columnas)</h3>
+      <p class="md-type-body-medium">Sistema adaptativo M3: 4 columnas en Compact (&lt; 600px), 8 columnas en Medium (600–839px) y 12 columnas en Expanded (≥ 840px).</p>
+
+      <div class="sr-specimen">
+        <div class="md-grid">
+          <div class="md-col-span-3">
+            <article class="md-card md-card-outlined">
+              <div class="md-card-header">
+                <h4 class="md-type-title-medium">Columna 1</h4>
+                <p class="md-type-body-small">Span 3 (25%)</p>
+              </div>
+            </article>
+          </div>
+          <div class="md-col-span-3">
+            <article class="md-card md-card-outlined">
+              <div class="md-card-header">
+                <h4 class="md-type-title-medium">Columna 2</h4>
+                <p class="md-type-body-small">Span 3 (25%)</p>
+              </div>
+            </article>
+          </div>
+          <div class="md-col-span-3">
+            <article class="md-card md-card-outlined">
+              <div class="md-card-header">
+                <h4 class="md-type-title-medium">Columna 3</h4>
+                <p class="md-type-body-small">Span 3 (25%)</p>
+              </div>
+            </article>
+          </div>
+          <div class="md-col-span-3">
+            <article class="md-card md-card-outlined">
+              <div class="md-card-header">
+                <h4 class="md-type-title-medium">Columna 4</h4>
+                <p class="md-type-body-small">Span 3 (25%)</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;div class="md-grid"&gt;
+  &lt;div class="md-col-span-3"&gt;
+    &lt;article class="md-card md-card-outlined"&gt;
+      &lt;div class="md-card-header"&gt;
+        &lt;h4 class="md-type-title-medium"&gt;Columna 1&lt;/h4&gt;
+        &lt;p class="md-type-body-small"&gt;Span 3 (25%)&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/article&gt;
+  &lt;/div&gt;
+  &lt;div class="md-col-span-3"&gt;
+    &lt;article class="md-card md-card-outlined"&gt;
+      &lt;div class="md-card-header"&gt;
+        &lt;h4 class="md-type-title-medium"&gt;Columna 2&lt;/h4&gt;
+        &lt;p class="md-type-body-small"&gt;Span 3 (25%)&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/article&gt;
+  &lt;/div&gt;
+  &lt;div class="md-col-span-3"&gt;
+    &lt;article class="md-card md-card-outlined"&gt;
+      &lt;div class="md-card-header"&gt;
+        &lt;h4 class="md-type-title-medium"&gt;Columna 3&lt;/h4&gt;
+        &lt;p class="md-type-body-small"&gt;Span 3 (25%)&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/article&gt;
+  &lt;/div&gt;
+  &lt;div class="md-col-span-3"&gt;
+    &lt;article class="md-card md-card-outlined"&gt;
+      &lt;div class="md-card-header"&gt;
+        &lt;h4 class="md-type-title-medium"&gt;Columna 4&lt;/h4&gt;
+        &lt;p class="md-type-body-small"&gt;Span 3 (25%)&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/article&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA PAR 1: hasta aqui -->
+
+    <!-- PAREJA PAR 2: Proporciones y spans de rejilla (12, 6+6, 4+4+4, 8+4) -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Proporciones y spans de rejilla (12, 6+6, 4+4+4, 8+4)</h3>
+      <p class="md-type-body-medium">Particiones modulares simétricas y asimétricas gobernadas por las clases de ocupación .md-col-span-*.</p>
+
+      <div class="sr-specimen">
+        <div class="md-grid">
+          <!-- Ancho completo (12 columnas) -->
+          <div class="md-col-full">
+            <article class="md-card md-card-outlined">
+              <div class="md-card-header">
+                <h4 class="md-type-title-medium">Ancho completo (.md-col-full · 12 columnas)</h4>
+                <p class="md-type-body-small">Franja horizontal continua para cabeceras o banners</p>
+              </div>
+            </article>
+          </div>
+
+          <!-- Dos mitades simétricas (6 + 6 columnas) -->
+          <div class="md-col-span-6">
+            <article class="md-card md-card-outlined">
+              <div class="md-card-header">
+                <h4 class="md-type-title-medium">Mitad A (.md-col-span-6)</h4>
+                <p class="md-type-body-small">Bloque simétrico de 6 columnas</p>
+              </div>
+            </article>
+          </div>
+          <div class="md-col-span-6">
+            <article class="md-card md-card-outlined">
+              <div class="md-card-header">
+                <h4 class="md-type-title-medium">Mitad B (.md-col-span-6)</h4>
+                <p class="md-type-body-small">Bloque simétrico de 6 columnas</p>
+              </div>
+            </article>
+          </div>
+
+          <!-- Tres tercios (4 + 4 + 4 columnas) -->
+          <div class="md-col-span-4">
+            <article class="md-card md-card-outlined">
+              <div class="md-card-header">
+                <h4 class="md-type-title-medium">Tercio 1 (.md-col-span-4)</h4>
+                <p class="md-type-body-small">4 columnas</p>
+              </div>
+            </article>
+          </div>
+          <div class="md-col-span-4">
+            <article class="md-card md-card-outlined">
+              <div class="md-card-header">
+                <h4 class="md-type-title-medium">Tercio 2 (.md-col-span-4)</h4>
+                <p class="md-type-body-small">4 columnas</p>
+              </div>
+            </article>
+          </div>
+          <div class="md-col-span-4">
+            <article class="md-card md-card-outlined">
+              <div class="md-card-header">
+                <h4 class="md-type-title-medium">Tercio 3 (.md-col-span-4)</h4>
+                <p class="md-type-body-small">4 columnas</p>
+              </div>
+            </article>
+          </div>
+
+          <!-- Asimetría (8 + 4 columnas) -->
+          <div class="md-col-span-8">
+            <article class="md-card md-card-outlined">
+              <div class="md-card-header">
+                <h4 class="md-type-title-medium">Zona principal (.md-col-span-8)</h4>
+                <p class="md-type-body-small">8 columnas para contenido primario</p>
+              </div>
+            </article>
+          </div>
+          <div class="md-col-span-4">
+            <article class="md-card md-card-outlined">
+              <div class="md-card-header">
+                <h4 class="md-type-title-medium">Zona lateral (.md-col-span-4)</h4>
+                <p class="md-type-body-small">4 columnas para apoyo</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;div class="md-grid"&gt;
+  &lt;!-- Ancho completo (12 columnas) --&gt;
+  &lt;div class="md-col-full"&gt;
+    &lt;article class="md-card md-card-outlined"&gt;
+      &lt;div class="md-card-header"&gt;
+        &lt;h4 class="md-type-title-medium"&gt;Ancho completo (.md-col-full · 12 columnas)&lt;/h4&gt;
+        &lt;p class="md-type-body-small"&gt;Franja horizontal continua para cabeceras o banners&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/article&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Dos mitades simétricas (6 + 6 columnas) --&gt;
+  &lt;div class="md-col-span-6"&gt;
+    &lt;article class="md-card md-card-outlined"&gt;
+      &lt;div class="md-card-header"&gt;
+        &lt;h4 class="md-type-title-medium"&gt;Mitad A (.md-col-span-6)&lt;/h4&gt;
+        &lt;p class="md-type-body-small"&gt;Bloque simétrico de 6 columnas&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/article&gt;
+  &lt;/div&gt;
+  &lt;div class="md-col-span-6"&gt;
+    &lt;article class="md-card md-card-outlined"&gt;
+      &lt;div class="md-card-header"&gt;
+        &lt;h4 class="md-type-title-medium"&gt;Mitad B (.md-col-span-6)&lt;/h4&gt;
+        &lt;p class="md-type-body-small"&gt;Bloque simétrico de 6 columnas&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/article&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Tres tercios (4 + 4 + 4 columnas) --&gt;
+  &lt;div class="md-col-span-4"&gt;
+    &lt;article class="md-card md-card-outlined"&gt;
+      &lt;div class="md-card-header"&gt;
+        &lt;h4 class="md-type-title-medium"&gt;Tercio 1 (.md-col-span-4)&lt;/h4&gt;
+        &lt;p class="md-type-body-small"&gt;4 columnas&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/article&gt;
+  &lt;/div&gt;
+  &lt;div class="md-col-span-4"&gt;
+    &lt;article class="md-card md-card-outlined"&gt;
+      &lt;div class="md-card-header"&gt;
+        &lt;h4 class="md-type-title-medium"&gt;Tercio 2 (.md-col-span-4)&lt;/h4&gt;
+        &lt;p class="md-type-body-small"&gt;4 columnas&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/article&gt;
+  &lt;/div&gt;
+  &lt;div class="md-col-span-4"&gt;
+    &lt;article class="md-card md-card-outlined"&gt;
+      &lt;div class="md-card-header"&gt;
+        &lt;h4 class="md-type-title-medium"&gt;Tercio 3 (.md-col-span-4)&lt;/h4&gt;
+        &lt;p class="md-type-body-small"&gt;4 columnas&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/article&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Asimetría (8 + 4 columnas) --&gt;
+  &lt;div class="md-col-span-8"&gt;
+    &lt;article class="md-card md-card-outlined"&gt;
+      &lt;div class="md-card-header"&gt;
+        &lt;h4 class="md-type-title-medium"&gt;Zona principal (.md-col-span-8)&lt;/h4&gt;
+        &lt;p class="md-type-body-small"&gt;8 columnas para contenido primario&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/article&gt;
+  &lt;/div&gt;
+  &lt;div class="md-col-span-4"&gt;
+    &lt;article class="md-card md-card-outlined"&gt;
+      &lt;div class="md-card-header"&gt;
+        &lt;h4 class="md-type-title-medium"&gt;Zona lateral (.md-col-span-4)&lt;/h4&gt;
+        &lt;p class="md-type-body-small"&gt;4 columnas para apoyo&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/article&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA PAR 2: hasta aqui -->
+
+    <!-- PAREJA PAR 3: Layout canónico: Supporting Pane (360dp) -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Layout canónico: Supporting Pane (360dp)</h3>
+      <p class="md-type-body-medium">Patrón canónico de dos áreas: espacio principal fluido (1fr) junto a panel lateral de apoyo persistente de 360dp.</p>
+
+      <div class="sr-specimen">
+        <div class="md-layout-supporting-panel">
+          <!-- Área principal fluida (1fr) -->
+          <div class="md-layout-supporting-panel-main">
+            <article class="md-card md-card-outlined">
+              <div class="md-card-header">
+                <h4 class="md-type-title-medium">Área principal fluida (1fr)</h4>
+                <p class="md-type-body-small">Flujo de trabajo primario: catálogo, mapa o tabla</p>
+              </div>
+              <div class="md-card-content">
+                <p class="md-type-body-medium">Espacio flexible que absorbe todo el ancho disponible.</p>
+              </div>
+            </article>
+          </div>
+
+          <!-- Panel lateral de apoyo (360dp) -->
+          <aside class="md-layout-supporting-panel-aside" aria-label="Panel de apoyo">
+            <article class="md-card md-card-filled">
+              <div class="md-card-header">
+                <h4 class="md-type-title-medium">Panel de apoyo (360dp)</h4>
+                <p class="md-type-body-small">Contexto persistente</p>
+              </div>
+              <div class="md-card-content">
+                <p class="md-type-body-medium">Inspector contextual o comanda activa.</p>
+              </div>
+            </article>
+          </aside>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;div class="md-layout-supporting-panel"&gt;
+  &lt;!-- Área principal fluida (1fr) --&gt;
+  &lt;div class="md-layout-supporting-panel-main"&gt;
+    &lt;article class="md-card md-card-outlined"&gt;
+      &lt;div class="md-card-header"&gt;
+        &lt;h4 class="md-type-title-medium"&gt;Área principal fluida (1fr)&lt;/h4&gt;
+        &lt;p class="md-type-body-small"&gt;Flujo de trabajo primario: catálogo, mapa o tabla&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class="md-card-content"&gt;
+        &lt;p class="md-type-body-medium"&gt;Espacio flexible que absorbe todo el ancho disponible.&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/article&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Panel lateral de apoyo (360dp) --&gt;
+  &lt;aside class="md-layout-supporting-panel-aside" aria-label="Panel de apoyo"&gt;
+    &lt;article class="md-card md-card-filled"&gt;
+      &lt;div class="md-card-header"&gt;
+        &lt;h4 class="md-type-title-medium"&gt;Panel de apoyo (360dp)&lt;/h4&gt;
+        &lt;p class="md-type-body-small"&gt;Contexto persistente&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class="md-card-content"&gt;
+        &lt;p class="md-type-body-medium"&gt;Inspector contextual o comanda activa.&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/article&gt;
+  &lt;/aside&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA PAR 3: hasta aqui -->
+
+    <!-- PAREJA PAR 4: Layout canónico: List-Detail (360dp + 1fr) -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Layout canónico: List-Detail (360dp + 1fr)</h3>
+      <p class="md-type-body-medium">Patrón canónico maestro-detalle: columna fija de lista de 360dp acoplada a panel fluido de inspección (1fr).</p>
+
+      <div class="sr-specimen">
+        <div class="md-layout-list-detail">
+          <!-- Columna maestra de lista (360dp) -->
+          <div class="md-layout-list-detail-list">
+            <article class="md-card md-card-filled">
+              <div class="md-card-header">
+                <h4 class="md-type-title-medium">Lista maestra (360dp)</h4>
+                <p class="md-type-body-small">Índice o selector</p>
+              </div>
+              <div class="md-card-content">
+                <p class="md-type-body-medium">Superficie base de navegación y selección de elementos.</p>
+              </div>
+            </article>
+          </div>
+
+          <!-- Panel fluido de detalle (1fr) -->
+          <div class="md-layout-list-detail-detail">
+            <article class="md-card md-card-elevated">
+              <div class="md-card-header">
+                <h4 class="md-type-title-medium">Panel de detalle (1fr)</h4>
+                <p class="md-type-body-small">Registro activo</p>
+              </div>
+              <div class="md-card-content">
+                <p class="md-type-body-medium">Superficie destacada con vista profunda del elemento seleccionado.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;div class="md-layout-list-detail"&gt;
+  &lt;!-- Columna maestra de lista (360dp) --&gt;
+  &lt;div class="md-layout-list-detail-list"&gt;
+    &lt;article class="md-card md-card-filled"&gt;
+      &lt;div class="md-card-header"&gt;
+        &lt;h4 class="md-type-title-medium"&gt;Lista maestra (360dp)&lt;/h4&gt;
+        &lt;p class="md-type-body-small"&gt;Índice o selector&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class="md-card-content"&gt;
+        &lt;p class="md-type-body-medium"&gt;Superficie base de navegación y selección de elementos.&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/article&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Panel fluido de detalle (1fr) --&gt;
+  &lt;div class="md-layout-list-detail-detail"&gt;
+    &lt;article class="md-card md-card-elevated"&gt;
+      &lt;div class="md-card-header"&gt;
+        &lt;h4 class="md-type-title-medium"&gt;Panel de detalle (1fr)&lt;/h4&gt;
+        &lt;p class="md-type-body-small"&gt;Registro activo&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class="md-card-content"&gt;
+        &lt;p class="md-type-body-medium"&gt;Superficie destacada con vista profunda del elemento seleccionado.&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/article&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA PAR 4: hasta aqui -->
+
+    <!-- PAREJA PAR 5: Layout canónico: Feed adaptativo -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Layout canónico: Feed adaptativo</h3>
+      <p class="md-type-body-medium">Rejilla fluida auto-ajustable (auto-fill / minmax) para colecciones homogéneas, tarjetas de monitoreo y tableros.</p>
+
+      <div class="sr-specimen">
+        <div class="md-layout-feed">
+          <article class="md-card md-card-outlined">
+            <div class="md-card-header">
+              <h4 class="md-type-title-medium">Tarjeta de feed 1</h4>
+              <p class="md-type-body-small">Densidad uniforme</p>
+            </div>
+          </article>
+          <article class="md-card md-card-outlined">
+            <div class="md-card-header">
+              <h4 class="md-type-title-medium">Tarjeta de feed 2</h4>
+              <p class="md-type-body-small">Densidad uniforme</p>
+            </div>
+          </article>
+          <article class="md-card md-card-outlined">
+            <div class="md-card-header">
+              <h4 class="md-type-title-medium">Tarjeta de feed 3</h4>
+              <p class="md-type-body-small">Densidad uniforme</p>
+            </div>
+          </article>
+          <article class="md-card md-card-outlined">
+            <div class="md-card-header">
+              <h4 class="md-type-title-medium">Tarjeta de feed 4</h4>
+              <p class="md-type-body-small">Densidad uniforme</p>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;div class="md-layout-feed"&gt;
+  &lt;article class="md-card md-card-outlined"&gt;
+    &lt;div class="md-card-header"&gt;
+      &lt;h4 class="md-type-title-medium"&gt;Tarjeta de feed 1&lt;/h4&gt;
+      &lt;p class="md-type-body-small"&gt;Densidad uniforme&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/article&gt;
+  &lt;article class="md-card md-card-outlined"&gt;
+    &lt;div class="md-card-header"&gt;
+      &lt;h4 class="md-type-title-medium"&gt;Tarjeta de feed 2&lt;/h4&gt;
+      &lt;p class="md-type-body-small"&gt;Densidad uniforme&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/article&gt;
+  &lt;article class="md-card md-card-outlined"&gt;
+    &lt;div class="md-card-header"&gt;
+      &lt;h4 class="md-type-title-medium"&gt;Tarjeta de feed 3&lt;/h4&gt;
+      &lt;p class="md-type-body-small"&gt;Densidad uniforme&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/article&gt;
+  &lt;article class="md-card md-card-outlined"&gt;
+    &lt;div class="md-card-header"&gt;
+      &lt;h4 class="md-type-title-medium"&gt;Tarjeta de feed 4&lt;/h4&gt;
+      &lt;p class="md-type-body-small"&gt;Densidad uniforme&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/article&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA PAR 5: hasta aqui -->
+
+  </main>
+
+</body>
+</html>

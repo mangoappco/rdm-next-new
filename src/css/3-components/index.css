@@ -40,6 +40,7 @@
 @import url("navigation-rail.css");
 @import url("snackbar.css");
 @import url("scaffold.css");
+@import url("layout.css");
 
 /* navigation-bar.css no compone con ningun hermano anterior: sus clases
    son propias (.md-navigation-bar-*), solo consume tokens de Capa 2 y el

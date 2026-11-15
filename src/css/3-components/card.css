@@ -348,6 +348,13 @@
      `transition` de border-radius, que es fija de por vida. */
 }
 
+/* Si la card aloja un ancla de menú flotante (como un split button o un menú de
+   acciones contextuales), se libera el desbordamiento para que la superficie
+   del menú pueda proyectarse fuera de la tarjeta sin ser recortada. */
+.md-card:has(.md-menu-anchor) {
+  overflow: visible;
+}
+
 /* ---------------------------------------------------------------------------
    LAS TRES FICHAS DE COLOR
    ---------------------------------------------------------------------------

@@ -18,7 +18,7 @@ Solo prohibiciones verbales. Las reglas de showroom, de capas y de ciclo no se c
 
 ## Componentes creados
 
-Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **26 componentes y 35 vistas** (26 de componente + 9 de tokens), todas enlazadas en `showroom/index.html`. El orden es el de `index.css`:
+Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **27 componentes y 36 vistas** (27 de componente + 9 de tokens), todas enlazadas en `showroom/index.html`. El orden es el de `index.css`:
 
 | Componente | Hoja | Vista |
 | --- | --- | --- |
@@ -48,10 +48,11 @@ Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **26 compo
 | Navigation Rail | `navigation-rail.css` | `navigation-rail.html` |
 | Snackbar | `snackbar.css` | `snackbar.html` |
 | Scaffold | `scaffold.css` | `scaffold.html` |
+| Layout | `layout.css` | `layout.html` |
 
 Cada componente tiene además su molde en `showroom/templates/<nombre>.template.html`.
 
-**Hoy TRECE pares molde/vista rinden byte-idénticos: `search`, `switch`, `checkbox`, `radio`, `select`, `top-app-bar`, `tabs`, `navigation-bar`, `navigation-rail`, `snackbar`, `scaffold` y `split-button`** —verificados por hash SHA256; los moldes de `fab`, `fab-extended`, `card`, `dialog`, `list` y `segmented-button`, que sí lo fueron a su día (rumbo del 2026-10-13), se quedaron atrás de su vista. Las demás vistas difieren de su molde por el puntero de dos líneas de la convención antigua o por el desfase del molde anotado en deuda. `chips` no tiene molde propio y `typography.html` apunta a `component.template.html`.
+**Hoy DIECISIETE pares molde/vista rinden byte-idénticos: `card`, `dialog`, `fab`, `fab-extended`, `layout`, `list`, `menu`, `navigation-bar`, `navigation-rail`, `scaffold`, `search`, `segmented-button`, `snackbar`, `split-button`, `tabs`, `text-field` y `top-app-bar`** —verificados por hash SHA256; los demás moldes difieren de su vista por el puntero de dos líneas de la convención antigua o por el desfase del molde anotado en deuda. `chips` no tiene molde propio y `typography.html` apunta a `component.template.html`.
 
 ## FAB — la base NO es el `md-fab-medium`
 
@@ -517,7 +518,7 @@ Nada de esto se ha tocado. Está anotado para que no se dé por verdad:
 
 - `showroom.css:223` mete `padding: 16px` en todo `div` directo de `.sr-specimen`. Un specimen escrito como `<div class="md-card">` lo ganaría en silencio y REGLA 11 no lo detectaría. La card usa `<article>` por eso.
 - Tres vistas quedaron sobre el techo de prosa al recortarla: `button-group` (199 de media), `icon-button` (287 máx.) y `motion` (211 máx.).
-- **El split button ya no está bloqueado.** Dependía de un `menu` que no existía, y el menú se publicó el 2026-11-11 (`menu.css` + `src/js/menu.js`). El componente arrancó el 2026-11-13 por el Par 1 (`split-button.css`, abajo). La nota de `button.css` que decía «dependen de un componente `menu` que no existe» quedó corregida en el mismo commit. El FAB menu sigue pendiente, pero ya no por el menú.
+- **El split button está 100% completado y publicado (2026-11-14).** Sus 8 pares (5 normativos y 3 de negocio ManGo! App) están cerrados y verificados con paridad byte-idéntica entre molde y componente. Dependía del menú, que se publicó el 2026-11-11. El FAB menu sigue pendiente, pero ya no por el menú.
 - FAB y extended FAB tienen 1 de las 8 familias de color de M3. Decidido y escrito en `fab.css:448-451`.
 - `4-utilities` no publica ninguna utilidad de espaciado, así que las ranuras de la card no pueden delegar su hueco al autor: lo declara el componente.
 - **`dialog` ya no es una deuda de `main.css`.** La línea de la capa `comp` lo enunciaba como «button, card, dialog» cuando no existía, y el README §11 avisaba de ello —«esa línea es hoy más un recordatorio que una descripción: `card` ya existe y `dialog` no»—. Con la publicación esa línea describe lo que hay, así que la nota queda cerrada. **El recordatorio sigue sirviendo para los siguientes**: `3-components/index.css` avisa de los que vendrán.
@@ -663,9 +664,9 @@ Superficie flotante de Material Design 3 Expressive construida con arquitectura 
 - `tools/verify-tokens.mjs`: 0 fallos nuevos en el componente; preservado el baseline histórico de `FALLOS: 2` (`select.css:448, 453`).
 - REGLA 11: 100% de paridad byte-idéntica entre especímenes y snippets copiables.
 
-## Componente Scaffold (.md-scaffold) — Consolidación y Cierre de Especificación (2026-11-13)
+## Componente Scaffold (.md-scaffold) — Consolidación y Cierre de App Shell (2026-11-15)
 
-Ensamblador estructural de pantalla canónico de Material Design 3 Expressive, construido con arquitectura de dos bloques y cerrado al 100% en su Bloque 1 de especificación técnica y anatomía (7 pares normativos):
+Ensamblador estructural de pantalla canónico de Material Design 3 Expressive, enfocado exclusivamente en el App Shell exterior (3 pares normativos puros):
 
 ### Anatomía Estructural y Ranuras de Pantalla
 - **Host `.md-scaffold`:** Establece `block-size: 100dvh; overflow: hidden;` con display flex columnar para gobernar el app shell completo sin desbordamientos globales. Define `@container scaffold (min-width: ...)` para reaccionar fluidamente a sus propias dimensiones.
@@ -673,41 +674,60 @@ Ensamblador estructural de pantalla canónico de Material Design 3 Expressive, c
 - **Scroll Independiente en Main (`.md-scaffold-main`):** Asume `flex: 1; overflow-y: auto; overscroll-behavior: contain;` con padding responsivo (`layout-margin-compact` en móvil / `layout-margin-expanded` en desktop). Delegación de scroll interna conectada con elevación automática de `top-app-bar.js`.
 - **Blindaje Ergonómico M3 con `:has()`:** Ranuras fijas flotantes (`.md-scaffold-fab`, `.md-scaffold-snackbar`) calculan automáticamente su elevación a `calc(80dp + 16dp)` en presencia de `.md-navigation-bar` mediante `:has(.md-navigation-bar)`.
 
-### Rejilla Responsiva Fluida (.md-grid) Desacoplada
-- **Compact (< 600px):** 4 columnas con gutters y márgenes de 16dp (`--md-sys-measurement-layout-gutter-compact`). Clamping preventivo para evitar pistas implícitas ficticias.
-- **Medium (600px–839px):** 8 columnas con gutters y márgenes de 24dp (`--md-sys-measurement-layout-gutter-expanded`).
-- **Expanded (>= 840px):** 12 columnas fluidas con gutters y márgenes de 24dp.
-
-### Layout Canónico: Supporting Panel (.md-layout-supporting-panel)
-- **Modo Escritorio (>= 840px):** Disposición en fila (`flex-direction: row; block-size: 100%; overflow: hidden;`) con área principal fluida (`.md-layout-supporting-panel-main`) y panel lateral de apoyo (`.md-layout-supporting-panel-aside`) de 360dp (`--md-sys-measurement-layout-supporting-panel-width`), divisor vertical sutil `outline-variant` y scroll independiente por panel.
-- **Modo Móvil (< 840px):** Apilado vertical al 100% del ancho (`flex-direction: column; overflow-y: auto;`) garantizando ergonomía de lectura en punto de venta (POS) y comanderos.
-
-### 7 Pares Normativos en Showroom
-1. Par 1 · Estructura base (Header con `data-md-top-app-bar-scroll`, Main y FAB)
-2. Par 2 · App Shell de escritorio con Navigation Rail (eje coaxial a 32dp, divisor vertical y sombra contenida)
-3. Par 3 · App Shell móvil con Navigation Bar (semántica landmark limpia con `aria-current="page"`)
-4. Par 4 · Rejilla responsiva: Compact (4 columnas · 412px con `.sr-specimen-compact`)
-5. Par 5 · Rejilla responsiva: Medium (8 columnas · 720px con `.sr-specimen-medium`)
-6. Par 6 · Rejilla responsiva: Expanded (12 columnas · Fluido)
-7. Par 7 · Layout canónico: Panel de apoyo (Supporting Panel 360dp para POS / Comanda activa)
+### 3 Pares Normativos en Showroom
+1. Par 1 · Estructura base: Header sticky con `data-md-top-app-bar-scroll`, Main fluido (texto limpio sin entidades literales) y FAB anclado
+2. Par 2 · App Shell de escritorio con Navigation Rail (eje coaxial a 32dp, divisor vertical y botón con `aria-expanded="false"`)
+3. Par 3 · App Shell móvil con Navigation Bar (semántica landmark limpia con `aria-current="page"` y elevación automática del FAB a 96dp vía `:has()`)
 
 ### Métricas de Validación
 - `tools/verify-tokens.mjs`: 0 fallos nuevos; baseline histórico intacto en `FALLOS: 2` (`select.css:448, 453`).
 - REGLA 11: 100% de correspondencia carácter a carácter entre especímenes y blueprints copiables.
+- SHA-256 byte-idéntico entre molde `scaffold.template.html` y componente `scaffold.html`.
+- Cobertura consolidada en 3 arquetipos canónicos de navegación real existentes en la librería.
 
 
-## Split button — Par 1 (2026-11-13)
+## Componente Layout (.md-layout / .md-grid) — Consolidación y Creación (2026-11-15)
 
-Hoja en `src/css/3-components/split-button.css`, vista y molde en `showroom/components/split-button.html` y `showroom/templates/split-button.template.html`, fila nueva en `showroom/index.html` y `@import` en `3-components/index.css` justo después de `menu.css`. Cierra el **Par 1: anatomía base filled con su menu-button**. Faltan las tres variantes de color restantes, la escala de tamaños, los estados (morph de la esquina interior incluido) y el bloque 2.
+Patrones canónicos de distribución interior de Material Design 3 Expressive (`src/css/3-components/layout.css`, `showroom/components/layout.html`, molde en `layout.template.html` y listado oficial en `showroom/index.html`). Cierra oficialmente su Bloque 1 de especificación técnica y anatomía en **5 pares normativos**:
 
-- **El contrato es Compose, no el SCSS, porque el comp web no existe.** m3.material.io marca Web como *Unavailable* para split button y no hay `_md-comp-split-button.scss`; los valores se leen en `SplitButton{XSmall,Small,Medium,Large,XLarge}Tokens.kt`, VERSION `18_0_18`. Es el mismo camino que el Top App Bar.
-- **Las cinco alturas NO acuñan primitiva, y es la decisión que hay que leer antes de tocarlas.** `container.height` vale 32, 40, 56, 96 y 136dp, que son exactamente los cinco peldaños de `container-height.css` que el botón ya consume. Capa 2 las mapea (`--md-sys-measurement-split-button-height*`) y el componente **no** las usa para la caja: cada segmento hereda la altura de su propia clase de tamaño, así que la pieza no se descuadra ni puede tener una clase de tamaño y la otra no. Si se quieren los cinco roles con consumidor propio, eso se decide en el Par 3.
-- **Lo que sí se acuñó en Capa 1 es el chevron:** 22, 22, 26, 38 y 50dp, ninguno en la escalera de iconos (20/24/32/40) ni paso de Space. Cuarto descongelamiento por medida de componente, tras el FAB 28, el segmented 18 y el checkbox 18.
-- **El ancho del segmento del menú se calcula:** `max(alto del botón, 48dp)` da 48, 48, 56, 96 y 136. Los paddings de M3 (13, 15, 29 y 43) son `(ancho − icono) / 2` y no se declaran: el glifo va centrado. **Medido en la base: 48×40.**
-- **`min-inline-size: 0` en el segmento, y sin esa línea la pieza miente.** El botón declara 64dp de ancho mínimo, que es el piso de un botón con etiqueta; medido sin ella, el segmento salía de 64 en vez de 48.
-- **El canto exterior lo pone el botón** (`corner-half-small`, que en una caja de 40 recorta a 20) y el split solo toca las dos esquinas interiores, 4dp en la base. El outer `corner-full` de M3 no se escribe: sus 9999px romperían la transición de forma del botón.
-- **El segmento del menú es un `.md-button`, no un `md-icon-button`:** comparte relleno, capa de estado, anillo de foco y onda con la acción principal, que es lo que hace que se lean como una sola pieza.
-- **El ancla del menú es el segmento derecho**, y allí el menú se alinea a su borde final (`inset-inline-start: auto; inset-inline-end: 0`), porque `menu.css` lo cuelga a la izquierda del ancla. Medido al abrir: 4dp bajo el disparador, delta horizontal 0 y foco en el primer ítem.
-- **El desplazamiento óptico del chevron no se aplica** (−1, −1, −2, −3 y −6dp en implementaciones de terceros): androidx `v18_0_18` no lo publica. El giro del glifo y el redondeo del segmento al abrir son estado, y van en su par.
-- **Deuda pagada de paso:** `showroom.css` excluye `.md-split-button` del `padding: 16px` que recibe todo `div` directo de `.sr-specimen`. Medido antes de la exclusión: la pieza crecía de 40 a 72 de alto y de 123 a 155 de ancho, y REGLA 11 no lo veía porque compara marcado, no caja.
-- **Verificador:** `FALLOS: 3`, ninguno del componente — los dos `color-mix` del baseline de `select.css` y el `style` en línea de `lab.html` que llegó con el pull del 2026-11-13.
+### Anatomía y Distribuciones Interiores Canónicas
+1. **Rejilla Responsiva Fluida (.md-grid):** Sistema adaptativo M3 de 4 columnas en Compact (< 600px, gutters de 16dp), 8 columnas en Medium (600–839px, gutters de 24dp) y 12 columnas en Expanded (>= 840px, gutters de 24dp).
+2. **Spans de Ocupación (.md-col-span-* y .md-col-full):** Modulación simétrica y asimétrica de columnas (12, 6+6, 4+4+4, 8+4) con adaptación automática según breakpoint.
+3. **Supporting Pane (.md-layout-supporting-panel):** Flujo de trabajo principal (1fr) acoplado a panel lateral de apoyo de 360dp (`--md-sys-measurement-layout-supporting-panel-width`). Despliegue en 2 columnas lado a lado en tablets y escritorio (>= 600px) con brecha de 24dp, colapsando a flujo vertical apilado en móvil.
+4. **List-Detail (.md-layout-list-detail):** Patrón maestro-detalle M3 con columna de lista de 360dp a la izquierda acoplada a panel fluido de detalle (1fr) a la derecha.
+5. **Feed (.md-layout-feed):** Rejilla fluida auto-ajustable con `auto-fill` y `minmax` para colecciones homogéneas, tarjetas de monitoreo y tableros.
+
+### 5 Pares Normativos en Showroom
+1. Par 1 · Rejilla responsiva base (4 / 8 / 12 columnas)
+2. Par 2 · Proporciones y spans de rejilla (12, 6+6, 4+4+4, 8+4)
+3. Par 3 · Layout canónico: Supporting Pane (360dp)
+4. Par 4 · Layout canónico: List-Detail (360dp + 1fr)
+5. Par 5 · Layout canónico: Feed adaptativo
+
+### Métricas de Validación
+- `tools/verify-tokens.mjs`: 0 fallos nuevos; baseline histórico intacto en `FALLOS: 2` (`select.css:448, 453`).
+- REGLA 11: 100% de correspondencia carácter a carácter entre especímenes y snippets copiables.
+- SHA-256 byte-idéntico entre molde y vista publicada.
+
+
+## Componente Split Button (.md-split-button) — Consolidación y Cierre de Especificación (2026-11-14)
+
+Hoja en `src/css/3-components/split-button.css`, vista y molde en `showroom/components/split-button.html` y `showroom/templates/split-button.template.html`, listado oficial en `showroom/index.html` bajo la familia **Acción** e importado en `3-components/index.css`. Cierra oficialmente la especificación completa de **8 pares normativos** estructurados en dos bloques:
+
+### Bloque 1 · Especificación Técnica y Anatomía (Pares 1 a 5)
+1. **Par 1 · Anatomía base filled:** Segmento principal y disparador unidos por costura de 2dp (`--md-comp-split-button-between-space`), esquinas interiores de 4dp (`--md-comp-split-button-inner-corner`), target táctil expandido invisible de 48dp y altura base de 40dp (small).
+2. **Par 2 · Variantes cromáticas:** Filled (base de énfasis alto), Tonal (énfasis medio), Outlined (énfasis bajo/delimitado con contorno sincronizado) y Elevated (énfasis medio con elevación level1).
+3. **Par 3 · Leading icon vs Label-only:** Contrato de contenido polimórfico con glifo leading de 20px (`payments`, `send`) frente a botón solo texto.
+4. **Par 4 · Escala de tamaños M3 Expressive:** Escala continua en 5 peldaños (`xsmall 32dp`, `small 40dp`, `medium 56dp`, `large 96dp`, `xlarge 136dp`). Escalado no lineal del chevron en Capa 1 (`22px`, `22px`, `26px`, `38px`, `50px`), optical sizes (`opsz 20/24/40/48`) y radios interiores (`4/4/4/8/12dp`).
+5. **Par 5 · Estados interactivos y deshabilitado:** Estados Enabled, Disabled parcial (acción principal bloqueada pero menú secundario activo) y Disabled completo (Filled y Outlined) con opacidad canónica del 38%.
+
+### Bloque 2 · Casos de Uso ManGo! App (Pares 6 a 8)
+6. **Par 6 · POS · Cierre y cobro de cuenta:** Ensamble dentro de `.md-card.md-card-outlined` con comanda de 4 productos en COP, divisor y acción principal de cobro (`Cobrar · $ 68.000`) acoplada a menú con datáfono, QR y división de cuenta.
+7. **Par 7 · Toma de comandas · Envío a producción:** Tarjeta `.md-card.md-card-elevated` con comanda activa en sala, botón secundario `.md-button-outlined` (`Añadir nota`) y split button `skillet` (`Enviar a cocina`) con rutas VIP, diferido y guardado local.
+8. **Par 8 · Cabecera administrativa · Gestión de catálogo:** Cabecera en `.md-card.md-card-outlined` con botón tonal (`filter_list` · `Filtrar categorías`) y split button `add` (`Nuevo plato`) con menú para creación de combos, importación CSV y categorías.
+
+### Innovaciones Técnicas y Decisiones de Arquitectura
+- **Desplazamiento Óptico del Chevron (M3 Expressive Specs):** Compensación asimétrica del glifo hacia la costura en reposo (`-1dp` en xs/s, `-2dp` en m, `-3dp` en l, `-6dp` en xl). Al conmutar `aria-expanded="true"`, el offset regresa a `0dp` en perfecta sincronía con la rotación de 180° del chevron y el morphing geométrico a círculo 1:1.
+- **Cascada de Posicionamiento de Menú de 6 Peldaños:** Algoritmo en `src/js/menu.js` y fallback estático en CSS que respeta la jerarquía oficial M3 (`#2 Aligned to trailing button bottom` → `#1 top` → `#5 Right-aligned bottom` → `#3 top` → `#6 Left-aligned bottom` → `#4 top`). Separación vertical de 4dp (`--md-sys-measurement-space-50`).
+- **Desbordamiento Limpio en Tarjetas (`card.css`):** Incorporación declarativa de `.md-card:has(.md-menu-anchor) { overflow: visible; }`, resolviendo de raíz el recorte de superficies flotantes dentro de tarjetas sin alterar el recorte de miniaturas y medios.
+- **Verificación:** Baseline inalterado en `FALLOS: 2` (`select.css:448, 453`); paridad SHA-256 byte a byte entre molde y componente publicado.

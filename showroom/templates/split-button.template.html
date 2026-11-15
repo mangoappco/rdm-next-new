@@ -22,9 +22,9 @@
 
   ESTADO DE LA VISTA
   ------------------
-  Par 1 de 5, cerrado: anatomía base filled con su menu-button.
-  Pendientes: variantes de color, escala de tamaños, estados (morph de la
-  esquina interior incluido) y el bloque 2.
+  Pares 1 a 8 de 8: Vista completa.
+  Bloque 1 (Pares 1 a 5): Especificación técnica y anatomía.
+  Bloque 2 (Pares 6 a 8): Casos de uso ManGo! App (POS / KDS / Administración).
 -->
 
 <body class="md-bg-background md-text-on-background md-type-body-medium">
@@ -52,7 +52,7 @@
     <header class="sr-header">
       <h1 class="md-type-display-large">Split button</h1>
       <p class="md-type-body-large">Los botones divididos abren un menú para ofrecer más opciones relacionadas con una acción.</p>
-      <p class="md-type-body-medium md-text-on-surface-variant">M3 Expressive · Bloque 1 · Par 1 de 5</p>
+      <p class="md-type-body-medium md-text-on-surface-variant">M3 Expressive · Bloque 1 y 2 (Pares 1 a 8)</p>
     </header>
 
     <hr class="md-divider">
@@ -65,56 +65,1027 @@
       <h3 class="md-type-title-large">Anatomía base filled</h3>
       <p class="md-type-body-medium">La acción principal y el disparador del menú comparten relleno, canto y altura: los une una costura de 2dp, no un borde.</p>
 
-      <div class="sr-specimen sr-specimen-menu">
-        <div class="md-split-button">
-          <button type="button" class="md-button md-button-filled">
-            <span class="md-button-label">Cobrar</span>
-          </button>
-          <div class="md-menu-anchor">
-            <button type="button" class="md-button md-button-filled md-split-button-menu" id="split-menu-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="split-menu-demo" aria-label="Más formas de cobro">
-              <span class="md-icon" aria-hidden="true">arrow_drop_down</span>
+      <div class="sr-specimen sr-specimen-gap">
+        <div class="md-menu-anchor">
+          <div class="md-split-button">
+            <!-- Slot: Acción principal -->
+            <button type="button" class="md-button md-button-filled">
+              <span class="md-button-label">Cobrar</span>
             </button>
-            <div class="md-menu" id="split-menu-demo" role="menu" aria-labelledby="split-menu-trigger">
-              <button type="button" class="md-menu-item" role="menuitem">
-                <span class="md-menu-item-headline">Cobrar en efectivo</span>
-              </button>
-              <button type="button" class="md-menu-item" role="menuitem">
-                <span class="md-menu-item-headline">Cobrar con tarjeta</span>
-              </button>
-              <button type="button" class="md-menu-item" role="menuitem">
-                <span class="md-menu-item-headline">Dividir la cuenta</span>
-              </button>
-            </div>
+            <!-- Slot: Disparador del menú -->
+            <button type="button" class="md-button md-button-filled md-split-button-menu" id="split-menu-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="split-menu-demo" aria-label="Más formas de cobro">
+              <span class="md-icon" aria-hidden="true">keyboard_arrow_down</span>
+            </button>
+          </div>
+          <div class="md-menu" id="split-menu-demo" role="menu" aria-labelledby="split-menu-trigger">
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-headline">Cobrar en efectivo</span>
+            </button>
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-headline">Cobrar con tarjeta</span>
+            </button>
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-headline">Dividir la cuenta</span>
+            </button>
           </div>
         </div>
       </div>
 
-      <pre class="sr-code"><code>&lt;div class="md-split-button"&gt;
-  &lt;!-- Slot: Acción principal --&gt;
-  &lt;button type="button" class="md-button md-button-filled"&gt;
-    &lt;span class="md-button-label"&gt;Cobrar&lt;/span&gt;
-  &lt;/button&gt;
-  &lt;!-- Slot: Disparador del menú --&gt;
-  &lt;div class="md-menu-anchor"&gt;
-    &lt;button type="button" class="md-button md-button-filled md-split-button-menu" id="split-menu-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="split-menu-demo" aria-label="Más formas de cobro"&gt;
-      &lt;span class="md-icon" aria-hidden="true"&gt;arrow_drop_down&lt;/span&gt;
+      <pre class="sr-code"><code>&lt;div class="md-menu-anchor"&gt;
+  &lt;div class="md-split-button"&gt;
+    &lt;!-- Slot: Acción principal --&gt;
+    &lt;button type="button" class="md-button md-button-filled"&gt;
+      &lt;span class="md-button-label"&gt;Cobrar&lt;/span&gt;
     &lt;/button&gt;
-    &lt;div class="md-menu" id="split-menu-demo" role="menu" aria-labelledby="split-menu-trigger"&gt;
-      &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
-        &lt;span class="md-menu-item-headline"&gt;Cobrar en efectivo&lt;/span&gt;
-      &lt;/button&gt;
-      &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
-        &lt;span class="md-menu-item-headline"&gt;Cobrar con tarjeta&lt;/span&gt;
-      &lt;/button&gt;
-      &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
-        &lt;span class="md-menu-item-headline"&gt;Dividir la cuenta&lt;/span&gt;
-      &lt;/button&gt;
-    &lt;/div&gt;
+    &lt;!-- Slot: Disparador del menú --&gt;
+    &lt;button type="button" class="md-button md-button-filled md-split-button-menu" id="split-menu-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="split-menu-demo" aria-label="Más formas de cobro"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;keyboard_arrow_down&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="md-menu" id="split-menu-demo" role="menu" aria-labelledby="split-menu-trigger"&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-headline"&gt;Cobrar en efectivo&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-headline"&gt;Cobrar con tarjeta&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-headline"&gt;Dividir la cuenta&lt;/span&gt;
+    &lt;/button&gt;
   &lt;/div&gt;
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
     <!-- PAREJA PAR 1: hasta aqui -->
+
+    <!-- PAREJA PAR 2: Variantes cromáticas M3 -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Variantes cromáticas M3</h3>
+      <p class="md-type-body-medium">Las cuatro expresiones de elevación y énfasis de Material Design 3: Filled (base), Tonal, Outlined y Elevated.</p>
+
+      <div class="sr-specimen sr-specimen-gap">
+        <!-- Filled (base) -->
+        <div class="md-menu-anchor">
+          <div class="md-split-button">
+            <!-- Slot: Acción principal -->
+            <button type="button" class="md-button md-button-filled">
+              <span class="md-button-label">Filled</span>
+            </button>
+            <!-- Slot: Disparador del menú -->
+            <button type="button" class="md-button md-button-filled md-split-button-menu" id="split-menu-filled-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="split-menu-filled" aria-label="Más opciones de Filled">
+              <span class="md-icon" aria-hidden="true">keyboard_arrow_down</span>
+            </button>
+          </div>
+          <div class="md-menu" id="split-menu-filled" role="menu" aria-labelledby="split-menu-filled-trigger">
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-headline">Opción 1</span>
+            </button>
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-headline">Opción 2</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Tonal -->
+        <div class="md-menu-anchor">
+          <div class="md-split-button md-split-button-tonal">
+            <!-- Slot: Acción principal -->
+            <button type="button" class="md-button md-button-tonal">
+              <span class="md-button-label">Tonal</span>
+            </button>
+            <!-- Slot: Disparador del menú -->
+            <button type="button" class="md-button md-button-tonal md-split-button-menu" id="split-menu-tonal-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="split-menu-tonal" aria-label="Más opciones de Tonal">
+              <span class="md-icon" aria-hidden="true">keyboard_arrow_down</span>
+            </button>
+          </div>
+          <div class="md-menu" id="split-menu-tonal" role="menu" aria-labelledby="split-menu-tonal-trigger">
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-headline">Opción 1</span>
+            </button>
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-headline">Opción 2</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Outlined -->
+        <div class="md-menu-anchor">
+          <div class="md-split-button md-split-button-outlined">
+            <!-- Slot: Acción principal -->
+            <button type="button" class="md-button md-button-outlined">
+              <span class="md-button-label">Outlined</span>
+            </button>
+            <!-- Slot: Disparador del menú -->
+            <button type="button" class="md-button md-button-outlined md-split-button-menu" id="split-menu-outlined-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="split-menu-outlined" aria-label="Más opciones de Outlined">
+              <span class="md-icon" aria-hidden="true">keyboard_arrow_down</span>
+            </button>
+          </div>
+          <div class="md-menu" id="split-menu-outlined" role="menu" aria-labelledby="split-menu-outlined-trigger">
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-headline">Opción 1</span>
+            </button>
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-headline">Opción 2</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Elevated -->
+        <div class="md-menu-anchor">
+          <div class="md-split-button md-split-button-elevated">
+            <!-- Slot: Acción principal -->
+            <button type="button" class="md-button md-button-elevated">
+              <span class="md-button-label">Elevated</span>
+            </button>
+            <!-- Slot: Disparador del menú -->
+            <button type="button" class="md-button md-button-elevated md-split-button-menu" id="split-menu-elevated-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="split-menu-elevated" aria-label="Más opciones de Elevated">
+              <span class="md-icon" aria-hidden="true">keyboard_arrow_down</span>
+            </button>
+          </div>
+          <div class="md-menu" id="split-menu-elevated" role="menu" aria-labelledby="split-menu-elevated-trigger">
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-headline">Opción 1</span>
+            </button>
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-headline">Opción 2</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;!-- Filled (base) --&gt;
+&lt;div class="md-menu-anchor"&gt;
+  &lt;div class="md-split-button"&gt;
+    &lt;!-- Slot: Acción principal --&gt;
+    &lt;button type="button" class="md-button md-button-filled"&gt;
+      &lt;span class="md-button-label"&gt;Filled&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;!-- Slot: Disparador del menú --&gt;
+    &lt;button type="button" class="md-button md-button-filled md-split-button-menu" id="split-menu-filled-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="split-menu-filled" aria-label="Más opciones de Filled"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;keyboard_arrow_down&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="md-menu" id="split-menu-filled" role="menu" aria-labelledby="split-menu-filled-trigger"&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-headline"&gt;Opción 1&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-headline"&gt;Opción 2&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Tonal --&gt;
+&lt;div class="md-menu-anchor"&gt;
+  &lt;div class="md-split-button md-split-button-tonal"&gt;
+    &lt;!-- Slot: Acción principal --&gt;
+    &lt;button type="button" class="md-button md-button-tonal"&gt;
+      &lt;span class="md-button-label"&gt;Tonal&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;!-- Slot: Disparador del menú --&gt;
+    &lt;button type="button" class="md-button md-button-tonal md-split-button-menu" id="split-menu-tonal-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="split-menu-tonal" aria-label="Más opciones de Tonal"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;keyboard_arrow_down&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="md-menu" id="split-menu-tonal" role="menu" aria-labelledby="split-menu-tonal-trigger"&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-headline"&gt;Opción 1&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-headline"&gt;Opción 2&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Outlined --&gt;
+&lt;div class="md-menu-anchor"&gt;
+  &lt;div class="md-split-button md-split-button-outlined"&gt;
+    &lt;!-- Slot: Acción principal --&gt;
+    &lt;button type="button" class="md-button md-button-outlined"&gt;
+      &lt;span class="md-button-label"&gt;Outlined&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;!-- Slot: Disparador del menú --&gt;
+    &lt;button type="button" class="md-button md-button-outlined md-split-button-menu" id="split-menu-outlined-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="split-menu-outlined" aria-label="Más opciones de Outlined"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;keyboard_arrow_down&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="md-menu" id="split-menu-outlined" role="menu" aria-labelledby="split-menu-outlined-trigger"&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-headline"&gt;Opción 1&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-headline"&gt;Opción 2&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Elevated --&gt;
+&lt;div class="md-menu-anchor"&gt;
+  &lt;div class="md-split-button md-split-button-elevated"&gt;
+    &lt;!-- Slot: Acción principal --&gt;
+    &lt;button type="button" class="md-button md-button-elevated"&gt;
+      &lt;span class="md-button-label"&gt;Elevated&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;!-- Slot: Disparador del menú --&gt;
+    &lt;button type="button" class="md-button md-button-elevated md-split-button-menu" id="split-menu-elevated-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="split-menu-elevated" aria-label="Más opciones de Elevated"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;keyboard_arrow_down&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="md-menu" id="split-menu-elevated" role="menu" aria-labelledby="split-menu-elevated-trigger"&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-headline"&gt;Opción 1&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-headline"&gt;Opción 2&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA PAR 2: hasta aqui -->
+
+    <!-- PAREJA PAR 3: Configuración con icono inicial -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Configuración con icono inicial</h3>
+      <p class="md-type-body-medium">El segmento principal admite un icono inicial (.md-button-icon) o solo texto, manteniendo la simetría y la costura de 2dp.</p>
+
+      <div class="sr-specimen sr-specimen-gap">
+        <!-- Con icono inicial (Leading Icon) -->
+        <div class="md-menu-anchor">
+          <div class="md-split-button">
+            <!-- Slot: Acción principal con icono -->
+            <button type="button" class="md-button md-button-filled">
+              <span class="md-button-icon md-icon" aria-hidden="true">send</span>
+              <span class="md-button-label">Enviar comanda</span>
+            </button>
+            <!-- Slot: Disparador del menú -->
+            <button type="button" class="md-button md-button-filled md-split-button-menu" id="split-menu-leading-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="split-menu-leading" aria-label="Más opciones de envío">
+              <span class="md-icon" aria-hidden="true">keyboard_arrow_down</span>
+            </button>
+          </div>
+          <div class="md-menu" id="split-menu-leading" role="menu" aria-labelledby="split-menu-leading-trigger">
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-headline">Enviar a cocina</span>
+            </button>
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-headline">Enviar a barra</span>
+            </button>
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-headline">Programar despacho</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Solo texto (Label-only) -->
+        <div class="md-menu-anchor">
+          <div class="md-split-button">
+            <!-- Slot: Acción principal solo texto -->
+            <button type="button" class="md-button md-button-filled">
+              <span class="md-button-label">Enviar comanda</span>
+            </button>
+            <!-- Slot: Disparador del menú -->
+            <button type="button" class="md-button md-button-filled md-split-button-menu" id="split-menu-label-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="split-menu-label" aria-label="Más opciones de envío">
+              <span class="md-icon" aria-hidden="true">keyboard_arrow_down</span>
+            </button>
+          </div>
+          <div class="md-menu" id="split-menu-label" role="menu" aria-labelledby="split-menu-label-trigger">
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-headline">Enviar a cocina</span>
+            </button>
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-headline">Enviar a barra</span>
+            </button>
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-headline">Programar despacho</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;!-- Con icono inicial (Leading Icon) --&gt;
+&lt;div class="md-menu-anchor"&gt;
+  &lt;div class="md-split-button"&gt;
+    &lt;!-- Slot: Acción principal con icono --&gt;
+    &lt;button type="button" class="md-button md-button-filled"&gt;
+      &lt;span class="md-button-icon md-icon" aria-hidden="true"&gt;send&lt;/span&gt;
+      &lt;span class="md-button-label"&gt;Enviar comanda&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;!-- Slot: Disparador del menú --&gt;
+    &lt;button type="button" class="md-button md-button-filled md-split-button-menu" id="split-menu-leading-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="split-menu-leading" aria-label="Más opciones de envío"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;keyboard_arrow_down&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="md-menu" id="split-menu-leading" role="menu" aria-labelledby="split-menu-leading-trigger"&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-headline"&gt;Enviar a cocina&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-headline"&gt;Enviar a barra&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-headline"&gt;Programar despacho&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Solo texto (Label-only) --&gt;
+&lt;div class="md-menu-anchor"&gt;
+  &lt;div class="md-split-button"&gt;
+    &lt;!-- Slot: Acción principal solo texto --&gt;
+    &lt;button type="button" class="md-button md-button-filled"&gt;
+      &lt;span class="md-button-label"&gt;Enviar comanda&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;!-- Slot: Disparador del menú --&gt;
+    &lt;button type="button" class="md-button md-button-filled md-split-button-menu" id="split-menu-label-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="split-menu-label" aria-label="Más opciones de envío"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;keyboard_arrow_down&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="md-menu" id="split-menu-label" role="menu" aria-labelledby="split-menu-label-trigger"&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-headline"&gt;Enviar a cocina&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-headline"&gt;Enviar a barra&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-headline"&gt;Programar despacho&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA PAR 3: hasta aqui -->
+
+    <!-- PAREJA PAR 4: Escala de tamaños M3 Expressive -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Escala de tamaños M3 Expressive</h3>
+      <p class="md-type-body-medium">Cinco alturas de 32dp a 136dp con escalado armónico de chevron, esquinas interiores y área de toque.</p>
+
+      <div class="sr-specimen sr-specimen-gap">
+        <!-- XSmall (32dp) -->
+        <div class="md-menu-anchor">
+          <div class="md-split-button md-split-button-xsmall">
+            <!-- Slot: Acción principal -->
+            <button type="button" class="md-button md-button-filled md-button-xsmall">
+              <span class="md-button-label">XSmall</span>
+            </button>
+            <!-- Slot: Disparador del menú -->
+            <button type="button" class="md-button md-button-filled md-button-xsmall md-split-button-menu" id="split-size-xs-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="split-size-xs-menu" aria-label="Más opciones de XSmall">
+              <span class="md-icon" aria-hidden="true">keyboard_arrow_down</span>
+            </button>
+          </div>
+          <div class="md-menu" id="split-size-xs-menu" role="menu" aria-labelledby="split-size-xs-trigger">
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-headline">Opción 1</span>
+            </button>
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-headline">Opción 2</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Small (40dp — base) -->
+        <div class="md-menu-anchor">
+          <div class="md-split-button md-split-button-small">
+            <!-- Slot: Acción principal -->
+            <button type="button" class="md-button md-button-filled md-button-small">
+              <span class="md-button-label">Small</span>
+            </button>
+            <!-- Slot: Disparador del menú -->
+            <button type="button" class="md-button md-button-filled md-button-small md-split-button-menu" id="split-size-s-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="split-size-s-menu" aria-label="Más opciones de Small">
+              <span class="md-icon" aria-hidden="true">keyboard_arrow_down</span>
+            </button>
+          </div>
+          <div class="md-menu" id="split-size-s-menu" role="menu" aria-labelledby="split-size-s-trigger">
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-headline">Opción 1</span>
+            </button>
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-headline">Opción 2</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Medium (56dp) -->
+        <div class="md-menu-anchor">
+          <div class="md-split-button md-split-button-medium">
+            <!-- Slot: Acción principal -->
+            <button type="button" class="md-button md-button-filled md-button-medium">
+              <span class="md-button-label">Medium</span>
+            </button>
+            <!-- Slot: Disparador del menú -->
+            <button type="button" class="md-button md-button-filled md-button-medium md-split-button-menu" id="split-size-m-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="split-size-m-menu" aria-label="Más opciones de Medium">
+              <span class="md-icon" aria-hidden="true">keyboard_arrow_down</span>
+            </button>
+          </div>
+          <div class="md-menu" id="split-size-m-menu" role="menu" aria-labelledby="split-size-m-trigger">
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-headline">Opción 1</span>
+            </button>
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-headline">Opción 2</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Large (96dp) -->
+        <div class="md-menu-anchor">
+          <div class="md-split-button md-split-button-large">
+            <!-- Slot: Acción principal -->
+            <button type="button" class="md-button md-button-filled md-button-large">
+              <span class="md-button-label">Large</span>
+            </button>
+            <!-- Slot: Disparador del menú -->
+            <button type="button" class="md-button md-button-filled md-button-large md-split-button-menu" id="split-size-l-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="split-size-l-menu" aria-label="Más opciones de Large">
+              <span class="md-icon" aria-hidden="true">keyboard_arrow_down</span>
+            </button>
+          </div>
+          <div class="md-menu" id="split-size-l-menu" role="menu" aria-labelledby="split-size-l-trigger">
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-headline">Opción 1</span>
+            </button>
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-headline">Opción 2</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- XLarge (136dp) -->
+        <div class="md-menu-anchor">
+          <div class="md-split-button md-split-button-xlarge">
+            <!-- Slot: Acción principal -->
+            <button type="button" class="md-button md-button-filled md-button-xlarge">
+              <span class="md-button-label">XLarge</span>
+            </button>
+            <!-- Slot: Disparador del menú -->
+            <button type="button" class="md-button md-button-filled md-button-xlarge md-split-button-menu" id="split-size-xl-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="split-size-xl-menu" aria-label="Más opciones de XLarge">
+              <span class="md-icon" aria-hidden="true">keyboard_arrow_down</span>
+            </button>
+          </div>
+          <div class="md-menu" id="split-size-xl-menu" role="menu" aria-labelledby="split-size-xl-trigger">
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-headline">Opción 1</span>
+            </button>
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-headline">Opción 2</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;!-- XSmall (32dp) --&gt;
+&lt;div class="md-menu-anchor"&gt;
+  &lt;div class="md-split-button md-split-button-xsmall"&gt;
+    &lt;!-- Slot: Acción principal --&gt;
+    &lt;button type="button" class="md-button md-button-filled md-button-xsmall"&gt;
+      &lt;span class="md-button-label"&gt;XSmall&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;!-- Slot: Disparador del menú --&gt;
+    &lt;button type="button" class="md-button md-button-filled md-button-xsmall md-split-button-menu" id="split-size-xs-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="split-size-xs-menu" aria-label="Más opciones de XSmall"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;keyboard_arrow_down&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="md-menu" id="split-size-xs-menu" role="menu" aria-labelledby="split-size-xs-trigger"&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-headline"&gt;Opción 1&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-headline"&gt;Opción 2&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Small (40dp — base) --&gt;
+&lt;div class="md-menu-anchor"&gt;
+  &lt;div class="md-split-button md-split-button-small"&gt;
+    &lt;!-- Slot: Acción principal --&gt;
+    &lt;button type="button" class="md-button md-button-filled md-button-small"&gt;
+      &lt;span class="md-button-label"&gt;Small&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;!-- Slot: Disparador del menú --&gt;
+    &lt;button type="button" class="md-button md-button-filled md-button-small md-split-button-menu" id="split-size-s-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="split-size-s-menu" aria-label="Más opciones de Small"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;keyboard_arrow_down&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="md-menu" id="split-size-s-menu" role="menu" aria-labelledby="split-size-s-trigger"&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-headline"&gt;Opción 1&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-headline"&gt;Opción 2&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Medium (56dp) --&gt;
+&lt;div class="md-menu-anchor"&gt;
+  &lt;div class="md-split-button md-split-button-medium"&gt;
+    &lt;!-- Slot: Acción principal --&gt;
+    &lt;button type="button" class="md-button md-button-filled md-button-medium"&gt;
+      &lt;span class="md-button-label"&gt;Medium&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;!-- Slot: Disparador del menú --&gt;
+    &lt;button type="button" class="md-button md-button-filled md-button-medium md-split-button-menu" id="split-size-m-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="split-size-m-menu" aria-label="Más opciones de Medium"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;keyboard_arrow_down&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="md-menu" id="split-size-m-menu" role="menu" aria-labelledby="split-size-m-trigger"&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-headline"&gt;Opción 1&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-headline"&gt;Opción 2&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Large (96dp) --&gt;
+&lt;div class="md-menu-anchor"&gt;
+  &lt;div class="md-split-button md-split-button-large"&gt;
+    &lt;!-- Slot: Acción principal --&gt;
+    &lt;button type="button" class="md-button md-button-filled md-button-large"&gt;
+      &lt;span class="md-button-label"&gt;Large&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;!-- Slot: Disparador del menú --&gt;
+    &lt;button type="button" class="md-button md-button-filled md-button-large md-split-button-menu" id="split-size-l-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="split-size-l-menu" aria-label="Más opciones de Large"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;keyboard_arrow_down&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="md-menu" id="split-size-l-menu" role="menu" aria-labelledby="split-size-l-trigger"&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-headline"&gt;Opción 1&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-headline"&gt;Opción 2&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- XLarge (136dp) --&gt;
+&lt;div class="md-menu-anchor"&gt;
+  &lt;div class="md-split-button md-split-button-xlarge"&gt;
+    &lt;!-- Slot: Acción principal --&gt;
+    &lt;button type="button" class="md-button md-button-filled md-button-xlarge"&gt;
+      &lt;span class="md-button-label"&gt;XLarge&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;!-- Slot: Disparador del menú --&gt;
+    &lt;button type="button" class="md-button md-button-filled md-button-xlarge md-split-button-menu" id="split-size-xl-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="split-size-xl-menu" aria-label="Más opciones de XLarge"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;keyboard_arrow_down&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="md-menu" id="split-size-xl-menu" role="menu" aria-labelledby="split-size-xl-trigger"&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-headline"&gt;Opción 1&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-headline"&gt;Opción 2&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA PAR 4: hasta aqui -->
+
+    <!-- PAREJA PAR 5: Estados interactivos -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Estados interactivos</h3>
+      <p class="md-type-body-medium">Comportamiento en reposo, deshabilitado parcial de acción principal y deshabilitado completo en variantes Filled y Outlined.</p>
+
+      <div class="sr-specimen sr-specimen-gap">
+        <!-- Enabled (Reposo interactivo) -->
+        <div class="md-menu-anchor">
+          <div class="md-split-button">
+            <!-- Slot: Acción principal -->
+            <button type="button" class="md-button md-button-filled">
+              <span class="md-button-label">Enviar pedido</span>
+            </button>
+            <!-- Slot: Disparador del menú -->
+            <button type="button" class="md-button md-button-filled md-split-button-menu" id="split-state-enabled-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="split-state-enabled-menu" aria-label="Más opciones de envío">
+              <span class="md-icon" aria-hidden="true">keyboard_arrow_down</span>
+            </button>
+          </div>
+          <div class="md-menu" id="split-state-enabled-menu" role="menu" aria-labelledby="split-state-enabled-trigger">
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-headline">Enviar a cocina</span>
+            </button>
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-headline">Enviar a barra</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Disabled parcial (Acción principal deshabilitada, menú accesible) -->
+        <div class="md-menu-anchor">
+          <div class="md-split-button">
+            <!-- Slot: Acción principal deshabilitada -->
+            <button type="button" class="md-button md-button-filled" disabled>
+              <span class="md-button-label">Confirmar mesa</span>
+            </button>
+            <!-- Slot: Disparador del menú activo -->
+            <button type="button" class="md-button md-button-filled md-split-button-menu" id="split-state-partial-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="split-state-partial-menu" aria-label="Más opciones de mesa">
+              <span class="md-icon" aria-hidden="true">keyboard_arrow_down</span>
+            </button>
+          </div>
+          <div class="md-menu" id="split-state-partial-menu" role="menu" aria-labelledby="split-state-partial-trigger">
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-headline">Guardar borrador</span>
+            </button>
+            <button type="button" class="md-menu-item" role="menuitem">
+              <span class="md-menu-item-headline">Asignar cliente</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Disabled completo (Filled) -->
+        <div class="md-split-button">
+          <!-- Slot: Acción principal deshabilitada -->
+          <button type="button" class="md-button md-button-filled" disabled>
+            <span class="md-button-label">Confirmar pedido</span>
+          </button>
+          <!-- Slot: Disparador del menú deshabilitado -->
+          <button type="button" class="md-button md-button-filled md-split-button-menu" aria-label="Más opciones de pedido" disabled>
+            <span class="md-icon" aria-hidden="true">keyboard_arrow_down</span>
+          </button>
+        </div>
+
+        <!-- Disabled completo (Outlined) -->
+        <div class="md-split-button md-split-button-outlined">
+          <!-- Slot: Acción principal deshabilitada -->
+          <button type="button" class="md-button md-button-outlined" disabled>
+            <span class="md-button-label">Facturar comanda</span>
+          </button>
+          <!-- Slot: Disparador del menú deshabilitado -->
+          <button type="button" class="md-button md-button-outlined md-split-button-menu" aria-label="Más opciones de facturación" disabled>
+            <span class="md-icon" aria-hidden="true">keyboard_arrow_down</span>
+          </button>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;!-- Enabled (Reposo interactivo) --&gt;
+&lt;div class="md-menu-anchor"&gt;
+  &lt;div class="md-split-button"&gt;
+    &lt;!-- Slot: Acción principal --&gt;
+    &lt;button type="button" class="md-button md-button-filled"&gt;
+      &lt;span class="md-button-label"&gt;Enviar pedido&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;!-- Slot: Disparador del menú --&gt;
+    &lt;button type="button" class="md-button md-button-filled md-split-button-menu" id="split-state-enabled-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="split-state-enabled-menu" aria-label="Más opciones de envío"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;keyboard_arrow_down&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="md-menu" id="split-state-enabled-menu" role="menu" aria-labelledby="split-state-enabled-trigger"&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-headline"&gt;Enviar a cocina&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-headline"&gt;Enviar a barra&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Disabled parcial (Acción principal deshabilitada, menú accesible) --&gt;
+&lt;div class="md-menu-anchor"&gt;
+  &lt;div class="md-split-button"&gt;
+    &lt;!-- Slot: Acción principal deshabilitada --&gt;
+    &lt;button type="button" class="md-button md-button-filled" disabled&gt;
+      &lt;span class="md-button-label"&gt;Confirmar mesa&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;!-- Slot: Disparador del menú activo --&gt;
+    &lt;button type="button" class="md-button md-button-filled md-split-button-menu" id="split-state-partial-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="split-state-partial-menu" aria-label="Más opciones de mesa"&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;keyboard_arrow_down&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class="md-menu" id="split-state-partial-menu" role="menu" aria-labelledby="split-state-partial-trigger"&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-headline"&gt;Guardar borrador&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+      &lt;span class="md-menu-item-headline"&gt;Asignar cliente&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Disabled completo (Filled) --&gt;
+&lt;div class="md-split-button"&gt;
+  &lt;!-- Slot: Acción principal deshabilitada --&gt;
+  &lt;button type="button" class="md-button md-button-filled" disabled&gt;
+    &lt;span class="md-button-label"&gt;Confirmar pedido&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;!-- Slot: Disparador del menú deshabilitado --&gt;
+  &lt;button type="button" class="md-button md-button-filled md-split-button-menu" aria-label="Más opciones de pedido" disabled&gt;
+    &lt;span class="md-icon" aria-hidden="true"&gt;keyboard_arrow_down&lt;/span&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+
+&lt;!-- Disabled completo (Outlined) --&gt;
+&lt;div class="md-split-button md-split-button-outlined"&gt;
+  &lt;!-- Slot: Acción principal deshabilitada --&gt;
+  &lt;button type="button" class="md-button md-button-outlined" disabled&gt;
+    &lt;span class="md-button-label"&gt;Facturar comanda&lt;/span&gt;
+  &lt;/button&gt;
+  &lt;!-- Slot: Disparador del menú deshabilitado --&gt;
+  &lt;button type="button" class="md-button md-button-outlined md-split-button-menu" aria-label="Más opciones de facturación" disabled&gt;
+    &lt;span class="md-icon" aria-hidden="true"&gt;keyboard_arrow_down&lt;/span&gt;
+  &lt;/button&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA PAR 5: hasta aqui -->
+
+    <hr class="md-divider">
+
+    <!-- BLOQUE 2: CASOS DE USO MANGO! APP -->
+    <h2 class="md-type-headline-medium">Bloque 2 · Casos de uso ManGo! App</h2>
+
+    <!-- PAREJA PAR 6: POS · Cierre y cobro de cuenta -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">POS · Cierre y cobro de cuenta</h3>
+      <p class="md-type-body-medium">Acción primaria de cobro inmediato acoplada a métodos de pago alternativos y división de cuenta en tarjeta de comanda.</p>
+
+      <div class="sr-specimen">
+        <article class="md-card md-card-outlined">
+          <div class="md-card-header">
+            <h4 class="md-type-title-large">Mesa 4 · Cuenta activa</h4>
+            <p class="md-type-body-medium">Mesero: Carlos M. · 4 productos</p>
+          </div>
+          <div class="md-card-content">
+            <p class="md-type-body-medium">1× Hamburguesa Clásica · $ 28.000</p>
+            <p class="md-type-body-medium">1× Papas Rústicas · $ 14.000</p>
+            <p class="md-type-body-medium">1× Cerveza Artesanal · $ 16.000</p>
+            <p class="md-type-body-medium">1× Limonada Natural · $ 10.000</p>
+          </div>
+          <hr class="md-divider">
+          <div class="md-card-actions">
+            <div class="md-menu-anchor">
+              <div class="md-split-button">
+                <!-- Slot: Acción principal de cobro -->
+                <button type="button" class="md-button md-button-filled">
+                  <span class="md-button-icon md-icon" aria-hidden="true">payments</span>
+                  <span class="md-button-label">Cobrar · $ 68.000</span>
+                </button>
+                <!-- Slot: Disparador de métodos alternativos -->
+                <button type="button" class="md-button md-button-filled md-split-button-menu" id="split-pos-pay-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="split-pos-pay-menu" aria-label="Más métodos de cobro">
+                  <span class="md-icon" aria-hidden="true">keyboard_arrow_down</span>
+                </button>
+              </div>
+              <div class="md-menu" id="split-pos-pay-menu" role="menu" aria-labelledby="split-pos-pay-trigger">
+                <button type="button" class="md-menu-item" role="menuitem">
+                  <span class="md-menu-item-leading md-icon" aria-hidden="true">credit_card</span>
+                  <span class="md-menu-item-headline">Cobrar con datáfono</span>
+                </button>
+                <button type="button" class="md-menu-item" role="menuitem">
+                  <span class="md-menu-item-leading md-icon" aria-hidden="true">qr_code_2</span>
+                  <span class="md-menu-item-headline">Pago con transferencia / QR</span>
+                </button>
+                <button type="button" class="md-menu-item" role="menuitem">
+                  <span class="md-menu-item-leading md-icon" aria-hidden="true">call_split</span>
+                  <span class="md-menu-item-headline">Dividir cuenta por persona</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <pre class="sr-code"><code>&lt;article class="md-card md-card-outlined"&gt;
+  &lt;div class="md-card-header"&gt;
+    &lt;h4 class="md-type-title-large"&gt;Mesa 4 · Cuenta activa&lt;/h4&gt;
+    &lt;p class="md-type-body-medium"&gt;Mesero: Carlos M. · 4 productos&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;1× Hamburguesa Clásica · $ 28.000&lt;/p&gt;
+    &lt;p class="md-type-body-medium"&gt;1× Papas Rústicas · $ 14.000&lt;/p&gt;
+    &lt;p class="md-type-body-medium"&gt;1× Cerveza Artesanal · $ 16.000&lt;/p&gt;
+    &lt;p class="md-type-body-medium"&gt;1× Limonada Natural · $ 10.000&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;hr class="md-divider"&gt;
+  &lt;div class="md-card-actions"&gt;
+    &lt;div class="md-menu-anchor"&gt;
+      &lt;div class="md-split-button"&gt;
+        &lt;!-- Slot: Acción principal de cobro --&gt;
+        &lt;button type="button" class="md-button md-button-filled"&gt;
+          &lt;span class="md-button-icon md-icon" aria-hidden="true"&gt;payments&lt;/span&gt;
+          &lt;span class="md-button-label"&gt;Cobrar · $ 68.000&lt;/span&gt;
+        &lt;/button&gt;
+        &lt;!-- Slot: Disparador de métodos alternativos --&gt;
+        &lt;button type="button" class="md-button md-button-filled md-split-button-menu" id="split-pos-pay-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="split-pos-pay-menu" aria-label="Más métodos de cobro"&gt;
+          &lt;span class="md-icon" aria-hidden="true"&gt;keyboard_arrow_down&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div class="md-menu" id="split-pos-pay-menu" role="menu" aria-labelledby="split-pos-pay-trigger"&gt;
+        &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+          &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;credit_card&lt;/span&gt;
+          &lt;span class="md-menu-item-headline"&gt;Cobrar con datáfono&lt;/span&gt;
+        &lt;/button&gt;
+        &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+          &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;qr_code_2&lt;/span&gt;
+          &lt;span class="md-menu-item-headline"&gt;Pago con transferencia / QR&lt;/span&gt;
+        &lt;/button&gt;
+        &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+          &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;call_split&lt;/span&gt;
+          &lt;span class="md-menu-item-headline"&gt;Dividir cuenta por persona&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/article&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA PAR 6: hasta aqui -->
+
+    <!-- PAREJA PAR 7: Toma de comandas · Envío a producción -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Toma de comandas · Envío a producción</h3>
+      <p class="md-type-body-medium">Flujo de mesero en sala para despachar pedidos a cocina con prioridad estándar o rutas urgentes y de guardado.</p>
+
+      <div class="sr-specimen">
+        <article class="md-card md-card-elevated">
+          <div class="md-card-header">
+            <h4 class="md-type-title-large">Mesa 7 · Salón Principal</h4>
+            <p class="md-type-body-medium">Comanda en marcha · 3 productos</p>
+          </div>
+          <div class="md-card-content">
+            <p class="md-type-body-medium">2× Hamburguesa Artesanal · $ 56.000</p>
+            <p class="md-type-body-medium">1× Papas en Cascos · $ 12.000</p>
+            <p class="md-type-body-medium">1× Limonada de Coco · $ 14.000</p>
+          </div>
+          <hr class="md-divider">
+          <div class="md-card-actions">
+            <button type="button" class="md-button md-button-outlined">
+              <span class="md-button-icon md-icon" aria-hidden="true">edit_note</span>
+              <span class="md-button-label">Añadir nota</span>
+            </button>
+            <div class="md-menu-anchor">
+              <div class="md-split-button">
+                <!-- Slot: Acción principal de despacho -->
+                <button type="button" class="md-button md-button-filled">
+                  <span class="md-button-icon md-icon" aria-hidden="true">skillet</span>
+                  <span class="md-button-label">Enviar a cocina</span>
+                </button>
+                <!-- Slot: Disparador de despacho alternativo -->
+                <button type="button" class="md-button md-button-filled md-split-button-menu" id="split-kds-send-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="split-kds-send-menu" aria-label="Más opciones de despacho">
+                  <span class="md-icon" aria-hidden="true">keyboard_arrow_down</span>
+                </button>
+              </div>
+              <div class="md-menu" id="split-kds-send-menu" role="menu" aria-labelledby="split-kds-send-trigger">
+                <button type="button" class="md-menu-item" role="menuitem">
+                  <span class="md-menu-item-leading md-icon" aria-hidden="true">bolt</span>
+                  <span class="md-menu-item-headline">Enviar como urgente (VIP)</span>
+                </button>
+                <button type="button" class="md-menu-item" role="menuitem">
+                  <span class="md-menu-item-leading md-icon" aria-hidden="true">schedule_send</span>
+                  <span class="md-menu-item-headline">Programar segundo tiempo</span>
+                </button>
+                <button type="button" class="md-menu-item" role="menuitem">
+                  <span class="md-menu-item-leading md-icon" aria-hidden="true">draft</span>
+                  <span class="md-menu-item-headline">Guardar sin enviar a cocina</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <pre class="sr-code"><code>&lt;article class="md-card md-card-elevated"&gt;
+  &lt;div class="md-card-header"&gt;
+    &lt;h4 class="md-type-title-large"&gt;Mesa 7 · Salón Principal&lt;/h4&gt;
+    &lt;p class="md-type-body-medium"&gt;Comanda en marcha · 3 productos&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="md-card-content"&gt;
+    &lt;p class="md-type-body-medium"&gt;2× Hamburguesa Artesanal · $ 56.000&lt;/p&gt;
+    &lt;p class="md-type-body-medium"&gt;1× Papas en Cascos · $ 12.000&lt;/p&gt;
+    &lt;p class="md-type-body-medium"&gt;1× Limonada de Coco · $ 14.000&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;hr class="md-divider"&gt;
+  &lt;div class="md-card-actions"&gt;
+    &lt;button type="button" class="md-button md-button-outlined"&gt;
+      &lt;span class="md-button-icon md-icon" aria-hidden="true"&gt;edit_note&lt;/span&gt;
+      &lt;span class="md-button-label"&gt;Añadir nota&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;div class="md-menu-anchor"&gt;
+      &lt;div class="md-split-button"&gt;
+        &lt;!-- Slot: Acción principal de despacho --&gt;
+        &lt;button type="button" class="md-button md-button-filled"&gt;
+          &lt;span class="md-button-icon md-icon" aria-hidden="true"&gt;skillet&lt;/span&gt;
+          &lt;span class="md-button-label"&gt;Enviar a cocina&lt;/span&gt;
+        &lt;/button&gt;
+        &lt;!-- Slot: Disparador de despacho alternativo --&gt;
+        &lt;button type="button" class="md-button md-button-filled md-split-button-menu" id="split-kds-send-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="split-kds-send-menu" aria-label="Más opciones de despacho"&gt;
+          &lt;span class="md-icon" aria-hidden="true"&gt;keyboard_arrow_down&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div class="md-menu" id="split-kds-send-menu" role="menu" aria-labelledby="split-kds-send-trigger"&gt;
+        &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+          &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;bolt&lt;/span&gt;
+          &lt;span class="md-menu-item-headline"&gt;Enviar como urgente (VIP)&lt;/span&gt;
+        &lt;/button&gt;
+        &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+          &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;schedule_send&lt;/span&gt;
+          &lt;span class="md-menu-item-headline"&gt;Programar segundo tiempo&lt;/span&gt;
+        &lt;/button&gt;
+        &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+          &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;draft&lt;/span&gt;
+          &lt;span class="md-menu-item-headline"&gt;Guardar sin enviar a cocina&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/article&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA PAR 7: hasta aqui -->
+
+    <!-- PAREJA PAR 8: Cabecera administrativa · Gestión de catálogo -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Cabecera administrativa · Gestión de catálogo</h3>
+      <p class="md-type-body-medium">Barra de control para creación rápida de productos en carta con acceso directo a combos e importación masiva.</p>
+
+      <div class="sr-specimen">
+        <article class="md-card md-card-outlined">
+          <div class="md-card-header">
+            <h4 class="md-type-title-large">Carta & Menú · 48 productos activos</h4>
+            <p class="md-type-body-medium">Administración de carta, precios de venta e inventario gastronómico</p>
+          </div>
+          <hr class="md-divider">
+          <div class="md-card-actions">
+            <button type="button" class="md-button md-button-tonal">
+              <span class="md-button-icon md-icon" aria-hidden="true">filter_list</span>
+              <span class="md-button-label">Filtrar categorías</span>
+            </button>
+            <div class="md-menu-anchor">
+              <div class="md-split-button">
+                <!-- Slot: Acción principal de creación -->
+                <button type="button" class="md-button md-button-filled">
+                  <span class="md-button-icon md-icon" aria-hidden="true">add</span>
+                  <span class="md-button-label">Nuevo plato</span>
+                </button>
+                <!-- Slot: Disparador de opciones de catálogo -->
+                <button type="button" class="md-button md-button-filled md-split-button-menu" id="split-admin-catalog-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="split-admin-catalog-menu" aria-label="Más acciones de catálogo">
+                  <span class="md-icon" aria-hidden="true">keyboard_arrow_down</span>
+                </button>
+              </div>
+              <div class="md-menu" id="split-admin-catalog-menu" role="menu" aria-labelledby="split-admin-catalog-trigger">
+                <button type="button" class="md-menu-item" role="menuitem">
+                  <span class="md-menu-item-leading md-icon" aria-hidden="true">lunch_dining</span>
+                  <span class="md-menu-item-headline">Crear combo o promoción</span>
+                </button>
+                <button type="button" class="md-menu-item" role="menuitem">
+                  <span class="md-menu-item-leading md-icon" aria-hidden="true">upload_file</span>
+                  <span class="md-menu-item-headline">Importar carta desde CSV</span>
+                </button>
+                <button type="button" class="md-menu-item" role="menuitem">
+                  <span class="md-menu-item-leading md-icon" aria-hidden="true">category</span>
+                  <span class="md-menu-item-headline">Nueva categoría de menú</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <pre class="sr-code"><code>&lt;article class="md-card md-card-outlined"&gt;
+  &lt;div class="md-card-header"&gt;
+    &lt;h4 class="md-type-title-large"&gt;Carta &amp; Menú · 48 productos activos&lt;/h4&gt;
+    &lt;p class="md-type-body-medium"&gt;Administración de carta, precios de venta e inventario gastronómico&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;hr class="md-divider"&gt;
+  &lt;div class="md-card-actions"&gt;
+    &lt;button type="button" class="md-button md-button-tonal"&gt;
+      &lt;span class="md-button-icon md-icon" aria-hidden="true"&gt;filter_list&lt;/span&gt;
+      &lt;span class="md-button-label"&gt;Filtrar categorías&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;div class="md-menu-anchor"&gt;
+      &lt;div class="md-split-button"&gt;
+        &lt;!-- Slot: Acción principal de creación --&gt;
+        &lt;button type="button" class="md-button md-button-filled"&gt;
+          &lt;span class="md-button-icon md-icon" aria-hidden="true"&gt;add&lt;/span&gt;
+          &lt;span class="md-button-label"&gt;Nuevo plato&lt;/span&gt;
+        &lt;/button&gt;
+        &lt;!-- Slot: Disparador de opciones de catálogo --&gt;
+        &lt;button type="button" class="md-button md-button-filled md-split-button-menu" id="split-admin-catalog-trigger" aria-haspopup="menu" aria-expanded="false" aria-controls="split-admin-catalog-menu" aria-label="Más acciones de catálogo"&gt;
+          &lt;span class="md-icon" aria-hidden="true"&gt;keyboard_arrow_down&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div class="md-menu" id="split-admin-catalog-menu" role="menu" aria-labelledby="split-admin-catalog-trigger"&gt;
+        &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+          &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;lunch_dining&lt;/span&gt;
+          &lt;span class="md-menu-item-headline"&gt;Crear combo o promoción&lt;/span&gt;
+        &lt;/button&gt;
+        &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+          &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;upload_file&lt;/span&gt;
+          &lt;span class="md-menu-item-headline"&gt;Importar carta desde CSV&lt;/span&gt;
+        &lt;/button&gt;
+        &lt;button type="button" class="md-menu-item" role="menuitem"&gt;
+          &lt;span class="md-menu-item-leading md-icon" aria-hidden="true"&gt;category&lt;/span&gt;
+          &lt;span class="md-menu-item-headline"&gt;Nueva categoría de menú&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/article&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA PAR 8: hasta aqui -->
 
   </main>
 </body>

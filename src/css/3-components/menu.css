@@ -39,7 +39,7 @@
 }
 
 /* Anclaje visual canónico M3: el disparador raíz retiene su state-layer sutil (0.08) mientras el menú esté desplegado */
-.md-menu-anchor > :is(.md-icon-button, .md-button)[aria-expanded="true"]::after {
+.md-menu-anchor :is(.md-icon-button, .md-button)[aria-expanded="true"]::after {
   opacity: var(--md-sys-state-hover-state-layer-opacity);
 }
 
@@ -71,7 +71,7 @@
 
 /* Estado abierto: visible cuando el ancla tiene aria-expanded="true",
    cuando tiene clase .md-menu-open o en selectores vinculados */
-.md-menu-anchor:has(> [aria-expanded="true"]) > .md-menu,
+.md-menu-anchor:has([aria-expanded="true"]) > .md-menu,
 .md-menu-submenu:has(> [aria-expanded="true"]) > .md-menu,
 .md-menu-anchor > .md-menu.md-menu-open,
 .md-menu-submenu > .md-menu.md-menu-open,

@@ -175,6 +175,19 @@
   --md-ref-padding-navigation-rail-content-top: 44px;
 
   /* ------------------------------------------------------------------------
+     DESPLAZAMIENTO ÓPTICO DEL CHEVRON · SPLIT BUTTON (M3 Expressive)
+     ------------------------------------------------------------------------
+     Especificación oficial M3 (Specs · Split Button · Trailing button icon).
+     En reposo, la asimetría de la pastilla desplaza el glifo hacia la costura:
+     -1dp en xs y s, -2dp en m, -3dp en l y -6dp en xl. Al abrir se centra a 0.
+     ------------------------------------------------------------------------ */
+  --md-ref-offset-split-button-xsmall: 1px;
+  --md-ref-offset-split-button-small: 1px;
+  --md-ref-offset-split-button-medium: 2px;
+  --md-ref-offset-split-button-large: 3px;
+  --md-ref-offset-split-button-xlarge: 6px;
+
+  /* ------------------------------------------------------------------------
      BREAKPOINTS Y LAYOUT CANÓNICO M3 (Window Size Classes & Canonical Layouts)
      ------------------------------------------------------------------------
      Cotas oficiales publicadas en m3.material.io/foundations/layout/

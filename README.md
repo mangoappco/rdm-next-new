@@ -1007,7 +1007,7 @@ de dónde sale cada cosa, y el precio es que cada vista tiene que acordarse de e
 
 ## 11. Componentes
 
-El catálogo de M3 tiene decenas de componentes y aquí hay **veintiuno**. Se construyen uno a
+El catálogo de M3 tiene decenas de componentes y aquí hay **veintisiete**. Se construyen uno a
 uno, y ninguno se da por bueno sin medirlo en el navegador: `tools/verify-tokens.mjs`
 comprueba la arquitectura, no que el componente se vea bien.
 
@@ -1025,7 +1025,7 @@ El orden es el de `3-components/index.css`, que es el de carga y el de dependenc
 | Dialog | `3-components/dialog.css` | 5 | 3 | `dialog.html`, 6 secciones |
 | List | `3-components/list.css` | 16 | 25 | `list.html`, 15 secciones |
 | Segmented Button | `3-components/segmented-button.css` | 6 | 18 | `segmented-button.html`, 9 secciones |
-| Split Button | `3-components/split-button.css` | 2 | 4 | `split-button.html`, 1 sección |
+| Split Button | `3-components/split-button.css` | 18 | 22 | `split-button.html`, 8 secciones |
 | Chips | `3-components/chip.css` | 6 | 0 | `chips.html`, 11 secciones |
 | Text Field | `3-components/text-field.css` | 15 | 20 | `text-field.html`, 16 secciones |
 | Search | `3-components/search.css` | 12 | 8 | `search.html`, 5 secciones |
@@ -1040,7 +1040,8 @@ El orden es el de `3-components/index.css`, que es el de carga y el de dependenc
 | Navigation Bar | `3-components/navigation-bar.css` | 13 | 0 | `navigation-bar.html`, 6 secciones |
 | Navigation Rail | `3-components/navigation-rail.css` | 15 | 0 | `navigation-rail.html`, 10 secciones |
 | Snackbar | `3-components/snackbar.css` | 11 | 0 | `snackbar.html`, 7 secciones |
-| Scaffold | `3-components/scaffold.css` | 20 | 0 | `scaffold.html`, 7 secciones |
+| Scaffold | `3-components/scaffold.css` | 10 | 0 | `scaffold.html`, 3 secciones |
+| Layout | `3-components/layout.css` | 18 | 0 | `layout.html`, 5 secciones |
 
 Las "clases" son las que expone el componente, sin contar las de `2-system-tokens` que compone para
 colocar la capa de estado: `button.css` nombra `.md-state-layer` y `.md-disabled` en sus
