@@ -674,16 +674,19 @@ Ensamblador estructural de pantalla canónico de Material Design 3 Expressive, e
 - **Scroll Independiente en Main (`.md-scaffold-main`):** Asume `flex: 1; overflow-y: auto; overscroll-behavior: contain;` con padding responsivo (`layout-margin-compact` en móvil / `layout-margin-expanded` en desktop). Delegación de scroll interna conectada con elevación automática de `top-app-bar.js`.
 - **Blindaje Ergonómico M3 con `:has()`:** Ranuras fijas flotantes (`.md-scaffold-fab`, `.md-scaffold-snackbar`) calculan automáticamente su elevación a `calc(80dp + 16dp)` en presencia de `.md-navigation-bar` mediante `:has(.md-navigation-bar)`.
 
-### 3 Pares Normativos en Showroom
-1. Par 1 · Estructura base: Header sticky con `data-md-top-app-bar-scroll`, Main fluido (texto limpio sin entidades literales) y FAB anclado
-2. Par 2 · App Shell de escritorio con Navigation Rail (eje coaxial a 32dp, divisor vertical y botón con `aria-expanded="false"`)
-3. Par 3 · App Shell móvil con Navigation Bar (semántica landmark limpia con `aria-current="page"` y elevación automática del FAB a 96dp vía `:has()`)
+### 6 Pares Normativos en Showroom (Arquitectura de Ranuras y Ensamblajes M3 · Prosa Normalizada)
+1. Par 1 · Anatomía base (App Shell: blueprint maestro universal con sus tres ranuras estructurales comentadas: Header, Body/Main y FAB)
+2. Par 2 · Cabecera sticky y scroll independiente (anclaje inmutable en top: 0 y contención overscroll en Main)
+3. Par 3 · Navegación lateral: Navigation Rail 96dp (eje coaxial, divisor vertical y conmutación de chasis a flex-direction: row)
+4. Par 4 · Navegación inferior y elevación de FAB (blindaje ergonómico con elevación automática a 96dp vía `:has(.md-navigation-bar)`)
+5. Par 5 · Ensamblaje Compact (< 600dp: smartphone con cabecera sticky, scroll continuo, FAB elevado y barra de navegación)
+6. Par 6 · Ensamblaje Expanded (≥ 840dp: escritorio multi-panel acoplando carril lateral y Supporting Pane de 360dp con semántica accesible `role="region"`)
 
 ### Métricas de Validación
 - `tools/verify-tokens.mjs`: 0 fallos nuevos; baseline histórico intacto en `FALLOS: 2` (`select.css:448, 453`).
-- REGLA 11: 100% de correspondencia carácter a carácter entre especímenes y blueprints copiables.
+- REGLA 11: 100% de correspondencia carácter a carácter entre especímenes y blueprints copiables en los 6 pares (cero doble escapado `&amp;` o `&gt;`).
 - SHA-256 byte-idéntico entre molde `scaffold.template.html` y componente `scaffold.html`.
-- Cobertura consolidada en 3 arquetipos canónicos de navegación real existentes en la librería.
+- Higiene WAI-ARIA / HTML5: único landmark `<main>` por espécimen, `<div>` con `role="region"` en el panel lateral secundario del Par 6 y retiro del Snackbar por no pertenecer al App Shell estático.
 
 
 ## Componente Layout (.md-layout / .md-grid) — Consolidación y Creación (2026-11-15)
