@@ -92,7 +92,21 @@
   }
 }
 
+@container scaffold (min-width: 600px) {
+  .md-scaffold-body {
+    flex-direction: row;
+    gap: var(--md-sys-measurement-layout-gutter-compact);
+  }
+}
+
 @media (min-width: 840px) {
+  .md-scaffold-body {
+    gap: var(--md-sys-measurement-layout-gutter-expanded);
+    padding: var(--md-sys-measurement-layout-margin-expanded);
+  }
+}
+
+@container scaffold (min-width: 840px) {
   .md-scaffold-body {
     gap: var(--md-sys-measurement-layout-gutter-expanded);
     padding: var(--md-sys-measurement-layout-margin-expanded);
@@ -119,6 +133,11 @@
   gap: var(--md-sys-measurement-layout-gutter-compact);
 }
 
+/* Evitar el colapso vertical u horizontal de elementos hijos en contenedores con scroll */
+.md-scaffold-pane > * {
+  flex-shrink: 0;
+}
+
 /* Comportamiento 1: Fixed Pane (Ancho fijo canónico de 360dp) */
 .md-scaffold-pane-fixed {
   inline-size: 100%;
@@ -128,6 +147,14 @@
 }
 
 @media (min-width: 840px) {
+  .md-scaffold-pane-fixed {
+    inline-size: var(--md-sys-measurement-layout-supporting-panel-width);
+    max-inline-size: var(--md-sys-measurement-layout-supporting-panel-width);
+    flex: 0 0 var(--md-sys-measurement-layout-supporting-panel-width);
+  }
+}
+
+@container scaffold (min-width: 840px) {
   .md-scaffold-pane-fixed {
     inline-size: var(--md-sys-measurement-layout-supporting-panel-width);
     max-inline-size: var(--md-sys-measurement-layout-supporting-panel-width);
