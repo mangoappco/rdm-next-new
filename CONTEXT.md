@@ -682,22 +682,15 @@ $$\mathbf{Scaffold} = \mathbf{Bars} + \mathbf{Rails} + \mathbf{Panes}$$
   4. `.md-scaffold-pane-semi-permanent`: Panel lateral acoplado con alternancia de visibilidad mediante atributos accesibles (`data-pane-collapsed="true"` o `aria-hidden="true"`) y transición enfatizada M3 (`--md-sys-motion-easing-emphasized`).
 - **Configuraciones de Pantalla:** Soporte nativo para Single-pane (< 600dp), Two-pane (≥ 840dp) y Three-pane (≥ 1200dp).
 
-### 8 Pares Normativos en Showroom (Taxonomía M3 · Prosa Normalizada)
-1. **Par 1 · Clase base (slots obligatorios):** Chasis base mínimo con cuerpo flexible y un único panel con scroll independiente sin barras accesorias.
-2. **Par 2 · Bar superior (Top App Bar):** Integración de cabecera fija sticky manteniendo contención y desplazamiento vertical en el panel.
-3. **Par 3 · Bar inferior y FAB (Navigation Bar 80dp):** Ensamblaje móvil con barra inferior y blindaje ergonómico de elevación del FAB a 96dp.
-4. **Par 4 · Rail lateral (Navigation Rail 96dp):** Disposición de escritorio con riel lateral coaxial y panel autónomo en flujo horizontal.
-5. **Par 5 · Panes: Fixed y Flexible (Two-pane):** Convivencia de panel fijo de 360dp y panel flexible con scroll independiente por contenedor.
-6. **Par 6 · Panes: Floating y Semi-permanent:** Panel elevado flotante con sombra level 2 junto a panel lateral colapsable accesible.
-7. **Par 7 · Ensamblaje Expanded (Two-pane):** Chasis completo de escritorio con Navigation Rail coaxial y dos paneles simultáneos (`1fr` + `360dp`).
-8. **Par 8 · Ensamblaje Large / Extra-Large (Three-pane):** Ensamblaje amplio para estaciones POS con Navigation Rail y tres paneles simultáneos (`Fixed 360dp` + `Flexible 1fr` + `Floating 360dp`).
+### Bloque 1 en Construcción Par por Par (Par 1 · Clase base y slots obligatorios)
+1. **Par 1 · Clase base y slots obligatorios:** Chasis base mínimo viable de M3 con contenedor raíz (.md-scaffold), cuerpo (.md-scaffold-body) y panel flexible (.md-scaffold-pane-flexible) con scroll vertical independiente y contención overscroll. Protegido con `padding: var(--md-sys-measurement-space-200)` en el interior del panel para evitar clipping de esquinas en `.md-card-outlined`.
 
 ### Métricas de Validación
 - `tools/verify-tokens.mjs`: 0 fallos nuevos; baseline histórico intacto en `FALLOS: 2` (`select.css:448, 453`).
 - REGLA 10: 100% de clases físicas existentes en `src/css/`.
-- REGLA 11: 100% de paridad carácter a carácter entre especímenes y snippets copiables en los 8 pares.
-- SHA-256 byte-idéntico entre molde `scaffold.template.html` y componente `scaffold.html` (`B40ACFBBB821AEA55DA65AD2CAD4ED55928466ACCBABF9A7106F6850338E54B5`).
-- Verificación visual: los 8 pares saneados con altura acotada a 420px, sin tipografía de depuración de 57px y con tarjetas outlined M3 listas para producción.
+- REGLA 11: 100% de paridad carácter a carácter entre espécimen y snippet copiable en el Par 1.
+- SHA-256 byte-idéntico entre molde `scaffold.template.html` y componente `scaffold.html` (`a2e3045705b2e04d9472229a245687076b1e2155606955c104c1665872d49f9e`).
+- Verificación visual: altura acotada a 420px, botón Copiar funcional vía `data-copy` y cuatro esquinas de `.md-card-outlined` íntegras sin recorte de clipping.
 
 
 ## Componente Layout (.md-layout / .md-grid) — Consolidación y Creación (2026-11-15)
