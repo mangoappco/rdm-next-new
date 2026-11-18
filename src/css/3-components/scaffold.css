@@ -1,34 +1,48 @@
 /* ==========================================================================
-   src/css/3-components/scaffold.css — SCAFFOLD (Layout Canónico M3)
+   src/css/3-components/scaffold.css — SCAFFOLD (App Shell & Panes Canónicos M3)
    ==========================================================================
 
-   QUE HACE
+   QUÉ HACE
    --------
    Arquitectura estructural de pantalla de Material Design 3. Ensambla y
-   orquesta los slots de ventana (Top App Bar sticky, Navigation Rail lateral,
-   Navigation Bar inferior, cuerpo con scroll independiente y FAB flotante seguro),
-   proporcionando el esqueleto de aplicación (App Shell) y la rejilla responsiva
-   (.md-grid) según las Window Size Classes de M3 (Compact, Medium, Expanded).
+   orquesta la ecuación completa de M3 (Bars + Rails + Panes):
+   - Bars: Top App Bar sticky (.md-scaffold-header) y Navigation Bar inferior (.md-scaffold-nav).
+   - Rails: Navigation Rail lateral coaxial (.md-scaffold-nav) y anclaje seguro del FAB (.md-scaffold-fab).
+   - Panes: Sistema integral de paneles de contenido (.md-scaffold-body > .md-scaffold-pane)
+     con scroll vertical independiente, contención overscroll y los 4 comportamientos
+     oficiales de M3 (Fixed 360dp, Flexible 1fr, Floating elevado y Semi-permanent colapsable),
+     admitiendo configuraciones Single-pane, Two-pane y Three-pane.
 
-   ANATOMIA
+   ANATOMÍA
    --------
      <div class="md-scaffold">
+       <!-- Bars: Cabecera superior sticky -->
        <div class="md-scaffold-header"> ... Top App Bar sticky ... </div>
+
+       <!-- Cuerpo de la aplicación (Rails + Panes) -->
        <div class="md-scaffold-body">
-         <div class="md-scaffold-nav"> ... Navigation Rail o Bar ... </div>
-         <main class="md-scaffold-main">
-           <div class="md-grid"> ... Rejilla y Contenido ... </div>
-         </main>
+         <!-- Rails: Navegación lateral persistente (opcional) -->
+         <div class="md-scaffold-nav"> ... Navigation Rail ... </div>
+
+         <!-- Panes: Paneles de contenido M3 con scroll independiente -->
+         <main class="md-scaffold-pane md-scaffold-pane-flexible"> ... </main>
+         <aside class="md-scaffold-pane md-scaffold-pane-fixed"> ... </aside>
        </div>
+
+       <!-- Controles flotantes anclados -->
        <div class="md-scaffold-fab"> ... FAB flotante seguro ... </div>
-       <div class="md-scaffold-snackbar"> ... Snackbar anclado ... </div>
+
+       <!-- Bars: Navegación inferior móvil (Compact) -->
+       <div class="md-scaffold-nav"> ... Navigation Bar ... </div>
      </div>
 
    FUENTES
    -------
-   - m3.material.io/foundations/layout/applying-layout/window-size-classes
+   - m3.material.io/foundations/layout/scaffold/panes
+   - m3.material.io/foundations/layout/scaffold/bars
+   - m3.material.io/foundations/layout/scaffold/rails
    - m3.material.io/foundations/layout/canonical-layouts/overview
-   - m3.material.io/foundations/layout/understanding-layout/spacing
+   - m3.material.io/foundations/layout/applying-layout/window-size-classes
    ========================================================================== */
 
 /* Contenedor raíz de pantalla (App Shell M3) */
@@ -56,17 +70,116 @@
   box-sizing: border-box;
 }
 
-/* Cuerpo flexible: aloja la navegación lateral y el contenido principal */
+/* Cuerpo flexible: orquesta la navegación lateral y los paneles de contenido (Panes M3) */
 .md-scaffold-body {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex: 1;
   min-block-size: var(--md-sys-measurement-space-0);
   min-inline-size: var(--md-sys-measurement-space-0);
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
   position: relative;
   box-sizing: border-box;
+  gap: var(--md-sys-measurement-layout-gutter-compact);
+  padding: var(--md-sys-measurement-layout-margin-compact);
 }
+
+@media (min-width: 600px) {
+  .md-scaffold-body {
+    flex-direction: row;
+    gap: var(--md-sys-measurement-layout-gutter-compact);
+  }
+}
+
+@media (min-width: 840px) {
+  .md-scaffold-body {
+    gap: var(--md-sys-measurement-layout-gutter-expanded);
+    padding: var(--md-sys-measurement-layout-margin-expanded);
+  }
+}
+
+/* ==========================================================================
+   PANES M3: UNIDAD BASE Y COMPORTAMIENTOS CANÓNICOS
+   ========================================================================== */
+
+/* Unidad Base de Panel (.md-scaffold-pane) con desplazamiento vertical autónomo */
+.md-scaffold-pane {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 var(--md-sys-measurement-space-0);
+  min-inline-size: var(--md-sys-measurement-space-0);
+  min-block-size: var(--md-sys-measurement-space-0);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  box-sizing: border-box;
+  position: relative;
+  border-radius: var(--md-sys-shape-corner-large);
+  gap: var(--md-sys-measurement-layout-gutter-compact);
+}
+
+/* Comportamiento 1: Fixed Pane (Ancho fijo canónico de 360dp) */
+.md-scaffold-pane-fixed {
+  inline-size: 100%;
+  flex: 1 1 auto;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+@media (min-width: 840px) {
+  .md-scaffold-pane-fixed {
+    inline-size: var(--md-sys-measurement-layout-supporting-panel-width);
+    max-inline-size: var(--md-sys-measurement-layout-supporting-panel-width);
+    flex: 0 0 var(--md-sys-measurement-layout-supporting-panel-width);
+  }
+}
+
+/* Comportamiento 2: Flexible Pane (Área fluida que absorbe el espacio disponible) */
+.md-scaffold-pane-flexible {
+  flex: 1 1 auto;
+  min-inline-size: min(100%, var(--md-sys-measurement-layout-supporting-panel-width));
+}
+
+/* Comportamiento 3: Floating Pane (Panel elevado con superficie alta y sombra M3) */
+.md-scaffold-pane-floating {
+  background-color: var(--md-sys-color-surface-container-high);
+  box-shadow: var(--md-sys-elevation-level2);
+  border: var(--md-sys-shape-stroke-thin) solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-large);
+  z-index: 1;
+  padding: var(--md-sys-measurement-layout-margin-compact);
+}
+
+/* Comportamiento 4: Semi-permanent Pane (Panel acoplado colapsable con transición M3) */
+.md-scaffold-pane-semi-permanent {
+  transition: transform var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized),
+              opacity var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized);
+}
+
+.md-scaffold-pane-semi-permanent[data-pane-collapsed="true"],
+.md-scaffold-pane-semi-permanent[aria-hidden="true"] {
+  display: none;
+}
+
+/* Retrocompatibilidad semántica para área principal histórica */
+.md-scaffold-main {
+  flex: 1;
+  min-inline-size: var(--md-sys-measurement-space-0);
+  min-block-size: var(--md-sys-measurement-space-0);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--md-sys-measurement-layout-gutter-compact);
+}
+
+/* ==========================================================================
+   RAILS Y BARS: INTEGRACIÓN PERIMETRAL
+   ========================================================================== */
 
 /* Ranura adaptable de navegación (Rail lateral o Bar inferior) */
 .md-scaffold-nav {
@@ -108,7 +221,7 @@
   z-index: 1;
 }
 
-/* Contenedor vertical de contenido (Header + Main) cuando coexiste con Rail lateral */
+/* Contenedor vertical de contenido (Header + Body) cuando coexiste con Rail lateral */
 .md-scaffold-content {
   display: flex;
   flex-direction: column;
@@ -121,41 +234,9 @@
   box-sizing: border-box;
 }
 
-.md-scaffold-content > .md-scaffold-body {
-  display: flex;
-  flex-direction: row;
-  flex: 1;
-  min-block-size: var(--md-sys-measurement-space-0);
-  min-inline-size: var(--md-sys-measurement-space-0);
-  overflow: hidden;
-  position: relative;
-  box-sizing: border-box;
-}
-
-.md-scaffold-content > .md-scaffold-main {
-  flex: 1;
-  min-inline-size: var(--md-sys-measurement-space-0);
-  min-block-size: var(--md-sys-measurement-space-0);
-}
-
-/* Área de contenido principal con desplazamiento independiente */
-.md-scaffold-main {
-  flex: 1;
-  min-inline-size: var(--md-sys-measurement-space-0);
-  min-block-size: var(--md-sys-measurement-space-0);
-  overflow-x: hidden;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  position: relative;
-  box-sizing: border-box;
-  padding: var(--md-sys-measurement-layout-margin-compact);
-}
-
-@container scaffold (min-width: 600px) {
-  .md-scaffold-main {
-    padding: var(--md-sys-measurement-layout-margin-expanded);
-  }
-}
+/* ==========================================================================
+   FAB Y COMPENSACIÓN ERGONÓMICA
+   ========================================================================== */
 
 /* Ranura segura para botón de acción flotante (FAB) */
 .md-scaffold-fab {
@@ -175,22 +256,7 @@
   inset-block-end: calc(var(--md-sys-measurement-navigation-bar-height) + var(--md-sys-measurement-space-200));
 }
 
-/* Ranura segura para avisos efímeros (Snackbar) */
-.md-scaffold-snackbar {
-  position: fixed;
-  inset-inline: var(--md-sys-measurement-space-0);
-  inset-block-end: var(--md-sys-measurement-space-200);
-  display: flex;
-  justify-content: center;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.md-scaffold:has(.md-navigation-bar) .md-scaffold-snackbar {
-  inset-block-end: calc(var(--md-sys-measurement-navigation-bar-height) + var(--md-sys-measurement-space-200));
-}
-
 /* Compensación de desplazamiento cuando existe navegación inferior */
-.md-scaffold:has(.md-navigation-bar) .md-scaffold-main {
+.md-scaffold:has(.md-navigation-bar) .md-scaffold-pane {
   padding-block-end: calc(var(--md-sys-measurement-navigation-bar-height) + var(--md-sys-measurement-layout-margin-compact));
 }

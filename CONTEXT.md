@@ -664,29 +664,39 @@ Superficie flotante de Material Design 3 Expressive construida con arquitectura 
 - `tools/verify-tokens.mjs`: 0 fallos nuevos en el componente; preservado el baseline histórico de `FALLOS: 2` (`select.css:448, 453`).
 - REGLA 11: 100% de paridad byte-idéntica entre especímenes y snippets copiables.
 
-## Componente Scaffold (.md-scaffold) — Consolidación y Cierre de App Shell (2026-11-15)
+## Componente Scaffold (.md-scaffold) — Consolidación Integral Canónica M3 (Bars + Rails + Panes) (2026-11-18)
 
-Ensamblador estructural de pantalla canónico de Material Design 3 Expressive, enfocado exclusivamente en el App Shell exterior (3 pares normativos puros):
+Ensamblador estructural de pantalla canónico de Material Design 3 Expressive alineado al 100% con la ecuación oficial de Google M3 (`m3.material.io/foundations/layout/scaffold/panes`):
+$$\mathbf{Scaffold} = \mathbf{Bars} + \mathbf{Rails} + \mathbf{Panes}$$
 
-### Anatomía Estructural y Ranuras de Pantalla
-- **Host `.md-scaffold`:** Establece `block-size: 100dvh; overflow: hidden;` con display flex columnar para gobernar el app shell completo sin desbordamientos globales. Define `@container scaffold (min-width: ...)` para reaccionar fluidamente a sus propias dimensiones.
-- **Header Sticky (`.md-scaffold-header`):** Posicionado con `position: sticky; top: 0; z-index: 1; inline-size: 100%;` alojando `Top App Bar` con el servicio `data-md-top-app-bar-scroll`. Aislado para proyectar sombra de scroll sin invadir rieles adyacentes.
-- **Scroll Independiente en Main (`.md-scaffold-main`):** Asume `flex: 1; overflow-y: auto; overscroll-behavior: contain;` con padding responsivo (`layout-margin-compact` en móvil / `layout-margin-expanded` en desktop). Delegación de scroll interna conectada con elevación automática de `top-app-bar.js`.
-- **Blindaje Ergonómico M3 con `:has()`:** Ranuras fijas flotantes (`.md-scaffold-fab`, `.md-scaffold-snackbar`) calculan automáticamente su elevación a `calc(80dp + 16dp)` en presencia de `.md-navigation-bar` mediante `:has(.md-navigation-bar)`.
+### Anatomía Estructural y Panes Canónicos M3
+- **Host `.md-scaffold`:** Chasis de ventana con `block-size: 100dvh; overflow: hidden; position: relative;` y display flex columnar. Define `@container scaffold (min-width: ...)` para reaccionar fluidamente.
+- **Bars (`.md-scaffold-header` y `.md-scaffold-nav`):** Cabecera superior sticky (`Top App Bar`) y barra inferior de navegación móvil (`Navigation Bar` 80dp).
+- **Rails (`.md-scaffold-nav` y `.md-scaffold-fab`):** Navigation Rail lateral coaxial a 96dp (conmutación automática de chasis a `flex-direction: row` vía `:has(> .md-scaffold-nav > .md-navigation-rail)`) y FAB anclado con blindaje ergonómico de elevación a 96dp vía `:has(.md-navigation-bar)`.
+- **Cuerpo y Contenedor de Panes (`.md-scaffold-body`):** Disposición columnar en móvil y fila en pantallas medianas/grandes con brechas canónicas de 24dp (`--md-sys-measurement-layout-gutter-expanded`), padding perimetral de 24dp y desplazamiento horizontal suave (`overflow-x: auto; overflow-y: hidden`).
+- **Unidad Base de Panel (`.md-scaffold-pane`):** Contenedor autónomo con scroll vertical independiente (`overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain;`), esquinas M3 (`--md-sys-shape-corner-large`), contención de scroll y retrocompatibilidad plena con `.md-scaffold-main`.
+- **Los 4 Comportamientos Canónicos de Pane (*Pane Behaviors* M3):**
+  1. `.md-scaffold-pane-fixed`: Ancho inmutable canónico de 360dp (`--md-sys-measurement-layout-supporting-panel-width`), `flex-shrink: 0`.
+  2. `.md-scaffold-pane-flexible`: Área fluida (`flex: 1 1 auto; min-inline-size: min(100%, 360dp);`) que absorbe el espacio disponible sin colapsar a 0px en contenedores acotados.
+  3. `.md-scaffold-pane-floating`: Panel contextual elevado sobre el plano base (`surface-container-high`, sombra `--md-sys-elevation-level2`, radio de 16dp y borde tenue).
+  4. `.md-scaffold-pane-semi-permanent`: Panel lateral acoplado con alternancia de visibilidad mediante atributos accesibles (`data-pane-collapsed="true"` o `aria-hidden="true"`) y transición enfatizada M3 (`--md-sys-motion-easing-emphasized`).
+- **Configuraciones de Pantalla:** Soporte nativo para Single-pane (< 600dp), Two-pane (≥ 840dp) y Three-pane (≥ 1200dp).
 
-### 6 Pares Normativos en Showroom (Arquitectura de Ranuras y Ensamblajes M3 · Prosa Normalizada)
-1. Par 1 · Anatomía base (App Shell: blueprint maestro universal con sus tres ranuras estructurales comentadas: Header, Body/Main y FAB)
-2. Par 2 · Cabecera sticky y scroll independiente (anclaje inmutable en top: 0 y contención overscroll en Main)
-3. Par 3 · Navegación lateral: Navigation Rail 96dp (eje coaxial, divisor vertical y conmutación de chasis a flex-direction: row)
-4. Par 4 · Navegación inferior y elevación de FAB (blindaje ergonómico con elevación automática a 96dp vía `:has(.md-navigation-bar)`)
-5. Par 5 · Ensamblaje Compact (< 600dp: smartphone con cabecera sticky, scroll continuo, FAB elevado y barra de navegación)
-6. Par 6 · Ensamblaje Expanded (≥ 840dp: escritorio multi-panel acoplando carril lateral y Supporting Pane de 360dp con semántica accesible `role="region"`)
+### 7 Pares Normativos en Showroom (Taxonomía M3 · Prosa Normalizada)
+1. **Par 1 · Base y anatomía (Single-pane Scaffold):** Chasis base con Header sticky, panel principal autónomo con scroll independiente y FAB seguro.
+2. **Par 2 · Fixed y Flexible Panes (Two-pane):** Convivencia de panel fijo de 360dp y panel flexible con desplazamiento independiente por contenedor.
+3. **Par 3 · Floating Pane (Panel elevado):** Panel contextual elevado con sombra M3 level 2 sobre el plano base sin deformar el panel primario.
+4. **Par 4 · Semi-permanent Pane (Colapsable):** Panel lateral acoplado con alternancia accesible de visibilidad mediante control `aria-expanded` y botón `view_sidebar`.
+5. **Par 5 · Compact (< 600dp · Single-pane):** Ensamblaje móvil con barra superior, panel único, navegación inferior de 80dp y FAB elevado a 96dp.
+6. **Par 6 · Medium y Expanded (≥ 840dp · Two-pane):** Chasis de escritorio con Navigation Rail lateral coaxial a 96dp y dos paneles simultáneos (`1fr` + `360dp`).
+7. **Par 7 · Large y Extra-Large (≥ 1200dp · Three-pane):** Ensamblaje amplio para estaciones POS con Navigation Rail y tres paneles simultáneos (`Fixed 360dp` + `Flexible 1fr` + `Floating 360dp`).
 
 ### Métricas de Validación
 - `tools/verify-tokens.mjs`: 0 fallos nuevos; baseline histórico intacto en `FALLOS: 2` (`select.css:448, 453`).
-- REGLA 11: 100% de correspondencia carácter a carácter entre especímenes y blueprints copiables en los 6 pares (cero doble escapado `&amp;` o `&gt;`).
-- SHA-256 byte-idéntico entre molde `scaffold.template.html` y componente `scaffold.html`.
-- Higiene WAI-ARIA / HTML5: único landmark `<main>` por espécimen, `<div>` con `role="region"` en el panel lateral secundario del Par 6 y retiro del Snackbar por no pertenecer al App Shell estático.
+- REGLA 10: 100% de clases físicas existentes en `src/css/`.
+- REGLA 11: 100% de paridad carácter a carácter entre especímenes y snippets copiables en los 7 pares.
+- SHA-256 byte-idéntico entre molde `scaffold.template.html` y componente `scaffold.html` (`0864E77DB659ED1A2BF2C5601D843430B9BCBF2D11C48EA693B231F97EFE2824`).
+- Verificación visual en Chromium: los 7 pares validados con métricas reales, Three-pane fluido a 360px por panel y desplazamiento horizontal sin colapsos.
 
 
 ## Componente Layout (.md-layout / .md-grid) — Consolidación y Creación (2026-11-15)
