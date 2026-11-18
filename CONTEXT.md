@@ -682,21 +682,22 @@ $$\mathbf{Scaffold} = \mathbf{Bars} + \mathbf{Rails} + \mathbf{Panes}$$
   4. `.md-scaffold-pane-semi-permanent`: Panel lateral acoplado con alternancia de visibilidad mediante atributos accesibles (`data-pane-collapsed="true"` o `aria-hidden="true"`) y transición enfatizada M3 (`--md-sys-motion-easing-emphasized`).
 - **Configuraciones de Pantalla:** Soporte nativo para Single-pane (< 600dp), Two-pane (≥ 840dp) y Three-pane (≥ 1200dp).
 
-### 7 Pares Normativos en Showroom (Taxonomía M3 · Prosa Normalizada)
-1. **Par 1 · Base y anatomía (Single-pane Scaffold):** Chasis base con Header sticky, panel principal autónomo con scroll independiente y FAB seguro.
-2. **Par 2 · Fixed y Flexible Panes (Two-pane):** Convivencia de panel fijo de 360dp y panel flexible con desplazamiento independiente por contenedor.
-3. **Par 3 · Floating Pane (Panel elevado):** Panel contextual elevado con sombra M3 level 2 sobre el plano base sin deformar el panel primario.
-4. **Par 4 · Semi-permanent Pane (Colapsable):** Panel lateral acoplado con alternancia accesible de visibilidad mediante control `aria-expanded` y botón `view_sidebar`.
-5. **Par 5 · Compact (< 600dp · Single-pane):** Ensamblaje móvil con barra superior, panel único, navegación inferior de 80dp y FAB elevado a 96dp.
-6. **Par 6 · Medium y Expanded (≥ 840dp · Two-pane):** Chasis de escritorio con Navigation Rail lateral coaxial a 96dp y dos paneles simultáneos (`1fr` + `360dp`).
-7. **Par 7 · Large y Extra-Large (≥ 1200dp · Three-pane):** Ensamblaje amplio para estaciones POS con Navigation Rail y tres paneles simultáneos (`Fixed 360dp` + `Flexible 1fr` + `Floating 360dp`).
+### 8 Pares Normativos en Showroom (Taxonomía M3 · Prosa Normalizada)
+1. **Par 1 · Clase base (slots obligatorios):** Chasis base mínimo con cuerpo flexible y un único panel con scroll independiente sin barras accesorias.
+2. **Par 2 · Bar superior (Top App Bar):** Integración de cabecera fija sticky manteniendo contención y desplazamiento vertical en el panel.
+3. **Par 3 · Bar inferior y FAB (Navigation Bar 80dp):** Ensamblaje móvil con barra inferior y blindaje ergonómico de elevación del FAB a 96dp.
+4. **Par 4 · Rail lateral (Navigation Rail 96dp):** Disposición de escritorio con riel lateral coaxial y panel autónomo en flujo horizontal.
+5. **Par 5 · Panes: Fixed y Flexible (Two-pane):** Convivencia de panel fijo de 360dp y panel flexible con scroll independiente por contenedor.
+6. **Par 6 · Panes: Floating y Semi-permanent:** Panel elevado flotante con sombra level 2 junto a panel lateral colapsable accesible.
+7. **Par 7 · Ensamblaje Expanded (Two-pane):** Chasis completo de escritorio con Navigation Rail coaxial y dos paneles simultáneos (`1fr` + `360dp`).
+8. **Par 8 · Ensamblaje Large / Extra-Large (Three-pane):** Ensamblaje amplio para estaciones POS con Navigation Rail y tres paneles simultáneos (`Fixed 360dp` + `Flexible 1fr` + `Floating 360dp`).
 
 ### Métricas de Validación
 - `tools/verify-tokens.mjs`: 0 fallos nuevos; baseline histórico intacto en `FALLOS: 2` (`select.css:448, 453`).
 - REGLA 10: 100% de clases físicas existentes en `src/css/`.
-- REGLA 11: 100% de paridad carácter a carácter entre especímenes y snippets copiables en los 7 pares.
-- SHA-256 byte-idéntico entre molde `scaffold.template.html` y componente `scaffold.html` (`0864E77DB659ED1A2BF2C5601D843430B9BCBF2D11C48EA693B231F97EFE2824`).
-- Verificación visual en Chromium: los 7 pares validados con métricas reales, Three-pane fluido a 360px por panel y desplazamiento horizontal sin colapsos.
+- REGLA 11: 100% de paridad carácter a carácter entre especímenes y snippets copiables en los 8 pares.
+- SHA-256 byte-idéntico entre molde `scaffold.template.html` y componente `scaffold.html` (`B40ACFBBB821AEA55DA65AD2CAD4ED55928466ACCBABF9A7106F6850338E54B5`).
+- Verificación visual: los 8 pares saneados con altura acotada a 420px, sin tipografía de depuración de 57px y con tarjetas outlined M3 listas para producción.
 
 
 ## Componente Layout (.md-layout / .md-grid) — Consolidación y Creación (2026-11-15)
