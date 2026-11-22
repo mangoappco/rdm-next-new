@@ -29,8 +29,9 @@
 .md-scaffold {
   display: flex;
   flex-direction: column;
-  block-size: 100%;
+  block-size: 100dvh;
   inline-size: 100%;
+  min-block-size: var(--md-sys-measurement-space-0);
   overflow: hidden;
   background-color: var(--md-sys-color-background);
   color: var(--md-sys-color-on-background);

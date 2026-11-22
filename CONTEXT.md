@@ -682,15 +682,17 @@ $$\mathbf{Scaffold} = \mathbf{Bars} + \mathbf{Rails} + \mathbf{Panes}$$
   4. `.md-scaffold-pane-semi-permanent`: Panel lateral acoplado con alternancia de visibilidad mediante atributos accesibles (`data-pane-collapsed="true"` o `aria-hidden="true"`) y transición enfatizada M3 (`--md-sys-motion-easing-emphasized`).
 - **Configuraciones de Pantalla:** Soporte nativo para Single-pane (< 600dp), Two-pane (≥ 840dp) y Three-pane (≥ 1200dp).
 
-### Bloque 1 en Construcción Par por Par (Par 1 · Clase base y slots obligatorios)
-1. **Par 1 · Clase base y slots obligatorios:** Chasis base mínimo viable de M3 con contenedor raíz (.md-scaffold), cuerpo (.md-scaffold-body) y panel flexible (.md-scaffold-pane-flexible) con scroll vertical independiente y contención overscroll. Protegido con `padding: var(--md-sys-measurement-space-200)` en el interior del panel para evitar clipping de esquinas en `.md-card-outlined`.
+### Bloque 1 en Construcción Par por Par (Estado Actual: Par 1 Completado)
+El desarrollo de `Scaffold` avanza de forma estrictamente incremental **par por par con parada obligatoria (`STOP & WAIT`)** y edición directa manual sobre los moldes (se eliminaron todos los generadores automáticos `tools/generate-scaffold-*.mjs` para mantener paridad con el resto del catálogo):
+1. **Par 1 · Clase base y slots obligatorios (COMPLETADO):** Chasis base mínimo viable de M3 con contenedor raíz (`.md-scaffold` con `block-size: 100dvh; min-block-size: 0; inline-size: 100%; overflow: hidden;`), cuerpo (`.md-scaffold-body` con `padding: 0; gap: var(--md-sys-measurement-layout-gutter-expanded);`) y panel flexible (`.md-scaffold-pane.md-scaffold-pane-flexible`) con scroll vertical independiente (`overflow-y: auto; overscroll-behavior: contain;`). Protegido con `padding: var(--md-sys-measurement-space-200)` en el interior del panel para evitar clipping de esquinas en `.md-card-outlined`, y `.md-scaffold-pane > * { flex-shrink: 0; }` para evitar aplastamiento de hijos.
+2. **Siguiente paso pendiente (PAR 2):** Incorporar la ranura superior sticky `.md-scaffold-header` con `Top App Bar`, validando su contención y scroll en el espécimen antes de avanzar al Par 3.
 
 ### Métricas de Validación
 - `tools/verify-tokens.mjs`: 0 fallos nuevos; baseline histórico intacto en `FALLOS: 2` (`select.css:448, 453`).
 - REGLA 10: 100% de clases físicas existentes en `src/css/`.
 - REGLA 11: 100% de paridad carácter a carácter entre espécimen y snippet copiable en el Par 1.
 - SHA-256 byte-idéntico entre molde `scaffold.template.html` y componente `scaffold.html` (`a2e3045705b2e04d9472229a245687076b1e2155606955c104c1665872d49f9e`).
-- Verificación visual: altura acotada a 420px, botón Copiar funcional vía `data-copy` y cuatro esquinas de `.md-card-outlined` íntegras sin recorte de clipping.
+- Verificación visual: altura acotada a 420px en showroom vía `showroom.css`, `100dvh` autónomo para producción y `lab.html`, botón Copiar funcional vía `data-copy` y cuatro esquinas de `.md-card-outlined` íntegras sin recorte de clipping.
 
 
 ## Componente Layout (.md-layout / .md-grid) — Consolidación y Creación (2026-11-15)
