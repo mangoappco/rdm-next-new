@@ -67,7 +67,7 @@
     <header class="sr-header">
       <h1 class="md-type-display-large">Navigation Rail</h1>
       <p class="md-type-body-large">Carril vertical primario M3 Expressive: 96dp colapsado y 280dp expandido con pastilla activa continua y cabecera adaptable.</p>
-      <p class="md-type-body-medium md-text-on-surface-variant">M3 Expressive · 96dp colapsado · 280dp expandido · 10 pares</p>
+      <p class="md-type-body-medium md-text-on-surface-variant">M3 Expressive · 96dp colapsado · 280dp expandido · 11 pares</p>
     </header>
 
     <hr class="md-divider">
@@ -861,6 +861,98 @@
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
     <!-- PAREJA PAR 10: hasta aqui -->
+
+    <!-- PAREJA PAR 11: Variante modal -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Variante modal</h3>
+      <p class="md-type-body-medium">Carril modal que arranca colapsado en 96dp y se despliega a 280dp con elevación Level 2, esquinas redondeadas y velo de fondo (scrim) interactivo sin desplazar el contenido.</p>
+
+      <div class="sr-specimen sr-specimen-rail">
+        <nav class="md-navigation-rail md-navigation-rail-modal" aria-label="Navegación principal">
+          <div class="md-navigation-rail-header">
+            <button type="button" class="md-icon-button" aria-label="Expandir menú de navegación" aria-expanded="false" data-rail-toggle>
+              <span class="md-icon" aria-hidden="true">menu</span>
+            </button>
+          </div>
+          <div class="md-navigation-rail-content">
+            <button type="button" class="md-navigation-rail-item" aria-current="page">
+              <span class="md-navigation-rail-indicator">
+                <span class="md-navigation-rail-icon md-icon" aria-hidden="true">inbox</span>
+              </span>
+              <span class="md-navigation-rail-label">Recibidos</span>
+              <span class="md-navigation-rail-label-horizontal" aria-hidden="true">Recibidos</span>
+            </button>
+            <button type="button" class="md-navigation-rail-item">
+              <span class="md-navigation-rail-indicator">
+                <span class="md-navigation-rail-icon md-icon" aria-hidden="true">send</span>
+              </span>
+              <span class="md-navigation-rail-label">Enviados</span>
+              <span class="md-navigation-rail-label-horizontal" aria-hidden="true">Enviados</span>
+            </button>
+            <button type="button" class="md-navigation-rail-item">
+              <span class="md-navigation-rail-indicator">
+                <span class="md-navigation-rail-icon md-icon" aria-hidden="true">favorite</span>
+              </span>
+              <span class="md-navigation-rail-label">Favoritos</span>
+              <span class="md-navigation-rail-label-horizontal" aria-hidden="true">Favoritos</span>
+            </button>
+          </div>
+        </nav>
+
+        <div class="md-type-body-medium">
+          <p class="md-type-title-medium">Bandeja de entrada</p>
+          <p>Área de contenido principal sobre la que se despliega el carril modal sin desplazar el layout.</p>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;nav class="md-navigation-rail md-navigation-rail-modal" aria-label="Navegación principal"&gt;
+  &lt;!-- Slot: Cabecera y controles maestros --&gt;
+  &lt;div class="md-navigation-rail-header"&gt;
+    &lt;button type="button" class="md-icon-button" aria-label="Expandir menú de navegación" aria-expanded="false" data-rail-toggle&gt;
+      &lt;span class="md-icon" aria-hidden="true"&gt;menu&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Slot: Lista de destinos de navegación --&gt;
+  &lt;div class="md-navigation-rail-content"&gt;
+    &lt;button type="button" class="md-navigation-rail-item" aria-current="page"&gt;
+      &lt;!-- Slot: Icono / Indicador --&gt;
+      &lt;span class="md-navigation-rail-indicator"&gt;
+        &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;inbox&lt;/span&gt;
+      &lt;/span&gt;
+      &lt;!-- Slot: Etiqueta de texto --&gt;
+      &lt;span class="md-navigation-rail-label"&gt;Recibidos&lt;/span&gt;
+      &lt;span class="md-navigation-rail-label-horizontal" aria-hidden="true"&gt;Recibidos&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-navigation-rail-item"&gt;
+      &lt;!-- Slot: Icono / Indicador --&gt;
+      &lt;span class="md-navigation-rail-indicator"&gt;
+        &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;send&lt;/span&gt;
+      &lt;/span&gt;
+      &lt;!-- Slot: Etiqueta de texto --&gt;
+      &lt;span class="md-navigation-rail-label"&gt;Enviados&lt;/span&gt;
+      &lt;span class="md-navigation-rail-label-horizontal" aria-hidden="true"&gt;Enviados&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;button type="button" class="md-navigation-rail-item"&gt;
+      &lt;!-- Slot: Icono / Indicador --&gt;
+      &lt;span class="md-navigation-rail-indicator"&gt;
+        &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;favorite&lt;/span&gt;
+      &lt;/span&gt;
+      &lt;!-- Slot: Etiqueta de texto --&gt;
+      &lt;span class="md-navigation-rail-label"&gt;Favoritos&lt;/span&gt;
+      &lt;span class="md-navigation-rail-label-horizontal" aria-hidden="true"&gt;Favoritos&lt;/span&gt;
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/nav&gt;
+
+&lt;!-- Slot: Contenido subyacente de demostración --&gt;
+&lt;div class="md-type-body-medium"&gt;
+  &lt;p class="md-type-title-medium"&gt;Bandeja de entrada&lt;/p&gt;
+  &lt;p&gt;Área de contenido principal sobre la que se despliega el carril modal sin desplazar el layout.&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA PAR 11: hasta aqui -->
 
   </main>
   <!-- MAIN: fin -->

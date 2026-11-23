@@ -214,6 +214,47 @@
     overflow: hidden;
   }
 
+  /* ESCENARIO PARA MODAL NAVIGATION RAIL (Par 11)
+     --------------------------------------------------------------------------
+     Acota el modal y su scrim dentro del mini-viewport de demostración
+     del espécimen (.sr-specimen-rail) sin escapar a la ventana del navegador.
+     El rail arranca a 96dp y al abrirse se expande a 280dp flotando encima
+     del contenido esquemático de la tarjeta y proyectando el scrim dentro
+     de la misma.
+     --------------------------------------------------------------------- */
+  .sr-specimen:has(.md-navigation-rail-modal),
+  .sr-specimen-rail:has(.md-navigation-rail-modal) {
+    position: relative !important;
+    overflow: hidden !important;
+  }
+
+  .sr-specimen .md-navigation-rail-modal {
+    position: absolute !important;
+    inset-block: var(--md-sys-measurement-space-0) !important;
+    inset-inline-start: var(--md-sys-measurement-space-0) !important;
+    block-size: 100% !important;
+    min-block-size: 100% !important;
+    z-index: 1 !important;
+  }
+
+  .sr-specimen .md-navigation-rail-scrim {
+    position: absolute !important;
+    inset: var(--md-sys-measurement-space-0) !important;
+    inline-size: 100% !important;
+    block-size: 100% !important;
+    z-index: 0 !important;
+  }
+
+  .sr-specimen-rail main,
+  .sr-specimen-rail > .md-type-body-medium {
+    flex: 1;
+    margin-inline-start: var(--md-sys-measurement-navigation-rail-width);
+    padding: var(--md-ref-spacing-400);
+    display: flex;
+    flex-direction: column;
+    gap: var(--md-ref-spacing-200);
+  }
+
   /* Caja con capa en escenario simple: mismo contrato (la caja aporta el
      contexto, el span el tinte), sin altura minima. Generaliza el relative
      a todo div directo de escenario: sin hijos posicionados es inocuo. */

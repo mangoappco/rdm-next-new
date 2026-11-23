@@ -1,70 +1,116 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-   <meta charset="utf-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1">
-   <title>Lab — RDM ManGo! App</title>
-   <link rel="preconnect" href="https://fonts.googleapis.com">
-   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
-   <link rel="stylesheet" href="../src/css/main.css?v=77">
-   <script type="module" src="../src/js/main.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lab — RDM ManGo! App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+  <link rel="stylesheet" href="../src/css/main.css?v=77">
+  <script type="module" src="../src/js/main.js"></script>
+  <script src="assets/showroom.js"></script>
 </head>
 <body class="md-bg-background md-text-on-background md-type-body-medium">
 
 
-
 <div class="md-scaffold">
-  <!-- Slot obligatorio: Cuerpo contenedor de paneles -->
-  <div class="md-scaffold-body">
-    <!-- Slot obligatorio: Panel principal flexible -->
-    <main class="md-scaffold-pane md-scaffold-pane-flexible">
-
-      <article class="md-card md-card-elevated">
-
-  <!-- Slot: Header / Titular y subtítulo -->
-  <div class="md-card-header">
-    <h3 class="md-type-title-large">Elevated</h3>
-    <p class="md-type-body-medium">Subhead</p>
+  <!-- Slot: Ranura lateral de navegación -->
+  <div class="md-scaffold-nav">
+    <nav class="md-navigation-rail md-navigation-rail-modal" aria-label="Navegación principal">
+      <div class="md-navigation-rail-header">
+        <button type="button" class="md-icon-button" aria-label="Abrir menú de navegación" data-rail-toggle>
+          <span class="md-icon" aria-hidden="true">menu</span>
+        </button>
+      </div>
+      <div class="md-navigation-rail-content">
+        <button type="button" class="md-navigation-rail-item" aria-current="page">
+          <span class="md-navigation-rail-indicator">
+            <span class="md-navigation-rail-icon md-icon" aria-hidden="true">inbox</span>
+          </span>
+          <span class="md-navigation-rail-label">Bandeja</span><span class="md-navigation-rail-label-horizontal" aria-hidden="true">Bandeja</span>
+        </button>
+        <button type="button" class="md-navigation-rail-item">
+          <span class="md-navigation-rail-indicator">
+            <span class="md-navigation-rail-icon md-icon" aria-hidden="true">send</span>
+          </span>
+          <span class="md-navigation-rail-label">Enviados</span><span class="md-navigation-rail-label-horizontal" aria-hidden="true">Enviados</span>
+        </button>
+        <button type="button" class="md-navigation-rail-item">
+          <span class="md-navigation-rail-indicator">
+            <span class="md-navigation-rail-icon md-icon" aria-hidden="true">archive</span>
+          </span>
+          <span class="md-navigation-rail-label">Archivo</span><span class="md-navigation-rail-label-horizontal" aria-hidden="true">Archivo</span>
+        </button>
+      </div>
+    </nav>
   </div>
 
-  <!-- Slot: Content / Cuerpo y texto de apoyo -->
-  <div class="md-card-content">
-    <p class="md-type-body-medium">Supporting text</p>
-  </div>
-</article>
-<article class="md-card md-card-filled">
+  <!-- Slot: Contenedor de contenido principal -->
+  <div class="md-scaffold-content">
+    <!-- Slot: Cabecera superior sticky -->
+    <div class="md-scaffold-header">
+      <header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll>
+        <div class="md-top-app-bar-leading">
+          <button type="button" class="md-icon-button" aria-label="Menú principal">
+            <span class="md-icon" aria-hidden="true">menu</span>
+          </button>
+        </div>
+        <div class="md-top-app-bar-content">
+          <span class="md-top-app-bar-title">Scaffold · Navigation Rail</span>
+        </div>
+        <div class="md-top-app-bar-trailing">
+          <button type="button" class="md-icon-button" aria-label="Buscar">
+            <span class="md-icon" aria-hidden="true">search</span>
+          </button>
+        </div>
+      </header>
+    </div>
 
-  <!-- Slot: Header / Titular y subtítulo -->
-  <div class="md-card-header">
-    <h3 class="md-type-title-large">Filled</h3>
-    <p class="md-type-body-medium">Subhead</p>
-  </div>
-
-  <!-- Slot: Content / Cuerpo y texto de apoyo -->
-  <div class="md-card-content">
-    <p class="md-type-body-medium">Supporting text</p>
-  </div>
-</article>
-<article class="md-card md-card-outlined">
-
-  <!-- Slot: Header / Titular y subtítulo -->
-  <div class="md-card-header">
-    <h3 class="md-type-title-large">Outlined</h3>
-    <p class="md-type-body-medium">Subhead</p>
-  </div>
-
-  <!-- Slot: Content / Cuerpo y texto de apoyo -->
-  <div class="md-card-content">
-    <p class="md-type-body-medium">Supporting text</p>
-  </div>
-</article>
-
-
-
-    </main>
+    <!-- Slot obligatorio: Cuerpo contenedor de paneles -->
+    <div class="md-scaffold-body">
+      <!-- Slot obligatorio: Panel principal flexible con scroll -->
+      <main class="md-scaffold-pane md-scaffold-pane-flexible">
+        <article class="md-card md-card-outlined">
+          <div class="md-card-header">
+            <h4 class="md-type-title-medium">Panel principal con Navigation Rail lateral</h4>
+            <p class="md-type-body-small">El riel lateral ocupa 96dp en reposo y expande a 280dp empujando el panel en flujo continuo.</p>
+          </div>
+          <div class="md-card-content">
+            <p class="md-type-body-medium">Pulsa el botón de menú superior del riel para alternar la expansión coaxial y comprueba el desplazamiento vertical independiente.</p>
+          </div>
+        </article>
+        <article class="md-card md-card-outlined">
+          <div class="md-card-header">
+            <h4 class="md-type-title-medium">Bloque de desplazamiento 1</h4>
+            <p class="md-type-body-small">Contenido secuencial de prueba.</p>
+          </div>
+        </article>
+        <article class="md-card md-card-outlined">
+          <div class="md-card-header">
+            <h4 class="md-type-title-medium">Bloque de desplazamiento 2</h4>
+            <p class="md-type-body-small">Contenido secuencial de prueba.</p>
+          </div>
+        </article>
+        <article class="md-card md-card-outlined">
+          <div class="md-card-header">
+            <h4 class="md-type-title-medium">Bloque de desplazamiento 3</h4>
+            <p class="md-type-body-small">Contenido secuencial de prueba.</p>
+          </div>
+        </article>
+      </main>
+    </div>
   </div>
 </div>
+
+
+
+
+  <!-- Botón conmutador de tema -->
+  <button type="button" class="md-icon-button" data-theme-toggle aria-label="Tema del sistema activo">
+    <span class="md-icon" aria-hidden="true">brightness_auto</span>
+  </button>
+
 
 
 

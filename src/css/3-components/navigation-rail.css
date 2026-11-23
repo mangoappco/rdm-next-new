@@ -55,7 +55,7 @@
      startTransitionAnimation() de NavigationRailView.java en curvas
       simétricas canónicas consumiendo tokens Capa 2 (300ms medium2
       con emphasized-decelerate para respuesta inmediata sin arrastre muerto). El JS solo
-      conmuta la clase raíz .md-navigation-rail-expanded y aria-expanded en
+      conmuta la clase raíz :is(.md-navigation-rail-expanded, .md-navigation-rail-modal) y aria-expanded en
       frame 0. El FAB de cabecera morfifica (56dp <-> extended) con el estado
       del riel; etiqueta y pastilla interpolan geometría absoluta
       (inset/transform) sin clases temporales, timers ni handoff orquestado.
@@ -105,9 +105,9 @@ main:has(> .md-navigation-rail) {
   will-change: margin-inline-start;
 }
 
-.md-navigation-rail.md-navigation-rail-expanded ~ main,
-body:has(> .md-navigation-rail.md-navigation-rail-expanded) > main,
-main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
+.md-navigation-rail.md-navigation-rail-expanded:not(.md-navigation-rail-modal) ~ main,
+body:has(> .md-navigation-rail.md-navigation-rail-expanded:not(.md-navigation-rail-modal)) > main,
+main:has(> .md-navigation-rail.md-navigation-rail-expanded:not(.md-navigation-rail-modal)) {
   margin-inline-start: var(--md-sys-measurement-navigation-rail-expanded-width);
   transition: margin-inline-start var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate);
 }
@@ -130,32 +130,76 @@ main:has(> .md-navigation-rail.md-navigation-rail-expanded) {
   margin-block: auto;
 }
 
-/* VARIANTE MODAL: carril expandido flotante. Es una decisión de diseño
-   de RDM: el documento canónico Android solo publica la modalidad
-   non-modal, y el rail modal ocupa aquí el puesto del Drawer modal.
-   Elevación del nivel 4 (por encima del level3 del carril en reposo)
-   y contexto de pintura sobre su scrim. */
+/* ==========================================================================
+   VARIANTE MODAL (Modal Navigation Rail · M3 Expressive)
+   ==========================================================================
+   Sustituye formalmente al Modal Navigation Drawer en pantallas Compact y
+   Medium. Arranca visible en el borde inicial en su estado colapsado estándar
+   de 96dp y, al conmutarse con su botón toggle maestro, se despliega a 280dp
+   flotando sobre el contenido con scrim interactivo y elevación Level 2, sin
+   empujar el layout subyacente.
+   ========================================================================== */
+
+/* Host modal: carril anclado que arranca colapsado en 96dp y flota al expandirse */
 .md-navigation-rail-modal {
-  position: relative;
+  position: fixed;
+  inset-block: var(--md-sys-measurement-space-0);
+  inset-inline-start: var(--md-sys-measurement-space-0);
+  block-size: 100dvh;
   z-index: 1;
-  box-shadow: var(--md-sys-elevation-level4);
+  inline-size: var(--md-sys-measurement-navigation-rail-width); /* 96dp en reposo */
+  min-inline-size: var(--md-sys-measurement-navigation-rail-width);
+  background-color: var(--md-sys-color-surface-container);
+  border-radius: var(--md-sys-shape-corner-none);
+  box-shadow: none;
+  transition:
+    inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate),
+    background-color var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate),
+    box-shadow var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate),
+    border-radius var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate);
 }
 
-/* Encuadre del modo modal: aporta el bloque de coordenadas absoluto del
-   scrim. En producción el autor decide su encaje (flujo o position
-   fixed); el contrato es solo posicionarse en relación con su contenido. */
-.md-navigation-rail-modal-stage {
-  position: relative;
+/* Estado modal expandido: flota sobre el contenido a 280dp */
+.md-navigation-rail-modal:is(.md-navigation-rail-expanded, .md-navigation-rail-open) {
+  inline-size: var(--md-sys-measurement-navigation-rail-expanded-width); /* 280dp */
+  min-inline-size: var(--md-sys-measurement-navigation-rail-expanded-width);
+  background-color: var(--md-sys-color-surface-container);
+  box-shadow: var(--md-sys-elevation-level2);
+  border-start-end-radius: var(--md-sys-shape-corner-large);
+  border-end-end-radius: var(--md-sys-shape-corner-large);
+  border-start-start-radius: var(--md-sys-shape-corner-none);
+  border-end-start-radius: var(--md-sys-shape-corner-none);
 }
 
-/* Scrim del modo modal: la capa de atenuado canónica de M3 (color scrim
-   al 32%, mismo rol que consume dialog.css). Se compone como primer hijo
-   del encuadre; el carril con .md-navigation-rail-modal pinta por encima. */
+/* Bloqueo declarativo de scroll subyacente cuando el rail modal está expandido en viewport */
+body:has(> .md-navigation-rail-modal:is(.md-navigation-rail-expanded, .md-navigation-rail-open)),
+body:has(.md-navigation-rail-docked:is(.md-navigation-rail-expanded, .md-navigation-rail-open)) {
+  overflow: hidden;
+}
+
+.md-scaffold:has(.md-navigation-rail-modal:is(.md-navigation-rail-expanded, .md-navigation-rail-open)) .md-scaffold-pane {
+  overflow: hidden;
+}
+
+/* Scrim del modo modal: velo de fondo canónico de M3 (color scrim al 32% vía --md-sys-scrim-opacity) */
 .md-navigation-rail-scrim {
-  position: absolute;
-  inset: 0;
+  position: fixed;
+  inset: var(--md-sys-measurement-space-0);
+  inline-size: 100vw;
+  block-size: 100dvh;
   background-color: var(--md-sys-color-scrim);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized-decelerate);
+}
+
+/* Activación del scrim cuando el modal está expandido */
+.md-navigation-rail-scrim.md-navigation-rail-scrim-open,
+.md-navigation-rail-modal:is(.md-navigation-rail-expanded, .md-navigation-rail-open) ~ .md-navigation-rail-scrim,
+:is(body, .sr-specimen, .md-scaffold):has(.md-navigation-rail-modal:is(.md-navigation-rail-expanded, .md-navigation-rail-open)) > .md-navigation-rail-scrim {
   opacity: var(--md-sys-scrim-opacity);
+  pointer-events: auto;
 }
 
 /* Capa de estado explícita (patrón de 4-utilities/state.css: la capa de
