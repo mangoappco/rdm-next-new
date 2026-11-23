@@ -1038,9 +1038,9 @@ El orden es el de `3-components/index.css`, que es el de carga y el de dependenc
 | Tabs | `3-components/tabs.css` | 8 | 0 | `tabs.html`, 6 secciones |
 | Badge | `3-components/badge.css` | 5 | 0 | `badge.html`, 5 secciones |
 | Navigation Bar | `3-components/navigation-bar.css` | 13 | 0 | `navigation-bar.html`, 6 secciones |
-| Navigation Rail | `3-components/navigation-rail.css` | 15 | 0 | `navigation-rail.html`, 10 secciones |
+| Navigation Rail | `3-components/navigation-rail.css` | 15 | 0 | `navigation-rail.html`, 11 secciones |
 | Snackbar | `3-components/snackbar.css` | 11 | 0 | `snackbar.html`, 7 secciones |
-| Scaffold | `3-components/scaffold.css` | 4 | 0 | `scaffold.html`, 1 sección (Par 1) |
+| Scaffold | `3-components/scaffold.css` | 8 | 0 | `scaffold.html`, 4 secciones (Pares 1 a 4) |
 | Layout | `3-components/layout.css` | 18 | 0 | `layout.html`, 5 secciones |
 
 Las "clases" son las que expone el componente, sin contar las de `2-system-tokens` que compone para
