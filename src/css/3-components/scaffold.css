@@ -39,6 +39,14 @@
   box-sizing: border-box;
 }
 
+/* Ranura estructural de cabecera: barra superior sticky */
+.md-scaffold-header {
+  position: sticky;
+  inset-block-start: var(--md-sys-measurement-space-0);
+  z-index: 1;
+  flex-shrink: 0;
+}
+
 /* Ranura estructural de cuerpo: orquesta los paneles de contenido */
 .md-scaffold-body {
   flex: 1 1 0%;
@@ -51,6 +59,14 @@
   overflow-x: auto;
   overflow-y: hidden;
   gap: var(--md-sys-measurement-layout-gutter-expanded);
+}
+
+/* Ranura estructural de pie: barra de navegación inferior sticky */
+.md-scaffold-footer {
+  position: sticky;
+  inset-block-end: var(--md-sys-measurement-space-0);
+  z-index: 1;
+  flex-shrink: 0;
 }
 
 /* Unidad Base de Panel (.md-scaffold-pane) con desplazamiento vertical autónomo */
@@ -79,3 +95,47 @@
 .md-scaffold-pane-flexible {
   flex: 1 1 auto;
 }
+
+/* ==========================================================================
+   ORQUESTACIÓN CON RANURA LATERAL (Navigation Rail M3)
+   ========================================================================== */
+
+/* Distribución en fila cuando el scaffold aloja ranura lateral */
+.md-scaffold:has(> .md-scaffold-nav) {
+  flex-direction: row;
+}
+
+/* Área de contenido principal (cabecera + cuerpo) al convivir con rail lateral */
+.md-scaffold-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0%;
+  min-inline-size: var(--md-sys-measurement-space-0);
+  min-block-size: var(--md-sys-measurement-space-0);
+  block-size: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Ranura estructural de navegación lateral: aloja Navigation Rail */
+.md-scaffold-nav {
+  flex-shrink: 0;
+  display: flex;
+  block-size: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+/* Encaje limpio del rail dentro de .md-scaffold-nav en flujo */
+.md-scaffold-nav > .md-navigation-rail:not(.md-navigation-rail-modal) {
+  position: relative;
+  inset: auto;
+  block-size: 100%;
+  min-block-size: var(--md-sys-measurement-space-0);
+}
+
+/* Neutralizar margen residual sobre paneles dentro de Scaffold */
+.md-scaffold .md-scaffold-pane {
+  margin-inline-start: var(--md-sys-measurement-space-0);
+}
+
