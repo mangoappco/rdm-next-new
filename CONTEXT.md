@@ -665,38 +665,47 @@ Superficie flotante de Material Design 3 Expressive construida con arquitectura 
 - `tools/verify-tokens.mjs`: 0 fallos nuevos en el componente; preservado el baseline histórico de `FALLOS: 2` (`select.css:448, 453`).
 - REGLA 11: 100% de paridad byte-idéntica entre especímenes y snippets copiables.
 
-## Componente Scaffold (.md-scaffold) — Consolidación Integral Canónica M3 (Bars + Rails + Panes) (2026-11-18)
+## Componente Scaffold (.md-scaffold) — Consolidación y Cierre Integral Canónico M3 (7 Pares Técnicos Certificados) (2026-11-23)
 
 Ensamblador estructural de pantalla canónico de Material Design 3 Expressive alineado al 100% con la ecuación oficial de Google M3 (`m3.material.io/foundations/layout/scaffold/panes`):
 $$\mathbf{Scaffold} = \mathbf{Bars} + \mathbf{Rails} + \mathbf{Panes}$$
 
 ### Anatomía Estructural y Panes Canónicos M3
-- **Host `.md-scaffold`:** Chasis de ventana con `block-size: 100dvh; overflow: hidden; position: relative;` y display flex columnar. Define `@container scaffold (min-width: ...)` para reaccionar fluidamente.
-- **Bars (`.md-scaffold-header` y `.md-scaffold-nav`):** Cabecera superior sticky (`Top App Bar`) y barra inferior de navegación móvil (`Navigation Bar` 80dp).
-- **Rails (`.md-scaffold-nav` y `.md-scaffold-fab`):** Navigation Rail lateral coaxial a 96dp (conmutación automática de chasis a `flex-direction: row` vía `:has(> .md-scaffold-nav > .md-navigation-rail)`) y FAB anclado con blindaje ergonómico de elevación a 96dp vía `:has(.md-navigation-bar)`.
-- **Cuerpo y Contenedor de Panes (`.md-scaffold-body`):** Disposición columnar en móvil y fila en pantallas medianas/grandes con brechas canónicas de 24dp (`--md-sys-measurement-layout-gutter-expanded`), padding perimetral de 24dp y desplazamiento horizontal suave (`overflow-x: auto; overflow-y: hidden`).
-- **Unidad Base de Panel (`.md-scaffold-pane`):** Contenedor autónomo con scroll vertical independiente (`overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain;`), esquinas M3 (`--md-sys-shape-corner-large`), contención de scroll y retrocompatibilidad plena con `.md-scaffold-main`.
-- **Los 4 Comportamientos Canónicos de Pane (*Pane Behaviors* M3):**
-  1. `.md-scaffold-pane-fixed`: Ancho inmutable canónico de 360dp (`--md-sys-measurement-layout-supporting-panel-width`), `flex-shrink: 0`.
-  2. `.md-scaffold-pane-flexible`: Área fluida (`flex: 1 1 auto; min-inline-size: min(100%, 360dp);`) que absorbe el espacio disponible sin colapsar a 0px en contenedores acotados.
-  3. `.md-scaffold-pane-floating`: Panel contextual elevado sobre el plano base (`surface-container-high`, sombra `--md-sys-elevation-level2`, radio de 16dp y borde tenue).
-  4. `.md-scaffold-pane-semi-permanent`: Panel lateral acoplado con alternancia de visibilidad mediante atributos accesibles (`data-pane-collapsed="true"` o `aria-hidden="true"`) y transición enfatizada M3 (`--md-sys-motion-easing-emphasized`).
-- **Configuraciones de Pantalla:** Soporte nativo para Single-pane (< 600dp), Two-pane (≥ 840dp) y Three-pane (≥ 1200dp).
+- **Host `.md-scaffold`:** Chasis de ventana con `block-size: 100dvh; overflow: hidden; position: relative; isolation: isolate;` y display flex columnar.
+- **Bars (`.md-scaffold-header` y `.md-scaffold-footer`):** Cabecera superior sticky (`Top App Bar`, `z-index: 1`) y barra inferior de navegación móvil persistente (`Navigation Bar` 80dp, `z-index: 1`).
+- **Rails (`.md-scaffold-nav`):** Ranura lateral coaxial que aloja el `Navigation Rail` a 96dp en reposo, conmutando el chasis a `flex-direction: row` mediante `.md-scaffold:has(> .md-scaffold-nav)`. Encapsula el contenido principal en `.md-scaffold-content`.
+- **Coexistencia con Modal Navigation Rail:**
+  - En reposo, `.md-scaffold-nav:has(> .md-navigation-rail-modal)` preserva su huella inmutable de 96dp.
+  - Al expandirse a 280dp, `.md-navigation-rail-modal` se eleva a `z-index: 3` sobre el chasis con esquinas `corner-large` de 16dp.
+  - El scrim acotado `.md-scaffold > .md-navigation-rail-scrim` se activa a `z-index: 2`, cubriendo y atenuando uniformemente tanto la `Top App Bar` (`z-index: 1`) como los paneles de contenido (`z-index: 0`), manteniendo el botón `menu_open` visible y accesible.
+- **Cuerpo y Contenedor de Panes (`.md-scaffold-body`):** Disposición de fila con brecha canónica de 24dp (`--md-sys-measurement-layout-gutter-expanded`), padding perimetral de 16dp (`space-200`) a los lados y abajo, y respiro superior simétrico de 16dp cuando carece de `Top App Bar` (`.md-scaffold:not(:has(.md-scaffold-header)) .md-scaffold-body`).
+- **Unidad Base de Panel (`.md-scaffold-pane`):** Contenedor autónomo con scroll vertical independiente (`overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain;`), esquinas M3 de 16dp (`corner-large`) y fondo tonal `surface-container-low`.
+- **Scrollbars M3 Expressive Universales (`src/css/reset.css`):**
+  - Promovidas a nivel global para todos los contenedores con scroll de la aplicación.
+  - Sin flechas ni botones direccionales nativos (`::-webkit-scrollbar-button { display: none; }`).
+  - Ancho delgado de 12dp con pista transparente y margen vertical de 8dp (`margin-block: 8dp`).
+  - Pulgar en forma de píldora redondeada con color `outline-variant` (hover `outline`), borde transparente de 4dp y `background-clip: content-box`, respetando estrictamente el radio de 16dp de las esquinas.
+  - Fallback estándar para Firefox mediante `@supports not selector(::-webkit-scrollbar) { * { scrollbar-width: thin; scrollbar-color: var(--md-sys-color-outline-variant) transparent; } }`.
+- **Los 3 Comportamientos de Pane Implementados en Scaffold:**
+  1. `.md-scaffold-pane-flexible`: Área fluida (`flex: 1 1 auto;`) que absorbe el espacio disponible sin colapsar.
+  2. `.md-scaffold-pane-fixed`: Ancho inmutable canónico de 360dp (`--md-sys-measurement-layout-supporting-panel-width`), `flex: 0 0 360dp`.
+  3. `.md-scaffold-pane-collapsible`: Panel semi-permanente auxiliar gobernado por el módulo desacoplado `src/js/scaffold.js` mediante `[data-scaffold-pane-toggle]`. Se repliega a 0px neutralizando el gutter adyacente mediante margen negativo con cinemática M3 `emphasized` (`motion-duration-long1` / `motion-easing-emphasized`).
 
-### Bloque 1 en Construcción Par por Par (Estado Actual: Pares 1, 2, 3 y 4 Completados)
-El desarrollo de `Scaffold` avanza de forma estrictamente incremental **par por par con parada obligatoria (`STOP & WAIT`)** y edición directa manual sobre los moldes:
-1. **Par 1 · Clase base y slots obligatorios (COMPLETADO):** Chasis base mínimo viable de M3 con contenedor raíz (`.md-scaffold` con `block-size: 100dvh; min-block-size: 0; inline-size: 100%; overflow: hidden;`), cuerpo (`.md-scaffold-body` con `padding: 0; gap: var(--md-sys-measurement-layout-gutter-expanded);`) y panel flexible (`.md-scaffold-pane.md-scaffold-pane-flexible`) con scroll vertical independiente (`overflow-y: auto; overscroll-behavior: contain;`). Protegido con `padding: var(--md-sys-measurement-space-200)` en el interior del panel para evitar clipping de esquinas en `.md-card-outlined`, y `.md-scaffold-pane > * { flex-shrink: 0; }` para evitar aplastamiento de hijos.
-2. **Par 2 · Ranura superior: Top App Bar sticky (COMPLETADO):** Incorporada la ranura superior sticky `.md-scaffold-header` (`position: sticky; inset-block-start: var(--md-sys-measurement-space-0); z-index: 1; flex-shrink: 0;`) alojando una `Top App Bar` pequeña, mientras el panel principal (`.md-scaffold-pane`) conserva su desplazamiento vertical autónomo e independiente sin arrastrar la cabecera.
-3. **Par 3 · Ranura inferior: Navigation Bar persistente (COMPLETADO):** Incorporada la ranura inferior persistente `.md-scaffold-footer` (`position: sticky; inset-block-end: var(--md-sys-measurement-space-0); z-index: 1; flex-shrink: 0;`) alojando una `Navigation Bar` de 80dp anclada al pie, completando la contención vertical de la pantalla ($Bars = Header + Footer$) mientras el panel principal conserva su desplazamiento vertical autónomo entre ambas barras.
-4. **Par 4 · Ranura lateral: Navigation Rail coaxial a 96dp / 280dp (COMPLETADO):** Sustitución de la navegación inferior por la ranura lateral `.md-scaffold-nav` en flujo (`flex-shrink: 0; display: flex; block-size: 100%; position: relative; z-index: 1;`), organizando el chasis en fila (`.md-scaffold:has(> .md-scaffold-nav) { flex-direction: row; }`), encapsulando el contenido principal en `.md-scaffold-content` y encajando `.md-navigation-rail` en flujo flex relativo (`96dp` colapsado a `280dp` expandido) empujando suavemente el contenido sin solapamiento ni márgenes residuales.
-5. **Siguiente paso pendiente (PAR 5):** Two-pane canónico: Panel fijo de 360dp (`.md-scaffold-pane-fixed`) + Panel flexible (`.md-scaffold-pane-flexible`) conviviendo con scrolls verticales independientes y brecha de 24dp.
+### Los 7 Pares Técnicos Normativos (Bloque 1 Cerrado y Certificado)
+1. **Par 1 · Chasis base y slots obligatorios:** Contenedor raíz `.md-scaffold`, cuerpo `.md-scaffold-body` y panel flexible con scroll independiente y respiro simétrico superior de 16dp.
+2. **Par 2 · Ranura superior: Top App Bar sticky:** Ranura `.md-scaffold-header` alojando `Top App Bar small` sticky a `top: 0` con panel flexible scrolleable debajo.
+3. **Par 3 · Ranura inferior: Navigation Bar persistente:** Ranura `.md-scaffold-footer` alojando `Navigation Bar` de 80dp anclada al pie, conteniendo verticalmente el panel.
+4. **Par 4 · Ranura lateral: Navigation Rail coaxial (96dp / 280dp):** Sustitución de navegación inferior por ranura lateral `.md-scaffold-nav` en flujo coaxial. Eliminada la duplicación de botones de menú en la cabecera.
+5. **Par 5 · Two-pane: Panel fijo 360dp + Panel flexible:** Panel lateral fijo de 360dp (`<aside class="md-scaffold-pane md-scaffold-pane-fixed">`) acoplado a panel flexible principal (`<main class="md-scaffold-pane md-scaffold-pane-flexible">`) con scrolls independientes y gutter contractual de 24dp.
+6. **Par 6 · Panel semi-permanente: Colapsable con aria-expanded:** Alternancia accesible de panel auxiliar mediante botón `[data-scaffold-pane-toggle]` y cinemática `emphasized`, absorbiendo el panel flexible el ancho completo al colapsar.
+7. **Par 7 · Three-pane: Lista + Detalle + Panel de Apoyo (≥ 1200dp):** Tres paneles simultáneos (lista maestra de 360dp, detalle flexible y panel de apoyo de 360dp). Degrada a Two-pane en anchos < 1200px mediante `@media (width < 1200px)`.
 
 ### Métricas de Validación
 - `tools/verify-tokens.mjs`: 0 fallos nuevos; baseline histórico intacto en `FALLOS: 2` (`select.css:448, 453`).
 - REGLA 10: 100% de clases físicas existentes en `src/css/`.
-- REGLA 11: 100% de paridad carácter a carácter entre espécimen y snippet copiable en los Pares 1, 2, 3 y 4.
-- SHA-256 byte-idéntico entre molde `scaffold.template.html` y componente `scaffold.html` (`b95c6613708e09ae8e50b4c49266e74e82b793e5f0f2fe1577fb6f3cade5dcaa`).
-- Verificación visual: altura acotada a 420px en showroom vía `showroom.css`, `100dvh` autónomo para producción y `lab.html`, botón Copiar funcional vía `data-copy` y cuatro esquinas de `.md-card-outlined` íntegras sin recorte de clipping.
+- REGLA 11: 100% de paridad carácter a carácter entre espécimen y snippet copiable en los 7 Pares.
+- SHA-256 byte-idéntico entre molde `scaffold.template.html` y componente `scaffold.html` (`67ECB6FEDD33393A3FCBF47732A3D1E99F22E59E8066AF72BC6535CF079480C6`).
+- Sin Par 8 ni casos de uso de negocio en páginas individuales (reservados para la galería general de ManGo! App al final del catálogo).
 
 
 ## Componente Layout (.md-layout / .md-grid) — Consolidación y Creación (2026-11-15)

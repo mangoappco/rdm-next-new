@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="utf-8">
@@ -45,7 +45,7 @@
     <header class="sr-header">
       <h1 class="md-type-display-large">Scaffold</h1>
       <p class="md-type-body-large">Estructura base de pantalla que organiza y ensambla las regiones de navegación, cabeceras y contenido.</p>
-      <p class="md-type-body-medium md-text-on-surface-variant">M3 Expressive · App Shell & Panes · Bloque 1 (Pares 1 a 4 · En construcción)</p>
+      <p class="md-type-body-medium md-text-on-surface-variant">M3 Expressive · App Shell & Panes · Siete pares</p>
     </header>
 
     <hr class="md-divider">
@@ -427,11 +427,6 @@
             <!-- Slot: Cabecera superior sticky -->
             <div class="md-scaffold-header">
               <header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll>
-                <div class="md-top-app-bar-leading">
-                  <button type="button" class="md-icon-button" aria-label="Menú principal">
-                    <span class="md-icon" aria-hidden="true">menu</span>
-                  </button>
-                </div>
                 <div class="md-top-app-bar-content">
                   <span class="md-top-app-bar-title">Scaffold · Navigation Rail</span>
                 </div>
@@ -517,11 +512,6 @@
     &lt;!-- Slot: Cabecera superior sticky --&gt;
     &lt;div class="md-scaffold-header"&gt;
       &lt;header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll&gt;
-        &lt;div class="md-top-app-bar-leading"&gt;
-          &lt;button type="button" class="md-icon-button" aria-label="Menú principal"&gt;
-            &lt;span class="md-icon" aria-hidden="true"&gt;menu&lt;/span&gt;
-          &lt;/button&gt;
-        &lt;/div&gt;
         &lt;div class="md-top-app-bar-content"&gt;
           &lt;span class="md-top-app-bar-title"&gt;Scaffold · Navigation Rail&lt;/span&gt;
         &lt;/div&gt;
@@ -565,6 +555,585 @@
           &lt;/div&gt;
         &lt;/article&gt;
       &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- PAREJA: Dos paneles: Panel fijo (360dp) + Panel flexible -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Dos paneles: Panel fijo (360dp) + Panel flexible</h3>
+      <p class="md-type-body-medium">Combina un panel lateral fijo de 360dp (.md-scaffold-pane-fixed) que no crece ni encoge con un panel principal flexible (.md-scaffold-pane-flexible) que absorbe el ancho restante con gutter de 24dp y scroll independiente en ambos.</p>
+
+      <div class="sr-specimen sr-specimen-scaffold">
+        <div class="md-scaffold">
+          <!-- Slot: Ranura lateral de navegación -->
+          <div class="md-scaffold-nav">
+            <nav class="md-navigation-rail" aria-label="Navegación principal">
+              <div class="md-navigation-rail-header">
+                <button type="button" class="md-icon-button" aria-label="Abrir menú de navegación" data-rail-toggle>
+                  <span class="md-icon" aria-hidden="true">menu</span>
+                </button>
+              </div>
+              <div class="md-navigation-rail-content">
+                <button type="button" class="md-navigation-rail-item" aria-current="page">
+                  <span class="md-navigation-rail-indicator">
+                    <span class="md-navigation-rail-icon md-icon" aria-hidden="true">inbox</span>
+                  </span>
+                  <span class="md-navigation-rail-label">Bandeja</span><span class="md-navigation-rail-label-horizontal" aria-hidden="true">Bandeja</span>
+                </button>
+                <button type="button" class="md-navigation-rail-item">
+                  <span class="md-navigation-rail-indicator">
+                    <span class="md-navigation-rail-icon md-icon" aria-hidden="true">send</span>
+                  </span>
+                  <span class="md-navigation-rail-label">Enviados</span><span class="md-navigation-rail-label-horizontal" aria-hidden="true">Enviados</span>
+                </button>
+                <button type="button" class="md-navigation-rail-item">
+                  <span class="md-navigation-rail-indicator">
+                    <span class="md-navigation-rail-icon md-icon" aria-hidden="true">archive</span>
+                  </span>
+                  <span class="md-navigation-rail-label">Archivo</span><span class="md-navigation-rail-label-horizontal" aria-hidden="true">Archivo</span>
+                </button>
+              </div>
+            </nav>
+          </div>
+
+          <!-- Slot: Contenedor de contenido principal -->
+          <div class="md-scaffold-content">
+            <!-- Slot: Cabecera superior sticky -->
+            <div class="md-scaffold-header">
+              <header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll>
+                <div class="md-top-app-bar-content">
+                  <span class="md-top-app-bar-title">Scaffold · Two-pane</span>
+                </div>
+                <div class="md-top-app-bar-trailing">
+                  <button type="button" class="md-icon-button" aria-label="Buscar">
+                    <span class="md-icon" aria-hidden="true">search</span>
+                  </button>
+                </div>
+              </header>
+            </div>
+
+            <!-- Slot obligatorio: Cuerpo con dos paneles simultáneos -->
+            <div class="md-scaffold-body">
+              <!-- Slot: Panel fijo de 360dp (Supporting Pane) -->
+              <aside class="md-scaffold-pane md-scaffold-pane-fixed" aria-label="Lista de elementos">
+                <article class="md-card md-card-outlined">
+                  <div class="md-card-header">
+                    <h4 class="md-type-title-medium">Elemento 1</h4>
+                    <p class="md-type-body-small">Fila de lista con scroll independiente.</p>
+                  </div>
+                </article>
+                <article class="md-card md-card-outlined">
+                  <div class="md-card-header">
+                    <h4 class="md-type-title-medium">Elemento 2</h4>
+                    <p class="md-type-body-small">Fila de lista con scroll independiente.</p>
+                  </div>
+                </article>
+                <article class="md-card md-card-outlined">
+                  <div class="md-card-header">
+                    <h4 class="md-type-title-medium">Elemento 3</h4>
+                    <p class="md-type-body-small">Fila de lista con scroll independiente.</p>
+                  </div>
+                </article>
+                <article class="md-card md-card-outlined">
+                  <div class="md-card-header">
+                    <h4 class="md-type-title-medium">Elemento 4</h4>
+                    <p class="md-type-body-small">Fila de lista con scroll independiente.</p>
+                  </div>
+                </article>
+              </aside>
+
+              <!-- Slot: Panel flexible principal (Detail Pane) -->
+              <main class="md-scaffold-pane md-scaffold-pane-flexible">
+                <article class="md-card md-card-outlined">
+                  <div class="md-card-header">
+                    <h4 class="md-type-title-medium">Panel de detalle flexible</h4>
+                    <p class="md-type-body-small">Absorbe el espacio restante. El panel fijo de 360dp permanece estático a su izquierda.</p>
+                  </div>
+                  <div class="md-card-content">
+                    <p class="md-type-body-medium">Desplaza ambos paneles de forma independiente para verificar el scroll autónomo de cada uno.</p>
+                  </div>
+                </article>
+                <article class="md-card md-card-outlined">
+                  <div class="md-card-header">
+                    <h4 class="md-type-title-medium">Bloque de desplazamiento 1</h4>
+                    <p class="md-type-body-small">Contenido secuencial de prueba.</p>
+                  </div>
+                </article>
+                <article class="md-card md-card-outlined">
+                  <div class="md-card-header">
+                    <h4 class="md-type-title-medium">Bloque de desplazamiento 2</h4>
+                    <p class="md-type-body-small">Contenido secuencial de prueba.</p>
+                  </div>
+                </article>
+              </main>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;div class="md-scaffold"&gt;
+  &lt;!-- Slot: Ranura lateral de navegación --&gt;
+  &lt;div class="md-scaffold-nav"&gt;
+    &lt;nav class="md-navigation-rail" aria-label="Navegación principal"&gt;
+      &lt;div class="md-navigation-rail-header"&gt;
+        &lt;button type="button" class="md-icon-button" aria-label="Abrir menú de navegación" data-rail-toggle&gt;
+          &lt;span class="md-icon" aria-hidden="true"&gt;menu&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div class="md-navigation-rail-content"&gt;
+        &lt;button type="button" class="md-navigation-rail-item" aria-current="page"&gt;
+          &lt;span class="md-navigation-rail-indicator"&gt;
+            &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;inbox&lt;/span&gt;
+          &lt;/span&gt;
+          &lt;span class="md-navigation-rail-label"&gt;Bandeja&lt;/span&gt;&lt;span class="md-navigation-rail-label-horizontal" aria-hidden="true"&gt;Bandeja&lt;/span&gt;
+        &lt;/button&gt;
+        &lt;button type="button" class="md-navigation-rail-item"&gt;
+          &lt;span class="md-navigation-rail-indicator"&gt;
+            &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;send&lt;/span&gt;
+          &lt;/span&gt;
+          &lt;span class="md-navigation-rail-label"&gt;Enviados&lt;/span&gt;&lt;span class="md-navigation-rail-label-horizontal" aria-hidden="true"&gt;Enviados&lt;/span&gt;
+        &lt;/button&gt;
+        &lt;button type="button" class="md-navigation-rail-item"&gt;
+          &lt;span class="md-navigation-rail-indicator"&gt;
+            &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;archive&lt;/span&gt;
+          &lt;/span&gt;
+          &lt;span class="md-navigation-rail-label"&gt;Archivo&lt;/span&gt;&lt;span class="md-navigation-rail-label-horizontal" aria-hidden="true"&gt;Archivo&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/nav&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Slot: Contenedor de contenido principal --&gt;
+  &lt;div class="md-scaffold-content"&gt;
+    &lt;!-- Slot: Cabecera superior sticky --&gt;
+    &lt;div class="md-scaffold-header"&gt;
+      &lt;header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll&gt;
+        &lt;div class="md-top-app-bar-content"&gt;
+          &lt;span class="md-top-app-bar-title"&gt;Scaffold · Two-pane&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class="md-top-app-bar-trailing"&gt;
+          &lt;button type="button" class="md-icon-button" aria-label="Buscar"&gt;
+            &lt;span class="md-icon" aria-hidden="true"&gt;search&lt;/span&gt;
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Slot obligatorio: Cuerpo con dos paneles simultáneos --&gt;
+    &lt;div class="md-scaffold-body"&gt;
+      &lt;!-- Slot: Panel fijo de 360dp (Supporting Pane) --&gt;
+      &lt;aside class="md-scaffold-pane md-scaffold-pane-fixed" aria-label="Lista de elementos"&gt;
+        &lt;article class="md-card md-card-outlined"&gt;
+          &lt;div class="md-card-header"&gt;
+            &lt;h4 class="md-type-title-medium"&gt;Elemento 1&lt;/h4&gt;
+            &lt;p class="md-type-body-small"&gt;Fila de lista con scroll independiente.&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/article&gt;
+        &lt;article class="md-card md-card-outlined"&gt;
+          &lt;div class="md-card-header"&gt;
+            &lt;h4 class="md-type-title-medium"&gt;Elemento 2&lt;/h4&gt;
+            &lt;p class="md-type-body-small"&gt;Fila de lista con scroll independiente.&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/article&gt;
+        &lt;article class="md-card md-card-outlined"&gt;
+          &lt;div class="md-card-header"&gt;
+            &lt;h4 class="md-type-title-medium"&gt;Elemento 3&lt;/h4&gt;
+            &lt;p class="md-type-body-small"&gt;Fila de lista con scroll independiente.&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/article&gt;
+        &lt;article class="md-card md-card-outlined"&gt;
+          &lt;div class="md-card-header"&gt;
+            &lt;h4 class="md-type-title-medium"&gt;Elemento 4&lt;/h4&gt;
+            &lt;p class="md-type-body-small"&gt;Fila de lista con scroll independiente.&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/article&gt;
+      &lt;/aside&gt;
+
+      &lt;!-- Slot: Panel flexible principal (Detail Pane) --&gt;
+      &lt;main class="md-scaffold-pane md-scaffold-pane-flexible"&gt;
+        &lt;article class="md-card md-card-outlined"&gt;
+          &lt;div class="md-card-header"&gt;
+            &lt;h4 class="md-type-title-medium"&gt;Panel de detalle flexible&lt;/h4&gt;
+            &lt;p class="md-type-body-small"&gt;Absorbe el espacio restante. El panel fijo de 360dp permanece estático a su izquierda.&lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div class="md-card-content"&gt;
+            &lt;p class="md-type-body-medium"&gt;Desplaza ambos paneles de forma independiente para verificar el scroll autónomo de cada uno.&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/article&gt;
+        &lt;article class="md-card md-card-outlined"&gt;
+          &lt;div class="md-card-header"&gt;
+            &lt;h4 class="md-type-title-medium"&gt;Bloque de desplazamiento 1&lt;/h4&gt;
+            &lt;p class="md-type-body-small"&gt;Contenido secuencial de prueba.&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/article&gt;
+        &lt;article class="md-card md-card-outlined"&gt;
+          &lt;div class="md-card-header"&gt;
+            &lt;h4 class="md-type-title-medium"&gt;Bloque de desplazamiento 2&lt;/h4&gt;
+            &lt;p class="md-type-body-small"&gt;Contenido secuencial de prueba.&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/article&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- PAREJA: Panel semi-permanente: Colapsable con aria-expanded y movimiento emphasized -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Panel semi-permanente: Colapsable con aria-expanded y movimiento emphasized</h3>
+      <p class="md-type-body-medium">Permite alternar un panel auxiliar semi-permanente mediante aria-expanded y curvas de movimiento emphasized de M3, haciendo que el panel flexible absorba o ceda el espacio de forma fluida.</p>
+
+      <div class="sr-specimen sr-specimen-scaffold">
+        <div class="md-scaffold">
+          <!-- Slot: Cabecera superior sticky -->
+          <div class="md-scaffold-header">
+            <header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll>
+              <div class="md-top-app-bar-content">
+                <span class="md-top-app-bar-title">Scaffold · Panel semi-permanente</span>
+              </div>
+              <div class="md-top-app-bar-trailing">
+                <button type="button" class="md-icon-button" aria-label="Alternar panel auxiliar" aria-expanded="true" aria-controls="scaffold-supporting-pane-demo" data-scaffold-pane-toggle>
+                  <span class="md-icon" aria-hidden="true">dock_to_right</span>
+                </button>
+              </div>
+            </header>
+          </div>
+
+          <!-- Slot obligatorio: Cuerpo contenedor de paneles -->
+          <div class="md-scaffold-body">
+            <!-- Slot: Panel flexible principal -->
+            <main class="md-scaffold-pane md-scaffold-pane-flexible">
+              <article class="md-card md-card-outlined">
+                <div class="md-card-header">
+                  <h4 class="md-type-title-medium">Área principal flexible</h4>
+                  <p class="md-type-body-small">Absorbe el ancho remanente o se expande al colapsar el panel auxiliar.</p>
+                </div>
+                <div class="md-card-content">
+                  <p class="md-type-body-medium">Pulsa el botón superior derecho (dock_to_right) para alternar el panel auxiliar con cinemática emphasized de M3.</p>
+                </div>
+              </article>
+              <article class="md-card md-card-outlined">
+                <div class="md-card-header">
+                  <h4 class="md-type-title-medium">Contenido secundario</h4>
+                  <p class="md-type-body-small">Bloque de desplazamiento continuo.</p>
+                </div>
+              </article>
+            </main>
+
+            <!-- Slot: Panel auxiliar semi-permanente colapsable -->
+            <aside id="scaffold-supporting-pane-demo" class="md-scaffold-pane md-scaffold-pane-fixed md-scaffold-pane-collapsible" aria-label="Panel auxiliar de detalles">
+              <article class="md-card md-card-outlined">
+                <div class="md-card-header">
+                  <h4 class="md-type-title-medium">Detalles auxiliares</h4>
+                  <p class="md-type-body-small">Supporting pane colapsable.</p>
+                </div>
+                <div class="md-card-content">
+                  <p class="md-type-body-medium">Este panel de 360dp se repliega suavemente a cero mediante aria-hidden y curvas emphasized.</p>
+                </div>
+              </article>
+              <article class="md-card md-card-outlined">
+                <div class="md-card-header">
+                  <h4 class="md-type-title-medium">Metadatos de apoyo</h4>
+                  <p class="md-type-body-small">Información contextual adicional.</p>
+                </div>
+              </article>
+            </aside>
+          </div>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;div class="md-scaffold"&gt;
+  &lt;!-- Slot: Cabecera superior sticky --&gt;
+  &lt;div class="md-scaffold-header"&gt;
+    &lt;header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll&gt;
+      &lt;div class="md-top-app-bar-content"&gt;
+        &lt;span class="md-top-app-bar-title"&gt;Scaffold · Panel semi-permanente&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class="md-top-app-bar-trailing"&gt;
+        &lt;button type="button" class="md-icon-button" aria-label="Alternar panel auxiliar" aria-expanded="true" aria-controls="scaffold-supporting-pane-demo" data-scaffold-pane-toggle&gt;
+          &lt;span class="md-icon" aria-hidden="true"&gt;dock_to_right&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Slot obligatorio: Cuerpo contenedor de paneles --&gt;
+  &lt;div class="md-scaffold-body"&gt;
+    &lt;!-- Slot: Panel flexible principal --&gt;
+    &lt;main class="md-scaffold-pane md-scaffold-pane-flexible"&gt;
+      &lt;article class="md-card md-card-outlined"&gt;
+        &lt;div class="md-card-header"&gt;
+          &lt;h4 class="md-type-title-medium"&gt;Área principal flexible&lt;/h4&gt;
+          &lt;p class="md-type-body-small"&gt;Absorbe el ancho remanente o se expande al colapsar el panel auxiliar.&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class="md-card-content"&gt;
+          &lt;p class="md-type-body-medium"&gt;Pulsa el botón superior derecho (dock_to_right) para alternar el panel auxiliar con cinemática emphasized de M3.&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/article&gt;
+      &lt;article class="md-card md-card-outlined"&gt;
+        &lt;div class="md-card-header"&gt;
+          &lt;h4 class="md-type-title-medium"&gt;Contenido secundario&lt;/h4&gt;
+          &lt;p class="md-type-body-small"&gt;Bloque de desplazamiento continuo.&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/article&gt;
+    &lt;/main&gt;
+
+    &lt;!-- Slot: Panel auxiliar semi-permanente colapsable --&gt;
+    &lt;aside id="scaffold-supporting-pane-demo" class="md-scaffold-pane md-scaffold-pane-fixed md-scaffold-pane-collapsible" aria-label="Panel auxiliar de detalles"&gt;
+      &lt;article class="md-card md-card-outlined"&gt;
+        &lt;div class="md-card-header"&gt;
+          &lt;h4 class="md-type-title-medium"&gt;Detalles auxiliares&lt;/h4&gt;
+          &lt;p class="md-type-body-small"&gt;Supporting pane colapsable.&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class="md-card-content"&gt;
+          &lt;p class="md-type-body-medium"&gt;Este panel de 360dp se repliega suavemente a cero mediante aria-hidden y curvas emphasized.&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/article&gt;
+      &lt;article class="md-card md-card-outlined"&gt;
+        &lt;div class="md-card-header"&gt;
+          &lt;h4 class="md-type-title-medium"&gt;Metadatos de apoyo&lt;/h4&gt;
+          &lt;p class="md-type-body-small"&gt;Información contextual adicional.&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/article&gt;
+    &lt;/aside&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- PAREJA: Tres paneles: Lista + Detalle + Panel de Apoyo (≥ 1200dp) -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Tres paneles: Lista + Detalle + Panel de Apoyo (≥ 1200dp)</h3>
+      <p class="md-type-body-medium">Arquitectura tri-panel de Material Design 3 para ventanas Large (≥ 1200dp): panel maestro fijo de 360dp, panel de detalle flexible central y panel de apoyo contextual de 360dp con scroll independiente.</p>
+
+      <div class="sr-specimen sr-specimen-scaffold">
+        <div class="md-scaffold">
+          <!-- Slot: Ranura lateral de navegación -->
+          <div class="md-scaffold-nav">
+            <nav class="md-navigation-rail" aria-label="Navegación principal">
+              <div class="md-navigation-rail-header">
+                <button type="button" class="md-icon-button" aria-label="Abrir menú de navegación" data-rail-toggle>
+                  <span class="md-icon" aria-hidden="true">menu</span>
+                </button>
+              </div>
+              <div class="md-navigation-rail-content">
+                <button type="button" class="md-navigation-rail-item" aria-current="page">
+                  <span class="md-navigation-rail-indicator">
+                    <span class="md-navigation-rail-icon md-icon" aria-hidden="true">inbox</span>
+                  </span>
+                  <span class="md-navigation-rail-label">Bandeja</span><span class="md-navigation-rail-label-horizontal" aria-hidden="true">Bandeja</span>
+                </button>
+                <button type="button" class="md-navigation-rail-item">
+                  <span class="md-navigation-rail-indicator">
+                    <span class="md-navigation-rail-icon md-icon" aria-hidden="true">send</span>
+                  </span>
+                  <span class="md-navigation-rail-label">Enviados</span><span class="md-navigation-rail-label-horizontal" aria-hidden="true">Enviados</span>
+                </button>
+                <button type="button" class="md-navigation-rail-item">
+                  <span class="md-navigation-rail-indicator">
+                    <span class="md-navigation-rail-icon md-icon" aria-hidden="true">archive</span>
+                  </span>
+                  <span class="md-navigation-rail-label">Archivo</span><span class="md-navigation-rail-label-horizontal" aria-hidden="true">Archivo</span>
+                </button>
+              </div>
+            </nav>
+          </div>
+
+          <!-- Slot: Contenedor de contenido principal -->
+          <div class="md-scaffold-content">
+            <!-- Slot: Cabecera superior sticky -->
+            <div class="md-scaffold-header">
+              <header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll>
+                <div class="md-top-app-bar-content">
+                  <span class="md-top-app-bar-title">Scaffold · Three-pane</span>
+                </div>
+                <div class="md-top-app-bar-trailing">
+                  <button type="button" class="md-icon-button" aria-label="Buscar">
+                    <span class="md-icon" aria-hidden="true">search</span>
+                  </button>
+                </div>
+              </header>
+            </div>
+
+            <!-- Slot obligatorio: Cuerpo con tres paneles simultáneos -->
+            <div class="md-scaffold-body">
+              <!-- Slot: Panel 1 (Lista maestro · Fijo 360dp) -->
+              <aside class="md-scaffold-pane md-scaffold-pane-fixed" aria-label="Lista de conversaciones">
+                <article class="md-card md-card-outlined">
+                  <div class="md-card-header">
+                    <h4 class="md-type-title-medium">Conversación 1</h4>
+                    <p class="md-type-body-small">Panel maestro de lista (360dp).</p>
+                  </div>
+                </article>
+                <article class="md-card md-card-outlined">
+                  <div class="md-card-header">
+                    <h4 class="md-type-title-medium">Conversación 2</h4>
+                    <p class="md-type-body-small">Panel maestro de lista (360dp).</p>
+                  </div>
+                </article>
+                <article class="md-card md-card-outlined">
+                  <div class="md-card-header">
+                    <h4 class="md-type-title-medium">Conversación 3</h4>
+                    <p class="md-type-body-small">Panel maestro de lista (360dp).</p>
+                  </div>
+                </article>
+              </aside>
+
+              <!-- Slot: Panel 2 (Detalle principal · Flexible) -->
+              <main class="md-scaffold-pane md-scaffold-pane-flexible">
+                <article class="md-card md-card-outlined">
+                  <div class="md-card-header">
+                    <h4 class="md-type-title-medium">Detalle de conversación</h4>
+                    <p class="md-type-body-small">Panel central fluido que absorbe el ancho entre los dos paneles fijos.</p>
+                  </div>
+                  <div class="md-card-content">
+                    <p class="md-type-body-medium">Espacio de trabajo principal con desplazamiento vertical independiente.</p>
+                  </div>
+                </article>
+                <article class="md-card md-card-outlined">
+                  <div class="md-card-header">
+                    <h4 class="md-type-title-medium">Mensajes del hilo</h4>
+                    <p class="md-type-body-small">Contenido secuencial del detalle.</p>
+                  </div>
+                </article>
+              </main>
+
+              <!-- Slot: Panel 3 (Apoyo / Contexto · Fijo 360dp) -->
+              <aside class="md-scaffold-pane md-scaffold-pane-fixed" aria-label="Panel de apoyo contextual">
+                <article class="md-card md-card-outlined">
+                  <div class="md-card-header">
+                    <h4 class="md-type-title-medium">Panel de apoyo</h4>
+                    <p class="md-type-body-small">Información contextual (360dp).</p>
+                  </div>
+                  <div class="md-card-content">
+                    <p class="md-type-body-medium">Metadatos, acciones secundarias o resumen de comanda en ManGo! App.</p>
+                  </div>
+                </article>
+                <article class="md-card md-card-outlined">
+                  <div class="md-card-header">
+                    <h4 class="md-type-title-medium">Actividad reciente</h4>
+                    <p class="md-type-body-small">Historial contextual de acciones.</p>
+                  </div>
+                </article>
+              </aside>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;div class="md-scaffold"&gt;
+  &lt;!-- Slot: Ranura lateral de navegación --&gt;
+  &lt;div class="md-scaffold-nav"&gt;
+    &lt;nav class="md-navigation-rail" aria-label="Navegación principal"&gt;
+      &lt;div class="md-navigation-rail-header"&gt;
+        &lt;button type="button" class="md-icon-button" aria-label="Abrir menú de navegación" data-rail-toggle&gt;
+          &lt;span class="md-icon" aria-hidden="true"&gt;menu&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div class="md-navigation-rail-content"&gt;
+        &lt;button type="button" class="md-navigation-rail-item" aria-current="page"&gt;
+          &lt;span class="md-navigation-rail-indicator"&gt;
+            &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;inbox&lt;/span&gt;
+          &lt;/span&gt;
+          &lt;span class="md-navigation-rail-label"&gt;Bandeja&lt;/span&gt;&lt;span class="md-navigation-rail-label-horizontal" aria-hidden="true"&gt;Bandeja&lt;/span&gt;
+        &lt;/button&gt;
+        &lt;button type="button" class="md-navigation-rail-item"&gt;
+          &lt;span class="md-navigation-rail-indicator"&gt;
+            &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;send&lt;/span&gt;
+          &lt;/span&gt;
+          &lt;span class="md-navigation-rail-label"&gt;Enviados&lt;/span&gt;&lt;span class="md-navigation-rail-label-horizontal" aria-hidden="true"&gt;Enviados&lt;/span&gt;
+        &lt;/button&gt;
+        &lt;button type="button" class="md-navigation-rail-item"&gt;
+          &lt;span class="md-navigation-rail-indicator"&gt;
+            &lt;span class="md-navigation-rail-icon md-icon" aria-hidden="true"&gt;archive&lt;/span&gt;
+          &lt;/span&gt;
+          &lt;span class="md-navigation-rail-label"&gt;Archivo&lt;/span&gt;&lt;span class="md-navigation-rail-label-horizontal" aria-hidden="true"&gt;Archivo&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/nav&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Slot: Contenedor de contenido principal --&gt;
+  &lt;div class="md-scaffold-content"&gt;
+    &lt;!-- Slot: Cabecera superior sticky --&gt;
+    &lt;div class="md-scaffold-header"&gt;
+      &lt;header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll&gt;
+        &lt;div class="md-top-app-bar-content"&gt;
+          &lt;span class="md-top-app-bar-title"&gt;Scaffold · Three-pane&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class="md-top-app-bar-trailing"&gt;
+          &lt;button type="button" class="md-icon-button" aria-label="Buscar"&gt;
+            &lt;span class="md-icon" aria-hidden="true"&gt;search&lt;/span&gt;
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Slot obligatorio: Cuerpo con tres paneles simultáneos --&gt;
+    &lt;div class="md-scaffold-body"&gt;
+      &lt;!-- Slot: Panel 1 (Lista maestro · Fijo 360dp) --&gt;
+      &lt;aside class="md-scaffold-pane md-scaffold-pane-fixed" aria-label="Lista de conversaciones"&gt;
+        &lt;article class="md-card md-card-outlined"&gt;
+          &lt;div class="md-card-header"&gt;
+            &lt;h4 class="md-type-title-medium"&gt;Conversación 1&lt;/h4&gt;
+            &lt;p class="md-type-body-small"&gt;Panel maestro de lista (360dp).&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/article&gt;
+        &lt;article class="md-card md-card-outlined"&gt;
+          &lt;div class="md-card-header"&gt;
+            &lt;h4 class="md-type-title-medium"&gt;Conversación 2&lt;/h4&gt;
+            &lt;p class="md-type-body-small"&gt;Panel maestro de lista (360dp).&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/article&gt;
+        &lt;article class="md-card md-card-outlined"&gt;
+          &lt;div class="md-card-header"&gt;
+            &lt;h4 class="md-type-title-medium"&gt;Conversación 3&lt;/h4&gt;
+            &lt;p class="md-type-body-small"&gt;Panel maestro de lista (360dp).&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/article&gt;
+      &lt;/aside&gt;
+
+      &lt;!-- Slot: Panel 2 (Detalle principal · Flexible) --&gt;
+      &lt;main class="md-scaffold-pane md-scaffold-pane-flexible"&gt;
+        &lt;article class="md-card md-card-outlined"&gt;
+          &lt;div class="md-card-header"&gt;
+            &lt;h4 class="md-type-title-medium"&gt;Detalle de conversación&lt;/h4&gt;
+            &lt;p class="md-type-body-small"&gt;Panel central fluido que absorbe el ancho entre los dos paneles fijos.&lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div class="md-card-content"&gt;
+            &lt;p class="md-type-body-medium"&gt;Espacio de trabajo principal con desplazamiento vertical independiente.&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/article&gt;
+        &lt;article class="md-card md-card-outlined"&gt;
+          &lt;div class="md-card-header"&gt;
+            &lt;h4 class="md-type-title-medium"&gt;Mensajes del hilo&lt;/h4&gt;
+            &lt;p class="md-type-body-small"&gt;Contenido secuencial del detalle.&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/article&gt;
+      &lt;/main&gt;
+
+      &lt;!-- Slot: Panel 3 (Apoyo / Contexto · Fijo 360dp) --&gt;
+      &lt;aside class="md-scaffold-pane md-scaffold-pane-fixed" aria-label="Panel de apoyo contextual"&gt;
+        &lt;article class="md-card md-card-outlined"&gt;
+          &lt;div class="md-card-header"&gt;
+            &lt;h4 class="md-type-title-medium"&gt;Panel de apoyo&lt;/h4&gt;
+            &lt;p class="md-type-body-small"&gt;Información contextual (360dp).&lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div class="md-card-content"&gt;
+            &lt;p class="md-type-body-medium"&gt;Metadatos, acciones secundarias o resumen de comanda en ManGo! App.&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/article&gt;
+        &lt;article class="md-card md-card-outlined"&gt;
+          &lt;div class="md-card-header"&gt;
+            &lt;h4 class="md-type-title-medium"&gt;Actividad reciente&lt;/h4&gt;
+            &lt;p class="md-type-body-small"&gt;Historial contextual de acciones.&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/article&gt;
+      &lt;/aside&gt;
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;</code></pre>

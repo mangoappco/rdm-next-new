@@ -132,6 +132,7 @@ import { initNavigationBar } from './navigation-bar.js';
 import { initNavigationRail } from './navigation-rail.js';
 import { initSnackbar } from './snackbar.js';
 import { initMenu } from './menu.js';
+import { initScaffold } from './scaffold.js';
 
 /* Se registra al cargar el script, no al hacer clic. Los specimens del
    showroom llevan `<dialog open>` a secas, que NO es modal, asi que ahi no
@@ -206,6 +207,10 @@ initSnackbar();
 /* Menu: gestión de apertura/cierre, navegación por teclado WAI-ARIA
    y cierre exterior (click outside) */
 initMenu();
+
+/* Scaffold: gestión de paneles semi-permanentes y colapsables con
+   delegación sobre [data-scaffold-pane-toggle] y sincronización ARIA */
+initScaffold();
 
 /* Y aqui iran los que lo necesiten:
      import { registrar as registrarFabMenu } from './fab-menu.js';

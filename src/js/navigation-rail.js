@@ -33,13 +33,16 @@ export function initNavigationRail() {
   }
 
   function ensureScrim(rail) {
-    const parent = (rail && rail.parentNode) ? rail.parentNode : document.body;
+    const scaffold = rail ? rail.closest('.md-scaffold') : null;
+    const parent = scaffold || ((rail && rail.parentNode) ? rail.parentNode : document.body);
     let scrim = parent.querySelector('.md-navigation-rail-scrim');
     if (!scrim) {
       scrim = document.createElement('div');
       scrim.className = 'md-navigation-rail-scrim';
       scrim.setAttribute('aria-hidden', 'true');
-      if (rail && rail.parentNode) {
+      if (scaffold) {
+        scaffold.insertBefore(scrim, scaffold.firstChild);
+      } else if (rail && rail.parentNode) {
         rail.parentNode.insertBefore(scrim, rail);
       } else {
         parent.appendChild(scrim);
@@ -105,7 +108,8 @@ export function initNavigationRail() {
     }
 
     // Desactivar scrim
-    const parent = (rail && rail.parentNode) ? rail.parentNode : document.body;
+    const scaffold = rail ? rail.closest('.md-scaffold') : null;
+    const parent = scaffold || ((rail && rail.parentNode) ? rail.parentNode : document.body);
     const scrim = parent.querySelector('.md-navigation-rail-scrim') || document.querySelector('.md-navigation-rail-scrim');
     if (scrim) {
       scrim.classList.remove('md-navigation-rail-scrim-open');
@@ -141,7 +145,7 @@ export function initNavigationRail() {
     // B) Clic en el Scrim: cierra el modal activo
     const scrim = event.target.closest('.md-navigation-rail-scrim');
     if (scrim) {
-      const parent = scrim.parentNode || document.body;
+      const parent = scrim.closest('.md-scaffold') || scrim.parentNode || document.body;
       const modalRail = parent.querySelector('.md-navigation-rail-modal:is(.md-navigation-rail-expanded, .md-navigation-rail-open)') || document.querySelector('.md-navigation-rail-modal:is(.md-navigation-rail-expanded, .md-navigation-rail-open)');
       if (modalRail) {
         closeModal(modalRail);

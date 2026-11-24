@@ -400,6 +400,11 @@ for (const file of files) {
       probe = probe.replace(/\b(600|840|1200)px\b/g, 'BREAKPOINT');
     }
 
+    // Autorizar enteros bajos canónicos de elevación y apilamiento z-index (-1, 0, 1, 2, 3)
+    if (/z-index\b/.test(probe)) {
+      probe = probe.replace(/z-index\s*:\s*-?[0-3]\b/g, 'z-index: 0');
+    }
+
     for (const check of rawChecks) {
       for (const _m of Matches(probe, check.Pattern)) {
         AddIssue('REGLA 1', rel, i + 1, `valor crudo (${check.Name}) fuera de 1-reference-tokens`, lineText.trim());

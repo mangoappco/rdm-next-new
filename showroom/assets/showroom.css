@@ -1,4 +1,4 @@
-/* ==========================================================================
+﻿/* ==========================================================================
    showroom/assets/showroom.css — PLACEHOLDER (linea base del reinicio)
    --------------------------------------------------------------------------
    Capa del chrome del showroom, declarada despues de las cinco capas de
@@ -631,4 +631,8 @@ correctas: .md-scaffold (el marco de 420px no debe recibir aire) y
     max-inline-size: 720px;
     margin-inline: auto;
   }
+}
+
+.sr-specimen-scaffold .md-scaffold-body > .md-scaffold-pane:nth-child(n+3) {
+  display: flex !important;
 }

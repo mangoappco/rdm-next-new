@@ -36,6 +36,7 @@
   background-color: var(--md-sys-color-background);
   color: var(--md-sys-color-on-background);
   position: relative;
+  isolation: isolate;
   box-sizing: border-box;
 }
 
@@ -53,12 +54,19 @@
   min-block-size: var(--md-sys-measurement-space-0);
   display: flex;
   flex-direction: row;
-  padding: var(--md-sys-measurement-space-0);
+  padding-block-start: var(--md-sys-measurement-space-0);
+  padding-inline: var(--md-sys-measurement-space-200);
+  padding-block-end: var(--md-sys-measurement-space-200);
   position: relative;
   box-sizing: border-box;
   overflow-x: auto;
   overflow-y: hidden;
   gap: var(--md-sys-measurement-layout-gutter-expanded);
+}
+
+/* Respiro superior de 16dp cuando el Scaffold carece de Top App Bar (Par 1) */
+.md-scaffold:not(:has(.md-scaffold-header)) .md-scaffold-body {
+  padding-block-start: var(--md-sys-measurement-space-200);
 }
 
 /* Ranura estructural de pie: barra de navegación inferior sticky */
@@ -77,6 +85,7 @@
   min-inline-size: var(--md-sys-measurement-space-0);
   min-block-size: var(--md-sys-measurement-space-0);
   padding: var(--md-sys-measurement-space-200);
+  background-color: var(--md-sys-color-surface-container-low);
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -94,6 +103,44 @@
 /* Comportamiento Flexible: Área fluida que absorbe el espacio disponible */
 .md-scaffold-pane-flexible {
   flex: 1 1 auto;
+}
+
+/* Comportamiento Fijo: Panel lateral de ancho canónico M3 de 360dp (Supporting Pane) */
+.md-scaffold-pane-fixed {
+  flex: 0 0 var(--md-sys-measurement-layout-supporting-panel-width); /* 360dp — no crece ni encoge */
+  inline-size: var(--md-sys-measurement-layout-supporting-panel-width);
+  max-inline-size: 100%; /* seguridad responsiva: no desborda en viewports estrechos */
+}
+
+/* Comportamiento Colapsable / Semi-permanente: Permite alternar la presencia del panel auxiliar */
+.md-scaffold-pane-collapsible {
+  flex: 0 0 var(--md-sys-measurement-layout-supporting-panel-width);
+  inline-size: var(--md-sys-measurement-layout-supporting-panel-width);
+  opacity: 1;
+  transition:
+    flex-basis var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized),
+    inline-size var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized),
+    padding-inline var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized),
+    margin-inline-start var(--md-sys-motion-duration-long1) var(--md-sys-motion-easing-emphasized),
+    opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-linear);
+}
+
+/* Estado Colapsado / Cerrado: se pliega a cero y neutraliza el gutter adyacente */
+.md-scaffold-pane-collapsible[aria-hidden="true"] {
+  flex-basis: var(--md-sys-measurement-space-0);
+  inline-size: var(--md-sys-measurement-space-0);
+  padding-inline: var(--md-sys-measurement-space-0);
+  margin-inline-start: calc(-1 * var(--md-sys-measurement-layout-gutter-expanded));
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .md-scaffold-pane-collapsible {
+    transition: none;
+  }
 }
 
 /* ==========================================================================
@@ -126,16 +173,62 @@
   z-index: 1;
 }
 
-/* Encaje limpio del rail dentro de .md-scaffold-nav en flujo */
-.md-scaffold-nav > .md-navigation-rail:not(.md-navigation-rail-modal) {
+/* Huella física constante de 96dp cuando aloja rail modal */
+.md-scaffold-nav:has(> .md-navigation-rail-modal) {
+  inline-size: var(--md-sys-measurement-navigation-rail-width);
+  flex: 0 0 var(--md-sys-measurement-navigation-rail-width);
+}
+
+/* Encaje limpio de cualquier rail (estándar o modal) en reposo dentro de .md-scaffold-nav */
+.md-scaffold-nav > .md-navigation-rail {
   position: relative;
   inset: auto;
   block-size: 100%;
   min-block-size: var(--md-sys-measurement-space-0);
 }
 
+.md-scaffold-nav > .md-navigation-rail.md-navigation-rail-modal {
+  position: relative;
+  inset: auto;
+  block-size: 100%;
+  min-block-size: var(--md-sys-measurement-space-0);
+}
+
+/* Estado modal abierto dentro de Scaffold: elevación modal absoluta sobre el contenido y Top App Bar */
+.md-scaffold-nav:has(> .md-navigation-rail-modal:is(.md-navigation-rail-expanded, .md-navigation-rail-open)) {
+  z-index: 3;
+}
+
+.md-scaffold-nav > .md-navigation-rail.md-navigation-rail-modal:is(.md-navigation-rail-expanded, .md-navigation-rail-open),
+.md-scaffold .md-navigation-rail-modal:is(.md-navigation-rail-expanded, .md-navigation-rail-open) {
+  position: absolute;
+  inset-block: var(--md-sys-measurement-space-0);
+  inset-inline-start: var(--md-sys-measurement-space-0);
+  z-index: 3;
+}
+
+/* Scrim acotado al contenedor Scaffold cuando el modal está dentro de un Scaffold */
+.md-scaffold > .md-navigation-rail-scrim {
+  position: absolute;
+  inset: var(--md-sys-measurement-space-0);
+  inline-size: 100%;
+  block-size: 100%;
+  z-index: 2;
+}
+
 /* Neutralizar margen residual sobre paneles dentro de Scaffold */
 .md-scaffold .md-scaffold-pane {
   margin-inline-start: var(--md-sys-measurement-space-0);
+}
+
+/* ==========================================================================
+   ARQUITECTURA THREE-PANE (Lista + Detalle + Panel de Apoyo M3)
+   ========================================================================== */
+
+/* En ventanas menores a 1200px, el tercer panel de apoyo se repliega para degradar a Two-pane */
+@media (width < 1200px) {
+  .md-scaffold-body > .md-scaffold-pane:nth-child(n+3) {
+    display: none;
+  }
 }
 

@@ -74,6 +74,11 @@
   padding: 0;
 }
 
+/* Keyline canónico M3: cuando no existe slot leading, el contenedor arranca a 16dp */
+.md-top-app-bar:not(:has(.md-top-app-bar-leading)) {
+  padding-inline-start: var(--md-sys-measurement-space-200);
+}
+
 /* --------------------------------------------------------------------------
    SLOTS
    ------------------------------------------------------------------------ */

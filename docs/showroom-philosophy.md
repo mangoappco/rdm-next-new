@@ -193,26 +193,31 @@ Para prevenir que los menús se proyecten fuera de la pantalla en esquinas crít
 - La activación con tecla `Space` en ítems `<a>` simula la pulsación nativa según WAI-ARIA APG.
 - Se integra en `src/js/ripple.js` con recorte riguroso en `overflow: hidden;` para que la onda táctil no sobrepase las esquinas redondeadas concéntricas de 8dp.
 
-## 12. Directrices Consolidadas: Scaffold (App Shell M3 Expressive) (2026-11-13 / 2026-11-15)
+## 12. Directrices Consolidadas: Scaffold (App Shell M3 Expressive) (2026-11-23)
 
-### 12.1 Arquitectura Estructural de Pantalla y Contención de Scroll
-- **Host `.md-scaffold`:** Gobierna el viewport completo con `block-size: 100dvh; overflow: hidden;` evitando scroll parasitario en el `body`.
-- **Delegación de Scroll a `.md-scaffold-main`:** El desplazamiento vertical reside exclusivamente en `.md-scaffold-main` (`overflow-y: auto; overscroll-behavior: contain;`), permitiendo que el header (`.md-scaffold-header`) permanezca estrictamente fijo/sticky en `top: 0` y active el sombreado de scroll (`.md-top-app-bar-scrolled`) sin oscilaciones ni desplazamientos indeseados.
+### 12.1 Arquitectura Estructural de Pantalla y Panes M3
+- **Ecuación canónica:** $\text{Scaffold} = \mathbf{Bars} + \mathbf{Rails} + \mathbf{Panes}$.
+- **Host `.md-scaffold`:** Gobierna el viewport completo con `block-size: 100dvh; overflow: hidden; position: relative; isolation: isolate;` evitando scroll parasitario en el `body`.
+- **Delegación de Scroll a `.md-scaffold-pane`:** El desplazamiento vertical reside exclusivamente dentro de cada panel (`overflow-y: auto; overscroll-behavior: contain;`), con esquinas redondeadas de 16dp (`corner-large`) y fondo tonal `surface-container-low`, permitiendo que el header (`.md-scaffold-header`) permanezca estrictamente sticky en `top: 0` (`z-index: 1`) sin oscilaciones ni saltos.
+- **Respiro Simétrico Superior sin Cabecera:** Cuando el chasis carece de `Top App Bar` (Par 1), `.md-scaffold:not(:has(.md-scaffold-header)) .md-scaffold-body` aplica `padding-block-start: 16dp`, igualando el padding lateral e inferior.
 
-### 12.2 Aislamiento de Showroom y Filosofía Copy-Paste Puro
-- Para confinar el `position: fixed` de `.md-scaffold-fab` y `.md-scaffold-snackbar` dentro de las tarjetas del showroom sin tocar el HTML copiable:
-  - El marco `.sr-specimen-scaffold .md-scaffold` declara `transform: translateZ(0); contain: paint; block-size: 420px;`.
-  - El marcado copiable expone la receta estructural canónica de producción pura, garantizando REGLA 11 estricta.
+### 12.2 Coexistencia con Modal Navigation Rail y Jerarquía Z
+- En reposo, `.md-scaffold-nav:has(> .md-navigation-rail-modal)` preserva su huella inmutable de 96dp en flujo.
+- Al expandirse a 280dp, `.md-navigation-rail-modal` se eleva a `z-index: 3` sobre el chasis.
+- El velo acotado `.md-scaffold > .md-navigation-rail-scrim` se activa a `z-index: 2`, cubriendo y atenuando uniformemente la `Top App Bar` (`z-index: 1`) y los paneles de contenido (`z-index: 0`), manteniendo el botón `menu_open` visible y accesible.
 
-### 12.3 Blindaje Ergonómico M3 con `:has()`
-- Las ranuras fijas flotantes (`.md-scaffold-fab` y `.md-scaffold-snackbar`) calculan automáticamente su elevación sobre la barra de navegación inferior (`.md-navigation-bar`, 80dp) mediante:
-  ```css
-  .md-scaffold:has(.md-navigation-bar) .md-scaffold-fab {
-    inset-block-end: calc(var(--md-sys-measurement-navigation-bar-height) + var(--md-sys-measurement-space-200));
-  }
-  ```
-- No requiere clases auxiliares ni intervención de JavaScript: el motor de CSS resuelve la coexistencia de componentes.
-- Consolidado en 3 arquetipos canónicos de navegación real existentes: Estructura base (Header+Main+FAB), Desktop Navigation Rail (96dp) y Mobile Navigation Bar (80dp).
+### 12.3 Scrollbars M3 Expressive Universales
+- Promovidas a `src/css/reset.css` para toda la aplicación: delgadas (12dp WebKit con padding de 4dp, `scrollbar-width: thin` en Firefox), sin botones de flecha (`::-webkit-scrollbar-button { display: none; }`), pista transparente con margen de 8dp y thumb en píldora con color `outline-variant` (hover `outline`), respetando las esquinas curvas de 16dp.
+
+### 12.4 Los 7 Pares Técnicos Normativos (Bloque 1 Cerrado)
+1. Par 1 · Chasis base y slots obligatorios (Headerless con respiro de 16dp).
+2. Par 2 · Ranura superior: Top App Bar sticky.
+3. Par 3 · Ranura inferior: Navigation Bar persistente.
+4. Par 4 · Ranura lateral: Navigation Rail coaxial (96dp / 280dp).
+5. Par 5 · Two-pane: Panel fijo 360dp + Panel flexible con gutter de 24dp.
+6. Par 6 · Panel semi-permanente: Colapsable con aria-expanded y módulo `src/js/scaffold.js`.
+7. Par 7 · Three-pane: Lista + Detalle + Panel de Apoyo (≥ 1200dp).
+- **Cero Casos de Uso en Showroom Individual:** Las composiciones de negocio (comandas, salón de mesas, KDS de cocina) se reservan para la galería central al final del catálogo.
 
 ## 13. Directrices Consolidadas: Split Button (2026-11-14)
 
