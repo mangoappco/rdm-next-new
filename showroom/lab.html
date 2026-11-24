@@ -13,93 +13,76 @@
 </head>
 <body class="md-bg-background md-text-on-background md-type-body-medium">
 
-
 <div class="md-scaffold">
-  <!-- Slot: Ranura lateral de navegación -->
-  <div class="md-scaffold-nav">
-    <nav class="md-navigation-rail md-navigation-rail-modal" aria-label="Navegación principal">
-      <div class="md-navigation-rail-header">
-        <button type="button" class="md-icon-button" aria-label="Abrir menú de navegación" data-rail-toggle>
+  <!-- Slot: Cabecera superior sticky -->
+  <div class="md-scaffold-header">
+    <header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll>
+      <div class="md-top-app-bar-leading">
+        <button type="button" class="md-icon-button" aria-label="Menú principal">
           <span class="md-icon" aria-hidden="true">menu</span>
         </button>
       </div>
-      <div class="md-navigation-rail-content">
-        <button type="button" class="md-navigation-rail-item" aria-current="page">
-          <span class="md-navigation-rail-indicator">
-            <span class="md-navigation-rail-icon md-icon" aria-hidden="true">inbox</span>
-          </span>
-          <span class="md-navigation-rail-label">Bandeja</span><span class="md-navigation-rail-label-horizontal" aria-hidden="true">Bandeja</span>
-        </button>
-        <button type="button" class="md-navigation-rail-item">
-          <span class="md-navigation-rail-indicator">
-            <span class="md-navigation-rail-icon md-icon" aria-hidden="true">send</span>
-          </span>
-          <span class="md-navigation-rail-label">Enviados</span><span class="md-navigation-rail-label-horizontal" aria-hidden="true">Enviados</span>
-        </button>
-        <button type="button" class="md-navigation-rail-item">
-          <span class="md-navigation-rail-indicator">
-            <span class="md-navigation-rail-icon md-icon" aria-hidden="true">archive</span>
-          </span>
-          <span class="md-navigation-rail-label">Archivo</span><span class="md-navigation-rail-label-horizontal" aria-hidden="true">Archivo</span>
+      <div class="md-top-app-bar-content">
+        <span class="md-top-app-bar-title">Scaffold · Resizable panes</span>
+      </div>
+      <div class="md-top-app-bar-trailing">
+        <button type="button" class="md-icon-button" aria-label="Buscar">
+          <span class="md-icon" aria-hidden="true">search</span>
         </button>
       </div>
-    </nav>
+    </header>
   </div>
 
-  <!-- Slot: Contenedor de contenido principal -->
-  <div class="md-scaffold-content">
-    <!-- Slot: Cabecera superior sticky -->
-    <div class="md-scaffold-header">
-      <header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll>
-        <div class="md-top-app-bar-leading">
-          <button type="button" class="md-icon-button" aria-label="Menú principal">
-            <span class="md-icon" aria-hidden="true">menu</span>
-          </button>
+  <!-- Slot obligatorio: Cuerpo con dos paneles y drag handle intermedio -->
+  <div class="md-scaffold-body">
+    <!-- Slot: Panel lateral redimensionable -->
+    <aside id="scaffold-resizable-pane" class="md-scaffold-pane md-scaffold-pane-fixed md-scaffold-pane-resizable" aria-label="Panel lateral redimensionable">
+      <article class="md-card md-card-outlined">
+        <div class="md-card-header">
+          <h4 class="md-type-title-medium">Panel redimensionable</h4>
+          <p class="md-type-body-small">Arrastra el divisor para ajustar el ancho (280dp a 520dp) o colapsar a 0dp.</p>
         </div>
-        <div class="md-top-app-bar-content">
-          <span class="md-top-app-bar-title">Scaffold · Navigation Rail</span>
+        <div class="md-card-content">
+          <p class="md-type-body-medium">Haz clic en la manija o pulsa Enter/Espacio para alternar su visibilidad.</p>
         </div>
-        <div class="md-top-app-bar-trailing">
-          <button type="button" class="md-icon-button" aria-label="Buscar">
-            <span class="md-icon" aria-hidden="true">search</span>
-          </button>
+      </article>
+      <article class="md-card md-card-outlined">
+        <div class="md-card-header">
+          <h4 class="md-type-title-medium">Ítem secundario</h4>
+          <p class="md-type-body-small">Contenido del panel lateral.</p>
         </div>
-      </header>
+      </article>
+    </aside>
+
+    <!-- Slot: Manija de arrastre (Drag Handle canónico M3) -->
+    <div class="md-scaffold-drag-handle" role="separator" tabindex="0" aria-orientation="vertical" aria-label="Redimensionar panel lateral" aria-controls="scaffold-resizable-pane" aria-valuemin="0" aria-valuemax="520" aria-valuenow="360" data-scaffold-drag-handle>
+      <span class="md-scaffold-drag-handle-pill" aria-hidden="true"></span>
     </div>
 
-    <!-- Slot obligatorio: Cuerpo contenedor de paneles -->
-    <div class="md-scaffold-body">
-      <!-- Slot obligatorio: Panel principal flexible con scroll -->
-      <main class="md-scaffold-pane md-scaffold-pane-flexible">
-        <article class="md-card md-card-outlined">
-          <div class="md-card-header">
-            <h4 class="md-type-title-medium">Panel principal con Navigation Rail lateral</h4>
-            <p class="md-type-body-small">El riel lateral ocupa 96dp en reposo y expande a 280dp empujando el panel en flujo continuo.</p>
-          </div>
-          <div class="md-card-content">
-            <p class="md-type-body-medium">Pulsa el botón de menú superior del riel para alternar la expansión coaxial y comprueba el desplazamiento vertical independiente.</p>
-          </div>
-        </article>
-        <article class="md-card md-card-outlined">
-          <div class="md-card-header">
-            <h4 class="md-type-title-medium">Bloque de desplazamiento 1</h4>
-            <p class="md-type-body-small">Contenido secuencial de prueba.</p>
-          </div>
-        </article>
-        <article class="md-card md-card-outlined">
-          <div class="md-card-header">
-            <h4 class="md-type-title-medium">Bloque de desplazamiento 2</h4>
-            <p class="md-type-body-small">Contenido secuencial de prueba.</p>
-          </div>
-        </article>
-        <article class="md-card md-card-outlined">
-          <div class="md-card-header">
-            <h4 class="md-type-title-medium">Bloque de desplazamiento 3</h4>
-            <p class="md-type-body-small">Contenido secuencial de prueba.</p>
-          </div>
-        </article>
-      </main>
-    </div>
+    <!-- Slot obligatorio: Panel principal flexible -->
+    <main class="md-scaffold-pane md-scaffold-pane-flexible">
+      <article class="md-card md-card-outlined">
+        <div class="md-card-header">
+          <h4 class="md-type-title-medium">Área de trabajo flexible</h4>
+          <p class="md-type-body-small">Absorbe dinámicamente el espacio restante sin romper la cuadrícula.</p>
+        </div>
+        <div class="md-card-content">
+          <p class="md-type-body-medium">Ambos paneles conservan su desplazamiento vertical independiente con scrollbars M3 Expressive.</p>
+        </div>
+      </article>
+      <article class="md-card md-card-outlined">
+        <div class="md-card-header">
+          <h4 class="md-type-title-medium">Bloque de datos principal</h4>
+          <p class="md-type-body-small">Contenido secuencial de prueba.</p>
+        </div>
+      </article>
+      <article class="md-card md-card-outlined">
+        <div class="md-card-header">
+          <h4 class="md-type-title-medium">Bloque complementario</h4>
+          <p class="md-type-body-small">Contenido secuencial de prueba.</p>
+        </div>
+      </article>
+    </main>
   </div>
 </div>
 

@@ -45,7 +45,7 @@
     <header class="sr-header">
       <h1 class="md-type-display-large">Scaffold</h1>
       <p class="md-type-body-large">Estructura base de pantalla que organiza y ensambla las regiones de navegación, cabeceras y contenido.</p>
-      <p class="md-type-body-medium md-text-on-surface-variant">M3 Expressive · App Shell & Panes · Siete pares</p>
+      <p class="md-type-body-medium md-text-on-surface-variant">M3 Expressive · App Shell & Panes · Ocho pares</p>
     </header>
 
     <hr class="md-divider">
@@ -796,7 +796,7 @@
                 <span class="md-top-app-bar-title">Scaffold · Panel semi-permanente</span>
               </div>
               <div class="md-top-app-bar-trailing">
-                <button type="button" class="md-icon-button" aria-label="Alternar panel auxiliar" aria-expanded="true" aria-controls="scaffold-supporting-pane-demo" data-scaffold-pane-toggle>
+                <button type="button" class="md-icon-button" aria-label="Alternar panel auxiliar" aria-expanded="true" aria-controls="scaffold-supporting-pane" data-scaffold-pane-toggle>
                   <span class="md-icon" aria-hidden="true">dock_to_right</span>
                 </button>
               </div>
@@ -825,7 +825,7 @@
             </main>
 
             <!-- Slot: Panel auxiliar semi-permanente colapsable -->
-            <aside id="scaffold-supporting-pane-demo" class="md-scaffold-pane md-scaffold-pane-fixed md-scaffold-pane-collapsible" aria-label="Panel auxiliar de detalles">
+            <aside id="scaffold-supporting-pane" class="md-scaffold-pane md-scaffold-pane-fixed md-scaffold-pane-collapsible" aria-label="Panel auxiliar de detalles">
               <article class="md-card md-card-outlined">
                 <div class="md-card-header">
                   <h4 class="md-type-title-medium">Detalles auxiliares</h4>
@@ -854,7 +854,7 @@
         &lt;span class="md-top-app-bar-title"&gt;Scaffold · Panel semi-permanente&lt;/span&gt;
       &lt;/div&gt;
       &lt;div class="md-top-app-bar-trailing"&gt;
-        &lt;button type="button" class="md-icon-button" aria-label="Alternar panel auxiliar" aria-expanded="true" aria-controls="scaffold-supporting-pane-demo" data-scaffold-pane-toggle&gt;
+        &lt;button type="button" class="md-icon-button" aria-label="Alternar panel auxiliar" aria-expanded="true" aria-controls="scaffold-supporting-pane" data-scaffold-pane-toggle&gt;
           &lt;span class="md-icon" aria-hidden="true"&gt;dock_to_right&lt;/span&gt;
         &lt;/button&gt;
       &lt;/div&gt;
@@ -883,7 +883,7 @@
     &lt;/main&gt;
 
     &lt;!-- Slot: Panel auxiliar semi-permanente colapsable --&gt;
-    &lt;aside id="scaffold-supporting-pane-demo" class="md-scaffold-pane md-scaffold-pane-fixed md-scaffold-pane-collapsible" aria-label="Panel auxiliar de detalles"&gt;
+    &lt;aside id="scaffold-supporting-pane" class="md-scaffold-pane md-scaffold-pane-fixed md-scaffold-pane-collapsible" aria-label="Panel auxiliar de detalles"&gt;
       &lt;article class="md-card md-card-outlined"&gt;
         &lt;div class="md-card-header"&gt;
           &lt;h4 class="md-type-title-medium"&gt;Detalles auxiliares&lt;/h4&gt;
@@ -1135,6 +1135,161 @@
         &lt;/article&gt;
       &lt;/aside&gt;
     &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- PAREJA: Panes redimensionables con Drag Handle M3 -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Panes redimensionables: Drag Handle canónico M3 (Pointer + Teclado)</h3>
+      <p class="md-type-body-medium">Divisor interactivo de 24dp con píldora táctil M3: colapso completo (0dp) para alternar entre two-pane y single-pane, snap magnético (360dp, 412dp, 50%) y toggle por selección (tap, clic o Enter/Espacio).</p>
+
+      <div class="sr-specimen sr-specimen-scaffold">
+        <div class="md-scaffold">
+          <!-- Slot: Cabecera superior sticky -->
+          <div class="md-scaffold-header">
+            <header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll>
+              <div class="md-top-app-bar-leading">
+                <button type="button" class="md-icon-button" aria-label="Menú principal">
+                  <span class="md-icon" aria-hidden="true">menu</span>
+                </button>
+              </div>
+              <div class="md-top-app-bar-content">
+                <span class="md-top-app-bar-title">Scaffold · Resizable panes</span>
+              </div>
+              <div class="md-top-app-bar-trailing">
+                <button type="button" class="md-icon-button" aria-label="Buscar">
+                  <span class="md-icon" aria-hidden="true">search</span>
+                </button>
+              </div>
+            </header>
+          </div>
+
+          <!-- Slot obligatorio: Cuerpo con dos paneles y drag handle intermedio -->
+          <div class="md-scaffold-body">
+            <!-- Slot: Panel lateral redimensionable -->
+            <aside id="scaffold-resizable-pane" class="md-scaffold-pane md-scaffold-pane-fixed md-scaffold-pane-resizable" aria-label="Panel lateral redimensionable">
+              <article class="md-card md-card-outlined">
+                <div class="md-card-header">
+                  <h4 class="md-type-title-medium">Panel redimensionable</h4>
+                  <p class="md-type-body-small">Arrastra el divisor para ajustar el ancho (280dp a 520dp) o colapsar a 0dp.</p>
+                </div>
+                <div class="md-card-content">
+                  <p class="md-type-body-medium">Haz clic en la manija o pulsa Enter/Espacio para alternar su visibilidad.</p>
+                </div>
+              </article>
+              <article class="md-card md-card-outlined">
+                <div class="md-card-header">
+                  <h4 class="md-type-title-medium">Ítem secundario</h4>
+                  <p class="md-type-body-small">Contenido del panel lateral.</p>
+                </div>
+              </article>
+            </aside>
+
+            <!-- Slot: Manija de arrastre (Drag Handle canónico M3) -->
+            <div class="md-scaffold-drag-handle" role="separator" tabindex="0" aria-orientation="vertical" aria-label="Redimensionar panel lateral" aria-controls="scaffold-resizable-pane" aria-valuemin="0" aria-valuemax="520" aria-valuenow="360" data-scaffold-drag-handle>
+              <span class="md-scaffold-drag-handle-pill" aria-hidden="true"></span>
+            </div>
+
+            <!-- Slot obligatorio: Panel principal flexible -->
+            <main class="md-scaffold-pane md-scaffold-pane-flexible">
+              <article class="md-card md-card-outlined">
+                <div class="md-card-header">
+                  <h4 class="md-type-title-medium">Área de trabajo flexible</h4>
+                  <p class="md-type-body-small">Absorbe dinámicamente el espacio restante sin romper la cuadrícula.</p>
+                </div>
+                <div class="md-card-content">
+                  <p class="md-type-body-medium">Ambos paneles conservan su desplazamiento vertical independiente con scrollbars M3 Expressive.</p>
+                </div>
+              </article>
+              <article class="md-card md-card-outlined">
+                <div class="md-card-header">
+                  <h4 class="md-type-title-medium">Bloque de datos principal</h4>
+                  <p class="md-type-body-small">Contenido secuencial de prueba.</p>
+                </div>
+              </article>
+              <article class="md-card md-card-outlined">
+                <div class="md-card-header">
+                  <h4 class="md-type-title-medium">Bloque complementario</h4>
+                  <p class="md-type-body-small">Contenido secuencial de prueba.</p>
+                </div>
+              </article>
+            </main>
+          </div>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;div class="md-scaffold"&gt;
+  &lt;!-- Slot: Cabecera superior sticky --&gt;
+  &lt;div class="md-scaffold-header"&gt;
+    &lt;header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll&gt;
+      &lt;div class="md-top-app-bar-leading"&gt;
+        &lt;button type="button" class="md-icon-button" aria-label="Menú principal"&gt;
+          &lt;span class="md-icon" aria-hidden="true"&gt;menu&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+      &lt;div class="md-top-app-bar-content"&gt;
+        &lt;span class="md-top-app-bar-title"&gt;Scaffold · Resizable panes&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class="md-top-app-bar-trailing"&gt;
+        &lt;button type="button" class="md-icon-button" aria-label="Buscar"&gt;
+          &lt;span class="md-icon" aria-hidden="true"&gt;search&lt;/span&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+  &lt;/div&gt;
+
+  &lt;!-- Slot obligatorio: Cuerpo con dos paneles y drag handle intermedio --&gt;
+  &lt;div class="md-scaffold-body"&gt;
+    &lt;!-- Slot: Panel lateral redimensionable --&gt;
+    &lt;aside id="scaffold-resizable-pane" class="md-scaffold-pane md-scaffold-pane-fixed md-scaffold-pane-resizable" aria-label="Panel lateral redimensionable"&gt;
+      &lt;article class="md-card md-card-outlined"&gt;
+        &lt;div class="md-card-header"&gt;
+          &lt;h4 class="md-type-title-medium"&gt;Panel redimensionable&lt;/h4&gt;
+          &lt;p class="md-type-body-small"&gt;Arrastra el divisor para ajustar el ancho (280dp a 520dp) o colapsar a 0dp.&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class="md-card-content"&gt;
+          &lt;p class="md-type-body-medium"&gt;Haz clic en la manija o pulsa Enter/Espacio para alternar su visibilidad.&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/article&gt;
+      &lt;article class="md-card md-card-outlined"&gt;
+        &lt;div class="md-card-header"&gt;
+          &lt;h4 class="md-type-title-medium"&gt;Ítem secundario&lt;/h4&gt;
+          &lt;p class="md-type-body-small"&gt;Contenido del panel lateral.&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/article&gt;
+    &lt;/aside&gt;
+
+    &lt;!-- Slot: Manija de arrastre (Drag Handle canónico M3) --&gt;
+    &lt;div class="md-scaffold-drag-handle" role="separator" tabindex="0" aria-orientation="vertical" aria-label="Redimensionar panel lateral" aria-controls="scaffold-resizable-pane" aria-valuemin="0" aria-valuemax="520" aria-valuenow="360" data-scaffold-drag-handle&gt;
+      &lt;span class="md-scaffold-drag-handle-pill" aria-hidden="true"&gt;&lt;/span&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Slot obligatorio: Panel principal flexible --&gt;
+    &lt;main class="md-scaffold-pane md-scaffold-pane-flexible"&gt;
+      &lt;article class="md-card md-card-outlined"&gt;
+        &lt;div class="md-card-header"&gt;
+          &lt;h4 class="md-type-title-medium"&gt;Área de trabajo flexible&lt;/h4&gt;
+          &lt;p class="md-type-body-small"&gt;Absorbe dinámicamente el espacio restante sin romper la cuadrícula.&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class="md-card-content"&gt;
+          &lt;p class="md-type-body-medium"&gt;Ambos paneles conservan su desplazamiento vertical independiente con scrollbars M3 Expressive.&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/article&gt;
+      &lt;article class="md-card md-card-outlined"&gt;
+        &lt;div class="md-card-header"&gt;
+          &lt;h4 class="md-type-title-medium"&gt;Bloque de datos principal&lt;/h4&gt;
+          &lt;p class="md-type-body-small"&gt;Contenido secuencial de prueba.&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/article&gt;
+      &lt;article class="md-card md-card-outlined"&gt;
+        &lt;div class="md-card-header"&gt;
+          &lt;h4 class="md-type-title-medium"&gt;Bloque complementario&lt;/h4&gt;
+          &lt;p class="md-type-body-small"&gt;Contenido secuencial de prueba.&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/article&gt;
+    &lt;/main&gt;
   &lt;/div&gt;
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>

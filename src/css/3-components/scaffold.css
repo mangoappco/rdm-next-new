@@ -232,3 +232,107 @@
   }
 }
 
+/* ==========================================================================
+   MANIJA DE ARRASTRE DE PANELES (Drag Handle M3 Expressive)
+   ========================================================================== */
+
+/* Área interactiva accesible de 24dp (coincidente con el gutter canónico M3) */
+.md-scaffold-drag-handle {
+  flex: 0 0 var(--md-sys-measurement-layout-gutter-expanded);
+  inline-size: var(--md-sys-measurement-layout-gutter-expanded);
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: col-resize;
+  touch-action: none;
+  user-select: none;
+  position: relative;
+  z-index: 1;
+  outline: none;
+}
+
+/* Neutralización de doble gutter: el gap a ambos lados se absorbe para que la
+   separación total entre paneles contiguos permanezca exactamente en 24dp */
+.md-scaffold-body > .md-scaffold-drag-handle {
+  margin-inline: calc(-1 * var(--md-sys-measurement-layout-gutter-expanded));
+}
+
+/* Píldora visual indicadora central */
+.md-scaffold-drag-handle-pill {
+  inline-size: var(--md-sys-measurement-space-50);
+  block-size: var(--md-sys-measurement-space-600);
+  border-radius: var(--md-sys-shape-corner-full);
+  background-color: var(--md-sys-color-outline);
+  transition:
+    inline-size var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
+    block-size var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard),
+    background-color var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-standard);
+}
+
+/* Hover y foco accesible por teclado (role="separator") */
+.md-scaffold-drag-handle:hover .md-scaffold-drag-handle-pill {
+  background-color: var(--md-sys-color-on-surface);
+}
+
+.md-scaffold-drag-handle:focus-visible .md-scaffold-drag-handle-pill {
+  background-color: var(--md-sys-color-primary);
+  outline: var(--md-sys-shape-stroke-thick) solid var(--md-sys-color-primary);
+  outline-offset: var(--md-sys-measurement-space-25);
+}
+
+/* Estado activo de arrastre: se expande a 8dp x 56dp con color primario */
+.md-scaffold-drag-handle:active .md-scaffold-drag-handle-pill,
+.md-scaffold-drag-handle[data-dragging="true"] .md-scaffold-drag-handle-pill {
+  inline-size: var(--md-sys-measurement-space-100);
+  block-size: var(--md-sys-measurement-space-700);
+  background-color: var(--md-sys-color-primary);
+}
+
+/* Soporte de ancho dinámico en pane redimensionable con cinemática emphasized M3 */
+.md-scaffold-pane-resizable {
+  flex: 0 0 var(--md-scaffold-pane-width, var(--md-sys-measurement-layout-supporting-panel-width));
+  inline-size: var(--md-scaffold-pane-width, var(--md-sys-measurement-layout-supporting-panel-width));
+  min-inline-size: var(--md-sys-measurement-space-0);
+  transition:
+    flex-basis var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized),
+    inline-size var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized),
+    padding-inline var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized),
+    opacity var(--md-sys-motion-duration-medium2) var(--md-sys-motion-easing-emphasized);
+}
+
+/* Durante el arrastre activo se desactiva la transición para respuesta inmediata al puntero */
+.md-scaffold-body:has(.md-scaffold-drag-handle[data-dragging="true"]) .md-scaffold-pane-resizable {
+  transition: none;
+}
+
+/* Estado colapsado completo (0dp) para alternancia entre two-pane y single-pane */
+.md-scaffold-pane-resizable.is-collapsed,
+.md-scaffold-pane-resizable[data-collapsed="true"] {
+  flex: 0 0 var(--md-sys-measurement-space-0);
+  inline-size: var(--md-sys-measurement-space-0);
+  min-inline-size: var(--md-sys-measurement-space-0);
+  padding-inline: var(--md-sys-measurement-space-0);
+  border-inline-width: var(--md-sys-measurement-space-0);
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Anclaje y visibilidad en borde cuando el panel contiguo está colapsado (bidireccional: izquierda o derecha) */
+.md-scaffold-pane-resizable:is(.is-collapsed, [data-collapsed="true"]) + .md-scaffold-drag-handle {
+  margin-inline-start: calc(-1 * var(--md-sys-measurement-layout-gutter-expanded));
+}
+
+.md-scaffold-drag-handle:has(+ .md-scaffold-pane-resizable:is(.is-collapsed, [data-collapsed="true"])) {
+  margin-inline-end: calc(-1 * var(--md-sys-measurement-layout-gutter-expanded));
+}
+
+/* En ventanas Compact (< 840px), los paneles no coexisten lado a lado */
+@media (width < 840px) {
+  .md-scaffold-drag-handle {
+    display: none;
+  }
+}
+
+
