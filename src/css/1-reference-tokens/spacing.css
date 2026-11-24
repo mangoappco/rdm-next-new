@@ -199,4 +199,16 @@
   --md-ref-breakpoint-expanded: 1200px;
   --md-ref-layout-supporting-panel-width: 360px;
   --md-ref-layout-container-max-width: 1200px;
+
+  /* ------------------------------------------------------------------------
+     LOADING INDICATOR M3 EXPRESSIVE (Figura activa 38:48 / ~79.17%)
+     ------------------------------------------------------------------------
+     Cotas contractuales de la figura activa interna para los tres tamaños:
+     Small: 19px (en contenedor 24px)
+     Default: 38px (en contenedor 48px)
+     Large: 57px (en contenedor 72px)
+     ------------------------------------------------------------------------ */
+  --md-ref-loading-indicator-active-size-small: 19px;
+  --md-ref-loading-indicator-active-size: 38px;
+  --md-ref-loading-indicator-active-size-large: 57px;
 }

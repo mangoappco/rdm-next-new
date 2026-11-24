@@ -1369,6 +1369,16 @@
   --md-sys-measurement-layout-gutter-expanded: var(--md-sys-measurement-space-300);  /* 24dp */
   --md-sys-measurement-layout-supporting-panel-width: var(--md-ref-layout-supporting-panel-width); /* 360dp */
   --md-sys-measurement-layout-container-max-width: var(--md-ref-layout-container-max-width); /* 1200dp */
+
+  /* ==========================================================================
+     LOADING INDICATOR M3 EXPRESSIVE (Contenedor y Figura Activa)
+     ====================================================================== */
+  --md-sys-measurement-loading-indicator-container-size-small: var(--md-sys-measurement-space-300);
+  --md-sys-measurement-loading-indicator-container-size: var(--md-sys-measurement-space-600);
+  --md-sys-measurement-loading-indicator-container-size-large: var(--md-ref-spacing-900);
+  --md-sys-measurement-loading-indicator-active-size-small: var(--md-ref-loading-indicator-active-size-small);
+  --md-sys-measurement-loading-indicator-active-size: var(--md-ref-loading-indicator-active-size);
+  --md-sys-measurement-loading-indicator-active-size-large: var(--md-ref-loading-indicator-active-size-large);
 }
 
 /* Las clases utilitarias de esta familia se mudaron a 4-utilities/ en la auditoria M3:

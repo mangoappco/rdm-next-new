@@ -133,6 +133,7 @@ import { initNavigationRail } from './navigation-rail.js';
 import { initSnackbar } from './snackbar.js';
 import { initMenu } from './menu.js';
 import { initScaffold } from './scaffold.js';
+import { initLoadingIndicator } from './loading-indicator.js';
 
 /* Se registra al cargar el script, no al hacer clic. Los specimens del
    showroom llevan `<dialog open>` a secas, que NO es modal, asi que ahi no
@@ -211,6 +212,10 @@ initMenu();
 /* Scaffold: gestión de paneles semi-permanentes y colapsables con
    delegación sobre [data-scaffold-pane-toggle] y sincronización ARIA */
 initScaffold();
+
+/* Loading Indicator: hidratación automática de la morfología M3 Expressive
+   y control estricto de reducción de movimiento */
+initLoadingIndicator();
 
 /* Y aqui iran los que lo necesiten:
      import { registrar as registrarFabMenu } from './fab-menu.js';

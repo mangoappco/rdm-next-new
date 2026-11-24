@@ -1,0 +1,93 @@
+/* ==========================================================================
+   3-components/loading-indicator.css — LOADING INDICATOR M3 EXPRESSIVE
+   ==========================================================================
+   Componente de progreso indeterminado oficial de Material Design 3 Expressive.
+   Proporción contractual de figura activa a contenedor: 38:48 (~79.17%).
+
+   Variantes:
+   - Default (.md-loading-indicator): figura activa en primary sin contenedor.
+   - Contained (.md-loading-indicator-contained): fondo circular en
+     primary-container con figura activa en on-primary-container.
+   - Escala: Small (24dp / 19dp), Default (48dp / 38dp) y Large (72dp / 57dp).
+   ========================================================================== */
+
+@layer comp {
+  /* Contenedor base del indicador de carga */
+  .md-loading-indicator {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    padding: var(--md-sys-measurement-space-0);
+    inline-size: var(--md-sys-measurement-loading-indicator-container-size);
+    block-size: var(--md-sys-measurement-loading-indicator-container-size);
+    color: var(--md-sys-color-primary);
+    position: relative;
+    box-sizing: border-box;
+  }
+
+  /* Variante Contained con contenedor circular perimétrico */
+  .md-loading-indicator-contained {
+    background-color: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+    border-radius: var(--md-sys-shape-corner-full);
+  }
+
+  /* Figura SVG interna: rotación continua con aceleración lineal */
+  .md-loading-indicator-shape {
+    inline-size: var(--md-sys-measurement-loading-indicator-active-size);
+    block-size: var(--md-sys-measurement-loading-indicator-active-size);
+    flex-shrink: 0;
+    fill: currentColor;
+    display: block;
+    animation: md-loading-indicator-rotate var(--md-sys-motion-duration-extra-long4) var(--md-sys-motion-easing-linear) infinite;
+  }
+
+  /* Peldaño Small (24dp contenedor / 19dp figura activa) */
+  .md-loading-indicator-small {
+    inline-size: var(--md-sys-measurement-loading-indicator-container-size-small);
+    block-size: var(--md-sys-measurement-loading-indicator-container-size-small);
+  }
+
+  .md-loading-indicator-small .md-loading-indicator-shape {
+    inline-size: var(--md-sys-measurement-loading-indicator-active-size-small);
+    block-size: var(--md-sys-measurement-loading-indicator-active-size-small);
+  }
+
+  /* Peldaño Large (72dp contenedor / 57dp figura activa) */
+  .md-loading-indicator-large {
+    inline-size: var(--md-sys-measurement-loading-indicator-container-size-large);
+    block-size: var(--md-sys-measurement-loading-indicator-container-size-large);
+  }
+
+  .md-loading-indicator-large .md-loading-indicator-shape {
+    inline-size: var(--md-sys-measurement-loading-indicator-active-size-large);
+    block-size: var(--md-sys-measurement-loading-indicator-active-size-large);
+  }
+
+  /* Trayectoria vectorial de la figura morphing */
+  .md-loading-indicator-path {
+    fill: currentColor;
+  }
+
+  /* Animación continua de rotación */
+  @keyframes md-loading-indicator-rotate {
+    from {
+      transform: rotate(0turn);
+    }
+    to {
+      transform: rotate(1turn);
+    }
+  }
+
+  /* Supresión de movimiento para accesibilidad */
+  @media (prefers-reduced-motion: reduce) {
+    .md-loading-indicator-shape {
+      animation: none;
+    }
+
+    .md-loading-indicator-shape animate {
+      display: none;
+    }
+  }
+}

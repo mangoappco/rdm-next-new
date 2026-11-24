@@ -4,7 +4,7 @@ Contexto rápido para retomar la sesión en frío. No sustituye a `README.md` ni
 
 ## Qué estamos construyendo
 
-La librería de componentes de **RDM ManGo! App**: sistema de diseño estático, HTML + CSS y una capa fina de JavaScript, sin build y sin framework. Basado conceptualmente en Material Design 3, con arquitectura de tokens, nomenclatura y decisiones propias. Cuatro capas — `1-reference-tokens` → `2-system-tokens` → `3-components` → `4-utilities` — y un showroom que lo documenta con dogfooding: cada vista usa las clases reales del sistema. Un componente lleva JS solo si el CSS no alcanza: hoy los servicios de `src/js/` alimentan a dialog, toggle, tabs, snackbar, navigation-bar, chips, select, segmented-button, search, text-field y top-app-bar.
+La librería de componentes de **RDM ManGo! App**: sistema de diseño estático, HTML + CSS y una capa fina de JavaScript, sin build y sin framework. Basado conceptualmente en Material Design 3, con arquitectura de tokens, nomenclatura y decisiones propias. Cuatro capas — `1-reference-tokens` → `2-system-tokens` → `3-components` → `4-utilities` — y un showroom que lo documenta con dogfooding: cada vista usa las clases reales del sistema. Un componente lleva JS solo si el CSS no alcanza: hoy los servicios de `src/js/` alimentan a dialog, toggle, tabs, snackbar, navigation-bar, chips, select, segmented-button, search, text-field, top-app-bar y loading-indicator.
 
 ## Candados
 
@@ -18,7 +18,7 @@ Solo prohibiciones verbales. Las reglas de showroom, de capas y de ciclo no se c
 
 ## Componentes creados
 
-Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **27 componentes y 36 vistas** (27 de componente + 9 de tokens), todas enlazadas en `showroom/index.html`. El orden es el de `index.css`:
+Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **28 componentes y 37 vistas** (28 de componente + 9 de tokens), todas enlazadas en `showroom/index.html`. El orden es el de `index.css`:
 
 | Componente | Hoja | Vista |
 | --- | --- | --- |
@@ -49,10 +49,11 @@ Hoja en `src/css/3-components/`, vista en `showroom/components/`. Hay **27 compo
 | Snackbar | `snackbar.css` | `snackbar.html` |
 | Scaffold | `scaffold.css` | `scaffold.html` |
 | Layout | `layout.css` | `layout.html` |
+| Loading Indicator | `loading-indicator.css` | `loading-indicator.html` |
 
 Cada componente tiene además su molde en `showroom/templates/<nombre>.template.html`.
 
-**Hoy DIECISIETE pares molde/vista rinden byte-idénticos: `card`, `dialog`, `fab`, `fab-extended`, `layout`, `list`, `menu`, `navigation-bar`, `navigation-rail`, `scaffold`, `search`, `segmented-button`, `snackbar`, `split-button`, `tabs`, `text-field` y `top-app-bar`** —verificados por hash SHA256; los demás moldes difieren de su vista por el puntero de dos líneas de la convención antigua o por el desfase del molde anotado en deuda. `chips` no tiene molde propio y `typography.html` apunta a `component.template.html`.
+**Hoy DIECIOCHO pares molde/vista rinden byte-idénticos: `card`, `dialog`, `fab`, `fab-extended`, `layout`, `list`, `loading-indicator`, `menu`, `navigation-bar`, `navigation-rail`, `scaffold`, `search`, `segmented-button`, `snackbar`, `split-button`, `tabs`, `text-field` y `top-app-bar`** —verificados por hash SHA256; los demás moldes difieren de su vista por el puntero de dos líneas de la convención antigua o por el desfase del molde anotado en deuda. `chips` no tiene molde propio y `typography.html` apunta a `component.template.html`.
 
 ## FAB — la base NO es el `md-fab-medium`
 
@@ -730,6 +731,27 @@ Patrones canónicos de distribución interior de Material Design 3 Expressive (`
 - REGLA 10: 100% de clases físicas existentes en `src/css/`.
 - REGLA 11: 100% de correspondencia carácter a carácter entre especímenes y snippets copiables.
 - SHA-256 byte-idéntico entre molde `layout.template.html` y componente `layout.html` (`1c75d9a090560fc4d9f8b7e27d8222d86881e7639c30b3c45da3d9299b580d1d`).
+
+
+## Componente Loading Indicator (.md-loading-indicator) — Consolidación y Cierre de Especificación (2026-11-24)
+
+Hoja en `src/css/3-components/loading-indicator.css`, vista y molde en `showroom/components/loading-indicator.html` y `showroom/templates/loading-indicator.template.html`, listado oficial en `showroom/index.html` bajo la familia **Comunicación** e importado en `3-components/index.css`. Cierra oficialmente la especificación completa de **4 pares normativos** en Bloque 1 (Especificación técnica y anatomía):
+
+### Bloque 1 · Especificación Técnica y Anatomía (Pares 1 a 4)
+1. **Par 1 · Indicador base sin contenedor (Default / Uncontained):** Contenedor base de 48dp y figura activa de 38dp en `var(--md-sys-color-primary)` con morfología continua entre las 7 figuras canónicas M3 (`MaterialShapes`) y rotación continua lineal.
+2. **Par 2 · Indicador con contenedor (Contained):** Contenedor perimétrico circular (`--md-sys-shape-corner-full`) en `var(--md-sys-color-primary-container)` y figura activa contrastada en `var(--md-sys-color-on-primary-container)`.
+3. **Par 3 · Escala de tamaños M3 Expressive:** Tres peldaños canónicos que preservan estrictamente la proporción contractual de figura a contenedor `38:48` (~79.17%):
+   - **Small:** 24dp contenedor / 19dp figura activa (`.md-loading-indicator-small`).
+   - **Default:** 48dp contenedor / 38dp figura activa (`.md-loading-indicator`).
+   - **Large:** 72dp contenedor / 57dp figura activa (`.md-loading-indicator-large`).
+4. **Par 4 · Semántica WAI-ARIA y reducción de movimiento:** Accesibilidad normativa con `role="progressbar"` y `aria-label="Cargando..."` sin `aria-valuenow` (indeterminado). Supresión de movimiento para usuarios con sensibilidad vestibular (`prefers-reduced-motion: reduce`) pausando la rotación continua y el morphing SMIL a una silueta fija legible.
+
+### Métricas de Validación
+- `tools/verify-tokens.mjs`: 0 fallos nuevos; baseline histórico intacto en `FALLOS: 2` (`select.css:448, 453`).
+- REGLA 10: 100% de clases físicas existentes en `src/css/`.
+- REGLA 11: 100% de correspondencia carácter a carácter entre especímenes y snippets copiables.
+- SHA-256 byte-idéntico entre molde `loading-indicator.template.html` y componente `loading-indicator.html` (`3a6d8fe7fc9b9c9399b08fbf29d66d50c403c4bb9a8a6483796d9e7da1158aaa`).
+- Arquitectura limpia y ergonómica: el desarrollador escribe únicamente `<div class="md-loading-indicator" role="progressbar" aria-label="Cargando"></div>` y `src/js/loading-indicator.js` hidrata automáticamente la estructura vectorial SVG canónica, respetando `prefers-reduced-motion: reduce`.
 
 
 ## Componente Split Button (.md-split-button) — Consolidación y Cierre de Especificación (2026-11-14)

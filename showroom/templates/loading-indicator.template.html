@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Loading Indicator de RDM Next: componente oficial de progreso indeterminado de Material Design 3 Expressive con morfología viva entre las 7 figuras canónicas de MaterialShapes.">
+  <title>Loading Indicator — RDM ManGo! App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex&display=swap">
+  <link rel="stylesheet" href="../../src/css/main.css">
+  <link rel="stylesheet" href="../assets/showroom.css">
+  <script type="module" src="../../src/js/main.js"></script>
+  <script src="../assets/showroom.js"></script>
+</head>
+
+<body class="md-bg-background md-text-on-background md-type-body-medium">
+  <!-- CABECERA INSTITUCIONAL DEL SHOWROOM (DOGFOODING) -->
+  <header class="md-top-app-bar md-top-app-bar-small" data-md-top-app-bar-scroll role="banner" aria-label="Cabecera institucional del showroom">
+    <div class="md-top-app-bar-leading">
+      <a href="../index.html" class="md-icon-button" aria-label="Volver al catálogo">
+        <span class="md-icon" aria-hidden="true">arrow_back</span>
+      </a>
+    </div>
+    <div class="md-top-app-bar-content">
+      <span class="md-top-app-bar-title">Loading Indicator</span>
+      <span class="md-top-app-bar-subtitle">RDM Next · ManGo! App</span>
+    </div>
+    <div class="md-top-app-bar-trailing">
+      <button type="button" class="md-icon-button" data-theme-toggle aria-label="Tema del sistema activo">
+        <span class="md-icon" aria-hidden="true">brightness_auto</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="sr-page">
+
+    <!-- PORTADA DEL COMPONENTE -->
+    <header class="sr-header">
+      <h1 class="md-type-display-large">Loading Indicator</h1>
+      <p class="md-type-body-large">Indicador de progreso indeterminado con morfología viva entre las 7 figuras canónicas de Material Design 3 Expressive.</p>
+    </header>
+
+    <hr class="md-divider">
+
+    <!-- BLOQUE 1: ESPECIFICACIÓN TÉCNICA Y ANATOMÍA -->
+    <h2 class="md-type-headline-medium">Bloque 1 · Especificación técnica y anatomía</h2>
+
+    <!-- Indicador base sin contenedor -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Indicador base sin contenedor</h3>
+      <p class="md-type-body-medium">Figura activa en color primario sobre fondo transparente con rotación continua lineal.</p>
+
+      <div class="sr-specimen">
+        <div class="md-loading-indicator" role="progressbar" aria-label="Cargando"></div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-loading-indicator" role="progressbar" aria-label="Cargando"&gt;&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- Indicador con contenedor circular -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Indicador con contenedor circular</h3>
+      <p class="md-type-body-medium">Superficie perimétrica en contenedor primario con figura activa contrastada en su color frontal.</p>
+
+      <div class="sr-specimen">
+        <div class="md-loading-indicator md-loading-indicator-contained" role="progressbar" aria-label="Cargando"></div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-loading-indicator md-loading-indicator-contained" role="progressbar" aria-label="Cargando"&gt;&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- Escala de tamaños M3 Expressive -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Escala de tamaños M3 Expressive</h3>
+      <p class="md-type-body-medium">Tres peldaños canónicos de 24dp, 48dp y 72dp que preservan la proporción contractual de 38 a 48.</p>
+
+      <div class="sr-specimen sr-specimen-gap">
+        <div class="md-loading-indicator md-loading-indicator-small" role="progressbar" aria-label="Cargando"></div>
+        <div class="md-loading-indicator" role="progressbar" aria-label="Cargando"></div>
+        <div class="md-loading-indicator md-loading-indicator-large" role="progressbar" aria-label="Cargando"></div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-loading-indicator md-loading-indicator-small" role="progressbar" aria-label="Cargando"&gt;&lt;/div&gt;
+&lt;div class="md-loading-indicator" role="progressbar" aria-label="Cargando"&gt;&lt;/div&gt;
+&lt;div class="md-loading-indicator md-loading-indicator-large" role="progressbar" aria-label="Cargando"&gt;&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+    <!-- Semántica accesible y reducción de movimiento -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Semántica accesible y reducción de movimiento</h3>
+      <p class="md-type-body-medium">Contrato accesible con rol progressbar y congelamiento de giro y metamorfosis ante reducción de movimiento.</p>
+
+      <div class="sr-specimen">
+        <div class="md-loading-indicator md-loading-indicator-contained" role="progressbar" aria-label="Cargando contenido"></div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-loading-indicator md-loading-indicator-contained" role="progressbar" aria-label="Cargando contenido"&gt;&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
+  </main>
+</body>
+</html>
