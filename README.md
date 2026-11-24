@@ -1040,8 +1040,8 @@ El orden es el de `3-components/index.css`, que es el de carga y el de dependenc
 | Navigation Bar | `3-components/navigation-bar.css` | 13 | 0 | `navigation-bar.html`, 6 secciones |
 | Navigation Rail | `3-components/navigation-rail.css` | 15 | 0 | `navigation-rail.html`, 11 secciones |
 | Snackbar | `3-components/snackbar.css` | 11 | 0 | `snackbar.html`, 7 secciones |
-| Scaffold | `3-components/scaffold.css` | 10 | 0 | `scaffold.html`, 7 secciones |
-| Layout | `3-components/layout.css` | 18 | 0 | `layout.html`, 5 secciones |
+| Scaffold | `3-components/scaffold.css` | 13 | 0 | `scaffold.html`, 8 secciones |
+| Layout | `3-components/layout.css` | 17 | 0 | `layout.html`, 4 secciones |
 
 Las "clases" son las que expone el componente, sin contar las de `2-system-tokens` que compone para
 colocar la capa de estado: `button.css` nombra `.md-state-layer` y `.md-disabled` en sus

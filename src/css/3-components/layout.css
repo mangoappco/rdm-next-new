@@ -1,30 +1,27 @@
 /* ==========================================================================
-   src/css/3-components/layout.css — LAYOUT (Patrones Canónicos y Rejilla M3)
+   src/css/3-components/layout.css — LAYOUT (Retícula y Flujo Interior M3)
    ==========================================================================
 
    QUÉ HACE
    --------
    Distribución interior de pantalla de Material Design 3. Organiza el
-   contenido que reside dentro del cuerpo de la aplicación:
-   Rejilla responsiva fluida (.md-grid con 4, 8 y 12 columnas), Layout de Panel
-   de Apoyo (.md-layout-supporting-panel de 360dp), Patrón Lista-Detalle
-   (.md-layout-list-detail) y Rejilla adaptativa de tarjetas (.md-layout-feed).
+   contenido que reside dentro del cuerpo de la aplicación o de un panel:
+   Rejilla responsiva fluida (.md-grid con 4, 8 y 12 columnas con spans .md-col-*),
+   Rejilla adaptativa de tarjetas (.md-layout-feed con auto-fill / minmax) y
+   Contenedor acotado de lectura / página (.md-layout-container de 1200dp max).
 
    COMPONENTES Y CLASES
    --------------------
    - .md-grid: Rejilla adaptativa M3 (4 cols en Compact, 8 cols en Medium, 12 cols en Expanded)
    - .md-col-full, .md-col-span-1 .. .md-col-span-12: Spans de ocupación
-   - .md-layout-supporting-panel: Área principal fluida (1fr) + panel de apoyo (360dp)
-   - .md-layout-list-detail: Lista maestra fija (360dp) + detalle fluido (1fr)
-   - .md-layout-feed: Rejilla auto-ajustable (auto-fill / minmax) para tarjetas
+   - .md-layout-feed: Rejilla auto-ajustable (auto-fill / minmax) para colecciones
+   - .md-layout-container: Envolvente centrado con márgenes y ancho máximo legible
 
    FUENTES
    -------
-   - m3.material.io/foundations/layout/canonical-layouts/overview
-   - m3.material.io/foundations/layout/canonical-layouts/supporting-pane
-   - m3.material.io/foundations/layout/canonical-layouts/list-detail
-   - m3.material.io/foundations/layout/canonical-layouts/feed
    - m3.material.io/foundations/layout/applying-layout/window-size-classes
+   - m3.material.io/foundations/layout/understanding-layout/overview
+   - m3.material.io/foundations/layout/canonical-layouts/feed
    ========================================================================== */
 
 /* ==========================================================================
@@ -109,128 +106,7 @@
 }
 
 /* ==========================================================================
-   2. LAYOUT CANÓNICO: SUPPORTING PANE (.md-layout-supporting-panel)
-   ==========================================================================
-   Patrón oficial de M3 para mantener un contexto secundario persistente
-   junto a un flujo principal de trabajo:
-   - Compact (< 600px): Apilado vertical al 100% de ancho.
-   - Medium (600–839px): Reparto proporcional equilibrado en tablets.
-   - Expanded (>= 840px): Área principal fluida (1fr) + panel fijo de 360dp.
-   ========================================================================== */
-
-.md-layout-supporting-panel {
-  display: flex;
-  flex-direction: column;
-  inline-size: 100%;
-  flex: 1;
-  min-block-size: var(--md-sys-measurement-space-0);
-  box-sizing: border-box;
-  gap: var(--md-sys-measurement-layout-gutter-compact);
-}
-
-.md-layout-supporting-panel-main {
-  flex: 1;
-  min-inline-size: var(--md-sys-measurement-space-0);
-  min-block-size: var(--md-sys-measurement-space-0);
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: var(--md-sys-measurement-layout-gutter-compact);
-}
-
-.md-layout-supporting-panel-side,
-.md-layout-supporting-panel-aside {
-  inline-size: 100%;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: var(--md-sys-measurement-layout-gutter-compact);
-}
-
-@media (min-width: 600px) {
-  .md-layout-supporting-panel {
-    flex-direction: row;
-    gap: var(--md-sys-measurement-layout-gutter-expanded);
-  }
-
-  .md-layout-supporting-panel-side,
-  .md-layout-supporting-panel-aside {
-    flex: 1;
-    min-inline-size: var(--md-sys-measurement-space-0);
-  }
-}
-
-@media (min-width: 840px) {
-  .md-layout-supporting-panel-side,
-  .md-layout-supporting-panel-aside {
-    flex: initial;
-    inline-size: var(--md-sys-measurement-layout-supporting-panel-width);
-    flex-shrink: 0;
-  }
-}
-
-/* ==========================================================================
-   3. LAYOUT CANÓNICO: LIST-DETAIL (.md-layout-list-detail)
-   ==========================================================================
-   Patrón maestro-detalle M3:
-   - Compact (< 600px): Apilado vertical.
-   - Medium (600–839px): Reparto proporcional equilibrado en tablets.
-   - Expanded (>= 840px): Columna de lista fija de 360dp + detalle fluido (1fr).
-   ========================================================================== */
-
-.md-layout-list-detail {
-  display: flex;
-  flex-direction: column;
-  inline-size: 100%;
-  flex: 1;
-  min-block-size: var(--md-sys-measurement-space-0);
-  box-sizing: border-box;
-  gap: var(--md-sys-measurement-layout-gutter-compact);
-}
-
-.md-layout-list-detail-list,
-.md-layout-list-pane {
-  inline-size: 100%;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: var(--md-sys-measurement-layout-gutter-compact);
-}
-
-.md-layout-list-detail-detail,
-.md-layout-detail-pane {
-  flex: 1;
-  min-inline-size: var(--md-sys-measurement-space-0);
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: var(--md-sys-measurement-layout-gutter-compact);
-}
-
-@media (min-width: 600px) {
-  .md-layout-list-detail {
-    flex-direction: row;
-    gap: var(--md-sys-measurement-layout-gutter-expanded);
-  }
-
-  .md-layout-list-detail-list,
-  .md-layout-list-pane {
-    flex: 1;
-    min-inline-size: var(--md-sys-measurement-space-0);
-  }
-}
-
-@media (min-width: 840px) {
-  .md-layout-list-detail-list,
-  .md-layout-list-pane {
-    flex: initial;
-    inline-size: var(--md-sys-measurement-layout-supporting-panel-width);
-    flex-shrink: 0;
-  }
-}
-
-/* ==========================================================================
-   4. LAYOUT CANÓNICO: FEED (.md-layout-feed)
+   2. REJILLA ADAPTATIVA DE TARJETAS / FEED (.md-layout-feed)
    ==========================================================================
    Rejilla fluida auto-ajustable para tarjetas y elementos de monitoreo.
    minmax basado en la mitad del panel de apoyo (180dp) para permitir 2 a 3
@@ -248,5 +124,32 @@
 @media (min-width: 600px) {
   .md-layout-feed {
     gap: var(--md-sys-measurement-layout-gutter-expanded);
+  }
+}
+
+/* ==========================================================================
+   3. CONTENEDOR ACOTADO DE PÁGINA / LECTURA (.md-layout-container)
+   ==========================================================================
+   Envolvente centrado con ancho máximo legible (1200dp) y márgenes laterales
+   responsivos (16dp en Compact, 24dp en Medium/Expanded).
+   El flujo vertical en columna con gap asegura ritmo espacial automático
+   entre bloques internos contiguos (formularios, listas, tarjetas).
+   ========================================================================== */
+
+.md-layout-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--md-sys-measurement-layout-gutter-compact);
+  inline-size: 100%;
+  max-inline-size: var(--md-sys-measurement-layout-container-max-width);
+  margin-inline: auto;
+  padding-inline: var(--md-sys-measurement-layout-margin-compact);
+  box-sizing: border-box;
+}
+
+@media (min-width: 600px) {
+  .md-layout-container {
+    gap: var(--md-sys-measurement-layout-gutter-expanded);
+    padding-inline: var(--md-sys-measurement-layout-margin-expanded);
   }
 }

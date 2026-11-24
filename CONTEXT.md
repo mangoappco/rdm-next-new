@@ -691,7 +691,7 @@ $$\mathbf{Scaffold} = \mathbf{Bars} + \mathbf{Rails} + \mathbf{Panes}$$
   2. `.md-scaffold-pane-fixed`: Ancho inmutable canónico de 360dp (`--md-sys-measurement-layout-supporting-panel-width`), `flex: 0 0 360dp`.
   3. `.md-scaffold-pane-collapsible`: Panel semi-permanente auxiliar gobernado por el módulo desacoplado `src/js/scaffold.js` mediante `[data-scaffold-pane-toggle]`. Se repliega a 0px neutralizando el gutter adyacente mediante margen negativo con cinemática M3 `emphasized` (`motion-duration-long1` / `motion-easing-emphasized`).
 
-### Los 7 Pares Técnicos Normativos (Bloque 1 Cerrado y Certificado)
+### Los 8 Pares Técnicos Normativos (Bloque 1 Cerrado y Certificado)
 1. **Par 1 · Chasis base y slots obligatorios:** Contenedor raíz `.md-scaffold`, cuerpo `.md-scaffold-body` y panel flexible con scroll independiente y respiro simétrico superior de 16dp.
 2. **Par 2 · Ranura superior: Top App Bar sticky:** Ranura `.md-scaffold-header` alojando `Top App Bar small` sticky a `top: 0` con panel flexible scrolleable debajo.
 3. **Par 3 · Ranura inferior: Navigation Bar persistente:** Ranura `.md-scaffold-footer` alojando `Navigation Bar` de 80dp anclada al pie, conteniendo verticalmente el panel.
@@ -699,37 +699,37 @@ $$\mathbf{Scaffold} = \mathbf{Bars} + \mathbf{Rails} + \mathbf{Panes}$$
 5. **Par 5 · Two-pane: Panel fijo 360dp + Panel flexible:** Panel lateral fijo de 360dp (`<aside class="md-scaffold-pane md-scaffold-pane-fixed">`) acoplado a panel flexible principal (`<main class="md-scaffold-pane md-scaffold-pane-flexible">`) con scrolls independientes y gutter contractual de 24dp.
 6. **Par 6 · Panel semi-permanente: Colapsable con aria-expanded:** Alternancia accesible de panel auxiliar mediante botón `[data-scaffold-pane-toggle]` y cinemática `emphasized`, absorbiendo el panel flexible el ancho completo al colapsar.
 7. **Par 7 · Three-pane: Lista + Detalle + Panel de Apoyo (≥ 1200dp):** Tres paneles simultáneos (lista maestra de 360dp, detalle flexible y panel de apoyo de 360dp). Degrada a Two-pane en anchos < 1200px mediante `@media (width < 1200px)`.
+8. **Par 8 · Panes redimensionables: Drag Handle canónico M3 (Pointer + Teclado + Snaps + Colapso 0dp):** Manija interactiva `.md-scaffold-drag-handle` de 24dp con píldora táctil `.md-scaffold-drag-handle-pill` (4dp × 48dp en reposo, 8dp × 56dp activo/hover). Neutralización matemática del doble gutter con `margin-inline: -24dp`. Controlador en `src/js/scaffold.js` con soporte para colapso completo a 0dp (`aria-valuemin="0"`, umbral < 140px) para alternar entre single-pane y two-pane, snap magnético en soltado a anchos recomendados M3 (360dp, 412dp, 50% split-pane), toggle suave por clic/tap o teclado (Enter/Espacio) con memoria del último ancho expandido, y cinemática `emphasized` en CSS.
 
 ### Métricas de Validación
 - `tools/verify-tokens.mjs`: 0 fallos nuevos; baseline histórico intacto en `FALLOS: 2` (`select.css:448, 453`).
 - REGLA 10: 100% de clases físicas existentes en `src/css/`.
-- REGLA 11: 100% de paridad carácter a carácter entre espécimen y snippet copiable en los 7 Pares.
-- SHA-256 byte-idéntico entre molde `scaffold.template.html` y componente `scaffold.html` (`67ECB6FEDD33393A3FCBF47732A3D1E99F22E59E8066AF72BC6535CF079480C6`).
-- Sin Par 8 ni casos de uso de negocio en páginas individuales (reservados para la galería general de ManGo! App al final del catálogo).
+- REGLA 11: 100% de paridad carácter a carácter entre espécimen y snippet copiable en los 8 Pares.
+- SHA-256 byte-idéntico entre molde `scaffold.template.html` y componente `scaffold.html` (`8889cdadc491507de7d8276e206a013ebb4e3642d2af1e723e7c9b35fb8e8b5e`).
+- Cero casos de uso de negocio en páginas individuales (reservados para la galería general de ManGo! App al final del catálogo).
 
 
-## Componente Layout (.md-layout / .md-grid) — Consolidación y Creación (2026-11-15)
+## Componente Layout (.md-layout-container, .md-grid, .md-layout-feed) — Purificación Canónica (2026-11-24)
 
-Patrones canónicos de distribución interior de Material Design 3 Expressive (`src/css/3-components/layout.css`, `showroom/components/layout.html`, molde en `layout.template.html` y listado oficial en `showroom/index.html`). Cierra oficialmente su Bloque 1 de especificación técnica y anatomía en **5 pares normativos**:
+Patrones canónicos de distribución interior de Material Design 3 Expressive (`src/css/3-components/layout.css`, `showroom/components/layout.html`, molde en `layout.template.html` y listado oficial en `showroom/index.html`). Tras la certificación integral de `Scaffold` (que gobierna de forma superior el app shell y los paneles multi-pane con scroll independiente), `Layout` fue purificado (Opción B) eliminando 120 líneas redundantes de `.md-layout-supporting-panel*` y `.md-layout-list-detail*` y consolidando su Bloque 1 de especificación técnica y anatomía en **4 pares normativos**:
 
 ### Anatomía y Distribuciones Interiores Canónicas
 1. **Rejilla Responsiva Fluida (.md-grid):** Sistema adaptativo M3 de 4 columnas en Compact (< 600px, gutters de 16dp), 8 columnas en Medium (600–839px, gutters de 24dp) y 12 columnas en Expanded (>= 840px, gutters de 24dp).
 2. **Spans de Ocupación (.md-col-span-* y .md-col-full):** Modulación simétrica y asimétrica de columnas (12, 6+6, 4+4+4, 8+4) con adaptación automática según breakpoint.
-3. **Supporting Pane (.md-layout-supporting-panel):** Flujo de trabajo principal (1fr) acoplado a panel lateral de apoyo de 360dp (`--md-sys-measurement-layout-supporting-panel-width`). Despliegue en 2 columnas lado a lado en tablets y escritorio (>= 600px) con brecha de 24dp, colapsando a flujo vertical apilado en móvil.
-4. **List-Detail (.md-layout-list-detail):** Patrón maestro-detalle M3 con columna de lista de 360dp a la izquierda acoplada a panel fluido de detalle (1fr) a la derecha.
-5. **Feed (.md-layout-feed):** Rejilla fluida auto-ajustable con `auto-fill` y `minmax` para colecciones homogéneas, tarjetas de monitoreo y tableros.
+3. **Feed Adaptativo (.md-layout-feed):** Rejilla fluida auto-ajustable con `auto-fill` y `minmax` para colecciones homogéneas, tarjetas de monitoreo y tableros.
+4. **Contenedor Acotado y Márgenes de Página (.md-layout-container):** Envolvente centrado con ancho máximo legible de 1200dp (`--md-sys-measurement-layout-container-max-width`), márgenes laterales responsivos (16dp en Compact, 24dp en Medium+) y ritmo espacial vertical automático mediante `gap`.
 
-### 5 Pares Normativos en Showroom
+### 4 Pares Normativos en Showroom
 1. Par 1 · Rejilla responsiva base (4 / 8 / 12 columnas)
 2. Par 2 · Proporciones y spans de rejilla (12, 6+6, 4+4+4, 8+4)
-3. Par 3 · Layout canónico: Supporting Pane (360dp)
-4. Par 4 · Layout canónico: List-Detail (360dp + 1fr)
-5. Par 5 · Layout canónico: Feed adaptativo
+3. Par 3 · Layout canónico: Feed adaptativo
+4. Par 4 · Contenedor acotado y márgenes de página (.md-layout-container)
 
 ### Métricas de Validación
 - `tools/verify-tokens.mjs`: 0 fallos nuevos; baseline histórico intacto en `FALLOS: 2` (`select.css:448, 453`).
+- REGLA 10: 100% de clases físicas existentes en `src/css/`.
 - REGLA 11: 100% de correspondencia carácter a carácter entre especímenes y snippets copiables.
-- SHA-256 byte-idéntico entre molde y vista publicada.
+- SHA-256 byte-idéntico entre molde `layout.template.html` y componente `layout.html` (`1c75d9a090560fc4d9f8b7e27d8222d86881e7639c30b3c45da3d9299b580d1d`).
 
 
 ## Componente Split Button (.md-split-button) — Consolidación y Cierre de Especificación (2026-11-14)

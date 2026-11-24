@@ -198,4 +198,5 @@
   --md-ref-breakpoint-medium: 840px;
   --md-ref-breakpoint-expanded: 1200px;
   --md-ref-layout-supporting-panel-width: 360px;
+  --md-ref-layout-container-max-width: 1200px;
 }

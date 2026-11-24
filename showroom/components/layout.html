@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Layout de RDM Next: distribución interior de pantalla M3 con rejilla responsiva (4/8/12 cols), Supporting Pane, List-Detail y Feed.">
+  <meta name="description" content="Layout de RDM Next: distribución interior de pantalla M3 con rejilla responsiva (4/8/12 cols), Feed adaptativo y contenedor acotado.">
   <title>Layout — RDM ManGo! App</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -44,8 +44,8 @@
     <!-- PORTADA DEL COMPONENTE -->
     <header class="sr-header">
       <h1 class="md-type-display-large">Layout</h1>
-      <p class="md-type-body-large">Patrones canónicos de distribución interior de Material Design 3: Rejilla responsiva fluida, Supporting Pane, List-Detail y Feed adaptativo.</p>
-      <p class="md-type-body-medium md-text-on-surface-variant">M3 Expressive · Canonical Layouts · Bloque 1 (Pares 1 a 5 · Completo)</p>
+      <p class="md-type-body-large">Patrones canónicos de distribución interior de Material Design 3: Rejilla responsiva fluida, Feed adaptativo y contenedor acotado.</p>
+      <p class="md-type-body-medium md-text-on-surface-variant">M3 Expressive · Canonical Layouts · Bloque 1 (Cuatro pares · Especificación completa)</p>
     </header>
 
     <h2 class="md-type-headline-small">Bloque 1 · Especificación técnica y anatomía</h2>
@@ -288,139 +288,7 @@
     </section>
     <!-- PAREJA PAR 2: hasta aqui -->
 
-    <!-- PAREJA PAR 3: Layout canónico: Supporting Pane (360dp) -->
-    <section class="sr-section">
-      <h3 class="md-type-title-large">Layout canónico: Supporting Pane (360dp)</h3>
-      <p class="md-type-body-medium">Patrón canónico de dos áreas: espacio principal fluido (1fr) junto a panel lateral de apoyo persistente de 360dp.</p>
-
-      <div class="sr-specimen">
-        <div class="md-layout-supporting-panel">
-          <!-- Área principal fluida (1fr) -->
-          <div class="md-layout-supporting-panel-main">
-            <article class="md-card md-card-outlined">
-              <div class="md-card-header">
-                <h4 class="md-type-title-medium">Área principal fluida (1fr)</h4>
-                <p class="md-type-body-small">Flujo de trabajo primario: catálogo, mapa o tabla</p>
-              </div>
-              <div class="md-card-content">
-                <p class="md-type-body-medium">Espacio flexible que absorbe todo el ancho disponible.</p>
-              </div>
-            </article>
-          </div>
-
-          <!-- Panel lateral de apoyo (360dp) -->
-          <aside class="md-layout-supporting-panel-aside" aria-label="Panel de apoyo">
-            <article class="md-card md-card-filled">
-              <div class="md-card-header">
-                <h4 class="md-type-title-medium">Panel de apoyo (360dp)</h4>
-                <p class="md-type-body-small">Contexto persistente</p>
-              </div>
-              <div class="md-card-content">
-                <p class="md-type-body-medium">Inspector contextual o comanda activa.</p>
-              </div>
-            </article>
-          </aside>
-        </div>
-      </div>
-
-      <pre class="sr-code"><code>&lt;div class="md-layout-supporting-panel"&gt;
-  &lt;!-- Área principal fluida (1fr) --&gt;
-  &lt;div class="md-layout-supporting-panel-main"&gt;
-    &lt;article class="md-card md-card-outlined"&gt;
-      &lt;div class="md-card-header"&gt;
-        &lt;h4 class="md-type-title-medium"&gt;Área principal fluida (1fr)&lt;/h4&gt;
-        &lt;p class="md-type-body-small"&gt;Flujo de trabajo primario: catálogo, mapa o tabla&lt;/p&gt;
-      &lt;/div&gt;
-      &lt;div class="md-card-content"&gt;
-        &lt;p class="md-type-body-medium"&gt;Espacio flexible que absorbe todo el ancho disponible.&lt;/p&gt;
-      &lt;/div&gt;
-    &lt;/article&gt;
-  &lt;/div&gt;
-
-  &lt;!-- Panel lateral de apoyo (360dp) --&gt;
-  &lt;aside class="md-layout-supporting-panel-aside" aria-label="Panel de apoyo"&gt;
-    &lt;article class="md-card md-card-filled"&gt;
-      &lt;div class="md-card-header"&gt;
-        &lt;h4 class="md-type-title-medium"&gt;Panel de apoyo (360dp)&lt;/h4&gt;
-        &lt;p class="md-type-body-small"&gt;Contexto persistente&lt;/p&gt;
-      &lt;/div&gt;
-      &lt;div class="md-card-content"&gt;
-        &lt;p class="md-type-body-medium"&gt;Inspector contextual o comanda activa.&lt;/p&gt;
-      &lt;/div&gt;
-    &lt;/article&gt;
-  &lt;/aside&gt;
-&lt;/div&gt;</code></pre>
-      <button type="button" class="sr-copy" data-copy>Copiar</button>
-    </section>
-    <!-- PAREJA PAR 3: hasta aqui -->
-
-    <!-- PAREJA PAR 4: Layout canónico: List-Detail (360dp + 1fr) -->
-    <section class="sr-section">
-      <h3 class="md-type-title-large">Layout canónico: List-Detail (360dp + 1fr)</h3>
-      <p class="md-type-body-medium">Patrón canónico maestro-detalle: columna fija de lista de 360dp acoplada a panel fluido de inspección (1fr).</p>
-
-      <div class="sr-specimen">
-        <div class="md-layout-list-detail">
-          <!-- Columna maestra de lista (360dp) -->
-          <div class="md-layout-list-detail-list">
-            <article class="md-card md-card-filled">
-              <div class="md-card-header">
-                <h4 class="md-type-title-medium">Lista maestra (360dp)</h4>
-                <p class="md-type-body-small">Índice o selector</p>
-              </div>
-              <div class="md-card-content">
-                <p class="md-type-body-medium">Superficie base de navegación y selección de elementos.</p>
-              </div>
-            </article>
-          </div>
-
-          <!-- Panel fluido de detalle (1fr) -->
-          <div class="md-layout-list-detail-detail">
-            <article class="md-card md-card-elevated">
-              <div class="md-card-header">
-                <h4 class="md-type-title-medium">Panel de detalle (1fr)</h4>
-                <p class="md-type-body-small">Registro activo</p>
-              </div>
-              <div class="md-card-content">
-                <p class="md-type-body-medium">Superficie destacada con vista profunda del elemento seleccionado.</p>
-              </div>
-            </article>
-          </div>
-        </div>
-      </div>
-
-      <pre class="sr-code"><code>&lt;div class="md-layout-list-detail"&gt;
-  &lt;!-- Columna maestra de lista (360dp) --&gt;
-  &lt;div class="md-layout-list-detail-list"&gt;
-    &lt;article class="md-card md-card-filled"&gt;
-      &lt;div class="md-card-header"&gt;
-        &lt;h4 class="md-type-title-medium"&gt;Lista maestra (360dp)&lt;/h4&gt;
-        &lt;p class="md-type-body-small"&gt;Índice o selector&lt;/p&gt;
-      &lt;/div&gt;
-      &lt;div class="md-card-content"&gt;
-        &lt;p class="md-type-body-medium"&gt;Superficie base de navegación y selección de elementos.&lt;/p&gt;
-      &lt;/div&gt;
-    &lt;/article&gt;
-  &lt;/div&gt;
-
-  &lt;!-- Panel fluido de detalle (1fr) --&gt;
-  &lt;div class="md-layout-list-detail-detail"&gt;
-    &lt;article class="md-card md-card-elevated"&gt;
-      &lt;div class="md-card-header"&gt;
-        &lt;h4 class="md-type-title-medium"&gt;Panel de detalle (1fr)&lt;/h4&gt;
-        &lt;p class="md-type-body-small"&gt;Registro activo&lt;/p&gt;
-      &lt;/div&gt;
-      &lt;div class="md-card-content"&gt;
-        &lt;p class="md-type-body-medium"&gt;Superficie destacada con vista profunda del elemento seleccionado.&lt;/p&gt;
-      &lt;/div&gt;
-    &lt;/article&gt;
-  &lt;/div&gt;
-&lt;/div&gt;</code></pre>
-      <button type="button" class="sr-copy" data-copy>Copiar</button>
-    </section>
-    <!-- PAREJA PAR 4: hasta aqui -->
-
-    <!-- PAREJA PAR 5: Layout canónico: Feed adaptativo -->
+    <!-- PAREJA PAR 3: Layout canónico: Feed adaptativo -->
     <section class="sr-section">
       <h3 class="md-type-title-large">Layout canónico: Feed adaptativo</h3>
       <p class="md-type-body-medium">Rejilla fluida auto-ajustable (auto-fill / minmax) para colecciones homogéneas, tarjetas de monitoreo y tableros.</p>
@@ -482,7 +350,59 @@
 &lt;/div&gt;</code></pre>
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
-    <!-- PAREJA PAR 5: hasta aqui -->
+    <!-- PAREJA PAR 3: hasta aqui -->
+
+    <!-- PAREJA PAR 4: Contenedor acotado y márgenes de página (.md-layout-container) -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Contenedor acotado y márgenes de página (.md-layout-container)</h3>
+      <p class="md-type-body-medium">Envolvente centrado con ancho máximo legible de 1200dp, márgenes laterales responsivos (16dp en Compact, 24dp en Medium+) y ritmo vertical automático entre bloques internos.</p>
+
+      <div class="sr-specimen">
+        <div class="md-layout-container">
+          <article class="md-card md-card-outlined">
+            <div class="md-card-header">
+              <h4 class="md-type-title-medium">Bloque principal de contenido</h4>
+              <p class="md-type-body-small">Contenedor centrado con ancho máximo legible (1200dp).</p>
+            </div>
+            <div class="md-card-content">
+              <p class="md-type-body-medium">Los márgenes laterales se adaptan automáticamente a 16dp en Compact y 24dp en Medium y Expanded.</p>
+            </div>
+          </article>
+          <article class="md-card md-card-outlined">
+            <div class="md-card-header">
+              <h4 class="md-type-title-medium">Bloque complementario apilado</h4>
+              <p class="md-type-body-small">Ritmo espacial vertical gobernado por gap.</p>
+            </div>
+            <div class="md-card-content">
+              <p class="md-type-body-medium">La separación vertical entre tarjetas sucesivas se resuelve automáticamente sin márgenes ad-hoc.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <pre class="sr-code"><code>&lt;div class="md-layout-container"&gt;
+  &lt;article class="md-card md-card-outlined"&gt;
+    &lt;div class="md-card-header"&gt;
+      &lt;h4 class="md-type-title-medium"&gt;Bloque principal de contenido&lt;/h4&gt;
+      &lt;p class="md-type-body-small"&gt;Contenedor centrado con ancho máximo legible (1200dp).&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="md-card-content"&gt;
+      &lt;p class="md-type-body-medium"&gt;Los márgenes laterales se adaptan automáticamente a 16dp en Compact y 24dp en Medium y Expanded.&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/article&gt;
+  &lt;article class="md-card md-card-outlined"&gt;
+    &lt;div class="md-card-header"&gt;
+      &lt;h4 class="md-type-title-medium"&gt;Bloque complementario apilado&lt;/h4&gt;
+      &lt;p class="md-type-body-small"&gt;Ritmo espacial vertical gobernado por gap.&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="md-card-content"&gt;
+      &lt;p class="md-type-body-medium"&gt;La separación vertical entre tarjetas sucesivas se resuelve automáticamente sin márgenes ad-hoc.&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/article&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+    <!-- PAREJA PAR 4: hasta aqui -->
 
   </main>
 

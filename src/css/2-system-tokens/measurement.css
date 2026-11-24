@@ -1368,6 +1368,7 @@
   --md-sys-measurement-layout-gutter-compact: var(--md-sys-measurement-space-200);   /* 16dp */
   --md-sys-measurement-layout-gutter-expanded: var(--md-sys-measurement-space-300);  /* 24dp */
   --md-sys-measurement-layout-supporting-panel-width: var(--md-ref-layout-supporting-panel-width); /* 360dp */
+  --md-sys-measurement-layout-container-max-width: var(--md-ref-layout-container-max-width); /* 1200dp */
 }
 
 /* Las clases utilitarias de esta familia se mudaron a 4-utilities/ en la auditoria M3:
