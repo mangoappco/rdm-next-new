@@ -105,6 +105,43 @@
   flex: 1 1 auto;
 }
 
+/* ==========================================================================
+   ESTADOS DE CARGA ORGÁNICA EN PANELES (M3 Loading Indicator Integration)
+   ========================================================================== */
+
+/* Ranura de carga orgánica en paneles de Scaffold */
+.md-scaffold-pane-loader {
+  position: absolute;
+  inset: var(--md-sys-measurement-space-0);
+  display: grid;
+  place-items: center;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Modo recarga sobre contenido visible: velo de superficie translúcido (M3 Refresh Scrim) */
+.md-scaffold-pane[data-loading-active="refresh"] .md-scaffold-pane-loader {
+  background-color: rgb(from var(--md-sys-color-surface) r g b / var(--md-sys-scaffold-pane-refresh-scrim-opacity));
+  pointer-events: auto;
+}
+
+/* Modo carga inicial: atenuación de los elementos hijos del panel mientras dura la carga */
+.md-scaffold-pane:is([data-loading-active="initial"], [data-loading-active="true"]) > :not(.md-scaffold-pane-loader) {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Transición suave para evitar parpadeos visuales al alternar estados */
+.md-scaffold-pane > :not(.md-scaffold-pane-loader) {
+  transition: opacity var(--md-sys-motion-duration-short4) var(--md-sys-motion-easing-linear);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .md-scaffold-pane > :not(.md-scaffold-pane-loader) {
+    transition: none;
+  }
+}
+
 /* Comportamiento Fijo: Panel lateral de ancho canónico M3 de 360dp (Supporting Pane) */
 .md-scaffold-pane-fixed {
   flex: 0 0 var(--md-sys-measurement-layout-supporting-panel-width); /* 360dp — no crece ni encoge */

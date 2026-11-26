@@ -10,11 +10,14 @@
  * 3. Soporta colapso completo (0dp) para alternar entre two-pane y single-pane,
  *    snap magnético a anchos canónicos M3 (360dp, 412dp, 50%) y toggle por selección
  *    (tap/clic o Enter/Espacio en el separador).
+ * 4. Gestiona estados de carga orgánica [data-loading] en paneles (.md-scaffold-pane)
+ *    con umbral anti-parpadeo de 200ms e integración directa con Loading Indicator.
  *
  * ACCESIBILIDAD:
  * - aria-expanded en el disparador refleja si el panel subordinado está visible.
  * - aria-controls vincula el disparador o la manija con el id del panel objetivo.
  * - aria-hidden en el panel objetivo oculta o expone el árbol de accesibilidad.
+ * - aria-busy="true" mientras el panel está en estado de carga activa.
  * - role="separator", aria-orientation="vertical", aria-valuemin, aria-valuemax
  *   y aria-valuenow en las manijas de arrastre de paneles.
  *
@@ -24,7 +27,126 @@
  * ==========================================================================
  */
 
+import { hydrateLoadingIndicator } from './loading-indicator.js';
+
 let initialized = false;
+const loadingTimers = new WeakMap();
+
+/**
+ * Gestiona de forma reactiva los estados de carga sobre un panel de Scaffold.
+ * Aplica el umbral anti-parpadeo canónico M3 de 200ms.
+ *
+ * @param {HTMLElement} pane Panel objetivo (.md-scaffold-pane)
+ */
+function handlePaneLoadingChange(pane) {
+  if (!pane || !pane.matches?.('.md-scaffold-pane')) return;
+
+  const loadingAttr = pane.getAttribute('data-loading');
+  const timer = loadingTimers.get(pane);
+  if (timer) {
+    clearTimeout(timer);
+    loadingTimers.delete(pane);
+  }
+
+  if (!loadingAttr || loadingAttr === 'false') {
+    pane.removeAttribute('data-loading-active');
+    pane.removeAttribute('aria-busy');
+    const existingLoader = pane.querySelector(':scope > .md-scaffold-pane-loader');
+    if (existingLoader) {
+      existingLoader.remove();
+    }
+    return;
+  }
+
+  const mode = loadingAttr === 'refresh' ? 'refresh' : 'initial';
+  const delay = 200; // Umbral anti-parpadeo M3 (200ms)
+
+  const newTimer = setTimeout(() => {
+    loadingTimers.delete(pane);
+    const currentLoading = pane.getAttribute('data-loading');
+    if (!currentLoading || currentLoading === 'false') return;
+
+    pane.setAttribute('data-loading-active', mode);
+    pane.setAttribute('aria-busy', 'true');
+
+    let loader = pane.querySelector(':scope > .md-scaffold-pane-loader');
+    if (!loader) {
+      loader = document.createElement('div');
+      loader.className = 'md-scaffold-pane-loader';
+      loader.setAttribute('aria-hidden', 'true');
+      pane.appendChild(loader);
+    }
+
+    let indicator = loader.querySelector('.md-loading-indicator');
+    const label = pane.getAttribute('data-loading-label') || 'Cargando contenido';
+
+    if (!indicator) {
+      indicator = document.createElement('div');
+      indicator.setAttribute('role', 'progressbar');
+      loader.appendChild(indicator);
+    }
+
+    indicator.className = mode === 'refresh'
+      ? 'md-loading-indicator md-loading-indicator-contained'
+      : 'md-loading-indicator';
+    indicator.setAttribute('aria-label', label);
+
+    if (typeof hydrateLoadingIndicator === 'function') {
+      hydrateLoadingIndicator(indicator);
+    } else if (typeof window !== 'undefined' && typeof window.initLoadingIndicator === 'function') {
+      window.initLoadingIndicator();
+    }
+  }, delay);
+
+  loadingTimers.set(pane, newTimer);
+}
+
+/**
+ * Helper público para activar o desactivar el estado de carga en un panel.
+ *
+ * @param {HTMLElement|string} pane Referencia a elemento DOM o selector CSS del panel
+ * @param {string|boolean} mode 'initial' | 'refresh' | true | false
+ * @param {string|null} label Texto accesible descriptivo para el lector de pantalla
+ */
+export function setPaneLoading(pane, mode = 'initial', label = null) {
+  const el = typeof pane === 'string' ? document.querySelector(pane) : pane;
+  if (!el) return;
+
+  if (label) {
+    el.setAttribute('data-loading-label', label);
+  }
+
+  if (mode === false || mode === 'false' || mode === null) {
+    el.removeAttribute('data-loading');
+  } else {
+    el.setAttribute('data-loading', typeof mode === 'string' ? mode : 'initial');
+  }
+
+  handlePaneLoadingChange(el);
+}
+
+/**
+ * Envuelve una tarea asíncrona gestionando automáticamente el ciclo de vida
+ * del estado de carga sobre el panel especificado.
+ *
+ * @param {HTMLElement|string} pane Panel objetivo
+ * @param {Function|Promise} asyncTask Tarea asíncrona a ejecutar
+ * @param {Object|string} options Opciones de configuración { mode, label } o string con label
+ * @returns {Promise<*>} Resultado de la tarea asíncrona
+ */
+export async function withPaneLoading(pane, asyncTask, options = {}) {
+  const el = typeof pane === 'string' ? document.querySelector(pane) : pane;
+  const mode = (typeof options === 'object' && options?.mode) ? options.mode : 'initial';
+  const label = typeof options === 'string' ? options : (options?.label || null);
+
+  setPaneLoading(el, mode, label);
+  try {
+    const taskPromise = typeof asyncTask === 'function' ? asyncTask() : asyncTask;
+    return await taskPromise;
+  } finally {
+    setPaneLoading(el, false);
+  }
+}
 
 /**
  * Alterna el estado colapsado (0dp) / expandido de un panel redimensionable.
@@ -358,4 +480,45 @@ export function initScaffold() {
 
     event.preventDefault();
   });
+
+  // 4. Estados de carga orgánica [data-loading] en paneles de Scaffold
+  document.querySelectorAll('.md-scaffold-pane[data-loading]').forEach(handlePaneLoadingChange);
+
+  if (typeof MutationObserver !== 'undefined' && document.body) {
+    const loadingObserver = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        if (mutation.type === 'attributes') {
+          const target = mutation.target;
+          if (target.matches?.('.md-scaffold-pane')) {
+            handlePaneLoadingChange(target);
+          }
+        } else if (mutation.type === 'childList') {
+          for (const node of mutation.addedNodes) {
+            if (node.nodeType === 1) {
+              if (node.matches?.('.md-scaffold-pane[data-loading]')) {
+                handlePaneLoadingChange(node);
+              }
+              if (node.querySelectorAll) {
+                node.querySelectorAll('.md-scaffold-pane[data-loading]').forEach(handlePaneLoadingChange);
+              }
+            }
+          }
+        }
+      }
+    });
+
+    loadingObserver.observe(document.body, {
+      attributes: true,
+      attributeFilter: ['data-loading', 'data-loading-label'],
+      childList: true,
+      subtree: true,
+    });
+  }
+
+  // Exposición de API pública en window.M3Scaffold
+  if (typeof window !== 'undefined') {
+    window.M3Scaffold = window.M3Scaffold || {};
+    window.M3Scaffold.setPaneLoading = setPaneLoading;
+    window.M3Scaffold.withPaneLoading = withPaneLoading;
+  }
 }

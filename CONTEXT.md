@@ -708,6 +708,7 @@ $$\mathbf{Scaffold} = \mathbf{Bars} + \mathbf{Rails} + \mathbf{Panes}$$
 - REGLA 11: 100% de paridad carácter a carácter entre espécimen y snippet copiable en los 8 Pares.
 - SHA-256 byte-idéntico entre molde `scaffold.template.html` y componente `scaffold.html` (`8889cdadc491507de7d8276e206a013ebb4e3642d2af1e723e7c9b35fb8e8b5e`).
 - Cero casos de uso de negocio en páginas individuales (reservados para la galería general de ManGo! App al final del catálogo).
+- **Integración Orgánica de Loading Indicator en Panes:** Soporte declarativo sobre cualquier `.md-scaffold-pane` con `data-loading="initial"|"refresh"`, atenuación de hijos en carga inicial, velo translúcido de superficie al 72% (`--md-ref-opacity-72` / `--md-sys-scaffold-pane-refresh-scrim-opacity`) en recarga sobre datos visibles, umbral reactivo anti-parpadeo M3 de 200ms en `scaffold.js`, inyección automática de `.md-scaffold-pane-loader` e hidratación SVG de Loading Indicator, y helpers públicos `window.M3Scaffold.setPaneLoading` y `window.M3Scaffold.withPaneLoading`.
 
 
 ## Componente Layout (.md-layout-container, .md-grid, .md-layout-feed) — Purificación Canónica (2026-11-24)

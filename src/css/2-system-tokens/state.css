@@ -180,6 +180,9 @@
      El color del scrim ya existe y vive en los temas, como todos los colores
      (`--md-sys-color-scrim`). Aqui solo va el cuanto. */
   --md-sys-scrim-opacity: var(--md-ref-opacity-32);
+
+  /* 72% — Velo de recarga sobre paneles de Scaffold (M3 Refresh Scrim) */
+  --md-sys-scaffold-pane-refresh-scrim-opacity: var(--md-ref-opacity-72);
 }
 
 /* Las clases utilitarias de esta familia se mudaron a 4-utilities/ en la auditoria M3:

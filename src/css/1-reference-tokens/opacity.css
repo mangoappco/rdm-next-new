@@ -165,4 +165,12 @@
      una opacidad cruda distinta de las de arriba.
      --------------------------------------------------------------------- */
   --md-ref-opacity-32: 0.32;
+
+  /* ------------------------------------------------------------------------
+     OPACIDAD DEL VELO DE RECARGA EN PANELES (M3 Refresh Scrim)
+     ---------------------------------------------------------------------
+     72%. M3 lo aplica sobre contenido preexistente mientras se actualizan
+     datos en segundo plano, atenuando el panel sin ocultar su estructura.
+     --------------------------------------------------------------------- */
+  --md-ref-opacity-72: 0.72;
 }
