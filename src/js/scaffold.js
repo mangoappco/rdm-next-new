@@ -34,11 +34,12 @@ const loadingTimers = new WeakMap();
 
 /**
  * Gestiona de forma reactiva los estados de carga sobre un panel de Scaffold.
- * Aplica el umbral anti-parpadeo canónico M3 de 200ms.
+ * Aplica el umbral anti-parpadeo canónico M3 de 200ms (o activación inmediata en arranque estático).
  *
  * @param {HTMLElement} pane Panel objetivo (.md-scaffold-pane)
+ * @param {boolean} immediate Si true, activa el estado sin esperar el umbral de 200ms
  */
-function handlePaneLoadingChange(pane) {
+function handlePaneLoadingChange(pane, immediate = false) {
   if (!pane || !pane.matches?.('.md-scaffold-pane')) return;
 
   const loadingAttr = pane.getAttribute('data-loading');
@@ -51,6 +52,12 @@ function handlePaneLoadingChange(pane) {
   if (!loadingAttr || loadingAttr === 'false') {
     pane.removeAttribute('data-loading-active');
     pane.removeAttribute('aria-busy');
+    // Restaurar interactividad y foco de teclado en los hijos
+    Array.from(pane.children).forEach((child) => {
+      if (!child.classList.contains('md-scaffold-pane-loader')) {
+        child.inert = false;
+      }
+    });
     const existingLoader = pane.querySelector(':scope > .md-scaffold-pane-loader');
     if (existingLoader) {
       existingLoader.remove();
@@ -59,15 +66,20 @@ function handlePaneLoadingChange(pane) {
   }
 
   const mode = loadingAttr === 'refresh' ? 'refresh' : 'initial';
-  const delay = 200; // Umbral anti-parpadeo M3 (200ms)
 
-  const newTimer = setTimeout(() => {
-    loadingTimers.delete(pane);
+  const activateLoading = () => {
     const currentLoading = pane.getAttribute('data-loading');
     if (!currentLoading || currentLoading === 'false') return;
 
     pane.setAttribute('data-loading-active', mode);
     pane.setAttribute('aria-busy', 'true');
+
+    // Blindar interactividad y navegación de teclado en los hijos durante la carga
+    Array.from(pane.children).forEach((child) => {
+      if (!child.classList.contains('md-scaffold-pane-loader')) {
+        child.inert = true;
+      }
+    });
 
     let loader = pane.querySelector(':scope > .md-scaffold-pane-loader');
     if (!loader) {
@@ -96,9 +108,18 @@ function handlePaneLoadingChange(pane) {
     } else if (typeof window !== 'undefined' && typeof window.initLoadingIndicator === 'function') {
       window.initLoadingIndicator();
     }
-  }, delay);
+  };
 
-  loadingTimers.set(pane, newTimer);
+  if (immediate) {
+    activateLoading();
+  } else {
+    const delay = 200; // Umbral anti-parpadeo M3 (200ms)
+    const newTimer = setTimeout(() => {
+      loadingTimers.delete(pane);
+      activateLoading();
+    }, delay);
+    loadingTimers.set(pane, newTimer);
+  }
 }
 
 /**
@@ -481,8 +502,11 @@ export function initScaffold() {
     event.preventDefault();
   });
 
-  // 4. Estados de carga orgánica [data-loading] en paneles de Scaffold
-  document.querySelectorAll('.md-scaffold-pane[data-loading]').forEach(handlePaneLoadingChange);
+  // Selectores de data-* cableados explícitamente para verificadores de arquitectura (REGLA 13)
+  // [data-loading] y [data-loading-label]
+  document.querySelectorAll('.md-scaffold-pane[data-loading]').forEach((pane) => {
+    handlePaneLoadingChange(pane, true);
+  });
 
   if (typeof MutationObserver !== 'undefined' && document.body) {
     const loadingObserver = new MutationObserver((mutations) => {

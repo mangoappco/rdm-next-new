@@ -734,24 +734,25 @@ Patrones canónicos de distribución interior de Material Design 3 Expressive (`
 - SHA-256 byte-idéntico entre molde `layout.template.html` y componente `layout.html` (`1c75d9a090560fc4d9f8b7e27d8222d86881e7639c30b3c45da3d9299b580d1d`).
 
 
-## Componente Loading Indicator (.md-loading-indicator) — Consolidación y Cierre de Especificación (2026-11-24)
+## Componente Loading Indicator (.md-loading-indicator) — Consolidación y Cierre de Especificación (2026-11-26)
 
-Hoja en `src/css/3-components/loading-indicator.css`, vista y molde en `showroom/components/loading-indicator.html` y `showroom/templates/loading-indicator.template.html`, listado oficial en `showroom/index.html` bajo la familia **Comunicación** e importado en `3-components/index.css`. Cierra oficialmente la especificación completa de **4 pares normativos** en Bloque 1 (Especificación técnica y anatomía):
+Hoja en `src/css/3-components/loading-indicator.css`, vista y molde en `showroom/components/loading-indicator.html` y `showroom/templates/loading-indicator.template.html`, listado oficial en `showroom/index.html` bajo la familia **Comunicación** e importado en `3-components/index.css`. Cierra oficialmente la especificación completa de **5 pares normativos** en Bloque 1 (Especificación técnica y anatomía):
 
-### Bloque 1 · Especificación Técnica y Anatomía (Pares 1 a 4)
+### Bloque 1 · Especificación Técnica y Anatomía (Pares 1 a 5)
 1. **Par 1 · Indicador base sin contenedor (Default / Uncontained):** Contenedor base de 48dp y figura activa de 38dp en `var(--md-sys-color-primary)` con morfología continua entre las 7 figuras canónicas M3 (`MaterialShapes`) y rotación continua lineal.
 2. **Par 2 · Indicador con contenedor (Contained):** Contenedor perimétrico circular (`--md-sys-shape-corner-full`) en `var(--md-sys-color-primary-container)` y figura activa contrastada en `var(--md-sys-color-on-primary-container)`.
 3. **Par 3 · Escala de tamaños M3 Expressive:** Tres peldaños canónicos que preservan estrictamente la proporción contractual de figura a contenedor `38:48` (~79.17%):
    - **Small:** 24dp contenedor / 19dp figura activa (`.md-loading-indicator-small`).
    - **Default:** 48dp contenedor / 38dp figura activa (`.md-loading-indicator`).
    - **Large:** 72dp contenedor / 57dp figura activa (`.md-loading-indicator-large`).
-4. **Par 4 · Semántica WAI-ARIA y reducción de movimiento:** Accesibilidad normativa con `role="progressbar"` y `aria-label="Cargando..."` sin `aria-valuenow` (indeterminado). Supresión de movimiento para usuarios con sensibilidad vestibular (`prefers-reduced-motion: reduce`) pausando la rotación continua y el morphing SMIL a una silueta fija legible.
+4. **Par 4 · Semántica WAI-ARIA y reducción de movimiento:** Accesibilidad normativa con `role="progressbar"` y `aria-label="Cargando contenido"` sin `aria-valuenow` (indeterminado). Supresión de movimiento para usuarios con sensibilidad vestibular (`prefers-reduced-motion: reduce`) pausando la rotación continua y el morphing SMIL a una silueta fija legible.
+5. **Par 5 · Contención orgánica en paneles de Scaffold:** Integración sobre `.md-scaffold-pane` en modo carga inicial (`data-loading="initial"`) y recarga sobre contenido visible (`data-loading="refresh"`) con velo translúcido de superficie al 72% (`--md-sys-scaffold-pane-refresh-scrim-opacity`), blindaje de accesibilidad (`child.inert = true`) en los elementos descendientes y despacho inmediato en arranque estático.
 
 ### Métricas de Validación
 - `tools/verify-tokens.mjs`: 0 fallos nuevos; baseline histórico intacto en `FALLOS: 2` (`select.css:448, 453`).
 - REGLA 10: 100% de clases físicas existentes en `src/css/`.
 - REGLA 11: 100% de correspondencia carácter a carácter entre especímenes y snippets copiables.
-- SHA-256 byte-idéntico entre molde `loading-indicator.template.html` y componente `loading-indicator.html` (`3a6d8fe7fc9b9c9399b08fbf29d66d50c403c4bb9a8a6483796d9e7da1158aaa`).
+- SHA-256 byte-idéntico entre molde `loading-indicator.template.html` y componente `loading-indicator.html` (`755a8164076de56c53e5849764964d819ecc22b4e3d25f8a026230fce79f2c7a`).
 - Arquitectura limpia y ergonómica: el desarrollador escribe únicamente `<div class="md-loading-indicator" role="progressbar" aria-label="Cargando"></div>` y `src/js/loading-indicator.js` hidrata automáticamente la estructura vectorial SVG canónica, respetando `prefers-reduced-motion: reduce`.
 
 

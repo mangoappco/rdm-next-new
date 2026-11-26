@@ -98,6 +98,62 @@
       <button type="button" class="sr-copy" data-copy>Copiar</button>
     </section>
 
+    <!-- Contención orgánica en paneles de Scaffold -->
+    <section class="sr-section">
+      <h3 class="md-type-title-large">Contención orgánica en paneles de Scaffold</h3>
+      <p class="md-type-body-medium">Integración sobre paneles en modo carga inicial (Default) y recarga sobre contenido visible con velo de superficie (Contained).</p>
+
+      <div class="sr-specimen sr-specimen-scaffold">
+        <div class="md-scaffold">
+          <!-- Slot: Cuerpo de paneles de Scaffold -->
+          <div class="md-scaffold-body">
+            <!-- Slot: Pane fijo con carga inicial (Default uncontained) -->
+            <section class="md-scaffold-pane md-scaffold-pane-fixed" data-loading="initial" data-loading-label="Cargando panel" aria-label="Panel fijo">
+              <article class="md-card md-card-outlined">
+                <div class="md-card-content">
+                  <p class="md-type-title-medium">Contenido</p>
+                  <p class="md-type-body-small">Atenuado durante la carga inicial.</p>
+                </div>
+              </article>
+            </section>
+            <!-- Slot: Pane flexible en recarga (Contained con velo de superficie) -->
+            <section class="md-scaffold-pane md-scaffold-pane-flexible" data-loading="refresh" data-loading-label="Actualizando panel" aria-label="Panel flexible">
+              <article class="md-card md-card-outlined">
+                <div class="md-card-content">
+                  <p class="md-type-title-medium">Panel en recarga</p>
+                  <p class="md-type-body-small">Contenido visible protegido bajo el velo translucido de superficie.</p>
+                </div>
+              </article>
+            </section>
+          </div>
+        </div>
+      </div>
+      <pre class="sr-code"><code>&lt;div class="md-scaffold"&gt;
+  &lt;!-- Slot: Cuerpo de paneles de Scaffold --&gt;
+  &lt;div class="md-scaffold-body"&gt;
+    &lt;!-- Slot: Pane fijo con carga inicial (Default uncontained) --&gt;
+    &lt;section class="md-scaffold-pane md-scaffold-pane-fixed" data-loading="initial" data-loading-label="Cargando panel" aria-label="Panel fijo"&gt;
+      &lt;article class="md-card md-card-outlined"&gt;
+        &lt;div class="md-card-content"&gt;
+          &lt;p class="md-type-title-medium"&gt;Contenido&lt;/p&gt;
+          &lt;p class="md-type-body-small"&gt;Atenuado durante la carga inicial.&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/article&gt;
+    &lt;/section&gt;
+    &lt;!-- Slot: Pane flexible en recarga (Contained con velo de superficie) --&gt;
+    &lt;section class="md-scaffold-pane md-scaffold-pane-flexible" data-loading="refresh" data-loading-label="Actualizando panel" aria-label="Panel flexible"&gt;
+      &lt;article class="md-card md-card-outlined"&gt;
+        &lt;div class="md-card-content"&gt;
+          &lt;p class="md-type-title-medium"&gt;Panel en recarga&lt;/p&gt;
+          &lt;p class="md-type-body-small"&gt;Contenido visible protegido bajo el velo translucido de superficie.&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/article&gt;
+    &lt;/section&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <button type="button" class="sr-copy" data-copy>Copiar</button>
+    </section>
+
   </main>
 </body>
 </html>
