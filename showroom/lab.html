@@ -13,16 +13,29 @@
 </head>
 <body class="md-bg-background md-text-on-background md-type-body-medium">
 
-<div class="md-loading-indicator" role="progressbar" aria-label="Cargando"></div>
-
-<div class="md-loading-indicator md-loading-indicator-contained" role="progressbar" aria-label="Cargando"></div>
-
-<div class="md-loading-indicator md-loading-indicator-small" role="progressbar" aria-label="Cargando"></div>
-<div class="md-loading-indicator" role="progressbar" aria-label="Cargando"></div>
-<div class="md-loading-indicator md-loading-indicator-large" role="progressbar" aria-label="Cargando"></div>
-
-<div class="md-loading-indicator md-loading-indicator-contained" role="progressbar" aria-label="Cargando contenido"></div>
-
+<div class="md-scaffold">
+  <!-- Slot: Cuerpo de paneles de Scaffold -->
+  <div class="md-scaffold-body">
+    <!-- Slot: Pane fijo con carga inicial (Default uncontained) -->
+    <section class="md-scaffold-pane md-scaffold-pane-fixed" data-loading="initial" data-loading-label="Cargando panel" aria-label="Panel fijo">
+      <article class="md-card md-card-outlined">
+        <div class="md-card-content">
+          <p class="md-type-title-medium">Contenido</p>
+          <p class="md-type-body-small">Atenuado durante la carga inicial.</p>
+        </div>
+      </article>
+    </section>
+    <!-- Slot: Pane flexible en recarga (Contained con velo de superficie) -->
+    <section class="md-scaffold-pane md-scaffold-pane-flexible" data-loading="refresh" data-loading-label="Actualizando panel" aria-label="Panel flexible">
+      <article class="md-card md-card-outlined">
+        <div class="md-card-content">
+          <p class="md-type-title-medium">Panel en recarga</p>
+          <p class="md-type-body-small">Contenido visible protegido bajo el velo translucido de superficie.</p>
+        </div>
+      </article>
+    </section>
+  </div>
+</div>
 
 
 
